@@ -176,7 +176,7 @@ function YulupEditController(aParameterObject) {
     };
 
     /**
-     * 
+     *
      * @param {nsIFile}   aResultFile
      * @param {Exception} aException
      */
