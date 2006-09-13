@@ -1,73 +1,38 @@
 <?xml version="1.0"?>
 
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-
   <title>Development</title>
-
 </head>
 
 
 
 <body>
-
 <h2>Development</h2>
-
 <ul>
-
-  
-<li><a href="#subversion">Get the Source Code from Subversion</a></li>
-
+  <li><a href="#subversion">Get the Source Code from Subversion</a></li>
   <li><a href="#installation">Installation</a></li>
   <li><a href="#xpi">Building Releases: Generating XPI from source (Unix only)</a></li>
-
   <li><a href="#setup">Set Up your Environment for Code Development</a></li>
-
-  
-<li><a href="#tcpmon">Debugging the client-server data-exchange</a></li>
+  <li><a href="#tcpmon">Debugging the client-server data-exchange</a></li>
   <li><a href="#requirements">System Requirements for Code Development</a></li>
-
 </ul>
-
-
-
-
-
-
-
 
 
 <h3 id="subversion">Get the Source Code from Subversion</h3>
 
 <h4>Anonymous</h4>
-
-<pre>svn co <a href="http://svn.wyona.com/repos/public/ulysses">http://svn.wyona.com/repos/public/ulysses</a>
-
-</pre>
+<pre>svn co <a href="http://svn.wyona.com/repos/public/yulup">http://svn.wyona.com/repos/public/yulup</a></pre>
 
 <p>
-
 Username: <i>anonymous</i>, Password: <i>anonymous</i>
-
 </p>
 
-
-
-
-
 <h4>Developers</h4>
-
-<pre>svn co --username USERNAME https://svn.wyona.com/repos/public/ulysses<br/></pre>
-
-
-
+<pre>svn co --username USERNAME https://svn.wyona.com/repos/public/yulup</pre>
 
 
 <h3 id="installation">Installation</h3>
@@ -86,13 +51,13 @@ If the source has been checked out from SVN, then one can install Yulup as follo
 
       <li><p><b>MacOS X:</b> <tt>/Users/USER/Library/Application Support/Firefox/Profiles/PROFILE/extensions/yulup-prototype-1@wyona.com</tt></p></li>
 
-      <li><p><b>Windows:</b> <tt>C:/Documents and Settings/USER/Application Data/Mozilla/Firefox/Profiles/PROFILE/extensions/yulup-prototype-1@wyona.com</tt> or <tt>C:\Programs\Mozilla&#160;Firefox\extensions\yulup-prototype-1@wyona.com</tt></p></li>
+      <li><p><b>Windows:</b> <tt>C:/Documents and Settings/USER/Application Data/Mozilla/Firefox/Profiles/PROFILE/extensions/yulup-prototype-1@wyona.com</tt> or <tt>C:\Programs\Mozilla Firefox\extensions\yulup-prototype-1@wyona.com</tt></p></li>
 
     </ul>
 
   </li>
 
-  <li><p>Open this file and add the path to the Yulup source, e.g. <tt>/home/USER/src/ulysses/src/trunk/yulup/prototypes/prototype1/src</tt> (Unix) or <tt>C:\src\ulysses\src\trunk\yulup\prototypes\prototype1\src</tt> (Windows)</p></li>
+  <li><p>Open this file and add the path to the Yulup source, e.g. <tt>/home/USER/src/yulup/src/trunk/yulup/prototypes/prototype1/src</tt> (Unix) or <tt>C:\src\yulup\src\trunk\yulup\prototypes\prototype1\src</tt> (Windows)</p></li>
 
   <li>Delete <tt>compreg.dat</tt> and <tt>xpti.dat</tt> from your profile directory.</li>
 
@@ -101,14 +66,15 @@ If the source has been checked out from SVN, then one can install Yulup as follo
 </ul>
 
 <h3 id="xpi">Building Releases: Generating XPI from source (Unix only)</h3>
-<p>Assume a path snippet <tt>$CURRENT</tt> which currently points to <tt>public/ulysses/src/trunk/ulysses/prototypes/prototype1</tt>.</p>
+<p>Assume a path snippet <tt>$CURRENT</tt> which currently points to <tt>public/yulup/src/trunk/yulup/prototypes/prototype1/src</tt>.</p>
 <ul>
-<li><p>Edit <tt>$CURRENT/src/install.rdf</tt> and bump version number contained in the &lt;em:version&gt; element (XPath: RDF/Description/em:version)</p></li>
-<li><p>Edit <tt>$CURRENT/src/chrome/locale/xml/yulup.dtd.xml</tt> and run Apache Ant</p></li>
-<li><p>In directory <tt>$CURRENT/src/</tt>, issue "make".</p></li>
+  <li><p>Edit <tt>$CURRENT/install.rdf</tt> and bump version number contained in the &lt;em:version> element (XPath: RDF/Description/em:version)</p></li>
+  <li><p>Edit <tt>$CURRENT/chrome/locale/xml/yulup.dtd.xml</tt> and run Apache Ant</p></li>
+  <li><p>In directory <tt>$CURRENTchrome/locale</tt>, issue "ant".</p></li>
+  <li><p>In directory <tt>$CURRENT</tt>, issue "ant".</p></li>
 </ul>
 <p>
-The new package can then be found in <tt>public/ulysses/download</tt> (the <tt>update.rdf</tt> file in the <tt>download</tt> directory is modified automatically to include the new release).
+The new package can then be found in <tt>public/website/yulup/download</tt> (the <tt>update.rdf</tt> file in the <tt>download</tt> directory is modified automatically to include the new release).
 </p>
 
 
@@ -135,15 +101,6 @@ The new package can then be found in <tt>public/ulysses/download</tt> (the <tt>u
 <p>See also the <a href="http://kb.mozillazine.org/Setting_up_extension_development_environment">Setting up extension development environment</a> mozillaZine kb entry. Note though that not all information in that article is up-to-date anymore. In the case of doubt, the information stated here overrides information in that article.</p>
 
 
-
-
-
-
-
-
-
-
-
 <h3 id="tcpmon">Debugging the client-server data exchange</h3>
 
 <p>Download <a href="http://ws.apache.org/axis/java/releases.html">Axis</a> and use <a href="http://ws.apache.org/axis/java/user-guide.html#AppendixUsingTheAxisTCPMonitorTcpmon">TCP Monitor</a>:</p>
@@ -158,33 +115,19 @@ or <a href="http://ngrep.sourceforge.net/">ngrep</a>, e.g. to check what DTDs ar
 
 
 
-<pre>
-
-sudo bash
-
-ngrep -w dtd
-
-</pre>
+<pre><br/>sudo bash<br/><br/>ngrep -w dtd<br/><br/></pre>
 
 
 
 <p>or to grep stuff on localhost (127.0.0.1)</p>
 
-<pre>
-
-ngrep -d lo
-
-</pre>
+<pre><br/>ngrep -d lo<br/><br/></pre>
 
 
 
 <p>or check for regular expressions on a specific port</p>
 
-<pre>
-
-ngrep "Atom" "port 80"
-
-</pre>
+<pre><br/>ngrep "Atom" "port 80"<br/><br/></pre>
 
 
 
@@ -208,6 +151,4 @@ or tcpdump or ...
 
 
 </body>
-
 </html>
-
