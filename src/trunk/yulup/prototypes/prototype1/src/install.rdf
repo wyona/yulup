@@ -64,7 +64,7 @@
     <em:contributor>Gregor Imboden (Wyona Inc.)</em:contributor>
     <em:contributor>Thomas Comiotto (University of Zurich)</em:contributor>
     <em:iconURL>chrome://yulup/skin/icons/yulup-logo.png</em:iconURL>
-    <em:homepageURL>http://yulup.wyona.org/</em:homepageURL>
-    <em:updateURL>http://yulup.wyona.org/download/update.rdf</em:updateURL>
+    <em:homepageURL>http://www.yulup.org/</em:homepageURL>
+    <em:updateURL>http://www.yulup.org/download/update.rdf</em:updateURL>
   </Description>
 </RDF>
