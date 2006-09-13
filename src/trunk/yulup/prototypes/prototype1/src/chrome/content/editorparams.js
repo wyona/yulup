@@ -85,17 +85,20 @@ NeutronEditorParameters.prototype = {
  * @param  {nsIURI}               aURI            the URI of the document to load into the new editor
  * @param  {String}               aTemplate       a template action parameter string
  * @param  {String}               aCreationStatus specifies if the document has to be "create"ed first or simply "edit"
+ * @param  {Introspection}           aIntrospectionObject the introspection object associated with the document to load
  * @return {AtomEditorParameters}
  */
-function AtomEditorParameters(aURI, aTemplate, aCreationStatus) {
+function AtomEditorParameters(aURI, aTemplate, aCreationStatus, aIntrospectionObject) {
     EditorParameters.call(this, aURI, aTemplate);
 
     this.creationStatus = aCreationStatus;
+    this.introspection  = aIntrospectionObject;
 }
 
 AtomEditorParameters.prototype = {
     __proto__: EditorParameters.prototype,
 
     type          : "AtomEditorParameters",
-    creationStatus: null
+    creationStatus: null,
+    introspection : null
 };

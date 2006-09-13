@@ -129,6 +129,8 @@ var AtomSidebar = {
     editCurrentEntry: function () {
         var selectedEntries = null;
         var editURI         = null;
+        var introspection   = null;
+        var fragment        = null;
 
         /* DEBUG */ dump("Yulup:atomsidebar.js:AtomSidebar.editCurrentEntry() invoked\n");
 
@@ -140,8 +142,15 @@ var AtomSidebar = {
             if (editURI = selectedEntries[i].getEditURI()) {
                 /* DEBUG */ dump("Yulup:atomsidebar.js:AtomSidebar.editCurrentEntry: edit link \"" + editURI + "\" found. Calling editor.\n");
 
+                // create a fake introspection object
+                introspection = new Introspection();
+                fragment      = introspection.createNewFragment();
+
+                fragment.mimeType = "application/atom+xml";
+                fragment.open     = introspection.createNewFileOperation(editURI, "GET");
+
                 // call Yulup to create a new editor
-                AtomSidebar.mainBrowserWindow.yulup.editAtomEntryProxy(editURI);
+                AtomSidebar.mainBrowserWindow.yulup.editAtomEntryProxy(editURI, introspection);
             } else {
                 /* DEBUG */ dump("Yulup:atomsidebar.js:AtomSidebar.editCurrentEntry: no edit link found. Aborting.\n");
             }

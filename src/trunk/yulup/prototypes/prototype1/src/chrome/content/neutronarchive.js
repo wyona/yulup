@@ -344,7 +344,8 @@ var NeutronArchiveRegistry = {
     // registered mime-types
     mimeTypeMap: {
         "application/xhtml+xml" : "xhtml.nar",
-        "application/mathml"    : "mathml.nar"
+        "application/mathml"    : "mathml.nar",
+        "application/atom+xml"  : "atom.nar"
     },
 
     /**

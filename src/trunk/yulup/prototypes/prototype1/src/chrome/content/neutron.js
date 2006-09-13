@@ -211,7 +211,7 @@ Introspection.prototype = {
     fragments:             null,
     newAsset:              null,
     navigation:            null,
-    
+
     /**
      * Get the introspection document source.
      *
@@ -229,6 +229,39 @@ Introspection.prototype = {
      */
     getIntrospectionURI: function () {
         return this.introspectionURI;
+    },
+
+
+    /**
+     * Create a new fragment and add it to the fragments list.
+     *
+     * @return {Object} returns the newly created fragment
+     */
+    createNewFragment: function () {
+        var fragment = null;
+
+        fragment = {
+            mimeType     : null,
+            open         : this.createNewFileOperation(null, null),
+            save         : this.createNewFileOperation(null, null),
+            checkout     : this.createNewFileOperation(null, null),
+            checkin      : this.createNewFileOperation(null, null),
+            schemas      : null,
+            styles       : null,
+            styleTemplate: null,
+            widgets      : null
+        };
+
+        this.fragments.push(fragment);
+
+        return fragment;
+    },
+
+    createNewFileOperation: function (aURI, aMethod) {
+        return {
+            uri   : aURI,
+            method: aMethod
+        };
     },
 
     /**
@@ -450,8 +483,7 @@ Introspection.prototype = {
         // return available style sheets for fragment
         return this.fragments[aFragment].styles;
     },
-    
-    
+
     /**
      * Return the styles template associated with the fragment for the given
      * fragment identifier.
@@ -461,12 +493,12 @@ Introspection.prototype = {
      * @param  {Integer} aFragment a fragment identifier
      * @return a style template
      */
-    
+
     queryFragmentStyleTemplate: function (aFragment) {
         // return available style template for fragment
         return this.fragments[aFragment].styleTemplate;
     },
-    
+
 
     /**
      * Return the widgets associated with the fragment for the given
@@ -490,7 +522,7 @@ Introspection.prototype = {
      */
     toString: function () {
         var objString = "";
-        var xmlSerializer = null; 
+        var xmlSerializer = null;
 
         xmlSerializer = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer);
 
@@ -527,10 +559,10 @@ Introspection.prototype = {
             } else {
                 objString += this.fragments[i].styles + "\n";
             }
-            
-            
-            objString += "Style Template:          " + (this.fragments[i].styleTemplate ? this.fragments[i].styleTemplate.uri.spec : "") + "\n"; 
-          
+
+
+            objString += "Style Template:          " + (this.fragments[i].styleTemplate ? this.fragments[i].styleTemplate.uri.spec : "") + "\n";
+
             objString += "Widgets:\n";
             if (this.fragments[i].widgets) {
                 for (var j=0; j < this.fragments[i].widgets.length; j++) {

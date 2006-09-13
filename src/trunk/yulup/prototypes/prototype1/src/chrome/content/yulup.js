@@ -734,12 +734,12 @@ Yulup.prototype = {
         }
     },
 
-    editAtomEntryProxy: function (aURI) {
+    editAtomEntryProxy: function (aURI, aIntrospectionObject) {
         var editorParameters = null;
 
         /* DEBUG */ dump("Yulup:yulup.js:Yulup.editAtomEntryProxy(\"" + aURI + "\") invoked\n");
 
-        editorParameters = new AtomEditorParameters(aURI, null, "edit");
+        editorParameters = new AtomEditorParameters(aURI, null, "edit", aIntrospectionObject);
 
         // replace the current editor
         createNewEditor(editorParameters);

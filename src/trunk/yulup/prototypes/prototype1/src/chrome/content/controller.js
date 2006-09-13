@@ -331,9 +331,8 @@ function YulupEditController(aParameterObject) {
             gEditorController.templateArchive.loadNeutronArchive(YulupEditController.templateArchiveLoadFinished);
         }
 
-        /* Check if we have to load a document, or we are
-        * starting from template. Note that the blank
-        * template is also a template. */
+        /* Check if we have to load a document, or we are starting from
+         * template. Note that the blank template is also a template. */
         if (!aFromTemplate) {
             // load document
             try {
@@ -458,6 +457,9 @@ function YulupEditController(aParameterObject) {
             this.editorMode = EDITOR_MODE_ATOM;
 
             argAtomCreationStatus = aParameterObject.parameters.creationStatus;
+
+            argNeutronIntrospection = aParameterObject.parameters.introspection;
+            argNeutronFragment      = 0;
         } else {
             /* DEBUG */ dump("Yulup:controller.js:YulupEditController: parameters are of type EditorParameters\n");
 
@@ -472,7 +474,7 @@ function YulupEditController(aParameterObject) {
         this.fragmentID    = argNeutronFragment;
         this.loadStyle     = argNeutronLoadStyle;
 
-        if (argNeutronIntrospection) {
+        if (this.editorMode == EDITOR_MODE_NEUTRON) {
             contentType = argNeutronIntrospection.queryFragmentMIMEType(argNeutronFragment);
         } else if (this.editorMode == EDITOR_MODE_ATOM) {
             contentType = "application/atom+xml";
@@ -533,7 +535,7 @@ function YulupEditController(aParameterObject) {
     }
 
     // instantiate the document, depending on type
-    if (argNeutronIntrospection) {
+    if (this.editorMode == EDITOR_MODE_NEUTRON) {
         if (argNeutronLoadStyle == "open") {
             if (argNeutronIntrospection.queryFragmentMIMEType(argNeutronFragment) == "application/neutron-archive") {
                 this.archive = new NeutronArchive(argNeutronIntrospection.queryFragmentOpenURI(argNeutronFragment));
