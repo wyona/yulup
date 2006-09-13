@@ -28,7 +28,7 @@
 
 const YULUP_EDITOR_CHROME_URI = "chrome://yulup/content/editor.xul";
 const YULUP_ABOUT_CHROME_URI  = "chrome://yulup/content/about.xul";
-const YULUP_DEMO_SITE_URI     = "http://demo.yulup.wyona.org/";
+const YULUP_DEMO_SITE_URI     = "http://demo.yulup.org/";
 const NAMESPACE_XUL           = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
 const INTROSPECTION_TYPE_NEUTRON = 0;
