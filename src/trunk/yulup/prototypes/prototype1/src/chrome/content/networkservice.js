@@ -497,9 +497,12 @@ DownloadObserver.prototype = {
      * @return {Undefined} does not have a return value
      */
     onDownloadComplete: function (aDownloader, aRequest, aContext, aStatusCode, aResult) {
-        var responseStatusCode = null;
-        var fileURI            = null;
-        var xmlDoc             = null;
+        var responseStatusCode    = null;
+        var responseHeaderVisitor = null;
+        var responseHeaders       = null;
+        var fileURI               = null;
+        var xmlDoc                = null;
+        var location              = null;
 
         /* DEBUG */ dump("Yulup:networkservice.js:DownloadObserver.onDownloadComplete(\"" + aDownloader + "\", \"" + aRequest + "\", \"" + aContext + "\", \"" + aStatusCode + "\", \"" + aResult + "\") invoked\n");
 
@@ -513,8 +516,11 @@ DownloadObserver.prototype = {
 
         /* DEBUG */ dump("Yulup:networkservice.js:DownloadObserver.onDownloadComplete: status code = \"" + responseStatusCode + "\"\n");
 
-        // retrieve HTTP response headers if the response status is 401 and we do authentication
-        if (responseStatusCode == 401 && this.request.handleAuthentication) {
+        /* Retrieve HTTP response headers the response status is 301 and we therefore
+         * have to retrieve the Location header, or the response status is 401 and we
+         * do authentication. */
+        if (responseStatusCode == 301 ||
+            (responseStatusCode == 401 && this.request.handleAuthentication)) {
             try {
                 this.channel.QueryInterface(Components.interfaces.nsIHttpChannel);
 
@@ -530,29 +536,63 @@ DownloadObserver.prototype = {
 
         // check if request was successful
         if (Components.isSuccessCode(aStatusCode)) {
-            // check if we should do authentication
-            if (responseStatusCode == 401 && this.request.handleAuthentication) {
-                /* DEBUG */ dump("Yulup:networkservice.js:DownloadObserver.onDownloadComplete: we have to authenticate\n");
+            switch (responseStatusCode) {
+                case 301:
+                    // moved permanently
+                    if (responseHeaders) {
+                        // check for availability of the Location header field
+                        for (var i = 0; i < responseHeaders.length; i++) {
+                            if (responseHeaders[i].header == "Location") {
+                                location = responseHeaders[i].value;
+                                break;
+                            }
+                        }
+                    }
 
-                // get an nsIURI object for the response file
-                fileURI = Components.classes["@mozilla.org/network/io-service;1"]. getService(Components.interfaces.nsIIOService).newFileURI(aResult);
+                    if (location && location != "") {
+                        try {
+                            // set new URI
+                            this.request.uri = location;
 
-                xmlDoc = new XMLDocument(fileURI);
-                xmlDoc.loadDocument();
+                            // restart request
+                            NetworkService.performHTTPRequest(this.request);
+                        } catch (exception) {
+                            // failed to restart request
+                            this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, exception);
+                        }
+                    } else {
+                        // no location header or no headers available at all; bail out
+                        this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, new YulupException("Yulup:networkservice.js:DownloadObserver.onDownloadComplete: request failed, return code is \"" + aStatusCode + "\""));
+                    }
+                    break;
 
-                try {
-                    NetworkService.authenticate(this.request, responseHeaders, xmlDoc.documentData);
-                } catch (exception) {
-                    /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:DownloadObserver.onDownloadComplete", exception);
-                    /* We should authenticate but the server did not tell us how, the
-                     * headers were not accessible, or the specified authentication
-                     * scheme is unknown. Bail out. */
-                    this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, exception);
-                }
-            } else {
-                /* Everything went fine (even if we received 401, but the caller did not order
-                 * us to authenticate, therefore he is expecting a potential authentication failure). */
-                this.request.requestFinishedCallback(aResult, responseStatusCode, this.request.context, null);
+                case 401:
+                    // unauthorized
+                    if (this.request.handleAuthentication) {
+                        /* DEBUG */ dump("Yulup:networkservice.js:DownloadObserver.onDownloadComplete: we have to authenticate\n");
+
+                        // get an nsIURI object for the response file
+                        fileURI = Components.classes["@mozilla.org/network/io-service;1"]. getService(Components.interfaces.nsIIOService).newFileURI(aResult);
+
+                        xmlDoc = new XMLDocument(fileURI);
+                        xmlDoc.loadDocument();
+
+                        try {
+                            NetworkService.authenticate(this.request, responseHeaders, xmlDoc.documentData);
+                        } catch (exception) {
+                            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:DownloadObserver.onDownloadComplete", exception);
+                            /* We should authenticate but the server did not tell us how, the
+                             * headers were not accessible, or the specified authentication
+                             * scheme is unknown. Bail out. */
+                            this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, exception);
+                        }
+                    }
+                    break;
+
+                default:
+                    /* Everything went fine (even if we received 401, but the caller did not order
+                     * us to authenticate, therefore he is expecting a potential authentication failure). */
+                    this.request.requestFinishedCallback(aResult, responseStatusCode, this.request.context, null);
             }
         } else {
             // request failed
@@ -652,7 +692,7 @@ StreamListener.prototype = {
         var responseHeaders       = null;
         var unicodeConverter      = null;
         var unicodeDoc            = null;
-        var authScheme            = null;
+        var location              = null;
 
         /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStopRequest(\"" + aRequest + "\", \"" + aContext + "\", \"" + aStatusCode + "\") invoked\n");
 
@@ -667,9 +707,11 @@ StreamListener.prototype = {
 
         /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStopRequest: status code = \"" + responseStatusCode + "\"\n");
 
-        /* Retrieve HTTP response headers if the caller wants us to, or
-         * the response status is 401 and we do authentication. */
+        /* Retrieve HTTP response headers if the caller wants us to,
+         * the response status is 301 and we therefore have to retrieve the
+         * Location header, or the response status is 401 and we do authentication. */
         if (this.request.retrieveResponseHeaders ||
+            responseStatusCode == 301            ||
             (responseStatusCode == 401 && this.request.handleAuthentication)) {
             try {
                 this.channel.QueryInterface(Components.interfaces.nsIHttpChannel);
@@ -693,23 +735,57 @@ StreamListener.prototype = {
 
             /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStopRequest: document data =\n" + unicodeDoc + "\n");
 
-            // check if we should do authentication
-            if (responseStatusCode == 401 && this.request.handleAuthentication) {
-                /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStopRequest: we have to authenticate\n");
+            switch (responseStatusCode) {
+                case 301:
+                    // moved permanently
+                    if (responseHeaders) {
+                        // check for availability of the Location header field
+                        for (var i = 0; i < responseHeaders.length; i++) {
+                            if (responseHeaders[i].header == "Location") {
+                                location = responseHeaders[i].value;
+                                break;
+                            }
+                        }
+                    }
 
-                try {
-                    NetworkService.authenticate(this.request, responseHeaders, unicodeDoc);
-                } catch (exception) {
-                    /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:StreamListener.onStopRequest", exception);
-                    /* We should authenticate but the server did not tell us how, the
-                     * headers were not accessible, or the specified authentication
-                     * scheme is unknown. Bail out. */
-                    this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, exception);
-                }
-            } else {
-                /* Everything went fine (even if we received 401, but the caller did not order
-                 * us to authenticate, therefore he is expecting a potential authentication failure). */
-                this.request.requestFinishedCallback(unicodeDoc, responseStatusCode, this.request.context, responseHeaders, null);
+                    if (location && location != "") {
+                        try {
+                            // set new URI
+                            this.request.uri = location;
+
+                            // restart request
+                            NetworkService.performHTTPRequest(this.request);
+                        } catch (exception) {
+                            // failed to restart request
+                            this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, exception);
+                        }
+                    } else {
+                        // no location header or no headers available at all; bail out
+                        this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, new YulupException("Yulup:networkservice.js:StreamListener.onStopRequest: request failed, return code is \"" + aStatusCode + "\""));
+                    }
+                    break;
+
+                case 401:
+                    // unauthorized
+                    if (this.request.handleAuthentication) {
+                        /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStopRequest: we have to authenticate\n");
+
+                        try {
+                            NetworkService.authenticate(this.request, responseHeaders, unicodeDoc);
+                        } catch (exception) {
+                            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:StreamListener.onStopRequest", exception);
+                            /* We should authenticate but the server did not tell us how, the
+                             * headers were not accessible, or the specified authentication
+                             * scheme is unknown. Bail out. */
+                            this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, exception);
+                        }
+                    }
+                    break;
+
+                default:
+                    /* Everything went fine (even if we received a 401, but the caller did not order
+                     * us to authenticate, therefore he is expecting a potential authentication failure). */
+                    this.request.requestFinishedCallback(unicodeDoc, responseStatusCode, this.request.context, responseHeaders, null);
             }
         } else {
             // request failed
