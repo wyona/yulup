@@ -131,7 +131,7 @@
   </entity>
 
   <entity id="editDemoMenuitem.tooltip">
-    <name xml:lang="en">Takes you to a demo site</name>
+    <name xml:lang="en">Takes you to the demo site</name>
     <name xml:lang="de">Zur Demosite gehen</name>
   </entity>
 
