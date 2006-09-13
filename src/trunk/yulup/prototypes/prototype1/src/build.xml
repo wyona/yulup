@@ -26,6 +26,9 @@
     <copy todir="../pkg/tmp/chrome">
       <fileset dir="./chrome"/>
     </copy>
+    <copy todir="../pkg/tmp/templates">
+      <fileset dir="./templates"/>
+    </copy>
     <copy file="./install.rdf" todir="../pkg/tmp"/>
     <!-- exclude install.js for now since it is non-functional -->
     <!--<copy file="./install.js" todir="../pkg/tmp"/>-->
@@ -47,7 +50,7 @@
   </target>
 
   <target name="pkg-clean" description="Remove temporary files">
-    <delete failonerror="false">
+    <delete failonerror="false" includeemptydirs="true">
       <fileset dir="../pkg/tmp"/>
     </delete>
     <delete failonerror="false">
