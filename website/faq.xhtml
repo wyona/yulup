@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+
+
+
+<!--
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+-->
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+  <title>Frequently Asked Questions</title>
+
+</head>
+
+<body>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Questions</h3>
+
+<ul>
+
+<li><a name="troubleinstalltoc"/><b>Troubleshooting Installation</b>
+
+  <ul>
+    <li><a href="#xpinstall">"Software installation is currently disabled. Click Edit Options... to enable it and try again."</a></li>
+    <li><a href="#noupdates">Does not find any updates and hence cannot upgrade to a newer version</a></li>
+    <li><a href="#upgrade">How to upgrade from an older to a newer version</a></li>
+    <li><a href="#notvalidpackage">Firefox could not install the file at htt://... because: Not a valid install package</a></li>
+  </ul>
+
+</li>
+
+</ul>
+
+
+
+<h3>Answers</h3>
+
+
+
+<a name="xpinstall"/>
+
+<p><span style="font-weight: bolder;">Q.</span> When I click on one of the download links below, Firefox tells me something along the lines of "Software installation is currently disabled. Click Edit Options... to enable it and try again." When clicking on "Edit Options...", the preferences dialog is opened but there is no relevant option to reenable software installation.</p>
+
+<p><span style="font-weight: bolder;">A.</span> The option to enable software installation was removed from the user interface, without implementing a replacement. This is a known bug (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=310737">https://bugzilla.mozilla.org/show_bug.cgi?id=310737</a>) and is fixed in Firefox 2 alpha 2. For users of Firefox 1.5.0.x, a workaround is to open the URI "about:config", scroll down to the option "xpinstall.enabled", right click on that name, and select "Toggle" from the context menu, such that the "Value" column reads "true".</p>
+
+<p>Note that this bug must not necessarily show up with your installation, since the "xpinstall.enabled" is set to "true" by default, and could only have been changed by you yourself (or your administrator) in an earlier release or manually by using "about:config".</p>
+
+
+
+<hr/>
+
+<a name="noupdates"/>
+
+<p><span style="font-weight: bolder;">Q.</span> Cannot upgrade to a newer version.</p>
+
+<p><span style="font-weight: bolder;">A.</span> Delete your local profile and restart Firefox (warning: this deletes all your bookmarks, etc., therefore you might want to create a backup copy of your profile folder first, and afterwards migrate your old bookmarks to your new profile).</p>
+
+
+
+<hr/>
+
+<a name="upgrade"/>
+
+<p><span style="font-weight: bolder;">Q.</span> How to upgrade from an older to a newer version.</p>
+
+<p><span style="font-weight: bolder;">A.</span> Click on the Firefox/Mozilla Tools menu, then on the Extensions menu item, and then click "Find Updates".</p>
+
+
+
+<hr/>
+<a name="notvalidpackage"/>
+<p><span style="font-weight: bolder;">Q.</span> Firefox could not install the file at htt://... because: Not a valid install package</p>
+<p><span style="font-weight: bolder;">A.</span> Make sure that the server delivers the package as content-type <tt>application/x-xpinstall</tt>.</p>
+
+
+
+<pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</body>
+
+</html>
+

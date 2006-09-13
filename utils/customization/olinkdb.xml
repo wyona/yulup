@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE targetset SYSTEM "../docbook/common/targetdatabase.dtd" [
+  <!ENTITY specification_targets       SYSTEM "../../website/deliverables/analysis/specification.db">
+  <!ENTITY data_model_targets          SYSTEM "../../website/deliverables/design/data_model.db">
+  <!ENTITY entangled_xml_targets       SYSTEM "../../website/deliverables/design/entangled_xml.db">
+  <!ENTITY code_design_overall_targets SYSTEM "../../website/deliverables/design/code_design_overall.db">
+  <!ENTITY code_design_m1_targets      SYSTEM "../../website/deliverables/design/code_design_m1.db">
+  <!ENTITY development_policy_targets  SYSTEM "../../website/deliverables/design/development_policy.db">
+  <!ENTITY roadmap_targets             SYSTEM "../../website/deliverables/planning/roadmap.db">
+  <!ENTITY product_sketch_targets      SYSTEM "../../website/deliverables/preparation/product_sketch.db">
+]>
+
+<targetset>
+  <targetsetinfo>
+    Phoenix DocBook olink target database.
+  </targetsetinfo>
+
+  <!-- Site map for generating relative paths between documents -->
+  <sitemap>
+    <dir name="deliverables">
+      <dir name="analysis">
+        <document targetdoc="specification">
+          &specification_targets;
+        </document>
+      </dir>
+      <dir name="design">
+        <document targetdoc="data_model">
+          &data_model_targets;
+        </document>
+        <document targetdoc="entangled_xml">
+          &entangled_xml_targets;
+        </document>
+        <document targetdoc="code_design_overall">
+          &code_design_overall_targets;
+        </document>
+        <document targetdoc="code_design_m1">
+          &code_design_m1_targets;
+        </document>
+        <document targetdoc="development_policy">
+          &development_policy_targets;
+        </document>
+      </dir>
+      <dir name="planning">
+        <document targetdoc="roadmap">
+          &roadmap_targets;
+        </document>
+      </dir>
+      <dir name="preparation">
+        <document targetdoc="product_sketch">
+          &product_sketch_targets;
+        </document>
+      </dir>
+    </dir>
+  </sitemap>
+
+</targetset>

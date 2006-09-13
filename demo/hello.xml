@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" office:version="1.0">
+  <office:scripts/>
+  <office:font-face-decls>
+    <style:font-face xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" style:name="Lucidasans1" svg:font-family="Lucidasans" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"/>
+    <style:font-face xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" style:name="Bitstream Vera Sans" svg:font-family="'Bitstream Vera Sans'" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" style:font-pitch="variable"/>
+    <style:font-face xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" style:name="Lucidasans" svg:font-family="Lucidasans" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" style:font-pitch="variable"/>
+    <style:font-face xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" style:name="Bitstream Vera Serif" svg:font-family="'Bitstream Vera Serif'" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" style:font-family-generic="roman" style:font-pitch="variable"/>
+  </office:font-face-decls>
+  <office:automatic-styles/>
+  <office:body>
+    <office:text>
+      <office:forms form:automatic-focus="false" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" form:apply-design-mode="false"/>
+      <text:sequence-decls xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">
+        <text:sequence-decl text:display-outline-level="0" text:name="Illustration"/>
+        <text:sequence-decl text:display-outline-level="0" text:name="Table"/>
+        <text:sequence-decl text:display-outline-level="0" text:name="Text"/>
+        <text:sequence-decl text:display-outline-level="0" text:name="Drawing"/>
+      </text:sequence-decls>
+      <text:p xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" text:style-name="Standard">Hello World!</text:p>
+      <text:p xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" text:style-name="Standard"/>
+      <text:p xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" text:style-name="Standard">This is a document in the Open Document Format.</text:p>
+      <text:p xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" text:style-name="Standard"/>
+      <text:p xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" text:style-name="Standard">Good Bye.</text:p>
+    </office:text>
+  </office:body>
+</office:document-content>

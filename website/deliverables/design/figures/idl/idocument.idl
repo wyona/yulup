@@ -1,0 +1,16 @@
+#ifndef IDOCUMENT_IDL
+#define IDOCUMENT_IDL
+
+
+// interface
+interface IDocument {
+  // Associations
+  // Attributes
+  // Operations
+  abstract Controller getController (  ) = 0;
+  abstract Model getModel (  ) = 0;
+  abstract String serialize (  ) = 0;
+  abstract void close (  ) = 0;
+};
+
+#endif

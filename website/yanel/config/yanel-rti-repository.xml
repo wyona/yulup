@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<repository>
+  <name>Ulysses Website</name>
+
+  <paths class="org.wyona.yarep.impl.VFileSystemMapImpl" src="../rti-content"/>
+
+  <storage class="org.wyona.yarep.core.impl.vfs.VFileSystemStorage">
+    <content src="../rti-content"/>
+  </storage>
+</repository>

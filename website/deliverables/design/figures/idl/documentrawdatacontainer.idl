@@ -1,0 +1,13 @@
+#ifndef DOCUMENTRAWDATACONTAINER_IDL
+#define DOCUMENTRAWDATACONTAINER_IDL
+
+
+interface DocumentRawDataContainer {
+  // Associations
+  // Attributes
+  attribute String serializedDocument;
+  attribute ??? metaData;
+  // Operations
+};
+
+#endif

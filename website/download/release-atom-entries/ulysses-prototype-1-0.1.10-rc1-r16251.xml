@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<entry xmlns="http://www.w3.org/2005/Atom">
+ <title>ulysses-prototype-1-0.1.10-rc1-r16251</title>
+ <author><name>Michael Wechner</name></author>
+ <id>urn:uuid:atom-release-entries-ulysses-prototype-1-0.1.10-rc1-r16251.xml</id>
+ <updated>2006-07-22T16:30:55-07:00</updated>
+ <summary type='html'>Release Candidate rc1: ulysses-prototype-1-0.1.10-rc1-r16251</summary>
+ <content type='xhtml'>
+   <div xmlns='http://www.w3.org/1999/xhtml'>
+     <ul>
+       <li>Renamed to Ulysses.</li>
+       <li>Guided tag insertion.</li>
+       <li>Minor Bugfixes and Enhancements.</li>
+     </ul>
+   </div>
+ </content>
+ <dc:subject xmlns:dc='http://purl.org/dc/elements/1.1/'>Release Candidate rc1: ulysses-prototype-1-0.1.10-rc1-r16251</dc:subject>
+</entry>

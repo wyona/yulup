@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<introspection xmlns="http://www.wyona.org/neutron/1.0">
+
+<edit mime-type="application/neutron-archive" name="Calendar">
+  <open url="calendar.nar" method="GET"/>
+  <save url="calendar/calendar.xml?yanel.resource.usecase=save" method="PUT"/>
+  <styles>
+    <style href="calendar/calendar2xhtml.xsl"/>
+  </styles>
+</edit>
+
+</introspection>

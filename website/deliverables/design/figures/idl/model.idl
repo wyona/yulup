@@ -1,0 +1,11 @@
+#ifndef MODEL_IDL
+#define MODEL_IDL
+
+
+interface Model {
+  // Associations
+  // Attributes
+  // Operations
+};
+
+#endif

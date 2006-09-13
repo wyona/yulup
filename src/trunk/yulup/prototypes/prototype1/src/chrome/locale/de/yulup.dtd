@@ -1,0 +1,28 @@
+<!ENTITY editToolbarbutton.label "Editor">
+<!ENTITY editMenuitem.label "Lokal Bearbeiten">
+<!ENTITY editCheckoutNoLockMenuitem.label "Öffnen und Bearbeiten">
+<!ENTITY editCheckoutNoLockMenu.label "Öffnen und Bearbeiten">
+<!ENTITY editCheckoutMenuitem.label "Auschecken und Editieren">
+<!ENTITY editCheckoutMenu.label "Auschecken und Editieren">
+<!ENTITY editOperationNewMenu.label "Neu">
+<!ENTITY fileOperationNewAtomEntryMenuitem.label "Neuer Atom Eintrag">
+<!ENTITY editOperationOpenMenu.label "Öffnen">
+<!ENTITY editAboutMenuitem.label "Ueber">
+<!ENTITY editHelpMenuitem.label "Hilfe">
+<!ENTITY editDemoMenuitem.label "Demosite">
+<!ENTITY editVersionStringMenuitem.label "Yulup 0.1.10-rc4-r1XXXX-dev">
+<!ENTITY editToolbarbuttonWarnTooltip1.tooltip "Warnung:">
+<!ENTITY editToolbarbuttonWarnTooltip2.tooltip "Im Zusammenhang mit dem Introspection-Objekt das mit diesem Dokument assoziiert ist trat ein Fehler auf.">
+<!ENTITY editToolbarbuttonWarnTooltip3.tooltip "Das File existiert nicht, oder ist nicht in einer geeigneten Form.">
+<!ENTITY editMenuitem.tooltip "Die aktuelle Webseite so wie sie derzeit dargestellt wird bearbeiten">
+<!ENTITY editCheckoutNoLockMenuitem.tooltip "Das aktuelle Dokument im CMS öffnen und editieren">
+<!ENTITY editCheckoutNoLockMenu.tooltip "Eines der verfügbaren Fragmente im CMS öffnen und editieren">
+<!ENTITY editCheckoutMenuitem.tooltip "Das aktuelle Dokument vom CMS auschecken (d.h. für andere Benutzer sperren) und editieren">
+<!ENTITY editCheckoutMenu.tooltip "Eines der verfügbaren Fragmente vom CMS auschecken (d.h. für andere Benutzer sperren) und editieren">
+<!ENTITY editOperationNewMenu.tooltip "Ein neues Dokument erstellen">
+<!ENTITY fileOperationNewAtomEntryMenuitem.tooltip "Einen neuen Atom Eintrag im aktuellen Feed erstellen">
+<!ENTITY editOperationOpenMenu.tooltip "Ein bereits existierendes Dokument öffnen">
+<!ENTITY editAboutMenuitem.tooltip "Über Yulup">
+<!ENTITY editHelpMenuitem.tooltip "Den Hilfe-Browser von Yulup anzeigen">
+<!ENTITY editDemoMenuitem.tooltip "Zur Demosite gehen">
+<!ENTITY editVersionStringMenuitem.tooltip "Die Version von Yulup die Sie derzeit benützen">

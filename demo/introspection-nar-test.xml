@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<introspection xmlns="http://www.wyona.org/neutron/1.0">
+
+<edit mime-type="application/neutron-archive" name="Test Page (NAR)">
+  <checkout url="nar-test2.nar?yanel.resource.usecase=checkout" method="GET"/>
+  <checkin url="nar-test.html?yanel.resource.usecase=checkin" method="PUT"/>
+
+<!--
+  <open url="nar-test.nar" method="GET"/>
+  <save url="nar-test.html?yanel.resource.usecase=checkin" method="PUT"/>
+-->
+</edit>
+
+</introspection>

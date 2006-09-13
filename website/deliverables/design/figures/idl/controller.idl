@@ -1,0 +1,11 @@
+#ifndef CONTROLLER_IDL
+#define CONTROLLER_IDL
+
+
+interface Controller {
+  // Associations
+  // Attributes
+  // Operations
+};
+
+#endif

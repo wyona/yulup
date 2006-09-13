@@ -1,0 +1,24 @@
+#ifndef IBACKEND_IDL
+#define IBACKEND_IDL
+
+
+// interface
+interface IBackend {
+  // Associations
+  // Attributes
+  // Operations
+  abstract IDocument createNewDocumentInstanceFromEmpty (  ) = 0;
+  abstract IDocument createNewDocumentInstanceFromExisting (  ) = 0;
+  abstract IDocument createNewDocumentInstanceFromTemplate (  ) = 0;
+  abstract void serializeDocumentInstanceToFile ( in IDocument document, in String name, in URI path ) = 0;
+  abstract void serializeDocumentInstanceToCMS ( in IDocument document, in String name, in URI path ) = 0;
+  abstract boolean hasCapability ( in String capability ) = 0;
+  abstract void tearDown (  ) = 0;
+  abstract private DocumentRawDataContainer openFromFile (  ) = 0;
+  abstract private DocumentRawDataContainer openFromCMS (  ) = 0;
+  abstract private DocumentRawDataContainer openFromHttp (  ) = 0;
+  abstract private DocumentRawDataContainer saveToFile (  ) = 0;
+  abstract private DocumentRawDataContainer saveToCMS (  ) = 0;
+};
+
+#endif

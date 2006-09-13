@@ -1,0 +1,56 @@
+
+	[INFO]	Query view for “glazou” opened.
+	glazou	aw1 were you looking for me (editor peer) some while ago ?
+	===	glazou <daniel@moz-204094DD.disruptive-innovations.fr> “Daniel Glazman”
+	===	glazou: member of @#xulfr, #developers, and @#composer
+	===	glazou: attached to sand.mozilla.org “Sunnyvale California”
+	===	glazou: idle for 1 seconds (on since Mi, 10. Mai 2006 15:30:08 Uhr)
+	---	End of WHOIS information for glazou
+	aw1	Hi glazou. Well, we were talking about you with regard to the editor and maintenance (people feared that the editor was undermaintained, and told me to talk to you since you'd have some patches which could go in).
+	aw1	Anyway, since we are looking into development of an editor based on the Mozilla platform, we were a bit worried about the fact of undermaintaenance.
+	glazou	that will change
+	aw1	Cool! :)
+	glazou	I hope to have 1 person full time on that
+	glazou	no ETA though
+	aw1	Ok.
+	aw1	So do you have any specific plans on the development of editor?
+	glazou	rewrite Nvu as Mozilla Composer
+	glazou	as an official mozilla project
+	glazou	better, cleaner, xulrunner-based
+	aw1	I see. And development on the underlying components?
+	glazou	xhtml
+	aw1	+1
+	glazou	possibly XML
+	glazou	relax-ng based
+	glazou	we already have the code
+	aw1	:)
+	glazou	we'll demo it at Xtech 2006 next week
+	glazou	I want also to improve midas but that's another story
+	glazou	we need contenteditable
+	aw1	Well, we are definitely interested in having that happen. Since we basically need exatcly that stuff. Although I am a bit afraid that you maybe not like me, since we are basically a competitior of disruptive... :(
+	glazou	?
+	aw1	Well, just to make sure, I am a member of wyona, which had lately shown interest in Etna (we've sent some mails back and forth).
+	glazou	how are you a competitor
+	glazou	?
+	aw1	We want to develop an XML editor, similar to e.g. BXE or Xopus, but having the logic running as an XPCOM component.
+	aw1	So, something similar as Etna does.
+	aw1	I don't know how you would feel about teaming up though.
+	glazou	well for the moment, that's not our plan
+	aw1	Our editor is going to be open source anyway.
+	glazou	we invested a lot of time, energy and money there
+	glazou	really _a lot_
+	aw1	Yeah, we were under that impresssion that you'd rather keep it as your own project.
+	glazou	no
+	aw1	?
+	glazou	we are not going to keep it ours
+	aw1	?
+	glazou	we want developers and a community
+	aw1	Yeah, that's what we want too.
+	glazou	but we certainly don't want others to market what we did
+	aw1	That's why I said we may be competiors.
+	glazou	correct
+	aw1	No no, don't get me wrong!!
+	aw1	We do not want to ripp-off Etna or something!
+	aw1	So, no fear!
+	aw1	It just looks as we are going into somehow equal directions.
+	aw1	And that's why we are of course interested in having a well maintained base editor in Mozilla.

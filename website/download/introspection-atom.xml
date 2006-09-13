@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<service xmlns="http://purl.org/atom/app#">
+  <workspace title="Yulup Website">
+    <collection title="Releases" href="release-atom-entries/?yanel.resource.viewid=atom">
+<!--
+    <collection title="Releases" href="http://127.0.0.1:8080/ulysses-website/download/release-atom-entries/?yanel.resource.viewid=atom">
+-->
+    </collection>
+  </workspace>
+</service>

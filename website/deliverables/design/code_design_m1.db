@@ -1,0 +1,192 @@
+<div element="article" href="code_design_m1.xhtml#id52600" number="">
+  <ttl>Yulup Code Design Milestone 1</ttl>
+  <xreftext>Yulup Code Design Milestone 1</xreftext>
+  <div element="section" href="code_design_m1.xhtml#id342753" number="1">
+    <ttl>Overview</ttl>
+    <xreftext>Section 1, “Overview”</xreftext>
+  </div>
+  <div element="section" href="code_design_m1.xhtml#id342762" number="2">
+    <ttl>Classes and Interfaces</ttl>
+    <xreftext>Section 2, “Classes and Interfaces”</xreftext>
+    <div element="section" href="code_design_m1.xhtml#id342768" number="2.1">
+      <ttl>FRONTEND</ttl>
+      <xreftext>Section 2.1, “FRONTEND”</xreftext>
+      <div element="section" href="code_design_m1.xhtml#id342773" number="2.1.1">
+        <ttl>BROWSER</ttl>
+        <xreftext>Section 2.1.1, “BROWSER”</xreftext>
+        <div element="section" href="code_design_m1.xhtml#id342778" number="2.1.1.1">
+          <ttl>General</ttl>
+          <xreftext>Section 2.1.1.1, “General”</xreftext>
+          <div element="section" href="code_design_m1.xhtml#id342784" number="2.1.1.1.1">
+            <ttl>MVC</ttl>
+            <xreftext>Section 2.1.1.1.1, “MVC”</xreftext>
+            <obj element="figure" href="code_design_m1.xhtml#id342793" number="1">
+              <ttl>Frontend MVC</ttl>
+              <xreftext>Figure 1, “Frontend MVC”</xreftext>
+            </obj>
+            <obj element="figure" href="code_design_m1.xhtml#id342819" number="2">
+              <ttl>Editor State Controller</ttl>
+              <xreftext>Figure 2, “Editor State Controller”</xreftext>
+            </obj>
+          </div>
+        </div>
+        <div element="section" href="code_design_m1.xhtml#id342846" number="2.1.1.2">
+          <ttl>Feature-Specific</ttl>
+          <xreftext>Section 2.1.1.2, “Feature-Specific”</xreftext>
+        </div>
+      </div>
+      <div element="section" href="code_design_m1.xhtml#id342971" number="2.1.2">
+        <ttl>STANDALONE</ttl>
+        <xreftext>Section 2.1.2, “STANDALONE”</xreftext>
+        <div element="section" href="code_design_m1.xhtml#id342976" number="2.1.2.1">
+          <ttl>General</ttl>
+          <xreftext>Section 2.1.2.1, “General”</xreftext>
+        </div>
+        <div element="section" href="code_design_m1.xhtml#id342982" number="2.1.2.2">
+          <ttl>Feature-Specific</ttl>
+          <xreftext>Section 2.1.2.2, “Feature-Specific”</xreftext>
+        </div>
+      </div>
+      <div element="section" href="code_design_m1.xhtml#id343004" number="2.1.3">
+        <ttl>WEB</ttl>
+        <xreftext>Section 2.1.3, “WEB”</xreftext>
+        <div element="section" href="code_design_m1.xhtml#id343009" number="2.1.3.1">
+          <ttl>General</ttl>
+          <xreftext>Section 2.1.3.1, “General”</xreftext>
+        </div>
+        <div element="section" href="code_design_m1.xhtml#id343016" number="2.1.3.2">
+          <ttl>Feature-Specific</ttl>
+          <xreftext>Section 2.1.3.2, “Feature-Specific”</xreftext>
+        </div>
+      </div>
+    </div>
+    <div element="section" href="code_design_m1.xhtml#id343038" number="2.2">
+      <ttl>BACKEND</ttl>
+      <xreftext>Section 2.2, “BACKEND”</xreftext>
+      <div element="section" href="code_design_m1.xhtml#id343044" number="2.2.1">
+        <ttl>Generic</ttl>
+        <xreftext>Section 2.2.1, “Generic”</xreftext>
+        <div element="section" href="code_design_m1.xhtml#id343049" number="2.2.1.1">
+          <ttl>Bootstrapping the Back End</ttl>
+          <xreftext>Section 2.2.1.1, “Bootstrapping the Back End”</xreftext>
+          <obj element="figure" href="code_design_m1.xhtml#id343054" number="3">
+            <ttl>The Backend Service</ttl>
+            <xreftext>Figure 3, “The Backend Service”</xreftext>
+          </obj>
+          <obj element="figure" href="code_design_m1.xhtml#id343083" number="4">
+            <ttl>Class <code xmlns="http://www.w3.org/1999/xhtml" class="code">BackendService</code></ttl>
+            <xreftext>Figure 4, “Class <code xmlns="http://www.w3.org/1999/xhtml" class="code">BackendService</code>”</xreftext>
+          </obj>
+        </div>
+        <div element="section" href="code_design_m1.xhtml#id343119" number="2.2.1.2">
+          <ttl>Base Functionality of the Back End</ttl>
+          <xreftext>Section 2.2.1.2, “Base Functionality of the Back End”</xreftext>
+          <obj element="figure" href="code_design_m1.xhtml#id343124" number="5">
+            <ttl>The Backend</ttl>
+            <xreftext>Figure 5, “The Backend”</xreftext>
+          </obj>
+          <obj element="figure" href="code_design_m1.xhtml#id343152" number="6">
+            <ttl>Interface <code xmlns="http://www.w3.org/1999/xhtml" class="code">IBackend</code></ttl>
+            <xreftext>Figure 6, “Interface <code xmlns="http://www.w3.org/1999/xhtml" class="code">IBackend</code>”</xreftext>
+          </obj>
+          <obj element="figure" href="code_design_m1.xhtml#id343183" number="7">
+            <ttl>Class <code xmlns="http://www.w3.org/1999/xhtml" class="code">Backend</code></ttl>
+            <xreftext>Figure 7, “Class <code xmlns="http://www.w3.org/1999/xhtml" class="code">Backend</code>”</xreftext>
+          </obj>
+        </div>
+        <div element="section" href="code_design_m1.xhtml#id343215" number="2.2.1.3">
+          <ttl>An Instance of a Document (XML, XSLT, CSS, Plain Text, ...)</ttl>
+          <xreftext>Section 2.2.1.3, “An Instance of a Document (XML, XSLT, CSS, Plain Text, ...)”</xreftext>
+          <obj element="figure" href="code_design_m1.xhtml#id343222" number="8">
+            <ttl>A Document</ttl>
+            <xreftext>Figure 8, “A Document”</xreftext>
+          </obj>
+          <obj element="figure" href="code_design_m1.xhtml#id343250" number="9">
+            <ttl>Interface <code xmlns="http://www.w3.org/1999/xhtml" class="code">IDocument</code></ttl>
+            <xreftext>Figure 9, “Interface <code xmlns="http://www.w3.org/1999/xhtml" class="code">IDocument</code>”</xreftext>
+          </obj>
+          <obj element="figure" href="code_design_m1.xhtml#id343281" number="10">
+            <ttl>Interface <code xmlns="http://www.w3.org/1999/xhtml" class="code">IValidatable</code></ttl>
+            <xreftext>Figure 10, “Interface <code xmlns="http://www.w3.org/1999/xhtml" class="code">IValidatable</code>”</xreftext>
+          </obj>
+          <obj element="figure" href="code_design_m1.xhtml#id343312" number="11">
+            <ttl>Class <code xmlns="http://www.w3.org/1999/xhtml" class="code">XMLDocument</code></ttl>
+            <xreftext>Figure 11, “Class <code xmlns="http://www.w3.org/1999/xhtml" class="code">XMLDocument</code>”</xreftext>
+          </obj>
+          <obj element="figure" href="code_design_m1.xhtml#id343343" number="12">
+            <ttl>Class <code xmlns="http://www.w3.org/1999/xhtml" class="code">PlainDocument</code></ttl>
+            <xreftext>Figure 12, “Class <code xmlns="http://www.w3.org/1999/xhtml" class="code">PlainDocument</code>”</xreftext>
+          </obj>
+        </div>
+        <div element="section" href="code_design_m1.xhtml#id343376" number="2.2.1.4">
+          <ttl>A Container to Hold a Serialized File</ttl>
+          <xreftext>Section 2.2.1.4, “A Container to Hold a Serialized File”</xreftext>
+          <obj element="figure" href="code_design_m1.xhtml#id343382" number="13">
+            <ttl>Document Raw Data Container</ttl>
+            <xreftext>Figure 13, “Document Raw Data Container”</xreftext>
+          </obj>
+          <obj element="figure" href="code_design_m1.xhtml#id343411" number="14">
+            <ttl>Class <code xmlns="http://www.w3.org/1999/xhtml" class="code">DocumentRawDataContainer</code></ttl>
+            <xreftext>Figure 14, “Class <code xmlns="http://www.w3.org/1999/xhtml" class="code">DocumentRawDataContainer</code>”</xreftext>
+          </obj>
+        </div>
+        <div element="section" href="code_design_m1.xhtml#id343444" number="2.2.1.5">
+          <ttl>Document Model</ttl>
+          <xreftext>Section 2.2.1.5, “Document Model”</xreftext>
+          <obj element="figure" href="code_design_m1.xhtml#id343450" number="15">
+            <ttl>Model</ttl>
+            <xreftext>Figure 15, “Model”</xreftext>
+          </obj>
+          <obj element="figure" href="code_design_m1.xhtml#id343478" number="16">
+            <ttl>Class <code xmlns="http://www.w3.org/1999/xhtml" class="code">Model</code></ttl>
+            <xreftext>Figure 16, “Class <code xmlns="http://www.w3.org/1999/xhtml" class="code">Model</code>”</xreftext>
+          </obj>
+        </div>
+        <div element="section" href="code_design_m1.xhtml#id343510" number="2.2.1.6">
+          <ttl>Document Controller</ttl>
+          <xreftext>Section 2.2.1.6, “Document Controller”</xreftext>
+          <obj element="figure" href="code_design_m1.xhtml#id343516" number="17">
+            <ttl>Controller</ttl>
+            <xreftext>Figure 17, “Controller”</xreftext>
+          </obj>
+          <obj element="figure" href="code_design_m1.xhtml#id343545" number="18">
+            <ttl>Class <code xmlns="http://www.w3.org/1999/xhtml" class="code">Controller</code></ttl>
+            <xreftext>Figure 18, “Class <code xmlns="http://www.w3.org/1999/xhtml" class="code">Controller</code>”</xreftext>
+          </obj>
+        </div>
+        <div element="section" href="code_design_m1.xhtml#id343577" number="2.2.1.7">
+          <ttl>Facility to Communicate with the CMS</ttl>
+          <xreftext>Section 2.2.1.7, “Facility to Communicate with the CMS”</xreftext>
+          <obj element="figure" href="code_design_m1.xhtml#id343583" number="19">
+            <ttl>CMS</ttl>
+            <xreftext>Figure 19, “CMS”</xreftext>
+          </obj>
+          <obj element="figure" href="code_design_m1.xhtml#id343612" number="20">
+            <ttl>Interface <code xmlns="http://www.w3.org/1999/xhtml" class="code">ICMS</code></ttl>
+            <xreftext>Figure 20, “Interface <code xmlns="http://www.w3.org/1999/xhtml" class="code">ICMS</code>”</xreftext>
+          </obj>
+        </div>
+        <div element="section" href="code_design_m1.xhtml#id343644" number="2.2.1.8">
+          <ttl>Editing XML Documents in WYSIWYG Mode with XSLT Applied</ttl>
+          <xreftext>Section 2.2.1.8, “Editing XML Documents in WYSIWYG Mode with XSLT Applied”</xreftext>
+        </div>
+      </div>
+      <div element="section" href="code_design_m1.xhtml#id343799" number="2.2.2">
+        <ttl>Feature-Specific</ttl>
+        <xreftext>Section 2.2.2, “Feature-Specific”</xreftext>
+      </div>
+    </div>
+    <div element="section" href="code_design_m1.xhtml#id344079" number="2.3">
+      <ttl>CONNECTOR</ttl>
+      <xreftext>Section 2.3, “CONNECTOR”</xreftext>
+      <div element="section" href="code_design_m1.xhtml#id344084" number="2.3.1">
+        <ttl>General</ttl>
+        <xreftext>Section 2.3.1, “General”</xreftext>
+      </div>
+      <div element="section" href="code_design_m1.xhtml#id344091" number="2.3.2">
+        <ttl>Feature-Specifc</ttl>
+        <xreftext>Section 2.3.2, “Feature-Specifc”</xreftext>
+      </div>
+    </div>
+  </div>
+</div>

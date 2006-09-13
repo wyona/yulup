@@ -1,0 +1,20 @@
+#ifndef XMLDOCUMENT_IDL
+#define XMLDOCUMENT_IDL
+
+#include "idocument.idl"
+#include "ivalidatable.idl"
+
+interface XMLDocument: IValidatable:  IDocument {
+  // Associations
+  // Attributes
+  private attribute Controller controller;
+  private attribute Model model;
+  // Operations
+  ValidationErrors validate (  );
+  Controller getController (  );
+  Model getModel (  );
+  String serialize (  );
+  void close (  );
+};
+
+#endif

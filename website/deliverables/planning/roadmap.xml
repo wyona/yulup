@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../utils/customization/style.xsl"?>
+<!DOCTYPE article [
+  <!ENTITY % docbook PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+  %docbook;
+  <!ENTITY % local SYSTEM "../../../utils/customization/commons.dtd">
+  %local;
+]>
+
+<article>
+  <articleinfo>
+    <title>&project; Roadmap</title>
+    <authorgroup>
+      <author>
+        <firstname>Andreas</firstname>
+        <surname>Wuest</surname>
+        <email>awuest@student.ethz.ch</email>
+        <affiliation>
+          <corpname>Wyona AG</corpname>
+        </affiliation>
+      </author>
+      <author>
+        <firstname>Michael</firstname>
+        <surname>Wechner</surname>
+        <email>michi@wyona.com</email>
+        <affiliation>
+          <jobtitle>CEO</jobtitle>
+          <corpname>Wyona AG</corpname>
+        </affiliation>
+        <affiliation>
+          <orgname>Apache Software Foundation</orgname>
+        </affiliation>
+      </author>
+    </authorgroup>
+    <!-- All dates specified in ISO "YYYY-MM-DD" format -->
+    <pubdate>2006-05-18</pubdate>
+    <!-- Most recent revision goes at the top; list in descending order -->
+    <revhistory>
+      <revision>
+        <revnumber>1.2</revnumber>
+        <date>2006-05-18</date>
+        <authorinitials>AW</authorinitials>
+        <revremark>Dropped <olink targetdoc="specification" targetptr="UC11"/> from M1 (reason: <ulink url="https://bugzilla.mozilla.org/show_bug.cgi?id=102699">Mozilla Core Bug #102699</ulink>).</revremark>
+      </revision>
+      <revision>
+        <revnumber>1.1</revnumber>
+        <date>2006-05-11</date>
+        <authorinitials>AW</authorinitials>
+        <revremark>Added features to reflect specification.</revremark>
+      </revision>
+      <revision>
+        <revnumber>1.0</revnumber>
+        <date>2006-05-05</date>
+        <authorinitials>AW</authorinitials>
+        <revremark>First initial draft.</revremark>
+      </revision>
+    </revhistory>
+    <abstract>
+      <para>Describes the roadmap of the <emphasis>&project;</emphasis> project.</para>
+    </abstract>
+  </articleinfo>
+
+  <section>
+    <title>Project Overview</title>
+    <para>
+    </para>
+    <section>
+      <title>Components and Variants</title>
+      <para>
+        The project consists of three components: the front end, the back end, and a connector component. The front end component is divided into three variants: the editor integrated in a web browser, as a standalone editor, and a web-based, browser-independent variant. The back end can be run either locally on the same client as the front end, or on a remote host if the connector component is available.
+      </para>
+
+      <section>
+        <title>Front End Component (FRONTEND)</title>
+        <para>
+          The front end component is responsible for the handling the view. FRONTEND performs tasks like rendering the document, supplying user interaction facilities, etc. Note that all thre front ends can work with either a local BACKEND or a remote BACKEND.
+        </para>
+        <para>
+          Note that the FRONTEND UI is separated from the document views entirely. This makes it possible to implement the UI using either XUL (for Mozilla Platform based browsers), JavaScript or e.g. Flash.
+        </para>
+        <section>
+          <title>Browser Integrated Variant (BROWSER)</title>
+          <para>
+            The browser integrated variant of FRONTEND is a XUL widget which integrates seamlessly into web browsers based on the Mozilla Platform. BROWSER must be able to work with up-to-date versions of Firefox and SeaMonkey (formerly Mozilla Suite).
+          </para>
+        </section>
+        <section>
+          <title>Standalone Variant (STANDALONE)</title>
+          <para>
+            The standalone variant of the FRONTEND can be used as a standalone editor, independent of a web browser. Like the browser integrated version, STANDALONE is based on XUL.
+          </para>
+        </section>
+        <section>
+          <title>Web-based Variant (WEB)</title>
+          <para>
+            The web-based variant of FRONTEND is a JavaScript solution independent of the web browser it is deployed on.
+          </para>
+        </section>
+      </section>
+
+      <section>
+        <title>Back End Component (BACKEND)</title>
+        <para>
+          The back end component comprises the controller and the model. BACKEND contains the application logic and performs tasks like text insertion/deletion, ID tagging, XSLT processing, validation, etc. BACKEND runs either locally on the client, or remote on a different network host if a remote connector (CONNECTOR) is available.
+        </para>
+        <para>
+          BACKEND is also responsible for discovering and instantiating a suitable CONNECTOR, if the back end runs on a remote host. This must be completely transparent to FRONTEND.
+        </para>
+      </section>
+
+      <section>
+        <title>Remote Connector Component (CONNECTOR)</title>
+        <para>
+          The remote connector component is responsible for connecting a BACKEND running on a different host than the front end to FRONTEND. The connection is completely transparent to FRONTEND.
+        </para>
+      </section>
+
+    </section>
+  </section>
+
+  <section>
+    <title>Use Case Priorities</title>
+    <orderedlist>
+      <listitem>
+        <para>
+          <olink targetdoc="specification" targetptr="UC1"/>, <olink targetdoc="specification" targetptr="UC2"/>, <olink targetdoc="specification" targetptr="UC3"/>, <olink targetdoc="specification" targetptr="UC4"/>, <olink targetdoc="specification" targetptr="UC5"/>, <olink targetdoc="specification" targetptr="UC6"/>, <olink targetdoc="specification" targetptr="UC7"/>, <olink targetdoc="specification" targetptr="UC8"/>, <olink targetdoc="specification" targetptr="UC9"/>, <olink targetdoc="specification" targetptr="UC11"/>, <olink targetdoc="specification" targetptr="UC15"/>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <olink targetdoc="specification" targetptr="UC19"/>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <olink targetdoc="specification" targetptr="UC18"/>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <olink targetdoc="specification" targetptr="UC16"/>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <olink targetdoc="specification" targetptr="UC17"/>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <olink targetdoc="specification" targetptr="UC10"/>, <olink targetdoc="specification" targetptr="UC12"/>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <olink targetdoc="specification" targetptr="UC13"/>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <olink targetdoc="specification" targetptr="UC14"/>
+        </para>
+      </listitem>
+    </orderedlist>
+  </section>
+
+  <section>
+    <title>Schedule</title>
+    <para>
+      The schedule consists of multiple mile stones, which are defined by the set of features which are to be implemented by this point.
+    </para>
+    <para>
+      Note that we are using Rolling Wave Planning, on the granularity of milestones, i.e. only the next milestone is currently planned in detail. Future milestones are kept as planning packages.
+    </para>
+    <section>
+      <title>Milestone 1 (M1) UniZurich</title>
+      <figure>
+        <title>Actual Implementation M1</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/actual_architecture_m1.png" format="PNG" scale="99"/>
+          </imageobject>
+          <textobject>
+            <phrase>Actual Implementation M1</phrase>
+          </textobject>
+        </mediaobject>
+      </figure>
+
+      <section>
+        <title>Involved Use Cases</title>
+        <itemizedlist>
+          <listitem>
+            <formalpara>
+              <title><olink targetdoc="specification" targetptr="UC1"/></title>
+                    <olink targetdoc="specification" targetptr="FF1"/>, <olink targetdoc="specification" targetptr="FF2"/>, <olink targetdoc="specification" targetptr="FB1.1"/>, <olink targetdoc="specification" targetptr="FB2.1"/>
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title><olink targetdoc="specification" targetptr="UC2"/></title>
+                    <olink targetdoc="specification" targetptr="FF3"/>, <olink targetdoc="specification" targetptr="FF4"/>, <olink targetdoc="specification" targetptr="FB3.1"/>, <olink targetdoc="specification" targetptr="FB3.2"/>, <olink targetdoc="specification" targetptr="FB3.3"/>, <olink targetdoc="specification" targetptr="FB4.1"/>, <olink targetdoc="specification" targetptr="FB4.2"/>, <olink targetdoc="specification" targetptr="FB4.3"/>
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title><olink targetdoc="specification" targetptr="UC3"/></title>
+                    <olink targetdoc="specification" targetptr="FF1"/>, <olink targetdoc="specification" targetptr="FF4"/>, <olink targetdoc="specification" targetptr="FB1.1"/>, <olink targetdoc="specification" targetptr="FB4.1"/>, <olink targetdoc="specification" targetptr="FB4.2"/>, <olink targetdoc="specification" targetptr="FB4.3"/>
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title><olink targetdoc="specification" targetptr="UC4"/></title>
+                    <olink targetdoc="specification" targetptr="FF5"/>, <olink targetdoc="specification" targetptr="FB5.1"/>, <olink targetdoc="specification" targetptr="FB5.2"/>, <olink targetdoc="specification" targetptr="FB5.3"/>
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title><olink targetdoc="specification" targetptr="UC5"/></title>
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title><olink targetdoc="specification" targetptr="UC6"/></title>
+              <olink targetdoc="specification" targetptr="FF1"/>, <olink targetdoc="specification" targetptr="FF2"/>, <olink targetdoc="specification" targetptr="FB1.1"/>, <olink targetdoc="specification" targetptr="FB1.2"/>, <olink targetdoc="specification" targetptr="FB2.1"/>, <olink targetdoc="specification" targetptr="FB2.2"/>
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title><olink targetdoc="specification" targetptr="UC7"/></title>
+              <olink targetdoc="specification" targetptr="FF6"/>, <olink targetdoc="specification" targetptr="FF8"/>, <olink targetdoc="specification" targetptr="FF12"/>, <olink targetdoc="specification" targetptr="FF13"/>, <olink targetdoc="specification" targetptr="FB6.1"/>, <olink targetdoc="specification" targetptr="FB6.2"/>, <olink targetdoc="specification" targetptr="FB6.3"/>, <olink targetdoc="specification" targetptr="FB6.4"/>, <olink targetdoc="specification" targetptr="FB6.5"/>, <olink targetdoc="specification" targetptr="FB8"/>, <olink targetdoc="specification" targetptr="FB15"/>, <olink targetdoc="specification" targetptr="FB16"/>, <olink targetdoc="specification" targetptr="FB17"/>
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title><olink targetdoc="specification" targetptr="UC8"/></title>
+              <olink targetdoc="specification" targetptr="FF7"/>, <olink targetdoc="specification" targetptr="FF8"/>, <olink targetdoc="specification" targetptr="FF12"/>, <olink targetdoc="specification" targetptr="FF13"/>, <olink targetdoc="specification" targetptr="FB7.1"/>, <olink targetdoc="specification" targetptr="FB7.2"/>, <olink targetdoc="specification" targetptr="FB7.3.1"/>, <olink targetdoc="specification" targetptr="FB7.3.2.1"/>, <olink targetdoc="specification" targetptr="FB7.3.2.2"/>, <olink targetdoc="specification" targetptr="FB7.4.1"/>, <olink targetdoc="specification" targetptr="FB7.4.2.1"/>, <olink targetdoc="specification" targetptr="FB7.4.2.2"/>, <olink targetdoc="specification" targetptr="FB7.4.2.3"/>, <olink targetdoc="specification" targetptr="FB8"/>, <olink targetdoc="specification" targetptr="FB9.1"/>, <olink targetdoc="specification" targetptr="FB9.2"/>, <olink targetdoc="specification" targetptr="FB10.1"/>, <olink targetdoc="specification" targetptr="FB10.2"/>, <olink targetdoc="specification" targetptr="FB15"/>, <olink targetdoc="specification" targetptr="FB16"/>, <olink targetdoc="specification" targetptr="FB17"/>
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title><olink targetdoc="specification" targetptr="UC9"/></title>
+              <olink targetdoc="specification" targetptr="FF9"/>, <olink targetdoc="specification" targetptr="FB11.1.1"/>, <olink targetdoc="specification" targetptr="FB11.1.2"/>, <olink targetdoc="specification" targetptr="FB11.1.3"/>, <olink targetdoc="specification" targetptr="FB11.2.1"/>, <olink targetdoc="specification" targetptr="FB11.2.2"/>, <olink targetdoc="specification" targetptr="FB11.2.3"/>, <olink targetdoc="specification" targetptr="FB11.3.1"/>, <olink targetdoc="specification" targetptr="FB11.3.2"/>, <olink targetdoc="specification" targetptr="FB11.3.3"/>, <olink targetdoc="specification" targetptr="FB12"/>
+            </formalpara>
+          </listitem>
+          <!--<listitem>
+            <formalpara>
+              <title><olink targetdoc="specification" targetptr="UC11"/></title>
+              <olink targetdoc="specification" targetptr="FF3"/>, <olink targetdoc="specification" targetptr="FF4"/>, <olink targetdoc="specification" targetptr="FB1.3"/>, <olink targetdoc="specification" targetptr="FB2.3"/>, <olink targetdoc="specification" targetptr="FB3"/>, <olink targetdoc="specification" targetptr="FB4"/>, <olink targetdoc="specification" targetptr="FB10.1"/>, <olink targetdoc="specification" targetptr="FB10.2"/>
+            </formalpara>
+          </listitem>-->
+          <listitem>
+            <formalpara>
+              <title><olink targetdoc="specification" targetptr="UC15"/></title>
+              <olink targetdoc="specification" targetptr="FF7"/>, <olink targetdoc="specification" targetptr="FB7.6"/>
+            </formalpara>
+          </listitem>
+        </itemizedlist>
+      </section>
+
+      <section>
+        <title>Target Features</title>
+        <para>
+          These are the features that are acutally going to be implemented. They are derived from the use cases, but filtered by alternatives and schedule.
+        </para>
+        <para>
+        <itemizedlist>
+
+          <listitem>
+            <para>
+              FRONTEND
+              <itemizedlist>
+                <listitem>
+                  <para>
+                    BROWSER
+                    <itemizedlist>
+                      <listitem>
+                        <para>
+                          <olink targetdoc="specification" targetptr="FF1"/>
+                        </para>
+                      </listitem>
+                      <listitem>
+                        <para>
+                          <olink targetdoc="specification" targetptr="FF2"/>
+                        </para>
+                      </listitem>
+                      <listitem>
+                        <para>
+                          <olink targetdoc="specification" targetptr="FF3"/>
+                        </para>
+                      </listitem>
+                      <listitem>
+                        <para>
+                          <olink targetdoc="specification" targetptr="FF4"/>
+                        </para>
+                      </listitem>
+                      <listitem>
+                        <para>
+                          <olink targetdoc="specification" targetptr="FF5"/>
+                        </para>
+                      </listitem>
+                      <listitem>
+                        <para>
+                          <olink targetdoc="specification" targetptr="FF6"/>
+                        </para>
+                      </listitem>
+                      <listitem>
+                        <para>
+                          <olink targetdoc="specification" targetptr="FF7"/>
+                        </para>
+                      </listitem>
+                      <listitem>
+                        <para>
+                          <olink targetdoc="specification" targetptr="FF8"/>
+                        </para>
+                      </listitem>
+                      <listitem>
+                        <para>
+                          <olink targetdoc="specification" targetptr="FF9"/>
+                        </para>
+                      </listitem>
+                    </itemizedlist>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    STANDALONE
+                    <itemizedlist>
+                      <listitem>
+                        <para>
+                          None.
+                        </para>
+                      </listitem>
+                    </itemizedlist>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    WEB
+                    <itemizedlist>
+                      <listitem>
+                        <para>
+                          None.
+                        </para>
+                      </listitem>
+                    </itemizedlist>
+                  </para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              BACKEND
+              <itemizedlist>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB1.1"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB1.2"/>
+                  </para>
+                </listitem>
+                <!--<listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB1.3"/>
+                  </para>
+                </listitem>-->
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB2.1"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB2.2"/>
+                  </para>
+                </listitem>
+                <!--<listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB2.3"/>
+                  </para>
+                </listitem>-->
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB3.3"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB4.3"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB5.3"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB6.1"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB6.2"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB6.3"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB7.1"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB7.2"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB7.6"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB8"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB9.1"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB9.2"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB11.1.1"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB11.2.1"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB11.3.1"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB12"/>
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <olink targetdoc="specification" targetptr="FB16"/>
+                  </para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+          <listitem>
+            <para>
+              CONNECTOR
+              <itemizedlist>
+                <listitem>
+                  <para>
+                    None.
+                  </para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+
+        </itemizedlist>
+      </para>
+      </section>
+
+      <section>
+        <title>Schedule</title>
+        <table frame="all">
+          <title>Schedule M1 (UniZurich)</title>
+          <tgroup cols="3" align="left" colsep="1" rowsep="1">
+            <thead>
+              <row>
+                <entry align="center">Task</entry>
+                <entry align="center">Date</entry>
+                <entry align="center">Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>1. Preliminary Meeting</entry>
+                <entry>April 21, 2006</entry>
+                <entry>Requirements of University of Zurich. Discussion of alternative solutions.</entry>
+              </row>
+              <row>
+                <entry>Product Specification</entry>
+                <entry>May 02, 2006 - May 05, 2006</entry>
+                <entry>Requirements engineering, architecture specification, roadmap, schedule.</entry>
+              </row>
+              <row>
+                <entry>Implementation of Base Functionality</entry>
+                <entry>May 08, 2006 - June 02, 2006</entry>
+                <entry>Open document, edit in source mode (no WYSIWYG nor validation), save document.</entry>
+              </row>
+              <row>
+                <entry>Implementation of Validator</entry>
+                <entry>June 05, 2006 - June 09, 2006</entry>
+                <entry>RelaxNG validation (XML Schema validation optional).</entry>
+              </row>
+              <row>
+                <entry>Implementation of WYSIWYG mode</entry>
+                <entry>June 12, 2006 - June 30, 2006</entry>
+                <entry>Basic Processing Loop, XSLT.</entry>
+              </row>
+              <row>
+                <entry>Slack</entry>
+                <entry>July 03, 2006 - July 07, 2006</entry>
+                <entry>Minimal change requests.</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </section>
+
+    </section>
+  </section>
+
+</article>

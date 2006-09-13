@@ -1,0 +1,127 @@
+General
+-------
+http://xml.coverpages.org/hierarchies.html
+http://www.tei-c.org/wiki/index.php/SIG:Overlap
+http://www.tei-c.org/Activities/SIG/Overlap/index.xml
+http://www.garshol.priv.no/download/xmltools/
+
+Editors
+-------
+Etna:      http://rhaptos.org/downloads/editing/etna/
+Mozile:    http://www.oreillynet.com/pub/a/mozilla/2003/10/03/mozile.html, http://mozile.mozdev.org/index.html
+Nvu:       http://www.nvu.com
+TinyMCE:   http://sourceforge.net/projects/tinymce/
+Verbosio:  http://verbosio.mozdev.org/
+XStandard: http://www.xstandard.com/
+
+Similar Projects
+----------------
+http://www.flock.com
+
+
+Papers, Articles and Reports
+----------------------------
+http://weblogs.mozillazine.org/weirdal/archives/008056.html
+
+http://ahds.ac.uk/creating/information-papers/xml-editors/
+
+http://www.tei-c.org/P4X/NH.html
+
+Alex Dekhtyar, Ionut E. Iacob, A Framework for Management of Concurrent XML Markup, Lecture Notes in Computer Science, Volume 2814, Sep 2003, Pages 311 - 322
+(http://www.springerlink.com/openurl.asp?genre=article&issn=0302-9743&volume=2814&spage=311)
+
+@inproceedings{1066280,
+ author = {Ionut E. Iacob and Alex Dekhtyar},
+ title = {A framework for processing complex document-centric XML with overlapping structures},
+ booktitle = {SIGMOD '05: Proceedings of the 2005 ACM SIGMOD international conference on Management of data},
+ year = {2005},
+ isbn = {1-59593-060-4},
+ pages = {897--899},
+ location = {Baltimore, Maryland},
+ doi = {http://doi.acm.org/10.1145/1066157.1066280},
+ publisher = {ACM Press},
+ address = {New York, NY, USA},
+ }
+(http://portal.acm.org/ft_gateway.cfm?id=1066280&type=pdf&coll=GUIDE&dl=GUIDE&CFID=74311375&CFTOKEN=24199127)
+
+@inproceedings{1065513,
+ author = {Ionut E. Iacob and Alex Dekhtyar},
+ title = {Processing XML documents with overlapping hierarchies},
+ booktitle = {JCDL '05: Proceedings of the 5th ACM/IEEE-CS joint conference on Digital libraries},
+ year = {2005},
+ isbn = {1-58113-876-8},
+ pages = {409--409},
+ location = {Denver, CO, USA},
+ doi = {http://doi.acm.org/10.1145/1065385.1065513},
+ publisher = {ACM Press},
+ address = {New York, NY, USA},
+ }
+(http://portal.acm.org/ft_gateway.cfm?id=1065513&type=pdf&coll=GUIDE&dl=GUIDE&CFID=74311375&CFTOKEN=24199127)
+
+@inproceedings{1031460,
+ author = {Ionut E. Iacob and Alex Dekhtyar},
+ title = {Parsing concurrent XML},
+ booktitle = {WIDM '04: Proceedings of the 6th annual ACM international workshop on Web information and data management},
+ year = {2004},
+ isbn = {1-58113-978-0},
+ pages = {23--30},
+ location = {Washington DC, USA},
+ doi = {http://doi.acm.org/10.1145/1031453.1031460},
+ publisher = {ACM Press},
+ address = {New York, NY, USA},
+ }
+(http://portal.acm.org/ft_gateway.cfm?id=1031460&type=pdf&coll=GUIDE&dl=GUIDE&CFID=74311375&CFTOKEN=24199127)
+
+@inproceedings{1017097,
+ author = {Ionut E. Iacob and Alex Dekhtyar and Michael I. Dekhtyar},
+ title = {Checking potential validity of XML documents},
+ booktitle = {WebDB '04: Proceedings of the 7th International Workshop on the Web and Databases},
+ year = {2004},
+ pages = {91--96},
+ location = {Paris, France},
+ doi = {http://doi.acm.org/10.1145/1017074.1017097},
+ publisher = {ACM Press},
+ address = {New York, NY, USA},
+ }
+(http://portal.acm.org/ft_gateway.cfm?id=1017097&type=pdf&coll=GUIDE&dl=GUIDE&CFID=74311375&CFTOKEN=24199127)
+
+Unification of XML Documents with Concurrent Markup
+Andreas Witt, Daniela Goecke, Felix Sasaki and Harald Lüngen
+Bielefeld University, Bielefeld Justus-Liebig-Universität Gießen
+(http://llc.oxfordjournals.org/cgi/content/abstract/20/1/103?etoc)
+
+Concurrent Markup for XML Documents
+(http://www.idealliance.org/papers/xmle02/dx_xmle02/papers/03-03-07/03-03-07.html)
+
+Multiple Hierarchies: New Aspects of an Old Solution
+(http://scholar.google.com/url?sa=U&q=http://www.sfb632.uni-potsdam.de/publications/isis02_4witt.pdf)
+
+@inproceedings{1007598,
+ author = {H. V. Jagadish and Laks V. S. Lakshmanan and Monica Scannapieco and Divesh Srivastava and Nuwee Wiwatwattana},
+ title = {Colorful XML: one hierarchy isn't enough},
+ booktitle = {SIGMOD '04: Proceedings of the 2004 ACM SIGMOD international conference on Management of data},
+ year = {2004},
+ isbn = {1-58113-859-8},
+ pages = {251--262},
+ location = {Paris, France},
+ doi = {http://doi.acm.org/10.1145/1007568.1007598},
+ publisher = {ACM Press},
+ address = {New York, NY, USA},
+ }
+(http://portal.acm.org/ft_gateway.cfm?id=1007598&type=pdf&coll=GUIDE&dl=GUIDE&CFID=74311375&CFTOKEN=24199127)
+
+C.M. Sperberg-McQueen, Claus Huitfeldt, GODDAG: A Data Structure for Overlapping Hierarchies, Lecture Notes in Computer Science, Volume 2023, Feb 2004, Pages 139 - 160
+(http://www.springerlink.com/openurl.asp?genre=article&issn=0302-9743&volume=2023&spage=139)
+
+@inproceedings{DBLP:conf/extreme/DurusauO02,
+  author    = {Patrick Durusau and
+               Matthew Brook O'Donnell},
+  title     = {Coming down from the trees: Next step in the evolution of
+               markup?},
+  booktitle = {Extreme Markup Languages},
+  year      = {2002},
+  ee        = {http://www.mulberrytech.com/Extreme/Proceedings/html/2002/Durusau01/EML2002Durusau01.html},
+  crossref  = {DBLP:conf/extreme/2002},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+(http://www.mulberrytech.com/Extreme/Proceedings/html/2004/DeRose01/EML2004DeRose01.html)

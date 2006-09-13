@@ -1,0 +1,11 @@
+DO NOT change the XHTML files directly. Modify the XML files instead
+which are in DocBook format.
+
+In order to build the XHTML files from the DocBook files, type "make"
+either in this directory (make will recursively travel through all
+sub-directories looking for XML files which have changed), or in the
+directory of the XML file you modified (make will then only rebuild
+the files in that specific directory).
+
+Note that you need xsltproc installed to process the XML files
+(xsltproc comes with libxml).

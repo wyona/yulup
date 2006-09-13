@@ -1,0 +1,104 @@
+body {
+  font-family: sans-serif;
+  font-size:   small;
+}
+
+a {
+  text-decoration: none;
+  color: #3366cc;
+}
+a:hover {
+  text-decoration: underline;
+  color: #3366cc;
+}
+a:visited {
+  text-decoration: none;
+  color: grey;
+}
+a:visited:hover {
+  text-decoration: underline;
+  color: grey;
+}
+
+#yulup-logo {
+  font-family: serif;
+  font-size:   xx-large;
+}
+
+#yulup-logo > a:link, #yulup-logo > a:visited, #yulup-logo > a:hover, #yulup-logo > a:active {
+  color: black;
+  text-decoration: none;
+}
+
+#download {
+/*
+  border-style: solid;
+  border-color: green;
+*/
+  text-align: center;
+  font-family: helvetica;
+}
+
+#download a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#download-download {
+  color: #000;
+  font-size: 12px;
+}
+
+#download-yulup {
+  color: #fff;
+  font-size: 12px;
+}
+
+#download-version {
+  color: #fff;
+  font-size: 12px;
+}
+
+#download-firefox {
+  color: #000;
+  font-size: 9px;
+}
+
+#download-size {
+  color: #000;
+  font-size: 9px;
+}
+
+#footer-copyright {
+  font-size: x-small;
+}
+
+#footer-page-info {
+  font-size: x-small;
+}
+
+#gradient {
+  background-image: url('../images/gradient.jpg');
+}
+
+#header {
+/*
+  border-style: solid;
+  border-color:red;
+*/
+  height: 22px;
+  background-color: #68c7e9;
+}
+
+#header a {
+  text-decoration: none;
+  color: #fff;
+}
+
+#claim {
+  font-family: helvetica;
+  font-size:   16px;
+  font-weight: normal;
+  color: #000;
+}

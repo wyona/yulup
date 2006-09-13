@@ -1,0 +1,20 @@
+#ifndef BACKENDPROXY_IDL
+#define BACKENDPROXY_IDL
+
+#include "ibackend.idl"
+
+interface BackendProxy: IBackend {
+  // Associations
+  // Attributes
+  private attribute IConnector connector;
+  // Operations
+  IDocument createNewDocumentInstanceFromEmpty (  );
+  IDocument createNewDocumentInstanceFromExisting (  );
+  IDocument createNewDocumentInstanceFromTemplate (  );
+  void serializeDocumentInstanceToFile ( in IDocument document, in String name, in URI path );
+  void serializeDocumentInstanceToCMS ( in IDocument document, in String name, in URI path );
+  boolean hasCapability ( in String capability );
+  void tearDown (  );
+};
+
+#endif

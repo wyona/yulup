@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<project default="pkg-deploy" basedir="." name="XPI builder">
+
+  <xmlproperty file="install.rdf" collapseAttributes="true"/>
+
+  <property name="basename" value="yulup-prototype-1"/>
+  <property name="version" value="${RDF.Description.em:version}"/>
+  <property name="id" value="${RDF.Description.em:id}"/>
+  <property name="filename" value="${basename}-${version}.xpi"/>
+  <property name="download-dir" value="../../../../../../website/download"/>
+
+  <target name="pkg-deploy" description="Deploy the XPI file" depends="pkg-clean, pkg">
+    <move todir="${download-dir}">
+      <fileset file="../pkg/${filename}"/>
+    </move>
+    <move todir="${download-dir}">
+      <fileset file="../pkg/update.rdf"/>
+    </move>
+  </target>
+
+  <target name="pkg" description="Build the XPI file" depends="pkg-clean">
+    <echo message="Package version is ${version}. Constructed package filename is ${filename}."/>
+
+    <mkdir dir="../pkg/tmp"/>
+    <copy todir="../pkg/tmp/chrome">
+      <fileset dir="./chrome"/>
+    </copy>
+    <copy file="./install.rdf" todir="../pkg/tmp"/>
+    <!-- exclude install.js for now since it is non-functional -->
+    <!--<copy file="./install.js" todir="../pkg/tmp"/>-->
+    <copy file="./chrome.manifest" todir="../pkg/tmp"/>
+    <delete>
+      <fileset dir="../pkg/tmp" includes=".svn"/>
+    </delete>
+    <replaceregexp match="/\* DEBUG \*/.+" replace="" byline="true">
+      <fileset dir="../pkg/tmp/chrome"/>
+    </replaceregexp>
+    <replaceregexp match=".+YULUP_EXTENSION_ID.+=.+" replace="const YULUP_EXTENSION_ID = '${id}';" byline="true">
+      <fileset file="../pkg/tmp/chrome/content/common.js"/>
+    </replaceregexp>
+    <zip destfile="../pkg/${filename}">
+      <fileset dir="../pkg/tmp"/>
+    </zip>
+    <copy file="../pkg/update.rdf.template" tofile="../pkg/update.rdf"/>
+    <replace file="../pkg/update.rdf" token="@VERSION@" value="${version}"/>
+  </target>
+
+  <target name="pkg-clean" description="Remove temporary files">
+    <delete failonerror="false">
+      <fileset dir="../pkg/tmp"/>
+    </delete>
+    <delete failonerror="false">
+      <fileset dir="../pkg/update.rdf"/>
+    </delete>
+  </target>
+
+</project>

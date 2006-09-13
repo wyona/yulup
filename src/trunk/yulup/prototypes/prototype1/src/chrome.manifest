@@ -1,0 +1,7 @@
+content yulup           chrome/content/
+locale  yulup en        chrome/locale/en/
+locale  yulup de        chrome/locale/de/
+skin    yulup pinstripe chrome/skin/
+overlay chrome://browser/content/browser.xul chrome://yulup/content/yulup.xul
+overlay chrome://browser/content/browser.xul chrome://yulup/content/atomsidebar-overlay.xul
+overlay chrome://browser/content/browser.xul chrome://yulup/content/neutronsidebar-overlay.xul

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<entry xmlns="http://www.w3.org/2005/Atom">
+ <title></title>
+ <author><name></name></author>
+ <id></id>
+ <updated>yyyy-mm-ddThh:mm:ss-hh:mm</updated>
+ <summary type="html"></summary>
+ <content type="xhtml">
+   <div xmlns='http://www.w3.org/1999/xhtml'>
+   </div>
+ </content>
+</entry>

@@ -1,0 +1,229 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* ------------------------ Bindings ------------------------ */
+
+#uiYulupEditorTabbox {
+  -moz-binding: url('chrome://yulup/content/editor.xml#editortabbox');
+}
+
+editor {
+  -moz-binding: url('chrome://yulup/content/editor.xml#editor');
+}
+
+editview[type="source"] {
+  -moz-binding: url('chrome://yulup/content/editor.xml#editviewsource');
+}
+
+editview[type="wysiwyg"] {
+  -moz-binding: url('chrome://yulup/content/editor.xml#editviewwysiwyg');
+}
+
+editcontroller {
+  -moz-binding: url('chrome://yulup/content/editor.xml#editcontroller');
+}
+
+/* ---------------------- Content Deck ---------------------- */
+
+#uiYulupEditorWaitDescription {
+  text-align: center;
+  font-size: x-large;
+  font-weight: bolder;
+  max-height: 1em;
+  margin: 0px 0px 0px 0px;
+}
+
+/* -------------------------- Tabs -------------------------- */
+
+.tabs-left {
+  /* use !important because default css uses it
+   * as well (otherwise we couldn't override it). */
+  -moz-box-flex: 0 !important;
+}
+
+
+/* -------------------- Toolbar Buttons  -------------------- */
+/* for gnome icons see bin/share/icons/gnome/24x24/stock/generic */
+/* note: rect(top_edge right_edge bottom_edge left_edge) */
+
+#uiFileOperationNew {
+  list-style-image: url("chrome://yulup/skin/icons/yulup-new.png");
+  -moz-image-region: rect(0px 23px 24px 0px);
+  -moz-box-orient: vertical;
+}
+
+#uiFileOperationNew > dropmarker {
+  display: none !important;
+}
+
+#uiFileOperationNew[disabled="false"]:active {
+  -moz-image-region: rect(24px 23px 48px 0px);
+}
+
+#uiFileOperationNew[disabled="true"] {
+  -moz-image-region: rect(48px 23px 72px 0px);
+}
+
+
+#uiFileOperationOpen {
+  list-style-image: url("chrome://yulup/skin/icons/yulup-open.png");
+  -moz-image-region: rect(0px 24px 24px 0px);
+  -moz-box-orient: vertical;
+}
+
+#uiFileOperationOpen > dropmarker {
+  display: none !important;
+}
+
+#uiFileOperationOpen[disabled="false"]:active {
+  -moz-image-region: rect(24px 24px 48px 0px);
+}
+
+#uiFileOperationOpen[disabled="true"] {
+  -moz-image-region: rect(48px 24px 72px 0px);
+}
+
+
+#uiFileOperationSave {
+  list-style-image: url("chrome://yulup/skin/icons/yulup-save.png");
+  -moz-image-region: rect(0px 24px 24px 0px);
+  -moz-box-orient: vertical;
+}
+
+#uiFileOperationSave > dropmarker {
+  display: none !important;
+}
+
+#uiFileOperationSave[disabled="false"]:active {
+  -moz-image-region: rect(24px 24px 48px 0px);
+}
+
+#uiFileOperationSave[disabled="true"] {
+  -moz-image-region: rect(48px 24px 72px 0px);
+}
+
+
+#uiFileOperationSaveAs {
+  list-style-image: url("chrome://yulup/skin/icons/yulup-save.png");
+  -moz-image-region: rect(0px 24px 24px 0px);
+  -moz-box-orient: vertical;
+}
+
+#uiFileOperationSaveAs > dropmarker {
+  display: none !important;
+}
+
+#uiFileOperationSaveAs[disabled="false"]:active {
+  -moz-image-region: rect(24px 24px 48px 0px);
+}
+
+#uiFileOperationSaveAs[disabled="true"] {
+  -moz-image-region: rect(48px 24px 72px 0px);
+}
+
+
+#uiEditOperationUndo {
+  list-style-image: url("chrome://yulup/skin/icons/yulup-undo-redo.png");
+  -moz-image-region: rect(0px 25px 24px 0px);
+  -moz-box-orient: vertical;
+}
+
+#uiEditOperationUndo[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 48px 0px);
+}
+
+#uiEditOperationUndo[disabled="true"] {
+  -moz-image-region: rect(48px 25px 72px 0px);
+}
+
+
+#uiEditOperationRedo {
+  list-style-image: url("chrome://yulup/skin/icons/yulup-undo-redo.png");
+  -moz-image-region: rect(0px 52px 24px 25px);
+  -moz-box-orient: vertical;
+}
+
+#uiEditOperationRedo[disabled="false"]:active {
+  -moz-image-region: rect(24px 52px 48px 25px);
+}
+
+#uiEditOperationRedo[disabled="true"] {
+  -moz-image-region: rect(48px 52px 72px 25px);
+}
+
+
+#uiEditOperationCut {
+  list-style-image: url("chrome://yulup/skin/icons/compose-toolbar-small.png");
+  -moz-image-region: rect(0px 192px 24px 168px);
+  -moz-box-orient: vertical;
+}
+
+#uiEditOperationCut[disabled="false"]:active {
+  -moz-image-region: rect(24px 192px 48px 168px);
+}
+
+#uiEditOperationCut[disabled="true"] {
+  -moz-image-region: rect(48px 192px 72px 168px);
+}
+
+
+#uiEditOperationCopy {
+  list-style-image: url("chrome://yulup/skin/icons/compose-toolbar-small.png");
+  -moz-image-region: rect(0px 216px 24px 192px);
+  -moz-box-orient: vertical;
+}
+
+#uiEditOperationCopy[disabled="false"]:active {
+  -moz-image-region: rect(24px 216px 48px 192px);
+}
+
+#uiEditOperationCopy[disabled="true"] {
+  -moz-image-region: rect(48px 216px 72px 192px);
+}
+
+
+#uiEditOperationPaste {
+  list-style-image: url("chrome://yulup/skin/icons/compose-toolbar-small.png");
+  -moz-image-region: rect(0px 239px 24px 216px);
+  -moz-box-orient: vertical;
+}
+
+#uiEditOperationPaste[disabled="false"]:active {
+  -moz-image-region: rect(24px 239px 48px 216px);
+}
+
+#uiEditOperationPaste[disabled="true"] {
+  -moz-image-region: rect(48px 239px 72px 216px);
+}
+
+/* -------------------- Footer Toolbars  -------------------- */
+
+.uiEditorFooterToolBar {
+  background-image: url("chrome://global/skin/icons/white-gray-gradient.gif");
+  background-repeat: repeat-x;
+  background-position: bottom right;
+  padding-left: 6px;
+  background-color: rgb(246, 246, 246);
+  border-top: 1px solid #b3b3b3;
+  border-bottom: none;
+  padding-right: 2px;
+  color: #565656;
+}
+
+.uiEditorFooterToolBarCloseButton {
+  padding-right: 4px !important;
+  list-style-image: url("chrome://global/skin/icons/closetab.png") !important;
+  list-style-image: none;
+  border: none;
+}
+
+.uiEditorFooterToolBarCloseButton:hover:active {
+  list-style-image: url("chrome://global/skin/icons/closetab-active.png") !important;
+}
+
+.uiEditorFooterToolBarCloseButton > label {
+  display: none;
+}
+
+#uiYulupXPathToolBarExpressionLabel {
+  font-weight: bold;
+}

@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../../../../utils/customization/style.xsl"?>
+
+<!DOCTYPE article [
+  <!ENTITY % docbook PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+  %docbook;
+  <!ENTITY % local SYSTEM "../../../../../../utils/customization/commons.dtd">
+  %local;
+]>
+
+<article>
+  <articleinfo>
+    <title>&project; User Manual</title>
+    <authorgroup>
+      <author>
+        <firstname>Andreas</firstname>
+        <surname>Wuest</surname>
+        <email>awuest@student.ethz.ch</email>
+        <affiliation>
+          <corpname>Wyona AG</corpname>
+        </affiliation>
+      </author>
+      <author>
+        <firstname>Michael</firstname>
+        <surname>Wechner</surname>
+        <email>michi@wyona.com</email>
+        <affiliation>
+          <jobtitle>CEO</jobtitle>
+          <corpname>Wyona AG</corpname>
+        </affiliation>
+        <affiliation>
+          <orgname>Apache Software Foundation</orgname>
+        </affiliation>
+      </author>
+    </authorgroup>
+    <!-- All dates specified in ISO "YYYY-MM-DD" format -->
+    <pubdate>2006-08-08</pubdate>
+    <!-- Most recent revision goes at the top; list in descending order -->
+    <revhistory>
+      <revision>
+        <revnumber>0.1.0</revnumber>
+        <date>2006-08-08</date>
+        <authorinitials>AW</authorinitials>
+        <revremark>First initial draft.</revremark>
+      </revision>
+    </revhistory>
+    <abstract>
+      <para>The user manual for <emphasis>&project;</emphasis>.</para>
+    </abstract>
+  </articleinfo>
+
+  <section>
+    <title>Introduction</title>
+    <para>
+      &project; is a <ulink url="http://www.wyona.org/osr-101/osr-101.xhtml">Neutron</ulink>-enabled editing client, based on the <ulink url="http://www.mozilla.org/">Mozilla</ulink> platform. It is available as an <emphasis>extension</emphasis> (also called <emphasis>add-on</emphasis>) for <ulink url="http://www.mozilla.com/firefox/">Mozilla Firefox</ulink>.
+    </para>
+    <para>
+      With &project;, you can edit the following document types:
+      <itemizedlist>
+        <listitem>
+          <formalpara>
+            <title>XML</title>
+            You can edit plain <emphasis>XML</emphasis> documents in source mode.
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>XML with associated XSLT</title>
+            You can edit <emphasis>XML</emphasis> with associated <emphasis>XSLT</emphasis> documents in source as well as WYSIWYG mode. To display your XML document in the WYSIWYG mode, it is first transformed using the associated XSLT document. Any changes you make to your document in the WYSIWYG view are then propagated back to your XML source.
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>XHTML</title>
+            You can edit <emphasis>XHTML</emphasis> documents in source as well as WYSIWYG mode.
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>HTML</title>
+            You can edit <emphasis>HTML</emphasis> documents in source as well as WYSIWYG mode.
+          </formalpara>
+        </listitem>
+      </itemizedlist>
+    </para>
+    <para>
+      &project; allows for seamless interaction with Neutron-enabled Content Management Systems, making editing a breeze. When visiting a certain document, you can directly check out the source from your CMS, edit it, and store it back without further interaction with the CMS.
+    </para>
+    <para>
+      The &project; editor strives to bridge the gap between the Web and the desktop. Traditional editors were either stand-alone desktop applications, or in-browser tools. Stand-alone applications obviously lead to an impedance-mismatch between the user's browsing and publishing activity on the Web and the editing of documents. In-browser editors on the other hand can avoid this gap, but lack the features of a stand-alone application like access to the desktop, offline editing, import/export filters, etc. Furthermore, they often perform poorly or have scalability issues.
+    </para>
+    <para>
+      &project; tries to bring together the Web and the desktop, offering the full capabilities of a conventional desktop application, but avoiding the gap between the browsing and publishing workflow by being integrated seamlessly into the browser. This enables the user to stay in the same application, no matter if she is browsing, reading, editing or publishing.
+    </para>
+  </section>
+
+  <section>
+    <title>System Requirements</title>
+    <para>
+      &project; requires <ulink url="http://www.mozilla.com/firefox/">Mozilla Firefox</ulink> with a minimum version of 1.5. The &project; editor is a platform-independent application, and can therefore be run on every machine which also runs Firefox.
+    </para>
+  </section>
+
+  <section>
+    <title>Installation</title>
+    <para>
+      For a first-time install, please refer to the <xref linkend="install" endterm="install.title"/> section. If you want to update a &project; installation to the latest version, refer to section <xref linkend="update" endterm="update.title"/>.
+    </para>
+    <section id="install">
+      <title id="install.title">Install</title>
+      <para>
+        <orderedlist>
+          <listitem>
+            <para>
+              Open Firefox.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Go to <ulink url="http://yulup.wyona.org/">http://yulup.wyona.org/</ulink>.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Click the <emphasis>Download &project;</emphasis> link.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              In the requester which just popped up, click <guibutton>Install Now</guibutton>.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Restart Firefox.
+            </para>
+          </listitem>
+        </orderedlist>
+        You are done. You can verify that the installation was successful by opening Firefox's extension manager (<guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Extensions</guimenuitem>). There, an entry for &project; should appear.
+      </para>
+    </section>
+    <section id="update">
+      <title id="update.title">Update</title>
+      <para>
+        <orderedlist>
+          <listitem>
+            <para>
+              Open Firefox's extension manager (<guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Extensions</guimenuitem>).
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Click on the <guibutton>Find Updates</guibutton> button and wait until Firefox has finished searching for available updates. If an update for &project; is available, a button labeled <guibutton>Update Now</guibutton> appears to the right of the &project; entry.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Click the <guibutton>Update Now</guibutton> button and wait until Firefox has downloaded the update.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Restart Firefox.
+            </para>
+          </listitem>
+        </orderedlist>
+        You are done.
+      </para>
+    </section>
+  </section>
+
+  <section>
+    <title>Concepts</title>
+    <section>
+      <title>Webbrowser View and Editor View</title>
+      <para>
+        
+      </para>
+    </section>
+    <section>
+      <title>Webpages, Documents and Document Fragments</title>
+      <para>
+        It is important to realise that a webpage, as you may see when browsing a CMS, is not actually what is stored on the server as the source, and not necessarily every portion in a webpage can be edited. For example, a typical <emphasis>webpage</emphasis> may consists of a navigational part, a main content part, and a news section. The navigational part may not be editable, because it is generated dynamically by the webserver, and not stored in any <emphasis>document</emphasis> source file. Furhtermore, the main content and the news section themelves may not live inside the same document. In fact, your webserver may dynamically aggregate these two parts (called <emphasis>document fragments</emphasis>) from two different source files, and then add the navigational part.
+      </para>
+      <para>
+        But there is more to that. After having constructed such a document, it may not be displayable by a webbrowser, because its format lacks the representational aspects of a webpage, i.e. the formatting. These formatting instructions may come from another different document, and the webserver first has to process the content, applying this representational information.
+      </para>
+      <para>
+        This makes it clear that it is not straight forward to edit a webpage as you can see it rendered by your webbrowser. Although this is perfectly possible, it may not have the effect you would like to see, namely the changes you made in that webpage to be incorporated back into the various source documents which make up this webpage.
+      </para>
+      <para>
+        What you would like to do is therefore having a way of making the changes you want directly in the various document fragments a webpage is made up from, but nevertheless having the document rendered like it would be by a webbrowser if you would not be editing it.
+      </para>
+    </section>
+  </section>
+
+  <section>
+    <title>Opening and Creating new Documents</title>
+    <para>
+      You can open and create documents starting from two different points: either from your normal webbrowser view or from within the editor itself.
+    </para>
+    <section>
+      <title>Opening Documents</title>
+      <section>
+        <title>From the Webbrowser View</title>
+        <section>
+          <title>Open Document from CMS</title>
+          <para>
+            When viewing a webpage in your browser which resides on a Neutron-enabled CMS, you are offered the possibility to open that document's source directly from the CMS. This means that the latest revision of the document underlying your currently displayed webpage is fetched from the CMS, and, depending on the opening mode, is either checked out from the CMS (meaning that you acquire a lock on that document), or simply opened (meaning no lock is created on the server side).
+          </para>
+          <para>
+            <itemizedlist>
+              <listitem>
+                <formalpara>
+                  <title>Open and Edit</title>
+                  If the server offers you the option of opening the document without locking, then a menu item labelled <guimenuitem>Open and Edit</guimenuitem> is enabled in the &project; Browser Menu.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Checkout and Edit</title>
+                </formalpara>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section>
+          <title>Open Document As-Is</title>
+        </section>
+      </section>
+      <section>
+        <title>From inside the Editor</title>
+        <section>
+          <title>Open Document from CMS</title>
+        </section>
+      </section>
+    </section>
+    <section>
+      <title>Creating Documents</title>
+      <section>
+        <title>From the Webbrowser View</title>
+      </section>
+      <section>
+        <title>From inside the Editor</title>
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <title>Saving Documents</title>
+  </section>
+
+  <section>
+    <title>Editing Documents</title>
+    <section>
+      <title>Source Mode</title>
+      <section>
+        <title>Guided Tag Inserter</title>
+        <para>
+          The guided tag inserter helps to insert elements at the current cursor position. It can create two tag types, namely empty (tags only consisting of an opening tag, ending with a "/") and non-empty tags. The guided tag inserter is invoked by pressing <emphasis>C-i</emphasis>.
+        </para>
+        <para>
+          If a block of text is currently selected, then the guided tag inserter will surround this block with the newly created tag, but only if a non-empty tag is generated. Otherwise, the current selection is overwritten.
+        </para>
+        <para>
+          The guided tag inserter first asks for the tag name. If you hit return without entering any text into the tag name field, the guided tag inserter aborts without inserting any text into the editor. Otherwise, if you have indeed entered a tag name, it goes into a loop and asks for attribute names and their values. If you hit return without entering any text into the attribute name field, the guided tag inserter proceeds to ask you if you want to create an empty or a non-empty tag. If you hit return without entering any text into the attribute value field, the guided tag inserter asks you for the next attribute name.
+        </para>
+        <para>
+          You can leave the guided tag inserter at any time by clicking "Abort". No text is inserted into the editor in this case.
+        </para>
+      </section>
+    </section>
+    <section>
+      <title>Keybindings</title>
+      <para>
+        The following keybindings are activated by default (also known as <emphasis>Readline</emphasis> or <emphasis>Emacs</emphasis> keybindings). The <keycap>C</keycap> key means <keycap>Ctrl</keycap> and is valid for all platforms. Note that there are additional platform-dependent keybindings (for those, please refer to the user manual of your Operating System).
+        <bridgehead>Moving and Selecting</bridgehead>
+        <itemizedlist>
+          <listitem>
+            <formalpara>
+              <title>C-a</title>
+              Move to beginning of line.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-A</title>
+              Select to beginning of line.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-b</title>
+              Move to previous character.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-B</title>
+              Select previous character.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-e</title>
+              Move to end of line.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-E</title>
+              Select to end of line.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-f</title>
+              Move to next character.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-F</title>
+              Select next character.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-n</title>
+              Move to next line.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-N</title>
+              Select to next line.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-p</title>
+              Move to previous line.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-P</title>
+              Select to previous line.
+            </formalpara>
+          </listitem>
+        </itemizedlist>
+        <bridgehead>Inserting</bridgehead>
+        <itemizedlist>
+          <listitem>
+            <formalpara>
+              <title>C-i</title>
+              Open the guided tag/element inserter.
+            </formalpara>
+          </listitem>
+        </itemizedlist>
+        <bridgehead>Deleting</bridgehead>
+        <itemizedlist>
+          <listitem>
+            <formalpara>
+              <title>C-d</title>
+              Delete (delete next character).
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-h</title>
+              Backspace (delete previous character)
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-k</title>
+              Delete to end of line.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-u</title>
+              Delete complete current line.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-w</title>
+              Delete previous word.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>C-W</title>
+              Delete next word.
+            </formalpara>
+          </listitem>
+        </itemizedlist>
+        <bridgehead>Undo/Redo</bridgehead>
+        <itemizedlist>
+          <listitem>
+            <formalpara>
+              <title>C-_</title>
+              Undo last action.
+            </formalpara>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+  </section>
+
+</article>

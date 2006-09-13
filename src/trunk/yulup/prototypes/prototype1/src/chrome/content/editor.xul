@@ -1,0 +1,232 @@
+<?xml version="1.0"?>
+
+<!--
+# ***** BEGIN LICENSE BLOCK *****
+# Copyright 2006 Wyona AG Zurich
+#
+# This file is part of Yulup.
+#
+# Yulup is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Yulup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Yulup; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# ***** END LICENSE BLOCK *****
+-->
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://yulup/skin/editor.css" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://yulup/locale/editor.dtd">
+
+<!-- Add onUnload Handler to handle ungraceful exits (e.g. user changes URL) -->
+<window id="uiYulupEditorWindow"
+        orient="vertical"
+        align="stretch"
+        onload="Editor.onLoadListener()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <stringbundle id="uiYulupEditorStringbundle" src="chrome://yulup/locale/editor.properties"/>
+  <stringbundle id="uiYulupAuthStringbundle" src="chrome://yulup/locale/authentication.properties"/>
+
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/common.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/editor.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/editorparams.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/persistenceservice.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/networkservice.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/neutron.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/neutronparser10.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/neutronarchive.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/widget.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/document.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/model.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/view.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/controller.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/neutronauth.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/neutronauthparser10.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/authentication.js"/>
+
+  <commandset id="uiYulupEditorFocusEventCommandset"
+              commandupdater="true"
+              events="focus"
+              oncommandupdate="Editor.goUpdateFocusEventCommands()"/>
+  <commandset id="uiYulupEditorSelectEventCommandset"
+              commandupdater="true"
+              events="select"
+              oncommandupdate="Editor.goUpdateSelectEventCommands()"/>
+  <commandset id="uiYulupEditorUndoEventCommandset"
+              commandupdater="true"
+              events="undo"
+              oncommandupdate="Editor.goUpdateUndoEventCommands()"/>
+  <commandset id="uiYulupEditorClipboardEventCommandset"
+              commandupdater="true"
+              events="clipboard"
+              oncommandupdate="Editor.goUpdateClipboardEventCommands()"/>
+
+  <commandset id="uiYulupEditorBaseCommandset">
+    <command id="cmd_undo"  oncommand="Editor.goDoCommand('cmd_undo')"  disabled="false"/>
+    <command id="cmd_redo"  oncommand="Editor.goDoCommand('cmd_redo')"  disabled="false"/>
+    <command id="cmd_cut"   oncommand="Editor.goDoCommand('cmd_cut')"   disabled="true"/>
+    <command id="cmd_copy"  oncommand="Editor.goDoCommand('cmd_copy')"  disabled="true"/>
+    <command id="cmd_paste" oncommand="Editor.goDoCommand('cmd_paste')" disabled="true"/>
+  </commandset>
+
+  <commandset id="uiYulupEditorWidgetCommandset"/>
+
+  <broadcasterset>
+    <broadcaster id="broadcaster_yulup_editorinitialised"   disabled="true"/>
+    <broadcaster id="broadcaster_yulup_openfailed"          disabled="true"/>
+    <broadcaster id="broadcaster_yulup_newopen"             disabled="true">
+      <observes element="broadcaster_yulup_editorinitialised" attribute="disabled"/>
+      <observes element="broadcaster_yulup_openfailed"        attribute="disabled"/>
+    </broadcaster>
+    <broadcaster id="broadcaster_yulup_saveas"              disabled="true">
+      <observes element="broadcaster_yulup_editorinitialised" attribute="disabled"/>
+    </broadcaster>
+    <broadcaster id="broadcaster_yulup_neutronfromopen"     disabled="true"/>
+    <broadcaster id="broadcaster_yulup_neutronfromcheckout" disabled="true"/>
+  </broadcasterset>
+
+  <toolbox>
+    <toolbar id="uiYulupEditorToolbar"
+             toolbarname="Yulup Editor Toolbar">
+      <box id="uiYulupFileOperationsToolbarbuttons">
+        <toolbarbutton id="uiFileOperationNew" label="&fileOperationNew.label;" tooltiptext="&fileOperationNew.tooltip;" observes="broadcaster_yulup_newopen" type="menu">
+          <menupopup id="uiFileOperationNewMenupopup">
+            <menuitem id="uiFileOperationNewEmptyMenuitem"
+                      oncommand="Editor.createNew('blank')"
+                      label="&fileOperationNewEmptyMenuitem.label;" tooltiptext="&fileOperationNewEmptyMenuitem.tooltip;"
+                      disabled="false"/>
+            <menuitem id="uiFileOperationNewXMLMenuitem"
+                      oncommand="Editor.createNew('template-xml')"
+                      label="&fileOperationNewXMLMenuitem.label;" tooltiptext="&fileOperationNewXMLMenuitem.tooltip;"
+                      disabled="false"/>
+            <menuitem id="uiFileOperationNewXHTMLMenuitem"
+                      oncommand="Editor.createNew('template-xhtml')"
+                      label="&fileOperationNewXHTMLMenuitem.label;" tooltiptext="&fileOperationNewXHTMLMenuitem.tooltip;"
+                      disabled="false"/>
+            <menuseparator/>
+            <menuitem id="uiFileOperationNewFromTemplateLocalMenuitem"
+                      oncommand="Editor.createNewFromTemplateLocal()"
+                      label="&fileOperationNewFromTemplateLocalMenuitem.label;" tooltiptext="&fileOperationNewFromTemplateLocalMenuitem.tooltip;"
+                      disabled="true"/>
+            <menuitem id="uiFileOperationNewFromTemplateCMSMenuitem"
+                      oncommand="Editor.createNewFromTemplateCMS()"
+                      label="&fileOperationNewFromTemplateCMSMenuitem.label;" tooltiptext="&fileOperationNewFromTemplateCMSMenuitem.tooltip;"
+                      disabled="true"/>
+          </menupopup>
+        </toolbarbutton>
+        <toolbarbutton id="uiFileOperationOpen" label="&fileOperationOpen.label;" tooltiptext="&fileOperationOpen.tooltip;" observes="broadcaster_yulup_newopen" type="menu">
+          <menupopup id="uiFileOperationOpenMenupopup">
+            <menuitem id="uiFileOperationOpenLocalMenuitem"
+                      oncommand="Editor.openFromFile()"
+                      label="&fileOperationOpenLocalMenuitem.label;" tooltiptext="&fileOperationOpenLocalMenuitem.tooltip;"
+                      disabled="false"/>
+            <menuitem id="uiFileOperationOpenCMSMenuitem"
+                      oncommand="Editor.openFromCMS()"
+                      label="&fileOperationOpenCMSMenuitem.label;" tooltiptext="&fileOperationOpenCMSMenuitem.tooltip;"
+                      disabled="true"/>
+          </menupopup>
+        </toolbarbutton>
+        <toolbarbutton id="uiFileOperationSave" label="&fileOperationSave.label;" tooltiptext="&fileOperationSave.tooltip;" disabled="true" type="menu">
+          <menupopup id="uiFileOperationSaveMenupopup">
+            <menuitem id="uiFileOperationSaveLocalMenuitem"
+                      oncommand="Editor.saveDispatcher('save')"
+                      label="&fileOperationSaveLocalMenuitem.label;" tooltiptext="&fileOperationSaveLocalMenuitem.tooltip;"
+                      disabled="true"/>
+            <menuseparator/>
+            <menuitem id="uiFileOperationSaveTempMenuitem"
+                      oncommand="Editor.saveDispatcher('savetemp')"
+                      label="&fileOperationSaveTempMenuitem.label;" tooltiptext="&fileOperationSaveTempMenuitem.tooltip;"
+                      disabled="true"/>
+            <menuitem id="uiFileOperationSaveCMSMenuitem"
+                      oncommand="Editor.saveDispatcher('savecms')"
+                      label="&fileOperationSaveCMSMenuitem.label;" tooltiptext="&fileOperationSaveCMSMenuitem.tooltip;"
+                      disabled="true"/>
+          </menupopup>
+        </toolbarbutton>
+        <toolbarbutton id="uiFileOperationSaveAs" label="&fileOperationSaveAs.label;" tooltiptext="&fileOperationSaveAs.tooltip;" observes="broadcaster_yulup_saveas" type="menu">
+          <menupopup id="uiFileOperationSaveAsMenupopup">
+            <menuitem id="uiFileOperationSaveAsLocalMenuitem"
+                      oncommand="Editor.saveDispatcher('saveaslocal')"
+                      label="&fileOperationSaveAsLocalMenuitem.label;" tooltiptext="&fileOperationSaveAsLocalMenuitem.tooltip;"
+                      disabled="false"/>
+            <menuitem id="uiFileOperationSaveAsCMSMenuitem"
+                      oncommand="Editor.saveDispatcher('saveascms')"
+                      label="&fileOperationSaveAsCMSMenuitem.label;" tooltiptext="&fileOperationSaveAsCMSMenuitem.tooltip;"
+                      disabled="true"/>
+          </menupopup>
+        </toolbarbutton>
+      </box>
+      <toolbarseparator/>
+      <box id="uiYulupEditOperationsToolbarbuttons">
+        <toolbarbutton id="uiEditOperationUndo"  command="cmd_undo"  label="&editOperationUndo.label;"  tooltiptext="&editOperationUndo.tooltip;"/>
+        <toolbarbutton id="uiEditOperationRedo"  command="cmd_redo"  label="&editOperationRedo.label;"  tooltiptext="&editOperationRedo.tooltip;"/>
+        <toolbarbutton id="uiEditOperationCut"   command="cmd_cut"   label="&editOperationCut.label;"   tooltiptext="&editOperationCut.tooltip;"/>
+        <toolbarbutton id="uiEditOperationCopy"  command="cmd_copy"  label="&editOperationCopy.label;"  tooltiptext="&editOperationCopy.tooltip;"/>
+        <toolbarbutton id="uiEditOperationPaste" command="cmd_paste" label="&editOperationPaste.label;" tooltiptext="&editOperationPaste.tooltip;"/>
+      </box>
+      <toolbarseparator id="uiYulupWidgetToolbarSeparator" hidden="true"/>
+      <box id="uiYulupWidgetToolbarbuttons"/>
+    </toolbar>
+  </toolbox>
+
+  <deck id="uiYulupEditorContentDeck" selectedIndex="0" orient="vertical" align="stretch" flex="1">
+    <vbox>
+      <spacer align="stretch" flex="2"/>
+      <description id="uiYulupEditorWaitDescription" value="&waitDescription.label;" flex="1"/>
+      <spacer align="stretch" flex="2"/>
+    </vbox>
+    <tabbox id="uiYulupEditorTabbox" flex="1">
+      <tabs>
+      </tabs>
+      <tabpanels flex="1">
+      </tabpanels>
+    </tabbox>
+  </deck>
+
+  <toolbar id="uiYulupEditorPromptBox"
+           class="uiEditorFooterToolBar"
+           fullscreentoolbar="true"
+           align="center"
+           hidden="true"/>
+
+  <toolbar id="uiYulupXPathToolBar"
+           class="uiEditorFooterToolBar"
+           fullscreentoolbar="true"
+           align="center"
+           hidden="true">
+    <toolbarbutton id="uiYulupXPathToolBarCloseButton" class="uiEditorFooterToolBarCloseButton" tooltiptext="Close XPath Toolbar" value="close"/>
+    <label id="uiYulupXPathToolBarExpressionLabel" value="XPath:"/>
+    <label id="uiYulupXPathToolBarXPathExpression"/>
+    <spacer align="stretch" flex="1"/>
+    <checkbox id="uiYulupXPathToolBarNSAwareCheckbox" label="Namespace Aware" checked="true"/>
+    <checkbox id="uiYulupXPathToolBarUseNiceNamesCheckbox" label="Use Nice Names"/>
+  </toolbar>
+
+</window>

@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!--
+<?xml-stylesheet type="text/xsl" href="calendar2xhtml.xsl"?>
+-->
+<calendar user="michi">
+
+<year value="2009">
+
+<month name="January">
+<entry day="1" name="Sunday" hour="13:35" public="true">
+Hello World
+</entry>
+</month>
+
+<month name="February">
+<entry day="DD" name="NAME" hour="HH:MM" public="true">
+...
+</entry>
+</month>
+
+<month name="March">
+<entry day="DD" name="NAME" hour="HH:MM" public="true">
+...
+</entry>
+</month>
+
+<month name="April">
+<entry day="DD" name="NAME" hour="HH:MM" public="true">
+...
+</entry>
+</month>
+
+<month name="May">
+<entry day="DD" name="NAME" hour="HH:MM" public="true">
+...
+</entry>
+</month>
+
+<month name="June">
+<entry day="DD" name="NAME" hour="HH:MM" public="true">
+...
+</entry>
+</month>
+
+<month name="July">
+<entry day="DD" name="NAME" hour="HH:MM" public="true">
+...
+</entry>
+</month>
+
+<month name="August">
+<entry day="DD" name="NAME" hour="HH:MM" public="true">
+...
+</entry>
+</month>
+
+<month name="September">
+<entry day="DD" name="NAME" hour="HH:MM" public="true">
+...
+</entry>
+</month>
+
+<month name="October">
+<entry day="DD" name="NAME" hour="HH:MM" public="true">
+...
+</entry>
+</month>
+
+<month name="November">
+<entry day="DD" name="NAME" hour="HH:MM" public="true">
+...
+</entry>
+</month>
+
+<month name="December">
+<entry day="DD" name="NAME" hour="HH:MM" public="true">
+...
+</entry>
+</month>
+
+</year>
+</calendar>

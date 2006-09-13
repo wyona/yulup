@@ -1,0 +1,19 @@
+#ifndef DOCUMENTPROXY_IDL
+#define DOCUMENTPROXY_IDL
+
+#include "idocument.idl"
+
+interface DocumentProxy: IDocument {
+  // Associations
+  // Attributes
+  private attribute IConnector connector;
+  private attribute Controller controller;
+  private attribute Model model;
+  // Operations
+  Controller getController (  );
+  Model getModel (  );
+  String serialize (  );
+  void close (  );
+};
+
+#endif

@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Yulup Roadmap</title>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.69.1"/>
+    <meta name="description" content="Describes the roadmap of the Yulup project."/>
+  </head>
+  <body>
+    <div class="article" lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a id="id52600"/>Yulup Roadmap</h1>
+          </div>
+          <div>
+            <div class="authorgroup">
+              <div class="author">
+                <h3 class="author"><span class="firstname">Andreas</span> <span class="surname">Wuest</span></h3>
+                <div class="affiliation">
+                  <span class="corpname">Wyona AG<br/></span>
+                </div>
+                <code class="email">&lt;<a href="mailto:awuest@student.ethz.ch">awuest@student.ethz.ch</a>&gt;</code>
+              </div>
+              <div class="author">
+                <h3 class="author"><span class="firstname">Michael</span> <span class="surname">Wechner</span></h3>
+                <div class="affiliation">
+                  <span class="jobtitle">CEO<br/></span>
+                  <span class="corpname">Wyona AG<br/></span>
+                </div>
+                <div class="affiliation">
+                  <span class="orgname">Apache Software Foundation<br/></span>
+                </div>
+                <code class="email">&lt;<a href="mailto:michi@wyona.com">michi@wyona.com</a>&gt;</code>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="pubdate">2006-05-18</p>
+          </div>
+          <div>
+            <div class="revhistory">
+              <table border="1" width="100%" summary="Revision history">
+                <tr>
+                  <th align="left" valign="top" colspan="3">
+                    <b>Revision History</b>
+                  </th>
+                </tr>
+                <tr>
+                  <td align="left">Revision 1.2</td>
+                  <td align="left">2006-05-18</td>
+                  <td align="left">AW</td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="3">Dropped <a href="../analysis/specification.xhtml#UC11" class="olink">UC11</a> from M1 (reason: <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=102699">Mozilla Core Bug #102699</a>).</td>
+                </tr>
+                <tr>
+                  <td align="left">Revision 1.1</td>
+                  <td align="left">2006-05-11</td>
+                  <td align="left">AW</td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="3">Added features to reflect specification.</td>
+                </tr>
+                <tr>
+                  <td align="left">Revision 1.0</td>
+                  <td align="left">2006-05-05</td>
+                  <td align="left">AW</td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="3">First initial draft.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div class="abstract">
+              <p class="title">
+                <b>Abstract</b>
+              </p>
+              <p>Describes the roadmap of the <span class="emphasis"><em>Yulup</em></span> project.</p>
+            </div>
+          </div>
+        </div>
+        <hr/>
+      </div>
+      <div class="toc">
+        <p>
+          <b>Table of Contents</b>
+        </p>
+        <dl>
+          <dt>
+            <span class="section">
+              <a href="#id342826">1. Project Overview</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id342835">1.1. Components and Variants</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#id342850">1.1.1. Front End Component (FRONTEND)</a>
+                    </span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="section">
+                          <a href="#id342870">1.1.1.1. Browser Integrated Variant (BROWSER)</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id342885">1.1.1.2. Standalone Variant (STANDALONE)</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id342898">1.1.1.3. Web-based Variant (WEB)</a>
+                        </span>
+                      </dt>
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="section">
+                      <a href="#id342911">1.1.2. Back End Component (BACKEND)</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id342933">1.1.3. Remote Connector Component (CONNECTOR)</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id342948">2. Use Case Priorities</a>
+            </span>
+          </dt>
+          <dt>
+            <span class="section">
+              <a href="#id343124">3. Schedule</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id343141">3.1. Milestone 1 (M1) UniZurich</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#id343176">3.1.1. Involved Use Cases</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id343763">3.1.2. Target Features</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id344247">3.1.3. Schedule</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id342826"/>1. Project Overview</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+    </p>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id342835"/>1.1. Components and Variants</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        The project consists of three components: the front end, the back end, and a connector component. The front end component is divided into three variants: the editor integrated in a web browser, as a standalone editor, and a web-based, browser-independent variant. The back end can be run either locally on the same client as the front end, or on a remote host if the connector component is available.
+      </p>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id342850"/>1.1.1. Front End Component (FRONTEND)</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          The front end component is responsible for the handling the view. FRONTEND performs tasks like rendering the document, supplying user interaction facilities, etc. Note that all thre front ends can work with either a local BACKEND or a remote BACKEND.
+        </p>
+            <p>
+          Note that the FRONTEND UI is separated from the document views entirely. This makes it possible to implement the UI using either XUL (for Mozilla Platform based browsers), JavaScript or e.g. Flash.
+        </p>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id342870"/>1.1.1.1. Browser Integrated Variant (BROWSER)</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+            The browser integrated variant of FRONTEND is a XUL widget which integrates seamlessly into web browsers based on the Mozilla Platform. BROWSER must be able to work with up-to-date versions of Firefox and SeaMonkey (formerly Mozilla Suite).
+          </p>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id342885"/>1.1.1.2. Standalone Variant (STANDALONE)</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+            The standalone variant of the FRONTEND can be used as a standalone editor, independent of a web browser. Like the browser integrated version, STANDALONE is based on XUL.
+          </p>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id342898"/>1.1.1.3. Web-based Variant (WEB)</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+            The web-based variant of FRONTEND is a JavaScript solution independent of the web browser it is deployed on.
+          </p>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id342911"/>1.1.2. Back End Component (BACKEND)</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          The back end component comprises the controller and the model. BACKEND contains the application logic and performs tasks like text insertion/deletion, ID tagging, XSLT processing, validation, etc. BACKEND runs either locally on the client, or remote on a different network host if a remote connector (CONNECTOR) is available.
+        </p>
+            <p>
+          BACKEND is also responsible for discovering and instantiating a suitable CONNECTOR, if the back end runs on a remote host. This must be completely transparent to FRONTEND.
+        </p>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id342933"/>1.1.3. Remote Connector Component (CONNECTOR)</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          The remote connector component is responsible for connecting a BACKEND running on a different host than the front end to FRONTEND. The connection is completely transparent to FRONTEND.
+        </p>
+          </div>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id342948"/>2. Use Case Priorities</h2>
+            </div>
+          </div>
+        </div>
+        <div class="orderedlist">
+          <ol type="1">
+            <li>
+              <p>
+          <a href="../analysis/specification.xhtml#UC1" class="olink">UC1</a>, <a href="../analysis/specification.xhtml#UC2" class="olink">UC2</a>, <a href="../analysis/specification.xhtml#UC3" class="olink">UC3</a>, <a href="../analysis/specification.xhtml#UC4" class="olink">UC4</a>, <a href="../analysis/specification.xhtml#UC5" class="olink">UC5</a>, <a href="../analysis/specification.xhtml#UC6" class="olink">UC6</a>, <a href="../analysis/specification.xhtml#UC7" class="olink">UC7</a>, <a href="../analysis/specification.xhtml#UC8" class="olink">UC8</a>, <a href="../analysis/specification.xhtml#UC9" class="olink">UC9</a>, <a href="../analysis/specification.xhtml#UC11" class="olink">UC11</a>, <a href="../analysis/specification.xhtml#UC15" class="olink">UC15</a>
+        </p>
+            </li>
+            <li>
+              <p>
+          <a href="../analysis/specification.xhtml#UC19" class="olink">UC19</a>
+        </p>
+            </li>
+            <li>
+              <p>
+          <a href="../analysis/specification.xhtml#UC18" class="olink">UC18</a>
+        </p>
+            </li>
+            <li>
+              <p>
+          <a href="../analysis/specification.xhtml#UC16" class="olink">UC16</a>
+        </p>
+            </li>
+            <li>
+              <p>
+          <a href="../analysis/specification.xhtml#UC17" class="olink">UC17</a>
+        </p>
+            </li>
+            <li>
+              <p>
+          <a href="../analysis/specification.xhtml#UC10" class="olink">UC10</a>, <a href="../analysis/specification.xhtml#UC12" class="olink">UC12</a>
+        </p>
+            </li>
+            <li>
+              <p>
+          <a href="../analysis/specification.xhtml#UC13" class="olink">UC13</a>
+        </p>
+            </li>
+            <li>
+              <p>
+          <a href="../analysis/specification.xhtml#UC14" class="olink">UC14</a>
+        </p>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id343124"/>3. Schedule</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      The schedule consists of multiple mile stones, which are defined by the set of features which are to be implemented by this point.
+    </p>
+        <p>
+      Note that we are using Rolling Wave Planning, on the granularity of milestones, i.e. only the next milestone is currently planned in detail. Future milestones are kept as planning packages.
+    </p>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id343141"/>3.1. Milestone 1 (M1) UniZurich</h3>
+              </div>
+            </div>
+          </div>
+          <div class="figure">
+            <a id="id343147"/>
+            <p class="title">
+              <b>Figure 1. Actual Implementation M1</b>
+            </p>
+            <div class="mediaobject">
+              <img src="figures/actual_architecture_m1.png" width="534.6" alt="Actual Implementation M1"/>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id343176"/>3.1.1. Involved Use Cases</h4>
+                </div>
+              </div>
+            </div>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <p><b><a href="../analysis/specification.xhtml#UC1" class="olink">UC1</a>. </b><a href="../analysis/specification.xhtml#FF1" class="olink">Feature F1</a>, <a href="../analysis/specification.xhtml#FF2" class="olink">Feature F2</a>, <a href="../analysis/specification.xhtml#FB1.1" class="olink">Feature B1.1</a>, <a href="../analysis/specification.xhtml#FB2.1" class="olink">Feature B2.1</a></p>
+                </li>
+                <li>
+                  <p><b><a href="../analysis/specification.xhtml#UC2" class="olink">UC2</a>. </b><a href="../analysis/specification.xhtml#FF3" class="olink">Feature F3</a>, <a href="../analysis/specification.xhtml#FF4" class="olink">Feature F4</a>, <a href="../analysis/specification.xhtml#FB3.1" class="olink">Feature B3.1</a>, <a href="../analysis/specification.xhtml#FB3.2" class="olink">Feature B3.2</a>, <a href="../analysis/specification.xhtml#FB3.3" class="olink">Feature B3.3</a>, <a href="../analysis/specification.xhtml#FB4.1" class="olink">Feature B4.1</a>, <a href="../analysis/specification.xhtml#FB4.2" class="olink">Feature B4.2</a>, <a href="../analysis/specification.xhtml#FB4.3" class="olink">Feature B4.3</a></p>
+                </li>
+                <li>
+                  <p><b><a href="../analysis/specification.xhtml#UC3" class="olink">UC3</a>. </b><a href="../analysis/specification.xhtml#FF1" class="olink">Feature F1</a>, <a href="../analysis/specification.xhtml#FF4" class="olink">Feature F4</a>, <a href="../analysis/specification.xhtml#FB1.1" class="olink">Feature B1.1</a>, <a href="../analysis/specification.xhtml#FB4.1" class="olink">Feature B4.1</a>, <a href="../analysis/specification.xhtml#FB4.2" class="olink">Feature B4.2</a>, <a href="../analysis/specification.xhtml#FB4.3" class="olink">Feature B4.3</a></p>
+                </li>
+                <li>
+                  <p><b><a href="../analysis/specification.xhtml#UC4" class="olink">UC4</a>. </b><a href="../analysis/specification.xhtml#FF5" class="olink">Feature F5</a>, <a href="../analysis/specification.xhtml#FB5.1" class="olink">Feature B5.1</a>, <a href="../analysis/specification.xhtml#FB5.2" class="olink">Feature B5.2</a>, <a href="../analysis/specification.xhtml#FB5.3" class="olink">Feature B5.3</a></p>
+                </li>
+                <li>
+                  <p>
+                    <b><a href="../analysis/specification.xhtml#UC5" class="olink">UC5</a>. </b>
+                  </p>
+                </li>
+                <li>
+                  <p><b><a href="../analysis/specification.xhtml#UC6" class="olink">UC6</a>. </b><a href="../analysis/specification.xhtml#FF1" class="olink">Feature F1</a>, <a href="../analysis/specification.xhtml#FF2" class="olink">Feature F2</a>, <a href="../analysis/specification.xhtml#FB1.1" class="olink">Feature B1.1</a>, <a href="../analysis/specification.xhtml#FB1.2" class="olink">Feature B1.2</a>, <a href="../analysis/specification.xhtml#FB2.1" class="olink">Feature B2.1</a>, <a href="../analysis/specification.xhtml#FB2.2" class="olink">Feature B2.2</a></p>
+                </li>
+                <li>
+                  <p><b><a href="../analysis/specification.xhtml#UC7" class="olink">UC7</a>. </b><a href="../analysis/specification.xhtml#FF6" class="olink">Feature F6</a>, <a href="../analysis/specification.xhtml#FF8" class="olink">Feature F8</a>, <a href="../analysis/specification.xhtml#FF12" class="olink">Feature F12</a>, <a href="../analysis/specification.xhtml#FF13" class="olink">Feature F13</a>, <a href="../analysis/specification.xhtml#FB6.1" class="olink">Feature B6.1</a>, <a href="../analysis/specification.xhtml#FB6.2" class="olink">Feature B6.2</a>, <a href="../analysis/specification.xhtml#FB6.3" class="olink">Feature B6.3</a>, <a href="../analysis/specification.xhtml#FB6.4" class="olink">Feature B6.4</a>, <a href="../analysis/specification.xhtml#FB6.5" class="olink">Feature B6.5</a>, <a href="../analysis/specification.xhtml#FB8" class="olink">Feature B8</a>, <a href="../analysis/specification.xhtml#FB15" class="olink">Feature B15</a>, <a href="../analysis/specification.xhtml#FB16" class="olink">Feature B16</a>, <a href="../analysis/specification.xhtml#FB17" class="olink">Feature B17</a></p>
+                </li>
+                <li>
+                  <p><b><a href="../analysis/specification.xhtml#UC8" class="olink">UC8</a>. </b><a href="../analysis/specification.xhtml#FF7" class="olink">Feature F7</a>, <a href="../analysis/specification.xhtml#FF8" class="olink">Feature F8</a>, <a href="../analysis/specification.xhtml#FF12" class="olink">Feature F12</a>, <a href="../analysis/specification.xhtml#FF13" class="olink">Feature F13</a>, <a href="../analysis/specification.xhtml#FB7.1" class="olink">Feature B7.1</a>, <a href="../analysis/specification.xhtml#FB7.2" class="olink">Feature B7.2</a>, <a href="../analysis/specification.xhtml#FB7.3.1" class="olink">Feature B7.3.1</a>, <a href="../analysis/specification.xhtml#FB7.3.2.1" class="olink">Feature B7.3.2.1</a>, <a href="../analysis/specification.xhtml#FB7.3.2.2" class="olink">Feature B7.3.2.2</a>, <a href="../analysis/specification.xhtml#FB7.4.1" class="olink">Feature B7.4.1</a>, <a href="../analysis/specification.xhtml#FB7.4.2.1" class="olink">Feature B7.4.2.1</a>, <a href="../analysis/specification.xhtml#FB7.4.2.2" class="olink">Feature B7.4.2.2</a>, <a href="../analysis/specification.xhtml#FB7.4.2.3" class="olink">Feature B7.4.2.3</a>, <a href="../analysis/specification.xhtml#FB8" class="olink">Feature B8</a>, <a href="../analysis/specification.xhtml#FB9.1" class="olink">Feature B9.1</a>, <a href="../analysis/specification.xhtml#FB9.2" class="olink">Feature B9.2</a>, <a href="../analysis/specification.xhtml#FB10.1" class="olink">Feature B10.1</a>, <a href="../analysis/specification.xhtml#FB10.2" class="olink">Feature B10.2</a>, <a href="../analysis/specification.xhtml#FB15" class="olink">Feature B15</a>, <a href="../analysis/specification.xhtml#FB16" class="olink">Feature B16</a>, <a href="../analysis/specification.xhtml#FB17" class="olink">Feature B17</a></p>
+                </li>
+                <li>
+                  <p><b><a href="../analysis/specification.xhtml#UC9" class="olink">UC9</a>. </b><a href="../analysis/specification.xhtml#FF9" class="olink">Feature F9</a>, <a href="../analysis/specification.xhtml#FB11.1.1" class="olink">Feature B11.1.1</a>, <a href="../analysis/specification.xhtml#FB11.1.2" class="olink">Feature B11.1.2</a>, <a href="../analysis/specification.xhtml#FB11.1.3" class="olink">Feature B11.1.3</a>, <a href="../analysis/specification.xhtml#FB11.2.1" class="olink">Feature B11.2.1</a>, <a href="../analysis/specification.xhtml#FB11.2.2" class="olink">Feature B11.2.2</a>, <a href="../analysis/specification.xhtml#FB11.2.3" class="olink">Feature B11.2.3</a>, <a href="../analysis/specification.xhtml#FB11.3.1" class="olink">Feature B11.3.1</a>, <a href="../analysis/specification.xhtml#FB11.3.2" class="olink">Feature B11.3.2</a>, <a href="../analysis/specification.xhtml#FB11.3.3" class="olink">Feature B11.3.3</a>, <a href="../analysis/specification.xhtml#FB12" class="olink">Feature B12</a></p>
+                </li>
+                <li>
+                  <p><b><a href="../analysis/specification.xhtml#UC15" class="olink">UC15</a>. </b><a href="../analysis/specification.xhtml#FF7" class="olink">Feature F7</a>, <a href="../analysis/specification.xhtml#FB7.6" class="olink">Feature B7.6</a></p>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id343763"/>3.1.2. Target Features</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          These are the features that are acutally going to be implemented. They are derived from the use cases, but filtered by alternatives and schedule.
+        </p>
+            <p>
+        </p>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <p>
+              FRONTEND
+              </p>
+                  <div class="itemizedlist">
+                    <ul>
+                      <li>
+                        <p>
+                    BROWSER
+                    </p>
+                        <div class="itemizedlist">
+                          <ul>
+                            <li>
+                              <p>
+                          <a href="../analysis/specification.xhtml#FF1" class="olink">Feature F1</a>
+                        </p>
+                            </li>
+                            <li>
+                              <p>
+                          <a href="../analysis/specification.xhtml#FF2" class="olink">Feature F2</a>
+                        </p>
+                            </li>
+                            <li>
+                              <p>
+                          <a href="../analysis/specification.xhtml#FF3" class="olink">Feature F3</a>
+                        </p>
+                            </li>
+                            <li>
+                              <p>
+                          <a href="../analysis/specification.xhtml#FF4" class="olink">Feature F4</a>
+                        </p>
+                            </li>
+                            <li>
+                              <p>
+                          <a href="../analysis/specification.xhtml#FF5" class="olink">Feature F5</a>
+                        </p>
+                            </li>
+                            <li>
+                              <p>
+                          <a href="../analysis/specification.xhtml#FF6" class="olink">Feature F6</a>
+                        </p>
+                            </li>
+                            <li>
+                              <p>
+                          <a href="../analysis/specification.xhtml#FF7" class="olink">Feature F7</a>
+                        </p>
+                            </li>
+                            <li>
+                              <p>
+                          <a href="../analysis/specification.xhtml#FF8" class="olink">Feature F8</a>
+                        </p>
+                            </li>
+                            <li>
+                              <p>
+                          <a href="../analysis/specification.xhtml#FF9" class="olink">Feature F9</a>
+                        </p>
+                            </li>
+                          </ul>
+                        </div>
+                        <p>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    STANDALONE
+                    </p>
+                        <div class="itemizedlist">
+                          <ul>
+                            <li>
+                              <p>
+                          None.
+                        </p>
+                            </li>
+                          </ul>
+                        </div>
+                        <p>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    WEB
+                    </p>
+                        <div class="itemizedlist">
+                          <ul>
+                            <li>
+                              <p>
+                          None.
+                        </p>
+                            </li>
+                          </ul>
+                        </div>
+                        <p>
+                  </p>
+                      </li>
+                    </ul>
+                  </div>
+                  <p>
+            </p>
+                </li>
+                <li>
+                  <p>
+              BACKEND
+              </p>
+                  <div class="itemizedlist">
+                    <ul>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB1.1" class="olink">Feature B1.1</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB1.2" class="olink">Feature B1.2</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB2.1" class="olink">Feature B2.1</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB2.2" class="olink">Feature B2.2</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB3.3" class="olink">Feature B3.3</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB4.3" class="olink">Feature B4.3</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB5.3" class="olink">Feature B5.3</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB6.1" class="olink">Feature B6.1</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB6.2" class="olink">Feature B6.2</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB6.3" class="olink">Feature B6.3</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB7.1" class="olink">Feature B7.1</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB7.2" class="olink">Feature B7.2</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB7.6" class="olink">Feature B7.6</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB8" class="olink">Feature B8</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB9.1" class="olink">Feature B9.1</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB9.2" class="olink">Feature B9.2</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB11.1.1" class="olink">Feature B11.1.1</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB11.2.1" class="olink">Feature B11.2.1</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB11.3.1" class="olink">Feature B11.3.1</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB12" class="olink">Feature B12</a>
+                  </p>
+                      </li>
+                      <li>
+                        <p>
+                    <a href="../analysis/specification.xhtml#FB16" class="olink">Feature B16</a>
+                  </p>
+                      </li>
+                    </ul>
+                  </div>
+                  <p>
+            </p>
+                </li>
+                <li>
+                  <p>
+              CONNECTOR
+              </p>
+                  <div class="itemizedlist">
+                    <ul>
+                      <li>
+                        <p>
+                    None.
+                  </p>
+                      </li>
+                    </ul>
+                  </div>
+                  <p>
+            </p>
+                </li>
+              </ul>
+            </div>
+            <p>
+      </p>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id344247"/>3.1.3. Schedule</h4>
+                </div>
+              </div>
+            </div>
+            <div class="table">
+              <a id="id344253"/>
+              <p class="title">
+                <b>Table 1. Schedule M1 (UniZurich)</b>
+              </p>
+              <table summary="Schedule M1 (UniZurich)" border="1">
+                <colgroup>
+                  <col/>
+                  <col/>
+                  <col/>
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th align="center">Task</th>
+                    <th align="center">Date</th>
+                    <th align="center">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td align="left">1. Preliminary Meeting</td>
+                    <td align="left">April 21, 2006</td>
+                    <td align="left">Requirements of University of Zurich. Discussion of alternative solutions.</td>
+                  </tr>
+                  <tr>
+                    <td align="left">Product Specification</td>
+                    <td align="left">May 02, 2006 - May 05, 2006</td>
+                    <td align="left">Requirements engineering, architecture specification, roadmap, schedule.</td>
+                  </tr>
+                  <tr>
+                    <td align="left">Implementation of Base Functionality</td>
+                    <td align="left">May 08, 2006 - June 02, 2006</td>
+                    <td align="left">Open document, edit in source mode (no WYSIWYG nor validation), save document.</td>
+                  </tr>
+                  <tr>
+                    <td align="left">Implementation of Validator</td>
+                    <td align="left">June 05, 2006 - June 09, 2006</td>
+                    <td align="left">RelaxNG validation (XML Schema validation optional).</td>
+                  </tr>
+                  <tr>
+                    <td align="left">Implementation of WYSIWYG mode</td>
+                    <td align="left">June 12, 2006 - June 30, 2006</td>
+                    <td align="left">Basic Processing Loop, XSLT.</td>
+                  </tr>
+                  <tr>
+                    <td align="left">Slack</td>
+                    <td align="left">July 03, 2006 - July 07, 2006</td>
+                    <td align="left">Minimal change requests.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

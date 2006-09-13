@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<repository>
+  <name>Ulysses Website Identities</name>
+
+  <paths class="org.wyona.yarep.impl.VFileSystemMapImpl" src="../ac-identities-content"/>
+
+  <storage class="org.wyona.yarep.core.impl.vfs.VFileSystemStorage">
+    <content src="../ac-identities-content"/>
+  </storage>
+</repository>

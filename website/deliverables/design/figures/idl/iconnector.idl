@@ -1,0 +1,12 @@
+#ifndef ICONNECTOR_IDL
+#define ICONNECTOR_IDL
+
+
+// interface
+interface IConnector {
+  // Associations
+  // Attributes
+  // Operations
+};
+
+#endif

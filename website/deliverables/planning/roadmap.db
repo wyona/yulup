@@ -1,0 +1,68 @@
+<div element="article" href="roadmap.xhtml#id52599" number="">
+  <ttl>Yulup Roadmap</ttl>
+  <xreftext>Yulup Roadmap</xreftext>
+  <div element="section" href="roadmap.xhtml#id342826" number="1">
+    <ttl>Project Overview</ttl>
+    <xreftext>Section 1, “Project Overview”</xreftext>
+    <div element="section" href="roadmap.xhtml#id342834" number="1.1">
+      <ttl>Components and Variants</ttl>
+      <xreftext>Section 1.1, “Components and Variants”</xreftext>
+      <div element="section" href="roadmap.xhtml#id342850" number="1.1.1">
+        <ttl>Front End Component (FRONTEND)</ttl>
+        <xreftext>Section 1.1.1, “Front End Component (FRONTEND)”</xreftext>
+        <div element="section" href="roadmap.xhtml#id342870" number="1.1.1.1">
+          <ttl>Browser Integrated Variant (BROWSER)</ttl>
+          <xreftext>Section 1.1.1.1, “Browser Integrated Variant (BROWSER)”</xreftext>
+        </div>
+        <div element="section" href="roadmap.xhtml#id342884" number="1.1.1.2">
+          <ttl>Standalone Variant (STANDALONE)</ttl>
+          <xreftext>Section 1.1.1.2, “Standalone Variant (STANDALONE)”</xreftext>
+        </div>
+        <div element="section" href="roadmap.xhtml#id342897" number="1.1.1.3">
+          <ttl>Web-based Variant (WEB)</ttl>
+          <xreftext>Section 1.1.1.3, “Web-based Variant (WEB)”</xreftext>
+        </div>
+      </div>
+      <div element="section" href="roadmap.xhtml#id342910" number="1.1.2">
+        <ttl>Back End Component (BACKEND)</ttl>
+        <xreftext>Section 1.1.2, “Back End Component (BACKEND)”</xreftext>
+      </div>
+      <div element="section" href="roadmap.xhtml#id342932" number="1.1.3">
+        <ttl>Remote Connector Component (CONNECTOR)</ttl>
+        <xreftext>Section 1.1.3, “Remote Connector Component (CONNECTOR)”</xreftext>
+      </div>
+    </div>
+  </div>
+  <div element="section" href="roadmap.xhtml#id342947" number="2">
+    <ttl>Use Case Priorities</ttl>
+    <xreftext>Section 2, “Use Case Priorities”</xreftext>
+  </div>
+  <div element="section" href="roadmap.xhtml#id343123" number="3">
+    <ttl>Schedule</ttl>
+    <xreftext>Section 3, “Schedule”</xreftext>
+    <div element="section" href="roadmap.xhtml#id343141" number="3.1">
+      <ttl>Milestone 1 (M1) UniZurich</ttl>
+      <xreftext>Section 3.1, “Milestone 1 (M1) UniZurich”</xreftext>
+      <obj element="figure" href="roadmap.xhtml#id343146" number="1">
+        <ttl>Actual Implementation M1</ttl>
+        <xreftext>Figure 1, “Actual Implementation M1”</xreftext>
+      </obj>
+      <div element="section" href="roadmap.xhtml#id343176" number="3.1.1">
+        <ttl>Involved Use Cases</ttl>
+        <xreftext>Section 3.1.1, “Involved Use Cases”</xreftext>
+      </div>
+      <div element="section" href="roadmap.xhtml#id343763" number="3.1.2">
+        <ttl>Target Features</ttl>
+        <xreftext>Section 3.1.2, “Target Features”</xreftext>
+      </div>
+      <div element="section" href="roadmap.xhtml#id344247" number="3.1.3">
+        <ttl>Schedule</ttl>
+        <xreftext>Section 3.1.3, “Schedule”</xreftext>
+        <obj element="table" href="roadmap.xhtml#id344252" number="1">
+          <ttl>Schedule M1 (UniZurich)</ttl>
+          <xreftext>Table 1, “Schedule M1 (UniZurich)”</xreftext>
+        </obj>
+      </div>
+    </div>
+  </div>
+</div>

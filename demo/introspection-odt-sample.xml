@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<introspection xmlns="http://www.wyona.org/neutron/1.0">
+
+<edit mime-type="application/xml" name="content.xml of ODT">
+  <open url="odt-sample.xml" method="GET"/>
+  <save url="odt-sample.xml?yanel.resource.usecase=save" method="PUT"/>
+  <styles>
+    <style href="odt2xhtml.xsl"/>
+  </styles>
+</edit>
+
+<edit mime-type="application/vnd.oasis.opendocument.text" name="ODT itself">
+  <open url="odt-sample.odt" method="GET"/>
+
+<!--
+  <save url="TODO.xml?yanel.resource.usecase=save" method="PUT"/>
+-->
+</edit>
+
+</introspection>

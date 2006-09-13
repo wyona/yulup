@@ -1,0 +1,1486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Yulup Specification</title>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.69.1"/>
+    <meta name="description" content="Specification of the Yulup project."/>
+  </head>
+  <body>
+    <div class="article" lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a id="id52601"/>Yulup Specification</h1>
+          </div>
+          <div>
+            <div class="authorgroup">
+              <div class="author">
+                <h3 class="author"><span class="firstname">Andreas</span> <span class="surname">Wuest</span></h3>
+                <div class="affiliation">
+                  <span class="corpname">Wyona AG<br/></span>
+                </div>
+                <code class="email">&lt;<a href="mailto:awuest@student.ethz.ch">awuest@student.ethz.ch</a>&gt;</code>
+              </div>
+              <div class="author">
+                <h3 class="author"><span class="firstname">Thomas</span> <span class="surname">Comiotto</span></h3>
+                <div class="affiliation">
+                  <span class="corpname">unicom Online (University of Zurich)<br/></span>
+                </div>
+                <code class="email">&lt;<a href="mailto:thomas.comiotto@unicom.unizh.ch">thomas.comiotto@unicom.unizh.ch</a>&gt;</code>
+              </div>
+              <div class="author">
+                <h3 class="author"><span class="firstname">Michael</span> <span class="surname">Wechner</span></h3>
+                <div class="affiliation">
+                  <span class="jobtitle">CEO<br/></span>
+                  <span class="corpname">Wyona AG<br/></span>
+                </div>
+                <div class="affiliation">
+                  <span class="orgname">Apache Software Foundation<br/></span>
+                </div>
+                <code class="email">&lt;<a href="mailto:michi@wyona.com">michi@wyona.com</a>&gt;</code>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="pubdate">2006-05-07</p>
+          </div>
+          <div>
+            <div class="revhistory">
+              <table border="1" width="100%" summary="Revision history">
+                <tr>
+                  <th align="left" valign="top" colspan="3">
+                    <b>Revision History</b>
+                  </th>
+                </tr>
+                <tr>
+                  <td align="left">Revision 1.3</td>
+                  <td align="left">2006-05-07</td>
+                  <td align="left">AW</td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="3">Cleaned up use cases and feature list. Restructured contents to make the document more readable.</td>
+                </tr>
+                <tr>
+                  <td align="left">Revision 1.2</td>
+                  <td align="left">2006-05-03</td>
+                  <td align="left">AW</td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="3">Added variant WEB to component FRONTEND. Revised architecture following propositions by Thomas Comiotto.</td>
+                </tr>
+                <tr>
+                  <td align="left">Revision 1.1</td>
+                  <td align="left">2006-05-02</td>
+                  <td align="left">AW</td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="3">Project decomposition and features.</td>
+                </tr>
+                <tr>
+                  <td align="left">Revision 1.0</td>
+                  <td align="left">2006-04-28</td>
+                  <td align="left">AW</td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="3">First initial draft.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div class="abstract">
+              <p class="title">
+                <b>Abstract</b>
+              </p>
+              <p>Specification of the <span class="emphasis"><em>Yulup</em></span> project.</p>
+            </div>
+          </div>
+        </div>
+        <hr/>
+      </div>
+      <div class="toc">
+        <p>
+          <b>Table of Contents</b>
+        </p>
+        <dl>
+          <dt>
+            <span class="section">
+              <a href="#id342851">1. Use Cases</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id342856">1.1. Using Yulup as a Browser</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#id342875">1.2. Using Yulup as an Editing Tool</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#id343044">1.3. More than XML</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id343263">2. Project Decomposition</a>
+            </span>
+          </dt>
+          <dt>
+            <span class="section">
+              <a href="#id343319">3. Requirements</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id343324">3.1. Functional Requirements</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#id343329">3.1.1. Front End Component (FRONTEND)</a>
+                    </span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="section">
+                          <a href="#id343740">3.1.1.1. Browser Integrated Variant (BROWSER)</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id343755">3.1.1.2. Standalone Variant (STANDALONE)</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id343768">3.1.1.3. Web-based Variant (WEB)</a>
+                        </span>
+                      </dt>
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="section">
+                      <a href="#id343781">3.1.2. Back End Component (BACKEND)</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id345850">3.1.3. Remote Connector Component (CONNECTOR)</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#id345944">3.2. Non-Functional Requirements</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id346021">4. Open Issues/To be discussed</a>
+            </span>
+          </dt>
+          <dt>
+            <span class="section">
+              <a href="#id346082">5. Reasoning</a>
+            </span>
+          </dt>
+        </dl>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id342851"/>1. Use Cases</h2>
+            </div>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id342856"/>1.1. Using Yulup as a Browser</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        Yulup is always based on the most recent Firefox version and therefore provides the same functionality. If a webpage offers an introspection link (see Introspection ...) then Yulup would request the introspection from the corresponding server and would present the operations allowed on this webpage (e.g. editing, versions, annotations, ...).
+      </p>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id342875"/>1.2. Using Yulup as an Editing Tool</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        Yulup can also be used (beside browsing the web) as a standalone editing tool of arbitrary XML with customized styles applied. Offline editing would be supported.
+        </p>
+          <div class="itemizedlist">
+            <ul>
+              <li>
+                <a id="UC1"/>
+                <p><b>Usecase UC1. </b>
+              Open File from your desktop and Save to your desktop.
+            </p>
+              </li>
+              <li>
+                <a id="UC2"/>
+                <p><b>Usecase UC2. </b>
+              Browse to webpage, open webpage from server (e.g. WebDAV and checkout/lock on server, depending on server functionality), edit, save back to server (checkin/unlock...).
+            </p>
+              </li>
+              <li>
+                <a id="UC3"/>
+                <p><b>Usecase UC3. </b>
+              Open local file, Save/New to server.
+            </p>
+              </li>
+              <li>
+                <a id="UC4"/>
+                <p><b>Usecase UC4. </b>
+              New webpage (from template on server) on server.
+            </p>
+              </li>
+              <li>
+                <a id="UC5"/>
+                <p><b>Usecase UC5. </b>
+              Edit whilst being on-line.
+            </p>
+              </li>
+              <li>
+                <a id="UC6"/>
+                <p><b>Usecase UC6. </b>
+              Edit whilst being off-line. Needs to save local temporary version with meta-data (server URL, schema/RelaxNG, style,  ...).
+            </p>
+              </li>
+              <li>
+                <a id="UC7"/>
+                <p><b>Usecase UC7. </b>
+              Edit in Source Mode. Add/delete text, add/delete elements, add/remove Schema-specific styling (like <code class="code">&lt;b&gt;</code> or <code class="code">&lt;tt&gt;</code> in XHTML), add/remove CSS styling.
+            </p>
+              </li>
+              <li>
+                <a id="UC8"/>
+                <p><b>Usecase UC8. </b>
+              Edit in WYSIWYG Mode. Add/delete text, add/delete elements, add/remove Schema-specific styling (like <code class="code">&lt;b&gt;</code> or <code class="code">&lt;tt&gt;</code> in XHTML), add/remove CSS styling.
+            </p>
+              </li>
+              <li>
+                <a id="UC9"/>
+                <p><b>Usecase UC9. </b>
+              Validate document.
+            </p>
+              </li>
+            </ul>
+          </div>
+          <p>
+        Generally speaking one has the possibility to edit existing "documents", either from a remote server or from the local desktop, or to create a new document based on a template provided by the remote server or located on the local desktop.
+      </p>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id343044"/>1.3. More than XML</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        Yulup should allow plain/semi-structured text editing  with a "common" formatting, which means no XML Schema attached.
+        </p>
+          <div class="itemizedlist">
+            <ul>
+              <li>
+                <a id="UC10"/>
+                <p><b>Usecase UC10. </b>
+              Start with XML and additonal "common" formatting.
+              </p>
+                <div class="example">
+                  <a id="id343069"/>
+                  <p class="title">
+                    <b>Example 1. Add "common" formatting</b>
+                  </p>
+                  <pre class="programlisting">
+                  
+&lt;person&gt;
+  &lt;firstname&gt;Caleb&lt;/firstname&gt;
+  &lt;lastname&gt;Yeanan&lt;/lastname&gt;
+  &lt;email&gt;cy@wyona.org&lt;/email&gt;
+&lt;/person&gt;
+
+&lt;p&gt;
+  Address:
+  &lt;br/&gt;
+  &lt;b&gt;Caleb Yeanan&lt;/b&gt;
+  &lt;br/&gt;
+  &lt;i&gt;cy@wyona.org&lt;/i&gt;
+&lt;/p&gt;
+
+                </pre>
+                </div>
+              </li>
+              <li>
+                <a id="UC11"/>
+                <p><b>Usecase UC11. </b>
+              Start with plain text resp. semi-structured and add tags according to selected schema, but retain style or allow to select style according to schema in case such a style exists (Similar to CSS ...!).
+            </p>
+              </li>
+              <li>
+                <a id="UC12"/>
+                <p><b>Usecase UC12. </b>
+              Add/remove "common" styling derived from Schema (e.g. <code class="code">&lt;i&gt;</code> in XHTML and <code class="code">&lt;emphasis&gt;</code> in DocBook). Requires a mapping from these "common" styles to the specific Schema in use.
+            </p>
+              </li>
+              <li>
+                <a id="UC13"/>
+                <p><b>Usecase UC13. </b>
+              Apply multiple schemas allowing <span class="emphasis"><em>entanglement</em></span> for internal representation.
+            </p>
+              </li>
+              <li>
+                <a id="UC14"/>
+                <p><b>Usecase UC14. </b>
+              Automatic insertion of tags through training, derived from style. Insertion controllable by stepping through the document.
+            </p>
+              </li>
+              <li>
+                <a id="UC15"/>
+                <p><b>Usecase UC15. </b>
+              Insertion (e.g. by Copy and Paste or Drag and Drop) of links to other assets.
+            </p>
+              </li>
+              <li>
+                <a id="UC16"/>
+                <p><b>Usecase UC16. </b>
+              Insertion (e.g. by Copy and Paste or Drag and Drop) of blobs (e.g. images, ...). (NOTE: mapping between input and schema!)
+            </p>
+              </li>
+              <li>
+                <a id="UC17"/>
+                <p><b>Usecase UC17. </b>
+              Insertion (e.g. by Copy and Paste or Drag and Drop) of Schema-foreign elements.
+            </p>
+              </li>
+              <li>
+                <a id="UC18"/>
+                <p><b>Usecase UC18. </b>
+              Insertion (e.g. by Copy and Paste or Drag and Drop) of (semi-)structured text (e.g. from Word, OpenOffice, ...) or pre-formatted clobs (e.g. program listings). (NOTE: mapping between input and schema!)
+            </p>
+              </li>
+              <li>
+                <a id="UC19"/>
+                <p><b>Usecase UC19. </b>
+              Word/OpenOffice functionality/usability (return means new paragraph!).
+            </p>
+              </li>
+              <li>
+                <a id="UC20"/>
+                <p><b>Usecase UC20. </b>
+              Word/OpenOffice interoperability: ODT, WordXML, etc. document import/export.
+            </p>
+              </li>
+            </ul>
+          </div>
+          <p>
+      </p>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id343263"/>2. Project Decomposition</h2>
+            </div>
+            <div>
+              <h3 class="subtitle">General Architecture</h3>
+            </div>
+          </div>
+        </div>
+        <p>
+      The decomposition serves the purpose of partitioning the project into implementable features. Note that a single usecase may need support from the front end as well as the back end, therefore a usecase may consist of several features in different components. It follows that in order to implement a usecase, features in the front as well as the back end must be implemented; the implementation though only has to be done in one variant of a component to have the usecase working for this variant. Therefore, the variants of a component are independent.
+    </p>
+        <div class="figure">
+          <a id="id343275"/>
+          <p class="title">
+            <b>Figure 1. Project Decomposition</b>
+          </p>
+          <div class="mediaobject">
+            <img src="figures/project_decomposition.png" width="534.6" alt="Project Decomposition"/>
+          </div>
+        </div>
+        <h3><a id="id343304"/>Components and Variants</h3>
+        <p>
+      The project consists of three components: the front end, the back end, and a connector component. The front end component is divided into three variants: the editor integrated in a web browser, as a standalone editor, and a web-based, browser-independent variant. The back end can be run either locally on the same client as the front end, or on a remote host if the connector component is available.
+    </p>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id343319"/>3. Requirements</h2>
+            </div>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id343324"/>3.1. Functional Requirements</h3>
+              </div>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id343329"/>3.1.1. Front End Component (FRONTEND)</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          The front end component is responsible for the handling the view. FRONTEND performs tasks like rendering the document, supplying user interaction facilities, etc. Note that all thre front ends can work with either a local BACKEND or a remote BACKEND.
+        </p>
+            <p>
+          Note that the FRONTEND UI is separated from the document views entirely. This makes it possible to implement the UI using either XUL (for Mozilla Platform based browsers), JavaScript or e.g. Flash.
+        </p>
+            <div class="figure">
+              <a id="id343349"/>
+              <p class="title">
+                <b>Figure 2. Front End</b>
+              </p>
+              <div class="mediaobject">
+                <img src="figures/front_end.png" width="529.2" alt="Front End"/>
+              </div>
+            </div>
+            <h5><a id="id343378"/>Common Feature Set</h5>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <a id="FF1"/>
+                  <p><b>Feature F1 (<a href="#UC1">UC1</a>, <a href="#UC3">UC3</a>, <a href="#UC6">UC6</a>). </b>
+              UI to open document from file system.
+            </p>
+                </li>
+                <li>
+                  <a id="FF2"/>
+                  <p><b>Feature F2 (<a href="#UC1">UC1</a>, <a href="#UC6">UC6</a>). </b>
+              UI to save document to file system.
+            </p>
+                </li>
+                <li>
+                  <a id="FF3"/>
+                  <p><b>Feature F3 (<a href="#UC2">UC2</a>, <a href="#UC10">UC10</a>, <a href="#UC11">UC11</a>, <a href="#UC13">UC13</a>). </b>
+              UI to open document from CMS.
+            </p>
+                </li>
+                <li>
+                  <a id="FF4"/>
+                  <p><b>Feature F4 (<a href="#UC2">UC2</a>, <a href="#UC3">UC3</a>, <a href="#UC10">UC10</a>, <a href="#UC11">UC11</a>, <a href="#UC13">UC13</a>). </b>
+              UI to save document to CMS.
+            </p>
+                </li>
+                <li>
+                  <a id="FF5"/>
+                  <p><b>Feature F5 (<a href="#UC4">UC4</a>). </b>
+              UI to create new document from template from CMS.
+            </p>
+                </li>
+                <li>
+                  <a id="FF6"/>
+                  <p><b>Feature F6 (<a href="#UC7">UC7</a>). </b>
+              Source Mode view.
+            </p>
+                </li>
+                <li>
+                  <a id="FF7"/>
+                  <p><b>Feature F7 (<a href="#UC8">UC8</a>, <a href="#UC12">UC12</a>, <a href="#UC15">UC15</a>, <a href="#UC16">UC16</a>, <a href="#UC17">UC17</a>, <a href="#UC18">UC18</a>, <a href="#UC19">UC19</a>). </b>
+              WYSIWYG Mode view.
+            </p>
+                </li>
+                <li>
+                  <a id="FF8"/>
+                  <p><b>Feature F8 (<a href="#UC7">UC7</a>, <a href="#UC8">UC8</a>). </b>
+              Content Assist widget.
+            </p>
+                </li>
+                <li>
+                  <a id="FF9"/>
+                  <p><b>Feature F9 (<a href="#UC9">UC9</a>). </b>
+              Widget to visualise results of Schema validation.
+            </p>
+                </li>
+                <li>
+                  <a id="FF10"/>
+                  <p><b>Feature F10 (<a href="#UC14">UC14</a>). </b>
+              Toolbar to train automatic tag inserter.
+            </p>
+                </li>
+                <li>
+                  <a id="FF11"/>
+                  <p><b>Feature F11 (<a href="#UC14">UC14</a>). </b>
+              Toolbar to guide step-wise automatic tag inserter.
+            </p>
+                </li>
+                <li>
+                  <a id="FF12"/>
+                  <p><b>Feature F12 (<a href="#UC7">UC7</a>, <a href="#UC8">UC8</a>). </b>
+              Choice of different keybindings (e.g. gettext/Emacs-style, etc.)
+            </p>
+                </li>
+                <li>
+                  <a id="FF13"/>
+                  <p><b>Feature F13 (<a href="#UC7">UC7</a>, <a href="#UC8">UC8</a>). </b>
+              Spellchecker UI.
+            </p>
+                </li>
+                <li>
+                  <a id="FF14"/>
+                  <p><b>Feature F14 (<a href="#UC20">UC20</a>). </b>
+              UI to import document from file system. Ability to specify target output format (e.g. XHTML, DocBook, etc.).
+            </p>
+                </li>
+                <li>
+                  <a id="FF15"/>
+                  <p><b>Feature F15 (<a href="#UC20">UC20</a>). </b>
+              UI to export document to file system. Ability to specify target output format (e.g. WordXML, ODT, etc.).
+            </p>
+                </li>
+              </ul>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id343740"/>3.1.1.1. Browser Integrated Variant (BROWSER)</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+            The browser integrated variant of FRONTEND is a XUL widget which integrates seamlessly into web browsers based on the Mozilla Platform. BROWSER must be able to work with up-to-date versions of Firefox and SeaMonkey (formerly Mozilla Suite).
+          </p>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id343755"/>3.1.1.2. Standalone Variant (STANDALONE)</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+            The standalone variant of the FRONTEND can be used as a standalone editor, independent of a web browser. Like the browser integrated version, STANDALONE is based on XUL.
+          </p>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id343768"/>3.1.1.3. Web-based Variant (WEB)</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+            The web-based variant of FRONTEND is a JavaScript solution independent of the web browser it is deployed on.
+          </p>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id343781"/>3.1.2. Back End Component (BACKEND)</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          The back end component comprises the controller and the model. BACKEND contains the application logic and performs tasks like text insertion/deletion, ID tagging, XSLT processing, validation, etc. BACKEND runs either locally on the client, or remote on a different network host if a remote connector (CONNECTOR) is available.
+        </p>
+            <p>
+          BACKEND is also responsible for discovering and instantiating a suitable CONNECTOR, if the back end runs on a remote host. This must be completely transparent to FRONTEND.
+        </p>
+            <div class="figure">
+              <a id="id343802"/>
+              <p class="title">
+                <b>Figure 3. Back End</b>
+              </p>
+              <div class="mediaobject">
+                <img src="figures/back_end.png" width="529.2" alt="Back End"/>
+              </div>
+            </div>
+            <h5><a id="id343831"/>Feature Set</h5>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <a id="FB1"/>
+                  <p><b>Feature B1 (<a href="#UC1">UC1</a>, <a href="#UC3">UC3</a>, <a href="#UC6">UC6</a>, <a href="#UC10">UC10</a>, <a href="#UC11">UC11</a>, <a href="#UC13">UC13</a>). </b>
+              Open document from file system (<code class="code">file://</code>).
+              </p>
+                  <div class="itemizedlist">
+                    <ul>
+                      <li>
+                        <a id="FB1.1"/>
+                        <p><b>Feature B1.1 (<a href="#UC1">UC1</a>, <a href="#UC3">UC3</a>, <a href="#UC6">UC6</a>). </b>
+                    Open well-formed XML document from file system.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB1.2"/>
+                        <p><b>Feature B1.2 (<a href="#UC6">UC6</a>, <a href="#UC10">UC10</a>). </b>
+                    Open potentially associated meta-data from file system. Meta-data may be CMS information, XSLT, CSS and Schemas.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB1.3"/>
+                        <p><b>Feature B1.3 (<a href="#UC11">UC11</a>). </b>
+                    Open ill-formed XML document from file system.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB1.4"/>
+                        <p><b>Feature B1.4 (<a href="#UC13">UC13</a>). </b>
+                    Open entangled XML document from file system.
+                  </p>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <a id="FB2"/>
+                  <p><b>Feature B2 (<a href="#UC1">UC1</a>, <a href="#UC6">UC6</a>, <a href="#UC10">UC10</a>, <a href="#UC11">UC11</a>, <a href="#UC13">UC13</a>). </b>
+              Save document to file system (<code class="code">file://</code>).
+              </p>
+                  <div class="itemizedlist">
+                    <ul>
+                      <li>
+                        <a id="FB2.1"/>
+                        <p><b>Feature B2.1 (<a href="#UC1">UC1</a>, <a href="#UC6">UC6</a>). </b>
+                    Save XML document to file system.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB2.2"/>
+                        <p><b>Feature B2.2 (<a href="#UC6">UC6</a>, <a href="#UC10">UC10</a>). </b>
+                    Save potentially associated meta-data to file system. Meta-data may be CMS information, XSLT, CSS and Schemas.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB2.3"/>
+                        <p><b>Feature B2.3 (<a href="#UC11">UC11</a>). </b>
+                    Save ill-formed XML document to file system.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB2.4"/>
+                        <p><b>Feature B2.4 (<a href="#UC13">UC13</a>). </b>
+                    Save entangled XML document to file system.
+                  </p>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <a id="FB3"/>
+                  <p><b>Feature B3 (<a href="#UC2">UC2</a>, <a href="#UC10">UC10</a>, <a href="#UC11">UC11</a>, <a href="#UC13">UC13</a>). </b>
+              Open document from CMS.
+              </p>
+                  <div class="itemizedlist">
+                    <ul>
+                      <li>
+                        <a id="FB3.1"/>
+                        <p><b>Feature B3.1 (<a href="#UC2">UC2</a>). </b>
+                    Using HTTP protocol.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB3.2"/>
+                        <p><b>Feature B3.2 (<a href="#UC2">UC2</a>). </b>
+                    Using WebDAV protocol.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB3.3"/>
+                        <p><b>Feature B3.3 (<a href="#UC2">UC2</a>). </b>
+                    Using OSR-101 protocol.
+                  </p>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <a id="FB4"/>
+                  <p><b>Feature B4 (<a href="#UC2">UC2</a>, <a href="#UC3">UC3</a>, <a href="#UC10">UC10</a>, <a href="#UC11">UC11</a>, <a href="#UC13">UC13</a>). </b>
+              Save document to CMS.
+              </p>
+                  <div class="itemizedlist">
+                    <ul>
+                      <li>
+                        <a id="FB4.1"/>
+                        <p><b>Feature B4.1 (<a href="#UC2">UC2</a>, <a href="#UC3">UC3</a>). </b>
+                    Using HTTP protocol.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB4.2"/>
+                        <p><b>Feature B4.2 (<a href="#UC2">UC2</a>, <a href="#UC3">UC3</a>). </b>
+                    Using WebDAV protocol.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB4.3"/>
+                        <p><b>Feature B4.3 (<a href="#UC2">UC2</a>, <a href="#UC3">UC3</a>). </b>
+                    Using OSR-101 protocol.
+                  </p>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <a id="FB5"/>
+                  <p><b>Feature B5 (<a href="#UC4">UC4</a>). </b>
+              Fetch document template from CMS.
+              </p>
+                  <div class="itemizedlist">
+                    <ul>
+                      <li>
+                        <a id="FB5.1"/>
+                        <p><b>Feature B5.1 (<a href="#UC4">UC4</a>). </b>
+                    Using HTTP protocol.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB5.2"/>
+                        <p><b>Feature B5.2 (<a href="#UC4">UC4</a>). </b>
+                    Using WebDAV protocol.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB5.3"/>
+                        <p><b>Feature B5.3 (<a href="#UC4">UC4</a>). </b>
+                    Using OSR-101 protocol.
+                  </p>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <a id="FB6"/>
+                  <p><b>Feature B6 (<a href="#UC7">UC7</a>). </b>
+              Edit in Source Mode.
+              </p>
+                  <div class="itemizedlist">
+                    <ul>
+                      <li>
+                        <a id="FB6.1"/>
+                        <p><b>Feature B6.1 (<a href="#UC7">UC7</a>). </b>
+                    Add/edit/delete text nodes.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB6.2"/>
+                        <p><b>Feature B6.2 (<a href="#UC7">UC7</a>). </b>
+                    Add/edit/delete elements.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB6.3"/>
+                        <p><b>Feature B6.3 (<a href="#UC7">UC7</a>). </b>
+                    Add/edit/delete element attributes.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB6.4"/>
+                        <p><b>Feature B6.4 (<a href="#UC7">UC7</a>). </b>
+                    Automatic indentation.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB6.5"/>
+                        <p><b>Feature B6.5 (<a href="#UC7">UC7</a>). </b>
+                    Syntax highlighting.
+                  </p>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <a id="FB7"/>
+                  <p><b>Feature B7 (<a href="#UC8">UC8</a>, <a href="#UC12">UC12</a>, <a href="#UC15">UC15</a>, <a href="#UC16">UC16</a>, <a href="#UC17">UC17</a>, <a href="#UC18">UC18</a>, <a href="#UC19">UC19</a>). </b>
+              Edit in WYSIWYG Mode.
+              </p>
+                  <div class="itemizedlist">
+                    <ul>
+                      <li>
+                        <a id="FB7.1"/>
+                        <p><b>Feature B7.1 (<a href="#UC8">UC8</a>). </b>
+                    Add/edit/delete text nodes.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB7.2"/>
+                        <p><b>Feature B7.2 (<a href="#UC8">UC8</a>). </b>
+                    Add/edit/delete elements.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB7.3"/>
+                        <p><b>Feature B7.3 (<a href="#UC8">UC8</a>). </b>
+                    Add/remove Schema-specific styling.
+                    </p>
+                        <div class="itemizedlist">
+                          <ul>
+                            <li>
+                              <a id="FB7.3.1"/>
+                              <p><b>Feature B7.3.1 (<a href="#UC8">UC8</a>). </b>
+                          Provide toolbar to select from Schema-specific styles.
+                        </p>
+                            </li>
+                            <li>
+                              <a id="FB7.3.2"/>
+                              <p><b>Feature B7.3.2 (<a href="#UC8">UC8</a>). </b>
+                          Provide list of Schema-specific elements which represent styling (e.g. <code class="code">&lt;i&gt;</code>, <code class="code">&lt;tt&gt;</code> or <code class="code">&lt;b&gt;</code> elements in XHTML) for each Schema in use. A "styling-element" is an XML element which is usually employed to solely convey styling information.
+                        </p>
+                              <p>
+                          Following is a list of Schema-specific styling-elements considered useful to be added to the FRONTEND. Extend this list if you find more useful Schemas.
+                          </p>
+                              <div class="itemizedlist">
+                                <ul>
+                                  <li>
+                                    <a id="FB7.3.2.1"/>
+                                    <p><b>Feature B7.3.2.1 (<a href="#UC8">UC8</a>). </b>
+                                XHTML styling-elements list.
+                              </p>
+                                  </li>
+                                  <li>
+                                    <a id="FB7.3.2.2"/>
+                                    <p><b>Feature B7.3.2.2 (<a href="#UC8">UC8</a>). </b>
+                                DocBook styling-elements list.
+                              </p>
+                                  </li>
+                                </ul>
+                              </div>
+                              <p>
+                        </p>
+                            </li>
+                          </ul>
+                        </div>
+                      </li>
+                      <li>
+                        <a id="FB7.4"/>
+                        <p><b>Feature B7.4 (<a href="#UC8">UC8</a>). </b>
+                    Add/remove CSS styling.
+                    </p>
+                        <div class="itemizedlist">
+                          <ul>
+                            <li>
+                              <a id="FB7.4.1"/>
+                              <p><b>Feature B7.4.1 (<a href="#UC8">UC8</a>). </b>
+                          Provide toolbar to select from predefined CSS styles.
+                        </p>
+                            </li>
+                            <li>
+                              <a id="FB7.4.2"/>
+                              <p><b>Feature B7.4.2 (<a href="#UC8">UC8</a>). </b>
+                          Provide list of predefined CSS styles. These lists may be independent or associated with a given Schema.
+                        </p>
+                              <p>
+                          Following is a list of CSS styles considered useful to be added to the FRONTEND. Extend this list if you find more useful styles.
+                          </p>
+                              <div class="itemizedlist">
+                                <ul>
+                                  <li>
+                                    <a id="FB7.4.2.1"/>
+                                    <p><b>Feature B7.4.2.1 (<a href="#UC8">UC8</a>). </b>
+                                Independent common CSS styles.
+                              </p>
+                                  </li>
+                                  <li>
+                                    <a id="FB7.4.2.2"/>
+                                    <p><b>Feature B7.4.2.2 (<a href="#UC8">UC8</a>). </b>
+                                Common CSS styles normally used in conjunction with XHTML.
+                              </p>
+                                  </li>
+                                  <li>
+                                    <a id="FB7.4.2.3"/>
+                                    <p><b>Feature B7.4.2.3 (<a href="#UC8">UC8</a>). </b>
+                                Common CSS styles normally used in conjunction with DocBook.
+                              </p>
+                                  </li>
+                                </ul>
+                              </div>
+                              <p>
+                        </p>
+                            </li>
+                          </ul>
+                        </div>
+                      </li>
+                      <li>
+                        <a id="FB7.5"/>
+                        <p><b>Feature B7.5 (<a href="#UC12">UC12</a>). </b>
+                    Add/remove "common" styling derived from Schema in use.
+                    </p>
+                        <div class="itemizedlist">
+                          <ul>
+                            <li>
+                              <a id="FB7.5.1"/>
+                              <p><b>Feature B7.5.1 (<a href="#UC12">UC12</a>). </b>
+                          Provide toolbar to select from Schema-derived "common" styles.
+                        </p>
+                            </li>
+                            <li>
+                              <a id="FB7.5.2"/>
+                              <p><b>Feature B7.5.2 (<a href="#UC12">UC12</a>). </b>
+                          Provide a mapping between a set of "common" styles and the corresponding elements of the Schema in use.
+                        </p>
+                              <p>
+                          Following is a list of mappings from a "common" style set to specific elements of Schemas which are considered useful to be added to the FRONTEND. Extend this list if you want more mappings available.
+                          </p>
+                              <div class="itemizedlist">
+                                <ul>
+                                  <li>
+                                    <a id="FB7.5.2.1"/>
+                                    <p><b>Feature B7.5.2.1 (<a href="#UC12">UC12</a>). </b>
+                                Mapping between the "common" style and XHTML elements.
+                              </p>
+                                  </li>
+                                  <li>
+                                    <a id="FB7.5.2.2"/>
+                                    <p><b>Feature B7.5.2.2 (<a href="#UC12">UC12</a>). </b>
+                                Mapping between the "common" style and DocBook elements.
+                              </p>
+                                  </li>
+                                </ul>
+                              </div>
+                              <p>
+                        </p>
+                            </li>
+                          </ul>
+                        </div>
+                      </li>
+                      <li>
+                        <a id="FB7.6"/>
+                        <p><b>Feature B7.6 (<a href="#UC15">UC15</a>). </b>
+                    Insertion of links to other assets.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB7.7"/>
+                        <p><b>Feature B7.7 (<a href="#UC16">UC16</a>). </b>
+                    Insertion of blobs. Requires a mapping between "common" blobs and the the Schema-specific elements which represent such blobs (e.g. <code class="code">&lt;img&gt;</code> in XHTMl and <code class="code">&lt;imageobject&gt;</code> in DocBook).
+                  </p>
+                        <p>
+                    Following is a list of mappings from "common" blobs to Schema-specific elements which are considered useful to be added to the FRONTEND. Extend this list if you want more mappings available.
+                    </p>
+                        <div class="itemizedlist">
+                          <ul>
+                            <li>
+                              <a id="FB7.7.1"/>
+                              <p><b>Feature B7.7.1 (<a href="#UC16">UC16</a>). </b>
+                          Mapping between "common" blobs and XHTML elements.
+                        </p>
+                            </li>
+                            <li>
+                              <a id="FB7.7.2"/>
+                              <p><b>Feature B7.7.2 (<a href="#UC16">UC16</a>). </b>
+                          Mapping between the "common" blobs and DocBook elements.
+                        </p>
+                            </li>
+                          </ul>
+                        </div>
+                        <p>
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB7.8"/>
+                        <p><b>Feature B7.8 (<a href="#UC17">UC17</a>). </b>
+                    Insertion of Schema-foreign elements.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB7.9"/>
+                        <p><b>Feature B7.9 (<a href="#UC18">UC18</a>). </b>
+                    Insertion of (semi-)structured text or pre-formatted clobs. Requires a mapping between every input source and the Schema in use.
+                  </p>
+                        <p>
+                    Following is a list of mappings from input sources to Schemas  considered useful to be added to the FRONTEND. Extend this list if you want more mappings available.
+                    </p>
+                        <div class="itemizedlist">
+                          <ul>
+                            <li>
+                              <a id="FB7.9.1"/>
+                              <p><b>Feature B7.9.1 (<a href="#UC18">UC18</a>). </b>
+                          Mapping between WordXML clobs and XHTML elements.
+                        </p>
+                            </li>
+                            <li>
+                              <a id="FB7.9.2"/>
+                              <p><b>Feature B7.9.2 (<a href="#UC18">UC18</a>). </b>
+                          Mapping between ODT clobs and XHTML elements.
+                        </p>
+                            </li>
+                            <li>
+                              <a id="FB7.9.3"/>
+                              <p><b>Feature B7.9.3 (<a href="#UC18">UC18</a>). </b>
+                          Mapping between WordXML clobs and DocBook elements.
+                        </p>
+                            </li>
+                            <li>
+                              <a id="FB7.9.4"/>
+                              <p><b>Feature B7.9.4 (<a href="#UC18">UC18</a>). </b>
+                          Mapping between ODT clobs and DocBook elements.
+                        </p>
+                            </li>
+                          </ul>
+                        </div>
+                        <p>
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB7.10"/>
+                        <p><b>Feature B7.10 (<a href="#UC19">UC19</a>). </b>
+                    Word-processor style usage.
+                  </p>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <a id="FB8"/>
+                  <p><b>Feature B8 (<a href="#UC7">UC7</a>, <a href="#UC8">UC8</a>). </b>
+              Content Assist, providing suggestions for element names, attributes names and attribute content.
+            </p>
+                </li>
+                <li>
+                  <a id="FB9"/>
+                  <p><b>Feature B9 (<a href="#UC8">UC8</a>). </b>
+              Retrieve XSLT.
+              </p>
+                  <div class="itemizedlist">
+                    <ul>
+                      <li>
+                        <a id="FB9.1"/>
+                        <p><b>Feature B9.1 (<a href="#UC8">UC8</a>). </b>
+                    Retrieve XSLT local file system.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB9.2"/>
+                        <p><b>Feature B9.2 (<a href="#UC8">UC8</a>). </b>
+                    Retrieve XSLT from CMS.
+                  </p>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <a id="FB10"/>
+                  <p><b>Feature B10 (<a href="#UC8">UC8</a>, <a href="#UC10">UC10</a>, <a href="#UC11">UC11</a>). </b>
+              Retrieve CSS.
+              </p>
+                  <div class="itemizedlist">
+                    <ul>
+                      <li>
+                        <a id="FB10.1"/>
+                        <p><b>Feature B10.1 (<a href="#UC8">UC8</a>, <a href="#UC10">UC10</a>, <a href="#UC11">UC11</a>). </b>
+                    Retrieve CSS local file system.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB10.2"/>
+                        <p><b>Feature B10.2 (<a href="#UC8">UC8</a>, <a href="#UC10">UC10</a>, <a href="#UC11">UC11</a>). </b>
+                    Retrieve CSS from CMS.
+                  </p>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <a id="FB11"/>
+                  <p><b>Feature B11 (<a href="#UC9">UC9</a>). </b>
+              Retrieve Schema from Schema server. Note that the Schema server may be the CMS or some other unrelated host on the network.
+              </p>
+                  <div class="itemizedlist">
+                    <ul>
+                      <li>
+                        <a id="FB11.1"/>
+                        <p><b>Feature B11.1 (<a href="#UC9">UC9</a>). </b>
+                    Retrieve Schema from local filesystem.
+                    </p>
+                        <div class="itemizedlist">
+                          <ul>
+                            <li>
+                              <a id="FB11.1.1"/>
+                              <p><b>Feature B11.1.1 (<a href="#UC9">UC9</a>). </b>
+                          Retrieve RelaxNG Schema from local filesystem.
+                        </p>
+                            </li>
+                            <li>
+                              <a id="FB11.1.2"/>
+                              <p><b>Feature B11.1.2 (<a href="#UC9">UC9</a>). </b>
+                          Retrieve W3C XML Schema from local filesystem.
+                        </p>
+                            </li>
+                            <li>
+                              <a id="FB11.1.3"/>
+                              <p><b>Feature B11.1.3 (<a href="#UC9">UC9</a>). </b>
+                          Retrieve DTD from local filesystem.
+                        </p>
+                            </li>
+                          </ul>
+                        </div>
+                      </li>
+                      <li>
+                        <a id="FB11.2"/>
+                        <p><b>Feature B11.2 (<a href="#UC9">UC9</a>). </b>
+                    Retrieve Schema from CMS.
+                    </p>
+                        <div class="itemizedlist">
+                          <ul>
+                            <li>
+                              <a id="FB11.2.1"/>
+                              <p><b>Feature B11.2.1 (<a href="#UC9">UC9</a>). </b>
+                          Retrieve RelaxNG Schema from CMS.
+                        </p>
+                            </li>
+                            <li>
+                              <a id="FB11.2.2"/>
+                              <p><b>Feature B11.2.2 (<a href="#UC9">UC9</a>). </b>
+                          Retrieve W3C XML Schema from CMS.
+                        </p>
+                            </li>
+                            <li>
+                              <a id="FB11.2.3"/>
+                              <p><b>Feature B11.2.3 (<a href="#UC9">UC9</a>). </b>
+                          Retrieve DTD from CMS.
+                        </p>
+                            </li>
+                          </ul>
+                        </div>
+                      </li>
+                      <li>
+                        <a id="FB11.3"/>
+                        <p><b>Feature B11.3 (<a href="#UC9">UC9</a>). </b>
+                    Retrieve Schema from Schema server.
+                    </p>
+                        <div class="itemizedlist">
+                          <ul>
+                            <li>
+                              <a id="FB11.3.1"/>
+                              <p><b>Feature B11.3.1 (<a href="#UC9">UC9</a>). </b>
+                          Retrieve RelaxNG Schema from Schema server.
+                        </p>
+                            </li>
+                            <li>
+                              <a id="FB11.3.2"/>
+                              <p><b>Feature B11.3.2 (<a href="#UC9">UC9</a>). </b>
+                          Retrieve W3C XML Schema from Schema server.
+                        </p>
+                            </li>
+                            <li>
+                              <a id="FB11.3.3"/>
+                              <p><b>Feature B11.3.3 (<a href="#UC9">UC9</a>). </b>
+                          Retrieve DTD from Schema server.
+                        </p>
+                            </li>
+                          </ul>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <a id="FB12"/>
+                  <p><b>Feature B12 (<a href="#UC9">UC9</a>). </b>
+              Validate document according to associated Schema.
+            </p>
+                </li>
+                <li>
+                  <a id="FB13"/>
+                  <p><b>Feature B13 (<a href="#UC20">UC20</a>). </b>
+              Import document. This requires import filters which translate the input format to a specific XML format
+            </p>
+                  <p>
+              Following is a list of import filters which convert the input document to a specific XML format. Extend this list if you want more filters available.
+              </p>
+                  <div class="itemizedlist">
+                    <ul>
+                      <li>
+                        <a id="FB13.1"/>
+                        <p><b>Feature B13.1 (<a href="#UC20">UC20</a>). </b>
+                    Import filter to convert from WordXML documents to XHTML documents.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB13.2"/>
+                        <p><b>Feature B13.2 (<a href="#UC20">UC20</a>). </b>
+                    Import filter to convert from ODT documents to XHTML documents.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB13.3"/>
+                        <p><b>Feature B13.3 (<a href="#UC20">UC20</a>). </b>
+                    Import filter to convert from ODF documents to XHTML documents.
+                  </p>
+                      </li>
+                    </ul>
+                  </div>
+                  <p>
+            </p>
+                </li>
+                <li>
+                  <a id="FB14"/>
+                  <p><b>Feature B14 (<a href="#UC20">UC20</a>). </b>
+              Export document. This requires export filters which translate a specific XML format to the specified output format
+            </p>
+                  <p>
+              Following is a list of export filters which convert a specific XML format to a specific output format. Extend this list if you want more filters available.
+              </p>
+                  <div class="itemizedlist">
+                    <ul>
+                      <li>
+                        <a id="FB14.1"/>
+                        <p><b>Feature B14.1 (<a href="#UC20">UC20</a>). </b>
+                    Export filter to convert from XHTML documents to WordXML documents.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB14.2"/>
+                        <p><b>Feature B14.2 (<a href="#UC20">UC20</a>). </b>
+                    Export filter to convert from XHTML documents to ODT documents.
+                  </p>
+                      </li>
+                      <li>
+                        <a id="FB14.3"/>
+                        <p><b>Feature B14.3 (<a href="#UC20">UC20</a>). </b>
+                    Export filter to convert from XHTML documents to ODF documents.
+                  </p>
+                      </li>
+                    </ul>
+                  </div>
+                  <p>
+            </p>
+                </li>
+                <li>
+                  <a id="FB15"/>
+                  <p><b>Feature B15 (<a href="#UC7">UC7</a>, <a href="#UC8">UC8</a>). </b>
+              Spellchecker with support for different languages.
+            </p>
+                </li>
+                <li>
+                  <a id="FB16"/>
+                  <p><b>Feature B16 (<a href="#UC7">UC7</a>, <a href="#UC8">UC8</a>). </b>
+              Undo/redo of operations.
+            </p>
+                </li>
+                <li>
+                  <a id="FB17"/>
+                  <p><b>Feature B17 (<a href="#UC7">UC7</a>, <a href="#UC8">UC8</a>). </b>
+              Search and Search/Replace.
+            </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id345850"/>3.1.3. Remote Connector Component (CONNECTOR)</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          The remote connector component is responsible for connecting a BACKEND running on a different host than the front end to FRONTEND. The connection is completely transparent to FRONTEND.
+        </p>
+            <div class="figure">
+              <a id="id345862"/>
+              <p class="title">
+                <b>Figure 4. Remote Connector</b>
+              </p>
+              <div class="mediaobject">
+                <img src="figures/connector.png" width="529.2" alt="Remote Connector"/>
+              </div>
+            </div>
+            <h5><a id="id345891"/>Feature Set</h5>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <a id="FC1"/>
+                  <p><b>Feature C1. </b>
+              Connect FRONTEND via Java RMI to BACKEND.
+            </p>
+                </li>
+                <li>
+                  <a id="FC2"/>
+                  <p><b>Feature C2. </b>
+              Connect FRONTEND via CORBA to BACKEND.
+            </p>
+                </li>
+                <li>
+                  <a id="FC3"/>
+                  <p><b>Feature C3. </b>
+              Connect FRONTEND via XML-RPC to BACKEND.
+            </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id345944"/>3.2. Non-Functional Requirements</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        </p>
+          <div class="itemizedlist">
+            <ul>
+              <li>
+                <p>
+              Performance.
+            </p>
+              </li>
+              <li>
+                <p>
+              Scalability (scales well with the size of documents / numbers of nodes in a document).
+            </p>
+              </li>
+              <li>
+                <p>
+              Stability.
+            </p>
+              </li>
+              <li>
+                <p>
+              Internationalization/Localization (language, date/time, ...).
+            </p>
+              </li>
+              <li>
+                <p>
+              Accessibility.
+            </p>
+              </li>
+              <li>
+                <p>
+              Ease of installation.
+            </p>
+              </li>
+              <li>
+                <p>
+              Synchronized with Firefox release plan/development.
+            </p>
+              </li>
+              <li>
+                <p>
+              Public collaboration space (hosted either by Wyona or an external service, accessed by using a subdomain of wyona.com or a specific TLD). Provides svn repository, bugzilla, project website and documentation.
+            </p>
+              </li>
+            </ul>
+          </div>
+          <p>
+      </p>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id346021"/>4. Open Issues/To be discussed</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      </p>
+        <div class="itemizedlist">
+          <ul>
+            <li>
+              <p>
+            Should we keep the source editing mode simple and stupid (i.e. only have the trivial operations of add/edit/delete of text nodes, elements and attributes), or should we add features like link insertion, etc.?
+          </p>
+            </li>
+            <li>
+              <p>
+            Implementation language (Java (also interesting for SERVER), C++, etc.)
+          </p>
+            </li>
+            <li>
+              <p>
+            Amount of reuse (Etna project, Mozilla Platform, etc.)
+          </p>
+            </li>
+            <li>
+              <p>
+            License (GPL, GPL+Commercial, LGPL, MPL, etc.)
+          </p>
+            </li>
+            <li>
+              <p>
+            Date of going public
+          </p>
+            </li>
+            <li>
+              <p>
+            Branding
+          </p>
+            </li>
+          </ul>
+        </div>
+        <p>
+    </p>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id346082"/>5. Reasoning</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      Why do we want to use the Mozilla platform for Yulup:
+      </p>
+        <div class="itemizedlist">
+          <ul>
+            <li>
+              <p>
+            No gap between browser and editing tool (e.g. OpenOffice, ...)!
+          </p>
+            </li>
+            <li>
+              <p>
+            Platform independence (Windows, Linux, MacOS, UNIX, ...)!
+          </p>
+            </li>
+            <li>
+              <p>
+            Offline/Online editing ...
+          </p>
+            </li>
+          </ul>
+        </div>
+        <p>
+    </p>
+      </div>
+    </div>
+  </body>
+</html>

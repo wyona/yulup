@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<entry xmlns="http://www.w3.org/2005/Atom">
+ <title>phoenix-prototype-1-0.1.8.xml</title>
+ <author><name>Michael Wechner</name></author>
+ <id>urn:lenya-uuid:download:release-atom-entries:phoenix-prototype-1-0.1.8.xml</id>
+ <updated>2006-07-21T16:30:57-07:00</updated>
+ <summary type='html'>Phoenix Development Release: phoenix-prototype-1-0.1.8</summary>
+ <content type='xhtml'>
+   <div xmlns='http://www.w3.org/1999/xhtml'>
+     <ul>
+       <li>XSLT view.</li>
+       <li>Lots of under-the-hood changes.</li>
+     </ul>
+   </div>
+ </content>
+ <dc:subject xmlns:dc='http://purl.org/dc/elements/1.1/'>Phoenix Development Release: phoenix-prototype-1-0.1.8</dc:subject>
+</entry>

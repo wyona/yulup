@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<introspection xmlns="http://www.wyona.org/neutron/1.0">
+
+<edit mime-type="text/xml" name="University of Z&#252;rich Sample">
+  <open url="unizh.xml" method="GET"/>
+  <save url="unizh.xml?yanel.resource.usecase=save" method="PUT"/>
+  <styles>
+    <style href="unizh.xsl"/>
+  </styles>
+</edit>
+
+</introspection>

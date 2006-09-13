@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<policy xmlns="http://www.wyona.org/security/1.0">
+
+  <role id="open">
+    <world permission="false"/>
+    <user id="yulup" permission="true"/>
+    <user id="alice" permission="true"/>
+  </role>
+
+  <role id="write">
+    <world permission="false"/>
+    <user id="yulup" permission="true"/>
+    <user id="alice" permission="true"/>
+  </role>
+
+</policy>

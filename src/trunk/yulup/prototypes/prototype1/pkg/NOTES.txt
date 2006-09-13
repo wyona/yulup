@@ -1,0 +1,12 @@
+For the web-install and auto-update to work correctly, you have to follow these guidelines:
+
+  1. Place the update.rdf file in
+     http://yulup.wyona.org/download/update.rdf.
+
+  2. The webserver must deliver update.rdf using MIME-type "text/rdf".
+
+  3. The XPI file must be placed in directory
+     http://yulup.wyona.org/download.
+
+  4. All XPI files must be delivered using MIME-type
+     "application/x-xpinstall".

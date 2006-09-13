@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../utils/customization/style.xsl"?>
+
+<!DOCTYPE article [
+  <!ENTITY % docbook PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+  %docbook;
+  <!ENTITY % local SYSTEM "../../../utils/customization/commons.dtd">
+  %local;
+]>
+
+<article>
+  <articleinfo>
+    <title>&project; Development Policy</title>
+    <authorgroup>
+      <author>
+        <firstname>Andreas</firstname>
+        <surname>Wuest</surname>
+        <email>awuest@student.ethz.ch</email>
+        <affiliation>
+          <corpname>Wyona AG</corpname>
+        </affiliation>
+      </author>
+    </authorgroup>
+    <!-- All dates specified in ISO "YYYY-MM-DD" format -->
+    <pubdate>2006-05-17</pubdate>
+    <!-- Most recent revision goes at the top; list in descending order -->
+    <revhistory>
+      <revision>
+        <revnumber>1.0</revnumber>
+        <date>2006-05-17</date>
+        <authorinitials>AW</authorinitials>
+        <revremark>First initial draft.</revremark>
+      </revision>
+    </revhistory>
+    <abstract>
+      <para>The development policy for <emphasis>&project;</emphasis>.</para>
+    </abstract>
+  </articleinfo>
+
+  <section>
+    <title>Development Rules</title>
+    <section>
+      <title>Methodology</title>
+      <para>
+        The development of &project; is test-driven. CppUnit is employed as the testing frame work. Additionally, we use a sub-set of Design-by-Contract, namely pre- and postconditions, to ensure correctness.
+      </para>
+      <section>
+        <title>Unit Tests</title>
+        <para>
+          Before implementing a new part of the interface, first write a fixture with CppUnit, and afterwards write the actual business logic.
+        </para>
+      </section>
+      <section>
+        <title>Design by Contract</title>
+        <para>
+          Pre- and postconditions are defined in the interface files themselves, and must be implemented in the actual implementation using either <code>assert</code> statements (Java) or <code>NS_PRECONDITON</code> and <code>NS_POSTCONDITION</code> macros from <code>nsDebug.h</code> (see <ulink url="http://lxr.mozilla.org/mozilla1.8.0/source/xpcom/glue/nsDebug.h"/>).
+        </para>
+        <para>
+          Remember that preconditions can only get weaker in subclasses, and postconditions accordingly can only get stronger.
+        </para>
+      </section>
+    </section>
+    <section>
+      <title>Coding Style</title>
+      <itemizedlist>
+        <listitem>
+          <formalpara>
+            <title>C++/Java/JavaScript</title>
+            Use a tab with of 4 spaces. No tabs allowed.
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>XML</title>
+            Use a tab with of 2 spaces. No tabs allowed.
+          </formalpara>
+        </listitem>
+      </itemizedlist>
+    </section>
+    <section>
+      <title>Coding Practices</title>
+      <itemizedlist>
+        <listitem>
+          <formalpara>
+            <title>C++</title>
+            <itemizedlist>
+              <listitem>
+                <para>
+                  Do not use exceptions. They are not portable.
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  For further rules, see <ulink url="http://www.mozilla.org/hacking/mozilla-style-guide.html">Mozilla Style Guide</ulink> and the <ulink url="http://www.mozilla.org/hacking/portable-cpp.html">C++ Portability Guide</ulink>. They are normative for &project;.
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  Use the licensing templates from <ulink url="http://www.mozilla.org/MPL/boilerplate-1.1/">http://www.mozilla.org/MPL/boilerplate-1.1/</ulink>.
+                </para>
+              </listitem>
+            </itemizedlist>
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>Java</title>
+            <itemizedlist>
+              <listitem>
+                <para>
+                  Use camelNotation.
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  Use the licensing templates from <ulink url="http://www.mozilla.org/MPL/boilerplate-1.1/">http://www.mozilla.org/MPL/boilerplate-1.1/</ulink>.
+                </para>
+              </listitem>
+            </itemizedlist>
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>JavaScript</title>
+            <itemizedlist>
+              <listitem>
+                <para>
+                  Use camelNotation.
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  Prefix formal parameters with "<code>a</code>".
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  Prefix globals with "<code>g</code>".
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  Use Java-style constants (all CAPS with underscores).
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  Use the licensing templates from <ulink url="http://www.mozilla.org/MPL/boilerplate-1.1/">http://www.mozilla.org/MPL/boilerplate-1.1/</ulink>.
+                </para>
+              </listitem>
+            </itemizedlist>
+          </formalpara>
+        </listitem>
+      </itemizedlist>
+    </section>
+  </section>
+
+  <section>
+    <title>Directory Structure</title>
+    <para>
+      The directory structure of the source directory is as follows:
+      <programlisting>
+./
+ |-- mozilla                                          <co id="co.mozilla" linkends="le.mozilla"/>
+ |    |-- gecko-sdk                                   <co id="co.m.gecko-sdk" linkends="le.m.gecko-sdk"/>
+ |    |    |-- PLATFORM                               <co id="co.m.g.platform" linkends="le.m.g.platform"/>
+ |    |    `-- PLATFORM...
+ |    |-- xulrunner                                   <co id="co.m.xulrunner" linkends="le.m.xulrunner"/>
+ |    |    |-- bin                                    <co id="co.m.x.bin" linkends="le.m.x.bin"/>
+ |    |    |    |-- PLATFORM                          <co id="co.m.x.b.platform" linkends="le.m.x.b.platform"/>
+ |    |    |    `-- PLATFORM...
+ |    |    `-- src                                    <co id="co.m.x.src" linkends="le.m.x.src"/>
+ |    |         |-- mozilla                           <co id="co.m.x.s.mozilla" linkends="le.m.x.s.mozilla"/>
+ |    |         `-- cvsco.log                         <co id="co.m.x.s.cvsco.log" linkends="le.m.x.s.cvsco.log"/>
+ |    `-- mozilla-tree.config                         <co id="co.m.mozilla-tree.config" linkends="le.m.mozilla-tree.config"/>
+ |-- yulup                                            <co id="co.yulup" linkends="le.yulup"/>
+ |    |-- bin                                         <co id="co.p.bin" linkends="le.p.bin"/>
+ |    |    |-- PLATFORM                               <co id="co.p.b.platform" linkends="le.p.b.platform"/>
+ |    |    `-- PLATFORM...
+ |    |-- pkg                                         <co id="co.p.pkg" linkends="le.p.pkg"/>
+ |    |    |-- PLATFORM                               <co id="co.p.p.platform" linkends="le.p.p.platform"/>
+ |    |    `-- PLATFORM...
+ |    `-- src                                         <co id="co.p.src" linkends="le.p.src"/>
+ |         |-- backend                                <co id="co.p.s.backend" linkends="le.p.s.backend"/>
+ |         |    |-- public                            <co id="co.p.s.b.public" linkends="le.p.s.b.public"/>
+ |         |    |    `-- Makefile.in
+ |         |    |-- src                               <co id="co.p.s.b.src" linkends="le.p.s.b.src"/>
+ |         |    |    `-- Makefile.in
+ |         |    `-- test                              <co id="co.p.s.b.test" linkends="le.p.s.b.test"/>
+ |         |         `-- Makefile.in
+ |         |-- connector                              <co id="co.p.s.connector" linkends="le.p.s.connector"/>
+ |         |-- frontend                               <co id="co.p.s.frontend" linkends="le.p.s.frontend"/>
+ |         |    |-- public                            <co id="co.p.s.f.public" linkends="le.p.s.f.public"/>
+ |         |    |    `-- Makefile.in
+ |         |    |-- src                               <co id="co.p.s.f.src" linkends="le.p.s.f.src"/>
+ |         |    |    `-- Makefile.in
+ |         |    |-- test                              <co id="co.p.s.f.test" linkends="le.p.s.f.test"/>
+ |         |    |    `-- Makefile.in
+ |         |    `-- variants                          <co id="co.p.s.f.variants" linkends="le.p.s.f.variants"/>
+ |         |         |-- browser                      <co id="co.p.s.f.v.browser" linkends="le.p.s.f.v.browser"/>
+ |         |         |    |-- public                  <co id="co.p.s.f.v.b.public" linkends="le.p.s.b.public"/>
+ |         |         |    |    `-- Makefile.in
+ |         |         |    |-- src                     <co id="co.p.s.f.v.b.src" linkends="le.p.s.b.src"/>
+ |         |         |    |    `-- Makefile.in
+ |         |         |    `-- test                    <co id="co.p.s.f.v.b.test" linkends="le.p.s.b.test"/>
+ |         |         |         `-- Makefile.in
+ |         |         |-- standalone                   <co id="co.p.s.f.v.standalone" linkends="le.p.s.f.v.standalone"/>
+ |         |         `-- web                          <co id="co.p.s.f.v.web" linkends="le.p.s.f.v.web"/>
+ |         |-- Makefile.in
+ |         `-- install.rdf                            <co id="co.p.s.install.rdf" linkends="le.le.p.s.install.rdf"/>
+ `-- Makefile                                         <co id="co.makefile" linkends="le.makefile"/>
+      </programlisting>
+      <calloutlist>
+        <callout arearefs="co.mozilla">
+          <para>
+            The <code>mozilla</code> directory contains the Mozilla header files and source code which are needed to link against. This is a CVS checkout of the target Mozilla branch for this specific &project; branch.
+          </para>
+          <para>
+            Note that the contents of this directory are READ-ONLY. This means:
+            <itemizedlist>
+              <listitem>
+                <para>
+                  You MUST NOT modify the contents of this directory directly. If the contents are modifed, we cannot guarantee anymore that &project; builds against the targeted Mozilla branch.
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  You MUST NOT execute <code>make</code> in this directory. The Mozilla platform employs a modified make infrastructure. Executing plain <code>make</code> screws up the tree beyond repair.
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                  You MUST NOT perform a CVS update in this directory. The Mozilla platform employs a custom CVS infrastructure which is driven by make files. Executing plain <code>cvs up</code> screws up the tree beyond repair.
+                </para>
+                <para>
+                  In order to update the Mozilla tree, issue <code>make mozilla-update</code> in the parent directory of <code>mozilla</code> (cf. <link linkend="build_infrastructure" endterm="build_infrastructure.title"/>). Note that this operation may only be performed by an authorised developer.
+                </para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </callout>
+        <callout arearefs="co.m.x.src">
+          <para>
+            The <code>mozilla/xulrunner/src</code> directory contains the Mozilla XULRunner tree from which the Gecko SDK is built. Note that this directory is about 306 MB in size.
+          </para>
+        </callout>
+        <callout arearefs="co.m.mozilla-tree.config">
+          <para>
+            The <code>mozilla-tree.config</code> contains the branch string of the Mozilla tree to checkout and update. Change the string in this file if you want to switch to a different branch of the Mozilla tree (but first issue <code>make mozilla-remove</code> to make sure that the branches do not mix up).
+          </para>
+        </callout>
+        <callout arearefs="co.yulup">
+          <para>
+            The <code>yulup</code> directory contains all files related to &project;. Although <code>mozilla</code> is of course needed to build &project;, those files are not an integral part of &project;.
+          </para>
+        </callout>
+        <callout arearefs="co.p.bin">
+          <para>
+            The <code>yulup/bin</code> directory contains the object files of the &project; module.
+          </para>
+        </callout>
+        <callout arearefs="co.p.pkg">
+          <para>
+            The <code>yulup/pkg</code> directory contains an installable XPI file of &project;.
+          </para>
+        </callout>
+        <callout arearefs="co.p.src">
+          <para>
+            The <code>yulup/src</code> directory contains the &project; sources.
+          </para>
+        </callout>
+        <callout arearefs="co.p.s.f.public">
+          <para>
+            The <code>yulup/src/frontend/public</code> directory contains the IDL files to interface with other modules.
+          </para>
+        </callout>
+        <callout arearefs="co.p.s.f.src">
+          <para>
+            The <code>yulup/src/frontend/src</code> directory contains the module source files.
+          </para>
+        </callout>
+        <callout arearefs="co.p.s.f.test">
+          <para>
+            The <code>yulup/src/frontend/test</code> directory contains the unit test source files.
+          </para>
+        </callout>
+        <callout arearefs="co.p.s.install.rdf">
+          <para>
+            The <code>yulup/src/install.rdf</code> file contains the information necessary to install &project; as an XPI extension.
+          </para>
+        </callout>
+        <callout arearefs="co.makefile">
+          <para>
+            The <code>Makfile</code> contains the central logic of the build infrastructure. For instructions on how to use it, see <link linkend="build_infrastructure" endterm="build_infrastructure.title"/>.
+          </para>
+        </callout>
+      </calloutlist>
+    </para>
+  </section>
+
+  <section id="build_infrastructure">
+    <title id="build_infrastructure.title">Build Infrastructure</title>
+    <para>
+      The central tool for building &project; is the make file in the top-level source directory. It supports the following targets:
+      <itemizedlist>
+        <listitem>
+          <formalpara>
+            <title>Default Target</title>
+            The default target builds &project; and places the objects in <code>yulup/bin</code>.
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title><code>pkg</code></title>
+            The <code>pkg</code> target builds &project; and creates an installable XPI file in <code>yulup/pkg</code>.
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title><code>clean</code></title>
+            The <code>clean</code> targets removes the object files in <code>yulup/bin</code> and deletes the XPI package in <code>yulup/pkg</code>.
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title><code>mozilla-checkout</code></title>
+            The <code>mozilla-checkout</code> target first removes the Mozilla tree in <code>mozilla/xulrunner</code> and then performs a fresh checkout of the branch set in <code>mozilla-tree.conf</code>.
+          </formalpara>
+          <para>
+            Do NOT exercise this target unless you know what you are doing and are authorised to do so.
+          </para>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title><code>mozilla-update</code></title>
+            The <code>mozilla-update</code> target updates the Mozilla tree in <code>mozilla</code>.
+          </formalpara>
+          <para>
+            Do NOT exercise this target unless you know what you are doing and are authorised to do so.
+          </para>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title><code>mozilla-build-gecko-sdk</code></title>
+            The <code>mozilla-build-gecko-sdk</code> target builds and installs the platform-specifc Gecko SDK in <code>mozilla/gecko-sdk/PLATFORM</code>, where <code>PLATFORM</code> is a string based on the architecture and the operating system currently running on your build host.
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title><code>mozilla-remove</code></title>
+            The <code>mozilla-remove</code> target deletes the complete Mozilla tree in <code>mozilla</code>.
+          </formalpara>
+          <para>
+            Do NOT exercise this target unless you know what you are doing and are authorised to do so.
+          </para>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title><code>mozilla-clean</code></title>
+            The <code>mozilla-clean</code> target cleans the Mozilla tree in <code>mozilla/xulrunner</code>.
+          </formalpara>
+          <para>
+            Do NOT exercise this target unless you know what you are doing and are authorised to do so.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </para>
+  </section>
+
+</article>

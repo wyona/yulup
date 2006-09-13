@@ -1,0 +1,43 @@
+This File contains random notes concerning the Yulup project.
+
+People
+======
+
+Stakeholders directly involved with the project:
+------------------------------------------------
+ * Michael Wechner (CEO) Wyona AG (michi@wyona.com):
+     - Yulup Project Manager
+
+ * Andreas Wuest Wyona AG (awuest@student.ethz.ch):
+     - Full-time Yulup Software Engineer
+
+ * Thomas Comiotto unicom Online (thomas.comiotto@unicom.unizh.ch):
+     - Part-time Yulup Software Engineer
+     - Unicom Representativ
+
+Third-party stakeholders:
+-------------------------
+ * Roger Stupf unicom Online (roger.stupf@unicom.unizh.ch,
+   http://www.phonebook.unizh.ch/?ID=13913):
+     - unicom Online Representative
+
+ * Andreas Zangger IEW Uni Zurich (zangger@iew.unizh.ch,
+   http://www.iew.unizh.ch/institute/people/index.php?action=query&oid=75485):
+     - Responsible for Lenya CMS user education at IEW.
+
+       We agreed on helping him to create to create an e-Learning
+       course on Yulup. In exchange, he would like to help us get in
+       touch with end users, and help in creating user documentation.
+
+       Keep him informed on current development, maybe providing him
+       with a pre-release of Yulup to toy around with.
+
+ * Doron Rosenberg IBM Austin/Mozilla Community (doronr@gmail.com,
+   doronr@us.ibm.com):
+     - Developer of the Mozilla W3C XML Schema validator
+
+       We agreed on keeping him informed about possible development of
+       the XML Schema Validator in conjunction with Yulup.
+
+       See also
+       misc/conversation_042106_doron-rosenberg_mozilla-w3c-schema-validator.txt.

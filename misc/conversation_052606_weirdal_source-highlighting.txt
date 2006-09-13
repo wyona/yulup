@@ -1,0 +1,183 @@
+	[INFO]	Query view for “WeirdAl” opened.
+	===	WeirdAl <chatzilla@moz-9A727803.hsd1.ca.comcast.net> “New Now Know How”
+	===	WeirdAl is a registered nick
+	===	WeirdAl: member of +#seamonkey and #developers
+	===	WeirdAl: attached to sand.mozilla.org “Sunnyvale California”
+	===	WeirdAl: idle for 7 minutes, 1 seconds (on since Fr, 26. Mai 2006 20:28:04 Uhr)
+	---	End of WHOIS information for WeirdAl
+	aw1	Hey, WeirdAl, you've been contemplating about syntax highlighting in editor recently, no?
+	WeirdAl	yeah, but it's one of about a dozen ideas I have, and with me being employed, my time is limited :)
+	WeirdAl	I wasn't serious about doing it Right Now
+	aw1	Mmmh, ok, I see.
+	WeirdAl	I just wanted to start sketching out a plan for doing it
+	aw1	Do you wanted a generic engine, or only for some specific languages?
+	WeirdAl	I would have preferred as generic an engine as possible
+	aw1	I.e., only for e.g. XML, or also for CSS, JS, etc.?
+	aw1	Ok.
+	WeirdAl	that said, it sounds hard
+	aw1	Well, you'd need a parser for every language you want to support.
+	aw1	But the interfaces of them could be made generic, i.e. the same for all.
+	aw1	Do you know about any <editor> which already does syntax highlighting?
+	WeirdAl	not a Mozilla editor element, no
+	aw1	Not good. :(
+	WeirdAl	well, it's what I wanted to design :)
+	aw1	heh :)
+	aw1	Soooo, do you already have an IDL for it or something similar?
+	WeirdAl	no, I don't - the best I've got are the notes between db48x and myself, and what DOM Inspector tells me about plaintext editors
+	WeirdAl	(specifically, that the contentDocument of even a plaintext editor is a HTML document)
+	WeirdAl	so it's certainly doable
+	aw1	Yeah, it certainly is!
+	aw1	Thing is, we might someday build a highligthing engine for XML. If you had some ideas about how an interface to a parser might look like, we could comply.
+	aw1	So it could get reused eventually.
+	WeirdAl	can you contact me tonight about that sort of thing?
+	WeirdAl	I'm really trying to concentrate on something else at the moment, something that helps me earn a paycheck :)
+	aw1	Well, in my time zone, it alredy IS tonight! ;)
+	WeirdAl	hehe, I don't expect to be home for at least another 5 hours
+	aw1	D'oh, in 5 hourse I will be happily sleeping.
+	aw1	* hours
+	aw1	You are in #developers quite often?
+	aw1	So I could try again during the weekend somewhen!
+	WeirdAl	yeah, easily
+	WeirdAl	I *might* be able to talk in 2-3 hours, maybe
+	WeirdAl	depends how my day goes
+	aw1	I'll be in #developers as long as I'm online, so if you see me, I'm not yet sleeping. Otherwise, I'll try to reach you tomorrow or sunday.
+	WeirdAl	ok
+	aw1	Fine! :) Now, I don't want to interrupt you any longer. Have a nice day!
+	WeirdAl	actually I have a few minutes now :)
+	aw1	Ok, cool!
+	WeirdAl	hang on, I want to check one other thing
+	aw1	np
+	WeirdAl	ok, go
+	WeirdAl	I'm gonna start munching lunch while you talk, so my responses might be a little delayed
+	aw1	np, just keep your keyboard clear ;)
+	WeirdAl	let me pull up the relevant blog entry
+	aw1	What I wanted to say is, that, if you would once have an IDL for a parser, and an IDL regarding how to use such a parser, we could implement an XML highlighter according to your spec.
+	WeirdAl	*blink*
+	WeirdAl	:-D
+	aw1	Or, if your interested, we could work toghether on designing such an interface.
+	WeirdAl	the latter would be preferable
+	aw1	It is in my very interest to keep it as generic as possible.
+	WeirdAl	but really, I want db48x closely involved in the spec writing
+	WeirdAl	he seems to know this stuff pretty well
+	aw1	Yes, I saw your conversation, and he seems to be quite knowledgeable!
+	WeirdAl	let me see if I can outline my thoughts here
+	aw1	Ok! :)
+	aw1	<editor>, as it is ATM, is a bit kludgy unfortunately.
+	WeirdAl	yeah, I know - hold on
+	aw1	glazou said something about having patches for a more generic interface.
+	WeirdAl	vaguely speaking, I see the IDL as being in two major parts
+	aw1	Go on.
+	WeirdAl	the first part is in determining rules for wrapping content in a span with a particular class.
+	WeirdAl	brb
+	aw1	np
+	WeirdAl	the second part is in managing which CSS stylesheets to apply to the editor's content document.
+	WeirdAl	in both parts, it should be possible to add, iterate over, and remove each item
+	aw1	item?
+	WeirdAl	for part 2, s/item/stylesheet
+	aw1	ok
+	WeirdAl	for part 1, s/item/rules
+	WeirdAl	part 2 is very easy; it's documented in DOM Level 2 Style
+	aw1	yeah, part 2 is the easy part.
+	WeirdAl	part 1 I have a real hard time formulating The Right Way
+	aw1	Hmmm. First, you'd have to know, what kind of content you have.
+	aw1	I.e. JS, XML, HTML, etc.
+	aw1	Then you could dispatch the document to the correct parser.
+	WeirdAl	that sounds like what db48x was telling me
+	aw1	Wait, it would be even nicer if we just could pass in the document. According to which parsers are available, we either get the spans, or an error.
+	WeirdAl	I don't see how that helps; the contentDocument of a plaintext editor is always HTMLDocument
+	aw1	Or did you think part I would us just give an abstract description on how to place spans.
+	aw1	Ah, no, I've meant, if it is JS code, XML code, etc., we want to highlight.
+	aw1	Depending on the installation, a parser for a certain kind of syntax may be availabler, or not.
+	WeirdAl	I understand, but right now we don't have a clear way to detect which the source code is
+	aw1	Yeah, that's a stopper.
+	WeirdAl	other than maybe content-type detection
+	WeirdAl	or a special attribute on the <xul:textbox/> or <xul:editor/> element
+	aw1	Hmmm. But somebody has to find out the type of content in the first place.
+	WeirdAl	(the latter of which I'm _not_ above specifying as a requirement :) )
+	WeirdAl	Okay, so add to the spec that the user has to specify a contentDocumentType attribute on the editor.
+	aw1	The classic method is to run every parser against the content until one returns no parsing error...
+	WeirdAl	eek
+	aw1	Yeah...
+	aw1	I guess we can assume that the user knows what he is trying to do.
+	WeirdAl	JS errors, XML well-formedness errors, CSS errors - if the loaded document has any of those for its given type, we're screwed
+	aw1	Well, depends on our parsers. If they are lean, then it could still work.
+	WeirdAl	actually wait a second
+	aw1	Think about IDE's, they even highlight in the presence of syntax errors (which cannot be avoided if you are in midst-editing).
+	WeirdAl	what if the application using our syntax highlighter was required to specify the highlighter object to go with the document?
+	WeirdAl	okay, what I just said didn't quite make sense
+	aw1	??
+	WeirdAl	what I mean is, explicitly require the XUL app to specify which syntax parsing to use
+	WeirdAl	default is none, meaning really plaintext editing
+	aw1	Yep, that would also be feasible. This would basically offload the problem of detecting the content type to the user.
+	aw1	Which, by itself, may not be the worst thing, since he might know better.
+	WeirdAl	when you say "user" I think "human being" :)
+	WeirdAl	I think what you call user I call the XUL app
+	aw1	Yeah.
+	aw1	The entitiy invoking the parser, to be exact.
+	WeirdAl	uh huh
+	aw1	This would reduce part I to a simple interface of the parser, no?
+	WeirdAl	our providing a few available parsers to be called in at the XUL app's discretion would be nice
+	aw1	?
+	WeirdAl	-- I don't know if it would reduce it that much... I'd still personally like the ability to define custom parsing
+	aw1	With "custom parsing", you mean providing your own implementation?
+	WeirdAl	yeah - but I'm not going to be hard-nosed about it
+	aw1	Well, if the interface is generic enough, this shouldn't hinder anyone,no?
+	WeirdAl	agreed
+	WeirdAl	are you able to start taking notes for an IDL interface?
+	aw1	Btw, I've just wondered how the "view source" highlighting works
+	WeirdAl	or set of interfaces, rather?
+	WeirdAl	heh, they do a XSLT transformation on that
+	aw1	Well, I can always take notes... ;)
+	aw1	Oh, hmm. Not the worst idea, no?
+	WeirdAl	no, in fact we could theoretically reuse that concept
+	aw1	Well, yes, but JS it IS a bad idea...
+	WeirdAl	?
+	aw1	Yeah, but we could only apply it to XML.
+	aw1	Although, hmm, no.
+	aw1	Let's assume we have a file with JS code.
+	WeirdAl	ok
+	aw1	We had to provide a custom parser anyway, since Mozilla has no way of transforming that into a tree.
+	aw1	No, we have to augment it with spans.
+	aw1	s/No/Now/
+	WeirdAl	uh huh
+	aw1	Or not directly spans, but merely hints.
+	aw1	These hints would help the XSLT processor.
+	WeirdAl	well, personally I don't like XSLT that much - I prefer CSS
+	aw1	But when we are already providing hints in the DOM, we could direclty add the spans and leave out the XSLT transformation.
+	WeirdAl	that's sorta what I'm saying
+	aw1	Well, the XSLT could by itself add spans, on which we could use CSS.
+	WeirdAl	hold on a sec
+	WeirdAl	I think you're making a dangerous assumption, in that XSLT can flexibly-enough add spans in all the right places
+	aw1	But for the transformation to work correctly, we'd need an XML document in the first place.
+	WeirdAl	I think that might have to indeed be handled at a parser level instead
+	aw1	Yeah. If we have to provide a parser, we could also add the spans directly.
+	aw1	Might even be faster and is more direct.
+	aw1	Now, I do have some concerns.
+	aw1	E.g., if we have an augmented DOM it's all nice and flashy. But at the end of the editing session, we need a way to serialze the DOM again, thereby stripping our stuff.
+	WeirdAl	listens
+	aw1	And stripping out ONLY our spans, and not something the user had added by himself.
+	aw1	Of course, we could handle that with a special namespace.
+	WeirdAl	we don't even need to do that
+	aw1	No?
+	WeirdAl	DOM 2 Range to the rescue - recall what the user sees is a contentDocument of the editor
+	aw1	Yep.
+	aw1	And now?
+	WeirdAl	DOM 2 Range can get the text of that document - which is the user's source code - and deliver that to the XUL app
+	aw1	Hmmmm.
+	WeirdAl	so all our fancy spans get filtered out anyway
+	aw1	needs to read more aobut Ranges first
+	aw1	But if it works as you say, this would solve that problem.
+	WeirdAl	well, it might not even require that much - if the editor's value property remains consistent, we don't have to do anything but get the value.
+	aw1	value property?
+	WeirdAl	err wait a sec
+	WeirdAl	whoops, I confused HTMLInputElement's value with the editor having a value :)
+	aw1	can't find a value property on nsIEditor nor on nsIPlaintextEditor
+	aw1	Ah, ok.
+	aw1	Now, the problem with editor is that it operates directly on the model and inserts it's presentation and handling stuff.
+	aw1	That's what enervates me most about editor.
+	aw1	Although it sports a serialization method, which filters out all the internal attribute it has added.
+	aw1	outputToString(), that is
+	aw1	or stream, depening on where you want to run off to with the content.
+	aw1	Now, unfortunately, I have to head home, since I have to catch the last bus (and get me some dinner somewhere...). I'll persist that conversation, and try to reach you over the weekend again.
+	aw1	Thanks a lot for the insightful talk, and it would be nice if we could come up with something as useful as possible! :)
+	aw1	Ok, gotta go, the bus isn't waiting for me... ;)

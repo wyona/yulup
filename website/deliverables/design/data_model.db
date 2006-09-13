@@ -1,0 +1,64 @@
+<div element="article" href="data_model.xhtml#id52599" number="">
+  <ttl>Yulup Data Model</ttl>
+  <xreftext>Yulup Data Model</xreftext>
+  <div element="section" href="data_model.xhtml#id342753" number="1">
+    <ttl>Introduction</ttl>
+    <xreftext>Section 1, “Introduction”</xreftext>
+    <div element="section" href="data_model.xhtml#copyright" number="1.1" targetptr="copyright">
+      <ttl>Copyright and License</ttl>
+      <xreftext>Section 1.1, “Copyright and License”</xreftext>
+    </div>
+    <div element="section" href="data_model.xhtml#disclaimer" number="1.2" targetptr="disclaimer">
+      <ttl>Disclaimer</ttl>
+      <xreftext>Section 1.2, “Disclaimer”</xreftext>
+    </div>
+    <div element="section" href="data_model.xhtml#feedback" number="1.3" targetptr="feedback">
+      <ttl>Feedback</ttl>
+      <xreftext>Section 1.3, “Feedback”</xreftext>
+    </div>
+  </div>
+  <div element="section" href="data_model.xhtml#id342834" number="2">
+    <ttl>Overview</ttl>
+    <xreftext>Section 2, “Overview”</xreftext>
+  </div>
+  <div element="section" href="data_model.xhtml#id342855" number="3">
+    <ttl>Aggregated Model</ttl>
+    <xreftext>Section 3, “Aggregated Model”</xreftext>
+    <div element="section" href="data_model.xhtml#id342860" number="3.1">
+      <ttl>Overview</ttl>
+      <xreftext>Section 3.1, “Overview”</xreftext>
+    </div>
+    <div element="section" href="data_model.xhtml#id342870" number="3.2">
+      <ttl>Content Format</ttl>
+      <xreftext>Section 3.2, “Content Format”</xreftext>
+    </div>
+  </div>
+  <div element="section" href="data_model.xhtml#id342881" number="4">
+    <ttl>Partial Model</ttl>
+    <xreftext>Section 4, “Partial Model”</xreftext>
+    <div element="section" href="data_model.xhtml#id342886" number="4.1">
+      <ttl>Overview</ttl>
+      <xreftext>Section 4.1, “Overview”</xreftext>
+    </div>
+    <div element="section" href="data_model.xhtml#id342896" number="4.2">
+      <ttl>Content Format</ttl>
+      <xreftext>Section 4.2, “Content Format”</xreftext>
+    </div>
+  </div>
+  <div element="section" href="data_model.xhtml#id342906" number="5">
+    <ttl>Aggregation</ttl>
+    <xreftext>Section 5, “Aggregation”</xreftext>
+    <div element="section" href="data_model.xhtml#id342921" number="5.1">
+      <ttl>Asymptotic Behaviour</ttl>
+      <xreftext>Section 5.1, “Asymptotic Behaviour”</xreftext>
+    </div>
+  </div>
+  <div element="section" href="data_model.xhtml#id342932" number="6">
+    <ttl>Derivation</ttl>
+    <xreftext>Section 6, “Derivation”</xreftext>
+    <div element="section" href="data_model.xhtml#id342941" number="6.1">
+      <ttl>Asymptotic Behaviour</ttl>
+      <xreftext>Section 6.1, “Asymptotic Behaviour”</xreftext>
+    </div>
+  </div>
+</div>

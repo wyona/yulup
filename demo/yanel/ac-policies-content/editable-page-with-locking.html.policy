@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<policy xmlns="http://www.wyona.org/security/1.0">
+
+  <role id="open">
+    <world permission="false"/>
+  </role>
+
+  <role id="write">
+    <world permission="false"/>
+  </role>
+
+</policy>

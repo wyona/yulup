@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../utils/customization/style.xsl"?>
+
+<!DOCTYPE article [
+  <!ENTITY % docbook PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+  %docbook;
+  <!ENTITY % local SYSTEM "../../../utils/customization/commons.dtd">
+  %local;
+]>
+
+<article>
+  <articleinfo>
+    <title>&project; General Code Design</title>
+    <authorgroup>
+      <author>
+        <firstname>Andreas</firstname>
+        <surname>Wuest</surname>
+        <email>awuest@student.ethz.ch</email>
+        <affiliation>
+          <corpname>Wyona AG</corpname>
+        </affiliation>
+      </author>
+    </authorgroup>
+    <!-- All dates specified in ISO "YYYY-MM-DD" format -->
+    <pubdate>2006-05-14</pubdate>
+    <!-- Most recent revision goes at the top; list in descending order -->
+    <revhistory>
+      <revision>
+        <revnumber>1.0</revnumber>
+        <date>2006-05-14</date>
+        <authorinitials>AW</authorinitials>
+        <revremark>First initial draft.</revremark>
+      </revision>
+    </revhistory>
+    <abstract>
+      <para>The <emphasis>&project;</emphasis> code design for the overall architecture.</para>
+    </abstract>
+  </articleinfo>
+
+  <section>
+    <title>Basic Processing Loop</title>
+    <section>
+      <title>Standard Variant</title>
+      <figure>
+        <title>Basic Processing Loop (Standard Variant)</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/basic_processing_loop.png" format="PNG" scale="100"/>
+          </imageobject>
+          <textobject>
+            <phrase>Basic Processing Loop (Standard Variant)</phrase>
+          </textobject>
+        </mediaobject>
+      </figure>
+    </section>
+
+    <section>
+      <title>More than XML Variant</title>
+      <figure>
+        <title>Basic Processing Loop (More than XML Variant)</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/basic_processing_loop-mtxml_uc1+2.png" format="PNG" scale="100"/>
+          </imageobject>
+          <textobject>
+            <phrase>Basic Processing Loop (More than XML Variant)</phrase>
+          </textobject>
+        </mediaobject>
+      </figure>
+    </section>
+  </section>
+
+</article>

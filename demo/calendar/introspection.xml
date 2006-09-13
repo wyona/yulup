@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<introspection xmlns="http://www.wyona.org/neutron/1.0">
+
+<edit mime-type="text/xml" name="Calendar">
+  <open url="calendar.xml" method="GET"/>
+  <save url="calendar.xml?yanel.resource.usecase=save" method="PUT"/>
+  <styles>
+    <style href="calendar2xhtml.xsl"/>
+  </styles>
+  <widgets>
+    <widget name="Entry" description="New Entry" type="insert" icon="icons/calendar.png">
+      <attribute name="day" xpath="entry/attribute::day"/>
+      <attribute name="name" xpath="entry/attribute::name"/>
+      <attribute name="hour" xpath="entry/attribute::hour"/>
+      <attribute name="public" xpath="entry/attribute::public"/>
+      <attribute name="text" xpath="entry/text()"/>
+      <fragment>
+        <entry xmlns="" day="1" name="Sunday" hour="13:35" public="true">Hello World</entry>
+      </fragment>
+    </widget>
+  </widgets>
+</edit>
+
+</introspection>

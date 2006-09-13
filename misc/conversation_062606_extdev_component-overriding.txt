@@ -1,0 +1,63 @@
+#extdev
+	[INFO]	Channel view for “#extdev” opened.
+	-->|	YOU have joined #extdev
+	=-=	Topic for #extdev is “Welcome to #extdev, the extension development channel || References: http://developer.mozilla.org/ http://www.xulplanet.com/ http://kb.mozillazine.org/Extension_development || Pastebin: http://mozilla.pastebin.com/ || FAQ: http://developer.mozilla.org/en/docs/Extension_FAQ”
+	=-=	Topic for #extdev was set by Mossop on Mo, 12. Jun 2006 19:22:36 Uhr
+	aw1	Hi! Is it possible to override Mozilla components (like "@mozilla.org/editor/editorcontroller;1") from a component (of course, sticking to the given interface definitions)?
+	aw1	s/from a component/from an extension/
+	asqueella	it should be possible, but I never understood how does mozilla choose the component to use
+	asqueella	register your component with that contractID (but a different CID)
+	aw1	Uhhm, I see. I guess it depends if Mozilla registers its internal components first, or the extension components.
+	aw1	Ok, same contractID, different compnentID.
+	aw1	Do I have to override all component from a given shared object (DLL), or can I pick individual components?
+	asqueella	if they're meant to be overriden, then you should be able to pick individual components
+	aw1	Yeah, sounds sensible! :)
+	aw1	Hey asqueella, thanks a dozen!! :)
+	asqueella	you're welcome
+	luser	you can override them, but i don't know what order they get chosen either
+	luser	i wrote an extension that overrode about:blank at one point
+	aw1	luser, thanks. Maybe I just have to try it out. Well, if they can be overridden, then Mozilla should obviously choose components provided by extensions first. Now, if two extensions ty to override the same component, things might get a bit messy...
+	luser	yes
+	luser	i think that just because you *can* do it doesn't mean you *should* :)
+	aw1	Yeah... On the other hand, the alterative is to provide custom Mozilla builds, which doesn't sound too sweet either.
+	asqueella	why, that's the point of contract ids, isn't it?
+	asqueella	(being able to provide your components adhering to a particular contract)
+	aw1	Yes. But if two extensions provide components for the same contract, then what?
+	asqueella	I was replying to luser
+	aw1	Oh, sorry.
+	asqueella	people installing more than a single extension are in a big trouble anyway ;)
+	aw1	heh :)
+	luser	asqueella: yes, but unless there's a defined rule for choosing among multiple implementations, then the behavior is undefined
+	aw1	Or better: people installing other extensions than *my* extensions are in big trouble...
+	asqueella	luser: which is why I mentioned this problem when I answered the original question
+	-->|	NSA (pwned@F1C75BC9.A45D8B2F.126E0C5B.IP) has joined #extdev
+	luser	yes.
+	asqueella	unfortunately I'm too lazy to find out how is the component to use chosen
+	=-=	NSA is now known as IRCMonkey8142979
+	aw1	luser, yes. For instance, nsEditingSession.cpp makes calls to @mozilla.org/editor/editorcontroller;1, now I'd like to reroute them to my own extensions editorcontroller implementation. Now, if two extensions are trying to do that: doom.
+	aw1	asqueella, should I head over to #developers to find out?
+	aw1	Or are they going to kill me?
+	asqueella	this is the kind of thing I would read the source to figure out
+	asqueella	but I don't think #developers enjoy killing anybody but babies
+	luser	if i were to make a wild-ass-guess, i would say that it probably picks the component that was registered last
+	aw1	asqueella, hmm, ok. So I might have to poke around in the XPCOM registration or discovery code.
+	luser	and that your extension compoents tend to be registered after components in the app directory
+	asqueella	luser: that would be my guess too, and that's why I always assumed it works
+	aw1	luser, yes, sounds reasonable. And the order of extension registration is arbitrary or something.
+	luser	it's the order they're installed in
+	aw1	ok. Anyway, I just hope I'm the only one doing this then, for a given installation.
+	luser	:)
+	asqueella	iirc, the order in the EM window used to matter
+	asqueella	guess it's order in extensions.ini that matters now
+	aw1	Guess I'll show a dialog at startup then, containing, in big fat letters, "if you install anything besides this, don't come to me whining" or something.
+	luser	asqueella: but component registration only happens on installation, doesn't it
+	luser	not on every restart
+	asqueella	luser: assuming something has triggered the autoregistration process
+	asqueella	aw1: technically, almost every extension should show that dialog on startup, so don't bother
+	asqueella	I don't think many people would override something editor-related anyway
+	
+IRCMonkey8142979	mossop!
+	aw1	asqueella, ok. So maybe we could lobby a standard dialog into Mozilla then... ;)
+	aw1	openHitUserOnTheHeadDialog()
+	luser	"your shit is probably already broken"
+	aw1	:)

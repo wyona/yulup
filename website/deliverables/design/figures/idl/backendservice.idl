@@ -1,0 +1,13 @@
+#ifndef BACKENDSERVICE_IDL
+#define BACKENDSERVICE_IDL
+
+
+interface BackendService {
+  // Associations
+  // Attributes
+  // Operations
+  Backend getLocalBackend (  );
+  BackendStub getRemoteBackend ( in URI backendHost );
+};
+
+#endif

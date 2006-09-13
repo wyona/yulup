@@ -1,0 +1,19 @@
+#ifndef DOCUMENTSTUB_IDL
+#define DOCUMENTSTUB_IDL
+
+#include "idocument.idl"
+
+interface DocumentStub: IDocument {
+  // Associations
+  // Attributes
+  private attribute IConnector connector;
+  private attribute Controller controller;
+  private attribute Model model;
+  // Operations
+  Controller getController (  );
+  Model getModel (  );
+  String serialize (  );
+  void close (  );
+};
+
+#endif

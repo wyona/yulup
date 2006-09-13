@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<dtd xmlns="http://yulup.wyona.org/1.0">
+
+  <entity id="editorConfirmCloseDialog.title">
+    <name xml:lang="en">Close Yulup</name>
+    <name xml:lang="de">Yulup beenden</name>
+  </entity>
+
+  <entity id="editorConfirmCloseDescription.label">
+    <name xml:lang="en">The document has been changed. Really exit the editor?</name>
+    <name xml:lang="de">Das Dokument wurde verändert. Soll der Editor wirklich beendet werden?</name>
+  </entity>
+
+  <entity id="editorConfirmCloseCancelButton.label">
+    <name xml:lang="en">Exit</name>
+    <name xml:lang="de">Beenden</name>
+  </entity>
+
+  <entity id="editorConfirmCloseAcceptButton.label">
+    <name xml:lang="en">Save and Exit</name>
+    <name xml:lang="de">Speichern und beenden</name>
+  </entity>
+
+  <entity id="editorConfirmCloseCancelButton.tooltip">
+    <name xml:lang="en">Exit without saving</name>
+    <name xml:lang="de">Beenden ohne zu Speichern</name>
+  </entity>
+
+  <entity id="editorConfirmCloseAcceptButton.tooltip">
+    <name xml:lang="en">Execute the selected save action</name>
+    <name xml:lang="de">Die ausgewählte Aktion ausführen</name>
+  </entity>
+
+  <entity id="confirmCloseMenulist.accesskey">
+    <name xml:lang="en">S</name>
+  </entity>
+
+</dtd>

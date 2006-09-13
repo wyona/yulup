@@ -1,0 +1,19 @@
+#ifndef ICMS_IDL
+#define ICMS_IDL
+
+
+// interface
+interface ICMS {
+  // Associations
+  // Attributes
+  // Operations
+  abstract ??? new (  ) = 0;
+  abstract ??? open (  ) = 0;
+  abstract ??? save (  ) = 0;
+  abstract ??? saveAs (  ) = 0;
+  abstract ??? exit (  ) = 0;
+  abstract ??? queryDirectory (  ) = 0;
+  abstract ??? queryAssetType (  ) = 0;
+};
+
+#endif

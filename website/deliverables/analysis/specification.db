@@ -1,0 +1,600 @@
+<div element="article" href="specification.xhtml#id52600" number="">
+  <ttl>Yulup Specification</ttl>
+  <xreftext>Yulup Specification</xreftext>
+  <div element="section" href="specification.xhtml#id342851" number="1">
+    <ttl>Use Cases</ttl>
+    <xreftext>Section 1, “Use Cases”</xreftext>
+    <div element="section" href="specification.xhtml#id342856" number="1.1">
+      <ttl>Using Yulup as a Browser</ttl>
+      <xreftext>Section 1.1, “Using Yulup as a Browser”</xreftext>
+    </div>
+    <div element="section" href="specification.xhtml#id342875" number="1.2">
+      <ttl>Using Yulup as an Editing Tool</ttl>
+      <xreftext>Section 1.2, “Using Yulup as an Editing Tool”</xreftext>
+      <obj element="listitem" href="specification.xhtml#UC1" number="" targetptr="UC1">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC1</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC2" number="" targetptr="UC2">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC2</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC3" number="" targetptr="UC3">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC3</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC4" number="" targetptr="UC4">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC4</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC5" number="" targetptr="UC5">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC5</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC6" number="" targetptr="UC6">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC6</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC7" number="" targetptr="UC7">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC7</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC8" number="" targetptr="UC8">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC8</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC9" number="" targetptr="UC9">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC9</xreftext>
+      </obj>
+    </div>
+    <div element="section" href="specification.xhtml#id343044" number="1.3">
+      <ttl>More than XML</ttl>
+      <xreftext>Section 1.3, “More than XML”</xreftext>
+      <obj element="listitem" href="specification.xhtml#UC10" number="" targetptr="UC10">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC10</xreftext>
+      </obj>
+      <obj element="example" href="specification.xhtml#id343069" number="1">
+        <ttl>Add "common" formatting</ttl>
+        <xreftext>Example 1, “Add "common" formatting”</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC11" number="" targetptr="UC11">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC11</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC12" number="" targetptr="UC12">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC12</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC13" number="" targetptr="UC13">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC13</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC14" number="" targetptr="UC14">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC14</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC15" number="" targetptr="UC15">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC15</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC16" number="" targetptr="UC16">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC16</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC17" number="" targetptr="UC17">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC17</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC18" number="" targetptr="UC18">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC18</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC19" number="" targetptr="UC19">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC19</xreftext>
+      </obj>
+      <obj element="listitem" href="specification.xhtml#UC20" number="" targetptr="UC20">
+        <ttl>???TITLE???</ttl>
+        <xreftext>UC20</xreftext>
+      </obj>
+    </div>
+  </div>
+  <div element="section" href="specification.xhtml#id343263" number="2">
+    <ttl>Project Decomposition</ttl>
+    <xreftext>Section 2, “Project Decomposition”</xreftext>
+    <obj element="figure" href="specification.xhtml#id343274" number="1">
+      <ttl>Project Decomposition</ttl>
+      <xreftext>Figure 1, “Project Decomposition”</xreftext>
+    </obj>
+  </div>
+  <div element="section" href="specification.xhtml#id343318" number="3">
+    <ttl>Requirements</ttl>
+    <xreftext>Section 3, “Requirements”</xreftext>
+    <div element="section" href="specification.xhtml#id343324" number="3.1">
+      <ttl>Functional Requirements</ttl>
+      <xreftext>Section 3.1, “Functional Requirements”</xreftext>
+      <div element="section" href="specification.xhtml#id343329" number="3.1.1">
+        <ttl>Front End Component (FRONTEND)</ttl>
+        <xreftext>Section 3.1.1, “Front End Component (FRONTEND)”</xreftext>
+        <obj element="figure" href="specification.xhtml#id343349" number="2">
+          <ttl>Front End</ttl>
+          <xreftext>Figure 2, “Front End”</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FF1" number="" targetptr="FF1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature F1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FF2" number="" targetptr="FF2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature F2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FF3" number="" targetptr="FF3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature F3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FF4" number="" targetptr="FF4">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature F4</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FF5" number="" targetptr="FF5">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature F5</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FF6" number="" targetptr="FF6">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature F6</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FF7" number="" targetptr="FF7">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature F7</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FF8" number="" targetptr="FF8">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature F8</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FF9" number="" targetptr="FF9">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature F9</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FF10" number="" targetptr="FF10">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature F10</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FF11" number="" targetptr="FF11">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature F11</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FF12" number="" targetptr="FF12">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature F12</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FF13" number="" targetptr="FF13">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature F13</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FF14" number="" targetptr="FF14">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature F14</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FF15" number="" targetptr="FF15">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature F15</xreftext>
+        </obj>
+        <div element="section" href="specification.xhtml#id343740" number="3.1.1.1">
+          <ttl>Browser Integrated Variant (BROWSER)</ttl>
+          <xreftext>Section 3.1.1.1, “Browser Integrated Variant (BROWSER)”</xreftext>
+        </div>
+        <div element="section" href="specification.xhtml#id343755" number="3.1.1.2">
+          <ttl>Standalone Variant (STANDALONE)</ttl>
+          <xreftext>Section 3.1.1.2, “Standalone Variant (STANDALONE)”</xreftext>
+        </div>
+        <div element="section" href="specification.xhtml#id343768" number="3.1.1.3">
+          <ttl>Web-based Variant (WEB)</ttl>
+          <xreftext>Section 3.1.1.3, “Web-based Variant (WEB)”</xreftext>
+        </div>
+      </div>
+      <div element="section" href="specification.xhtml#id343781" number="3.1.2">
+        <ttl>Back End Component (BACKEND)</ttl>
+        <xreftext>Section 3.1.2, “Back End Component (BACKEND)”</xreftext>
+        <obj element="figure" href="specification.xhtml#id343802" number="3">
+          <ttl>Back End</ttl>
+          <xreftext>Figure 3, “Back End”</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB1" number="" targetptr="FB1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB1.1" number="" targetptr="FB1.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B1.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB1.2" number="" targetptr="FB1.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B1.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB1.3" number="" targetptr="FB1.3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B1.3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB1.4" number="" targetptr="FB1.4">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B1.4</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB2" number="" targetptr="FB2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB2.1" number="" targetptr="FB2.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B2.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB2.2" number="" targetptr="FB2.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B2.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB2.3" number="" targetptr="FB2.3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B2.3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB2.4" number="" targetptr="FB2.4">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B2.4</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB3" number="" targetptr="FB3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB3.1" number="" targetptr="FB3.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B3.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB3.2" number="" targetptr="FB3.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B3.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB3.3" number="" targetptr="FB3.3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B3.3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB4" number="" targetptr="FB4">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B4</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB4.1" number="" targetptr="FB4.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B4.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB4.2" number="" targetptr="FB4.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B4.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB4.3" number="" targetptr="FB4.3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B4.3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB5" number="" targetptr="FB5">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B5</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB5.1" number="" targetptr="FB5.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B5.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB5.2" number="" targetptr="FB5.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B5.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB5.3" number="" targetptr="FB5.3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B5.3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB6" number="" targetptr="FB6">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B6</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB6.1" number="" targetptr="FB6.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B6.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB6.2" number="" targetptr="FB6.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B6.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB6.3" number="" targetptr="FB6.3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B6.3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB6.4" number="" targetptr="FB6.4">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B6.4</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB6.5" number="" targetptr="FB6.5">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B6.5</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7" number="" targetptr="FB7">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.1" number="" targetptr="FB7.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.2" number="" targetptr="FB7.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.3" number="" targetptr="FB7.3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.3.1" number="" targetptr="FB7.3.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.3.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.3.2" number="" targetptr="FB7.3.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.3.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.3.2.1" number="" targetptr="FB7.3.2.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.3.2.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.3.2.2" number="" targetptr="FB7.3.2.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.3.2.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.4" number="" targetptr="FB7.4">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.4</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.4.1" number="" targetptr="FB7.4.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.4.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.4.2" number="" targetptr="FB7.4.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.4.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.4.2.1" number="" targetptr="FB7.4.2.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.4.2.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.4.2.2" number="" targetptr="FB7.4.2.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.4.2.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.4.2.3" number="" targetptr="FB7.4.2.3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.4.2.3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.5" number="" targetptr="FB7.5">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.5</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.5.1" number="" targetptr="FB7.5.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.5.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.5.2" number="" targetptr="FB7.5.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.5.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.5.2.1" number="" targetptr="FB7.5.2.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.5.2.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.5.2.2" number="" targetptr="FB7.5.2.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.5.2.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.6" number="" targetptr="FB7.6">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.6</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.7" number="" targetptr="FB7.7">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.7</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.7.1" number="" targetptr="FB7.7.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.7.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.7.2" number="" targetptr="FB7.7.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.7.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.8" number="" targetptr="FB7.8">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.8</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.9" number="" targetptr="FB7.9">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.9</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.9.1" number="" targetptr="FB7.9.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.9.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.9.2" number="" targetptr="FB7.9.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.9.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.9.3" number="" targetptr="FB7.9.3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.9.3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.9.4" number="" targetptr="FB7.9.4">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.9.4</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB7.10" number="" targetptr="FB7.10">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B7.10</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB8" number="" targetptr="FB8">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B8</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB9" number="" targetptr="FB9">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B9</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB9.1" number="" targetptr="FB9.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B9.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB9.2" number="" targetptr="FB9.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B9.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB10" number="" targetptr="FB10">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B10</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB10.1" number="" targetptr="FB10.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B10.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB10.2" number="" targetptr="FB10.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B10.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB11" number="" targetptr="FB11">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B11</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB11.1" number="" targetptr="FB11.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B11.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB11.1.1" number="" targetptr="FB11.1.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B11.1.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB11.1.2" number="" targetptr="FB11.1.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B11.1.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB11.1.3" number="" targetptr="FB11.1.3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B11.1.3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB11.2" number="" targetptr="FB11.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B11.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB11.2.1" number="" targetptr="FB11.2.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B11.2.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB11.2.2" number="" targetptr="FB11.2.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B11.2.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB11.2.3" number="" targetptr="FB11.2.3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B11.2.3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB11.3" number="" targetptr="FB11.3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B11.3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB11.3.1" number="" targetptr="FB11.3.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B11.3.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB11.3.2" number="" targetptr="FB11.3.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B11.3.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB11.3.3" number="" targetptr="FB11.3.3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B11.3.3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB12" number="" targetptr="FB12">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B12</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB13" number="" targetptr="FB13">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B13</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB13.1" number="" targetptr="FB13.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B13.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB13.2" number="" targetptr="FB13.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B13.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB13.3" number="" targetptr="FB13.3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B13.3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB14" number="" targetptr="FB14">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B14</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB14.1" number="" targetptr="FB14.1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B14.1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB14.2" number="" targetptr="FB14.2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B14.2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB14.3" number="" targetptr="FB14.3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B14.3</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB15" number="" targetptr="FB15">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B15</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB16" number="" targetptr="FB16">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B16</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FB17" number="" targetptr="FB17">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature B17</xreftext>
+        </obj>
+      </div>
+      <div element="section" href="specification.xhtml#id345849" number="3.1.3">
+        <ttl>Remote Connector Component (CONNECTOR)</ttl>
+        <xreftext>Section 3.1.3, “Remote Connector Component (CONNECTOR)”</xreftext>
+        <obj element="figure" href="specification.xhtml#id345862" number="4">
+          <ttl>Remote Connector</ttl>
+          <xreftext>Figure 4, “Remote Connector”</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FC1" number="" targetptr="FC1">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature C1</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FC2" number="" targetptr="FC2">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature C2</xreftext>
+        </obj>
+        <obj element="listitem" href="specification.xhtml#FC3" number="" targetptr="FC3">
+          <ttl>???TITLE???</ttl>
+          <xreftext>Feature C3</xreftext>
+        </obj>
+      </div>
+    </div>
+    <div element="section" href="specification.xhtml#id345944" number="3.2">
+      <ttl>Non-Functional Requirements</ttl>
+      <xreftext>Section 3.2, “Non-Functional Requirements”</xreftext>
+    </div>
+  </div>
+  <div element="section" href="specification.xhtml#id346021" number="4">
+    <ttl>Open Issues/To be discussed</ttl>
+    <xreftext>Section 4, “Open Issues/To be discussed”</xreftext>
+  </div>
+  <div element="section" href="specification.xhtml#id346082" number="5">
+    <ttl>Reasoning</ttl>
+    <xreftext>Section 5, “Reasoning”</xreftext>
+  </div>
+</div>

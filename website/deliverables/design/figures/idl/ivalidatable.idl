@@ -1,0 +1,13 @@
+#ifndef IVALIDATABLE_IDL
+#define IVALIDATABLE_IDL
+
+
+// interface
+interface IValidatable {
+  // Associations
+  // Attributes
+  // Operations
+  abstract ValidationErrors validate (  ) = 0;
+};
+
+#endif

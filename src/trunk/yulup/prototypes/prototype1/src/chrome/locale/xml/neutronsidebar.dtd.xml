@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<dtd xmlns="http://yulup.wyona.org/1.0">
+
+  <entity id="neutronSidebarPage.title">
+    <name xml:lang="en">Neutron Sidebar</name>
+  </entity>
+
+  <entity id="openYulupNeutronSidebar.key">
+    <name xml:lang="en">N</name>
+  </entity>
+
+  <entity id="openYulupNeutronSidebar.modifiers">
+    <name xml:lang="en">shift accel</name>
+  </entity>
+
+</dtd>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Yulup Data Model</title>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.69.1"/>
+    <meta name="description" content="Describes the data model used by the Yulup Editor."/>
+  </head>
+  <body>
+    <div class="article" lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a id="id52600"/>Yulup Data Model</h1>
+          </div>
+          <div>
+            <div class="author">
+              <h3 class="author"><span class="firstname">Andreas</span> <span class="surname">Wuest</span></h3>
+              <div class="affiliation">
+                <div class="address">
+                  <p><br/>
+          <code class="email">&lt;<a href="mailto:awuest@student.ethz.ch">awuest@student.ethz.ch</a>&gt;</code><br/>
+        </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="pubdate">2006-04-22</p>
+          </div>
+          <div>
+            <div class="revhistory">
+              <table border="1" width="100%" summary="Revision history">
+                <tr>
+                  <th align="left" valign="top" colspan="3">
+                    <b>Revision History</b>
+                  </th>
+                </tr>
+                <tr>
+                  <td align="left">Revision 1.0</td>
+                  <td align="left">2006-04-22</td>
+                  <td align="left">AW</td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="3">First initial draft.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div class="abstract">
+              <p class="title">
+                <b>Abstract</b>
+              </p>
+              <p>Describes the data model used by the <span class="emphasis"><em>Yulup Editor</em></span>.</p>
+            </div>
+          </div>
+        </div>
+        <hr/>
+      </div>
+      <div class="toc">
+        <p>
+          <b>Table of Contents</b>
+        </p>
+        <dl>
+          <dt>
+            <span class="section">
+              <a href="#id342754">1. Introduction</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#copyright">1.1. Copyright and License</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#disclaimer">1.2. Disclaimer</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#feedback">1.3. Feedback</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id342835">2. Overview</a>
+            </span>
+          </dt>
+          <dt>
+            <span class="section">
+              <a href="#id342856">3. Aggregated Model</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id342861">3.1. Overview</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#id342870">3.2. Content Format</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id342881">4. Partial Model</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id342886">4.1. Overview</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#id342896">4.2. Content Format</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id342907">5. Aggregation</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id342922">5.1. Asymptotic Behaviour</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id342933">6. Derivation</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id342941">6.1. Asymptotic Behaviour</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+        </dl>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id342754"/>1. Introduction</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      Describes the data model used by the <span class="emphasis"><em>Yulup Editor</em></span>.
+    </p>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="copyright"/>1.1. Copyright and License</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        This document, <span class="emphasis"><em>Yulup Data Model</em></span>, is copyrighted (c) 2006 by <span class="emphasis"><em><a href="http://www.wyona.com">http://www.wyona.com</a></em></span>. Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.1 or any later version published by the Free Software Foundation; with no Invariant Sections, with no Front-Cover Texts, and with no Back-Cover Texts. A copy of the license is available at <a href="http://www.gnu.org/copyleft/fdl.html">http://www.gnu.org/copyleft/fdl.html</a>.
+      </p>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="disclaimer"/>1.2. Disclaimer</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        No liability for the contents of this document can be accepted. Use the concepts, examples and information at your own risk. There may be errors and inaccuracies, that could be damaging to your system. Proceed with caution, and although this is highly unlikely, the author(s) do not take any responsibility.
+      </p>
+          <p>
+        All copyrights are held by their by their respective owners, unless specifically noted otherwise. Use of a term in this document should not be regarded as affecting the validity of any trademark or service mark. Naming of particular products or brands should not be seen as endorsements.
+      </p>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="feedback"/>1.3. Feedback</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        Feedback is most certainly welcome for this document. Send your additions, comments and criticisms to the editors listed above.
+      </p>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id342835"/>2. Overview</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      The Yulup data model is spllit up in two sub models: the aggregated model and the partial model. Any instance of the aggregated model contains the combined information of all partial models. The content of the partial models can be directly derived from the aggregated model.
+    </p>
+        <p>
+      The aggregated model is only used for persistence, i.e. to create an in-core copy of the partial models. When editing, the edits only happen on the partial models. This has the advantage of having a simple editing model (namely one of the traditional DOM models), which improves the editing performance because it decreases the number of markup tags and atoms in the tree. Furthermore, other operations like validation or XSL transformations can be applied to the partial models straight forward, since they are indistinguishable from a normal DOM.
+    </p>
+        <p>
+      The downside of splitting the data model in these two parts is that there is a performance hit at persistence points and when switching the partial view. When loading an aggregated file, you first have to derive the selected partial view of the document. When saving a file, you first have to merge the selected partial view with the aggregated model. Assuming that a user spends most of the time editing the document, this approach is still significantly faster than operating on a single convoluted in-memory tree.
+    </p>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id342856"/>3. Aggregated Model</h2>
+            </div>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id342861"/>3.1. Overview</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        ...
+      </p>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id342870"/>3.2. Content Format</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        ...
+      </p>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id342881"/>4. Partial Model</h2>
+            </div>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id342886"/>4.1. Overview</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        ...
+      </p>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id342896"/>4.2. Content Format</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        ...
+      </p>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id342907"/>5. Aggregation</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      Since the aggregated model is only a combination of the various partial models, and therefore contains exactly the same information as the set of partial models, the aggregated model does only have to be updated at persistence points or partial view switches, i.e. when you want to save the partial models in a single file, or want to switch to editing a different view of the document.
+    </p>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id342922"/>5.1. Asymptotic Behaviour</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        The aggregation
+      </p>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id342933"/>6. Derivation</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      ...
+    </p>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id342941"/>6.1. Asymptotic Behaviour</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        ...
+      </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

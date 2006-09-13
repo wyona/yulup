@@ -1,0 +1,1190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Yulup Code Design Milestone 1</title>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.69.1"/>
+    <meta name="description" content="The Yulup code design for milestone 1."/>
+  </head>
+  <body>
+    <div class="article" lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a id="id52601"/>Yulup Code Design Milestone 1</h1>
+          </div>
+          <div>
+            <div class="authorgroup">
+              <div class="author">
+                <h3 class="author"><span class="firstname">Andreas</span> <span class="surname">Wuest</span></h3>
+                <div class="affiliation">
+                  <span class="corpname">Wyona AG<br/></span>
+                </div>
+                <code class="email">&lt;<a href="mailto:awuest@student.ethz.ch">awuest@student.ethz.ch</a>&gt;</code>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="pubdate">2006-08-07</p>
+          </div>
+          <div>
+            <div class="revhistory">
+              <table border="1" width="100%" summary="Revision history">
+                <tr>
+                  <th align="left" valign="top" colspan="3">
+                    <b>Revision History</b>
+                  </th>
+                </tr>
+                <tr>
+                  <td align="left">Revision 1.0</td>
+                  <td align="left">2006-08-07</td>
+                  <td align="left">AW</td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="3">First initial draft.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div class="abstract">
+              <p class="title">
+                <b>Abstract</b>
+              </p>
+              <p>The <span class="emphasis"><em>Yulup</em></span> code design for milestone 1.</p>
+            </div>
+          </div>
+        </div>
+        <hr/>
+      </div>
+      <div class="toc">
+        <p>
+          <b>Table of Contents</b>
+        </p>
+        <dl>
+          <dt>
+            <span class="section">
+              <a href="#id342753">1. Overview</a>
+            </span>
+          </dt>
+          <dt>
+            <span class="section">
+              <a href="#id342763">2. Classes and Interfaces</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id342768">2.1. FRONTEND</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#id342774">2.1.1. BROWSER</a>
+                    </span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="section">
+                          <a href="#id342779">2.1.1.1. General</a>
+                        </span>
+                      </dt>
+                      <dd>
+                        <dl>
+                          <dt>
+                            <span class="section">
+                              <a href="#id342784">2.1.1.1.1. MVC</a>
+                            </span>
+                          </dt>
+                        </dl>
+                      </dd>
+                      <dt>
+                        <span class="section">
+                          <a href="#id342847">2.1.1.2. Feature-Specific</a>
+                        </span>
+                      </dt>
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="section">
+                      <a href="#id342971">2.1.2. STANDALONE</a>
+                    </span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="section">
+                          <a href="#id342977">2.1.2.1. General</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id342983">2.1.2.2. Feature-Specific</a>
+                        </span>
+                      </dt>
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="section">
+                      <a href="#id343005">2.1.3. WEB</a>
+                    </span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="section">
+                          <a href="#id343010">2.1.3.1. General</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id343016">2.1.3.2. Feature-Specific</a>
+                        </span>
+                      </dt>
+                    </dl>
+                  </dd>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#id343039">2.2. BACKEND</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#id343044">2.2.1. Generic</a>
+                    </span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="section">
+                          <a href="#id343050">2.2.1.1. Bootstrapping the Back End</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id343120">2.2.1.2. Base Functionality of the Back End</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id343216">2.2.1.3. An Instance of a Document (XML, XSLT, CSS, Plain Text, ...)</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id343376">2.2.1.4. A Container to Hold a Serialized File</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id343445">2.2.1.5. Document Model</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id343511">2.2.1.6. Document Controller</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id343577">2.2.1.7. Facility to Communicate with the CMS</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id343644">2.2.1.8. Editing XML Documents in WYSIWYG Mode with XSLT Applied</a>
+                        </span>
+                      </dt>
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="section">
+                      <a href="#id343800">2.2.2. Feature-Specific</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#id344080">2.3. CONNECTOR</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#id344085">2.3.1. General</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id344091">2.3.2. Feature-Specifc</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id342753"/>1. Overview</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+
+    </p>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id342763"/>2. Classes and Interfaces</h2>
+            </div>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id342768"/>2.1. FRONTEND</h3>
+              </div>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id342774"/>2.1.1. BROWSER</h4>
+                </div>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id342779"/>2.1.1.1. General</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="section" lang="en">
+                <div class="titlepage">
+                  <div>
+                    <div>
+                      <h6 class="title"><a id="id342784"/>2.1.1.1.1. MVC</h6>
+                    </div>
+                  </div>
+                </div>
+                <div class="figure">
+                  <a id="id342793"/>
+                  <p class="title">
+                    <b>Figure 1. Frontend MVC</b>
+                  </p>
+                  <div class="mediaobject">
+                    <img src="figures/frontend_mvc.png" alt="Frontend MVC"/>
+                  </div>
+                </div>
+                <div class="figure">
+                  <a id="id342819"/>
+                  <p class="title">
+                    <b>Figure 2. Editor State Controller</b>
+                  </p>
+                  <div class="mediaobject">
+                    <img src="figures/frontend_editstatecontroller.png" alt="Editor State Controller"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id342847"/>2.1.1.2. Feature-Specific</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+            </p>
+              <div class="itemizedlist">
+                <ul>
+                  <li>
+                    <p>
+                  <a href="../analysis/specification.xhtml#FF1" class="olink">Feature F1</a>
+                </p>
+                  </li>
+                  <li>
+                    <p>
+                  <a href="../analysis/specification.xhtml#FF2" class="olink">Feature F2</a>
+                </p>
+                  </li>
+                  <li>
+                    <p>
+                  <a href="../analysis/specification.xhtml#FF3" class="olink">Feature F3</a>
+                </p>
+                  </li>
+                  <li>
+                    <p>
+                  <a href="../analysis/specification.xhtml#FF4" class="olink">Feature F4</a>
+                </p>
+                  </li>
+                  <li>
+                    <p>
+                  <a href="../analysis/specification.xhtml#FF5" class="olink">Feature F5</a>
+                </p>
+                  </li>
+                  <li>
+                    <p>
+                  <a href="../analysis/specification.xhtml#FF6" class="olink">Feature F6</a>
+                </p>
+                  </li>
+                  <li>
+                    <p>
+                  <a href="../analysis/specification.xhtml#FF7" class="olink">Feature F7</a>
+                </p>
+                  </li>
+                  <li>
+                    <p>
+                  <a href="../analysis/specification.xhtml#FF8" class="olink">Feature F8</a>
+                </p>
+                  </li>
+                  <li>
+                    <p>
+                  <a href="../analysis/specification.xhtml#FF9" class="olink">Feature F9</a>
+                </p>
+                  </li>
+                </ul>
+              </div>
+              <p>
+          </p>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id342971"/>2.1.2. STANDALONE</h4>
+                </div>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id342977"/>2.1.2.1. General</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id342983"/>2.1.2.2. Feature-Specific</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+            </p>
+              <div class="itemizedlist">
+                <ul>
+                  <li>
+                    <p>
+                  No features targeted for this milestone.
+                </p>
+                  </li>
+                </ul>
+              </div>
+              <p>
+          </p>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id343005"/>2.1.3. WEB</h4>
+                </div>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id343010"/>2.1.3.1. General</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id343016"/>2.1.3.2. Feature-Specific</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+            </p>
+              <div class="itemizedlist">
+                <ul>
+                  <li>
+                    <p>
+                  No features targeted for this milestone.
+                </p>
+                  </li>
+                </ul>
+              </div>
+              <p>
+          </p>
+            </div>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id343039"/>2.2. BACKEND</h3>
+              </div>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id343044"/>2.2.1. Generic</h4>
+                </div>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id343050"/>2.2.1.1. Bootstrapping the Back End</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="figure">
+                <a id="id343055"/>
+                <p class="title">
+                  <b>Figure 3. The Backend Service</b>
+                </p>
+                <div class="mediaobject">
+                  <img src="figures/uml_backendservice.png" width="432" alt="Backend Service"/>
+                </div>
+              </div>
+              <div class="figure">
+                <a id="id343084"/>
+                <p class="title">
+                  <b>Figure 4. Class <code class="code">BackendService</code></b>
+                </p>
+                <pre class="programlisting">
+#ifndef BACKENDSERVICE_IDL
+#define BACKENDSERVICE_IDL
+
+
+interface BackendService {
+  // Associations
+  // Attributes
+  // Operations
+  Backend getLocalBackend (  );
+  BackendStub getRemoteBackend ( in URI backendHost );
+};
+
+#endif
+
+            </pre>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id343120"/>2.2.1.2. Base Functionality of the Back End</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="figure">
+                <a id="id343125"/>
+                <p class="title">
+                  <b>Figure 5. The Backend</b>
+                </p>
+                <div class="mediaobject">
+                  <img src="figures/uml_backend.png" alt="Backend"/>
+                </div>
+              </div>
+              <div class="figure">
+                <a id="id343153"/>
+                <p class="title">
+                  <b>Figure 6. Interface <code class="code">IBackend</code></b>
+                </p>
+                <pre class="programlisting">
+#ifndef IBACKEND_IDL
+#define IBACKEND_IDL
+
+
+// interface
+interface IBackend {
+  // Associations
+  // Attributes
+  // Operations
+  abstract IDocument createNewDocumentInstanceFromEmpty (  ) = 0;
+  abstract IDocument createNewDocumentInstanceFromExisting (  ) = 0;
+  abstract IDocument createNewDocumentInstanceFromTemplate (  ) = 0;
+  abstract void serializeDocumentInstanceToFile ( in IDocument document, in String name, in URI path ) = 0;
+  abstract void serializeDocumentInstanceToCMS ( in IDocument document, in String name, in URI path ) = 0;
+  abstract boolean hasCapability ( in String capability ) = 0;
+  abstract void tearDown (  ) = 0;
+  abstract private DocumentRawDataContainer openFromFile (  ) = 0;
+  abstract private DocumentRawDataContainer openFromCMS (  ) = 0;
+  abstract private DocumentRawDataContainer openFromHttp (  ) = 0;
+  abstract private DocumentRawDataContainer saveToFile (  ) = 0;
+  abstract private DocumentRawDataContainer saveToCMS (  ) = 0;
+};
+
+#endif
+
+            </pre>
+              </div>
+              <div class="figure">
+                <a id="id343184"/>
+                <p class="title">
+                  <b>Figure 7. Class <code class="code">Backend</code></b>
+                </p>
+                <pre class="programlisting">
+#ifndef BACKEND_IDL
+#define BACKEND_IDL
+
+#include "ibackend.idl"
+
+interface Backend: IBackend {
+  // Associations
+  // Attributes
+  // Operations
+  IDocument createNewDocumentInstanceFromEmpty (  );
+  IDocument createNewDocumentInstanceFromExisting (  );
+  IDocument createNewDocumentInstanceFromTemplate (  );
+  void serializeDocumentInstanceToFile ( in IDocument document, in String name, in URI path );
+  void serializeDocumentInstanceToCMS ( in IDocument document, in String name, in URI path );
+  boolean hasCapability ( in String capability );
+  void tearDown (  );
+  private DocumentRawDataContainer openFromFile (  );
+  private DocumentRawDataContainer openFromCMS (  );
+  private DocumentRawDataContainer openFromHttp (  );
+  private DocumentRawDataContainer saveToFile (  );
+  private DocumentRawDataContainer saveToCMS (  );
+};
+
+#endif
+
+            </pre>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id343216"/>2.2.1.3. An Instance of a Document (XML, XSLT, CSS, Plain Text, ...)</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="figure">
+                <a id="id343222"/>
+                <p class="title">
+                  <b>Figure 8. A Document</b>
+                </p>
+                <div class="mediaobject">
+                  <img src="figures/uml_document.png" alt="Document"/>
+                </div>
+              </div>
+              <div class="figure">
+                <a id="id343251"/>
+                <p class="title">
+                  <b>Figure 9. Interface <code class="code">IDocument</code></b>
+                </p>
+                <pre class="programlisting">
+#ifndef IDOCUMENT_IDL
+#define IDOCUMENT_IDL
+
+
+// interface
+interface IDocument {
+  // Associations
+  // Attributes
+  // Operations
+  abstract Controller getController (  ) = 0;
+  abstract Model getModel (  ) = 0;
+  abstract String serialize (  ) = 0;
+  abstract void close (  ) = 0;
+};
+
+#endif
+
+            </pre>
+              </div>
+              <div class="figure">
+                <a id="id343282"/>
+                <p class="title">
+                  <b>Figure 10. Interface <code class="code">IValidatable</code></b>
+                </p>
+                <pre class="programlisting">
+#ifndef IVALIDATABLE_IDL
+#define IVALIDATABLE_IDL
+
+
+// interface
+interface IValidatable {
+  // Associations
+  // Attributes
+  // Operations
+  abstract ValidationErrors validate (  ) = 0;
+};
+
+#endif
+
+            </pre>
+              </div>
+              <div class="figure">
+                <a id="id343313"/>
+                <p class="title">
+                  <b>Figure 11. Class <code class="code">XMLDocument</code></b>
+                </p>
+                <pre class="programlisting">
+#ifndef XMLDOCUMENT_IDL
+#define XMLDOCUMENT_IDL
+
+#include "idocument.idl"
+#include "ivalidatable.idl"
+
+interface XMLDocument: IValidatable:  IDocument {
+  // Associations
+  // Attributes
+  private attribute Controller controller;
+  private attribute Model model;
+  // Operations
+  ValidationErrors validate (  );
+  Controller getController (  );
+  Model getModel (  );
+  String serialize (  );
+  void close (  );
+};
+
+#endif
+
+            </pre>
+              </div>
+              <div class="figure">
+                <a id="id343344"/>
+                <p class="title">
+                  <b>Figure 12. Class <code class="code">PlainDocument</code></b>
+                </p>
+                <pre class="programlisting">
+#ifndef PLAINDOCUMENT_IDL
+#define PLAINDOCUMENT_IDL
+
+#include "idocument.idl"
+
+interface PlainDocument: IDocument {
+  // Associations
+  // Attributes
+  private attribute Controller controller;
+  private attribute Model model;
+  // Operations
+  Controller getController (  );
+  Model getModel (  );
+  String serialize (  );
+  void close (  );
+};
+
+#endif
+
+            </pre>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id343376"/>2.2.1.4. A Container to Hold a Serialized File</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="figure">
+                <a id="id343382"/>
+                <p class="title">
+                  <b>Figure 13. Document Raw Data Container</b>
+                </p>
+                <div class="mediaobject">
+                  <img src="figures/uml_documentrawdatacontainer.png" width="270" alt="Document Raw Data Container"/>
+                </div>
+              </div>
+              <div class="figure">
+                <a id="id343412"/>
+                <p class="title">
+                  <b>Figure 14. Class <code class="code">DocumentRawDataContainer</code></b>
+                </p>
+                <pre class="programlisting">
+#ifndef DOCUMENTRAWDATACONTAINER_IDL
+#define DOCUMENTRAWDATACONTAINER_IDL
+
+
+interface DocumentRawDataContainer {
+  // Associations
+  // Attributes
+  attribute String serializedDocument;
+  attribute ??? metaData;
+  // Operations
+};
+
+#endif
+
+            </pre>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id343445"/>2.2.1.5. Document Model</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="figure">
+                <a id="id343450"/>
+                <p class="title">
+                  <b>Figure 15. Model</b>
+                </p>
+                <div class="mediaobject">
+                  <img src="figures/uml_model.png" width="43.2" alt="Model"/>
+                </div>
+              </div>
+              <div class="figure">
+                <a id="id343479"/>
+                <p class="title">
+                  <b>Figure 16. Class <code class="code">Model</code></b>
+                </p>
+                <pre class="programlisting">
+#ifndef MODEL_IDL
+#define MODEL_IDL
+
+
+interface Model {
+  // Associations
+  // Attributes
+  // Operations
+};
+
+#endif
+
+            </pre>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id343511"/>2.2.1.6. Document Controller</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="figure">
+                <a id="id343516"/>
+                <p class="title">
+                  <b>Figure 17. Controller</b>
+                </p>
+                <div class="mediaobject">
+                  <img src="figures/uml_controller.png" width="54" alt="Controller"/>
+                </div>
+              </div>
+              <div class="figure">
+                <a id="id343545"/>
+                <p class="title">
+                  <b>Figure 18. Class <code class="code">Controller</code></b>
+                </p>
+                <pre class="programlisting">
+#ifndef CONTROLLER_IDL
+#define CONTROLLER_IDL
+
+
+interface Controller {
+  // Associations
+  // Attributes
+  // Operations
+};
+
+#endif
+
+            </pre>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id343577"/>2.2.1.7. Facility to Communicate with the CMS</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="figure">
+                <a id="id343583"/>
+                <p class="title">
+                  <b>Figure 19. CMS</b>
+                </p>
+                <div class="mediaobject">
+                  <img src="figures/uml_cms.png" width="162" alt="CMS"/>
+                </div>
+              </div>
+              <div class="figure">
+                <a id="id343612"/>
+                <p class="title">
+                  <b>Figure 20. Interface <code class="code">ICMS</code></b>
+                </p>
+                <pre class="programlisting">
+#ifndef ICMS_IDL
+#define ICMS_IDL
+
+
+// interface
+interface ICMS {
+  // Associations
+  // Attributes
+  // Operations
+  abstract ??? new (  ) = 0;
+  abstract ??? open (  ) = 0;
+  abstract ??? save (  ) = 0;
+  abstract ??? saveAs (  ) = 0;
+  abstract ??? exit (  ) = 0;
+  abstract ??? queryDirectory (  ) = 0;
+  abstract ??? queryAssetType (  ) = 0;
+};
+
+#endif
+
+            </pre>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id343644"/>2.2.1.8. Editing XML Documents in WYSIWYG Mode with XSLT Applied</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+            </p>
+              <h6><a id="id343653"/>Tagging source document with IDs</h6>
+              <p>
+            </p>
+              <p>
+              All elements in the source document are tagged with a unique ID by applying the <code class="filename">sourcetagger.xsl</code> stlyesheet.
+            </p>
+              <p>
+            </p>
+              <p>
+              For example, a source document
+              </p>
+              <pre class="programlisting">
+&lt;foo&gt;
+  Some text.
+  &lt;bar&gt;
+    Hello.
+  &lt;/bar&gt;
+  Some more text.
+&lt;/foo&gt;
+              </pre>
+              <p>
+              would get transformed to
+              </p>
+              <pre class="programlisting">
+&lt;foo _yulup-id="951"&gt;
+  Some text.
+  &lt;bar _yulup-id="362"&gt;
+    Hello.
+  &lt;/bar&gt;
+  Some more text.
+&lt;/foo&gt;
+              </pre>
+              <p>
+              Note that the IDs are semi-random and do not neither imply order nor nesting levels.
+            </p>
+              <p>
+            </p>
+              <h6><a id="id343692"/>Creating a map of all elements</h6>
+              <p>
+            </p>
+              <p>
+              All elements are added into a map, consisting of ID/DOM node pairs.
+            </p>
+              <p>
+            </p>
+              <p>
+              For example:
+              </p>
+              <pre class="programlisting">
+951: ref to foo
+362: ref to bar
+              </pre>
+              <p>
+            </p>
+              <p>
+            </p>
+              <h6><a id="id343708"/>Transforming for display</h6>
+              <p>
+            </p>
+              <p>
+              The source document is transformed into its XHTML version by applying its associated stylesheet, which was first appended to the <code class="filename">idcopier.xsl</code> stylesheet which contains a rule to copy the source element's unique ID everytime text is extracted from this element's content and inserted into the XHTML document.
+            </p>
+              <p>
+            </p>
+              <p>
+              The result is an XHTML document consisting of nodes with no IDs and nodes with possibly not unique IDs (e.g. if the text of one source element was used twice). For exmaple:
+              </p>
+              <pre class="programlisting">
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;A Static Title&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;span _yulup-id="951"&gt;Some text.&lt;/span&gt;
+      &lt;emphasis&gt;&lt;span _yulup-id="362"&gt;Hello.&lt;/span&gt;&lt;/emphasis&gt;
+      &lt;span _yulup-id="951"&gt;Some more text.&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+              </pre>
+              <p>
+            </p>
+              <p>
+            </p>
+              <h6><a id="id343739"/>Creating a map of all tagged XHTML nodes</h6>
+              <p>
+            </p>
+              <p>
+              In order to propagate possible changes back to the source document, we first create a second map, mapping unique IDs to nodes using that ID. Since multiple nodes may be using the same ID in the XHTML form, this is a map consisting of ID/(list of DOM nodes) pairs.
+            </p>
+              <p>
+            </p>
+              <p>
+              For example:
+              </p>
+              <pre class="programlisting">
+951: [ref to "Some text." span] [ref to "Some more text." span]
+362: [ref to "Hello." span]
+              </pre>
+              <p>
+            </p>
+              <p>
+            </p>
+              <h6><a id="id343762"/>Propagating the changes back to the source document</h6>
+              <p>
+            </p>
+              <p>
+              For all unique IDs in the XHTML node map, the children of the corresponding node in the source document are removed, and all nodes in the XHTML form bearing that ID added to that node in the source document.
+            </p>
+              <p>
+            </p>
+              <p>
+              After an assumed user modification like
+              </p>
+              <pre class="programlisting">
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;A Static Title&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;span _yulup-id="951"&gt;I've modified some text.&lt;/span&gt;
+      &lt;emphasis&gt;&lt;span _yulup-id="362"&gt;Hola.&lt;/span&gt;&lt;/emphasis&gt;
+      &lt;span _yulup-id="951"&gt;I've modified some more text.&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+              </pre>
+              <p>
+              this would result in the following source document:
+              </p>
+              <pre class="programlisting">
+&lt;foo _yulup-id="951"&gt;
+  I've modified some text.
+  I've modified some more text.
+&lt;/foo&gt;
+              </pre>
+              <p>
+              Unfortunately, this means that the complete <code class="code">&lt;bar/&gt;</code> element is gone.
+            </p>
+              <p>
+          </p>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id343800"/>2.2.2. Feature-Specific</h4>
+                </div>
+              </div>
+            </div>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB1.1" class="olink">Feature B1.1</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB1.2" class="olink">Feature B1.2</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB2.1" class="olink">Feature B2.1</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB2.2" class="olink">Feature B2.2</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB3.3" class="olink">Feature B3.3</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB4.3" class="olink">Feature B4.3</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB5.3" class="olink">Feature B5.3</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB6.1" class="olink">Feature B6.1</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB6.2" class="olink">Feature B6.2</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB6.3" class="olink">Feature B6.3</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB7.1" class="olink">Feature B7.1</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB7.2" class="olink">Feature B7.2</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB7.6" class="olink">Feature B7.6</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB8" class="olink">Feature B8</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB9.1" class="olink">Feature B9.1</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB9.2" class="olink">Feature B9.2</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB11.1.1" class="olink">Feature B11.1.1</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB11.2.1" class="olink">Feature B11.2.1</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB11.3.1" class="olink">Feature B11.3.1</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB12" class="olink">Feature B12</a>
+            </p>
+                </li>
+                <li>
+                  <p>
+              <a href="../analysis/specification.xhtml#FB16" class="olink">Feature B16</a>
+            </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id344080"/>2.3. CONNECTOR</h3>
+              </div>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id344085"/>2.3.1. General</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id344091"/>2.3.2. Feature-Specifc</h4>
+                </div>
+              </div>
+            </div>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <p>
+              No features targeted for this milestone.
+            </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

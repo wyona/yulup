@@ -1,0 +1,40 @@
+<div element="article" href="entangled_xml.xhtml#id52600" number="">
+  <ttl>Entangled XML (eXML) Specification</ttl>
+  <xreftext>Entangled XML (eXML) Specification</xreftext>
+  <div element="section" href="entangled_xml.xhtml#id342753" number="1">
+    <ttl>Introduction</ttl>
+    <xreftext>Section 1, “Introduction”</xreftext>
+    <div element="section" href="entangled_xml.xhtml#copyright" number="1.1" targetptr="copyright">
+      <ttl>Copyright and License</ttl>
+      <xreftext>Section 1.1, “Copyright and License”</xreftext>
+    </div>
+    <div element="section" href="entangled_xml.xhtml#disclaimer" number="1.2" targetptr="disclaimer">
+      <ttl>Disclaimer</ttl>
+      <xreftext>Section 1.2, “Disclaimer”</xreftext>
+    </div>
+    <div element="section" href="entangled_xml.xhtml#feedback" number="1.3" targetptr="feedback">
+      <ttl>Feedback</ttl>
+      <xreftext>Section 1.3, “Feedback”</xreftext>
+    </div>
+  </div>
+  <div element="section" href="entangled_xml.xhtml#id342835" number="2">
+    <ttl>Overview</ttl>
+    <xreftext>Section 2, “Overview”</xreftext>
+  </div>
+  <div element="section" href="entangled_xml.xhtml#id342861" number="3">
+    <ttl>Example</ttl>
+    <xreftext>Section 3, “Example”</xreftext>
+  </div>
+  <div element="section" href="entangled_xml.xhtml#id342871" number="4">
+    <ttl>The eXML Schema</ttl>
+    <xreftext>Section 4, “The eXML Schema”</xreftext>
+    <div element="section" href="entangled_xml.xhtml#id342876" number="4.1">
+      <ttl>Overview</ttl>
+      <xreftext>Section 4.1, “Overview”</xreftext>
+    </div>
+    <div element="section" href="entangled_xml.xhtml#id342886" number="4.2">
+      <ttl>Schema</ttl>
+      <xreftext>Section 4.2, “Schema”</xreftext>
+    </div>
+  </div>
+</div>

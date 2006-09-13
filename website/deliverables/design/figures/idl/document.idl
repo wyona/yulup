@@ -1,0 +1,18 @@
+#ifndef DOCUMENT_IDL
+#define DOCUMENT_IDL
+
+#include "idocument.idl"
+
+interface Document: IDocument {
+  // Associations
+  // Attributes
+  private attribute Controller controller;
+  private attribute Model model;
+  // Operations
+  Controller getController (  );
+  Model getModel (  );
+  String serialize (  );
+  void close (  );
+};
+
+#endif

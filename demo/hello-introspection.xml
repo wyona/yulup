@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<introspection xmlns="http://www.wyona.org/neutron/1.0">
+
+<edit mime-type="text/xml" name="Hello OpenOffice">
+  <open url="hello.xml" method="GET"/>
+  <save url="hello.xml?yanel.resource.usecase=save" method="PUT"/>
+  <styles>
+    <style href="odt2xhtml.xsl"/>
+  </styles>
+</edit>
+
+</introspection>

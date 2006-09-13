@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<entry xmlns="http://www.w3.org/2005/Atom">
+ <title>Ulysses supports Atom Publishing Protocol</title>
+ <author><name>Michael Wechner</name></author>
+ <id>urn:yanel-uuid:atom:news-entries:ulysses-supports-APP.xml</id>
+ <link rel="edit" href="ulysses-supports-APP.xml"/>
+ <updated>2006-08-22T16:30:57-07:00</updated>
+ <summary type='html'>Ulysses supports APP</summary>
+ <content type='xhtml'>
+   <div xmlns='http://www.w3.org/1999/xhtml'>
+     <ul>
+       <li>Create new entries.</li>
+       <li>Update existing entries.</li>
+       <li>Delete entries.</li>
+     </ul>
+   </div>
+ </content>
+ <dc:subject xmlns:dc='http://purl.org/dc/elements/1.1/'>Ulysses supports APP</dc:subject>
+</entry>

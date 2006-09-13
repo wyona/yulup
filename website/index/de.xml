@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<homepage xmlns="http://ulysses.wyona.org/homepage/1.0">
+
+  <title>Willkommen bei Yulup</title>
+
+  <neutron href="introspection-index.xml"/>
+
+  <tabs>
+    <help name="Hilfe" href="de/hilfe.html"/>
+  </tabs>
+
+  <claim>Yulup ist gratis, open source and makes Content Management as simple as it gets.</claim>
+
+  <download-link href="download/ulysses-prototype-1-0.1.10-rc3-r16660.xpi"/>
+
+  <download-download>DOWNLOAD</download-download>
+  <download-ulysses>Yulup</download-ulysses>
+  <download-version>0.1.10-rc3</download-version>
+  <download-firefox>fuer Mozilla Firefox 1.5.x</download-firefox>
+  <download-size>257KB</download-size>
+
+<xhtml:html xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<xhtml:p>
+<xhtml:a href="download/index.html">Andere <!--systems and -->Versionen</xhtml:a> | <xhtml:a href="de/about.html">Mehr Informationen zu Yulup</xhtml:a>
+</xhtml:p>
+
+<xhtml:p>
+In case you need support or want to get in touch with the developers for whatever reason,
+please subscribe to one of the <xhtml:a href="mailing-lists.html">mailing lists</xhtml:a> or see the <xhtml:a href="faq.html">FAQ</xhtml:a>.
+</xhtml:p>
+</xhtml:html>
+
+</homepage>

@@ -1,0 +1,488 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<window id="uiEditorWindow"
+        orient="vertical"
+        align="stretch"
+        onload="initEditor()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript">
+<![CDATA[
+    // NOTE: for how to install a selection-listener, see http://lxr.mozilla.org/mozilla1.8.0/source/toolkit/components/viewsource/content/viewSource.js#219
+
+    const INSERT_TAB_STRING = "  ";
+    const OVERRIDE_CSS_URI  = "chrome://test/content/sourcemode-advanced-editing-test.css";
+
+    var gEditorElem    = null;
+    var gEditor        = null;
+    var gCaretReadonly = false;
+    var gLineNumber    = 1;
+
+    function initEditor() {
+        dump("######## YulupTEST:sourcemode-advanced-editing-test.js:initEditor() invoked\n");
+        // test dynamic tab insertion
+        var editorHbox = null;
+        var editorElem = null;
+
+        editorElem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "editor");
+        editorElem.setAttribute("type", "content");
+        editorElem.setAttribute("flex", "1");
+        editorElem.setAttribute("style", "border: 2px solid black; margin: 2px 2px 2px 2px;");
+        editorElem.setAttribute("onload", "event.stopPropagation()");
+        editorElem.setAttribute("onscroll", "onScrollHandler()");
+
+        editorHbox = document.getElementById("uiEditorHbox");
+        editorHbox.appendChild(editorElem);
+
+        gEditorElem = editorElem;
+
+        window.setTimeout(continueInit, 100);
+    }
+
+    function continueInit() {
+        dump("######## YulupTEST:sourcemode-advanced-editing-test.js:continueInit() invoked (chocked initialisation)\n");
+
+        var editorElem          = gEditorElem;
+        var selectionController = null;
+
+        // set up
+        editorElem.makeEditable("text", false);
+
+        gEditor = editorElem.getEditor(editorElem.contentWindow);
+        gEditor.QueryInterface(Components.interfaces.nsIEditor);
+
+        gEditor.enableUndo(true);
+        gEditor.rootElement.style.fontFamily = "-moz-fixed";
+        gEditor.rootElement.style.whiteSpace = "pre";
+        gEditor.rootElement.style.margin = 0;
+
+        createEditorContent(editorElem.contentDocument);
+
+        // hook up EditActionListener
+        gEditor.addEditActionListener(new EditActionListener());
+
+        //gEditor.rootElement.addEventListener("keypress", function (event) { event.preventBubble(); }, true);
+
+        // make the caret visible even if the current selection is not collapsed
+        selectionController = gEditor.selectionController;
+        selectionController.setCaretVisibilityDuringSelection(true);
+
+        // set override stylsheet
+        gEditor.QueryInterface(Components.interfaces.nsIEditorStyleSheets);
+        gEditor.addOverrideStyleSheet(OVERRIDE_CSS_URI);
+
+        gEditor.QueryInterface(Components.interfaces.nsIPlaintextEditor);
+
+        // hook up TextEditorKeyListener
+        //gSpecialKeyBindingsHandler = readlineKeyBindingsHandler;
+        editorElem.contentWindow.addEventListener("keypress", new ReadlineKeyBindingsListener(editorElem, gEditor), true);
+
+        editorElem.contentDocument.addEventListener("DOMNodeRemoved", domNodeRemovedHandler, false);
+        editorElem.contentDocument.addEventListener("DOMNodeInserted", domNodeInsertedHandler, false);
+
+        editorElem.contentDocument.addEventListener("scroll", onScrollHandler, true);
+
+        /*
+        gEditor.rootElement.onscroll = function (evt) {
+            alert('window ' + (evt ? evt.type : event.type));
+        };
+        */
+
+        /*
+        editorElem.contentWindow.addEventListener("scroll",
+                                                  function (evt) {
+                                                      alert('window ' + (evt ? evt.type : event.type));
+                                                  },
+                                                  true);
+        */
+
+        dump("editorElem status = \"" + editorElem.editingSession.editorStatus  + "\"\n");
+        dump("is editable = \"" + gEditor.isDocumentEditable  + "\"\n");
+    }
+
+    function onScrollHandler(aEvent) {
+        dump("######## YulupTEST:sourcemode-advanced-editing-test.js:onScrollHandler(\"" + aEvent + "\") invoked\n");
+    }
+
+    /**
+     * Creates the visual editing environment (line numbers,
+     * etc.).
+     *
+     * Creates the following structure:
+     * <body>
+     *   <div>                           = fringeContainer
+     *     line numbers, etc. go here
+     *   </div>                          = contentContainer
+     *     actual content goes here
+     *   </div>
+     * <body>
+     *
+     * @param  {HTMLDocument} aEditorContentDocument the content document in which to create the visuals
+     * @return {Undefined}    does not have a return value
+     */
+    function createEditorContent(aEditorContentDocument) {
+        var bodyNode         = null;
+        var childNode        = null;
+        var tmpChildNode     = null;
+        var fringeContainer  = null;
+        var contentContainer = null;
+
+        dump("######## YulupTEST:sourcemode-advanced-editing-test.js:createEditorContent(\"" + aEditorContentDocument + "\") invoked\n");
+
+        bodyNode = elemNodeIterator = aEditorContentDocument.evaluate("//body", aEditorContentDocument, aEditorContentDocument.createNSResolver(aEditorContentDocument.documentElement), XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
+
+        dump("######## YulupTEST:sourcemode-advanced-editing-test.js:createEditorContent: bodyNode = \"" + bodyNode + "\"\n");
+
+        fringeContainer = aEditorContentDocument.createElement("div");
+        fringeContainer.setAttribute("id", "fringeContainer");
+
+        contentContainer = aEditorContentDocument.createElement("div");
+        contentContainer.setAttribute("id", "contentContainer");
+
+        // add first line number to the fringe
+        fringeContainer.appendChild(createLineNumber(aEditorContentDocument, 1));
+        fringeContainer.style.setProperty("width", "1em", "");
+
+        // add empty text node to the edit area
+        contentContainer.appendChild(aEditorContentDocument.createTextNode("foo"));
+
+        // move all content of body node to the contentColumnNode
+        childNode = bodyNode.firstChild;
+        while (childNode != null) {
+            /* Use a tmp variable to hold the node we want to work on,
+             * so we can already iterate to the next. If we not go to
+             * the next child node immediately, nextSibling would return
+             * null after having moved the node using appendChild. */
+            tmpChildNode = childNode;
+            childNode    = childNode.nextSibling;
+
+            contentContainer.appendChild(tmpChildNode);
+        }
+
+        // glue the nodes together
+        bodyNode.appendChild(fringeContainer);
+        bodyNode.appendChild(contentContainer);
+    }
+
+    function markLineWarn(aEditorContentDocument, aLineNumber) {
+        var lineNumberSpan = null;
+
+        dump("######## YulupTEST:sourcemode-advanced-editing-test.js:markLineWarn(\"" + aEditorContentDocument + "\", \"" + aLineNumber + "\") invoked\n");
+
+        lineNumberSpan = aEditorContentDocument.getElementById("line" + aLineNumber);
+        lineNumberSpan.setAttribute("class", "warning");
+    }
+
+    function markLineError(aEditorContentDocument, aLineNumber) {
+        var lineNumberSpan = null;
+
+        lineNumberSpan = aEditorContentDocument.getElementById("line" + aLineNumber);
+        lineNumberSpan.setAttribute("class", "error");
+    }
+
+    function unmarkLine(aEditorContentDocument, aLineNumber) {
+        var lineNumberSpan = null;
+
+        lineNumberSpan = aEditorContentDocument.getElementById("line" + aLineNumber);
+        lineNumberSpan.removeAttribute("class");
+    }
+
+    function createLineNumber(aEditorContentDocument, aLineNumber) {
+        var lineNumberSpan = null;
+
+        lineNumberSpan = aEditorContentDocument.createElement("span");
+        lineNumberSpan.setAttribute("id", "line" + aLineNumber);
+
+        lineNumberSpan.appendChild(aEditorContentDocument.createTextNode(aLineNumber));
+
+        return lineNumberSpan;
+    }
+
+    function domNodeRemovedHandler(aEvent) {
+        dump("######## YulupTEST:sourcemode-advanced-editing-test.js:domNodeRemovedHandler(\"" + aEvent.target.nodeName + "\") invoked\n");
+
+        if (aEvent.target.nodeName.toLowerCase() == "br" && aEvent.relatedNode.getAttribute("id") == "contentContainer")
+            updateFringeDelete();
+    }
+
+    function domNodeInsertedHandler(aEvent) {
+        dump("######## YulupTEST:sourcemode-advanced-editing-test.js:domNodeInsertedHandler(\"" + aEvent.target.nodeName + "\") invoked\n");
+
+        if (aEvent.target.nodeName.toLowerCase() == "br" && aEvent.relatedNode.getAttribute("id") == "contentContainer")
+            updateFringeInsert();
+    }
+
+
+    function updateFringeInsert(aChild, aParent) {
+        var fringeContainer = null;
+
+        dump("######## YulupTEST:sourcemode-advanced-editing-test.js:updateFringeInsert(\"" + aChild + "\", \"" + aParent + "\") invoked\n");
+
+        //if (aParent.getAttribute("id") == "contentContainer" && aChild.nodeName.toLowerCase() == "br") {
+
+        // add new line number
+        fringeContainer = gEditorElem.contentDocument.getElementById("fringeContainer");
+
+        // adjust fringe width
+        fringeContainer.style.setProperty("width", ((new String(++gLineNumber)).length + 0) + "em", "");
+
+        // add line number
+        fringeContainer.appendChild(createLineNumber(gEditorElem.contentDocument, gLineNumber));
+
+        //}
+    }
+
+    function updateFringeDelete(aNode) {
+        var fringeContainer = null;
+
+        dump("######## YulupTEST:sourcemode-advanced-editing-test.js:updateFringeDelete(\"" + aNode + "\") invoked\n");
+
+        // TODO: this whole thing seems to be a bit unreliable. Maybe it would be better to just run through the contentContainer and recount all the "br" nodes upon delete? Do some performance tests.
+
+        //if (aNode.parentNode && aNode.parentNode.getAttribute("id") == "contentContainer" && aNode.nodeName.toLowerCase() == "br") {
+
+        // remove last line number
+        if (gLineNumber - 1 != 0) {
+            fringeContainer = gEditorElem.contentDocument.getElementById("fringeContainer");
+
+            fringeContainer.removeChild(fringeContainer.lastChild);
+
+            gLineNumber--;
+
+            // adjust fringe width
+            fringeContainer.style.setProperty("width", ((new String(gLineNumber)).length + 0) + "em", "");
+        }
+        //}
+    }
+
+    function ReadlineKeyBindingsListener(aEditorElem, aEditor, aControllers) {
+        dump("######## YulupTEST:sourcemode-advanced-editing-test.js:ReadlineKeyBindingsListener() invoked\n");
+
+        this.editorElem  = aEditorElem;
+        this.editor      = aEditor;
+        this.controllers = aControllers;
+    }
+
+    ReadlineKeyBindingsListener.prototype = {
+        editorElem       : null,
+        editor           : null,
+        commandController: null,
+
+        handleEvent: function (aKeyEvent) {
+            var moveController = null;
+
+            dump("######## YulupTEST:sourcemode-advanced-editing-test.js:ReadlineKeyBindingsListener:handleEvent() invoked\n");
+
+            // prevent keypress events from invoking FAYT
+            aKeyEvent.preventBubble();
+
+            switch (String.fromCharCode(aKeyEvent.charCode)) {
+            case "b":
+            case "B":
+                dump("char code = b\n");
+                if (!aKeyEvent.ctrlKey) {
+                    break;
+                } else {
+                    moveController = this.editorElem.contentWindow.controllers.getControllerForCommand("cmd_charPrevious");
+                    moveController.doCommand("cmd_charPrevious");
+
+                    // we consumed this event
+                    aKeyEvent.preventDefault();
+                    return true;
+                    break;
+                }
+            case "d":
+                dump("char code = d\n");
+                if (!aKeyEvent.ctrlKey) {
+                    break;
+                } else {
+                    this.sendNewKeyEvent(aKeyEvent, Components.interfaces.nsIDOMKeyEvent.DOM_VK_DELETE, 0);
+
+                    // we consumed this event
+                    aKeyEvent.preventDefault();
+                    return true;
+                    break;
+                }
+            case "f":
+            case "F":
+                dump("char code = f\n");
+                if (!aKeyEvent.ctrlKey) {
+                    break;
+                } else {
+                    if (aKeyEvent.shiftKey) {
+                        this.editor.selectionController.characterMove(true, true);
+                    } else {
+                        this.editor.selectionController.characterMove(true, false);
+                    }
+
+                    // we consumed this event
+                    aKeyEvent.preventDefault();
+                    return true;
+                    break;
+                }
+            case "n":
+            case "N":
+                dump("char code = n\n");
+                if (!aKeyEvent.ctrlKey) {
+                    break;
+                } else {
+                    if (aKeyEvent.shiftKey) {
+                        this.editor.selectionController.lineMove(true, true);
+                    } else {
+                        this.editor.selectionController.lineMove(true, false);
+                    }
+
+                    // we consumed this event
+                    aKeyEvent.preventDefault();
+                    return true;
+                    break;
+                }
+            case "p":
+            case "P":
+                dump("char code = p\n");
+                if (!aKeyEvent.ctrlKey) {
+                    break;
+                } else {
+                    if (aKeyEvent.shiftKey) {
+                        this.editor.selectionController.lineMove(false, true);
+                    } else {
+                        this.editor.selectionController.lineMove(false, false);
+                    }
+
+                    // we consumed this event
+                    aKeyEvent.preventDefault();
+                    return true;
+                    break;
+                }
+            }
+
+            return false;
+        },
+
+        sendNewKeyEvent: function (aReferenceEvent, aKeyCode, aCharCode) {
+            var event = null;
+
+            event = document.createEvent("KeyEvents");
+            dump("Event created\n");
+
+            event.initKeyEvent(aReferenceEvent.type, aReferenceEvent.canBubble, aReferenceEvent.cancelable, aReferenceEvent.view, false, false, false, false, aKeyCode, aCharCode);
+            dump("Event initialised\n");
+
+            this.editorElem.contentWindow.dispatchEvent(event);
+            dump("Event dispatched\n");
+        }
+    }
+
+    function addText() {
+        dump("######## YulupTEST:sourcemode-advanced-editing-test.js:addText() invoked\n");
+
+        gEditor.insertText("Hello?");
+    }
+
+    function fillEditor() {
+        var documentString = "<html><head></head><body>Some editable text. <span>Some none-editable text.</span> Some editable text.</body>";
+
+        dump("######## YulupTEST:sourcemode-advanced-editing-test.js:fillEditor() invoked\n");
+
+        gEditor.selectAll();
+        gEditor.deleteSelection(0);
+        gEditor.beginningOfDocument();
+        gEditor.insertText(documentString);
+        gEditor.beginningOfDocument();
+    }
+
+    /**
+     * EditActionListener constructor. Instantiates a new object of
+     * type EditActionListener.
+     *
+     * Note that this type implements the nsIEditActionListener
+     * interface.
+     *
+     * @constructor
+     * @return {EditActionListener}
+     */
+    function EditActionListener() {
+        /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:EditActionListener() invoked.\n");
+    }
+
+    EditActionListener.prototype = {
+        WillCreateNode: function (aTag, aParent, aPosition) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:WillCreateNode: tag = \"" + aTag + "\", parent = \"" + aParent.nodeName + "\", position = \"" + aPosition + "\"\n");
+        },
+
+        DidCreateNode: function (aTag, aNode, aParent, aPosition, aResult) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:DidCreateNode:  tag = \"" + aTag + "\", node = \"" + aNode + "\", parent = \"" + aParent.nodeName + "\", position = \"" + aPosition + "\", result = \"" + aResult + "\"\n");
+
+            //updateFringeInsert(aNode, aParent);
+        },
+
+        WillInsertNode: function (aNode, aParent, aPosition) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:WillInsertNode: node = \"" + aNode.nodeName + "\", parent = \"" + aParent.nodeName + "\", position = \"" + aPosition + "\"\n");
+        },
+
+        DidInsertNode: function (aNode, aParent, aPosition, aResult) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:DidInsertNode:  node = \"" + aNode.nodeName + "\", parent = \"" + aParent.nodeName + "\", position = \"" + aPosition + "\", result = \"" + aResult + "\"\n");
+        },
+
+        WillDeleteNode: function (aChild) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:WillDeleteNode: child = \"" + aChild.nodeName + "\"\n");
+
+            //updateFringeDelete(aChild);
+        },
+
+        DidDeleteNode: function (aChild, aResult) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:DidDeleteNode:  child = \"" + aChild.nodeName + "\", result = \"" + aResult + "\"\n");
+        },
+
+        WillSplitNode: function (aExistingRightNode, aOffset) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:WillSplitNode:  right node = \"" + aExistingRightNode.nodeName + "\", offset = \"" + aOffset + "\"\n");
+        },
+
+        DidSplitNode: function (aExistingRightNode, aOffset, aNewLeftNode, aResult) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:DidSplitNode:   right node = \"" + aExistingRightNode.nodeName + "\", offset = \"" + aOffset + "\", new left node = \"" + aNewLeftNode.nodeName + "\", result = \"" + aResult + "\"\n");
+        },
+
+        WillJoinNodes: function (aLeftNode, aRightNode, aParent) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:WillJoinNodes:  left node = \"" + aLeftNode.nodeName + "\", right node = \"" + aRightNode.nodeName + "\", parent node = \"" + aParent.nodeName + "\"\n");
+        },
+
+        DidJoinNodes: function (aLeftNode, aRightNode, aParent, aResult) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:DidJoinNodes:   left node = \"" + aLeftNode.nodeName + "\", right node = \"" + aRightNode.nodeName + "\", parent node = \"" + aParent.nodeName + "\", result = \"" + aResult + "\"\n");
+        },
+
+        WillInsertText: function (aTextNode, aOffset, aString) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:WillInsertText: text node = \"" + aTextNode.nodeName + "\", offset = \"" + aOffset + "\", string = \"" + aString + "\"\n");
+        },
+
+        DidInsertText: function (aTextNode, aOffset, aString, aResult) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:DidInsertText: text node = \"" + aTextNode.nodeName + "\", offset = \"" + aOffset + "\", string = \"" + aString + "\", result = \"" + aResult + "\"\n");
+        },
+
+        WillDeleteText: function (aTextNode, aOffset, aLength) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:WillDeleteText: text node = \"" + aTextNode.nodeName + "\", offset = \"" + aOffset + "\", length = \"" + aLength + "\"\n");
+        },
+
+        DidDeleteText: function (aTextNode, aOffset, aLength, aResult) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:DidDeleteText: text node = \"" + aTextNode.nodeName + "\", offset = \"" + aOffset + "\", length = \"" + aLength + "\", result = \"" + aResult + "\"\n");
+        },
+
+        WillDeleteSelection: function (aSelection) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:WillDeleteSelection: selection = \"" + aSelection + "\"\n");
+        },
+
+        DidDeleteSelection: function (aSelection) {
+            /* DEBUG */ dump("######## YulupTEST:sourcemode-advanced-editing-test.js:DidDeleteSelection: selection = \"" + aSelection + "\"\n");
+        }
+    };
+]]>
+  </script>
+
+  <button label="Mark line 10 as warn" oncommand="markLineWarn(gEditorElem.contentDocument, 10)"/>
+  <button label="Mark line 3 as error" oncommand="markLineError(gEditorElem.contentDocument, 3)"/>
+  <hbox id="uiEditorHbox" flex="1">
+    <button label="Add Text" oncommand="addText()"/>
+  </hbox>
+
+</window>

@@ -1,0 +1,176 @@
+<div element="article" href="development_policy.xhtml#id52600" number="">
+  <ttl>Yulup Development Policy</ttl>
+  <xreftext>Yulup Development Policy</xreftext>
+  <div element="section" href="development_policy.xhtml#id342753" number="1">
+    <ttl>Development Rules</ttl>
+    <xreftext>Section 1, “Development Rules”</xreftext>
+    <div element="section" href="development_policy.xhtml#id342758" number="1.1">
+      <ttl>Methodology</ttl>
+      <xreftext>Section 1.1, “Methodology”</xreftext>
+      <div element="section" href="development_policy.xhtml#id342711" number="1.1.1">
+        <ttl>Unit Tests</ttl>
+        <xreftext>Section 1.1.1, “Unit Tests”</xreftext>
+      </div>
+      <div element="section" href="development_policy.xhtml#id342782" number="1.1.2">
+        <ttl>Design by Contract</ttl>
+        <xreftext>Section 1.1.2, “Design by Contract”</xreftext>
+      </div>
+    </div>
+    <div element="section" href="development_policy.xhtml#id342821" number="1.2">
+      <ttl>Coding Style</ttl>
+      <xreftext>Section 1.2, “Coding Style”</xreftext>
+    </div>
+    <div element="section" href="development_policy.xhtml#id342853" number="1.3">
+      <ttl>Coding Practices</ttl>
+      <xreftext>Section 1.3, “Coding Practices”</xreftext>
+    </div>
+  </div>
+  <div element="section" href="development_policy.xhtml#id343012" number="2">
+    <ttl>Directory Structure</ttl>
+    <xreftext>Section 2, “Directory Structure”</xreftext>
+    <obj element="co" href="development_policy.xhtml#co.mozilla" number="" targetptr="co.mozilla">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(1)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.m.gecko-sdk" number="" targetptr="co.m.gecko-sdk">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(2)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.m.g.platform" number="" targetptr="co.m.g.platform">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(3)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.m.xulrunner" number="" targetptr="co.m.xulrunner">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(4)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.m.x.bin" number="" targetptr="co.m.x.bin">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(5)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.m.x.b.platform" number="" targetptr="co.m.x.b.platform">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(6)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.m.x.src" number="" targetptr="co.m.x.src">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(7)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.m.x.s.mozilla" number="" targetptr="co.m.x.s.mozilla">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(8)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.m.x.s.cvsco.log" number="" targetptr="co.m.x.s.cvsco.log">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(9)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.m.mozilla-tree.config" number="" targetptr="co.m.mozilla-tree.config">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(10)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.yulup" number="" targetptr="co.yulup">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(11)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.bin" number="" targetptr="co.p.bin">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(12)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.b.platform" number="" targetptr="co.p.b.platform">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(13)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.pkg" number="" targetptr="co.p.pkg">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(14)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.p.platform" number="" targetptr="co.p.p.platform">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(15)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.src" number="" targetptr="co.p.src">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(16)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.backend" number="" targetptr="co.p.s.backend">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(17)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.b.public" number="" targetptr="co.p.s.b.public">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(18)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.b.src" number="" targetptr="co.p.s.b.src">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(19)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.b.test" number="" targetptr="co.p.s.b.test">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(20)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.connector" number="" targetptr="co.p.s.connector">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(21)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.frontend" number="" targetptr="co.p.s.frontend">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(22)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.f.public" number="" targetptr="co.p.s.f.public">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(23)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.f.src" number="" targetptr="co.p.s.f.src">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(24)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.f.test" number="" targetptr="co.p.s.f.test">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(25)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.f.variants" number="" targetptr="co.p.s.f.variants">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(26)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.f.v.browser" number="" targetptr="co.p.s.f.v.browser">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(27)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.f.v.b.public" number="" targetptr="co.p.s.f.v.b.public">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(28)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.f.v.b.src" number="" targetptr="co.p.s.f.v.b.src">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(29)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.f.v.b.test" number="" targetptr="co.p.s.f.v.b.test">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(30)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.f.v.standalone" number="" targetptr="co.p.s.f.v.standalone">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(31)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.f.v.web" number="" targetptr="co.p.s.f.v.web">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(32)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.p.s.install.rdf" number="" targetptr="co.p.s.install.rdf">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(33)</xreftext>
+    </obj>
+    <obj element="co" href="development_policy.xhtml#co.makefile" number="" targetptr="co.makefile">
+      <ttl>???TITLE???</ttl>
+      <xreftext>(34)</xreftext>
+    </obj>
+  </div>
+  <div element="section" href="development_policy.xhtml#build_infrastructure" number="3" targetptr="build_infrastructure">
+    <ttl>Build Infrastructure</ttl>
+    <xreftext>Section 3, “Build Infrastructure”</xreftext>
+    <obj element="title" href="development_policy.xhtml#build_infrastructure.title" number="" targetptr="build_infrastructure.title">
+      <ttl>Build Infrastructure</ttl>
+      <xreftext>Section 3, “Build Infrastructure”</xreftext>
+    </obj>
+  </div>
+</div>

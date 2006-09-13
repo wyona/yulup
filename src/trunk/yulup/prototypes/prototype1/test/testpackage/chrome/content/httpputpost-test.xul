@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+
+<window id="uiEditorWindow"
+        orient="vertical"
+        align="stretch"
+        onload="onLoadHandler()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript">
+function onLoadHandler() {
+    /* DEBUG */ dump("YulupTEST:httpputpost-test.js:onLoadHandler() invoked\n");
+
+    var uri                   = "http://www.wyona.org/osr-101/clients/yulup/index.html?yanel.resource.usecase=checkin";
+    var stringInputStream     = null;
+    var ioService             = null;
+    var channel               = null;
+    var uploadChannel         = null;
+    var streamListener        = null;
+
+    stringInputStream = Components.classes["@mozilla.org/io/string-input-stream;1"].createInstance(Components.interfaces.nsIStringInputStream);
+    stringInputStream.setData("Some test data", -1);
+
+    ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+
+    channel = ioService.newChannelFromURI(ioService.newURI(uri, null, null)).QueryInterface(Components.interfaces.nsIHttpChannel);
+
+    uploadChannel = channel.QueryInterface(Components.interfaces.nsIUploadChannel);
+    uploadChannel.setUploadStream(stringInputStream, "text/html", -1);
+
+    streamListener = new StreamListener(uploadFinished);
+
+    channel.requestMethod = "PUT";
+
+    channel.asyncOpen(streamListener, null);
+}
+
+function uploadFinished(aDocumentData) {
+    /* DEBUG */ dump("YulupTEST:httpputpost-test.js:uploadFinished() invoked\n");
+
+    if (aDocumentData) {
+        // output data
+        /* DEBUG */ dump("YulupTEST:httpputpost-test.js:uploadFinished: document data =\n" + aDocumentData + "\n");
+    } else {
+        // load failed
+        /* DEBUG */ dump("YulupTEST:httpputpost-test.js:uploadFinished: upload failed\n");
+    }
+}
+
+function StreamListener(aCallbackFunction) {
+    /* DEBUG */ dump("YulupTEST:httpputpost-test.js:StreamListener(\"" + aCallbackFunction + "\") invoked\n");
+
+    this.loadFinishedCallback = aCallbackFunction;
+}
+
+StreamListener.prototype = {
+    loadFinishedCallback: null,
+    documentData        : null,
+
+    QueryInterface: function (aUUID) {
+        /* DEBUG */ dump("YulupTEST:httpputpost-test.js:StreamListener.QueryInterface(\"" + aUUID + "\") invoked\n");
+
+        if (aUUID.equals(Components.interfaces.nsISupports) ||
+            aUUID.equals(Components.interfaces.nsISupportsWeakReference) ||
+            aUUID.equals(Components.interfaces.nsIStreamListener) ||
+            aUUID.equals(Components.interfaces.nsIRequestObserver)) {
+            return this;
+        } else {
+            throw Components.results.NS_NOINTERFACE;
+        }
+    },
+
+    GetWeakReference: function () {
+        /* DEBUG */ dump("YulupTEST:httpputpost-test.js:StreamListener.GetWeakReference() invoked\n");
+
+        throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
+    },
+
+    onStartRequest: function (aRequest, aContext) {
+        /* DEBUG */ dump("YulupTEST:httpputpost-test.js:StreamListener.onStartRequest(\"" + aRequest + "\", \"" + aContext + "\") invoked\n");
+
+        this.documentData = "";
+    },
+
+    onStopRequest: function (aRequest, aContext, aStatusCode) {
+        /* DEBUG */ dump("YulupTEST:httpputpost-test.js:StreamListener.onStopRequest(\"" + aRequest + "\", \"" + aContext + "\", \"" + aStatusCode + "\") invoked\n");
+
+        if (Components.isSuccessCode(aStatusCode)) {
+            // request was successfull
+            this.loadFinishedCallback(this.documentData);
+        } else {
+            // request failed
+            this.loadFinishedCallback(null);
+        }
+    },
+
+    onDataAvailable: function (aRequest, aContext, aInputStream, aOffset, aCount) {
+        var scriptableInputStream = null;
+
+        /* DEBUG */ dump("YulupTEST:httpputpost-test.js:StreamListener.onDataAvailable(\"" + aRequest + "\", \"" + aContext + "\", \"" + aInputStream + "\", \"" + aOffset + "\", \"" + aCount + "\") invoked\n");
+
+        scriptableInputStream = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance(Components.interfaces.nsIScriptableInputStream);
+        scriptableInputStream.init(aInputStream);
+
+        // read aCount bytes from the stream
+        this.documentData += scriptableInputStream.read(aCount);
+    }
+}
+  </script>
+
+  <button label="Hello"/>
+
+</window>

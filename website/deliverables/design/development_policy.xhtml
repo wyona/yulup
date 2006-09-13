@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Yulup Development Policy</title>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.69.1"/>
+    <meta name="description" content="The development policy for Yulup."/>
+  </head>
+  <body>
+    <div class="article" lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a id="id52601"/>Yulup Development Policy</h1>
+          </div>
+          <div>
+            <div class="authorgroup">
+              <div class="author">
+                <h3 class="author"><span class="firstname">Andreas</span> <span class="surname">Wuest</span></h3>
+                <div class="affiliation">
+                  <span class="corpname">Wyona AG<br/></span>
+                </div>
+                <code class="email">&lt;<a href="mailto:awuest@student.ethz.ch">awuest@student.ethz.ch</a>&gt;</code>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="pubdate">2006-05-17</p>
+          </div>
+          <div>
+            <div class="revhistory">
+              <table border="1" width="100%" summary="Revision history">
+                <tr>
+                  <th align="left" valign="top" colspan="3">
+                    <b>Revision History</b>
+                  </th>
+                </tr>
+                <tr>
+                  <td align="left">Revision 1.0</td>
+                  <td align="left">2006-05-17</td>
+                  <td align="left">AW</td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="3">First initial draft.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div class="abstract">
+              <p class="title">
+                <b>Abstract</b>
+              </p>
+              <p>The development policy for <span class="emphasis"><em>Yulup</em></span>.</p>
+            </div>
+          </div>
+        </div>
+        <hr/>
+      </div>
+      <div class="toc">
+        <p>
+          <b>Table of Contents</b>
+        </p>
+        <dl>
+          <dt>
+            <span class="section">
+              <a href="#id342753">1. Development Rules</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id342759">1.1. Methodology</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#id342712">1.1.1. Unit Tests</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id342782">1.1.2. Design by Contract</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#id342822">1.2. Coding Style</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#id342853">1.3. Coding Practices</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id343012">2. Directory Structure</a>
+            </span>
+          </dt>
+          <dt>
+            <span class="section">
+              <a href="#build_infrastructure">3. Build Infrastructure</a>
+            </span>
+          </dt>
+        </dl>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id342753"/>1. Development Rules</h2>
+            </div>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id342759"/>1.1. Methodology</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        The development of Yulup is test-driven. CppUnit is employed as the testing frame work. Additionally, we use a sub-set of Design-by-Contract, namely pre- and postconditions, to ensure correctness.
+      </p>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id342712"/>1.1.1. Unit Tests</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          Before implementing a new part of the interface, first write a fixture with CppUnit, and afterwards write the actual business logic.
+        </p>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id342782"/>1.1.2. Design by Contract</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          Pre- and postconditions are defined in the interface files themselves, and must be implemented in the actual implementation using either <code class="code">assert</code> statements (Java) or <code class="code">NS_PRECONDITON</code> and <code class="code">NS_POSTCONDITION</code> macros from <code class="code">nsDebug.h</code> (see <a href="http://lxr.mozilla.org/mozilla1.8.0/source/xpcom/glue/nsDebug.h">http://lxr.mozilla.org/mozilla1.8.0/source/xpcom/glue/nsDebug.h</a>).
+        </p>
+            <p>
+          Remember that preconditions can only get weaker in subclasses, and postconditions accordingly can only get stronger.
+        </p>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id342822"/>1.2. Coding Style</h3>
+              </div>
+            </div>
+          </div>
+          <div class="itemizedlist">
+            <ul>
+              <li>
+                <p><b>C++/Java/JavaScript. </b>
+            Use a tab with of 4 spaces. No tabs allowed.
+          </p>
+              </li>
+              <li>
+                <p><b>XML. </b>
+            Use a tab with of 2 spaces. No tabs allowed.
+          </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id342853"/>1.3. Coding Practices</h3>
+              </div>
+            </div>
+          </div>
+          <div class="itemizedlist">
+            <ul>
+              <li>
+                <p>
+                  <b>C++. </b>
+                </p>
+                <div class="itemizedlist">
+                  <ul>
+                    <li>
+                      <p>
+                  Do not use exceptions. They are not portable.
+                </p>
+                    </li>
+                    <li>
+                      <p>
+                  For further rules, see <a href="http://www.mozilla.org/hacking/mozilla-style-guide.html">Mozilla Style Guide</a> and the <a href="http://www.mozilla.org/hacking/portable-cpp.html">C++ Portability Guide</a>. They are normative for Yulup.
+                </p>
+                    </li>
+                    <li>
+                      <p>
+                  Use the licensing templates from <a href="http://www.mozilla.org/MPL/boilerplate-1.1/">http://www.mozilla.org/MPL/boilerplate-1.1/</a>.
+                </p>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <p>
+                  <b>Java. </b>
+                </p>
+                <div class="itemizedlist">
+                  <ul>
+                    <li>
+                      <p>
+                  Use camelNotation.
+                </p>
+                    </li>
+                    <li>
+                      <p>
+                  Use the licensing templates from <a href="http://www.mozilla.org/MPL/boilerplate-1.1/">http://www.mozilla.org/MPL/boilerplate-1.1/</a>.
+                </p>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <p>
+                  <b>JavaScript. </b>
+                </p>
+                <div class="itemizedlist">
+                  <ul>
+                    <li>
+                      <p>
+                  Use camelNotation.
+                </p>
+                    </li>
+                    <li>
+                      <p>
+                  Prefix formal parameters with "<code class="code">a</code>".
+                </p>
+                    </li>
+                    <li>
+                      <p>
+                  Prefix globals with "<code class="code">g</code>".
+                </p>
+                    </li>
+                    <li>
+                      <p>
+                  Use Java-style constants (all CAPS with underscores).
+                </p>
+                    </li>
+                    <li>
+                      <p>
+                  Use the licensing templates from <a href="http://www.mozilla.org/MPL/boilerplate-1.1/">http://www.mozilla.org/MPL/boilerplate-1.1/</a>.
+                </p>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id343012"/>2. Directory Structure</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      The directory structure of the source directory is as follows:
+      </p>
+        <pre class="programlisting">
+./
+ |-- mozilla                                          <a id="co.mozilla"/>(1)
+ |    |-- gecko-sdk                                   <a id="co.m.gecko-sdk"/>(2)
+ |    |    |-- PLATFORM                               <a id="co.m.g.platform"/>(3)
+ |    |    `-- PLATFORM...
+ |    |-- xulrunner                                   <a id="co.m.xulrunner"/>(4)
+ |    |    |-- bin                                    <a id="co.m.x.bin"/>(5)
+ |    |    |    |-- PLATFORM                          <a id="co.m.x.b.platform"/>(6)
+ |    |    |    `-- PLATFORM...
+ |    |    `-- src                                    <a id="co.m.x.src"/>(7)
+ |    |         |-- mozilla                           <a id="co.m.x.s.mozilla"/>(8)
+ |    |         `-- cvsco.log                         <a id="co.m.x.s.cvsco.log"/>(9)
+ |    `-- mozilla-tree.config                         <a id="co.m.mozilla-tree.config"/>(10)
+ |-- yulup                                            <a id="co.yulup"/>(11)
+ |    |-- bin                                         <a id="co.p.bin"/>(12)
+ |    |    |-- PLATFORM                               <a id="co.p.b.platform"/>(13)
+ |    |    `-- PLATFORM...
+ |    |-- pkg                                         <a id="co.p.pkg"/>(14)
+ |    |    |-- PLATFORM                               <a id="co.p.p.platform"/>(15)
+ |    |    `-- PLATFORM...
+ |    `-- src                                         <a id="co.p.src"/>(16)
+ |         |-- backend                                <a id="co.p.s.backend"/>(17)
+ |         |    |-- public                            <a id="co.p.s.b.public"/>(18)
+ |         |    |    `-- Makefile.in
+ |         |    |-- src                               <a id="co.p.s.b.src"/>(19)
+ |         |    |    `-- Makefile.in
+ |         |    `-- test                              <a id="co.p.s.b.test"/>(20)
+ |         |         `-- Makefile.in
+ |         |-- connector                              <a id="co.p.s.connector"/>(21)
+ |         |-- frontend                               <a id="co.p.s.frontend"/>(22)
+ |         |    |-- public                            <a id="co.p.s.f.public"/>(23)
+ |         |    |    `-- Makefile.in
+ |         |    |-- src                               <a id="co.p.s.f.src"/>(24)
+ |         |    |    `-- Makefile.in
+ |         |    |-- test                              <a id="co.p.s.f.test"/>(25)
+ |         |    |    `-- Makefile.in
+ |         |    `-- variants                          <a id="co.p.s.f.variants"/>(26)
+ |         |         |-- browser                      <a id="co.p.s.f.v.browser"/>(27)
+ |         |         |    |-- public                  <a id="co.p.s.f.v.b.public"/>(28)
+ |         |         |    |    `-- Makefile.in
+ |         |         |    |-- src                     <a id="co.p.s.f.v.b.src"/>(29)
+ |         |         |    |    `-- Makefile.in
+ |         |         |    `-- test                    <a id="co.p.s.f.v.b.test"/>(30)
+ |         |         |         `-- Makefile.in
+ |         |         |-- standalone                   <a id="co.p.s.f.v.standalone"/>(31)
+ |         |         `-- web                          <a id="co.p.s.f.v.web"/>(32)
+ |         |-- Makefile.in
+ |         `-- install.rdf                            <a id="co.p.s.install.rdf"/>(33)
+ `-- Makefile                                         <a id="co.makefile"/>(34)
+      </pre>
+        <p>
+      </p>
+        <div class="calloutlist">
+          <table border="0" summary="Callout list">
+            <tr>
+              <td width="5%" valign="top" align="left"><a href="#co.mozilla">(1)</a> </td>
+              <td valign="top" align="left">
+                <p>
+            The <code class="code">mozilla</code> directory contains the Mozilla header files and source code which are needed to link against. This is a CVS checkout of the target Mozilla branch for this specific Yulup branch.
+          </p>
+                <p>
+            Note that the contents of this directory are READ-ONLY. This means:
+            </p>
+                <div class="itemizedlist">
+                  <ul>
+                    <li>
+                      <p>
+                  You MUST NOT modify the contents of this directory directly. If the contents are modifed, we cannot guarantee anymore that Yulup builds against the targeted Mozilla branch.
+                </p>
+                    </li>
+                    <li>
+                      <p>
+                  You MUST NOT execute <code class="code">make</code> in this directory. The Mozilla platform employs a modified make infrastructure. Executing plain <code class="code">make</code> screws up the tree beyond repair.
+                </p>
+                    </li>
+                    <li>
+                      <p>
+                  You MUST NOT perform a CVS update in this directory. The Mozilla platform employs a custom CVS infrastructure which is driven by make files. Executing plain <code class="code">cvs up</code> screws up the tree beyond repair.
+                </p>
+                      <p>
+                  In order to update the Mozilla tree, issue <code class="code">make mozilla-update</code> in the parent directory of <code class="code">mozilla</code> (cf. <a href="#build_infrastructure" title="3.&#xA0;Build Infrastructure">Build Infrastructure</a>). Note that this operation may only be performed by an authorised developer.
+                </p>
+                    </li>
+                  </ul>
+                </div>
+                <p>
+          </p>
+              </td>
+            </tr>
+            <tr>
+              <td width="5%" valign="top" align="left"><a href="#co.m.x.src">(7)</a> </td>
+              <td valign="top" align="left">
+                <p>
+            The <code class="code">mozilla/xulrunner/src</code> directory contains the Mozilla XULRunner tree from which the Gecko SDK is built. Note that this directory is about 306 MB in size.
+          </p>
+              </td>
+            </tr>
+            <tr>
+              <td width="5%" valign="top" align="left"><a href="#co.m.mozilla-tree.config">(10)</a> </td>
+              <td valign="top" align="left">
+                <p>
+            The <code class="code">mozilla-tree.config</code> contains the branch string of the Mozilla tree to checkout and update. Change the string in this file if you want to switch to a different branch of the Mozilla tree (but first issue <code class="code">make mozilla-remove</code> to make sure that the branches do not mix up).
+          </p>
+              </td>
+            </tr>
+            <tr>
+              <td width="5%" valign="top" align="left"><a href="#co.yulup">(11)</a> </td>
+              <td valign="top" align="left">
+                <p>
+            The <code class="code">yulup</code> directory contains all files related to Yulup. Although <code class="code">mozilla</code> is of course needed to build Yulup, those files are not an integral part of Yulup.
+          </p>
+              </td>
+            </tr>
+            <tr>
+              <td width="5%" valign="top" align="left"><a href="#co.p.bin">(12)</a> </td>
+              <td valign="top" align="left">
+                <p>
+            The <code class="code">yulup/bin</code> directory contains the object files of the Yulup module.
+          </p>
+              </td>
+            </tr>
+            <tr>
+              <td width="5%" valign="top" align="left"><a href="#co.p.pkg">(14)</a> </td>
+              <td valign="top" align="left">
+                <p>
+            The <code class="code">yulup/pkg</code> directory contains an installable XPI file of Yulup.
+          </p>
+              </td>
+            </tr>
+            <tr>
+              <td width="5%" valign="top" align="left"><a href="#co.p.src">(16)</a> </td>
+              <td valign="top" align="left">
+                <p>
+            The <code class="code">yulup/src</code> directory contains the Yulup sources.
+          </p>
+              </td>
+            </tr>
+            <tr>
+              <td width="5%" valign="top" align="left"><a href="#co.p.s.f.public">(23)</a> </td>
+              <td valign="top" align="left">
+                <p>
+            The <code class="code">yulup/src/frontend/public</code> directory contains the IDL files to interface with other modules.
+          </p>
+              </td>
+            </tr>
+            <tr>
+              <td width="5%" valign="top" align="left"><a href="#co.p.s.f.src">(24)</a> </td>
+              <td valign="top" align="left">
+                <p>
+            The <code class="code">yulup/src/frontend/src</code> directory contains the module source files.
+          </p>
+              </td>
+            </tr>
+            <tr>
+              <td width="5%" valign="top" align="left"><a href="#co.p.s.f.test">(25)</a> </td>
+              <td valign="top" align="left">
+                <p>
+            The <code class="code">yulup/src/frontend/test</code> directory contains the unit test source files.
+          </p>
+              </td>
+            </tr>
+            <tr>
+              <td width="5%" valign="top" align="left"><a href="#co.p.s.install.rdf">(33)</a> </td>
+              <td valign="top" align="left">
+                <p>
+            The <code class="code">yulup/src/install.rdf</code> file contains the information necessary to install Yulup as an XPI extension.
+          </p>
+              </td>
+            </tr>
+            <tr>
+              <td width="5%" valign="top" align="left"><a href="#co.makefile">(34)</a> </td>
+              <td valign="top" align="left">
+                <p>
+            The <code class="code">Makfile</code> contains the central logic of the build infrastructure. For instructions on how to use it, see <a href="#build_infrastructure" title="3.&#xA0;Build Infrastructure">Build Infrastructure</a>.
+          </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+    </p>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="build_infrastructure"/>3. Build Infrastructure</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      The central tool for building Yulup is the make file in the top-level source directory. It supports the following targets:
+      </p>
+        <div class="itemizedlist">
+          <ul>
+            <li>
+              <p><b>Default Target. </b>
+            The default target builds Yulup and places the objects in <code class="code">yulup/bin</code>.
+          </p>
+            </li>
+            <li>
+              <p><b><code class="code">pkg</code>. </b>
+            The <code class="code">pkg</code> target builds Yulup and creates an installable XPI file in <code class="code">yulup/pkg</code>.
+          </p>
+            </li>
+            <li>
+              <p><b><code class="code">clean</code>. </b>
+            The <code class="code">clean</code> targets removes the object files in <code class="code">yulup/bin</code> and deletes the XPI package in <code class="code">yulup/pkg</code>.
+          </p>
+            </li>
+            <li>
+              <p><b><code class="code">mozilla-checkout</code>. </b>
+            The <code class="code">mozilla-checkout</code> target first removes the Mozilla tree in <code class="code">mozilla/xulrunner</code> and then performs a fresh checkout of the branch set in <code class="code">mozilla-tree.conf</code>.
+          </p>
+              <p>
+            Do NOT exercise this target unless you know what you are doing and are authorised to do so.
+          </p>
+            </li>
+            <li>
+              <p><b><code class="code">mozilla-update</code>. </b>
+            The <code class="code">mozilla-update</code> target updates the Mozilla tree in <code class="code">mozilla</code>.
+          </p>
+              <p>
+            Do NOT exercise this target unless you know what you are doing and are authorised to do so.
+          </p>
+            </li>
+            <li>
+              <p><b><code class="code">mozilla-build-gecko-sdk</code>. </b>
+            The <code class="code">mozilla-build-gecko-sdk</code> target builds and installs the platform-specifc Gecko SDK in <code class="code">mozilla/gecko-sdk/PLATFORM</code>, where <code class="code">PLATFORM</code> is a string based on the architecture and the operating system currently running on your build host.
+          </p>
+            </li>
+            <li>
+              <p><b><code class="code">mozilla-remove</code>. </b>
+            The <code class="code">mozilla-remove</code> target deletes the complete Mozilla tree in <code class="code">mozilla</code>.
+          </p>
+              <p>
+            Do NOT exercise this target unless you know what you are doing and are authorised to do so.
+          </p>
+            </li>
+            <li>
+              <p><b><code class="code">mozilla-clean</code>. </b>
+            The <code class="code">mozilla-clean</code> target cleans the Mozilla tree in <code class="code">mozilla/xulrunner</code>.
+          </p>
+              <p>
+            Do NOT exercise this target unless you know what you are doing and are authorised to do so.
+          </p>
+            </li>
+          </ul>
+        </div>
+        <p>
+    </p>
+      </div>
+    </div>
+  </body>
+</html>

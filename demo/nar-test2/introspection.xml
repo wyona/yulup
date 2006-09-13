@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+<introspection xmlns="http://www.wyona.org/neutron/1.0">
+  
+  <edit mime-type="application/xhtml+xml" name="Test Page (from NAR)">
+    <checkout url="nar-test.html" method="GET"/>
+    <checkin url="nar-test.html?yanel.resource.usecase=checkin" method="PUT"/>
+    <widgets>
+      <widget type="surround" name="Bold" description="Bold Widget" icon="icons/bold.png">
+        <fragment>
+          <b xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="insert" name="Table" description="Table Widget" icon="icons/table.png">
+        <attribute name="Border" xpath="table/attribute::border"/>
+        <attribute name="Padding" xpath="table/attribute::cellpadding"/>
+        <attribute name="Spacing" xpath="table/attribute::cellspacing"/>
+        <attribute name="Bgcolor" xpath="table/attribute::bgcolor"/>
+        <fragment>
+          <table xmlns="" border="1" cellpadding="0" cellspacing="1" bgcolor="#d1e2f7">
+            <tr>
+              <td>Column 1, Row 1</td>
+              <td>Column 2, Row 1</td>
+            </tr>
+            <tr>
+              <td>Column 1, Row 2</td>
+              <td>Column 2, Row 2</td>
+            </tr>
+          </table>
+        </fragment>
+      </widget>
+      <widget type="insert" name="List" description="Unordered List Widget" icon="icons/ulist.png">
+        <fragment>
+          <ul xmlns="">
+            <li>List Item 1</li>
+            <li>List Item 2</li>
+          </ul>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Link" description="Hypertext Link Widget" icon="icons/hlink.png">
+        <attribute name="href" xpath="a/attribute::href"/>
+        <fragment>
+          <a xmlns="" href="http://www.wyona.com"/>
+        </fragment>
+      </widget>
+      <widget type="insert" name="Image" description="Image Widget" icon="icons/image.png">
+        <attribute name="src" xpath="img/attribute::src"/>
+        <attribute name="alt" xpath="img/attribute::alt"/>
+        <fragment>
+          <img xmlns="" src="http://www.wyona.com/images/wyona_gross.gif" alt=""/>
+        </fragment>
+      </widget>
+    </widgets>
+  </edit>
+
+</introspection>

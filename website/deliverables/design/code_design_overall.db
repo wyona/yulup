@@ -1,0 +1,24 @@
+<div element="article" href="code_design_overall.xhtml#id52600" number="">
+  <ttl>Yulup General Code Design</ttl>
+  <xreftext>Yulup General Code Design</xreftext>
+  <div element="section" href="code_design_overall.xhtml#id342753" number="1">
+    <ttl>Basic Processing Loop</ttl>
+    <xreftext>Section 1, “Basic Processing Loop”</xreftext>
+    <div element="section" href="code_design_overall.xhtml#id342758" number="1.1">
+      <ttl>Standard Variant</ttl>
+      <xreftext>Section 1.1, “Standard Variant”</xreftext>
+      <obj element="figure" href="code_design_overall.xhtml#id342767" number="1">
+        <ttl>Basic Processing Loop (Standard Variant)</ttl>
+        <xreftext>Figure 1, “Basic Processing Loop (Standard Variant)”</xreftext>
+      </obj>
+    </div>
+    <div element="section" href="code_design_overall.xhtml#id342795" number="1.2">
+      <ttl>More than XML Variant</ttl>
+      <xreftext>Section 1.2, “More than XML Variant”</xreftext>
+      <obj element="figure" href="code_design_overall.xhtml#id342800" number="2">
+        <ttl>Basic Processing Loop (More than XML Variant)</ttl>
+        <xreftext>Figure 2, “Basic Processing Loop (More than XML Variant)”</xreftext>
+      </obj>
+    </div>
+  </div>
+</div>

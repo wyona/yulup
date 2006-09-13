@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../utils/customization/style.xsl"?>
+<!DOCTYPE article [
+  <!ENTITY % docbook PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+  %docbook;
+  <!ENTITY % local SYSTEM "../../../utils/customization/commons.dtd">
+  %local;
+]>
+
+<article>
+  <articleinfo>
+    <title>Entangled XML (eXML) Specification</title>
+    <author>
+      <firstname>Andreas</firstname>
+      <surname>Wuest</surname>
+      <affiliation>
+        <address>
+          <email>awuest@student.ethz.ch</email>
+        </address>
+      </affiliation>
+    </author>
+    <!-- All dates specified in ISO "YYYY-MM-DD" format -->
+    <pubdate>2006-04-22</pubdate>
+    <!-- Most recent revision goes at the top; list in descending order -->
+    <revhistory>
+      <revision>
+        <revnumber>1.0</revnumber>
+        <date>2006-04-22</date>
+        <authorinitials>AW</authorinitials>
+        <revremark>First initial draft.</revremark>
+      </revision>
+    </revhistory>
+    <abstract>
+      <para>Describes the <emphasis>Entangled eXtensible Markup Language (eXML)</emphasis>.</para>
+    </abstract>
+  </articleinfo>
+  <section>
+    <title>Introduction</title>
+    <para>
+      Describes the <emphasis>Entangled eXtensible Markup Language (eXML)</emphasis>
+    </para>
+    <section id="copyright">
+      <title>Copyright and License</title>
+      <para>
+        This document, <emphasis>Entangled XML (eXML) Specification</emphasis>, is copyrighted (c) 2006 by <emphasis><ulink url="http://www.wyona.com">http://www.wyona.com</ulink></emphasis>. Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.1 or any later version published by the Free Software Foundation; with no Invariant Sections, with no Front-Cover Texts, and with no Back-Cover Texts. A copy of the license is available at <ulink url="http://www.gnu.org/copyleft/fdl.html">http://www.gnu.org/copyleft/fdl.html</ulink>.
+      </para>
+    </section>
+    <section id="disclaimer">
+      <title>Disclaimer</title>
+      <para>
+        No liability for the contents of this document can be accepted. Use the concepts, examples and information at your own risk. There may be errors and inaccuracies, that could be damaging to your system. Proceed with caution, and although this is highly unlikely, the author(s) do not take any responsibility.
+      </para>
+      <para>
+        All copyrights are held by their by their respective owners, unless specifically noted otherwise. Use of a term in this document should not be regarded as affecting the validity of any trademark or service mark. Naming of particular products or brands should not be seen as endorsements.
+      </para>
+    </section>
+    <section id="feedback">
+      <title>Feedback</title>
+      <para>
+        Feedback is most certainly welcome for this document. Send your additions, comments and criticisms to the editors listed above.
+      </para>
+    </section>
+  </section>
+  <section>
+    <title>Overview</title>
+    <para>
+      Entangled XML (eXML) is a well-formed and valid XML document, containing a part of non-well-formed interleaved XML. The eXML format thereby acts as a container, providing all the necessary information to derive every document making up the interleaved document. This means that the eXML, among other things, declares the number of individual documents contained in the entangled section, as well as provides the namespace declarations used by these documents.
+    </para>
+    <para>
+      Note that the individual documents making up the non-well-formed entangled content may by themselves not be valid or even well-formed. Nevertheless, the eXML gives enough information to derive every document from the entangled form, and reconstruct its original content as it was before the interleaving.
+    </para>
+  </section>
+  <section>
+    <title>Example</title>
+    <para>
+      ...
+    </para>
+  </section>
+  <section>
+    <title>The eXML Schema</title>
+    <section>
+      <title>Overview</title>
+      <para>
+        ...
+      </para>
+    </section>
+    <section>
+      <title>Schema</title>
+      <para>
+        ...
+      </para>
+    </section>
+  </section>
+</article>

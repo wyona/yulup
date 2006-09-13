@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<introspection xmlns="http://www.wyona.org/neutron/1.0">
+
+<edit mime-type="text/plain" name="Plain Text Example">
+  <open url="plain-text.txt" method="GET"/>
+
+  <save url="plain-text.txt?yanel.resource.usecase=save" method="PUT"/>
+</edit>
+
+</introspection>

@@ -1,0 +1,52 @@
+Query view for “doron” opened.
+	===	doron <doron@moz-6E4EB9A1.austin.ibm.com> “Doron Rosenberg”
+	===	doron is a registered nick
+	===	doron: member of @#xforms, #mozillazine, and #developers
+	===	doron: attached to sand.mozilla.org “Sunnyvale California”
+	===	doron: idle for 3 hours, 50 minutes, 42 seconds (on since Mi, 5. Apr 2006 16:49:59 Uhr)
+	---	End of WHOIS information for doron
+	aw1	Hi doron. I was relayed to you by shaver.
+	aw1	From #developers:
+	aw1	Does anybody know what the state of "extensions/schema-validation" is? I know that there is/was an ongoing discussion about having a validator in the Mozilla Platform, and wether this would be good or not. It's just that we might need a W3C or RelaxNG validator here soon, and it would be nice to know if there is ongoing development in that direction, so we could reuse part of the code, or if we should start writing validators from scratch.
+	aw1	Writing one from scratch shouldn't be a problem, we just don't want to duplicate efforts, or even compete with Mozilla.
+	doron	define w3c validator
+	aw1	Oops, sorry. I meant a W3C Schema validator.
+	doron	extensions/schema-validation is about w3c schema validation. I doubt it will ship by default, it is shipped as part of the XForms extension
+	aw1	I see. So you think we should build on that then?
+	doron	now, the nvu.com project has built a RelaxNG validator for mozilla, reusing some of my code
+	doron	not sure if their stuff is opensorce
+	aw1	Well, this would be a requirement, to have it under GPL.
+	aw1	At least for us, since the final product should be released under the GPL.
+	doron	the mozilla schema validation code would be a good base. Right now it is only me working on it.
+	aw1	Just saw that nvu.com claims to be 100% open source. Whatever that means...
+	doron	I don't know if the relaxng stuff is part of their current release or something they are working on
+	aw1	What we want to do is have schema validation (either RelaxNG or W3C, depending on the customer) for an XML editor.
+	aw1	That is, either online (i.e. during editing), or offline, meaning at a fixed point in the workflow.
+	aw1	I don't know what kind of output your code produces.
+	doron	right now it just does valid/not-valid
+	aw1	Since we also want to give the user hints about what he has done wrong, or even have auto-correction.
+	aw1	Ok, I see.
+	doron	and some node markings
+	aw1	Hmmm.
+	doron	the code could easily be modified to give more notifications, etc, just need requirements
+	aw1	I don't know what the chances are of getting our XML editor into the Mozilla Platform (it should be based on the current editor, but as it says, applicable to XML in general).
+	aw1	But the goal would be to reuse as much of the platform as possible.
+	aw1	I don't know if you would be interested to coordinate efforts. Or should we just create a derivative of the validator.
+	aw1	Basically, it doesn't matter for us, because we have to deploy the whole package by ourselves anyway.
+	aw1	We were just thinking about giving something back.
+	doron	I see no problem adding stuff to make it easier to build on top of the schema validator
+	aw1	That sounds good!
+	doron	in the end, you just want detailed errors per node
+	aw1	Exactly!
+	doron	http://rhaptos.org/downloads/editing/etna/ - that is the project that has the relaxng validator
+	aw1	We are working on the exact requirement details ATM, and will start to outline implementation details afterwards.
+	aw1	Ah, thanks for the link!
+	aw1	We plan to have the requirements/specifications completed in about two weeks time (or better, we must have it completed by then, since this is the deadline).
+	aw1	If you would be interested, I could keep you informed.
+	doron	sure
+	doron	doronr@gmail.com or doronr@us.ibm.com
+	aw1	awuest@gmail.com
+	aw1	Oh, well, btw., the company is wyona.com.
+	aw1	Thanks a lot for all your info. When we have more details, I will contact you, and you could tell us which stuff you would like to have integrated with your code!
+	doron	ok
+	aw1	Thanks then, doron, have a nice weekend!

@@ -1,0 +1,24 @@
+#ifndef BACKEND_IDL
+#define BACKEND_IDL
+
+#include "ibackend.idl"
+
+interface Backend: IBackend {
+  // Associations
+  // Attributes
+  // Operations
+  IDocument createNewDocumentInstanceFromEmpty (  );
+  IDocument createNewDocumentInstanceFromExisting (  );
+  IDocument createNewDocumentInstanceFromTemplate (  );
+  void serializeDocumentInstanceToFile ( in IDocument document, in String name, in URI path );
+  void serializeDocumentInstanceToCMS ( in IDocument document, in String name, in URI path );
+  boolean hasCapability ( in String capability );
+  void tearDown (  );
+  private DocumentRawDataContainer openFromFile (  );
+  private DocumentRawDataContainer openFromCMS (  );
+  private DocumentRawDataContainer openFromHttp (  );
+  private DocumentRawDataContainer saveToFile (  );
+  private DocumentRawDataContainer saveToCMS (  );
+};
+
+#endif
