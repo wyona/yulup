@@ -10,7 +10,7 @@
 <!ENTITY editAboutMenuitem.label "Ueber">
 <!ENTITY editHelpMenuitem.label "Hilfe">
 <!ENTITY editDemoMenuitem.label "Demosite">
-<!ENTITY editVersionStringMenuitem.label "Yulup 0.1.10-rc4-r1XXXX-dev">
+<!ENTITY editVersionStringMenuitem.label "Yulup 0.1.10-rc4-r17921">
 <!ENTITY editToolbarbuttonWarnTooltip1.tooltip "Warnung:">
 <!ENTITY editToolbarbuttonWarnTooltip2.tooltip "Im Zusammenhang mit dem Introspection-Objekt das mit diesem Dokument assoziiert ist trat ein Fehler auf.">
 <!ENTITY editToolbarbuttonWarnTooltip3.tooltip "Das File existiert nicht, oder ist nicht in einer geeigneten Form.">
