@@ -3,7 +3,7 @@
 <repository>
   <name>Ulysses Website Content</name>
 
-  <paths src="../data-paths"/>
+  <paths src="../data-paths" fallback="true"/>
 
   <storage class="org.wyona.yarep.core.impl.fs.FileSystemStorage">
     <content src="../../"/>
