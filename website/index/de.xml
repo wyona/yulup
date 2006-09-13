@@ -8,6 +8,7 @@
 
   <tabs>
     <help name="Hilfe" href="de/hilfe.html"/>
+    <demo name="Demo" href="http://demo.yulup.org"/>
   </tabs>
 
   <claim>Yulup ist gratis, open source and macht Content Management so einfach wie noch nie.</claim>
