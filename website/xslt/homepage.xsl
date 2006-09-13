@@ -40,7 +40,7 @@
    <div style="/*border-style: solid; border-color: black;*/ background-image: url('{$yarep.back2realm}images/tab-3758a0.gif'); width: 136px; height: 38px; float: right; text-align: right;"><br/><a href="developers.html">Community</a>&#160;&#160;</div>
    <div style="/*border-style: solid; border-color: black;*/ background-image: url('{$yarep.back2realm}images/tab-006ab3.gif'); width: 136px; height: 38px; float: right; text-align: right;"><br/><a href="download/index.html">Download</a>&#160;&#160;</div>
    <div style="/*border-style: solid; border-color: black;*/ background-image: url('{$yarep.back2realm}images/tab-0086cb.gif'); width: 136px; height: 38px; float: right; text-align: right;"><br/><a href="en/about.html">About</a>&#160;&#160;</div>
-   <div style="/*border-style: solid; border-color: black;*/ background-image: url('{$yarep.back2realm}images/tab-04addd.gif'); width: 136px; height: 38px; float: right; text-align: right;"><br/><a href="http://yulup.wyona.org/demo/">Demo</a>&#160;&#160;</div>
+   <div style="/*border-style: solid; border-color: black;*/ background-image: url('{$yarep.back2realm}images/tab-04addd.gif'); width: 136px; height: 38px; float: right; text-align: right;"><br/><a href="{/hp:homepage/hp:tabs/hp:demo/@href}">Demo</a>&#160;&#160;</div>
    <div style="/*border-style: solid; border-color:green;*/ background-image: url('{$yarep.back2realm}images/tab-68c7e9.gif'); width: 136px; height: 38px; float: right; text-align: right;"><br/><a href="{/hp:homepage/hp:tabs/hp:help/@href}"><xsl:value-of select="/hp:homepage/hp:tabs/hp:help/@name"/></a>&#160;&#160;</div>
   </div>
 

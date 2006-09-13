@@ -7,4 +7,9 @@
   <checkin  url="index.xml?yanel.resource.usecase=checkin"  method="PUT"/>
 </edit>
 
+<edit mime-type="application/xml" name="XSLT">
+  <checkout url="xslt/homepage.xsl?yanel.resource.usecase=checkout" method="GET"/>
+  <checkin  url="xslt/homepage.xsl?yanel.resource.usecase=checkin"  method="PUT"/>
+</edit>
+
 </introspection>
