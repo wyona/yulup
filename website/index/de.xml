@@ -10,12 +10,12 @@
     <help name="Hilfe" href="de/hilfe.html"/>
   </tabs>
 
-  <claim>Yulup ist gratis, open source and makes Content Management as simple as it gets.</claim>
+  <claim>Yulup ist gratis, open source and macht Content Management so einfach wie noch nie.</claim>
 
   <download-link href="download/ulysses-prototype-1-0.1.10-rc3-r16660.xpi"/>
 
   <download-download>DOWNLOAD</download-download>
-  <download-ulysses>Yulup</download-ulysses>
+  <download-yulup>Yulup</download-yulup>
   <download-version>0.1.10-rc3</download-version>
   <download-firefox>fuer Mozilla Firefox 1.5.x</download-firefox>
   <download-size>257KB</download-size>

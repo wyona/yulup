@@ -62,7 +62,7 @@
 
 <span id="download-download"><xsl:value-of select="/hp:homepage/hp:download-download"/></span><br/>
 
-<span id="download-ulysses"><xsl:value-of select="/hp:homepage/hp:download-ulysses"/></span>&#160;<span id="download-version"><xsl:value-of select="/hp:homepage/hp:download-version"/></span><br/>
+<span id="download-yulup"><xsl:value-of select="/hp:homepage/hp:download-yulup"/></span>&#160;<span id="download-version"><xsl:value-of select="/hp:homepage/hp:download-version"/></span><br/>
 
 <span id="download-firefox"><xsl:value-of select="/hp:homepage/hp:download-firefox"/></span><br/>
 

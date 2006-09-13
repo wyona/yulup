@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <repository>
-  <name>Ulysses Website Content</name>
+  <name>Yulup Website Content</name>
 
   <paths src="../data-paths" fallback="true"/>
 

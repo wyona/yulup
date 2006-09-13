@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <repository>
-  <name>Ulysses Website Access Policies</name>
+  <name>Yulup Website Access Policies</name>
 
   <paths class="org.wyona.yarep.impl.VFileSystemMapImpl" src="../ac-policies-content"/>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <repository>
-  <name>Ulysses Website Identities</name>
+  <name>Yulup Website Identities</name>
 
   <paths class="org.wyona.yarep.impl.VFileSystemMapImpl" src="../ac-identities-content"/>
 
