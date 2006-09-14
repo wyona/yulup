@@ -62,7 +62,7 @@
   </entity>
 
   <entity id="editVersionStringMenuitem.label">
-    <name xml:lang="en">Yulup 0.1.10-rc5-rXXXXX-dev</name>
+    <name xml:lang="en">Yulup-Dev</name>
   </entity>
 
   <entity id="editToolbarbuttonWarnTooltip1.tooltip">
