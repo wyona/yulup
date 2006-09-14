@@ -340,7 +340,7 @@ var Editor = {
 
         // if document is XML, perform well-formedness check
         if (gEditorController.model.documentReference.isContentXML()) {
-            if (wellFormednessError = Editor.checkWellFormedness(gEditorController.model.getDocument())) {
+            if (wellFormednessError = checkWellFormedness(gEditorController.model.getDocument())) {
                 promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
 
                 if (promptService.confirmEx(null,
@@ -531,75 +531,6 @@ var Editor = {
         gEditorController.model.unsetDirty();
 
         return true;
-    },
-
-    /**
-     * Check the well-formedness of a given document.
-     *
-     * @param {String}  aDocument the document to check
-     * @return {String} a message containing the result of the check, or null if check successful
-     */
-    checkWellFormedness: function (aDocument) {
-        var domParser              = null;
-        var domDocument            = null;
-        var rootElement            = null;
-        var xmlSerialiser          = null;
-        var sourceTextElement      = null;
-        var parseErrorString       = null;
-        var sourceTextString       = null;
-        var parseErrorStringRegExp = null;
-        var errorLine              = null;
-        var errorColumn            = null;
-
-        /* DEBUG */ dump("Yulup:editor.js:Editor.checkWellFormedness() invoked\n");
-
-        domParser   = new DOMParser();
-        domDocument = domParser.parseFromString(aDocument, "text/xml");
-
-        rootElement = domDocument.documentElement;
-        if ((rootElement.tagName == "parserError") ||
-            (rootElement.namespaceURI == "http://www.mozilla.org/newlayout/xml/parsererror.xml")) {
-            xmlSerialiser = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer);
-
-            /* DEBUG */ dump("Yulup:editor.js:Editor.checkWellFormedness: well-formedness error:\n" + xmlSerialiser.serializeToString(rootElement) + "\n");
-
-            // get parser error string
-            parseErrorString = "";
-
-            for (var child = rootElement.firstChild; child != null; child = child.nextSibling) {
-                if (child.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
-                    parseErrorString += child.nodeValue;
-                } else if (child.nodeType == Components.interfaces.nsIDOMNode.ELEMENT_NODE && child.tagName == "sourcetext") {
-                    sourceTextElement = child;
-                }
-            }
-
-            // extract line number and column
-            parseErrorStringRegExp = new RegExp(".*Line Number (.*?), Column (.*):");
-            parseErrorArray        = parseErrorStringRegExp.exec(parseErrorString);
-
-            /* Note that the matched results start at index 1, index 0
-             * contains the not matched strings (not what we want). */
-            errorLine = parseErrorArray[1];
-            errorColumn     = parseErrorArray[2];
-
-            // get source text
-            sourceTextString = "";
-
-            if (sourceTextElement) {
-                for (var child = sourceTextElement.firstChild; child != null; child = child.nextSibling) {
-                    if (child.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
-                        sourceTextString += child.nodeValue;
-                    }
-                }
-            }
-
-            /* DEBUG */ dump("Yulup:editor.js:Editor.checkWellFormedness: well-formedness error, line number = " + errorLine + ", column = " + errorColumn + ", source text = " + sourceTextString + "\n");
-
-            return { line: errorLine, column: errorColumn, sourceText: sourceTextString };
-        } else {
-            return null;
-        }
     },
 
     loadTemplate: function (aURI) {

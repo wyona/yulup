@@ -33,55 +33,127 @@ const NEUTRON_10_NAMESPACE = "http://www.wyona.org/neutron/1.0";
 
 var Neutron = {
     /**
-     * Fetch introspection file and parse it.
+     * Fetch introspection file.
      *
      * @param  {String}       aURI     URI of remote host to query for introspection file
      * @param  {nsIURI}       aBaseURI the URI of the document to which the introspection document is associated
-     * @return {Capabilities} a Capabilities object
+     * @return {Undefined}             does not have a return value
      */
-    introspection: function (aURI, aBaseURI) {
-        var xmlDocument   = null;
-        var success       = null;
-        var namespace     = null;
-        var introspection = null;
+    introspection: function (aURI, aBaseURI, aYulup) {
+        var context = null;
 
         /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspection(\"" + aURI + "\", \"" + aBaseURI + "\") invoked\n");
 
+        context = {
+            URI:              aURI,
+            baseURI:          aBaseURI,
+            yulup:            aYulup,
+            callbackFunction: Neutron.introspectionLoadFinished
+        };
+
+        NetworkService.httpRequestGET(aURI, null, this.__requestFinishedHandler, context, false, true);
+    },
+
+    /**
+     * Callback function that gets called when the introspection load
+     * request finished.
+     *
+     * @param  {String}   aDocumentData            the data returned by the request
+     * @param  {Long}     aResponseStatusCode      the status code of the response
+     * @param  {Object}   aContext                 context object containing the callback function and it's parameters
+     * @param  {Array}    aResponseHeaders         the response headers
+     * @param  {Error}    aException               an exception, or null if everything went well
+     * @return {Undefined} does not have a return value
+     */ 
+    __requestFinishedHandler: function(aDocumentData, aResponseStatusCode, aContext, aResponseHeaders) {
+
+        /* DEBUG */ dump("Yulup:neutron.js:Neutron.__requestFinishedHandler() invoked\n");
+
+        if (aResponseStatusCode == 200) {
+            // success, call back to original caller
+            aContext.callbackFunction(aDocumentData, null, aContext);
+        } else {
+            if (aException) {
+                aContext.callbackFunction(null, aException, aContext);
+            } else {
+                try {
+                    // parse error message (throws an exeception)
+                    Neutron.response(aDocumentData);
+                } catch (exception) {
+                    aContext.callbackFunction(null, exception, aContext);
+                    return;
+                }
+            }
+        }
+    },
+
+    /**
+     * Callback function that gets called when the introspection request
+     * finished and after parsing a possible exception.
+     *
+     * @param  {String}    aDocumentData the document data retrieved by the request
+     * @param  {Exception} aException    the exception
+     * @param  {Object}    aContext      context object containing the function parameters
+     * @return {Undefined}               does not have a return value
+     */
+    introspectionLoadFinished: function(aDocumentData, aException, aContext) {
+        var wellFormednessError = null;
+        var domParser           = null;
+        var documentRoot        = null;
+        var xmlSerializer       = null;
+        var introspection       = null;
+        var aURI                = aContext.URI;
+        var aBaseURI            = aContext.baseURI;
+        var aYulup              = aContext.yulup;
+
+        /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished() invoked\n");
+
         try {
-            xmlDocument = Components.classes["@mozilla.org/xml/xml-document;1"].createInstance(Components.interfaces.nsIDOMXMLDocument);
-            xmlDocument.async = false;
-
-            if (xmlDocument.load(aURI)) {
-                // load successful
-
+            if (aDocumentData) {
                 /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspection: loading introspection file \"" + aURI + "\" succeeded\n");
 
-                // instantiate the parser for this version and parse the file
-                introspection = Neutron.parserFactory(xmlDocument, aBaseURI).parseIntrospection();
+                if ((wellFormednessError = checkWellFormedness(aDocumentData)) != null) {
+                    throw new YulupException(Neutron.createWellFormednessAlertString(wellFormednessError));
+                }
 
-                introspection.introspectionDocument = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(xmlDocument);
+                domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"].createInstance(Components.interfaces.nsIDOMParser);
+
+                domDocument  = domParser.parseFromString(aDocumentData, "text/xml");
+
+                // instantiate the parser for this version and parse the file
+                introspection = Neutron.parserFactory(domDocument, aBaseURI).parseIntrospection();
+
+                introspection.introspectionDocument = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(domDocument);
                 introspection.introspectionURI      = aURI;
+
+                // set the global introspection object
+                gCurrentNeutronIntrospection = introspection;
+
+                // set the introspection state
+                aYulup.introspectionStateChanged("success");
 
                 /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspection: introspection = \n" + introspection.toString());
             } else {
-                /* Either the load failed, or the document is not well
-                 * formed. We could look at the document now to find out
-                 * what happened, but we simply report failure. */
-                throw new NeutronException("Yulup:neutron.js:Neutron.introspection: loading introspection file \"" + aURI + "\" failed.");
+                /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished: failed to load \"" + aURI + "\"). \"" + aException + "\"\n");
+
+                if (aException && (aException instanceof NeutronProtocolException || aException instanceof NeutronAuthException)) {
+                    // report error message retrieved from response
+                    throw new YulupException(document.getElementById("uiEditorOverlayStringbundle").getString("editorDocumentLoadError0.label") + " \"" + aURI + "\".\n" + document.getElementById("uiEditorOverlayStringbundle").getString("editorDocumentLoadServerError.label") + ": " + aException.message + ".");
+                } else
+                    throw new YulupException(document.getElementById("uiEditorOverlayStringbundle").getString("editorDocumentLoadError0.label") + " \"" + aURI + "\".");
             }
         } catch (exception) {
-            if (!(exception instanceof NeutronException)) {
-                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutron.js:Neutron.introspection", exception);
-                Components.utils.reportError(exception);
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutron.js:Neutron.introspection", exception);
 
-                throw new NeutronException("Yulup:neutron.js:Neutron.introspection: \"" + exception + "\".");
-            } else {
-                // rethrow
-                throw exception;
-            }
+            alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupIntrospectionLoadFailure.label") + "\n\n" + exception.message);
+
+            // set the introspection state
+            aYulup.introspectionStateChanged("failed");
         }
+    },
 
-        return introspection;
+    createWellFormednessAlertString: function (aWellFormednessError) {
+        return document.getElementById("uiYulupEditorStringbundle").getString("editorWellFormednessError0.label") + ": " + document.getElementById("uiYulupEditorStringbundle").getString("editorWellFormednessError1.label") + ": " + aWellFormednessError.line + ", " + document.getElementById("uiYulupEditorStringbundle").getString("editorWellFormednessError2.label") + ": " + aWellFormednessError.column + (aWellFormednessError.sourceText != "" ? "\n" + aWellFormednessError.sourceText : "");
     },
 
     /**

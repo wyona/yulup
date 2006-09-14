@@ -534,7 +534,7 @@ Yulup.prototype = {
                     for (var i = 0; i < introspectionLinks.length; i++) {
                         switch (introspectionLinks[i].type) {
                         case INTROSPECTION_TYPE_NEUTRON:
-                            gCurrentNeutronIntrospection = Neutron.introspection(introspectionLinks[i].uri, documentURI);
+                            Neutron.introspection(introspectionLinks[i].uri, documentURI, this);
                             break;
                         case INTROSPECTION_TYPE_APP:
                             this.currentAPPIntrospection = APP.fetchIntrospection(introspectionLinks[i].uri, documentURI);
