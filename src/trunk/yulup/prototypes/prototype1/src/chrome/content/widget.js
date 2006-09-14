@@ -270,13 +270,15 @@ var WidgetDialogHandler = {
 
     uiYulupEditorWidgetInsertOnDialogLoadHandler: function() {
         var widget     = null;
+        var nsResolver = null;
         var widgetRows = null;
         var label      = null;
         var elem       = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetDialogHandler.uiYulupEditorWidgetInsertOnDialogLoadHandler() invoked\n");
 
-        widget = window.arguments[1];
+        widget     = window.arguments[1];
+        nsResolver = window.arguments[2];
 
         gWidgetFragmentAttributes = widget.fragmentAttributes;
 
@@ -304,16 +306,16 @@ var WidgetDialogHandler = {
             elem.setAttribute("flex", "2");
 
             // set the attribute default value
-            elem.setAttribute("value", widget.fragment.evaluate(widget.fragmentAttributes[i].xpath, widget.fragment, WidgetHandler.nsResolver, XPathResult.STRING_TYPE, null).stringValue);
+            elem.setAttribute("value", widget.fragment.evaluate(widget.fragmentAttributes[i].xpath, widget.fragment, nsResolver, XPathResult.STRING_TYPE, null).stringValue);
 
             document.getElementById("row" + i).appendChild(elem);
         }
     },
 
-    showWidgetInsertDialog: function(aWidget) {
+    showWidgetInsertDialog: function(aWidget, aNSResolver) {
         returnObject    = new Object();
 
-        if (window.openDialog(YULUP_WIDGET_INSERT_CHROME_URI, "yulupWidgetInsertDialog", "modal,resizable=no", returnObject, aWidget)) {
+        if (window.openDialog(YULUP_WIDGET_INSERT_CHROME_URI, "yulupWidgetInsertDialog", "modal,resizable=no", returnObject, aWidget, aNSResolver)) {
             if (returnObject.returnValue) {
                 return returnObject.returnValue;
             }
@@ -343,20 +345,6 @@ var WidgetDialogHandler = {
 
 var WidgetHandler = {
 
-    nsResolver: function (aPrefix) {
-        var namespace = null;
-
-        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.nsResolver(\"" + aPrefix + "\") invoked\n");
-
-        // TODO make namespaces configurable
-        var namespace = {
-            "xhtml" : "http://www.w3.org/1999/xhtml",
-            "neutron10" : "http://www.wyona.org/neutron/1.0"
-        };
-
-        return namespace[aPrefix] || null;
-    },
-
     /**
      * Update the widgets xml-fragment with the user defined attribute
      * values.
@@ -370,10 +358,15 @@ var WidgetHandler = {
         var attrIterator    = null;
         var attrElement     = null;
         var newFragment     = null;
-
+        var namespaces      = null;
+        var nsResolver      = null;
+        var resolverFunction = null;
+        
         /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.getParametrizedWidgetFragment(): invoked\n");
 
-        if ((attributes = WidgetDialogHandler.showWidgetInsertDialog(aWidget)) != null) {
+        nsResolver = new configurableNsResolver(aWidget.fragment);
+
+        if ((attributes = WidgetDialogHandler.showWidgetInsertDialog(aWidget, nsResolver)) != null) {
             for (var i=0; i < aWidget.fragmentAttributes.length; i++) {
 
                 // get the user defined attribute value
@@ -383,7 +376,7 @@ var WidgetHandler = {
                 /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.getParametrizedWidgetFragment: " + customAttrValue + " " + attrXpath + " " + aWidget.fragmentAttributes[i].name + "\n");
 
                 // get the attribute in the fragment
-                attrIterator = aWidget.fragment.evaluate(attrXpath, aWidget.fragment, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+                attrIterator = aWidget.fragment.evaluate(attrXpath, aWidget.fragment, nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 
                 attrElement = attrIterator.iterateNext();
 
