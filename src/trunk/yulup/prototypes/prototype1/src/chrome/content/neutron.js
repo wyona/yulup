@@ -73,16 +73,12 @@ var Neutron = {
             // success, call back to original caller
             aContext.callbackFunction(aDocumentData, null, aContext);
         } else {
-            if (aException) {
-                aContext.callbackFunction(null, aException, aContext);
-            } else {
-                try {
-                    // parse error message (throws an exeception)
-                    Neutron.response(aDocumentData);
-                } catch (exception) {
-                    aContext.callbackFunction(null, exception, aContext);
-                    return;
-                }
+            try {
+                // parse error message (throws an exeception)
+                Neutron.response(aDocumentData);
+            } catch (exception) {
+                aContext.callbackFunction(null, exception, aContext);
+                return;
             }
         }
     },
@@ -138,9 +134,9 @@ var Neutron = {
 
                 if (aException && (aException instanceof NeutronProtocolException || aException instanceof NeutronAuthException)) {
                     // report error message retrieved from response
-                    throw new YulupException(document.getElementById("uiEditorOverlayStringbundle").getString("editorDocumentLoadError0.label") + " \"" + aURI + "\".\n" + document.getElementById("uiEditorOverlayStringbundle").getString("editorDocumentLoadServerError.label") + ": " + aException.message + ".");
+                    throw new YulupException(document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadError0.label") + " \"" + aURI + "\".\n" + document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadServerError.label") + ": " + aException.message + ".");
                 } else
-                    throw new YulupException(document.getElementById("uiEditorOverlayStringbundle").getString("editorDocumentLoadError0.label") + " \"" + aURI + "\".");
+                    throw new YulupException(document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadError0.label") + " \"" + aURI + "\".");
             }
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutron.js:Neutron.introspection", exception);
