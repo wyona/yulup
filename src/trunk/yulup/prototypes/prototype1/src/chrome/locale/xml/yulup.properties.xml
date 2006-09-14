@@ -17,4 +17,9 @@
     <name xml:lang="de">Von einem Realm abmelden</name>
   </entity>
 
+  <entity id="yulupIntrospectionLoadFailure.label">
+    <name xml:lang="en">Failed to load introspection.</name>
+    <name xml:lang="de">Das Laden der Introspektion ist fehlgeschlagen.</name>
+  </entity>
+  
 </dtd>
