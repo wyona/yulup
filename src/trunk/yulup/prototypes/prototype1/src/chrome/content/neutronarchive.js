@@ -61,13 +61,23 @@ NeutronArchive.prototype = {
     * Load the neutron archive
     *
     * @param  {Function}  aLoadFinishedCallback the function to call when the download finished
+    * @param  {Boolean}   aLocal                wheter to load a local nar file or not
     * @return {Undefined}                       does not have a return value
     */
-    loadNeutronArchive: function(aLoadFinishedCallback) {
+    loadNeutronArchive: function(aLoadFinishedCallback, aLocal) {
         var tmpDir     = null;
         var archiveURI = null;
 
         /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.loadNeutronArchive() invoked\n");
+
+        if (aLocal) {
+            // create a jar-URI object pointing to the local nar file
+            this.zipArchiveURI = Components.classes["@mozilla.org/network/io-service;1"]. getService(Components.interfaces.nsIIOService).newURI("jar:" + this.loadURI.spec + "!/dummy", null, null);
+
+            /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.loadNeutronArchive(): archive URI: " + this.zipArchiveURI.spec + "\n");
+
+            return;
+        }
 
         // get a nsIFile pointing to the tmp directory
         tmpDir = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("TmpD", Components.interfaces.nsIFile);
