@@ -261,6 +261,14 @@ WidgetManager.prototype = {
         }
 
         return null;
+    },
+
+    getWidgetCount: function () {
+        /* DEBUG */ dump("Yulup:widget.js:WidgetManager.getWidgetCount() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(this.widgets != null && this.widgets.length != null);
+
+        return this.widgets.length;
     }
 };
 

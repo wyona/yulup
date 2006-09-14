@@ -116,11 +116,14 @@ function YulupEditController(aParameterObject) {
      * Initialises the document with data from the neutron-archive, then
      * continues with the editor initialisation
      *
-     * @param {nsIFile}   aResultFile
-     * @param {Exception} aException
+     * @param  {nsIFile}   aResultFile
+     * @param  {Exception} aException
+     * @return {Undefined} does not have a return value
      */
-    this.constructor.archiveLoadFinished = function(aResultFile, aException) {
+    this.constructor.archiveLoadFinished = function (aResultFile, aException) {
        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.archiveLoadFinished() invoked\n");
+
+       /* DEBUG */ YulupDebug.ASSERT(gEditorController != null && gEditorController.editStateController);
 
         try {
             if (aResultFile) {
@@ -153,7 +156,7 @@ function YulupEditController(aParameterObject) {
                                     gEditorController.loadStyle);
                 }
 
-                gEditorController.constructor.startEditorWithDocument(gEditorController.document, null, null);
+                gEditorController.constructor.enterStageTemplate(gEditorController.document, null, null);
 
             } else {
                 /* DEBUG */ dump("Yulup:controller.js:YulupEditController.archiveLoadFinished: failed to load Neutron archive \"" + gEditorController.archive.loadURI.spec + "\". \"" + aException + "\"\n");
@@ -177,11 +180,14 @@ function YulupEditController(aParameterObject) {
 
     /**
      *
-     * @param {nsIFile}   aResultFile
-     * @param {Exception} aException
+     * @param  {nsIFile}   aResultFile
+     * @param  {Exception} aException
+     * @return {Undefined} does not have a return value
      */
     this.constructor.templateArchiveLoadFinished = function(aResultFile, aException) {
-       /* DEBUG */ dump("Yulup:controller.js:YulupEditController.templateArchiveLoadFinished() invoked\n");
+        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.templateArchiveLoadFinished() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(gEditorController != null && gEditorController.editStateController);
 
         try {
             if (aResultFile) {
@@ -189,6 +195,10 @@ function YulupEditController(aParameterObject) {
 
                 gEditorController.templateArchive.extractNeutronArchive();
                 gEditorController.templateArchive.mergeIntrospection(gEditorController.introspection);
+
+                // arrive at template barrier
+                /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.templateArchiveLoadFinished: arrive at template barrier (current thread count is \"" + gEditorController.templateBarrier.noOfThreads + "\")\n");
+                gEditorController.templateBarrier.arrive();
 
             } else {
                 /* DEBUG */ dump("Yulup:controller.js:YulupEditController.templateArchiveLoadFinished: failed to load Neutron archive \"" + gEditorController.archive.loadURI.spec + "\". \"" + aException + "\"\n");
@@ -207,19 +217,20 @@ function YulupEditController(aParameterObject) {
             gEditorController.editStateController.modelStateChanged("openfailed");
             return;
         }
-
     };
 
     /**
      * Register the downloaded widget in the WidgetManager
      *
-     * @param {nsIFile}   aResultFile the downloaded widget icon file
-     * @param {Exception} aException
-     * @param {Widget}    aWidget     the widget belonging to to aResultFile
+     * @param  {nsIFile}   aResultFile the downloaded widget icon file
+     * @param  {Exception} aException
+     * @param  {Widget}    aWidget     the widget belonging to to aResultFile
+     * @return {Undefined} does not have a return value
      */
     this.constructor.widgetLoadFinished = function (aResultFile, aException, aWidget) {
-
         /* DEBUG */ dump("Yulup:controller.js:YulupEditController.widgetLoadFinished() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aResultFile ? aWidget != null : true);
 
         if (aResultFile) {
             gEditorController.widgetManager.installWidget(aWidget);
@@ -230,12 +241,15 @@ function YulupEditController(aParameterObject) {
                 Components.utils.reportError(aException);
             }
         }
+
+        // arrive at widget barrier
+        /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.widgetLoadFinished: arrive at widget barrier (current thread count is \"" + gEditorController.widgetBarrier.noOfThreads + "\")\n");
+        gEditorController.widgetBarrier.arrive();
     }
 
     /**
-     * Sets the model associated with this controller
-     * to the passed document data. If you pass it an
-     * exception, the exception will be shown.
+     * Sets the model associated with this controller to the passed document data. If you
+     * pass it an exception, the exception will be shown.
      *
      * @param  {String}    aDocumentData the document
      * @param  {Error}     aException    an exception
@@ -244,18 +258,16 @@ function YulupEditController(aParameterObject) {
     this.constructor.documentLoadFinished = function (aDocumentData, aException) {
         /* DEBUG */ dump("Yulup:controller.js:YulupEditController.documentLoadFinished() invoked\n");
 
+        /* DEBUG */ YulupDebug.ASSERT(gEditorController && gEditorController.editStateController);
+
         try {
             if (aDocumentData) {
                 gEditorController.model.initDocument(aDocumentData);
                 gEditorController.editStateController.modelStateChanged("opensucceeded");
-                gEditorController.barrier.arrive();
 
-                 // load widgets
-                if (gEditorController.introspection && gEditorController.introspection.queryFragmentWidgets(gEditorController.fragmentID)){
-                    gEditorController.widgets = gEditorController.introspection.queryFragmentWidgets(gEditorController.fragmentID);
-                    gEditorController.widgetManager.addWidgets(gEditorController.widgets);
-                    gEditorController.widgetManager.loadWidgets(YulupEditController.widgetLoadFinished);
-                }
+                // arrive at load barrier
+                /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.documentLoadFinished: arrive at load barrier (current thread count is \"" + gEditorController.loadBarrier.noOfThreads + "\")\n");
+                gEditorController.loadBarrier.arrive();
             } else {
                 /* DEBUG */ dump("Yulup:controller.js:YulupEditController.documentLoadFinished: failed to load \"" + gEditorController.document.loadURI.spec + "\"). \"" + aException + "\"\n");
 
@@ -275,20 +287,33 @@ function YulupEditController(aParameterObject) {
         }
     };
 
+    this.constructor.widgetLoadingComplete = function () {
+        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.widgetLoadingComplete() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(gEditorController != null);
+
+        // arrive at load barrier
+        /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.widgetLoadingComplete: arrive at load barrier (current thread count is \"" + gEditorController.loadBarrier.noOfThreads + "\")\n");
+        gEditorController.loadBarrier.arrive();
+    };
+
     /**
      * Starts the editor with the specified neutron archive.
      *
      * @param  {NeutronArchive} aNeutronArchive the neutron archive, to be loaded
-     * @return {Undefined}                      does not have a return value
+     * @return {Undefined} does not have a return value
      */
-    this.constructor.startEditorWithNeutronArchive = function (aNeutronArchive) {
+    this.constructor.enterStageNeutronArchive = function (aNeutronArchive) {
+        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageNeutronArchive() invoked\n");
 
-        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.startEditorWithNeutronArchive(): invoked\n");
+        /* DEBUG */ YulupDebug.ASSERT(aNeutronArchive   != null);
+        /* DEBUG */ YulupDebug.ASSERT(Editor            != null);
+        /* DEBUG */ YulupDebug.ASSERT(gEditorController != null && gEditorController.editStateController);
 
         try {
             aNeutronArchive.loadNeutronArchive(YulupEditController.archiveLoadFinished);
         } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:controller.js:YulupEditController.startEditorWithNeutronArchive", exception);
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:controller.js:YulupEditController.enterStageNeutronArchive", exception);
 
             alert(Editor.getStringbundleString("editorDocumentLoadFailure.label") + "\n\n" + exception.message);
 
@@ -301,43 +326,80 @@ function YulupEditController(aParameterObject) {
     /**
      * Starts the editor.
      *
-     * @param {Document} aDocument       the document used to initialise the editor
-     * @param {Boolean}  aFromTemplate   defines wether the editor is started with a template
-     * @param {String}   aTemplateString the template body as a string
+     * @param  {Document} aDocument       the document used to initialise the editor
+     * @param  {Boolean}  aFromTemplate   defines wether the editor is started with a template
+     * @param  {String}   aTemplateString the template body as a string
+     * @return {Undefined} does not have a return value
      */
-    this.constructor.startEditorWithDocument = function (aDocument, aFromTemplate, aTemplateString) {
+    this.constructor.enterStageTemplate = function (aDocument, aFromTemplate, aTemplateString) {
         var templateArchiveURI = null;
+        var context            = null;
 
-        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.startEditorWithDocument(): invoked\n");
+        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageTemplate() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aDocument         != null);
+        /* DEBUG */ YulupDebug.ASSERT(gEditorController != null && gEditorController.editStateController);
 
         gEditorController.document = aDocument;
 
         // instantiate the model
         gEditorController.model = new Model(gEditorController.editStateController, gEditorController.document);
 
-        // initialise barrier
-        if (gEditorController.document.isContentHTML() || gEditorController.document.hasStyles()) {
-            gEditorController.barrier = new Barrier(4, YulupEditController.startEditor, gEditorController);
-        } else {
-            // no wysiwyg mode view
-            gEditorController.barrier = new Barrier(3, YulupEditController.startEditor, gEditorController);
-        }
+        context = {
+            fromTemplate  : aFromTemplate,
+            templateString: aTemplateString
+        };
 
         // get template nar file for this document type
         templateArchiveURI = NeutronArchiveRegistry.getArchiveURI(gEditorController.document.contentType);
 
         if (templateArchiveURI) {
+            // init template barrier
+            gEditorController.templateBarrier = new Barrier(2, YulupEditController.enterStageWidgets, context);
+
             gEditorController.templateArchive = new NeutronArchive(templateArchiveURI);
             gEditorController.templateArchive.loadNeutronArchive(YulupEditController.templateArchiveLoadFinished);
+        } else {
+            // init template barrier
+            gEditorController.templateBarrier = new Barrier(1, YulupEditController.enterStageWidgets, context);
+        }
+
+        // arrive at template barrier
+        /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.enterStageTemplate: arrive at template barrier (current thread count is \"" + gEditorController.templateBarrier.noOfThreads + "\")\n");
+        gEditorController.templateBarrier.arrive();
+    }
+
+    this.constructor.enterStageWidgets = function (aContext) {
+        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageWidgets() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aContext          != null);
+        /* DEBUG */ YulupDebug.ASSERT(gEditorController != null && gEditorController.editStateController);
+
+        // load widgets
+        if (gEditorController.introspection && gEditorController.introspection.queryFragmentWidgets(gEditorController.fragmentID)){
+            // init load barrier
+            gEditorController.loadBarrier = new Barrier(2, YulupEditController.enterStageView, null);
+
+            gEditorController.widgets = gEditorController.introspection.queryFragmentWidgets(gEditorController.fragmentID);
+
+            gEditorController.widgetManager.addWidgets(gEditorController.widgets);
+
+            // init widget barrier
+            gEditorController.widgetBarrier = new Barrier(gEditorController.widgetManager.getWidgetCount(), YulupEditController.widgetLoadingComplete, null);
+
+            gEditorController.widgetManager.loadWidgets(YulupEditController.widgetLoadFinished);
+        } else {
+            // init load barrier
+            gEditorController.loadBarrier = new Barrier(1, YulupEditController.enterStageView, null);
         }
 
         /* Check if we have to load a document, or we are starting from
          * template. Note that the blank template is also a template. */
-        if (!aFromTemplate) {
+        if (!aContext.fromTemplate) {
             // load document
             try {
                 try {
-                    // note that the barrier.arrive() is called in documentLoadFinshed
+                    // note that the loadBarrier.arrive() is called in documentLoadFinshed
                     gEditorController.document.loadDocument(YulupEditController.documentLoadFinished);
                 } catch (exception) {
                     /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:controller.js:YulupEditController", exception);
@@ -353,27 +415,42 @@ function YulupEditController(aParameterObject) {
             }
         } else {
             // we are starting from a template
-            gEditorController.model.createFromTemplate(aTemplateString);
+            gEditorController.model.createFromTemplate(aContext.templateString);
 
             gEditorController.editStateController.modelStateChanged("opensucceeded");
 
-            // we have to arrive at the barrier manually
-            gEditorController.barrier.arrive();
+            // we have to arrive at the view barrier manually
+            /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.enterStageWidgets: arrive at load barrier (current thread count is \"" + gEditorController.loadBarrier.noOfThreads + "\")\n");
+            gEditorController.loadBarrier.arrive();
+        }
+    };
+
+    this.constructor.enterStageView = function () {
+        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageView() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(gEditorController && gEditorController.editStateController);
+
+        // initialise view barrier
+        if (gEditorController.document.isContentHTML() || gEditorController.document.hasStyles()) {
+            gEditorController.viewBarrier = new Barrier(3, YulupEditController.startEditor, null);
+        } else {
+            // no wysiwyg mode view
+            gEditorController.viewBarrier = new Barrier(2, YulupEditController.startEditor, null);
         }
 
         // initialise the views
         if (gEditorController.document.isContentHTML()) {
-            gEditorController.wysiwygModeView = new WYSIWYGModeView(gEditorController, gEditorController.model, YulupEditController.onCommandShowView, gEditorController.barrier);
+            gEditorController.wysiwygModeView = new WYSIWYGModeView(gEditorController, gEditorController.model, YulupEditController.onCommandShowView, gEditorController.viewBarrier);
         } else if (gEditorController.document.hasStyles()) {
             /* TODO: instantiate a view for every available stye. At the moment, we only
              * show the first associated style. */
-            gEditorController.wysiwygModeView = new WYSIWYGXSLTModeView(gEditorController, gEditorController.model, YulupEditController.onCommandShowView, gEditorController.barrier, gEditorController.document.getAssociates().getStyle(0), gEditorController.document.getAssociates().getStyleTemplate(), gEditorController.document.getStyleTemplateMode());
+            gEditorController.wysiwygModeView = new WYSIWYGXSLTModeView(gEditorController, gEditorController.model, YulupEditController.onCommandShowView, gEditorController.viewBarrier, gEditorController.document.getAssociates().getStyle(0), gEditorController.document.getAssociates().getStyleTemplate(), gEditorController.document.getStyleTemplateMode());
         }
 
-        gEditorController.sourceModeView  = new SourceModeView(gEditorController, gEditorController.model, YulupEditController.onCommandShowView, gEditorController.barrier);
+        gEditorController.sourceModeView  = new SourceModeView(gEditorController, gEditorController.model, YulupEditController.onCommandShowView, gEditorController.viewBarrier);
 
-        /* DEBUG */ dump("Yulup:controller.js:YulupEditController: arrive at barrier\n");
-        gEditorController.barrier.arrive();
+        /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.enterStageView: arrive at view barrier (current thread count is \"" + gEditorController.viewBarrier.noOfThreads + "\")\n");
+        gEditorController.viewBarrier.arrive();
     };
 
     /**
@@ -385,10 +462,12 @@ function YulupEditController(aParameterObject) {
      * @param  {YulupEditController} the editor controller
      * @return {Undefined}             does not have a return value
      */
-    this.constructor.startEditor = function (aController) {
-        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.startEditor(\"" + aController + "\") invoked\n");
+    this.constructor.startEditor = function () {
+        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.startEditor() invoked\n");
 
-        // initialisation completed
+        /* DEBUG */ YulupDebug.ASSERT(gEditorController && gEditorController.editStateController);
+
+        // startup completed
         gEditorController.initialised = true;
 
         // select the first tab
@@ -429,7 +508,10 @@ function YulupEditController(aParameterObject) {
     this.wysiwygModeView     = null;
     this.activeView          = null;
     this.editStateController = null;
-    this.barrier             = null;
+    this.templateBarrier     = null;
+    this.loadBarrier         = null;
+    this.widgetBarrier       = null;
+    this.viewBarrier         = null;
     this.documentURI         = null;
     this.introspection       = null;
     this.fragmentID          = null;
@@ -584,9 +666,9 @@ function YulupEditController(aParameterObject) {
     gEditorController.editStateController = new YulupEditStateController();
 
     if (this.document) {
-        this.constructor.startEditorWithDocument(this.document, fromTemplate, templateString);
+        this.constructor.enterStageTemplate(this.document, fromTemplate, templateString);
     } else if (this.archive) {
-        this.constructor.startEditorWithNeutronArchive(this.archive);
+        this.constructor.enterStageNeutronArchive(this.archive);
     }
 }
 

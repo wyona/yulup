@@ -457,6 +457,7 @@ SourceModeView.prototype = {
             return;
         }
 
+        /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup::view.js:SourceModeView.setUp: arrive at view barrier (current thread count is \"" + this.barrier.noOfThreads + "\")\n");
         this.barrier.arrive();
     },
 
@@ -647,6 +648,7 @@ WYSIWYGModeView.prototype = {
             return;
         }
 
+        /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup::view.js:WYSIWYGModeView.setUp: arrive at view barrier (current thread count is \"" + this.barrier.noOfThreads + "\")\n");
         this.barrier.arrive();
     },
 
@@ -894,17 +896,17 @@ WYSIWYGXSLTModeView.prototype = {
 
             this.editorImpl.transactionManager.clear();
 
-            /* DEBUG */ dump("Yulup:view.js:WYSIWYGModeView.setUp: initialisation completed\n");
+            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.setUp: initialisation completed\n");
         } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGModeView.setUp", exception);
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.setUp", exception);
             Components.utils.reportError(exception);
             return;
         }
 
         /* Set XPathToolBar to visible */
-
         document.getElementById("uiYulupXPathToolBar").hidden = false;
 
+        /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup::view.js:WYSIWYGXSLTModeView.setUp: arrive at view barrier (current thread count is \"" + this.barrier.noOfThreads + "\")\n");
         this.barrier.arrive();
     },
 
