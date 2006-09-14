@@ -54,7 +54,7 @@ YulupException.prototype.__proto__  = Error.prototype;
  * @return {YulupEditorException}
  */
 function YulupEditorException(aMessage) {
-    // /* DEBUG */ dump("Yulup:common.js:YulupEditorException(" + aMessage + ") invoked\n");
+    ///* DEBUG */ dump("Yulup:common.js:YulupEditorException(" + aMessage + ") invoked\n");
     this.message = aMessage;
     this.name    = "YulupEditorException";
 }
@@ -76,6 +76,8 @@ Barrier.prototype = {
 
     arrive: function () {
         /* DEBUG */ dump("Yulup:common.js:Barrier.arrive() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT((this.noOfThreads - 1) >= 0);
 
         // warning: decrementing and testing is by NO MEANS guarded!
         if (--this.noOfThreads == 0) {
