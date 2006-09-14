@@ -90,14 +90,14 @@ NeutronArchive.prototype = {
         }
         this.tmpArchive = tmpDir.clone();
 
-        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.loadNeutronArchive(): temp file: " + this.tmpArchive.path + "\n");
+        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.loadNeutronArchive: temp file: " + this.tmpArchive.path + "\n");
 
         archiveURI = Components.classes["@mozilla.org/network/io-service;1"]. getService(Components.interfaces.nsIIOService).newFileURI(this.tmpArchive);
 
         // create a jar-URI object
         this.zipArchiveURI = Components.classes["@mozilla.org/network/io-service;1"]. getService(Components.interfaces.nsIIOService).newURI("jar:" + archiveURI.spec + "!/dummy", null, null);
 
-        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.loadNeutronArchive(): archive URI: " + this.zipArchiveURI.spec + "\n");
+        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.loadNeutronArchive: archive URI: " + this.zipArchiveURI.spec + "\n");
 
         NetworkService.httpFetchToFile(this.loadURI.spec, this.tmpArchive, this.__requestFinishedHandler, aLoadFinishedCallback, true);
     },
@@ -179,7 +179,7 @@ NeutronArchive.prototype = {
         var neutronParser       = null;
         var introspectionZipURI = null;
 
-        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.loadIntrospectionFile(): invoked\n");
+        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.loadIntrospectionFile() invoked\n");
 
         introspectionZipURI = Components.classes["@mozilla.org/network/io-service;1"]. getService(Components.interfaces.nsIIOService).newURI(NAR_INTROSPECTION_FILE, null, this.zipArchiveURI);
 
@@ -320,7 +320,7 @@ NeutronArchive.prototype = {
     rewriteIntrospectionURI: function() {
         var ioService  = null;
 
-        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.rewriteIntrospectionURI(): invoked\n");
+        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.rewriteIntrospectionURI() invoked\n");
 
         ioService = Components.classes["@mozilla.org/network/io-service;1"]. getService(Components.interfaces.nsIIOService);
 
@@ -329,13 +329,13 @@ NeutronArchive.prototype = {
             if (this.introspection.fragments[i].checkin.uri) {
                 this.introspection.fragments[i].checkin.uri = ioService.newURI(this.introspection.fragments[i].checkin.uri.path.substr(this.introspection.fragments[i].checkin.uri.path.indexOf("!") + 2), null, this.loadURI);
 
-                /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.rewriteIntrospectionURI(): checkin: " + this.introspection.fragments[i].checkin.uri.spec + "\n");
+                /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.rewriteIntrospectionURI: checkin: " + this.introspection.fragments[i].checkin.uri.spec + "\n");
             }
 
             if (this.introspection.fragments[i].save.uri) {
                 this.introspection.fragments[i].save.uri = ioService.newURI(this.introspection.fragments[i].save.uri.path.substr(this.introspection.fragments[i].save.uri.path.indexOf("!") + 2), null, this.loadURI);
 
-                /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.rewriteIntrospectionURI(): save: " + this.introspection.fragments[i].save.uri.spec + "\n");
+                /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.rewriteIntrospectionURI: save: " + this.introspection.fragments[i].save.uri.spec + "\n");
             }
         }
     }
@@ -375,7 +375,7 @@ var NeutronArchiveRegistry = {
         narFile = NeutronArchiveRegistry.mimeTypeMap[aMimeType];
 
         if (!narFile) {
-            /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.getArchiveURI(): no template NAR for this mime-type\n");
+            /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.getArchiveURI: no template NAR for this mime-type\n");
             return null;
         }
 
@@ -387,8 +387,8 @@ var NeutronArchiveRegistry = {
 
         // create a nsIFileURI pointing to the template NAR file
         narURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newFileURI(installDir);
-        
-        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.getArchiveURI(): narURI: " + narURI.spec + "\n");
+
+        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.getArchiveURI: narURI = \"" + narURI.spec + "\"\n");
 
         return narURI;
     }

@@ -71,7 +71,7 @@ function WidgetManager(aInstanceID) {
     this.tmpDir.append(this.instanceID);
     this.tmpDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
 
-    /* DEBUG */ dump("Yulup:widget.js:WidgetManager.WidgetManager(): temp dir: " + this.tmpDir.path +"\n");
+    /* DEBUG */ dump("Yulup:widget.js:WidgetManager.WidgetManager: temp dir = \"" + this.tmpDir.path +"\"\n");
 }
 
 WidgetManager.prototype = {
@@ -198,7 +198,7 @@ WidgetManager.prototype = {
                     iconFile.append(widget.icon);
                     iconFile.create(Components.interfaces.nsIFile.FILE_TYPE, 0755);
 
-                    /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget(): tmp icon file: " + iconFile.path + "\n");
+                    /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: tmp icon file = \"" + iconFile.path + "\"\n");
 
                     widget.tmpIconFile = iconFile;
                     widget.tmpIconURI  = ioService.newFileURI(widget.tmpIconFile);
@@ -361,8 +361,8 @@ var WidgetHandler = {
         var namespaces      = null;
         var nsResolver      = null;
         var resolverFunction = null;
-        
-        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.getParametrizedWidgetFragment(): invoked\n");
+
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.getParametrizedWidgetFragment() invoked\n");
 
         nsResolver = new configurableNsResolver(aWidget.fragment);
 
@@ -399,7 +399,7 @@ var WidgetHandler = {
         var tidyWidgetFragmentXSL = null;
         var xsltProcessor         = null;
 
-        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.tidyWidgetFragment(): invoked\n");
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.tidyWidgetFragment() invoked\n");
 
         tidyWidgetFragmentXSL = Components.classes["@mozilla.org/xml/xml-document;1"].createInstance(Components.interfaces.nsIDOMXMLDocument);
 
@@ -426,7 +426,7 @@ var WidgetHandler = {
         var scrollX         = null;
         var scrollY         = null;
 
-        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doContentWidgetCommand(): invoked\n");
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doContentWidgetCommand() invoked\n");
 
         xmlSerializer = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer);
 
@@ -563,7 +563,7 @@ var WidgetHandler = {
   * cleaned.
   *
   * @param  {String}    aDir directory unter TmpD which contains temporary files
-  * @return {Undefined}      does not have a return value
+  * @return {Undefined} does not have a return value
   */
 function initialCleanUp(aDir) {
     var tmpDir        = null;
@@ -580,7 +580,7 @@ function initialCleanUp(aDir) {
         currentTmpDir = tmpDir.clone();
         currentTmpDir.append(arguments[i]);
 
-        /* DEBUG */ dump("Yulup:widget.js:initialCleanUp(): cleaning: " + currentTmpDir.path + "\n");
+        /* DEBUG */ dump("Yulup:widget.js:initialCleanUp: cleaning \"" + currentTmpDir.path + "\"\n");
 
         if (currentTmpDir.exists()) {
             currentTmpDir.remove(true);
