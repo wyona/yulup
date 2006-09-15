@@ -586,6 +586,10 @@ DownloadObserver.prototype = {
                              * scheme is unknown. Bail out. */
                             this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, exception);
                         }
+                    } else {
+                        /* We received a 401, but the caller did not order us to authenticate,
+                         * therefore he is expecting a potential authentication failure. */
+                        this.request.requestFinishedCallback(aResult, responseStatusCode, this.request.context, null);
                     }
                     break;
 
@@ -779,12 +783,15 @@ StreamListener.prototype = {
                              * scheme is unknown. Bail out. */
                             this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, exception);
                         }
+                    } else {
+                        /* We received a 401, but the caller did not order us to authenticate,
+                         * therefore he is expecting a potential authentication failure. */
+                        this.request.requestFinishedCallback(unicodeDoc, responseStatusCode, this.request.context, responseHeaders, null);
                     }
                     break;
 
                 default:
-                    /* Everything went fine (even if we received a 401, but the caller did not order
-                     * us to authenticate, therefore he is expecting a potential authentication failure). */
+                    // everything went fine
                     this.request.requestFinishedCallback(unicodeDoc, responseStatusCode, this.request.context, responseHeaders, null);
             }
         } else {
