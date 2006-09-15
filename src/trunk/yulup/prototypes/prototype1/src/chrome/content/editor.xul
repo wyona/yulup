@@ -89,11 +89,11 @@
               oncommandupdate="Editor.goUpdateClipboardEventCommands()"/>
 
   <commandset id="uiYulupEditorBaseCommandset">
-    <command id="cmd_undo"  oncommand="Editor.goDoCommand('cmd_undo')"  disabled="false"/>
-    <command id="cmd_redo"  oncommand="Editor.goDoCommand('cmd_redo')"  disabled="false"/>
-    <command id="cmd_cut"   oncommand="Editor.goDoCommand('cmd_cut')"   disabled="true"/>
-    <command id="cmd_copy"  oncommand="Editor.goDoCommand('cmd_copy')"  disabled="true"/>
-    <command id="cmd_paste" oncommand="Editor.goDoCommand('cmd_paste')" disabled="true"/>
+    <command id="cmd_undo"  oncommand="Editor.goDoCommand('cmd_undo')"/>
+    <command id="cmd_redo"  oncommand="Editor.goDoCommand('cmd_redo')"/>
+    <command id="cmd_cut"   oncommand="Editor.goDoCommand('cmd_cut')"/>
+    <command id="cmd_copy"  oncommand="Editor.goDoCommand('cmd_copy')"/>
+    <command id="cmd_paste" oncommand="Editor.goDoCommand('cmd_paste')"/>
   </commandset>
 
   <commandset id="uiYulupEditorWidgetCommandset"/>
