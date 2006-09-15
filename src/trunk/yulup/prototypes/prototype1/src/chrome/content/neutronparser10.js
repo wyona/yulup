@@ -162,8 +162,11 @@ NeutronParser10.prototype = {
     },
 
     __parseEdit: function (aDocument, aNode) {
+        var templateWidgets = null;
+
         return {
             mimeType: aDocument.evaluate("attribute::mime-type", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
+            templateWidgets: ((templateWidgets = aDocument.evaluate("neutron10:widgets/attribute::templates", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) == "false" ? false : true),
             open:     this.__parseFileOperation(aDocument, aNode, "open"),
             save:     this.__parseFileOperation(aDocument, aNode, "save"),
             checkout: this.__parseFileOperation(aDocument, aNode, "checkout"),

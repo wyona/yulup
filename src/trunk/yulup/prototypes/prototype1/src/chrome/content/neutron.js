@@ -569,6 +569,18 @@ Introspection.prototype = {
 
 
     /**
+     * Return a boolean value that determines wheter to load
+     * template widgets or not.
+     *
+     * @param  {Integer} aFragment a fragment identifier
+     * @return {Boolean}           true if template widgets shall be loaded
+     */
+    queryTemplateWidgets: function (aFragment) {
+        // return available widgets for fragment
+        return this.fragments[aFragment].templateWidgets;
+    },
+
+    /**
      * Return the widgets associated with the fragment for the given
      * fragment identifier.
      *
