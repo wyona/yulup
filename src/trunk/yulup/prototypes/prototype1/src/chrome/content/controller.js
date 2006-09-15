@@ -745,8 +745,15 @@ YulupEditStateController.prototype = {
                             document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", true);
                             document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", true);
                         }
+
                         // deactivate "save" menu
                         document.getElementById("uiFileOperationSave").setAttribute("disabled", true);
+
+                        // activate widgets, if present
+                        if (document.getElementById('uiYulupWidgetToolbarbuttons').hasChildNodes()) {
+                            document.getElementById('uiYulupWidgetToolbarSeparator').removeAttribute("hidden");
+                            document.getElementById('uiYulupWidgetToolbarbuttons').removeAttribute("hidden");
+                        }
                         break;
                     case this.STATE_DOCUMENTNEW:
                         this.currentState = this.STATE_DOCUMENTREADY_MODIFIED;

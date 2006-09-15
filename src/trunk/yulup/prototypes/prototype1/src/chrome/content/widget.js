@@ -121,19 +121,12 @@ WidgetManager.prototype = {
      * @return {Undefined}         does not have a return value
      */
      installWidget: function(aWidget) {
-        var toolbarSeparator = null;
         var commandSet       = null;
         var widgetCommand    = null;
         var toolbarButtons   = null;
         var widgetButton     = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetManager.WidgetManager.installWidget() invoked\n");
-
-        // enable the toolbar separator
-        toolbarSeparator = document.getElementById('uiYulupWidgetToolbarSeparator');
-        if (toolbarSeparator.getAttribute('hidden') == 'true') {
-            toolbarSeparator.setAttribute('hidden', false);
-        }
 
         // add command to editor.xul
         commandSet = document.getElementById('uiYulupEditorWidgetCommandset');

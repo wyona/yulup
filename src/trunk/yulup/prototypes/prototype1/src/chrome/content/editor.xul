@@ -192,7 +192,7 @@
         <toolbarbutton id="uiEditOperationPaste" command="cmd_paste" label="&editOperationPaste.label;" tooltiptext="&editOperationPaste.tooltip;"/>
       </box>
       <toolbarseparator id="uiYulupWidgetToolbarSeparator" hidden="true"/>
-      <box id="uiYulupWidgetToolbarbuttons"/>
+      <box id="uiYulupWidgetToolbarbuttons" hidden="true"/>
     </toolbar>
   </toolbox>
 
