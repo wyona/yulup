@@ -199,7 +199,7 @@ function createNew(aTemplate) {
 
     /* DEBUG */ dump("Yulup:yulup.js:createNew(\"" + aTemplate + "\") invoked\n");
 
-    editorParameters = new EditorParameters(null, aTemplate);
+    editorParameters = new EditorParameters(null, null, null, null, null, aTemplate);
 
     createNewEditor(editorParameters);
 
@@ -227,7 +227,7 @@ function createNewAtomEntry() {
     /* DEBUG */ dump("Yulup:yulup.js:createNewAtomEntry: feed URI = \"" + feedURI.spec + "\"\n");
 
     if (feedURI) {
-        editorParameters = new AtomEditorParameters(feedURI, "template-atomentry", "create");
+        editorParameters = new AtomEditorParameters(feedURI,  "application/atom+xml", "template-atomentry", "create");
         createNewEditor(editorParameters);
     }
 
@@ -247,7 +247,7 @@ function openFromFile() {
     /* DEBUG */ dump("Yulup:yulup.js:openFromFile() invoked\n");
 
     if (documentURI = PersistenceService.queryOpenFileURI()) {
-        editorParameters = new EditorParameters(documentURI, null);
+        editorParameters = new EditorParameters(documentURI, null, null, null, null, null);
 
         // replace the current editor
         createNewEditor(editorParameters);
@@ -734,12 +734,12 @@ Yulup.prototype = {
         }
     },
 
-    editAtomEntryProxy: function (aURI, aIntrospectionObject) {
+    editAtomEntryProxy: function (aURI) {
         var editorParameters = null;
 
         /* DEBUG */ dump("Yulup:yulup.js:Yulup.editAtomEntryProxy(\"" + aURI + "\") invoked\n");
 
-        editorParameters = new AtomEditorParameters(aURI, null, "edit", aIntrospectionObject);
+        editorParameters = new AtomEditorParameters(aURI, "application/atom+xml", null, "edit");
 
         // replace the current editor
         createNewEditor(editorParameters);

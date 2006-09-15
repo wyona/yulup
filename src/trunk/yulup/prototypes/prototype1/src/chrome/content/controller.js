@@ -40,17 +40,9 @@ const EDITOR_MODE_ATOM    = 2;
 var gEditorController = null;
 
 function YulupEditController(aParameterObject) {
-    var argsStringRegExp        = null;
-    var argTemplate             = null;
-    var argURI                  = null;
-    var argNeutronIntrospection = null;
-    var argNeutronFragment      = null;
-    var argNeutronLoadStyle     = null;
-    var argAtomCreationStatus   = null;
-    var fromTemplate            = false;
-    var templateString          = null;
-    var documentSuffix          = null;
-    var contentType             = null;
+    var fromTemplate   = false;
+    var templateString = null;
+    var documentSuffix = null;
 
     /* DEBUG */ dump("Yulup:controller.js:YulupEditController(\"" + aParameterObject + "\") invoked\n");
 
@@ -130,36 +122,11 @@ function YulupEditController(aParameterObject) {
                 /* DEBUG */ dump("Yulup:controller.js:YulupEditController.archiveLoadFinished: archive file: " + aResultFile + "\n");
 
                 gEditorController.archive.extractNeutronArchive();
-                gEditorController.introspection = gEditorController.archive.introspection;
+                gEditorController.editorParams.substituteIntrospectionParams(gEditorController.archive.introspection);
 
-                if (gEditorController.loadStyle == "open") {
-                    gEditorController.document = new NeutronDocument(gEditorController.archive.introspection.queryFragmentOpenURI(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentOpenMethod(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentSaveURI(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentSaveMethod(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentMIMEType(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentName(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentSchemas(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentStyles(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentStyleTemplate(gEditorController.fragmentID),
-                                    gEditorController.loadStyle);
-                } else {
-                    gEditorController.document = new NeutronDocument(gEditorController.archive.introspection.queryFragmentCheckoutURI(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentCheckoutMethod(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentCheckinURI(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentCheckinMethod(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentMIMEType(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentName(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentSchemas(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentStyles(gEditorController.fragmentID),
-                                    gEditorController.archive.introspection.queryFragmentStyleTemplate(gEditorController.fragmentID),
-                                    gEditorController.loadStyle);
-                }
-
-                gEditorController.constructor.enterStageTemplate(gEditorController.document, null, null);
-
+                gEditorController.constructor.enterStageTemplateLoad(null, null);
             } else {
-                /* DEBUG */ dump("Yulup:controller.js:YulupEditController.archiveLoadFinished: failed to load Neutron archive \"" + gEditorController.archive.loadURI.spec + "\". \"" + aException + "\"\n");
+                /* DEBUG */ dump("Yulup:controller.js:YulupEditController.archiveLoadFinished: failed to load Neutron archive \"" + gEditorController.archive.loadURI.spec + "\": \"" + aException + "\"\n");
 
                 if (aException && (aException instanceof NeutronProtocolException || aException instanceof NeutronAuthException)) {
                     // report error message retrieved from response
@@ -194,7 +161,7 @@ function YulupEditController(aParameterObject) {
                 /* DEBUG */ dump("Yulup:controller.js:YulupEditController.templateArchiveLoadFinished: archive file: " + aResultFile + "\n");
 
                 gEditorController.templateArchive.extractNeutronArchive();
-                gEditorController.templateArchive.mergeIntrospection(gEditorController.introspection);
+                gEditorController.editorParams.mergeIntrospectionParams(gEditorController.templateArchive.introspection);
 
                 // arrive at template barrier
                 /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.templateArchiveLoadFinished: arrive at template barrier (current thread count is \"" + gEditorController.templateBarrier.noOfThreads + "\")\n");
@@ -303,8 +270,8 @@ function YulupEditController(aParameterObject) {
      * @param  {NeutronArchive} aNeutronArchive the neutron archive, to be loaded
      * @return {Undefined} does not have a return value
      */
-    this.constructor.enterStageNeutronArchive = function (aNeutronArchive) {
-        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageNeutronArchive() invoked\n");
+    this.constructor.enterStageNeutronArchiveLoad = function (aNeutronArchive) {
+        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageNeutronArchiveLoad() invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aNeutronArchive   != null);
         /* DEBUG */ YulupDebug.ASSERT(Editor            != null);
@@ -313,7 +280,7 @@ function YulupEditController(aParameterObject) {
         try {
             aNeutronArchive.loadNeutronArchive(YulupEditController.archiveLoadFinished);
         } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:controller.js:YulupEditController.enterStageNeutronArchive", exception);
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:controller.js:YulupEditController.enterStageNeutronArchiveLoad", exception);
 
             alert(Editor.getStringbundleString("editorDocumentLoadFailure.label") + "\n\n" + exception.message);
 
@@ -322,28 +289,20 @@ function YulupEditController(aParameterObject) {
         }
     };
 
-
     /**
      * Starts the editor.
      *
-     * @param  {Document} aDocument       the document used to initialise the editor
      * @param  {Boolean}  aFromTemplate   defines wether the editor is started with a template
      * @param  {String}   aTemplateString the template body as a string
      * @return {Undefined} does not have a return value
      */
-    this.constructor.enterStageTemplate = function (aDocument, aFromTemplate, aTemplateString) {
+    this.constructor.enterStageTemplateLoad = function (aFromTemplate, aTemplateString) {
         var templateArchiveURI = null;
         var context            = null;
 
-        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageTemplate() invoked\n");
+        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageTemplateLoad() invoked\n");
 
-        /* DEBUG */ YulupDebug.ASSERT(aDocument         != null);
         /* DEBUG */ YulupDebug.ASSERT(gEditorController != null && gEditorController.editStateController);
-
-        gEditorController.document = aDocument;
-
-        // instantiate the model
-        gEditorController.model = new Model(gEditorController.editStateController, gEditorController.document);
 
         context = {
             fromTemplate  : aFromTemplate,
@@ -351,38 +310,37 @@ function YulupEditController(aParameterObject) {
         };
 
         // get template nar file for this document type
-        templateArchiveURI = NeutronArchiveRegistry.getArchiveURI(gEditorController.document.contentType);
+        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageTemplateLoad: document type = \"" + gEditorController.editorParams.contentType + "\"\n");
+        templateArchiveURI = NeutronArchiveRegistry.getArchiveURI(gEditorController.editorParams.contentType);
 
         if (templateArchiveURI) {
             // init template barrier
-            gEditorController.templateBarrier = new Barrier(2, YulupEditController.enterStageWidgets, context);
+            gEditorController.templateBarrier = new Barrier(2, YulupEditController.enterStageDocumentLoad, context);
 
             gEditorController.templateArchive = new NeutronArchive(templateArchiveURI);
             gEditorController.templateArchive.loadNeutronArchive(YulupEditController.templateArchiveLoadFinished);
         } else {
             // init template barrier
-            gEditorController.templateBarrier = new Barrier(1, YulupEditController.enterStageWidgets, context);
+            gEditorController.templateBarrier = new Barrier(1, YulupEditController.enterStageDocumentLoad, context);
         }
 
         // arrive at template barrier
-        /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.enterStageTemplate: arrive at template barrier (current thread count is \"" + gEditorController.templateBarrier.noOfThreads + "\")\n");
+        /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.enterStageTemplateLoad: arrive at template barrier (current thread count is \"" + gEditorController.templateBarrier.noOfThreads + "\")\n");
         gEditorController.templateBarrier.arrive();
-    }
+    };
 
-    this.constructor.enterStageWidgets = function (aContext) {
-        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageWidgets() invoked\n");
+    this.constructor.enterStageDocumentLoad = function (aContext) {
+        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageDocumentLoad() invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aContext          != null);
         /* DEBUG */ YulupDebug.ASSERT(gEditorController != null && gEditorController.editStateController);
 
         // load widgets
-        if (gEditorController.introspection && gEditorController.introspection.queryFragmentWidgets(gEditorController.fragmentID)){
+        if (gEditorController.editorParams.widgets) {
             // init load barrier
-            gEditorController.loadBarrier = new Barrier(2, YulupEditController.enterStageView, null);
+            gEditorController.loadBarrier = new Barrier(2, YulupEditController.enterStageViewInitialisation, null);
 
-            gEditorController.widgets = gEditorController.introspection.queryFragmentWidgets(gEditorController.fragmentID);
-
-            gEditorController.widgetManager.addWidgets(gEditorController.widgets);
+            gEditorController.widgetManager.addWidgets(gEditorController.editorParams.widgets);
 
             // init widget barrier
             gEditorController.widgetBarrier = new Barrier(gEditorController.widgetManager.getWidgetCount(), YulupEditController.widgetLoadingComplete, null);
@@ -390,8 +348,51 @@ function YulupEditController(aParameterObject) {
             gEditorController.widgetManager.loadWidgets(YulupEditController.widgetLoadFinished);
         } else {
             // init load barrier
-            gEditorController.loadBarrier = new Barrier(1, YulupEditController.enterStageView, null);
+            gEditorController.loadBarrier = new Barrier(1, YulupEditController.enterStageViewInitialisation, null);
         }
+
+        // instantiate the document, depending on type
+        switch (gEditorController.editorMode) {
+            case EDITOR_MODE_NEUTRON:
+                if (gEditorController.editorParams.loadStyle == "open") {
+                    gEditorController.document = new NeutronDocument(gEditorController.editorParams.openURI,
+                                                                     gEditorController.editorParams.openMethod,
+                                                                     gEditorController.editorParams.saveURI,
+                                                                     gEditorController.editorParams.saveMethod,
+                                                                     gEditorController.editorParams.contentType,
+                                                                     gEditorController.editorParams.screenName,
+                                                                     gEditorController.editorParams.schemas,
+                                                                     gEditorController.editorParams.styles,
+                                                                     gEditorController.editorParams.styleTemplate,
+                                                                     gEditorController.editorParams.loadStyle);
+                } else {
+                    gEditorController.document = new NeutronDocument(gEditorController.editorParams.checkoutURI,
+                                                                     gEditorController.editorParams.checkoutMethod,
+                                                                     gEditorController.editorParams.checkinURI,
+                                                                     gEditorController.editorParams.checkinMethod,
+                                                                     gEditorController.editorParams.contentType,
+                                                                     gEditorController.editorParams.screenName,
+                                                                     gEditorController.editorParams.schemas,
+                                                                     gEditorController.editorParams.styles,
+                                                                     gEditorController.editorParams.styleTemplate,
+                                                                     gEditorController.editorParams.loadStyle);
+                }
+            break;
+
+            case EDITOR_MODE_ATOM:
+                if (gEditorController.editorParams.creationStatus == "create") {
+                    gEditorController.document = new AtomDocument(null, gEditorController.editorParams.uri, gEditorController.editorParams.contentType);
+                } else {
+                    gEditorController.document = new AtomDocument(gEditorController.editorParams.uri, null, gEditorController.editorParams.contentType);
+                }
+                break;
+
+            default:
+                gEditorController.document = new Document(gEditorController.editorParams.uri, gEditorController.editorParams.contentType, null, /* documentSuffix */ null);
+        }
+
+        // instantiate the model
+        gEditorController.model = new Model(gEditorController.editStateController, gEditorController.document);
 
         /* Check if we have to load a document, or we are starting from
          * template. Note that the blank template is also a template. */
@@ -420,13 +421,13 @@ function YulupEditController(aParameterObject) {
             gEditorController.editStateController.modelStateChanged("opensucceeded");
 
             // we have to arrive at the view barrier manually
-            /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.enterStageWidgets: arrive at load barrier (current thread count is \"" + gEditorController.loadBarrier.noOfThreads + "\")\n");
+            /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.enterStageDocumentLoad: arrive at load barrier (current thread count is \"" + gEditorController.loadBarrier.noOfThreads + "\")\n");
             gEditorController.loadBarrier.arrive();
         }
     };
 
-    this.constructor.enterStageView = function () {
-        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageView() invoked\n");
+    this.constructor.enterStageViewInitialisation = function () {
+        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageViewInitialisation() invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(gEditorController && gEditorController.editStateController);
 
@@ -442,14 +443,13 @@ function YulupEditController(aParameterObject) {
         if (gEditorController.document.isContentHTML()) {
             gEditorController.wysiwygModeView = new WYSIWYGModeView(gEditorController, gEditorController.model, YulupEditController.onCommandShowView, gEditorController.viewBarrier);
         } else if (gEditorController.document.hasStyles()) {
-            /* TODO: instantiate a view for every available stye. At the moment, we only
-             * show the first associated style. */
+            // TODO: instantiate a view for every available style. At the moment, we only show the first associated style.
             gEditorController.wysiwygModeView = new WYSIWYGXSLTModeView(gEditorController, gEditorController.model, YulupEditController.onCommandShowView, gEditorController.viewBarrier, gEditorController.document.getAssociates().getStyle(0), gEditorController.document.getAssociates().getStyleTemplate(), gEditorController.document.getStyleTemplateMode());
         }
 
         gEditorController.sourceModeView  = new SourceModeView(gEditorController, gEditorController.model, YulupEditController.onCommandShowView, gEditorController.viewBarrier);
 
-        /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.enterStageView: arrive at view barrier (current thread count is \"" + gEditorController.viewBarrier.noOfThreads + "\")\n");
+        /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.enterStageViewInitialisation: arrive at view barrier (current thread count is \"" + gEditorController.viewBarrier.noOfThreads + "\")\n");
         gEditorController.viewBarrier.arrive();
     };
 
@@ -484,24 +484,29 @@ function YulupEditController(aParameterObject) {
         YulupEditController.updateView();
 
         // give information about the views
+        /* DEBUG */ YulupEditController.viewInfo();
+    };
+
+    this.constructor.viewInfo = function () {
         if (gEditorController.sourceModeView) {
-            /* DEBUG */ dump("Yulup:controller.js:YulupEditController.startEditor: sourceModeView.view.contentsMIMEType = \"" + gEditorController.sourceModeView.view.contentsMIMEType + "\".\n");
-            /* DEBUG */ dump("Yulup:controller.js:YulupEditController.startEditor: sourceModeView.view.documentCharacterSet = \"" + gEditorController.sourceModeView.view.documentCharacterSet + "\".\n");
-            /* DEBUG */ dump("Yulup:controller.js:YulupEditController.startEditor: sourceModeView.view.document = \"" + gEditorController.sourceModeView.view.document + "\".\n");
-            /* DEBUG */ dump("Yulup:controller.js:YulupEditController.startEditor: sourceModeView.view.document.baseURI = \"" + gEditorController.sourceModeView.view.document.baseURI + "\".\n");
+             dump("Yulup:controller.js:YulupEditController.startEditor: sourceModeView.view.contentsMIMEType = \"" + gEditorController.sourceModeView.view.contentsMIMEType + "\".\n");
+             dump("Yulup:controller.js:YulupEditController.startEditor: sourceModeView.view.documentCharacterSet = \"" + gEditorController.sourceModeView.view.documentCharacterSet + "\".\n");
+             dump("Yulup:controller.js:YulupEditController.startEditor: sourceModeView.view.document = \"" + gEditorController.sourceModeView.view.document + "\".\n");
+             dump("Yulup:controller.js:YulupEditController.startEditor: sourceModeView.view.document.baseURI = \"" + gEditorController.sourceModeView.view.document.baseURI + "\".\n");
         }
 
         if (gEditorController.wysiwygModeView) {
-            /* DEBUG */ dump("Yulup:controller.js:YulupEditController.startEditor: wysiwygModeView.view.contentsMIMEType = \"" + gEditorController.wysiwygModeView.view.contentsMIMEType + "\".\n");
-            /* DEBUG */ dump("Yulup:controller.js:YulupEditController.startEditor: wysiwygModeView.view.documentCharacterSet = \"" + gEditorController.wysiwygModeView.view.documentCharacterSet + "\".\n");
-            /* DEBUG */ dump("Yulup:controller.js:YulupEditController.startEditor: wysiwygModeView.view.document = \"" + gEditorController.wysiwygModeView.view.document + "\".\n");
-            /* DEBUG */ dump("Yulup:controller.js:YulupEditController.startEditor: wysiwygModeView.view.document.baseURI = \"" + gEditorController.wysiwygModeView.view.document.baseURI + "\".\n");
+             dump("Yulup:controller.js:YulupEditController.startEditor: wysiwygModeView.view.contentsMIMEType = \"" + gEditorController.wysiwygModeView.view.contentsMIMEType + "\".\n");
+             dump("Yulup:controller.js:YulupEditController.startEditor: wysiwygModeView.view.documentCharacterSet = \"" + gEditorController.wysiwygModeView.view.documentCharacterSet + "\".\n");
+             dump("Yulup:controller.js:YulupEditController.startEditor: wysiwygModeView.view.document = \"" + gEditorController.wysiwygModeView.view.document + "\".\n");
+             dump("Yulup:controller.js:YulupEditController.startEditor: wysiwygModeView.view.document.baseURI = \"" + gEditorController.wysiwygModeView.view.document.baseURI + "\".\n");
         }
     };
 
     // public instance attributes
     this.initialised         = false;
     this.editorMode          = null;
+    this.editorParams        = null;
     this.model               = null;
     this.document            = null;
     this.sourceModeView      = null;
@@ -512,10 +517,6 @@ function YulupEditController(aParameterObject) {
     this.loadBarrier         = null;
     this.widgetBarrier       = null;
     this.viewBarrier         = null;
-    this.documentURI         = null;
-    this.introspection       = null;
-    this.fragmentID          = null;
-    this.loadStyle           = null;
     this.widgetManager       = null;
     this.archive             = null;
     this.templateArchive     = null;
@@ -525,89 +526,62 @@ function YulupEditController(aParameterObject) {
          * paramters object from the manager. */
         gMainBrowserWindow.yulup.instancesManager.removeInstance(aParameterObject.instanceID);
 
-        if (aParameterObject.parameters.type == "NeutronEditorParameters") {
-            /* DEBUG */ dump("Yulup:controller.js:YulupEditController: parameters are of type NeutronEditorParameters\n");
+        this.editorParams = aParameterObject.parameters;
 
-            this.editorMode = EDITOR_MODE_NEUTRON;
-
-            argNeutronIntrospection = aParameterObject.parameters.introspection;
-            argNeutronFragment      = aParameterObject.parameters.fragment;
-            argNeutronLoadStyle     = aParameterObject.parameters.loadStyle;
-        } else if (aParameterObject.parameters.type == "AtomEditorParameters") {
-            /* DEBUG */ dump("Yulup:controller.js:YulupEditController: parameters are of type AtomEditorParameters\n");
-
-            this.editorMode = EDITOR_MODE_ATOM;
-
-            argAtomCreationStatus = aParameterObject.parameters.creationStatus;
-
-            argNeutronIntrospection = aParameterObject.parameters.introspection;
-            argNeutronFragment      = 0;
-        } else {
-            /* DEBUG */ dump("Yulup:controller.js:YulupEditController: parameters are of type EditorParameters\n");
-
-            this.editorMode = EDITOR_MODE_REGULAR;
+        switch (this.editorParams.type) {
+            case "NeutronEditorParameters":
+                /* DEBUG */ dump("Yulup:controller.js:YulupEditController: parameters are of type NeutronEditorParameters\n");
+                this.editorMode = EDITOR_MODE_NEUTRON;
+                break;
+            case "AtomEditorParameters":
+                /* DEBUG */ dump("Yulup:controller.js:YulupEditController: parameters are of type AtomEditorParameters\n");
+                this.editorMode = EDITOR_MODE_ATOM;
+                break;
+            default:
+                /* DEBUG */ dump("Yulup:controller.js:YulupEditController: parameters are of type EditorParameters\n");
+                this.editorMode = EDITOR_MODE_REGULAR;
         }
 
-        argTemplate = aParameterObject.parameters.template;
-        argURI      = aParameterObject.parameters.uri;
-
-        this.documentURI   = argURI;
-        this.introspection = argNeutronIntrospection;
-        this.fragmentID    = argNeutronFragment;
-        this.loadStyle     = argNeutronLoadStyle;
-
-        if (this.editorMode == EDITOR_MODE_NEUTRON) {
-            contentType = argNeutronIntrospection.queryFragmentMIMEType(argNeutronFragment);
-        } else if (this.editorMode == EDITOR_MODE_ATOM) {
-            contentType = "application/atom+xml";
-        }
-
-        if (!contentType) {
-            /* TODO: either there is no introspection file available, or
-             * the content type was not defined in there. We now have to
-             * somehow find out what content type the document has. Just
-             * set it to "text/html" for the moment as a workaround. */
-            contentType = "text/html";
+        if (!this.editorParams.contentType) {
+            /* TODO: either there is no introspection file available, or the content type was not defined in there. We now have to
+             * somehow find out what content type the document has. Just set it to "text/html" for the moment as a workaround. */
+            this.editorParams.contentType = "text/html";
         }
 
         // initialise the WidgetManager
         this.widgetManager = new WidgetManager(aParameterObject.instanceID);
-
     } else {
-        argTemplate = "blank";
+        this.editorParams = new EditorParameters(null, null, null, null, null, "blank");
     }
 
-    /* DEBUG */ dump("Yulup:controller.js:YulupEditController: argTemplate = \"" + argTemplate + "\", argURI = \"" + argURI + "\", argNeutronIntrospection = \"" + argNeutronIntrospection + "\", argNeutronFragment = \"" + argNeutronFragment + "\"\n");
-
-    switch (argTemplate) {
+    /* Note that the documentSuffix is not used although it is
+     * set below. This is because the complete template-from-string
+     * mechanism is going to be replaced by NAR based templating. */
+    switch (this.editorParams.template) {
         case "blank":
-            argURI         = null;
             fromTemplate   = true;
             templateString = TEMPLATE_BLANK;
-            contentType    = "text/plain";
+            this.editorParams.contentType = "text/plain";
             break;
         case "template-xml":
-            argURI         = null;
             fromTemplate   = true;
             templateString = TEMPLATE_XML;
             documentSuffix = "xml";
-            contentType    = "text/xml";
+            this.editorParams.contentType = "text/xml";
             break;
         case "template-xhtml":
-            argURI         = null;
             fromTemplate   = true;
             templateString = TEMPLATE_XHTML;
             documentSuffix = "xhtml";
-            contentType    = "application/xhtml+xml";
+            this.editorParams.contentType = "application/xhtml+xml";
             break;
         case "template-file":
             // TODO: how to retrieve template from file system?
         case "template-cms":
             // TODO: how to retrieve template from CMS?
-            argURI         = null;
             fromTemplate   = true;
             templateString = TEMPLATE_BLANK;
-            contentType    = null;
+            this.editorParams.contentType = null;
             break;
         case "template-atomentry":
             fromTemplate   = true;
@@ -616,59 +590,23 @@ function YulupEditController(aParameterObject) {
         default:
     }
 
-    // instantiate the document, depending on type
-    if (this.editorMode == EDITOR_MODE_NEUTRON) {
-        if (argNeutronLoadStyle == "open") {
-            if (argNeutronIntrospection.queryFragmentMIMEType(argNeutronFragment) == "application/neutron-archive") {
-                this.archive = new NeutronArchive(argNeutronIntrospection.queryFragmentOpenURI(argNeutronFragment));
-            } else {
-                this.document = new NeutronDocument(argNeutronIntrospection.queryFragmentOpenURI(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentOpenMethod(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentSaveURI(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentSaveMethod(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentMIMEType(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentName(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentSchemas(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentStyles(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentStyleTemplate(argNeutronFragment),
-                                                argNeutronLoadStyle);
-
-            }
+    // check if we have to load a Neutron archive
+    if (this.editorMode == EDITOR_MODE_NEUTRON && this.editorParams.contentType == "application/neutron-archive") {
+        if (this.editorParams.loadStyle == "open") {
+            this.archive  = new NeutronArchive(this.editorParams.openURI);
         } else {
-            if (argNeutronIntrospection.queryFragmentMIMEType(argNeutronFragment) == "application/neutron-archive") {
-                this.archive = new NeutronArchive(argNeutronIntrospection.queryFragmentCheckoutURI(argNeutronFragment));
-            } else {
-                this.document = new NeutronDocument(argNeutronIntrospection.queryFragmentCheckoutURI(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentCheckoutMethod(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentCheckinURI(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentCheckinMethod(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentMIMEType(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentName(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentSchemas(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentStyles(argNeutronFragment),
-                                                argNeutronIntrospection.queryFragmentStyleTemplate(argNeutronFragment),
-                                                argNeutronLoadStyle);
-            }
+            this.archive  = new NeutronArchive(this.editorParams.checkoutURI);
         }
-    } else if (this.editorMode == EDITOR_MODE_ATOM) {
-        if (argAtomCreationStatus == "create") {
-            this.document = new AtomDocument(null, argURI, contentType);
-        } else {
-            this.document = new AtomDocument(argURI, null, contentType);
-        }
-    } else {
-        this.document = new Document(argURI, contentType, null, documentSuffix);
     }
 
+    this.editStateController = new YulupEditStateController();
 
     gEditorController = this;
 
-    gEditorController.editStateController = new YulupEditStateController();
-
-    if (this.document) {
-        this.constructor.enterStageTemplate(this.document, fromTemplate, templateString);
-    } else if (this.archive) {
-        this.constructor.enterStageNeutronArchive(this.archive);
+    if (this.archive) {
+        this.constructor.enterStageNeutronArchiveLoad(this.archive);
+    } else {
+        this.constructor.enterStageTemplateLoad(fromTemplate, templateString);
     }
 }
 

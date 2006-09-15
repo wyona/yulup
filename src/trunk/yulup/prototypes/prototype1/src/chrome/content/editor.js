@@ -240,7 +240,7 @@ var Editor = {
         /* DEBUG */ dump("Yulup:editor.js:Editor.createNew(\"" + aTemplate + "\") invoked\n");
 
         if (Editor.checkClose()) {
-            editorParameters = new EditorParameters(null, aTemplate);
+            editorParameters = new EditorParameters(null, null, null, null, null, aTemplate);
 
             Editor.replaceEditor(editorParameters);
 
@@ -288,7 +288,7 @@ var Editor = {
 
         if (Editor.checkClose()) {
             if (documentURI = PersistenceService.queryOpenFileURI()) {
-                editorParameters = new EditorParameters(documentURI, null);
+                editorParameters = new EditorParameters(documentURI, null, null, null, null, null);
 
                 // replace the current editor
                 Editor.replaceEditor(editorParameters);

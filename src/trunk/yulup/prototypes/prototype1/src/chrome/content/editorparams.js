@@ -31,19 +31,86 @@
  * type EditorParameters.
  *
  * @constructor
- * @param  {nsIURI}           aURI      the URI of the document to load into the new editor
- * @param  {String}           aTemplate a template action parameter string
+ * @param  {nsIURI}           aURI         the URI of the document to load into the new editor
+ * @param  {String}           aContentType the content type of the document
+ * @param  {String}           aTemplate    a template action parameter string
  * @return {EditorParameters}
  */
-function EditorParameters(aURI, aTemplate) {
-    this.uri      = aURI;
-    this.template = (aTemplate ? aTemplate : "");
+function EditorParameters(aURI, aContentType, aSchemas, aStyles, aWidgets, aTemplate) {
+    /* DEBUG */ YulupDebug.ASSERT(aURI         != null && aURI.spec != null);
+    /* DEBUG */ YulupDebug.ASSERT(aContentType != null);
+
+    this.uri         = aURI;
+    this.contentType = aContentType;
+    this.schemas     = aSchemas;
+    this.styles      = aStyles;
+    this.widgets     = aWidgets;
+    this.template    = (aTemplate ? aTemplate : "");
 }
 
-EditorParameters.prototpye = {
-    type    : "EditorParameters",
-    uri     : null,
-    template: null
+EditorParameters.prototype = {
+    type       : "EditorParameters",
+    uri        : null,
+    contentType: null,
+    schemas    : null,
+    styles     : null,
+    widgets    : null,
+    template   : null,
+
+    mergeIntrospectionParams: function (aIntrospectionObject) {
+        /* DEBUG */ dump("Yulup:editorparams.js:EditorParameters.mergeIntrospectionParams() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aIntrospectionObject != null);
+
+        // check if content types are compatible
+        if (aIntrospectionObject && aIntrospectionObject.fragments[0] && (this.contentType == aIntrospectionObject.fragments[0].mimeType)) {
+            if (aIntrospectionObject.fragments[0].schemas) {
+                this.__mergeSchemas(aIntrospectionObject.fragments[0].schemas);
+            }
+            if (aIntrospectionObject.fragments[0].styles) {
+                this.__mergeStyles(aIntrospectionObject.fragments[0].styles);
+            }
+            if (aIntrospectionObject.fragments[0].widgets) {
+                this.__mergeWidgets(aIntrospectionObject.fragments[0].widgets);
+            }
+        }
+    },
+
+    __mergeSchemas: function (aSchemas) {
+        /* DEBUG */ dump("Yulup:editorparams.js:EditorParameters.__mergeSchemas() invoked\n");
+
+        if (!this.schemas) {
+            this.schemas = aSchemas;
+        } else {
+            for (var i = 0; i < aSchemas.length; i++) {
+                this.schemas.push(aSchemas[i]);
+            }
+        }
+    },
+
+    __mergeStyles: function(aStyles) {
+        /* DEBUG */ dump("Yulup:editorparams.js:EditorParameters.__mergeStyles() invoked\n");
+
+        if (!this.styles) {
+            this.styles = aStyles;
+        } else {
+            for (var i = 0; i < aStyles.length; i++) {
+                this.styles.push(aStyles[i]);
+            }
+        }
+    },
+
+    __mergeWidgets: function(aWidgets) {
+        /* DEBUG */ dump("Yulup:editorparams.js:EditorParameters.__mergeWidgets() invoked\n");
+
+        if (!this.widgets) {
+            this.widgets = aWidgets;
+        } else {
+            for (var i = 0; i < aWidgets.length; i++) {
+                this.widgets.push(aWidgets[i]);
+            }
+        }
+    }
 };
 
 
@@ -60,20 +127,85 @@ EditorParameters.prototpye = {
  * @return {NeutronEditorParameters}
  */
 function NeutronEditorParameters(aURI, aTemplate, aIntrospectionObject, aFragment, aLoadStyle) {
-    EditorParameters.call(this, aURI, aTemplate);
+    /* DEBUG */ YulupDebug.ASSERT(aURI                 != null && aURI.spec != null);
+    /* DEBUG */ YulupDebug.ASSERT(aIntrospectionObject != null);
+    /* DEBUG */ YulupDebug.ASSERT(aFragment            != null);
+    /* DEBUG */ YulupDebug.ASSERT(aLoadStyle           != null);
 
-    this.introspection = aIntrospectionObject;
-    this.fragment      = aFragment;
-    this.loadStyle     = aLoadStyle;
+    EditorParameters.call(this, aURI, aIntrospectionObject.queryFragmentMIMEType(aFragment), aIntrospectionObject.queryFragmentSchemas(aFragment), aIntrospectionObject.queryFragmentStyles(aFragment), aIntrospectionObject.queryFragmentWidgets(aFragment), aTemplate);
+
+    this.openURI        = aIntrospectionObject.queryFragmentOpenURI(aFragment);
+    this.openMethod     = aIntrospectionObject.queryFragmentOpenMethod(aFragment);
+    this.saveURI        = aIntrospectionObject.queryFragmentSaveURI(aFragment);
+    this.saveMethod     = aIntrospectionObject.queryFragmentSaveMethod(aFragment);
+    this.checkoutURI    = aIntrospectionObject.queryFragmentCheckoutURI(aFragment);
+    this.checkoutMethod = aIntrospectionObject.queryFragmentCheckoutMethod(aFragment);
+    this.checkinURI     = aIntrospectionObject.queryFragmentCheckinURI(aFragment);
+    this.checkinMethod  = aIntrospectionObject.queryFragmentCheckinMethod(aFragment);
+    this.screenName     = aIntrospectionObject.queryFragmentName(aFragment);
+    this.styleTemplate  = aIntrospectionObject.queryFragmentStyleTemplate(aFragment);
+    this.loadStyle      = aLoadStyle;
 }
 
 NeutronEditorParameters.prototype = {
     __proto__: EditorParameters.prototype,
 
-    type         : "NeutronEditorParameters",
-    introspection: null,
-    fragment     : null,
-    loadStyle    : null
+    type          : "NeutronEditorParameters",
+    openURI       : null,
+    openMethod    : null,
+    saveURI       : null,
+    saveMethod    : null,
+    checkoutURI   : null,
+    checkoutMethod: null,
+    checkinURI    : null,
+    checkinMethod : null,
+    screenName    : null,
+    schemas       : null,
+    styles        : null,
+    styleTemplate : null,
+    widgets       : null,
+    loadStyle     : null,
+
+    /**
+     * Substitute the editor parameters by the parameters
+     * contained in the given Neutron introspection object.
+     *
+     * Note that this method is intended for updating the
+     * editor parameters after a NAR load. The NAR must
+     * contain exactly one fragment (everything else would not
+     * make sense).
+     *
+     * @param  {Introspection} aIntrospectionObject a Neutron introspection object
+     * @return {Undefined} does not have a return value
+     */
+    substituteIntrospectionParams: function (aIntrospectionObject) {
+        /* DEBUG */ dump("Yulup:editorparams.js:NeutronEditorParameters.substituteIntrospectionParams() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aIntrospectionObject != null);
+
+        this.openURI        = aIntrospectionObject.queryFragmentOpenURI(0);
+        this.openMethod     = aIntrospectionObject.queryFragmentOpenMethod(0);
+        this.saveURI        = aIntrospectionObject.queryFragmentSaveURI(0);
+        this.saveMethod     = aIntrospectionObject.queryFragmentSaveMethod(0);
+        this.checkoutURI    = aIntrospectionObject.queryFragmentCheckoutURI(0);
+        this.checkoutMethod = aIntrospectionObject.queryFragmentCheckoutMethod(0);
+        this.checkinURI     = aIntrospectionObject.queryFragmentCheckinURI(0);
+        this.checkinMethod  = aIntrospectionObject.queryFragmentCheckinMethod(0);
+        this.screenName     = aIntrospectionObject.queryFragmentName(0);
+        this.schemas        = aIntrospectionObject.queryFragmentSchemas(0);
+        this.styles         = aIntrospectionObject.queryFragmentStyles(0);
+        this.styleTemplate  = aIntrospectionObject.queryFragmentStyleTemplate(0);
+        this.widgets        = aIntrospectionObject.queryFragmentWidgets(0);
+        this.contentType    = aIntrospectionObject.queryFragmentMIMEType(0);
+    },
+
+    mergeIntrospectionParams: function (aIntrospectionObject) {
+        /* DEBUG */ dump("Yulup:editorparams.js:NeutronEditorParameters.mergeIntrospectionParams() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aIntrospectionObject != null);
+
+        EditorParameters.prototype.mergeIntrospectionParams.call(this, aIntrospectionObject);
+    }
 };
 
 
@@ -83,16 +215,19 @@ NeutronEditorParameters.prototype = {
  *
  * @constructor
  * @param  {nsIURI}               aURI            the URI of the document to load into the new editor
+ * @param  {String}               aContentType    the content type of the document
  * @param  {String}               aTemplate       a template action parameter string
  * @param  {String}               aCreationStatus specifies if the document has to be "create"ed first or simply "edit"
- * @param  {Introspection}           aIntrospectionObject the introspection object associated with the document to load
  * @return {AtomEditorParameters}
  */
-function AtomEditorParameters(aURI, aTemplate, aCreationStatus, aIntrospectionObject) {
-    EditorParameters.call(this, aURI, aTemplate);
+function AtomEditorParameters(aURI, aContentType, aTemplate, aCreationStatus) {
+    /* DEBUG */ YulupDebug.ASSERT(aURI            != null && aURI.spec != null);
+    /* DEBUG */ YulupDebug.ASSERT(aContentType    != null);
+    /* DEBUG */ YulupDebug.ASSERT(aCreationStatus != null);
+
+    EditorParameters.call(this, aURI, aContentType, null, null, null, aTemplate);
 
     this.creationStatus = aCreationStatus;
-    this.introspection  = aIntrospectionObject;
 }
 
 AtomEditorParameters.prototype = {
@@ -100,5 +235,12 @@ AtomEditorParameters.prototype = {
 
     type          : "AtomEditorParameters",
     creationStatus: null,
-    introspection : null
+
+    mergeIntrospectionParams: function (aIntrospectionObject) {
+        /* DEBUG */ dump("Yulup:editorparams.js:AtomEditorParameters.mergeIntrospectionParams() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aIntrospectionObject != null);
+
+        EditorParameters.prototype.mergeIntrospectionParams.call(this, aIntrospectionObject);
+    }
 };
