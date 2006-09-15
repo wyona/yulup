@@ -865,6 +865,11 @@ WYSIWYGXSLTModeView.prototype = {
             this.editorImpl.addDocumentStateListener(new View.DocumentStateListener(this.model));
 
             this.view = wysiwygXSLTEditor.getEditor(wysiwygXSLTEditor.contentWindow);
+
+            // disable object resizing
+            this.view.QueryInterface(Components.interfaces.nsIHTMLObjectResizer);
+            this.view.objectResizingEnabled = false;
+
             this.view.QueryInterface(Components.interfaces.nsIHTMLEditor);
 
             // make the caret visible even if the current selection is not collapsed
