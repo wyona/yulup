@@ -590,8 +590,13 @@ function initialCleanUp(aDir) {
 
         /* DEBUG */ dump("Yulup:widget.js:initialCleanUp: cleaning \"" + currentTmpDir.path + "\"\n");
 
-        if (currentTmpDir.exists()) {
-            currentTmpDir.remove(true);
+        try {
+            if (currentTmpDir.exists()) {
+                currentTmpDir.remove(true);
+            }
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:widget.js:initialCleanUp", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
         }
     }
 }
