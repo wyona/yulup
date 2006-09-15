@@ -885,6 +885,11 @@ WYSIWYGXSLTModeView.prototype = {
 
             wysiwygXSLTEditor.contentWindow.addEventListener("keyup", new WYSIWYGXSLTKeyListener(this), true);
 
+            // TODO: make this configurable via the preferences system
+            if (true) {
+                wysiwygXSLTEditor.contentWindow.addEventListener("keypress", new ReadlineKeyBindingsListener(wysiwygXSLTEditor), true);
+            }
+
             /* Prevent keypress events from bubbling to work around
              * bug https://bugzilla.mozilla.org/show_bug.cgi?id=304188
              * (prevent keypress events from invoking FAYT). */
