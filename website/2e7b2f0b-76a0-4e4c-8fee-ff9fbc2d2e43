@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <title>yulup-prototype-1-0.1.10-rc4-r17921</title>
+  <author><name>Michael Wechner</name></author>
+  <id></id>
+  <updated>2006-09-15T17:21:ss-hh:mm</updated>
+  <summary type="html">Yulup RC4 released</summary>
+  <content type="xhtml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+    Yulup RC4 released
+    </div>
+  </content>
+</entry>
