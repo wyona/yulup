@@ -34,17 +34,74 @@ const ATOM_10_NAMESPACE = "http://www.w3.org/2005/Atom";
 
 var APP = {
     /**
-     * Fetch introspection file and parse it.
+     * Fetch introspection file.
      *
-     * @param  {String}           aURI     URI of the introspection document
-     * @param  {nsIURI}           aBaseURI the URI of the document to which the introspection document is associated
-     * @return {APPIntrospection} a APPIntrospection object
+     * @param  {String}       aURI     URI of remote host to query for introspection file
+     * @param  {nsIURI}       aBaseURI the URI of the document to which the introspection document is associated
+     * @return {Undefined}             does not have a return value
      */
-    fetchIntrospection: function (aURI, aBaseURI) {
-        var xmlDocument   = null;
-        var success       = null;
-        var namespace     = null;
-        var introspection = null;
+    fetchIntrospection: function (aURI, aBaseURI, aYulup) {
+        var context = null;
+
+        /* DEBUG */ dump("Yulup:atom.js:APP.fetchIntrospection(\"" + aURI + "\", \"" + aBaseURI + "\") invoked\n");
+
+        context = {
+            URI:              aURI,
+            baseURI:          aBaseURI,
+            yulup:            aYulup,
+            callbackFunction: APP.introspectionLoadFinished
+        };
+
+        NetworkService.httpRequestGET(aURI, null, this.__requestFinishedHandler, context, false, true);
+    },
+
+    /**
+     * Callback function that gets called when the introspection load
+     * request finished.
+     *
+     * @param  {String}   aDocumentData            the data returned by the request
+     * @param  {Long}     aResponseStatusCode      the status code of the response
+     * @param  {Object}   aContext                 context object containing the callback function and it's parameters
+     * @param  {Array}    aResponseHeaders         the response headers
+     * @param  {Error}    aException               an exception, or null if everything went well
+     * @return {Undefined} does not have a return value
+     */ 
+    __requestFinishedHandler: function(aDocumentData, aResponseStatusCode, aContext, aResponseHeaders) {
+
+        /* DEBUG */ dump("Yulup:atom.js:APP.__requestFinishedHandler() invoked\n");
+
+        if (aResponseStatusCode == 200) {
+            // success, call back to original caller
+            aContext.callbackFunction(aDocumentData, null, aContext);
+        } else {
+            try {
+                // parse error message (throws an exeception)
+                Neutron.response(aDocumentData);
+            } catch (exception) {
+                aContext.callbackFunction(null, exception, aContext);
+                return;
+            }
+        }
+    },
+
+    /**
+     * Callback function that gets called when the introspection request
+     * finished and after parsing a possible exception.
+     *
+     * @param  {String}    aDocumentData the document data retrieved by the request
+     * @param  {Exception} aException    the exception
+     * @param  {Object}    aContext      context object containing the function parameters
+     * @return {Undefined}               does not have a return value
+     */
+    introspectionLoadFinished: function(aDocumentData, aException, aContext) {
+        var wellFormednessError = null;
+        var domParser           = null;
+        var xmlDocument         = null;
+        var xmlSerializer       = null;
+        var introspection       = null;
+        var aURI                = aContext.URI;
+        var aBaseURI            = aContext.baseURI;
+        var aYulup              = aContext.yulup;
 
         /* DEBUG */ dump("Yulup:atom.js:APP.fetchIntrospection(\"" + aURI + "\", \"" + aBaseURI + "\") invoked\n");
 
@@ -52,14 +109,19 @@ var APP = {
         /* DEBUG */ YulupDebug.ASSERT(aBaseURI != null);
 
         try {
-            xmlDocument = Components.classes["@mozilla.org/xml/xml-document;1"].createInstance(Components.interfaces.nsIDOMXMLDocument);
-            xmlDocument.async = false;
-
-            if (xmlDocument.load(aURI)) {
+            if (aDocumentData) {
                 // load successful
 
-                /* DEBUG */ dump("Yulup:atom.js:APP.fetchIntrospection: loading introspection file \"" + aURI + "\" succeeded\n");
-                /* DEBUG */ dump("Yulup:atom.js:APP.fetchIntrospection: introspection document =\n" + Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(xmlDocument) + "\n");
+                if ((wellFormednessError = checkWellFormedness(aDocumentData)) != null) {
+                    throw new YulupException(APP.createWellFormednessAlertString(wellFormednessError));
+                }
+
+                domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"].createInstance(Components.interfaces.nsIDOMParser);
+
+                xmlDocument  = domParser.parseFromString(aDocumentData, "text/xml");
+
+                /* DEBUG */ dump("Yulup:atom.js:APP.introspectionLoadFinished: loading introspection file \"" + aURI + "\" succeeded\n");
+                /* DEBUG */ dump("Yulup:atom.js:APP.introspectionLoadFinished: introspection document =\n" + Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(xmlDocument) + "\n");
 
                 // instantiate the parser for this version and parse the file
                 introspection = APP.parserFactory(xmlDocument, aURI).parseIntrospection();
@@ -67,26 +129,34 @@ var APP = {
                 introspection.sourceString = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(xmlDocument);
                 introspection.introspectionURI = aURI;
 
-                /* DEBUG */ dump("Yulup:atom.js:APP.fetchIntrospection: introspection object = \n" + introspection.toString());
+                // set the global introspection object
+                aYulup.currentAPPIntrospection = introspection;
+
+                // set the introspection state
+                aYulup.introspectionStateChanged("success");
+
+                /* DEBUG */ dump("Yulup:atom.js:APP.introspectionLoadFinished: introspection object = \n" + introspection.toString());
             } else {
-                /* Either the load failed, or the document is not well
-                 * formed. We could look at the document now to find out
-                 * what happened, but we simply report failure. */
-                throw new APPException("Yulup:atom.js:APP.fetchIntrospection: loading introspection file \"" + aURI + "\" failed.");
+                /* DEBUG */ dump("Yulup:atom.js:APP.introspectionLoadFinished: failed to load \"" + aURI + "\"). \"" + aException + "\"\n");
+
+                if (aException && (aException instanceof NeutronProtocolException || aException instanceof NeutronAuthException)) {
+                    // report error message retrieved from response
+                    throw new YulupException(document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadError0.label") + " \"" + aURI + "\".\n" + document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadServerError.label") + ": " + aException.message + ".");
+                } else
+                    throw new YulupException(document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadError0.label") + " \"" + aURI + "\".");
             }
         } catch (exception) {
-            if (!(exception instanceof APPException)) {
-                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:atom.js:APP.fetchIntrospection", exception);
-                Components.utils.reportError(exception);
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:atom.js:APP.introspectionLoadFinished", exception);
 
-                throw new APPException("Yulup:atom.js:APP.fetchIntrospection: \"" + exception + "\".");
-            } else {
-                // rethrow
-                throw exception;
-            }
+            alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupIntrospectionLoadFailure.label") + "\n\n" + exception.message);
+
+            // set the introspection state
+            aYulup.introspectionStateChanged("failed");
         }
+    },
 
-        return introspection;
+    createWellFormednessAlertString: function (aWellFormednessError) {
+        return document.getElementById("uiYulupEditorStringbundle").getString("editorWellFormednessError0.label") + ": " + document.getElementById("uiYulupEditorStringbundle").getString("editorWellFormednessError1.label") + ": " + aWellFormednessError.line + ", " + document.getElementById("uiYulupEditorStringbundle").getString("editorWellFormednessError2.label") + ": " + aWellFormednessError.column + (aWellFormednessError.sourceText != "" ? "\n" + aWellFormednessError.sourceText : "");
     },
 
     /**

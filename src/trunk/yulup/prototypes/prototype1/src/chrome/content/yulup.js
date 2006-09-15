@@ -537,7 +537,7 @@ Yulup.prototype = {
                             Neutron.introspection(introspectionLinks[i].uri, documentURI, this);
                             break;
                         case INTROSPECTION_TYPE_APP:
-                            this.currentAPPIntrospection = APP.fetchIntrospection(introspectionLinks[i].uri, documentURI);
+                            APP.fetchIntrospection(introspectionLinks[i].uri, documentURI, this);
                             break;
                         }
                     }
