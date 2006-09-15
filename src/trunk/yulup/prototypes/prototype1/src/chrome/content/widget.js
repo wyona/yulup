@@ -60,7 +60,7 @@ Widget.prototype = {
   */
 function WidgetManager(aInstanceID) {
 
-    /* DEBUG */ dump("Yulup:widget.js:WidgetManager.WidgetManager(\"" + aInstanceID  + "\") invoked\n");
+    /* DEBUG */ dump("Yulup:widget.js:WidgetManager(\"" + aInstanceID  + "\") invoked\n");
 
     this.instanceID   = aInstanceID;
     this.widgets      = new Array();
@@ -71,7 +71,7 @@ function WidgetManager(aInstanceID) {
     this.tmpDir.append(this.instanceID);
     this.tmpDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
 
-    /* DEBUG */ dump("Yulup:widget.js:WidgetManager.WidgetManager: temp dir = \"" + this.tmpDir.path +"\"\n");
+    /* DEBUG */ dump("Yulup:widget.js:WidgetManager: temp dir = \"" + this.tmpDir.path +"\"\n");
 }
 
 WidgetManager.prototype = {
@@ -143,7 +143,7 @@ WidgetManager.prototype = {
         widgetCommand.setAttribute('oncommand', "WidgetHandler.doWidgetCommand(\"" + aWidget.attributes["name"] + "\")");
         commandSet.appendChild(widgetCommand);
 
-        // add toolbarbtton to editor.xul
+        // add toolbarbutton to editor.xul
         toolbarButtons = document.getElementById('uiYulupWidgetToolbarbuttons');
         widgetButton = document.createElement('toolbarbutton');
         widgetButton.setAttribute('id', 'uiWidget' + aWidget.attributes["name"]);
