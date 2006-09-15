@@ -101,7 +101,7 @@ NeutronParser10.prototype = {
 
         if (elemNode = this.documentDOM.evaluate("neutron10:introspection/neutron10:new", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) {
             // new element exists
-            introspection.newAsset = this.parseNew(this.documentDOM, elemNode);
+            introspection.newTemplates = this.__parseNew(this.documentDOM, elemNode);
         }
 
         if (elemNode = this.documentDOM.evaluate("neutron10:introspection/neutron10:navigation", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) {
@@ -159,6 +159,35 @@ NeutronParser10.prototype = {
              * on him. */
             throw response;
         }
+    },
+
+    __parseNew: function(aDocument, aNode) {
+        var uri = null;
+
+        return {
+            uri: ((uri = aDocument.evaluate("attribute::uri", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != "" ? this.ioService.newURI(uri, null, this.baseURI) : null),
+            templates: this.__parseTemplates(aDocument, aNode)
+        };
+    },
+
+    __parseTemplates: function(aDocument, aNode) {
+        var templates     = null;
+        var tempalte      = null;
+        var templateArray = new Array();
+        var index         = 0;
+        var uri           = null;
+
+        templates = aDocument.evaluate("neutron10:template", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+
+        while (template = templates.iterateNext()) {
+            templateArray[index++] = {
+                name: aDocument.evaluate("attribute::name", template, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
+                uri: ((uri = aDocument.evaluate("attribute::uri", template, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != "" ? this.ioService.newURI(uri, null, this.baseURI) : null),
+                mimeType: aDocument.evaluate("attribute::mime-type", template, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue
+            }
+        }
+
+        return (templateArray.length > 0 ? templateArray : null);
     },
 
     __parseEdit: function (aDocument, aNode) {
