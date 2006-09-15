@@ -95,7 +95,6 @@ var Neutron = {
     introspectionLoadFinished: function(aDocumentData, aException, aContext) {
         var wellFormednessError = null;
         var domParser           = null;
-        var documentRoot        = null;
         var xmlSerializer       = null;
         var introspection       = null;
         var aURI                = aContext.URI;
@@ -128,7 +127,7 @@ var Neutron = {
                 // set the introspection state
                 aYulup.introspectionStateChanged("success");
 
-                /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspection: introspection = \n" + introspection.toString());
+                /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished: introspection = \n" + introspection.toString());
             } else {
                 /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished: failed to load \"" + aURI + "\"). \"" + aException + "\"\n");
 
@@ -139,7 +138,7 @@ var Neutron = {
                     throw new YulupException(document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadError0.label") + " \"" + aURI + "\".");
             }
         } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutron.js:Neutron.introspection", exception);
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutron.js:Neutron.introspectionLoadFinished", exception);
 
             alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupIntrospectionLoadFailure.label") + "\n\n" + exception.message);
 
