@@ -1279,7 +1279,7 @@ WYSIWYGXSLTModeView.prototype = {
 
         var sourceNode = domDocument.evaluate(xPathExpr, domDocument, domDocument.createNSResolver(domDocument.documentElement), XPathResult.ANY_TYPE, null).iterateNext();
 
-        dump ("Xpath query returned source node: " + sourceNode);
+        dump ("Xpath query returned source node: \"" + sourceNode + "\"\n");
 
         /** Do a xhtml to source node mapping to add text() constaints */
 

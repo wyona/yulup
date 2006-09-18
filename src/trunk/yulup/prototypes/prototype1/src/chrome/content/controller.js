@@ -381,14 +381,14 @@ function YulupEditController(aParameterObject) {
 
             case EDITOR_MODE_ATOM:
                 if (gEditorController.editorParams.creationStatus == "create") {
-                    gEditorController.document = new AtomDocument(null, gEditorController.editorParams.uri, gEditorController.editorParams.contentType);
+                    gEditorController.document = new AtomDocument(null, gEditorController.editorParams.uri, gEditorController.editorParams.contentType, gEditorController.editorParams.schemas, gEditorController.editorParams.styles, gEditorController.editorParams.styleTemplate);
                 } else {
-                    gEditorController.document = new AtomDocument(gEditorController.editorParams.uri, null, gEditorController.editorParams.contentType);
+                    gEditorController.document = new AtomDocument(gEditorController.editorParams.uri, null, gEditorController.editorParams.contentType, gEditorController.editorParams.schemas, gEditorController.editorParams.styles, gEditorController.editorParams.styleTemplate);
                 }
                 break;
 
             default:
-                gEditorController.document = new Document(gEditorController.editorParams.uri, gEditorController.editorParams.contentType, null, /* documentSuffix */ null);
+                gEditorController.document = new Document(gEditorController.editorParams.uri, gEditorController.editorParams.contentType, null, /* documentSuffix */ null, gEditorController.editorParams.schemas, gEditorController.editorParams.styles, gEditorController.editorParams.styleTemplate);
         }
 
         // instantiate the model
@@ -551,7 +551,7 @@ function YulupEditController(aParameterObject) {
         // initialise the WidgetManager
         this.widgetManager = new WidgetManager(aParameterObject.instanceID);
     } else {
-        this.editorParams = new EditorParameters(null, null, null, null, null, "blank");
+        this.editorParams = new EditorParameters(null, null, null, null, null, null, "blank");
     }
 
     /* Note that the documentSuffix is not used although it is

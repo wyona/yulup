@@ -40,12 +40,19 @@
  * @param  {String}   aContentType   the content type of the document, or null if unknown
  * @param  {String}   aScreenName    a description of the document to display e.g. in the window title, or null if unavailable
  * @param  {String}   aFileExtension the extension of the document file name, or null if unavailable
+ * @param  {Array}    aSchemaArray   the URIs for schemas associated with this document
+ * @param  {Array}    aStyleArray    the URIs for styles associated with this document
+ * @param  {Object}   aStyleTemplate the style template associated with this document
  * @return {Document}
  */
-function Document(aLoadURI, aContentType, aScreenName, aFileExtension) {
+function Document(aLoadURI, aContentType, aScreenName, aFileExtension, aSchemaArray, aStyleArray, aStyleTemplate) {
     var loadURL = null;
 
-    /* DEBUG */ dump("Yulup:document.js:Document(\"" + aLoadURI + "\", \"" + aContentType + "\", \"" + aScreenName + "\", \"" + aFileExtension + "\") invoked\n");
+    /* DEBUG */ dump("Yulup:document.js:Document(\"" + aLoadURI + "\", \"" + aContentType + "\", \"" + aScreenName + "\", \"" + aFileExtension + "\", \"" + aSchemaArray + "\", \"" + aStyleArray + "\", \"" + aStyleTemplate + "\") invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aLoadURI     != null);
+    /* DEBUG */ YulupDebug.ASSERT(aContentType != null);
+    /* DEBUG */ YulupDebug.ASSERT(aStyleTemplate ? aStyleTemplate.mode != null : true);
 
     this.contentType = aContentType;
 
@@ -66,15 +73,24 @@ function Document(aLoadURI, aContentType, aScreenName, aFileExtension) {
 
     if (aFileExtension && (aFileExtension != ""))
         this.documentExtension = aFileExtension;
+
+    if (aStyleArray || aSchemaArray) {
+        this.documentAssociates = new DocumentAssociates(aStyleArray, aStyleTemplate, aSchemaArray);
+        if (aStyleTemplate) {
+          this.styleTemplateMode = aStyleTemplate.mode;
+        }
+    }
 }
 
 Document.prototype = {
-    loadURI          : null,
-    documentBaseName : null,
-    documentExtension: null,
-    screenName       : null,
-    localSavePath    : null,
-    contentType      : null,
+    loadURI           : null,
+    documentBaseName  : null,
+    documentExtension : null,
+    screenName        : null,
+    localSavePath     : null,
+    contentType       : null,
+    documentAssociates: null,
+    styleTemplateMode : null,
 
     /**
      * Get the loadURI.
@@ -152,16 +168,49 @@ Document.prototype = {
     },
 
     /**
+     * Get the document associates.
+     *
+     * @return {DocumentAssociates} the document associates of this document, or null if unavailable
+     */
+    getAssociates: function () {
+        return this.documentAssociates;
+    },
+
+    getStyleTemplateMode: function () {
+        return this.styleTemplateMode;
+    },
+
+
+    /**
      * Determine if document has been instantiated with
      * XSLT knowledge.
      *
-     * In the case of type Document, this is never the
-     * case.
-     *
-     * @return {Boolean} returns false since Document cannot have styles associated
+     * @return {Boolean} returns true if XSLT stylesheet(s) are associated with this document, false otherwise
      */
     hasStyles: function () {
-        return false;
+        return (this.documentAssociates && this.documentAssociates.hasStyles());
+    },
+
+
+    /**
+     * Determine if document has been instantiated with
+     * style template knowledge.
+     *
+     * @return {Boolean} returns true if a style template is associated with this document, false otherwise
+     */
+    hasStyleTemplate: function () {
+        return (this.documentAssociates && this.documentAssociates.hasStyleTemplate());
+    },
+
+
+    /**
+     * Determine if document has been instantiated with
+     * Schema knowledge.
+     *
+     * @return {Boolean} returns true if Schema(s) are associated with this document, false otherwise
+     */
+    hasSchemas: function () {
+        return (this.documentAssociates && this.documentAssociates.hasSchemas());
     },
 
     /**
@@ -266,28 +315,29 @@ Document.prototype = {
  " @param  {String}          aUploadMethod  the upload method, as specified by the Neutron introspection (i.e. "PUT", "POST", etc.)
  * @param  {String}          aContentType   the content type of this document, as specified by the Neutron introspection
  * @param  {String}          aFragmentName  the name of the fragment to load, as specified by the Neutron introspection
- * @param  {String}          aLoadStyle     the load style used to load this document, i.e. either "open" or "checkout"
- * @param  {Array}           aStyleArray    the URIs for styles associated with this document, as specified by the Neutron introspection
  * @param  {Array}           aSchemaArray   the URIs for schemas associated with this document, as specified by the Neutron introspection
+ * @param  {Array}           aStyleArray    the URIs for styles associated with this document, as specified by the Neutron introspection
+ * @param  {Object}          aStyleTemplate the style template associated with this document, as specified by the Neutron introspection
+ * @param  {String}          aLoadStyle     the load style used to load this document, i.e. either "open" or "checkout"
  * @return {NeutronDocument}
  */
 function NeutronDocument(aLoadURI, aLoadMethod, aUploadURI, aUploadMethod, aContentType, aFragmentName, aSchemaArray, aStyleArray, aStyleTemplate, aLoadStyle) {
     /* DEBUG */ dump("Yulup:document.js:NeutronDocument(\"" + aLoadURI + "\", \"" + aLoadMethod + "\", \"" + aUploadURI + "\", \"" + aUploadMethod + "\", \"" + aContentType + "\", \"" + aFragmentName + "\", \"" + aSchemaArray + "\", \"" + aStyleArray + "\", \"" + aStyleTemplate + "\", \"" + aLoadStyle + "\") invoked\n");
 
-    //this.__proto__.__proto__.constructor.call(this, aLoadURI, aContentType, aFragmentName);
-    Document.call(this, aLoadURI, aContentType, aFragmentName);
+    /* DEBUG */ YulupDebug.ASSERT(aLoadURI      != null);
+    /* DEBUG */ YulupDebug.ASSERT(aLoadMethod   != null);
+    /* DEBUG */ YulupDebug.ASSERT(aUploadURI    != null);
+    /* DEBUG */ YulupDebug.ASSERT(aUploadMethod != null);
+    /* DEBUG */ YulupDebug.ASSERT(aContentType  != null);
+    /* DEBUG */ YulupDebug.ASSERT(aFragmentName != null);
+    /* DEBUG */ YulupDebug.ASSERT(aLoadStyle    != null);
+
+    Document.call(this, aLoadURI, aContentType, aFragmentName, null, aSchemaArray, aStyleArray, aStyleTemplate);
 
     this.loadMethod   = aLoadMethod;
     this.uploadURI    = aUploadURI;
     this.uploadMethod = aUploadMethod;
     this.loadStyle    = aLoadStyle;
-
-    if (aStyleArray || aSchemaArray) {
-        this.documentAssociates = new DocumentAssociates(aStyleArray, aStyleTemplate, aSchemaArray);
-        if (aStyleTemplate) {
-          this.styleTemplateMode = aStyleTemplate.mode;
-        }
-    }
 }
 
 NeutronDocument.prototype = {
@@ -300,9 +350,6 @@ NeutronDocument.prototype = {
 
     loadStyle   : null,
     acquiredLock: false,
-
-    documentAssociates: null,
-    styleTemplateMode: null,
 
     /**
      * Get the load method used to load this document.
@@ -350,40 +397,6 @@ NeutronDocument.prototype = {
      */
     getLoadStyle: function () {
         return this.loadStyle;
-    },
-
-    getAssociates: function () {
-        return this.documentAssociates;
-    },
-
-    getStyleTemplateMode: function () {
-        return this.styleTemplateMode;
-    },
-
-
-    /**
-     * Determine if document has been instantiated with
-     * XSLT knowledge.
-     *
-     * @return {Boolean} returns true if XSLT stylesheet(s) are associated with this document, false otherwise
-     */
-    hasStyles: function () {
-        return (this.documentAssociates && this.documentAssociates.hasStyles());
-    },
-
-    hasStyleTemplate: function () {
-        return (this.documentAssociates && this.documentAssociates.hasStyleTemplate());
-    },
-
-
-    /**
-     * Determine if document has been instantiated with
-     * Schema knowledge.
-     *
-     * @return {Boolean} returns true if Schema(s) are associated with this document, false otherwise
-     */
-    hasSchemas: function () {
-        return this.documentAssociates.hasSchemas();
     },
 
     /**
@@ -525,16 +538,16 @@ function DocumentAssociates(aStyleArray, aStyleTemplate, aSchemaArray) {
 };
 
 DocumentAssociates.prototype = {
-    styles : null,
-    styleTemplate : null,
-    schemas: null,
+    styles       : null,
+    styleTemplate: null,
+    schemas      : null,
 
     hasStyles: function () {
         return (this.styles ? true : false);
     },
 
     hasStyleTemplate: function () {
-        return (this.styleTemplate ? true: false);
+        return (this.styleTemplate ? true : false);
     },
 
     hasSchemas: function () {
@@ -591,7 +604,9 @@ DocumentAssociates.prototype = {
 function XMLDocument(aLoadURI) {
     /* DEBUG */ dump("Yulup:document.js:XMLDocument(\"" + aLoadURI + "\") invoked\n");
 
-    Document.call(this, aLoadURI, "text/xml", null, null);
+    /* DEBUG */ YulupDebug.ASSERT(aLoadURI != null);
+
+    Document.call(this, aLoadURI, "text/xml", null, null, null, null, null);
 }
 
 XMLDocument.prototype = {
@@ -698,15 +713,21 @@ XMLDocument.prototype = {
  * retrieved by the means of Atom introspection.
  *
  * @constructor
- * @param  {nsIURI}          aEditURI     the URI to update this entry
- * @param  {nsIURI}          aFeedURI     the URI to create this entry
- * @param  {String}          aContentType the content type of this document
+ * @param  {nsIURI}       aEditURI       the URI to update this entry
+ * @param  {nsIURI}       aFeedURI       the URI to create this entry
+ * @param  {String}       aContentType   the content type of this document
+ * @param  {Array}        aSchemaArray   the URIs for schemas associated with this document
+ * @param  {Array}        aStyleArray    the URIs for styles associated with this document
+ * @param  {Object}       aStyleTemplate the style template associated with this document
  * @return {AtomDocument}
  */
-function AtomDocument(aEditURI, aFeedURI, aContentType) {
-    /* DEBUG */ dump("Yulup:document.js:AtomDocument(\"" + aEditURI + "\", \"" + aFeedURI + "\", \"" + aContentType + "\") invoked\n");
+function AtomDocument(aEditURI, aFeedURI, aContentType, aSchemaArray, aStyleArray, aStyleTemplate) {
+    /* DEBUG */ dump("Yulup:document.js:AtomDocument(\"" + aEditURI + "\", \"" + aFeedURI + "\", \"" + aContentType + "\", \"" + aSchemaArray + "\", \"" + aStyleArray + "\", \"" + aStyleTemplate + "\") invoked\n");
 
-    Document.call(this, aEditURI, aContentType, null, null);
+    /* DEBUG */ YulupDebug.ASSERT(aEditURI ? true : aFeedURI != null);
+    /* DEBUG */ YulupDebug.ASSERT(aContentType != null);
+
+    Document.call(this, aEditURI, aContentType, null, null, aSchemaArray, aStyleArray, aStyleTemplate);
 
     this.feedURI = aFeedURI;
 }

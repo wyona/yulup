@@ -199,7 +199,7 @@ function createNew(aTemplate) {
 
     /* DEBUG */ dump("Yulup:yulup.js:createNew(\"" + aTemplate + "\") invoked\n");
 
-    editorParameters = new EditorParameters(null, null, null, null, null, aTemplate);
+    editorParameters = new EditorParameters(null, null, null, null, null, null, aTemplate);
 
     createNewEditor(editorParameters);
 
@@ -247,7 +247,7 @@ function openFromFile() {
     /* DEBUG */ dump("Yulup:yulup.js:openFromFile() invoked\n");
 
     if (documentURI = PersistenceService.queryOpenFileURI()) {
-        editorParameters = new EditorParameters(documentURI, null, null, null, null, null);
+        editorParameters = new EditorParameters(documentURI, null, null, null, null, null, null);
 
         // replace the current editor
         createNewEditor(editorParameters);

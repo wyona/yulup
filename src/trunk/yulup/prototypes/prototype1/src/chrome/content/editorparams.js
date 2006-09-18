@@ -31,31 +31,37 @@
  * type EditorParameters.
  *
  * @constructor
- * @param  {nsIURI}           aURI         the URI of the document to load into the new editor
- * @param  {String}           aContentType the content type of the document
- * @param  {String}           aTemplate    a template action parameter string
+ * @param  {nsIURI}           aURI           the URI of the document to load into the new editor
+ * @param  {String}           aContentType   the content type of the document
+ * @param  {Array}            aSchemas       the schmes
+ * @param  {Array}            aStyles        the stylesheets
+ * @param  {Object}           aStyleTemplate the style templates
+ * @param  {Array}            aWidgets       the widgets
+ * @param  {String}           aTemplate      a template action parameter string
  * @return {EditorParameters}
  */
-function EditorParameters(aURI, aContentType, aSchemas, aStyles, aWidgets, aTemplate) {
+function EditorParameters(aURI, aContentType, aSchemas, aStyles, aStyleTemplate, aWidgets, aTemplate) {
     /* DEBUG */ YulupDebug.ASSERT(aURI         != null && aURI.spec != null);
     /* DEBUG */ YulupDebug.ASSERT(aContentType != null);
 
-    this.uri         = aURI;
-    this.contentType = aContentType;
-    this.schemas     = aSchemas;
-    this.styles      = aStyles;
-    this.widgets     = aWidgets;
-    this.template    = (aTemplate ? aTemplate : "");
+    this.uri           = aURI;
+    this.contentType   = aContentType;
+    this.schemas       = aSchemas;
+    this.styles        = aStyles;
+    this.styleTemplate = aStyleTemplate;
+    this.widgets       = aWidgets;
+    this.template      = (aTemplate ? aTemplate : "");
 }
 
 EditorParameters.prototype = {
-    type       : "EditorParameters",
-    uri        : null,
-    contentType: null,
-    schemas    : null,
-    styles     : null,
-    widgets    : null,
-    template   : null,
+    type         : "EditorParameters",
+    uri          : null,
+    contentType  : null,
+    schemas      : null,
+    styles       : null,
+    styleTemplate: null,
+    widgets      : null,
+    template     : null,
 
     mergeIntrospectionParams: function (aIntrospectionObject) {
         /* DEBUG */ dump("Yulup:editorparams.js:EditorParameters.mergeIntrospectionParams() invoked\n");
@@ -69,6 +75,9 @@ EditorParameters.prototype = {
             }
             if (aIntrospectionObject.fragments[0].styles) {
                 this.__mergeStyles(aIntrospectionObject.fragments[0].styles);
+            }
+            if (aIntrospectionObject.fragments[0].styleTemplate) {
+                this.__mergeStyleTemplate(aIntrospectionObject.fragments[0].styleTemplate);
             }
             if (aIntrospectionObject.fragments[0].widgets) {
                 this.__mergeWidgets(aIntrospectionObject.fragments[0].widgets);
@@ -97,6 +106,14 @@ EditorParameters.prototype = {
             for (var i = 0; i < aStyles.length; i++) {
                 this.styles.push(aStyles[i]);
             }
+        }
+    },
+
+    __mergeStyleTemplate: function(aStyleTemplate) {
+        /* DEBUG */ dump("Yulup:editorparams.js:EditorParameters.__mergeStyleTemplate() invoked\n");
+
+        if (!this.styleTemplate) {
+            this.styleTemplate = aStyleTemplate;
         }
     },
 
@@ -132,7 +149,7 @@ function NeutronEditorParameters(aURI, aTemplate, aIntrospectionObject, aFragmen
     /* DEBUG */ YulupDebug.ASSERT(aFragment            != null);
     /* DEBUG */ YulupDebug.ASSERT(aLoadStyle           != null);
 
-    EditorParameters.call(this, aURI, aIntrospectionObject.queryFragmentMIMEType(aFragment), aIntrospectionObject.queryFragmentSchemas(aFragment), aIntrospectionObject.queryFragmentStyles(aFragment), aIntrospectionObject.queryFragmentWidgets(aFragment), aTemplate);
+    EditorParameters.call(this, aURI, aIntrospectionObject.queryFragmentMIMEType(aFragment), aIntrospectionObject.queryFragmentSchemas(aFragment), aIntrospectionObject.queryFragmentStyles(aFragment), aIntrospectionObject.queryFragmentStyleTemplate(aFragment), aIntrospectionObject.queryFragmentWidgets(aFragment), aTemplate);
 
     this.openURI        = aIntrospectionObject.queryFragmentOpenURI(aFragment);
     this.openMethod     = aIntrospectionObject.queryFragmentOpenMethod(aFragment);
@@ -143,7 +160,6 @@ function NeutronEditorParameters(aURI, aTemplate, aIntrospectionObject, aFragmen
     this.checkinURI     = aIntrospectionObject.queryFragmentCheckinURI(aFragment);
     this.checkinMethod  = aIntrospectionObject.queryFragmentCheckinMethod(aFragment);
     this.screenName     = aIntrospectionObject.queryFragmentName(aFragment);
-    this.styleTemplate  = aIntrospectionObject.queryFragmentStyleTemplate(aFragment);
     this.loadStyle      = aLoadStyle;
 }
 
@@ -160,10 +176,6 @@ NeutronEditorParameters.prototype = {
     checkinURI    : null,
     checkinMethod : null,
     screenName    : null,
-    schemas       : null,
-    styles        : null,
-    styleTemplate : null,
-    widgets       : null,
     loadStyle     : null,
 
     /**
@@ -225,7 +237,7 @@ function AtomEditorParameters(aURI, aContentType, aTemplate, aCreationStatus) {
     /* DEBUG */ YulupDebug.ASSERT(aContentType    != null);
     /* DEBUG */ YulupDebug.ASSERT(aCreationStatus != null);
 
-    EditorParameters.call(this, aURI, aContentType, null, null, null, aTemplate);
+    EditorParameters.call(this, aURI, aContentType, null, null, null, null, aTemplate);
 
     this.creationStatus = aCreationStatus;
 }
