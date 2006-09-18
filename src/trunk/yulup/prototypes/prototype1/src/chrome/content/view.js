@@ -995,7 +995,7 @@ WYSIWYGXSLTModeView.prototype = {
           }
         }
 
-        dump("Default Namespace is: " + defaultNamespace + "\n");
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.fillView: default Namespace is: \"" + defaultNamespace + "\"\n");
         this.defaultNamespace = defaultNamespace;
 
         /* Lookup default namespace prefix. Needed for tagging the source with xpath compatible location paths.
@@ -1017,7 +1017,7 @@ WYSIWYGXSLTModeView.prototype = {
             }
           }
 
-          /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.fillView: Default namespace prefix is: " + prefix + "\n");
+          /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.fillView: default namespace prefix is: \"" + prefix + "\"\n");
         }
 
 
@@ -1033,7 +1033,7 @@ WYSIWYGXSLTModeView.prototype = {
 
         var taggedSourceDocument = xsltProcessor.transformToDocument(this.domDocument);
 
-        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.fillView: tagged source: " + this.xmlSerializer.serializeToString (taggedSourceDocument) + "\n");
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.fillView: tagged source =\n" + this.xmlSerializer.serializeToString (taggedSourceDocument) + "\n");
 
         /* Apply a style template. Style templates provide a mechanism for aggregating multiple document
         ** sources before the xhml transformation step ( mode="pre" ) is applied, or for aggregating (transformed)
@@ -1080,7 +1080,7 @@ WYSIWYGXSLTModeView.prototype = {
         /* Serialize the xhtml document before filling the view */
         serializedDoc = this.xmlSerializer.serializeToString(xhtmlDocument);
 
-        /* DEBUG */ // dump("######## Yulup:view.js:WYSIWYGXSLTModeView.fillView: transformed document =\n" + serializedDoc + "\n");
+        /* DEBUG */ dump("######## Yulup:view.js:WYSIWYGXSLTModeView.fillView: transformed document =\n" + serializedDoc + "\n");
 
         this.model.preserveDirty = true;
 
