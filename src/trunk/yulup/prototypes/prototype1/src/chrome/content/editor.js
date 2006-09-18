@@ -570,7 +570,7 @@ var Editor = {
             if (controller)
                 enabled = controller.isCommandEnabled(aCommand);
 
-            goSetCommandEnabled(aCommand, enabled);
+            Editor.goSetCommandEnabled(aCommand, enabled);
         } catch (exception) {
             dump("Yulup:editor.js:Editor.goUpdateCommand: an error occurred updating command \"" + aCommand + "\": " + exception.toString() + "\n");
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.goUpdateCommand", exception);
@@ -596,7 +596,7 @@ var Editor = {
     goSetCommandEnabled: function (aCmdId, aEnabled) {
         var node = null;
 
-        /* DEBUG */ dump("Yulup:editor.js:Editor.goSetCommandEnabled(\"" + aCmdID + "\", \"" + aEnabled + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:editor.js:Editor.goSetCommandEnabled(\"" + aCmdId + "\", \"" + aEnabled + "\") invoked\n");
 
         node = document.getElementById(aCmdId);
 
@@ -676,6 +676,44 @@ var Editor = {
             } else {
                 dump("Yulup:editor.js:Editor.documentUploadFinished: received neither document data nor an exception.\n");
             }
+        }
+    }
+};
+
+
+function UndoRedoObserver () {
+    this.__active = false;
+}
+
+UndoRedoObserver.prototype = {
+    __active: null,
+
+    activate: function () {
+        this.__active = true;
+    },
+
+    deactivate: function () {
+        this.__active = false;
+    },
+
+    disableCommands: function () {
+        Editor.goSetCommandEnabled("cmd_undo", false);
+        Editor.goSetCommandEnabled("cmd_redo", false);
+    },
+
+    updateCommands: function () {
+        if (this.__active) {
+            Editor.goUpdateCommand("cmd_undo");
+            Editor.goUpdateCommand("cmd_redo");
+        }
+    },
+
+    observe: function (aSubject, aTopic, aData) {
+        /* DEBUG */ dump("Yulup:view.js:undoObserver(\"" + aSubject + "\", \"" + aTopic + "\", \"" + aData + "\") invoked\n");
+
+        if (this.__active) {
+            Editor.goUpdateCommand(aTopic);
+            //window.updateCommands("undo");
         }
     }
 };

@@ -141,15 +141,19 @@ function View(aEditorController, aModel, aBarrier) {
      * interface.
      *
      * @constructor
+     * @param  {View}               aView  the associated view
+     * @param  {Model}              aModel the model
      * @return {EditActionListener}
      */
-    this.constructor.EditActionListener = function (aModel) {
-        /* DEBUG */ dump("Yulup:view.js:View.EditActionListener(\"" + aModel + "\") invoked.\n");
+    this.constructor.EditActionListener = function (aView, aModel) {
+        /* DEBUG */ dump("Yulup:view.js:View.EditActionListener(\"" + aView + "\", \"" + aModel + "\") invoked.\n");
 
+        this.view  = aView;
         this.model = aModel;
     };
 
     this.constructor.EditActionListener.prototype = {
+        view : null,
         model: null,
 
         WillCreateNode: function (aTag, aParent, aPosition) {
@@ -159,6 +163,7 @@ function View(aEditorController, aModel, aBarrier) {
         DidCreateNode: function (aTag, aNode, aParent, aPosition, aResult) {
             /* DEBUG */ dump("Yulup:view.js:View.EditActionListener.DidCreateNode:  tag = \"" + aTag + "\", parent = \"" + aParent.nodeName + "\", position = \"" + aPosition + "\", result = \"" + aResult + "\"\n");
 
+            this.view.undoRedoObserver.updateCommands();
             this.model.setDirty();
         },
 
@@ -169,6 +174,7 @@ function View(aEditorController, aModel, aBarrier) {
         DidInsertNode: function (aNode, aParent, aPosition, aResult) {
             /* DEBUG */ dump("Yulup:view.js:View.EditActionListener.DidInsertNode:  node = \"" + aNode.nodeName + "\", parent = \"" + aParent.nodeName + "\", position = \"" + aPosition + "\", result = \"" + aResult + "\"\n");
 
+            this.view.undoRedoObserver.updateCommands();
             this.model.setDirty();
         },
 
@@ -179,6 +185,7 @@ function View(aEditorController, aModel, aBarrier) {
         DidDeleteNode: function (aChild, aResult) {
             /* DEBUG */ dump("Yulup:view.js:View.EditActionListener.DidDeleteNode:  child = \"" + aChild.nodeName + "\", result = \"" + aResult + "\"\n");
 
+            this.view.undoRedoObserver.updateCommands();
             this.model.setDirty();
         },
 
@@ -189,6 +196,7 @@ function View(aEditorController, aModel, aBarrier) {
         DidSplitNode: function (aExistingRightNode, aOffset, aNewLeftNode, aResult) {
             /* DEBUG */ dump("Yulup:view.js:View.EditActionListener.DidSplitNode:   right node = \"" + aExistingRightNode.nodeName + "\", offset = \"" + aOffset + "\", new left node = \"" + aNewLeftNode.nodeName + "\", result = \"" + aResult + "\"\n");
 
+            this.view.undoRedoObserver.updateCommands();
             this.model.setDirty();
         },
 
@@ -199,6 +207,7 @@ function View(aEditorController, aModel, aBarrier) {
         DidJoinNodes: function (aLeftNode, aRightNode, aParent, aResult) {
             /* DEBUG */ dump("Yulup:view.js:View.EditActionListener.DidJoinNodes:   left node = \"" + aLeftNode.nodeName + "\", right node = \"" + aRightNode.nodeName + "\", parent node = \"" + aParent.nodeName + "\", result = \"" + aResult + "\"\n");
 
+            this.view.undoRedoObserver.updateCommands();
             this.model.setDirty();
         },
 
@@ -209,6 +218,7 @@ function View(aEditorController, aModel, aBarrier) {
         DidInsertText: function (aTextNode, aOffset, aString, aResult) {
             /* DEBUG */ dump("Yulup:view.js:View.EditActionListener.DidInsertText: text node = \"" + aTextNode.nodeName + "\", offset = \"" + aOffset + "\", string = \"" + aString + "\", result = \"" + aResult + "\"\n");
 
+            this.view.undoRedoObserver.updateCommands();
             this.model.setDirty();
         },
 
@@ -219,6 +229,7 @@ function View(aEditorController, aModel, aBarrier) {
         DidDeleteText: function (aTextNode, aOffset, aLength, aResult) {
             /* DEBUG */ dump("Yulup:view.js:View.EditActionListener.DidDeleteText: text node = \"" + aTextNode.nodeName + "\", offset = \"" + aOffset + "\", length = \"" + aLength + "\", result = \"" + aResult + "\"\n");
 
+            this.view.undoRedoObserver.updateCommands();
             this.model.setDirty();
         },
 
@@ -229,6 +240,7 @@ function View(aEditorController, aModel, aBarrier) {
         DidDeleteSelection: function (aSelection) {
             /* DEBUG */ dump("Yulup:view.js:View.EditActionListener.DidDeleteSelection:  selection = \"" + aSelection + "\"\n");
 
+            this.view.undoRedoObserver.updateCommands();
             this.model.setDirty();
         }
     };
@@ -241,11 +253,14 @@ function View(aEditorController, aModel, aBarrier) {
     this.view         = null;
     this.editorImpl   = null;
     this.isFilled     = false;
+
+    // instantiate undo/redo observer
+    this.undoRedoObserver = new UndoRedoObserver();
 }
 
-// TODO: what is that for and who put it here?
-View.prototype.controller = null;
-View.prototype.model      = null;
+View.prototype.controller       = null;
+View.prototype.model            = null;
+View.prototype.undoRedoObserver = null;
 
 /**
  * Show this view.
@@ -292,8 +307,19 @@ View.prototype.show = function () {
              * with a document), then fill the view. */
             if (isViewModified || !this.isFilled) {
                 // fill view
+                if (this.undoRedoObserver) {
+                    this.undoRedoObserver.deactivate();
+                    this.undoRedoObserver.disableCommands();
+                }
+
                 this.fillView();
+
+                if (this.undoRedoObserver)
+                    this.undoRedoObserver.activate();
             }
+
+            if (this.undoRedoObserver)
+                this.undoRedoObserver.updateCommands();
 
             switchSuccessful = true;
         }
@@ -412,7 +438,7 @@ SourceModeView.prototype = {
             this.editorImpl.addDocumentStateListener(new View.DocumentStateListener(this.model));
 
             // hook up EditActionListener
-            this.editorImpl.addEditActionListener(new View.EditActionListener(this.model));
+            this.editorImpl.addEditActionListener(new View.EditActionListener(this, this.model));
 
             this.view = sourceEditor.getEditor(sourceEditor.contentWindow);
             this.view.QueryInterface(Components.interfaces.nsIPlaintextEditor);
@@ -449,6 +475,10 @@ SourceModeView.prototype = {
 
             // clear undo and redo stacks
             this.editorImpl.transactionManager.clear();
+
+            // hook up undo/redo observer
+            sourceEditor.commandManager.addCommandObserver(this.undoRedoObserver, "cmd_undo");
+            sourceEditor.commandManager.addCommandObserver(this.undoRedoObserver, "cmd_redo");
 
             /* DEBUG */ dump("Yulup:view.js:SourceModeView.setUp: initialisation completed\n");
         } catch (exception) {
@@ -572,7 +602,6 @@ function WYSIWYGModeView(aEditorController, aModel, aShowViewCommand, aBarrier) 
 
     this.editor = this.editviewElem.getView();
 
-
     /* DEBUG */ dump("Yulup:view.js:WYSIWYGModeView: this.editor = \"" + this.editor + "\"\n");
 }
 
@@ -606,7 +635,7 @@ WYSIWYGModeView.prototype = {
             this.editorImpl.addDocumentStateListener(new View.DocumentStateListener(this.model));
 
             // hook up EditActionListener
-            this.editorImpl.addEditActionListener(new View.EditActionListener(this.model));
+            this.editorImpl.addEditActionListener(new View.EditActionListener(this, this.model));
 
             this.view = wysiwygEditor.getEditor(wysiwygEditor.contentWindow);
             this.view.QueryInterface(Components.interfaces.nsIHTMLEditor);
@@ -640,6 +669,10 @@ WYSIWYGModeView.prototype = {
 
             // clear undo and redo stacks
             this.editorImpl.transactionManager.clear();
+
+            // hook up undo/redo observer
+            wysiwygEditor.commandManager.addCommandObserver(this.undoRedoObserver, "cmd_undo");
+            wysiwygEditor.commandManager.addCommandObserver(this.undoRedoObserver, "cmd_redo");
 
             /* DEBUG */ dump("Yulup:view.js:WYSIWYGModeView.setUp: initialisation completed\n");
         } catch (exception) {
@@ -818,25 +851,24 @@ function WYSIWYGXSLTModeView(aEditorController, aModel, aShowViewCommand, aBarri
     }
 
     this.patchDocumentStyle(this.documentXSL);
-
 }
 
 
 WYSIWYGXSLTModeView.prototype = {
     __proto__: WYSIWYGModeView.prototype,
 
-    documentXSL      : null,
-    defaultNamespace  : null,
-    sourceTaggerXSL  : null,
-    styleTemplate    : null,
-    domDocument      : null,
-    xhtmlDocument    : null,
-    xmlSerializer    : null,
-    xPathToolBarVisible : true,
-    isNamespaceAware   : true,
+    documentXSL               : null,
+    defaultNamespace          : null,
+    sourceTaggerXSL           : null,
+    styleTemplate             : null,
+    domDocument               : null,
+    xhtmlDocument             : null,
+    xmlSerializer             : null,
+    xPathToolBarVisible       : true,
+    isNamespaceAware          : true,
     currentSourceSelectionPath: null,
-    currentXHTMLNode : null,
-    currentSourceNode : null,
+    currentXHTMLNode          : null,
+    currentSourceNode         : null,
 
     /**
      * Initialise the current view.
@@ -905,6 +937,10 @@ WYSIWYGXSLTModeView.prototype = {
             nsCheckbox.addEventListener('CheckboxStateChange', new NSCheckboxStateChangeListener(this), true);
 
             this.editorImpl.transactionManager.clear();
+
+            // hook up undo/redo observer
+            wysiwygXSLTEditor.commandManager.addCommandObserver(this.undoRedoObserver, "cmd_undo");
+            wysiwygXSLTEditor.commandManager.addCommandObserver(this.undoRedoObserver, "cmd_redo");
 
             /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.setUp: initialisation completed\n");
         } catch (exception) {
@@ -1050,6 +1086,7 @@ WYSIWYGXSLTModeView.prototype = {
 
         /* Fill the view */
         try {
+
             /* What about using this.editor.contentDocument.innerHTML = content, see
              * also https://bugzilla.mozilla.org/show_bug.cgi?id=314987#c2 */
             this.view.rebuildDocumentFromSource(serializedDoc);
