@@ -23,6 +23,12 @@
 
   <target name="pkg" description="Build the XPI file" depends="pkg-clean">
     <echo message="Package version is ${version}. Constructed package filename is ${filename}."/>
+    <!-- build the locales -->
+    <ant dir="chrome/locale" inheritAll="false"/>
+
+    <!-- build NAR templates -->
+    <!--<ant dir="templates/src" inheritAll="false"/>-->
+
     <mkdir dir="../pkg/tmp"/>
     <copy todir="../pkg/tmp/chrome">
       <fileset dir="./chrome">
@@ -33,7 +39,9 @@
       </fileset>
     </copy>
     <copy todir="../pkg/tmp/templates">
-      <fileset dir="./templates"/>
+      <fileset dir="./templates">
+        <exclude name="src/"/>
+      </fileset>
     </copy>
     <copy file="./install.rdf" todir="../pkg/tmp"/>
     <!-- exclude install.js for now since it is non-functional -->
