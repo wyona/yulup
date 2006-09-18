@@ -67,6 +67,10 @@ const INSERT_TAB_STRING = "  ";
 function View(aEditorController, aModel, aBarrier) {
     /* DEBUG */ dump("Yulup:view.js:View(\"" + aEditorController + "\, \"" + aModel + "\", \"" + aBarrier + "\") invoked.\n");
 
+    /* DEBUG */ YulupDebug.ASSERT(aEditorController != null);
+    /* DEBUG */ YulupDebug.ASSERT(aModel            != null);
+    /* DEBUG */ YulupDebug.ASSERT(aBarrier          != null);
+
     // public static methods
 
     /**
@@ -394,6 +398,11 @@ View.prototype.setToModel = function() {
 function SourceModeView(aEditorController, aModel, aShowViewCommand, aBarrier) {
     /* DEBUG */ dump("Yulup:view.js:SourceModeView(\"" + aEditorController + "\", \"" + aModel + "\", \"" + aShowViewCommand + "\", \"" + aBarrier + "\") invoked.\n");
 
+    /* DEBUG */ YulupDebug.ASSERT(aEditorController != null);
+    /* DEBUG */ YulupDebug.ASSERT(aModel            != null);
+    /* DEBUG */ YulupDebug.ASSERT(aShowViewCommand  != null);
+    /* DEBUG */ YulupDebug.ASSERT(aBarrier          != null);
+
     // call super constructor
     this.__proto__.__proto__.constructor.call(this, aEditorController, aModel, aBarrier);
 
@@ -590,6 +599,11 @@ SourceModeView.prototype = {
  */
 function WYSIWYGModeView(aEditorController, aModel, aShowViewCommand, aBarrier) {
     /* DEBUG */ dump("Yulup:view.js:WYSIWYGModeView(\"" + aEditorController + "\", \"" + aModel + "\", \"" + aShowViewCommand + "\", \"" + aBarrier + "\") invoked.\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aEditorController != null);
+    /* DEBUG */ YulupDebug.ASSERT(aModel            != null);
+    /* DEBUG */ YulupDebug.ASSERT(aShowViewCommand  != null);
+    /* DEBUG */ YulupDebug.ASSERT(aBarrier          != null);
 
     // call super constructor
     this.__proto__.__proto__.constructor.call(this, aEditorController, aModel, aBarrier);
@@ -804,21 +818,25 @@ WYSIWYGModeView.prototype = {
  * Subtype of type WYSIWYGModeView.
  *
  * @constructor
- * @param  {YulupEditStateController} aEditorController the editor's state machine
- * @param  {Model}                      aModel            the model associated with this view
- * @param  {Function}                   aShowViewCommand  a function to call to show the current view
- * @param  {Barrier}                    aBarrier          the barrier on which to synchronise after setUp()
- * @param  {XMLDocument}                aXMLStyleDocument the style this view represents
- * @param  {XMLDocument}                aStyleTemplate the style template
+ * @param  {YulupEditStateController}   aEditorController  the editor's state machine
+ * @param  {Model}                      aModel             the model associated with this view
+ * @param  {Function}                   aShowViewCommand   a function to call to show the current view
+ * @param  {Barrier}                    aBarrier           the barrier on which to synchronise after setUp()
+ * @param  {XMLDocument}                aXMLStyleDocument  the style this view represents
+ * @param  {XMLDocument}                aStyleTemplate     the style template
  * @param  {String}                     aStyleTemplateMode how the styleTemplate should be applied (pre/post transformation)
  * @return {WYSIWYGXSLTModeView}
  */
 function WYSIWYGXSLTModeView(aEditorController, aModel, aShowViewCommand, aBarrier, aXMLStyleDocument, aStyleTemplate, aStyleTemplateMode) {
     /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView(\"" + aEditorController + "\", \"" + aModel + "\", \"" + aShowViewCommand + "\", \"" + aBarrier + "\", \"" + aXMLStyleDocument + "\" , \"" + aStyleTemplate + "\") invoked.\n");
 
+    /* DEBUG */ YulupDebug.ASSERT(aEditorController != null);
+    /* DEBUG */ YulupDebug.ASSERT(aModel            != null);
+    /* DEBUG */ YulupDebug.ASSERT(aShowViewCommand  != null);
+    /* DEBUG */ YulupDebug.ASSERT(aXMLStyleDocument != null);
+    /* DEBUG */ YulupDebug.ASSERT(aStyleTemplate ? aStyleTemplateMode != null : true);
+
     // call super constructor
-    //this.__proto__.__proto__.constructor.call(this, aEditorController, aModel, aShowViewCommand);
-    // as always, inheritance does not work reliably in SpiderMonkey, therefore name super-constructor explicitely
     WYSIWYGModeView.call(this, aEditorController, aModel, aShowViewCommand, aBarrier);
 
     // Get xml serializer
