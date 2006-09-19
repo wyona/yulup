@@ -785,16 +785,7 @@ WYSIWYGModeView.prototype = {
 
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGModeView.setupDocument: document preamble =\n" + this.documentPreamble + "\n");
 
-        // extract the remainder
-        documentRemainder = aDocument.substring(aDocument.search(/<body/i));
-
-        /* DEBUG */ dump("Yulup:view.js:WYSIWYGModeView.setupDocument: document remainder =\n" + documentRemainder + "\n");
-
-        // fixup the document
-        documentFixup  = "<html><head></head>";
-        documentFixup += documentRemainder;
-
-        return documentFixup;
+        return aDocument;
     },
 
     handleEvent: function (aEvent) {
