@@ -3,8 +3,13 @@
 <entry xmlns="http://www.w3.org/2005/Atom">
   <title>yulup-prototype-1-0.1.10-rc4-r17921</title>
   <author><name>Michael Wechner</name></author>
-  <id></id>
-  <updated>2006-09-15T17:21:ss-hh:mm</updated>
+
+  <!-- TODO: Create these elements dynamically -->
+  <id>urn:lenya-uuid:download:release-atom-entries:1158338664184.xml</id>
+  <updated>2006-09-19T16:21:53-01:00</updated>
+
+
+  <published>2006-09-15T17:21:13-01:00</published>
   <summary type="html">Yulup RC4 released</summary>
   <content type="xhtml">
     <div xmlns="http://www.w3.org/1999/xhtml">
