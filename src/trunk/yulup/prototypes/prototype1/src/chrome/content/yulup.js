@@ -54,6 +54,9 @@ function initYulup() {
 
     initialCleanUp(NAR_TMP_DIR, WIDGET_TMP_DIR);
 
+    // initialize the template registry
+    NeutronArchiveRegistry.loadLocalTemplates();
+
     new Yulup();
 }
 
@@ -123,6 +126,7 @@ function createNewEditor(aEditorParameters) {
  * @constructor
  * @return {EditorInstancesManager}
  */
+
 function EditorInstancesManager() {
     /* DEBUG */ dump("Yulup:yulup.js:EditorInstancesManager() invoked\n");
 
@@ -148,9 +152,10 @@ EditorInstancesManager.prototype = {
         instanceID = Date.now();
 
         editorInstance = new Object();
-        editorInstance.instanceID    = instanceID;
-        editorInstance.tab           = aTab;
-        editorInstance.parameters    = aEditorParameters;
+        editorInstance.instanceID      = instanceID;
+        editorInstance.tab             = aTab;
+        editorInstance.parameters      = aEditorParameters;
+        editorInstance.archiveRegistry = NeutronArchiveRegistry;
 
         // add instance to the hash table
         this.instanceHashtable[instanceID] = editorInstance;
@@ -869,5 +874,146 @@ WebProgressListener.prototype = {
     onStatusChange: function () {
         //throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
         return;
+    }
+}
+
+/**
+  * Registry which hold mime-type to template nar file mappings.
+  *
+  * Mime-Types that should have some default widgets, styles, schemas,
+  * navigation elements or templates should be registered in the
+  * mimeTypeMap with the appropriate nar file.
+  *
+  */
+var NeutronArchiveRegistry = {
+
+    // registered templates
+    templates: new Array(),
+
+    // registered mime-types
+    mimeTypeMap: {
+        "application/xhtml+xml" : "xhtml.nar",
+        "application/atom+xml"  : "atom.nar"
+    },
+
+    /**
+     * Returns the URI of the NAR file with the matching mime-type.
+     *
+     * @param  {String} aMimeType the mime-type of the NAR
+     * @return {nsIURI}           the URI pointing to the NAR file or null if no NAR file is registered for this mime-type
+     */
+    getArchiveURI: function(aMimeType) {
+        var narDir           = null;
+        var narFile          = null;
+        var narURI           = null;
+        var installDir       = null;
+
+        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.getArchiveURI(\"" + aMimeType + "\") invoked\n");
+
+        narFile = NeutronArchiveRegistry.mimeTypeMap[aMimeType];
+
+        if (!narFile) {
+            /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.getArchiveURI: no template NAR for this mime-type\n");
+            return null;
+        }
+
+        // get the extension installation directory
+        installDir = Components.classes["@mozilla.org/extensions/manager;1"]. getService(Components.interfaces.nsIExtensionManager).getInstallLocation(YULUP_EXTENSION_ID).getItemLocation(YULUP_EXTENSION_ID);
+
+        installDir.append(NAR_TEMPLATE_DIR);
+        installDir.append(narFile);
+
+        // create a nsIFileURI pointing to the template NAR file
+        narURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newFileURI(installDir);
+
+        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.getArchiveURI: narURI = \"" + narURI.spec + "\"\n");
+
+        return narURI;
+    },
+
+    /**
+     * Returns an array with all templates in this registry.
+     *
+     * @return {Array} array of templates
+     */
+    getAvailableTemplates: function() {
+
+        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.getAvailableTemplates() invoked\n");
+
+        return NeutronArchiveRegistry.templates;
+    },
+
+    /**
+     * Return a template object belonging to the specified name.
+     *
+     * @param  {String} aName the name of the template
+     * @return {Object}       the template object
+     */
+    getTemplateByName: function(aName) {
+
+        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.getTemplateByName() invoked\n");
+
+        for (var i=0; i<NeutronArchiveRegistry.templates.length; i++) {
+            if (NeutronArchiveRegistry.templates[i].name == aName) {
+                return NeutronArchiveRegistry.templates[i];
+            }
+        }
+        return null;
+    },
+
+    /**
+     * Register a template.
+     *
+     * @param  {nsIURI}  aURI      the template's fragment URI
+     * @param  {String}  aMimeType the template's mime-type
+     * @param  {String}  aName     the template's name
+     * @return {Boolean}           true if the template was registered otherwise false
+     */
+    registerTemplate: function(aURI, aMimeType, aName) {
+ 
+        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.registerTemplate(\"" + aURI.spec + "\", \"" + aMimeType + "\", \"" + aName + "\") invoked\n");
+
+        if (!NeutronArchiveRegistry.getTemplateByName(aName)) {
+
+            NeutronArchiveRegistry.templates[NeutronArchiveRegistry.templates.length] = {
+                name:     aName,
+                uri:      aURI,
+                mimeType: aMimeType
+            };
+            return true
+        }
+
+        return false;
+    },
+
+    /**
+     * Load all templates from the local NAR file storage.
+     *
+     * @return {Undefined} does not have a return value
+     */
+    loadLocalTemplates: function() {
+        var archiveURI = null;
+        var archive    = null;
+
+        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.loadLocalTemplates() invoked\n");
+
+        // iterate over all registered NAR files
+        for (var archiveName in NeutronArchiveRegistry.mimeTypeMap) {
+            archiveURI = NeutronArchiveRegistry.getArchiveURI(archiveName);
+            archive    = new NeutronArchive(archiveURI);
+
+            archive.loadNeutronArchive(null, true);
+            archive.extractNeutronArchive();
+
+            if (archive.introspection.newTemplates && archive.introspection.newTemplates.templates) {
+                for (var i=0; i<archive.introspection.newTemplates.templates.length; i++) {
+
+                    if (!NeutronArchiveRegistry.registerTemplate(archive.introspection.newTemplates.templates[i].uri, archive.introspection.newTemplates.templates[i].mimeType, archive.introspection.newTemplates.templates[i].name)) {
+
+                        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.loadLocalTemplates() template already registered under name " + archive.introspection.newTemplates.templates[i].name + "\n");
+                    }
+                }
+            }
+        }
     }
 }
