@@ -146,47 +146,6 @@ function YulupEditController(aParameterObject) {
     };
 
     /**
-     *
-     * @param  {nsIFile}   aResultFile
-     * @param  {Exception} aException
-     * @return {Undefined} does not have a return value
-     */
-    this.constructor.templateArchiveLoadFinished = function(aResultFile, aException) {
-        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.templateArchiveLoadFinished() invoked\n");
-
-        /* DEBUG */ YulupDebug.ASSERT(gEditorController != null && gEditorController.editStateController);
-
-        try {
-            if (aResultFile) {
-                /* DEBUG */ dump("Yulup:controller.js:YulupEditController.templateArchiveLoadFinished: archive file: " + aResultFile + "\n");
-
-                gEditorController.templateArchive.extractNeutronArchive();
-                gEditorController.editorParams.mergeIntrospectionParams(gEditorController.templateArchive.introspection);
-
-                // arrive at template barrier
-                /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.templateArchiveLoadFinished: arrive at template barrier (current thread count is \"" + gEditorController.templateBarrier.noOfThreads + "\")\n");
-                gEditorController.templateBarrier.arrive();
-
-            } else {
-                /* DEBUG */ dump("Yulup:controller.js:YulupEditController.templateArchiveLoadFinished: failed to load Neutron archive \"" + gEditorController.archive.loadURI.spec + "\". \"" + aException + "\"\n");
-
-                if (aException && (aException instanceof NeutronProtocolException || aException instanceof NeutronAuthException)) {
-                    // report error message retrieved from response
-                    throw new YulupException(Editor.getStringbundleString("editorDocumentLoadError0.label") + " \"" + gEditorController.archive.loadURI.spec + "\".\n" + Editor.getStringbundleString("editorDocumentLoadServerError.label") + ": " + aException.message + ".");
-                } else
-                    throw new YulupException(Editor.getStringbundleString("editorDocumentLoadError0.label") + " \"" + gEditorController.archive.loadURI.spec + "\".");
-            }
-        } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:controller.js:YulupEditController.templateArchiveLoadFinished", exception);
-
-            alert(Editor.getStringbundleString("editorDocumentLoadFailure.label") + "\n\n" + exception.message);
-
-            gEditorController.editStateController.modelStateChanged("openfailed");
-            return;
-        }
-    };
-
-    /**
      * Register the downloaded widget in the WidgetManager
      *
      * @param  {nsIFile}   aResultFile the downloaded widget icon file
@@ -304,29 +263,23 @@ function YulupEditController(aParameterObject) {
 
         /* DEBUG */ YulupDebug.ASSERT(gEditorController != null && gEditorController.editStateController);
 
+        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageTemplateLoad: document type = \"" + gEditorController.editorParams.contentType + "\"\n");
+
         context = {
             fromTemplate  : aFromTemplate,
             templateString: aTemplateString
         };
 
         // get template nar file for this document type
-        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageTemplateLoad: document type = \"" + gEditorController.editorParams.contentType + "\"\n");
-        templateArchiveURI = NeutronArchiveRegistry.getArchiveURI(gEditorController.editorParams.contentType);
-
-        if (templateArchiveURI) {
-            // init template barrier
-            gEditorController.templateBarrier = new Barrier(2, YulupEditController.enterStageDocumentLoad, context);
-
+        if ((templateArchiveURI = gEditorController.archiveRegistry.getArchiveURI(gEditorController.editorParams.contentType)) != null) {
             gEditorController.templateArchive = new NeutronArchive(templateArchiveURI);
-            gEditorController.templateArchive.loadNeutronArchive(YulupEditController.templateArchiveLoadFinished);
-        } else {
-            // init template barrier
-            gEditorController.templateBarrier = new Barrier(1, YulupEditController.enterStageDocumentLoad, context);
+            // load the local archive 
+            gEditorController.templateArchive.loadNeutronArchive(null, true);
+            gEditorController.templateArchive.extractNeutronArchive();
+            gEditorController.editorParams.mergeIntrospectionParams(gEditorController.templateArchive.introspection);
         }
 
-        // arrive at template barrier
-        /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.enterStageTemplateLoad: arrive at template barrier (current thread count is \"" + gEditorController.templateBarrier.noOfThreads + "\")\n");
-        gEditorController.templateBarrier.arrive();
+        YulupEditController.enterStageDocumentLoad(context);
     };
 
     this.constructor.enterStageDocumentLoad = function (aContext) {
@@ -518,6 +471,7 @@ function YulupEditController(aParameterObject) {
     this.widgetBarrier       = null;
     this.viewBarrier         = null;
     this.widgetManager       = null;
+    this.archiveRegistry     = null;
     this.archive             = null;
     this.templateArchive     = null;
 
@@ -526,7 +480,8 @@ function YulupEditController(aParameterObject) {
          * paramters object from the manager. */
         gMainBrowserWindow.yulup.instancesManager.removeInstance(aParameterObject.instanceID);
 
-        this.editorParams = aParameterObject.parameters;
+        this.editorParams    = aParameterObject.parameters;
+        this.archiveRegistry = aParameterObject.archiveRegistry;
 
         switch (this.editorParams.type) {
             case "NeutronEditorParameters":
