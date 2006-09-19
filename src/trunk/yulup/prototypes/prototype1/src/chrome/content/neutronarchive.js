@@ -151,7 +151,7 @@ NeutronArchive.prototype = {
      */
     extractNeutronArchive: function() {
 
-        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.loadNeutronArchive() invoked\n");
+        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.extractNeutronArchive() invoked\n");
 
         try {
 
@@ -193,121 +193,6 @@ NeutronArchive.prototype = {
     },
 
     /**
-     * Merges this archive's introspection with the
-     * introspection given in aIntrospection.
-     *
-     * @param  {Introspection} aIntrospection the introspection object that will be extended
-     * @return {Undefined}                    does not have a return value
-     */
-    mergeIntrospection: function(aIntrospection) {
-        var mimeType = null;
-
-        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.mergeIntrospection() invoked\n");
-
-        if (!this.introspection) {
-            return null;
-        }
-
-        // edit section
-        if (this.introspection.fragments) {
-            this.__mergeEdit(aIntrospection);
-        }
-
-        // new section
-        this.__mergeNew(aIntrospection);
-
-        // navigation
-        this.__mergeNavigation(aIntrospection);
-    },
-
-    __mergeEdit: function(aIntrospection) {
-
-        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.__mergeEdit() invoked\n");
-
-        for (var i=0; i < this.introspection.fragments.length; i++) {
-            mimeType = this.introspection.fragments[i].mimeType;
-            for (var j=0; j < aIntrospection.fragments.length; j++) {
-                if (aIntrospection.fragments[j].mimeType == mimeType) {
-                    if (this.introspection.fragments[i].schemas) {
-                        this.__mergeSchemas(aIntrospection.fragments[j], this.introspection.fragments[i]);
-                    }
-                    if (this.introspection.fragments[i].styles) {
-                        this.__mergeStyles(aIntrospection.fragments[j], this.introspection.fragments[i]);
-                    }
-                    if (this.introspection.fragments[i].widgets) {
-                        this.__mergeWidgets(aIntrospection.fragments[j], this.introspection.fragments[i]);
-                    }
-                }
-            }
-        }
-    },
-
-    __mergeSchemas: function(aFragment, aNewFragment) {
-
-        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.__mergeSchemas() invoked\n");
-
-        if (!aFragment.schemas) {
-            aFragment.schemas = aNewFragment.schemas;
-        } else {
-            for (var i=0; i < aNewFragment.schemas.length; i++) {
-                aFragment.schemas[aFragment.schemas.length] = aNewFragment.schemas[i];
-            }
-        }
-    },
-
-    __mergeStyles: function(aFragment, aNewFragment) {
-
-        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.__mergeStyles() invoked\n");
-
-        if (!aFragment.styles) {
-            aFragment.styles = aNewFragment.styles;
-        } else {
-            for (var i=0; i < aNewFragment.styles.length; i++) {
-                aFragment.styles[aFragment.styles.length] = aNewFragment.stlyes[i];
-            }
-        }
-    },
-
-    __mergeWidgets: function(aFragment, aNewFragment) {
-
-        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.__mergeWidgets() invoked\n");
-
-        if (!aFragment.widgets) {
-            aFragment.widgets = aNewFragment.widgets;
-        } else {
-            for (var i=0; i < aNewFragment.widgets.length; i++) {
-                aFragment.widgets[aFragment.widgets.length] = aNewFragment.widgets[i];
-            }
-        }
-    },
-
-    __mergeNew: function(aIntrospection) {
-
-        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.__mergeNew() invoked\n");
-
-        if (!aIntrospection.newAsset) {
-            aIntrospection.newAsset = this.introspection.newAsset;
-        } else {
-            for (var i=0; i < this.introspection.newAsset.length; i++) {
-                aIntrospection.newAsset[aIntrospection.newAsset.length] = this.introspection.newAsset[i];
-            }
-        }
-    },
-
-    __mergeNavigation: function(aIntrospection) {
-
-        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.__mergeNavigation() invoked\n");
-
-        if (!aIntrospection.navigation) {
-            aIntrospection.navigation = this.introspection.navigation;
-        } else {
-            for (var i=0; i < this.introspection.navigation.length; i++) {
-                aIntrospection.navigation[aIntrospection.navigation.length] = this.introspection.navigation[i];
-            }
-        }
-    },
-
-    /**
      * Rewrite the save/checking links in the introspection file
      *
      * The introspection file gets parsed relative to the tmp directory,
@@ -338,58 +223,5 @@ NeutronArchive.prototype = {
                 /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.rewriteIntrospectionURI: save: " + this.introspection.fragments[i].save.uri.spec + "\n");
             }
         }
-    }
-};
-
-/**
-  * Registry which hold mime-type to template nar file mappings.
-  *
-  * Mime-Types that should have some default widgets, styles, schemas,
-  * navigation elements or templates should be registered in the
-  * mimeTypeMap with the appropriate nar file.
-  *
-  */
-var NeutronArchiveRegistry = {
-
-    // registered mime-types
-    mimeTypeMap: {
-        "application/xhtml+xml" : "xhtml.nar",
-        "application/mathml"    : "mathml.nar",
-        "application/atom+xml"  : "atom.nar"
-    },
-
-    /**
-     * Returns the URI of the NAR file with the matching mime-type.
-     *
-     * @param  {String} aMimeType the mime-type of the NAR
-     * @return {nsIURI}           the URI pointing to the NAR file or null if no NAR file is registered for this mime-type
-     */
-    getArchiveURI: function(aMimeType) {
-        var narDir           = null;
-        var narFile          = null;
-        var narURI           = null;
-        var installDir       = null;
-
-        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.getArchiveURI(\"" + aMimeType + "\") invoked\n");
-
-        narFile = NeutronArchiveRegistry.mimeTypeMap[aMimeType];
-
-        if (!narFile) {
-            /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.getArchiveURI: no template NAR for this mime-type\n");
-            return null;
-        }
-
-        // get the extension installation directory
-        installDir = Components.classes["@mozilla.org/extensions/manager;1"]. getService(Components.interfaces.nsIExtensionManager).getInstallLocation(YULUP_EXTENSION_ID).getItemLocation(YULUP_EXTENSION_ID);
-
-        installDir.append(NAR_TEMPLATE_DIR);
-        installDir.append(narFile);
-
-        // create a nsIFileURI pointing to the template NAR file
-        narURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newFileURI(installDir);
-
-        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.getArchiveURI: narURI = \"" + narURI.spec + "\"\n");
-
-        return narURI;
     }
 };
