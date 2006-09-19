@@ -1,0 +1,5 @@
+<{http://www.wyona.org/yanel/resource/1.0}atom/>
+feed-title: Releases
+entries-path: /download/release-atom-entries
+xslt: /xslt/patch-atom-link-self.xsl
+mime-type: application/atom+xml
