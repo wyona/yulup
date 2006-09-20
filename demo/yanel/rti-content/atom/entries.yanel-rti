@@ -2,5 +2,5 @@
 xslt: /xslt/atomfeed2xhtml.xsl
 #mime-type: application/xml
 #mime-type: application/atom+xml
-feed-title: Demo Feed
+feed-title: Demo Feed (Releases)
 #entries-path: /atom/news-entries/
