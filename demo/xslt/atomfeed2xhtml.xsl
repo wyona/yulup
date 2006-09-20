@@ -59,7 +59,9 @@
 
 <xsl:copy-of select="atom:content/*"/>
 <br/>
-<font size="-1">Last Published: <xsl:value-of select="atom:updated"/></font>
+<font size="-1">Last Published (Updated): <xsl:value-of select="atom:updated"/></font>
+<br/>
+<font size="-1">First Published: <xsl:value-of select="atom:published"/></font>
 </xsl:template>
 
 </xsl:stylesheet>
