@@ -72,6 +72,8 @@
           src="chrome://yulup/content/authentication.js"/>
   <script type="application/x-javascript"
           src="chrome://yulup/content/editorparams.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/newmenu.js"/>
 
   <toolbar id="nav-bar">
     <stringbundle id="uiYulupOverlayStringbundle" src="chrome://yulup/locale/yulup.properties"/>
@@ -137,23 +139,12 @@
           <menupopup id="uiYulupOperationNewMenupopup">
             <menuitem id="uiYulupOperationNewAtomEntryMenuitem"
                       observes="command_yulup_newatomentry"/>
-            <menuitem id="uiYulupOperationNewEmptyMenuitem"
-                      oncommand="createNew('blank')"
-                      label="&fileOperationNewEmptyMenuitem.label;" tooltiptext="&fileOperationNewEmptyMenuitem.tooltip;"
-                      disabled="false"/>
-            <menuitem id="uiYulupOperationNewXMLMenuitem"
-                      oncommand="createNew('template-xml')"
-                      label="&fileOperationNewXMLMenuitem.label;" tooltiptext="&fileOperationNewXMLMenuitem.tooltip;"
-                      disabled="false"/>
-            <menuitem id="uiYulupOperationNewXHTMLMenuitem"
-                      oncommand="createNew('template-xhtml')"
-                      label="&fileOperationNewXHTMLMenuitem.label;" tooltiptext="&fileOperationNewXHTMLMenuitem.tooltip;"
-                      disabled="false"/>
             <menuseparator/>
-            <menuitem id="uiYulupOperationNewFromTemplateLocalMenuitem"
-                      oncommand="createNewFromTemplateLocal()"
+            <menu id="uiYulupOperationNewFromTemplateLocalMenu"
                       label="&fileOperationNewFromTemplateLocalMenuitem.label;" tooltiptext="&fileOperationNewFromTemplateLocalMenuitem.tooltip;"
-                      disabled="true"/>
+                      disabled="true">
+              <menupopup id="uiYulupOperationNewFromTemplateLocalMenupopup"/>
+            </menu>
             <menuitem id="uiYulupOperationNewFromTemplateCMSMenuitem"
                       oncommand="createNewFromTemplateCMS()"
                       label="&fileOperationNewFromTemplateCMSMenuitem.label;" tooltiptext="&fileOperationNewFromTemplateCMSMenuitem.tooltip;"

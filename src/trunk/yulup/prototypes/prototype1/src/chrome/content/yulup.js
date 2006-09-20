@@ -29,7 +29,6 @@
 const YULUP_EDITOR_CHROME_URI = "chrome://yulup/content/editor.xul";
 const YULUP_ABOUT_CHROME_URI  = "chrome://yulup/content/about.xul";
 const YULUP_DEMO_SITE_URI     = "http://demo.yulup.org/";
-const NAMESPACE_XUL           = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
 const INTROSPECTION_TYPE_NEUTRON = 0;
 const INTROSPECTION_TYPE_APP     = 1;
@@ -193,18 +192,19 @@ EditorInstancesManager.prototype = {
  * Create a new editor instance starting with a built-in
  * document template.
  *
- * Pass in a template identifier from the following list:
- * "blank", "template-xml", "template-xhtml".
- *
- * @param  {String}  aTemplate a template identifier
+ * @param  {String}  aTemplateName a template identifier
  * @return {Boolean} return true on success, false otherwise
  */
-function createNew(aTemplate) {
+function createNew(aTemplateName) {
     var editorParameters = null;
+    var template         = null;
 
-    /* DEBUG */ dump("Yulup:yulup.js:createNew(\"" + aTemplate + "\") invoked\n");
+    /* DEBUG */ dump("Yulup:yulup.js:createNew(\"" + aTemplateName + "\") invoked\n");
 
-    editorParameters = new EditorParameters(null, null, null, null, null, null, aTemplate);
+    template = NeutronArchiveRegistry.getTemplateByName(aTemplateName);
+
+    // set editor parameters according to NAR template
+    editorParameters = new EditorParameters(template.uri, template.mimeType, null, null, null, null);
 
     createNewEditor(editorParameters);
 
@@ -289,7 +289,7 @@ function checkoutNoLockFromCMS(aFragment) {
     /* DEBUG */ dump("Yulup:yulup.js:checkoutNoLockFromCMS(\"" + aFragment + "\") invoked\n");
 
     if (gCurrentNeutronIntrospection) {
-        editorParameters = new NeutronEditorParameters(gCurrentNeutronIntrospection.queryFragmentOpenURI(aFragment), null, gCurrentNeutronIntrospection, aFragment, "open");
+        editorParameters = new NeutronEditorParameters(gCurrentNeutronIntrospection.queryFragmentOpenURI(aFragment), gCurrentNeutronIntrospection, aFragment, "open");
 
         createNewEditor(editorParameters);
     } else {
@@ -311,7 +311,7 @@ function checkoutFromCMS(aFragment) {
     /* DEBUG */ dump("Yulup:yulup.js:checkoutFromCMS(\"" + aFragment + "\") invoked\n");
 
     if (gCurrentNeutronIntrospection) {
-        editorParameters = new NeutronEditorParameters(gCurrentNeutronIntrospection.queryFragmentCheckoutURI(aFragment), null, gCurrentNeutronIntrospection, aFragment, "checkout");
+        editorParameters = new NeutronEditorParameters(gCurrentNeutronIntrospection.queryFragmentCheckoutURI(aFragment), gCurrentNeutronIntrospection, aFragment, "checkout");
 
         createNewEditor(editorParameters);
     } else {
@@ -371,20 +371,22 @@ function Yulup() {
     this.currentState = "undefined";
 
     // cache element requests for often used elements
-    this.yulupEditMenu                            = document.getElementById("uiYulupEditToolbarbutton");
-    this.yulupEditMenuEditMenuitem                = document.getElementById("uiYulupEditMenuitem");
-    this.yulupEditMenuCheckoutMenuitem            = document.getElementById("uiYulupEditCheckoutMenuitem");
-    this.yulupEditMenuCheckoutNoLockMenuitem      = document.getElementById("uiYulupEditCheckoutNoLockMenuitem");
-    this.yulupEditMenuCheckoutMenuitemLabel       = document.getElementById("uiYulupEditCheckoutMenuitem").getAttribute("label");
-    this.yulupEditMenuCheckoutNoLockMenuitemLabel = document.getElementById("uiYulupEditCheckoutNoLockMenuitem").getAttribute("label");
-    this.yulupEditMenuCheckoutMenu                = document.getElementById("uiYulupEditCheckoutMenu");
-    this.yulupEditMenuCheckoutNoLockMenu          = document.getElementById("uiYulupEditCheckoutNoLockMenu");
-    this.yulupEditMenuCheckoutMenupopup           = document.getElementById("uiYulupEditCheckoutMenupopup");
-    this.yulupEditMenuCheckoutNoLockMenupopup     = document.getElementById("uiYulupEditCheckoutNoLockMenupopup");
-    this.yulupEditMenuRealmSeparator              = document.getElementById("uiYulupRealmSeparator");
-    this.yulupEditMenuExtrasSeparator             = document.getElementById("uiYulupExtrasSeparator");
-    this.uiYulupEditMenupopup                     = document.getElementById("uiYulupEditMenupopup");
-    this.yulupDocument                            = document;
+    this.yulupEditMenu                               = document.getElementById("uiYulupEditToolbarbutton");
+    this.yulupEditMenuEditMenuitem                   = document.getElementById("uiYulupEditMenuitem");
+    this.yulupEditMenuCheckoutMenuitem               = document.getElementById("uiYulupEditCheckoutMenuitem");
+    this.yulupEditMenuCheckoutNoLockMenuitem         = document.getElementById("uiYulupEditCheckoutNoLockMenuitem");
+    this.yulupEditMenuCheckoutMenuitemLabel          = document.getElementById("uiYulupEditCheckoutMenuitem").getAttribute("label");
+    this.yulupEditMenuCheckoutNoLockMenuitemLabel    = document.getElementById("uiYulupEditCheckoutNoLockMenuitem").getAttribute("label");
+    this.yulupEditMenuCheckoutMenu                   = document.getElementById("uiYulupEditCheckoutMenu");
+    this.yulupEditMenuCheckoutNoLockMenu             = document.getElementById("uiYulupEditCheckoutNoLockMenu");
+    this.yulupEditMenuCheckoutMenupopup              = document.getElementById("uiYulupEditCheckoutMenupopup");
+    this.yulupEditMenuCheckoutNoLockMenupopup        = document.getElementById("uiYulupEditCheckoutNoLockMenupopup");
+    this.yulupEditMenuRealmSeparator                 = document.getElementById("uiYulupRealmSeparator");
+    this.yulupEditMenuExtrasSeparator                = document.getElementById("uiYulupExtrasSeparator");
+    this.yulupOperationNewFromTemplateLocalMenu      = document.getElementById("uiYulupOperationNewFromTemplateLocalMenu");
+    this.yulupOperationNewFromTemplateLocalMenupopup = document.getElementById("uiYulupOperationNewFromTemplateLocalMenupopup");
+    this.uiYulupEditMenupopup                        = document.getElementById("uiYulupEditMenupopup");
+    this.yulupDocument                               = document;
 
     this.yulupEditMenu.setAttribute("disabled", "false");
 
@@ -405,6 +407,10 @@ function Yulup() {
      * filter mask (see https://bugzilla.mozilla.org/show_bug.cgi?id=320663). */
     this.installWebProgressListener(self.getBrowser());
 
+
+    buildNewMenu(NeutronArchiveRegistry.getAvailableTemplates(), this.yulupOperationNewFromTemplateLocalMenupopup, this.yulupOperationNewFromTemplateLocalMenu, "createNew");
+
+
     /* Call the introspection detector since we may have missed a STATE_STOP
      * of the current tab during initial handler installation. */
     this.introspectionDetector();
@@ -416,19 +422,21 @@ function Yulup() {
 }
 
 Yulup.prototype = {
-    yulupEditMenu                           : null,
-    yulupEditMenuEditMenuitem               : null,
-    yulupEditMenuCheckoutMenuitem           : null,
-    yulupEditMenuCheckoutMenu               : null,
-    yulupEditMenuCheckoutMenupopup          : null,
-    yulupEditMenuCheckoutNoLockMenuitem     : null,
-    yulupEditMenuCheckoutNoLockMenu         : null,
-    yulupEditMenuCheckoutNoLockMenupopup    : null,
-    yulupEditMenuCheckoutMenuitemLabel      : null,
-    yulupEditMenuCheckoutNoLockMenuitemLabel: null,
-    instancesManager                        : null,
-    activeWebProgressListener               : null,
-    currentState                            : null,
+    yulupEditMenu                               : null,
+    yulupEditMenuEditMenuitem                   : null,
+    yulupEditMenuCheckoutMenuitem               : null,
+    yulupEditMenuCheckoutMenu                   : null,
+    yulupEditMenuCheckoutMenupopup              : null,
+    yulupEditMenuCheckoutNoLockMenuitem         : null,
+    yulupEditMenuCheckoutNoLockMenu             : null,
+    yulupEditMenuCheckoutNoLockMenupopup        : null,
+    yulupEditMenuCheckoutMenuitemLabel          : null,
+    yulupEditMenuCheckoutNoLockMenuitemLabel    : null,
+    yulupOperationNewFromTemplateLocalMenu      : null,
+    yulupOperationNewFromTemplateLocalMenupopup : null,
+    instancesManager                            : null,
+    activeWebProgressListener                   : null,
+    currentState                                : null,
 
     /**
      * Install a webprogress listener in the tabbrowser.
@@ -892,6 +900,8 @@ var NeutronArchiveRegistry = {
 
     // registered mime-types
     mimeTypeMap: {
+        "application/xxx"       : "empty.nar",
+        "application/xml"       : "xml.nar",
         "application/xhtml+xml" : "xhtml.nar",
         "application/atom+xml"  : "atom.nar"
     },

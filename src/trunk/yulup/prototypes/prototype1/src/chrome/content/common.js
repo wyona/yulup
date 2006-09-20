@@ -28,6 +28,8 @@
 
 const YULUP_EXTENSION_ID = "yulup-prototype-1@wyona.com";
 
+const NAMESPACE_XUL = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+
 /**
  * YulupException constructor. Instantiates a new object of
  * type YulupException.

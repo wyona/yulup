@@ -255,7 +255,7 @@ function YulupEditController(aParameterObject) {
      * @param  {String}   aTemplateString the template body as a string
      * @return {Undefined} does not have a return value
      */
-    this.constructor.enterStageTemplateLoad = function (aFromTemplate, aTemplateString) {
+    this.constructor.enterStageTemplateLoad = function () {
         var templateArchiveURI = null;
         var context            = null;
 
@@ -264,11 +264,6 @@ function YulupEditController(aParameterObject) {
         /* DEBUG */ YulupDebug.ASSERT(gEditorController != null && gEditorController.editStateController);
 
         /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageTemplateLoad: document type = \"" + gEditorController.editorParams.contentType + "\"\n");
-
-        context = {
-            fromTemplate  : aFromTemplate,
-            templateString: aTemplateString
-        };
 
         // get template nar file for this document type
         if ((templateArchiveURI = gEditorController.archiveRegistry.getArchiveURI(gEditorController.editorParams.contentType)) != null) {
@@ -279,13 +274,12 @@ function YulupEditController(aParameterObject) {
             gEditorController.editorParams.mergeIntrospectionParams(gEditorController.templateArchive.introspection);
         }
 
-        YulupEditController.enterStageDocumentLoad(context);
+        YulupEditController.enterStageDocumentLoad();
     };
 
-    this.constructor.enterStageDocumentLoad = function (aContext) {
+    this.constructor.enterStageDocumentLoad = function () {
         /* DEBUG */ dump("Yulup:controller.js:YulupEditController.enterStageDocumentLoad() invoked\n");
 
-        /* DEBUG */ YulupDebug.ASSERT(aContext          != null);
         /* DEBUG */ YulupDebug.ASSERT(gEditorController != null && gEditorController.editStateController);
 
         // load widgets
@@ -347,35 +341,21 @@ function YulupEditController(aParameterObject) {
         // instantiate the model
         gEditorController.model = new Model(gEditorController.editStateController, gEditorController.document);
 
-        /* Check if we have to load a document, or we are starting from
-         * template. Note that the blank template is also a template. */
-        if (!aContext.fromTemplate) {
-            // load document
+        try {
             try {
-                try {
-                    // note that the loadBarrier.arrive() is called in documentLoadFinshed
-                    gEditorController.document.loadDocument(YulupEditController.documentLoadFinished);
-                } catch (exception) {
-                    /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:controller.js:YulupEditController", exception);
-                    throw new YulupEditorException(Editor.getStringbundleString("editorDocumentLoadError0.label") + " \"" + gEditorController.document.loadURI.spec + "\".\n" + Editor.getStringbundleString("editorDocumentLoadError1.label"));
-                }
+                // note that the loadBarrier.arrive() is called in documentLoadFinshed
+                gEditorController.document.loadDocument(YulupEditController.documentLoadFinished);
             } catch (exception) {
                 /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:controller.js:YulupEditController", exception);
-
-                alert(Editor.getStringbundleString("editorDocumentLoadFailure.label") + "\n\n" + exception.message);
-
-                gEditorController.editStateController.modelStateChanged("openfailed");
-                return;
+                throw new YulupEditorException(Editor.getStringbundleString("editorDocumentLoadError0.label") + " \"" + gEditorController.document.loadURI.spec + "\".\n" + Editor.getStringbundleString("editorDocumentLoadError1.label"));
             }
-        } else {
-            // we are starting from a template
-            gEditorController.model.createFromTemplate(aContext.templateString);
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:controller.js:YulupEditController", exception);
 
-            gEditorController.editStateController.modelStateChanged("opensucceeded");
+            alert(Editor.getStringbundleString("editorDocumentLoadFailure.label") + "\n\n" + exception.message);
 
-            // we have to arrive at the view barrier manually
-            /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.enterStageDocumentLoad: arrive at load barrier (current thread count is \"" + gEditorController.loadBarrier.noOfThreads + "\")\n");
-            gEditorController.loadBarrier.arrive();
+            gEditorController.editStateController.modelStateChanged("openfailed");
+            return;
         }
     };
 
@@ -483,6 +463,8 @@ function YulupEditController(aParameterObject) {
         this.editorParams    = aParameterObject.parameters;
         this.archiveRegistry = aParameterObject.archiveRegistry;
 
+        buildNewMenu(this.archiveRegistry.getAvailableTemplates(), document.getElementById("uiYulupOperationNewFromTemplateLocalMenupopup"), document.getElementById("uiYulupOperationNewFromTemplateLocalMenu"), "Editor.createNew");
+
         switch (this.editorParams.type) {
             case "NeutronEditorParameters":
                 /* DEBUG */ dump("Yulup:controller.js:YulupEditController: parameters are of type NeutronEditorParameters\n");
@@ -509,42 +491,6 @@ function YulupEditController(aParameterObject) {
         this.editorParams = new EditorParameters(null, null, null, null, null, null, "blank");
     }
 
-    /* Note that the documentSuffix is not used although it is
-     * set below. This is because the complete template-from-string
-     * mechanism is going to be replaced by NAR based templating. */
-    switch (this.editorParams.template) {
-        case "blank":
-            fromTemplate   = true;
-            templateString = TEMPLATE_BLANK;
-            this.editorParams.contentType = "text/plain";
-            break;
-        case "template-xml":
-            fromTemplate   = true;
-            templateString = TEMPLATE_XML;
-            documentSuffix = "xml";
-            this.editorParams.contentType = "text/xml";
-            break;
-        case "template-xhtml":
-            fromTemplate   = true;
-            templateString = TEMPLATE_XHTML;
-            documentSuffix = "xhtml";
-            this.editorParams.contentType = "application/xhtml+xml";
-            break;
-        case "template-file":
-            // TODO: how to retrieve template from file system?
-        case "template-cms":
-            // TODO: how to retrieve template from CMS?
-            fromTemplate   = true;
-            templateString = TEMPLATE_BLANK;
-            this.editorParams.contentType = null;
-            break;
-        case "template-atomentry":
-            fromTemplate   = true;
-            templateString = TEMPLATE_ATOMENTRY;
-            break;
-        default:
-    }
-
     // check if we have to load a Neutron archive
     if (this.editorMode == EDITOR_MODE_NEUTRON && this.editorParams.contentType == "application/neutron-archive") {
         if (this.editorParams.loadStyle == "open") {
@@ -561,7 +507,7 @@ function YulupEditController(aParameterObject) {
     if (this.archive) {
         this.constructor.enterStageNeutronArchiveLoad(this.archive);
     } else {
-        this.constructor.enterStageTemplateLoad(fromTemplate, templateString);
+        this.constructor.enterStageTemplateLoad();
     }
 }
 

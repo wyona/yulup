@@ -228,19 +228,21 @@ var Editor = {
      * Create a new editor instance starting with a built-in
      * document template.
      *
-     * Pass in a template identifier from the following list:
-     * "blank", "template-xml", "template-xhtml".
-     *
-     * @param  {String}  aTemplate a template identifier
+     * @param  {String}  aTemplateName a template identifier
      * @return {Boolean} return true on success, false otherwise
      */
-    createNew: function (aTemplate) {
+    createNew: function (aTemplateName) {
         var editorParameters = null;
+        var template         = null;
 
-        /* DEBUG */ dump("Yulup:editor.js:Editor.createNew(\"" + aTemplate + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:editor.js:Editor.createNew(\"" + aTemplateName + "\") invoked\n");
 
         if (Editor.checkClose()) {
-            editorParameters = new EditorParameters(null, null, null, null, null, null, aTemplate);
+
+            template = gEditorController.archiveRegistry.getTemplateByName(aTemplateName);
+
+            // set editor parameters according to NAR template
+            editorParameters = new EditorParameters(template.uri, template.mimeType, null, null, null, null);
 
             Editor.replaceEditor(editorParameters);
 
@@ -248,18 +250,6 @@ var Editor = {
         }
 
         return false;
-    },
-
-    /**
-     * Create a new editor instance starting with a document
-     * template loaded from a local file.
-     *
-     * @return {Undefined} does not have a return value
-     */
-    createNewFromTemplateLocal: function () {
-        /* DEBUG */ dump("Yulup:editor.js:Editor.createNewFromTemplateLocal() invoked\n");
-
-        throw new YulupEditorException("Yulup:editor.js:Editor.createNewFromTemplateLocal: method not implemented.");
     },
 
     /**

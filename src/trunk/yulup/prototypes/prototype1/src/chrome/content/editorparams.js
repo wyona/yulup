@@ -40,7 +40,7 @@
  * @param  {String}           aTemplate      a template action parameter string
  * @return {EditorParameters}
  */
-function EditorParameters(aURI, aContentType, aSchemas, aStyles, aStyleTemplate, aWidgets, aTemplate) {
+function EditorParameters(aURI, aContentType, aSchemas, aStyles, aStyleTemplate, aWidgets) {
     /* DEBUG */ YulupDebug.ASSERT(aURI         != null && aURI.spec != null);
     /* DEBUG */ YulupDebug.ASSERT(aContentType != null);
 
@@ -50,7 +50,6 @@ function EditorParameters(aURI, aContentType, aSchemas, aStyles, aStyleTemplate,
     this.styles        = aStyles;
     this.styleTemplate = aStyleTemplate;
     this.widgets       = aWidgets;
-    this.template      = (aTemplate ? aTemplate : "");
 }
 
 EditorParameters.prototype = {
@@ -61,7 +60,6 @@ EditorParameters.prototype = {
     styles       : null,
     styleTemplate: null,
     widgets      : null,
-    template     : null,
 
     mergeIntrospectionParams: function (aIntrospectionObject) {
         /* DEBUG */ dump("Yulup:editorparams.js:EditorParameters.mergeIntrospectionParams() invoked\n");
@@ -137,19 +135,18 @@ EditorParameters.prototype = {
  *
  * @constructor
  * @param  {nsIURI}                  aURI                 the URI of the document to load into the new editor
- * @param  {String}                  aTemplate            a template action parameter string
  * @param  {Introspection}           aIntrospectionObject the introspection object associated with the document to load
  * @param  {Integer}                 aFragment            the fragment identifier of the document to load
  * @param  {String}                  aLoadStyle           the Neutron load style, either "open" or "checkout"
  * @return {NeutronEditorParameters}
  */
-function NeutronEditorParameters(aURI, aTemplate, aIntrospectionObject, aFragment, aLoadStyle) {
+function NeutronEditorParameters(aURI, aIntrospectionObject, aFragment, aLoadStyle) {
     /* DEBUG */ YulupDebug.ASSERT(aURI                 != null && aURI.spec != null);
     /* DEBUG */ YulupDebug.ASSERT(aIntrospectionObject != null);
     /* DEBUG */ YulupDebug.ASSERT(aFragment            != null);
     /* DEBUG */ YulupDebug.ASSERT(aLoadStyle           != null);
 
-    EditorParameters.call(this, aURI, aIntrospectionObject.queryFragmentMIMEType(aFragment), aIntrospectionObject.queryFragmentSchemas(aFragment), aIntrospectionObject.queryFragmentStyles(aFragment), aIntrospectionObject.queryFragmentStyleTemplate(aFragment), aIntrospectionObject.queryFragmentWidgets(aFragment), aTemplate);
+    EditorParameters.call(this, aURI, aIntrospectionObject.queryFragmentMIMEType(aFragment), aIntrospectionObject.queryFragmentSchemas(aFragment), aIntrospectionObject.queryFragmentStyles(aFragment), aIntrospectionObject.queryFragmentStyleTemplate(aFragment), aIntrospectionObject.queryFragmentWidgets(aFragment));
 
     this.openURI        = aIntrospectionObject.queryFragmentOpenURI(aFragment);
     this.openMethod     = aIntrospectionObject.queryFragmentOpenMethod(aFragment);
