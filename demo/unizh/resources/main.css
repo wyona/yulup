@@ -1,7 +1,6 @@
 /*allgemeine Definition*/
 
-html {font-size:100%;}
-*html body { font-size:0.75em; }
+html { font-size: 100%; }
 
 html > body {font-size:12px}
 
@@ -16,7 +15,6 @@ body {
 
 .bodywidth {
 	max-width:800px;
-	width:expression(document.body.clientWidth > 800  ? "802px": "auto");
 	margin-right: auto;
 	margin-left: auto;
 }
@@ -184,7 +182,6 @@ img.icon {
 	background-color: #666699;
 	height:90px;
 	min-width:600px;
-	width:expression(document.body.clientWidth &lt; 600  ? "600px": "auto");
 }
 
 .bodywidthnolimit #headerarea, .bodywidthnolimit .endheaderline, .bodywidthnolimit #primarnav, .bodywidthnolimit #toolnav {
@@ -917,10 +914,6 @@ ol.list a {
 	margin-top:5px;
 }
 
-*html .imgMitLegende {
-	margin-top:14px;
-}
-
 .fullimgMitLegende {
 	background-color:#E9E9F0;
 	margin:14px 0 5px 0;
@@ -963,10 +956,6 @@ ol.list a {
 
 .teaserImg {
 	margin-bottom:3px;
-}
-
-*html .teaserImg {
-	margin-bottom:6px;
 }
 
 .teaser64long {
