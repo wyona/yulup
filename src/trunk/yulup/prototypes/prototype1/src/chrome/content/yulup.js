@@ -203,6 +203,13 @@ function createNew(aTemplateName) {
 
     template = NeutronArchiveRegistry.getTemplateByName(aTemplateName);
 
+    if (template.mimeType == "application/atom+xml") {
+        // create a new context aware atom entry
+        if (createNewAtomEntry()) {
+            return true;
+        }
+    }
+
     // set editor parameters according to NAR template
     editorParameters = new EditorParameters(template.uri, template.mimeType, null, null, null, null);
 
@@ -221,6 +228,7 @@ function createNew(aTemplateName) {
 function createNewAtomEntry() {
     var editorParameters = null;
     var feedURI          = null;
+    var template         = null;
 
     /* DEBUG */ dump("Yulup:yulup.js:createNewAtomEntry() invoked\n");
 
@@ -229,14 +237,19 @@ function createNewAtomEntry() {
         feedURI = document.getElementById("sidebar").contentDocument.getElementById("uiYulupAtomSidebarPage").currentFeed.feedURI;
     }
 
-    /* DEBUG */ dump("Yulup:yulup.js:createNewAtomEntry: feed URI = \"" + feedURI.spec + "\"\n");
-
     if (feedURI) {
-        editorParameters = new AtomEditorParameters(feedURI,  "application/atom+xml", "template-atomentry", "create");
+        /* DEBUG */ dump("Yulup:yulup.js:createNewAtomEntry: feed URI = \"" + feedURI.spec + "\"\n");
+
+        // get the first atom template
+        template = NeutronArchiveRegistry.getTemplatesByMimeType("application/atom+xml")[0];
+
+        editorParameters = new AtomEditorParameters(template.uri, feedURI,  "application/atom+xml");
         createNewEditor(editorParameters);
+
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 /**
@@ -752,7 +765,7 @@ Yulup.prototype = {
 
         /* DEBUG */ dump("Yulup:yulup.js:Yulup.editAtomEntryProxy(\"" + aURI + "\") invoked\n");
 
-        editorParameters = new AtomEditorParameters(aURI, "application/atom+xml", null, "edit");
+        editorParameters = new AtomEditorParameters(aURI, null, "application/atom+xml", null);
 
         // replace the current editor
         createNewEditor(editorParameters);
@@ -969,6 +982,27 @@ var NeutronArchiveRegistry = {
             }
         }
         return null;
+    },
+
+    /**
+     * Return template objects belonging to the specified mime-type.
+     *
+     * @param  {String} aMimeType the mime-type of the template
+     * @return {Array}            array of matching templates
+     */
+    getTemplatesByMimeType: function(aMimeType) {
+        var templates = new Array();
+        var index     = 0;
+
+        /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.getTemplatesByMimeType(\"" + aMimeType + "\") invoked\n");
+
+        for (var i=0; i<NeutronArchiveRegistry.templates.length; i++) {
+            if (NeutronArchiveRegistry.templates[i].mimeType == aMimeType) {
+                templates[index++] = NeutronArchiveRegistry.templates[i];
+            }
+        }
+
+        return (templates.length > 0 ? templates : null);
     },
 
     /**

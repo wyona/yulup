@@ -224,26 +224,24 @@ NeutronEditorParameters.prototype = {
  *
  * @constructor
  * @param  {nsIURI}               aURI            the URI of the document to load into the new editor
+ * @param  {nsIURI}               aFeedURI        the feed URI the document belongs to
  * @param  {String}               aContentType    the content type of the document
  * @param  {String}               aTemplate       a template action parameter string
- * @param  {String}               aCreationStatus specifies if the document has to be "create"ed first or simply "edit"
  * @return {AtomEditorParameters}
  */
-function AtomEditorParameters(aURI, aContentType, aTemplate, aCreationStatus) {
+function AtomEditorParameters(aURI, aFeedURI, aContentType) {
     /* DEBUG */ YulupDebug.ASSERT(aURI            != null && aURI.spec != null);
     /* DEBUG */ YulupDebug.ASSERT(aContentType    != null);
-    /* DEBUG */ YulupDebug.ASSERT(aCreationStatus != null);
 
-    EditorParameters.call(this, aURI, aContentType, null, null, null, null, aTemplate);
+    EditorParameters.call(this, aURI, aContentType, null, null, null, null);
 
-    this.creationStatus = aCreationStatus;
+    this.feedURI        = aFeedURI;
 }
 
 AtomEditorParameters.prototype = {
     __proto__: EditorParameters.prototype,
 
     type          : "AtomEditorParameters",
-    creationStatus: null,
 
     mergeIntrospectionParams: function (aIntrospectionObject) {
         /* DEBUG */ dump("Yulup:editorparams.js:AtomEditorParameters.mergeIntrospectionParams() invoked\n");

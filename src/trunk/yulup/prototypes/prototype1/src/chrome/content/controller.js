@@ -25,14 +25,6 @@
  * @author Andreas Wuest
  *
  */
-
-const TEMPLATE_BLANK     = '';
-const TEMPLATE_XML       = '<?xml version="1.0" encoding="UTF-8"?>';
-const TEMPLATE_XHTML     = '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n  <head>\n  </head>\n  <body>\n  </body>\n</html>';
-const TEMPLATE_ATOMENTRY = '<?xml version="1.0"?>\n\n<entry xmlns="http://www.w3.org/2005/Atom">\n  <title></title>\n  <author><name></name></author>\n  <id></id>\n  <updated>yyyy-mm-ddThh:mm:ss-hh:mm</updated>\n  <summary type="html"></summary>\n  <content type="xhtml">\n    <div xmlns="http://www.w3.org/1999/xhtml">\n    </div>\n  </content>\n</entry>'
-
-const TEMPLATE_ATOMENTRY_URI = "chrome://yulup/content/templates/atomentry.template.xml";
-
 const EDITOR_MODE_REGULAR = 0;
 const EDITOR_MODE_NEUTRON = 1;
 const EDITOR_MODE_ATOM    = 2;
@@ -327,11 +319,7 @@ function YulupEditController(aParameterObject) {
             break;
 
             case EDITOR_MODE_ATOM:
-                if (gEditorController.editorParams.creationStatus == "create") {
-                    gEditorController.document = new AtomDocument(null, gEditorController.editorParams.uri, gEditorController.editorParams.contentType, gEditorController.editorParams.schemas, gEditorController.editorParams.styles, gEditorController.editorParams.styleTemplate);
-                } else {
-                    gEditorController.document = new AtomDocument(gEditorController.editorParams.uri, null, gEditorController.editorParams.contentType, gEditorController.editorParams.schemas, gEditorController.editorParams.styles, gEditorController.editorParams.styleTemplate);
-                }
+                gEditorController.document = new AtomDocument(gEditorController.editorParams.uri, gEditorController.editorParams.feedURI, gEditorController.editorParams.contentType, gEditorController.editorParams.schemas, gEditorController.editorParams.styles, gEditorController.editorParams.styleTemplate);
                 break;
 
             default:

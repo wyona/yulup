@@ -784,7 +784,7 @@ AtomDocument.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aUploadFinishedCallback         != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aUploadFinishedCallback) == "function");
 
-        if (this.loadURI) {
+        if (this.loadURI && this.loadURI.scheme != "jar"){
             // the resource already exists, therefore PUT to member URI
             NetworkService.httpRequestPUT(this.loadURI.spec, null, aDocumentData, this.contentType, this.__updateFinishedHandler, aUploadFinishedCallback, false, true);
         } else if (this.feedURI) {
