@@ -974,8 +974,8 @@ WYSIWYGXSLTModeView.prototype = {
      * @return {String} current document of this view
      */
     contentToString: function () {
-
         serialisedDocument = this.xmlSerializer.serializeToString(this.domDocument);
+
         /* DEBUG */ dump("######## Yulup:view.js:WYSIWYGXSLTModeView.contentToString: document to write back (xmlserializer) =\n" + serialisedDocument + "\n");
 
         return serialisedDocument;
@@ -997,7 +997,6 @@ WYSIWYGXSLTModeView.prototype = {
         this.domDocument.normalize();
 
         /* Lookup default namespace */
-
         var sourceElements = this.domDocument.getElementsByTagName("*");
 
         for (var i= 0; i < sourceElements.length; i++) {
@@ -1016,7 +1015,6 @@ WYSIWYGXSLTModeView.prototype = {
         ** the the first node within a given namespace (and the value "xmlns" if that node has no prefix),
         ** we do prefix lookup by hand and set a dummy prefix if no prefixed node can be found.
         **/
-
         var prefix = null;
 
         if (defaultNamespace != null) {
@@ -1034,7 +1032,6 @@ WYSIWYGXSLTModeView.prototype = {
 
 
         /* tag the qualified document source with _yulup-location-path attributes */
-
         var xsltProcessor = new XSLTProcessor();
 
         xsltProcessor.importStylesheet(this.sourceTaggerXSL);
@@ -1053,7 +1050,6 @@ WYSIWYGXSLTModeView.prototype = {
         ** the views xhtmlDocument without further transformation steps. The aggregation points are marked by
         ** xi:include directives contained in the style template.
         */
-
         if (this.styleTemplate) {
 
             // Apply styleTemplate to the document before document styling by xslt
@@ -1083,7 +1079,6 @@ WYSIWYGXSLTModeView.prototype = {
         }
 
         /* Style the tagged source document by xslt. */
-
         var xhtmlDocument = this.xsltTransform(taggedSourceDocument, this.documentXSL);
 
         /* Remove extranous and adjacent Text nodes. */
@@ -1184,7 +1179,6 @@ WYSIWYGXSLTModeView.prototype = {
         /* Insert _yulup-location-path span node around nodeValue selectors.
         ** Note that for-each directives and $variable selectors are not implemented yet.
         */
-
         try {
             var nodeValueSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet//*/xsl:value-of[not(contains(@select, '$'))]", aDocumentXSL, aDocumentXSL.createNSResolver(aDocumentXSL.documentElement), XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
             span = aDocumentXSL.createElement("span");
@@ -1216,12 +1210,20 @@ WYSIWYGXSLTModeView.prototype = {
         // dump("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle: patched document =\n" + this.xmlSerializer.serializeToString(aDocumentXSL) + "\n");
     },
 
-
-    /** returns a transformed document after applying aXStylesheetDocument **/
+    /**
+     * Transform document with supplied XSLT stylesheet.
+     *
+     * @param  {nsIDOMNode} aDocument            the document to transform
+     * @param  {nsIDOMNode} aXStylesheetDocument the stylesheet to apply
+     * @return {nsIDOMNode} returns a transformed document after applying the stylesheet
+     */
     xsltTransform: function (aDocument, aXStylesheetDocument) {
         var xsltProcessor = null;
 
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.xsltTransform(\"" + aDocument + "\", \"" + aXStylesheetDocument + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aDocument            != null);
+        /* DEBUG */ YulupDebug.ASSERT(aXStylesheetDocument != null);
 
         /* DEBUG */ // dump("Yulup:view.js:WYSIWYGXSLTModeView.xsltTransform: applying stylesheet\n" + Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(aXStylesheetDocument)  + "\nto document\n" + Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(aDocument)  + "\n");
 
@@ -1233,68 +1235,75 @@ WYSIWYGXSLTModeView.prototype = {
     },
 
 
-    /** returns a node in the document source based on a passed xhtmlDocument node
-     ** by looking up _yulup-location-path attributes in the ancestor-or-self axis
-     ** and then issuing an xPath query based on the gathered location path data.
+    /** Returns an XPath expression to find the source node in the document source
+     ** corresponding to the passed xhtmlDocument node by looking up _yulup-location-path
+     ** attributes in the ancestor-or-self axis and then issuing an xPath query based
+     ** on the gathered location path data.
+     **
      ** Supports two modes of operation: namespace aware/unware. This is needed for
      ** source documents that do not use namespaces in a standardized way (quite a lot in fact).
      ** Note that no fallback mechanism from namespace aware to unaware is implemented yet.
+     **
+     ** @param  {nsIDOMNode} aXHTMLNode        the currently selected node in the WYSIWYG view
+     ** @param  {Boolean}    aIsNamespaceAware set to true if you would like namespace-aware evaluation of the query
+     ** @return {String} returns the XPath expression to find the corresponding node in the XML source according to the passed in node, or null if none was found
      **/
     getSourceXPathForXHTMLNode: function (aXHTMLNode, aIsNamespaceAware) {
-        var xPathToolBarLabel;
-        var domDocument = this.domDocument;
-        var xhtmlNode;
-        var namespaceAware = aIsNamespaceAware;
+        var xPathToolBarLabel = null;
+        var domDocument       = null;
+        var xhtmlNode         = null;
+        var locationPath      = null;
+        var xPathExpr         = null;
+        var sourceNode        = null;
 
-        xhtmlNode = aXHTMLNode;
+        /* DEBUG */ YulupDebug.ASSERT(aXHTMLNode        != null);
+        /* DEBUG */ YulupDebug.ASSERT(aIsNamespaceAware != null);
+
+        domDocument = this.domDocument;
+        xhtmlNode   = aXHTMLNode;
 
         /* Get a handle on the xPathToolBarLabel displaying a xpath expression for
         ** the current context node
         */
         xPathToolBarLabel = document.getElementById("uiYulupXPathToolBarXPathExpression");
 
-
         /** Look up location path by finding nearest _yulup-location-path attribute node.
          ** Note that _yulup-locaton-path values of elements with mixed content do not contain information
          ** about the actual text node selected. There is no way around this because marking source text nodes
          ** with location path information would break styling the document. Therefore text node constraints
          ** have to be estimated based on xhtml to source pattern matching.
-         **
          **/
-
-        var locationPath = null;
-
         while (xhtmlNode.parentNode != null) {
-            if (xhtmlNode.nodeType == 1 && xhtmlNode.getAttribute('_yulup-location-path') != null) {
-                locationPath = xhtmlNode.getAttribute('_yulup-location-path');
+            if (xhtmlNode.nodeType == Components.interfaces.nsIDOMNode.ELEMENT_NODE && xhtmlNode.getAttribute("_yulup-location-path") != null) {
+                locationPath = xhtmlNode.getAttribute("_yulup-location-path");
                 break;
             }
             xhtmlNode = xhtmlNode.parentNode;
         }
 
-        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: Location path: " + locationPath + "\n");
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: found location path: " + locationPath + "\n");
 
-
-        /* no location path data found. Update toolbar and return null */
+        /* No location path data found. Update toolbar and return null. */
         if (locationPath == null || locationPath == "" || locationPath == "undefined") {
             xPathToolBarLabel.value = "-";
             return null;
         }
 
-        var xPathExpr = locationPath;
+        xPathExpr = locationPath;
 
-        if (!namespaceAware) {
+        if (!aIsNamespaceAware) {
             xPathToolBarLabel.value = "Not yet implemented!";
             return null;
         }
 
-        /* Query the source document for xPathExpr */
-        var sourceNode = domDocument.evaluate(xPathExpr, domDocument, domDocument.createNSResolver(domDocument.documentElement), XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        /* Query the source document for xPathExpr (the location path found) */
+        sourceNode = domDocument.evaluate(xPathExpr, domDocument, domDocument.createNSResolver(domDocument.documentElement), XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 
         /* DEBUG */ dump ("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: XPath query returned source node: \"" + sourceNode + "\"\n");
 
         /** Do a xhtml to source node mapping to add text() constraints */
 
+        /* No corresponding source node found. Return null. */
         if (sourceNode == null) {
             xPathToolBarLabel.value = "Error! No source node for " + xPathExpr;
             return null;
@@ -1312,9 +1321,9 @@ WYSIWYGXSLTModeView.prototype = {
          * FIXME: Add support for static text generated by documentStyle.
          * Possibly extend documentXSLPatcher for that. */
         if (aXHTMLNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
-            var childNodes = sourceNode.childNodes;
+            var childNodes    = sourceNode.childNodes;
             var textNodeCount = 0;
-            var selPosition = null;
+            var selPosition   = null;
 
             for (var i=0; i < childNodes.length; i++) {
                 var childNode = childNodes.item(i);
@@ -1333,6 +1342,7 @@ WYSIWYGXSLTModeView.prototype = {
             }
 
             xPathToolBarLabel.value = xPathExpr;
+
             return xPathExpr;
         }
     },
@@ -1347,9 +1357,10 @@ WYSIWYGXSLTModeView.prototype = {
 
 
 function WYSIWYGXSLTKeyListener(aView) {
+    /* DEBUG */ YulupDebug.ASSERT(aView != null);
+
     this.view = aView;
 }
-
 
 WYSIWYGXSLTKeyListener.prototype = {
     view: null,
@@ -1357,34 +1368,39 @@ WYSIWYGXSLTKeyListener.prototype = {
     handleEvent: function (aKeyEvent) {
         // hook up paragraph inserter
         this.view.updateSource();
-
     }
 };
 
+
 function WYSIWYGXSLTMouseListener(aView) {
+    /* DEBUG */ YulupDebug.ASSERT(aView != null);
+
     this.view = aView;
 }
 
-
 WYSIWYGXSLTMouseListener.prototype = {
-
     view: null,
 
     handleEvent: function (aMouseEvent) {
+        var node        = null;
+        var domDocument = null;
+        var xpath       = null;
+        var sourceNode  = null;
 
-        var node = aMouseEvent.explicitOriginalTarget; // (Mozilla bug 185889)
+        node        = aMouseEvent.explicitOriginalTarget; // (Mozilla bug 185889)
+        domDocument = this.view.domDocument;
 
         this.view.currentXHTMLNode = node;
 
-        var domDocument = this.view.domDocument;
-        var xpath = this.view.getSourceXPathForXHTMLNode(node, this.view.isNamespaceAware);
+        xpath = this.view.getSourceXPathForXHTMLNode(node, this.view.isNamespaceAware);
 
         if (xpath != null && xpath != this.view.currentSourceSelectionPath) {
-            dump("xpath is : " + xpath);
-            var sourceNode = domDocument.evaluate(xpath, domDocument, domDocument.createNSResolver(domDocument.documentElement), XPathResult.ANY_TYPE, null).iterateNext();
-            if (sourceNode != null) {
+            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTMouseListener.handleEvent: XPath of selected node is: \"" + xpath + "\"\n");
 
-                /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTMouseListener.handleEvent: Setting source node " + sourceNode + " with xpath " + xpath + " as new current node\n");
+            sourceNode = domDocument.evaluate(xpath, domDocument, domDocument.createNSResolver(domDocument.documentElement), XPathResult.ANY_TYPE, null).iterateNext();
+
+            if (sourceNode != null) {
+                /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTMouseListener.handleEvent: setting source node \"" + sourceNode + "\" with XPath \"" + xpath + "\" as new current node\n");
                 this.view.currentSourceSelectionPath = xpath;
                 this.view.currentSourceNode = sourceNode;
 
@@ -1398,6 +1414,8 @@ WYSIWYGXSLTMouseListener.prototype = {
 
 
 function NSCheckboxStateChangeListener(aView) {
+    /* DEBUG */ YulupDebug.ASSERT(aView != null);
+
     this.view = aView;
 }
 
