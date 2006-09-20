@@ -1126,27 +1126,33 @@ WYSIWYGXSLTModeView.prototype = {
         return retVal;
     },
 
-    /** returns a document style xslt that propagates _yulup-location-path attributes from a tagged
+    /** Returns a document style xslt that propagates "_yulup-location-path" attributes from a tagged
      ** document source to the transformed xhtmlDocument.
+     **
      ** This is needed for mapping selections and text node changes from the xhtmlDocument contained in
      ** the view back to the underlying xml document (source).
+     **
      ** A patched document style has
      ** <ul>
      ** <li>@_yulup-location-path attribute selectors pointing to the current context node in all
      ** parent nodes of templateSelectors (xsl:apply-templates). </li>
      ** <li>span tags with @_yulup-location-path attribute selectors surrounding nodeValue selection
-     ** directives that point to the current context node. (xsl:value-of select="."/>)</li>
+     ** directives that point to the current context node (xsl:value-of select="."/>).</li>
      ** <li>span tags with @_yulup-location-path attributes that concatenate a @_yulup-location-path
      ** selector of the current context node with the nodeValue selector, when pointing to a node relative
-     ** to the current context node.(xsl:value-of select="foo/bar/@foo")</li>
+     ** to the current context node (xsl:value-of select="foo/bar/@foo").</li>
      ** <li>span tags with a @_yulup-location-path attribute that simply contains the select pattern of
-     ** the contained nodeValue selector, when using absolute node addressing (<xsl:value-of select="/foo/bar")
-     ** </li>
+     ** the contained nodeValue selector, when using absolute node addressing (<xsl:value-of select="/foo/bar").</li>
      ** </ul>
      ** Note that selectors pointing to $variables are excluded from the patching process.
+     **
+     ** @param  {nsIDOMXMLDocument} aDocumentXSL the document style to patch
+     ** @return {nsIDOMXMLDocument} the patched document style
      **/
     patchDocumentStyle: function (aDocumentXSL) {
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle(\"" + aDocumentXSL + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aDocumentXSL != null);
 
         /* Remove output method declarations to prevent mozilla from inserting crap into the generated xhtml.
         ** Note that this is for cosmetic reasons only and can be removed if experience should prove that
@@ -1154,7 +1160,7 @@ WYSIWYGXSLTModeView.prototype = {
         */
 
         try {
-            var outputMethodNode = aDocumentXSL.evaluate("xsl:stylesheet/xsl:output", aDocumentXSL, aDocumentXSL.createNSResolver(aDocumentXSL.documentElement), XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null).iterateNext();
+            var outputMethodNode = aDocumentXSL.evaluate("xsl:stylesheet/xsl:output", aDocumentXSL, aDocumentXSL.createNSResolver(aDocumentXSL.documentElement), XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
             if (outputMethodNode != null)
                 outputMethodNode.parentNode.removeChild(outputMethodNode);
 	    } catch (exception) {
