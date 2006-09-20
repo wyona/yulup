@@ -133,7 +133,7 @@
 
   <xsl:template match="atom:content">
     <div class="atomContent">
-      <xsl:copy-of select="*"/>
+      <xsl:copy-of select="child::node()"/>
     </div>
   </xsl:template>
 
@@ -157,7 +157,7 @@
 
   <xsl:template match="atom:summary">
     <div class="atomSummary">
-      <xsl:copy-of select="*"/>
+      <xsl:copy-of select="child::node()"/>
     </div>
   </xsl:template>
 
