@@ -1,5 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?><!-- $Id: xhtml-standard.xsl,v 1.11 2005/01/17 09:15:14 thomas Exp $ --><xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:uz="http://unizh.ch" xmlns:i18n="http://apache.org/cocoon/i18n/2.1" xmlns:index="http://apache.org/cocoon/lenya/documentindex/1.0" xmlns:level="http://apache.org/cocoon/lenya/documentlevel/1.0" xmlns:ci="http://apache.org/cocoon/include/1.0" version="1.0">
-  
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id: xhtml-standard.xsl,v 1.11 2005/01/17 09:15:14 thomas Exp $ -->
+
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:uz="http://unizh.ch" xmlns:i18n="http://apache.org/cocoon/i18n/2.1" xmlns:index="http://apache.org/cocoon/lenya/documentindex/1.0" xmlns:level="http://apache.org/cocoon/lenya/documentlevel/1.0" xmlns:ci="http://apache.org/cocoon/include/1.0" version="1.0">
   <xsl:param name="root"/>
   <xslt:param xmlns:xslt="http://www.w3.org/1999/XSL/Transform" xmlns:xi="http://www.w3.org/2001/XInclude" name="contextprefix">/lenya</xslt:param>
   <xslt:param xmlns:xslt="http://www.w3.org/1999/XSL/Transform" xmlns:xi="http://www.w3.org/2001/XInclude" name="area">authoring</xslt:param>
@@ -14,49 +17,56 @@
 
   <xsl:variable xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xslt="http://www.w3.org/1999/XSL/Transform" name="languagesuffix">
     <xsl:if test="$defaultlanguage != $language">.<xsl:value-of select="$language"/></xsl:if>
+  </xsl:variable>
 
-  </xsl:variable><xsl:variable name="documentlanguagesuffix">
+  <xsl:variable name="documentlanguagesuffix">
     <xsl:if test="$defaultlanguage != $language">_<xsl:value-of select="$language"/></xsl:if>
-  </xsl:variable><xsl:variable name="imageprefix" select="concat($contextprefix, '/unizh/authoring/images')"/><xsl:variable name="localsharedresources" select="concat(substring-before($root, $area), 'authoring')"/><xsl:variable name="content" select="/document/content/*"/><xsl:variable name="document-element-name">
+  </xsl:variable>
+
+  <xsl:variable name="imageprefix" select="concat($contextprefix, '/unizh/authoring/images')"/>
+
+  <xsl:variable name="localsharedresources" select="concat(substring-before($root, $area), 'authoring')"/>
+
+  <xsl:variable name="content" select="/document/content/*"/>
+
+  <xsl:variable name="document-element-name">
     <xsl:choose>
       <xsl:when test="name($content) = local-name($content)">
         <xsl:value-of select="concat('xhtml:', name($content))"/>
       </xsl:when>
       <xsl:otherwise>
-
         <xsl:value-of select="name($content)"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
+
   <xsl:template xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xslt="http://www.w3.org/1999/XSL/Transform" name="html-head">
-  <head>
-    <title>UZH - <xsl:value-of select="/document/content/*/unizh:header/unizh:heading"/> - <xsl:value-of select="*/lenya:meta/dc:title"/>
+    <head>
+      <title>UZH - <xsl:value-of select="/document/content/*/unizh:header/unizh:heading"/> - <xsl:value-of select="*/lenya:meta/dc:title"/></title>
+      <link rel="neutron-introspection" type="application/neutron+xml" href="unizh-introspection.xml"/>
+      <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type"/>
+      <style type="text/css">
+        @import url("http://demo.yulup.org/unizh/resources/main.css");
+      </style>
+      <script src="http://demo.yulup.org/unizh/resources/uni.js" type="text/javascript"/>
+      <script src="http://demo.yulup.org/unizh/resources/elml.js" type="text/javascript"/>
+      <xsl:if test="$document-element-name = 'unizh:news'">
+        <link href="{$nodeid}.rss.xml" rel="alternate" title="{/document/content/unizh:news/lenya:meta/dc:title}" type="application/rss+xml"/> 
+      </xsl:if>
+    </head>
+  </xsl:template>
 
-</title>
-    <link rel="neutron-introspection" type="application/neutron+xml" href="unizh-introspection.xml"/>
-    <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type"/>
-    <style type="text/css">
-      @import url("resources/main.css");
-    </style>
-    <script src="resources/uni.js" type="text/javascript"/>
-<script src="resources/elml.js" type="text/javascript"/>
-    <xsl:if test="$document-element-name = 'unizh:news'">
-      <link href="{$nodeid}.rss.xml" rel="alternate" title="{/document/content/unizh:news/lenya:meta/dc:title}" type="application/rss+xml"/> 
-    </xsl:if>
-  </head>
-
-</xsl:template>
   <xsl:template xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xslt="http://www.w3.org/1999/XSL/Transform" name="header">
     <div id="headerarea">
       <div style="float:right;width:195px;">
         <div class="imgunilogo">
           <a href="http://www.unizh.ch">
-            <img alt="unizh logo" height="45" src="resources/logo_{$language}.gif" width="180"/>
+            <img alt="unizh logo" height="45" src="http://demo.yulup.org/unizh/resources/logo_{$language}.gif" width="180"/>
           </a>
         </div>
 
         <div class="imginstitute">
-          <img alt="institute's picture" height="45" src="resources/key-visual.jpg" width="180"/>
+          <img alt="institute's picture" height="45" src="http://demo.yulup.org/unizh/resources/key-visual.jpg" width="180"/>
         </div>
       </div>
       <div id="headertitelpos">
@@ -67,7 +77,7 @@
 
               <h2>
                 <xsl:value-of select="/document/content/*/unizh:header/unizh:superscription"/>
-              
+                
               </h2>
             </div>
             <h1>
@@ -107,20 +117,20 @@
 
     <div class="floatclear"/>
     <div class="endheaderline">
-      <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+      <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
     </div>
   </xsl:template>
   <xsl:template xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xslt="http://www.w3.org/1999/XSL/Transform" name="footer">
     <div class="footermargintop"/>
     <div class="topnav"><a href="#top">top</a></div>
 
-    <div class="solidline"><img alt="separation line" height="1" src="resources/1.gif" width="1"/></div>
+    <div class="solidline"><img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/></div>
     <div id="footer">(C) 2005 Universitat Zurich | <a href="{/document/xhtml:div[@id = 'footnav']/xhtml:div[@id = 'impressum']/@href}"><xsl:value-of select="/document/xhtml:div[@id = 'footnav']/xhtml:div[@id = 'impressum']"/></a></div>
   </xsl:template>
   <xslt:param xmlns:xslt="http://www.w3.org/1999/XSL/Transform" xmlns:xi="http://www.w3.org/2001/XInclude" name="publicationid">unitemplate</xslt:param><xsl:template match="xhtml:div[@id = 'orthonav']">
     <xsl:if test="*">
       <div id="orthonav">
-       <span class="spacer"> </span>
+        <span class="spacer"> </span>
 
         <xsl:variable name="itemNr" select="count(*)"/>
         <xsl:for-each select="*">
@@ -150,41 +160,41 @@
       <xsl:for-each select="xhtml:div[@id != 'search']">
 
         <xsl:if test="@id = 'home'">
-           <a accesskey="0" href="{@href}"><xsl:value-of select="."/></a> &#9;
+          <a accesskey="0" href="{@href}"><xsl:value-of select="."/></a> &#9;
         </xsl:if>
         <xsl:if test="@id = 'contact'">
-         <a accesskey="3" href="{@href}"><xsl:value-of select="."/></a> &#9;
+          <a accesskey="3" href="{@href}"><xsl:value-of select="."/></a> &#9;
         </xsl:if>
         <xsl:if test="@id = 'sitemap'">
           <a accesskey="4" href="{@href}"><xsl:value-of select="."/></a> &#9;
 
         </xsl:if>
-       |
+        |
       </xsl:for-each>
       
       <xsl:choose>
         <xsl:when test="$publicationid = 'id'">      
           <label for="formsearch">Suchen:</label>  
           <form accept-charset="UTF-8" action="http://www.id.unizh.ch/search/search.jsp" id="formsearch" method="get">
-             <div class="serviceform">
-                <input accesskey="5" name="query" type="text"/>
-             </div>
+            <div class="serviceform">
+              <input accesskey="5" name="query" type="text"/>
+            </div>
 
-             <div class="serviceform">
-                <a href="javascript:document.forms['formsearch'].submit();">go!</a>
-             </div>
+            <div class="serviceform">
+              <a href="javascript:document.forms['formsearch'].submit();">go!</a>
+            </div>
           </form>
         </xsl:when>
         <xsl:otherwise>
           <label for="formsearch"><xsl:value-of select="xhtml:div[@id='search']"/>:</label>
           <form action="{xhtml:div[@id = 'search']/@href}" id="formsearch" method="get">
 
-             <div class="serviceform">
-                <input accesskey="5" name="queryString" type="text"/>
-             </div>
-             <div class="serviceform">
-                <a href="javascript:document.forms['formsearch'].submit();">go!</a>
-             </div>
+            <div class="serviceform">
+              <input accesskey="5" name="queryString" type="text"/>
+            </div>
+            <div class="serviceform">
+              <a href="javascript:document.forms['formsearch'].submit();">go!</a>
+            </div>
           </form>
         </xsl:otherwise>
 
@@ -199,11 +209,11 @@
 
         <a href="{@href}"><xsl:value-of select="translate(., 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/></a> |
       </xsl:for-each>
-      <a href="#" onClick="window.open('{xhtml:div[@id = 'print']/@href}', '', 'width=700,height=700,menubar=yes,scrollbars')" onmouseout="changeIcontext('')" onmouseover="changeIcontext('{xhtml:div[@id = 'print']}')"><img alt="{xhtml:div[@id = 'print']}" height="10" src="resources/icon_print.gif" width="10"/></a> |
+      <a href="#" onClick="window.open('{xhtml:div[@id = 'print']/@href}', '', 'width=700,height=700,menubar=yes,scrollbars')" onmouseout="changeIcontext('')" onmouseover="changeIcontext('{xhtml:div[@id = 'print']}')"><img alt="{xhtml:div[@id = 'print']}" height="10" src="http://demo.yulup.org/unizh/resources/icon_print.gif" width="10"/></a> |
       <a onmouseout="changeIcontext('')" onmouseover="changeIcontext('{xhtml:div[@id = 'fontsize']}')">
         <xsl:attribute name="id">switchFontSize</xsl:attribute>
-        <img alt="{xhtml:div[@id = 'fontsize']}" height="9" src="resources/icon_bigfont.gif" width="18"/></a> |
-      <a href="{xhtml:div[@id = 'simpleview']/@href}" onmouseout="changeIcontext('')" onmouseover="changeIcontext('{xhtml:div[@id = 'simpleview']}')"><img alt="{xhtml:div[@id = 'simpleview']}" height="9" src="resources/icon_pda.gif" width="18"/></a>
+        <img alt="{xhtml:div[@id = 'fontsize']}" height="9" src="http://demo.yulup.org/unizh/resources/icon_bigfont.gif" width="18"/></a> |
+      <a href="{xhtml:div[@id = 'simpleview']/@href}" onmouseout="changeIcontext('')" onmouseover="changeIcontext('{xhtml:div[@id = 'simpleview']}')"><img alt="{xhtml:div[@id = 'simpleview']}" height="9" src="http://demo.yulup.org/unizh/resources/icon_pda.gif" width="18"/></a>
     </div>
 
     <div class="floatclear"/>
@@ -213,16 +223,16 @@
     <xsl:variable name="level" select="count($descendants)"/>
 
     <div id="secnav">
-&#9;  <xsl:if test="not(../xhtml:div[@id = 'tabs'])">
-&#9;    <a accesskey="1" name="navigation"/>
+      &#9;  <xsl:if test="not(../xhtml:div[@id = 'tabs'])">
+        &#9;    <a accesskey="1" name="navigation"/>
 
-&#9;  </xsl:if>
+        &#9;  </xsl:if>
       <xsl:apply-templates select="xhtml:div[@class = 'home']"/>
       <xsl:if test="$level &gt; 3">
         <a href="{$descendants[$level - 3]/@href}">[...] <xsl:value-of select="$descendants[$level - 3]/text()"/></a>
-       </xsl:if>
+      </xsl:if>
       <div class="solidline">
-        <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+        <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
       </div>
 
       <ul>
@@ -254,7 +264,7 @@
       <xsl:if test="parent::xhtml:div[@id = 'menu']">
         <div class="dotline">
 
-          <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+          <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
         </div>
       </xsl:if>
     </li>
@@ -284,12 +294,12 @@
       <a href="{@root}"><xsl:value-of select="@label"/></a>
 
       <xsl:for-each select="xhtml:div">
-         &gt; <a href="{@href}"><xsl:value-of select="."/></a>
+        &gt; <a href="{@href}"><xsl:value-of select="."/></a>
       </xsl:for-each>
     </div>
   </xsl:template><xsl:template match="xhtml:div[@id = 'simplenav']">
     <div id="primarnav">
-&#9;<a name="navigation"/>
+      &#9;<a name="navigation"/>
       <xsl:for-each select="xhtml:div">
         <a href="{@href}"><xsl:value-of select="@label"/></a>
 
@@ -303,7 +313,7 @@
   <xsl:param xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xslt="http://www.w3.org/1999/XSL/Transform" name="root"/><xslt:param xmlns:xslt="http://www.w3.org/1999/XSL/Transform" xmlns:xi="http://www.w3.org/2001/XInclude" name="documentid">/xhtml</xslt:param><xslt:param xmlns:xslt="http://www.w3.org/1999/XSL/Transform" xmlns:xi="http://www.w3.org/2001/XInclude" name="contextprefix">/lenya</xslt:param><xslt:param xmlns:xslt="http://www.w3.org/1999/XSL/Transform" xmlns:xi="http://www.w3.org/2001/XInclude" name="rendertype"></xslt:param><xsl:template match="lenya:asset-dot[@class='image']">
 
     <a href="{@href}"> 
-      <img alt="Insert Identity" src="resources/uploadimage.gif"/>  
+      <img alt="Insert Identity" src="http://demo.yulup.org/unizh/resources/uploadimage.gif"/>  
     </a> 
   </xsl:template><xsl:template match="lenya:asset-dot[@class='floatImage']">
     <a href="{@href}">
@@ -311,12 +321,12 @@
     </a> 
   </xsl:template><xsl:template match="lenya:asset-dot[@class='delete']">
     <a href="{@href}">
-      <img alt="Insert Identity" src="resources/delete.gif"/>
+      <img alt="Insert Identity" src="http://demo.yulup.org/unizh/resources/delete.gif"/>
     </a> 
   </xsl:template><xsl:template match="lenya:asset-dot[@class='asset']">
 
     <a href="{@href}">
-      <img alt="Insert Asset" src="resources/uploadasset.gif"/>
+      <img alt="Insert Asset" src="http://demo.yulup.org/unizh/resources/uploadasset.gif"/>
     </a>  
   </xsl:template><xsl:template match="dc:title">
     <h1>
@@ -364,7 +374,7 @@
     </div>
 
     <div class="solidline">
-      <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+      <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
     </div>
     <ul class="sitemap">
       <xsl:apply-templates mode="firstlevel" select="unizh:node"/>
@@ -383,10 +393,10 @@
     </li>
     <div class="dotline">
 
-      <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+      <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
     </div>
   </xsl:template><xsl:template match="unizh:node">
-     <li>
+    <li>
       <a href="{$contextprefix}{@href}"><xsl:value-of select="unizh:title"/></a>
       <xsl:if test="unizh:node">
         <ul>
@@ -405,7 +415,7 @@
 
           </xsl:copy>
           <xsl:if test="lenya:asset-dot">
-              <br class="floatclear"/>
+            <br class="floatclear"/>
             <hr/>
             <xsl:apply-templates select="lenya:asset-dot"/>
             <br/>
@@ -423,7 +433,7 @@
           </xsl:copy>
           <xsl:if test="lenya:asset-dot">
 
-              <br class="floatclear"/>
+            <br class="floatclear"/>
             <hr/>
             <xsl:apply-templates select="lenya:asset-dot"/>
             <br/>
@@ -438,7 +448,7 @@
             <xsl:apply-templates select="@*|*[not(self::lenya:asset-dot)]|text()"/>
           </xsl:copy>
           <xsl:if test="lenya:asset-dot">
-              <br class="floatclear"/>
+            <br class="floatclear"/>
             <hr/>
             <xsl:apply-templates select="lenya:asset-dot"/>
 
@@ -482,7 +492,7 @@
           </xsl:when>
 
           <xsl:otherwise>
-             <xsl:text>arrow</xsl:text>
+            <xsl:text>arrow</xsl:text>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
@@ -535,7 +545,7 @@
                   <xsl:text>extern</xsl:text>
                 </xsl:when>
                 <xsl:otherwise>
-                   <xsl:text>arrow</xsl:text>
+                  <xsl:text>arrow</xsl:text>
                 </xsl:otherwise>
               </xsl:choose>
 
@@ -554,13 +564,13 @@
     <xsl:choose>
       <xsl:when test="preceding-sibling::* or ../../unizh:lead/xhtml:object or ../../unizh:lead/xhtml:p/descendant-or-self::*[text()]">
         <div class="solidlinemitmargin">
-          <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+          <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
         </div>
       </xsl:when>
       <xsl:otherwise>
         <div class="solidline">
 
-          <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+          <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
         </div>
       </xsl:otherwise>
     </xsl:choose>
@@ -573,7 +583,7 @@
         <xsl:apply-templates select="xhtml:object"/>
       </xsl:when>
       <xsl:otherwise>
-        <div class="dotline"><img alt="separation line" height="1" src="resources/1.gif" width="1"/></div>
+        <div class="dotline"><img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/></div>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:apply-templates select="xhtml:p"/>
@@ -586,18 +596,18 @@
     </xsl:for-each>
     <xsl:apply-templates select="lenya:asset-dot"/>
     <xsl:apply-templates select="unizh:title/lenya:asset-dot"/> 
-    <div class="dotlinemitmargin"><img alt="separation line" height="1" src="resources/1.gif" width="1"/></div>
+    <div class="dotlinemitmargin"><img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/></div>
   </xsl:template><xsl:template match="unizh:links[unizh:title/@href != '']">
     <xsl:choose>
 
       <xsl:when test="preceding-sibling::* or ../../unizh:lead/xhtml:object or ../../unizh:lead/xhtml:p/descendant-or-self::*[text()]">
         <div class="solidlinemitmargin">
-          <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+          <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
         </div>
       </xsl:when>
       <xsl:otherwise>
         <div class="solidline">
-          <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+          <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
         </div>
 
       </xsl:otherwise>
@@ -612,7 +622,7 @@
 
       </xsl:when>
       <xsl:otherwise>
-        <div class="dotline"><img alt="separation line" height="1" src="resources/1.gif" width="1"/></div>
+        <div class="dotline"><img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/></div>
       </xsl:otherwise>
     </xsl:choose>
     <ul class="linknav">
@@ -623,7 +633,7 @@
             <xsl:value-of select="."/>
           </a>
           <div class="dotline">
-            <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+            <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
           </div>
         </li>
       </xsl:for-each>
@@ -633,12 +643,12 @@
     <xsl:choose>
       <xsl:when test="preceding-sibling::* or ../../unizh:lead/xhtml:object or ../../unizh:lead/xhtml:p/descendant-or-self::*[text()]">
         <div class="solidlinemitmargin">
-          <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+          <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
         </div>
       </xsl:when>
       <xsl:otherwise>
         <div class="solidline">
-          <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+          <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
 
         </div>
       </xsl:otherwise>
@@ -653,7 +663,7 @@
         <xsl:apply-templates select="xhtml:object"/>
       </xsl:when>
       <xsl:otherwise>
-        <div class="dotline"><img alt="separation line" height="1" src="resources/1.gif" width="1"/></div>
+        <div class="dotline"><img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/></div>
       </xsl:otherwise>
     </xsl:choose>
     <ul class="linknav">
@@ -664,7 +674,7 @@
             <xsl:value-of select="."/>
           </a>
           <div class="dotline">
-            <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+            <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
           </div>
         </li>
       </xsl:for-each>
@@ -675,28 +685,28 @@
       <xsl:apply-templates/>
     </div>
   </xsl:template><xsl:template match="unizh:quicklinks">
-      <div class="quicklinks" id="quicklink">
-        <div class="solidline">
-          <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
-        </div>
-
-        <p class="titel"><xsl:value-of select="@label"/></p>
-        <div class="dotlinelead">
-          <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
-        </div>
-        <xsl:for-each select="unizh:quicklink">
-          <xsl:apply-templates select="xhtml:p"/>
-          <ul>
-            <xsl:for-each select="xhtml:a">
-              <li>
-
-                <a href="{@href}"><xsl:value-of select="."/></a>
-              </li>
-            </xsl:for-each>
-          </ul>
-          <div class="dotline"><img alt="separation line" height="1" src="resources/1.gif" width="1"/></div>
-        </xsl:for-each>
+    <div class="quicklinks" id="quicklink">
+      <div class="solidline">
+        <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
       </div>
+
+      <p class="titel"><xsl:value-of select="@label"/></p>
+      <div class="dotlinelead">
+        <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
+      </div>
+      <xsl:for-each select="unizh:quicklink">
+        <xsl:apply-templates select="xhtml:p"/>
+        <ul>
+          <xsl:for-each select="xhtml:a">
+            <li>
+
+              <a href="{@href}"><xsl:value-of select="."/></a>
+            </li>
+          </xsl:for-each>
+        </ul>
+        <div class="dotline"><img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/></div>
+      </xsl:for-each>
+    </div>
   </xsl:template><xsl:template match="xhtml:body//xhtml:h2">
     <h2>
 
@@ -732,35 +742,35 @@
 
     </xsl:choose>
   </xsl:template><xsl:template match="lenya:asset">
-   <xsl:variable name="extent">
-     <xsl:value-of select="dc:metadata/dc:extent"/>
-   </xsl:variable>
-   <xsl:variable name="suffix">
-     <xsl:call-template name="substring-after-last">
-       <xsl:with-param name="input" select="@src"/>
-       <xsl:with-param name="substr">.</xsl:with-param>
+    <xsl:variable name="extent">
+      <xsl:value-of select="dc:metadata/dc:extent"/>
+    </xsl:variable>
+    <xsl:variable name="suffix">
+      <xsl:call-template name="substring-after-last">
+        <xsl:with-param name="input" select="@src"/>
+        <xsl:with-param name="substr">.</xsl:with-param>
 
-     </xsl:call-template>
-   </xsl:variable>
-   <xsl:choose>
-     <xsl:when test="$suffix = 'swf'">
-       <xsl:variable name="width">
-         <xsl:choose>
-           <xsl:when test="@size != ''"><xsl:value-of select="substring-before(@size, 'x')"/></xsl:when>
-           <xsl:otherwise>500</xsl:otherwise>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:choose>
+      <xsl:when test="$suffix = 'swf'">
+        <xsl:variable name="width">
+          <xsl:choose>
+            <xsl:when test="@size != ''"><xsl:value-of select="substring-before(@size, 'x')"/></xsl:when>
+            <xsl:otherwise>500</xsl:otherwise>
 
-         </xsl:choose> 
-       </xsl:variable>
-       <xsl:variable name="height">
-         <xsl:choose>
-           <xsl:when test="@size != ''"><xsl:value-of select="substring-after(@size, 'x')"/></xsl:when>
-           <xsl:otherwise>400</xsl:otherwise>
-         </xsl:choose>
-       </xsl:variable>
-       <object height="{$height}" width="{$width}">
+          </xsl:choose> 
+        </xsl:variable>
+        <xsl:variable name="height">
+          <xsl:choose>
+            <xsl:when test="@size != ''"><xsl:value-of select="substring-after(@size, 'x')"/></xsl:when>
+            <xsl:otherwise>400</xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <object height="{$height}" width="{$width}">
 
-         <param name="movie" value="{$nodeid}/{@src}"/><embed height="{$height}" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" src="resources/{@src}" type="application/x-shockwave-flash" width="{$width}"/>
-       </object>
+          <param name="movie" value="{$nodeid}/{@src}"/><embed height="{$height}" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" src="http://demo.yulup.org/unizh/resources/{@src}" type="application/x-shockwave-flash" width="{$width}"/>
+        </object>
       </xsl:when>
       <xsl:otherwise>
         <div class="asset">
@@ -769,7 +779,7 @@
             <xsl:value-of select="text()"/>
 
           </a>
-          (<xsl:value-of select="format-number($extent div 1024, '#.#')"/>KB, <img alt="{text()}" src="resources/{$suffix}.gif" title="{text()}"/>)
+          (<xsl:value-of select="format-number($extent div 1024, '#.#')"/>KB, <img alt="{text()}" src="http://demo.yulup.org/unizh/resources/{$suffix}.gif" title="{text()}"/>)
         </div>
         <xsl:if test="parent::xhtml:body and not(following-sibling::*[1][name() = 'lenya:asset'])">
           <br/>
@@ -808,19 +818,19 @@
         <xsl:for-each select="index:child">
 
           <xsl:variable name="creationdate" select="*/*/lenya:meta/dcterms:created"/>
-          <div class="solidline"><img alt="separation line" height="1" src="resources/1.gif" width="1"/></div>
-&#9;  <h2><xsl:value-of select="*/*/lenya:meta/dc:title"/> 
-             <span class="lead">
-             <xsl:choose>
-               <xsl:when test="string-length($creationdate) &lt; '25'">
-                 <i18n:date pattern="EEE, d. MMM yyyy HH:mm" src-locale="en" src-pattern="d. MMM yyyy HH:mm" value="{$creationdate}"/>
-               </xsl:when>
-               <xsl:otherwise>
+          <div class="solidline"><img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/></div>
+          &#9;  <h2><xsl:value-of select="*/*/lenya:meta/dc:title"/> 
+            <span class="lead">
+              <xsl:choose>
+                <xsl:when test="string-length($creationdate) &lt; '25'">
+                  <i18n:date pattern="EEE, d. MMM yyyy HH:mm" src-locale="en" src-pattern="d. MMM yyyy HH:mm" value="{$creationdate}"/>
+                </xsl:when>
+                <xsl:otherwise>
 
-                 <i18n:date pattern="EEE, d. MMM yyyy HH:mm" src-locale="en" src-pattern="EEE MMM d HH:mm:ss zzz yyyy" value="{$creationdate}"/>
-               </xsl:otherwise>
-             </xsl:choose>
-             </span>
+                  <i18n:date pattern="EEE, d. MMM yyyy HH:mm" src-locale="en" src-pattern="EEE MMM d HH:mm:ss zzz yyyy" value="{$creationdate}"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </span>
           </h2>
           <p>
             <xsl:apply-templates select="*/*/unizh:short/xhtml:object"/>
@@ -875,9 +885,9 @@
       </xsl:when>
 
       <xsl:otherwise>
-          <xsl:copy>
-            <xsl:apply-templates/>
-          </xsl:copy>
+        <xsl:copy>
+          <xsl:apply-templates/>
+        </xsl:copy>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template><xsl:template match="unizh:children[ancestor::unizh:team]">
@@ -909,7 +919,7 @@
             <div class="floatleftclear"/>
           </div>
           <div class="solidline">
-            <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+            <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
           </div>
         </xsl:for-each>
       </xsl:when>
@@ -971,13 +981,13 @@
     </xsl:variable>
     <div class="solidlinetable">
 
-      <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+      <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
     </div> 
     <xsl:if test="xhtml:caption">
       <div class="tabletitel">
         <xsl:value-of select="xhtml:caption"/>
       </div>
-      <div class="dotline"><img alt="separation line" height="1" src="resources/1.gif" width="1"/></div>
+      <div class="dotline"><img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/></div>
     </xsl:if>
     <xsl:copy>
 
@@ -990,7 +1000,7 @@
           <td align="left" colspan="{$cols}">
             <div class="dotline">
 
-              <img alt="separation line" height="1" src="resources/1.gif" width="1"/>
+              <img alt="separation line" height="1" src="http://demo.yulup.org/unizh/resources/1.gif" width="1"/>
             </div>
           </td>
         </tr>
@@ -1001,7 +1011,7 @@
       <xsl:copy-of select="@class"/>
 
       <xsl:attribute name="width">100%</xsl:attribute>
-        <xsl:apply-templates/>
+      <xsl:apply-templates/>
     </xsl:copy>
   </xsl:template><xsl:template match="xhtml:table[@class = 'striped']">
     <xsl:copy>
@@ -1033,7 +1043,7 @@
             <xsl:value-of select="@width"/>
           </xsl:when>
           <xsl:otherwise>
-             <xsl:text>204</xsl:text>
+            <xsl:text>204</xsl:text>
           </xsl:otherwise>
 
         </xsl:choose>
@@ -1230,7 +1240,7 @@
 
     <div class="teaser64long">
 
-      <img alt="{$alt}" class="teaser64long" height="64" src="resources/" width="198"/>
+      <img alt="{$alt}" class="teaser64long" height="64" src="http://demo.yulup.org/unizh/resources/" width="198"/>
     </div>
   </xsl:template><xsl:template match="xhtml:object[parent::unizh:links]">
     <xsl:variable name="src" select="concat($nodeid, '/', @data)"/>
@@ -1247,7 +1257,7 @@
     </xsl:variable>
 
     <div class="teaser64long">
-      <img alt="{$alt}" class="teaser64long" height="64" src="resources/" width="198"/>
+      <img alt="{$alt}" class="teaser64long" height="64" src="http://demo.yulup.org/unizh/resources/" width="198"/>
     </div>
 
   </xsl:template><xsl:template match="xhtml:object[parent::unizh:lead]">
@@ -1266,11 +1276,11 @@
 
     <xsl:choose>
       <xsl:when test="not(following-sibling::xhtml:p) or not(following-sibling::xhtml:p/descendant-or-self::*[text()])">
-        <img alt="{$alt}" class="leadimg_mittopmargin" src="resources/" width="413"/>
+        <img alt="{$alt}" class="leadimg_mittopmargin" src="http://demo.yulup.org/unizh/resources/" width="413"/>
       </xsl:when>
       <xsl:otherwise>
 
-        <img alt="{$alt}" class="leadimg_mittopmargin" src="resources/" width="198"/>
+        <img alt="{$alt}" class="leadimg_mittopmargin" src="http://demo.yulup.org/unizh/resources/" width="198"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template><xsl:template match="xhtml:object[ancestor::unizh:news and not(parent::unizh:teaser)]">
@@ -1283,18 +1293,18 @@
   </xsl:template><xsl:template match="xhtml:object[parent::unizh:short]">
     <div class="imgTextfluss">
       <xsl:choose>
-&#9;<xsl:when test="ancestor::index:child">
-&#9;  <xsl:call-template name="object">
-&#9;    <xsl:with-param name="src" select="concat($contextprefix, substring-before(../../../../@href, '.html'), '/', @data)"/>
-&#9;    <xsl:with-param name="width">100</xsl:with-param>
-&#9;  </xsl:call-template>
+        &#9;<xsl:when test="ancestor::index:child">
+          &#9;  <xsl:call-template name="object">
+            &#9;    <xsl:with-param name="src" select="concat($contextprefix, substring-before(../../../../@href, '.html'), '/', @data)"/>
+            &#9;    <xsl:with-param name="width">100</xsl:with-param>
+            &#9;  </xsl:call-template>
 
-&#9;</xsl:when>
-&#9;<xsl:otherwise>
-&#9;  <xsl:call-template name="object">
-&#9;    <xsl:with-param name="width">100</xsl:with-param>
-&#9;  </xsl:call-template>
-&#9;</xsl:otherwise>
+          &#9;</xsl:when>
+        &#9;<xsl:otherwise>
+          &#9;  <xsl:call-template name="object">
+            &#9;    <xsl:with-param name="width">100</xsl:with-param>
+            &#9;  </xsl:call-template>
+          &#9;</xsl:otherwise>
       </xsl:choose>
     </div>
   </xsl:template><xsl:template match="xhtml:object[parent::unizh:person]">
@@ -1367,7 +1377,7 @@
       <xsl:when test="$rendertype = 'imageupload'">
         <a href="{lenya:asset-dot/@href}">
 
-          <img alt="{$alt}" src="resources/">
+          <img alt="{$alt}" src="http://demo.yulup.org/unizh/resources/">
             <xsl:if test="$width">
               <xsl:attribute name="width">
                 <xsl:value-of select="$width"/>
@@ -1384,7 +1394,7 @@
       </xsl:when>
       <xsl:when test="$href != ''">
         <a href="{$href}">
-          <img alt="{$alt}" src="resources/">
+          <img alt="{$alt}" src="http://demo.yulup.org/unizh/resources/">
             <xsl:if test="$width">
 
               <xsl:attribute name="width">
@@ -1401,7 +1411,7 @@
         </a>
       </xsl:when>
       <xsl:otherwise>
-        <img alt="{$alt}" src="resources/">
+        <img alt="{$alt}" src="http://demo.yulup.org/unizh/resources/">
           <xsl:if test="$width">
             <xsl:attribute name="width">
               <xsl:value-of select="$width"/>
@@ -1499,15 +1509,15 @@
     <xsl:apply-templates select="/document/xhtml:div[@id = 'orthonav']"/>
     <div class="contentarea1col">
 
-    <h1>
-      <a accesskey="2" name="content" class="namedanchor"/>
-      <div bxe_xpath="/{document-element-}/lenya:meta/dc:title">
-        <xsl:value-of select="/document/content/*/lenya:meta/dc:title"/>
+      <h1>
+        <a accesskey="2" name="content" class="namedanchor"/>
+        <div bxe_xpath="/{document-element-}/lenya:meta/dc:title">
+          <xsl:value-of select="/document/content/*/lenya:meta/dc:title"/>
+        </div>
+      </h1>
+      <div bxe_xpath="/{$document-element-name}/xhtml:body">
+        <xsl:apply-templates select="*/xhtml:body/*"/>
       </div>
-    </h1>
-    <div bxe_xpath="/{$document-element-name}/xhtml:body">
-      <xsl:apply-templates select="*/xhtml:body/*"/>
-    </div>
 
     </div>
   </xsl:template>
@@ -1627,7 +1637,7 @@
     </div>
   </xsl:template>
 
- 
+  
   <xsl:template name="homepage4columns">
     <div id="col1">
       <xsl:apply-templates select="/document/xhtml:div[@id = 'menu']"/>
@@ -1664,16 +1674,16 @@
         <a accesskey="2" name="content" class="namedanchor"/>
         <div class="content">
           <p class="lead">
-             <!-- FIXME: just a temporary solution because different time stamps exist for newsitem documents -->
+            <!-- FIXME: just a temporary solution because different time stamps exist for newsitem documents -->
 
-             <xsl:choose>
-               <xsl:when test="string-length($creationdate) &lt; '25'">
-                 <i18n:date pattern="EEE, d. MMM yyyy HH:mm" src-locale="en" src-pattern="d. MMM yyyy HH:mm" value="{$creationdate}"/> 
-               </xsl:when>
-               <xsl:otherwise>
-                 <i18n:date pattern="EEE, d. MMM yyyy HH:mm" src-locale="en" src-pattern="EEE MMM d HH:mm:ss zzz yyyy" value="{$creationdate}"/>
-               </xsl:otherwise>
-             </xsl:choose>
+            <xsl:choose>
+              <xsl:when test="string-length($creationdate) &lt; '25'">
+                <i18n:date pattern="EEE, d. MMM yyyy HH:mm" src-locale="en" src-pattern="d. MMM yyyy HH:mm" value="{$creationdate}"/> 
+              </xsl:when>
+              <xsl:otherwise>
+                <i18n:date pattern="EEE, d. MMM yyyy HH:mm" src-locale="en" src-pattern="EEE MMM d HH:mm:ss zzz yyyy" value="{$creationdate}"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </p>
 
           <h2>
@@ -1695,7 +1705,7 @@
             <p> </p>
 
             <xsl:apply-templates select="/document/xhtml:div[@id = 'link-to-parent']"/>
-            <div class="solidline"><img src="resources/1.gif" alt="separation line" width="1" height="1"/></div>
+            <div class="solidline"><img src="http://demo.yulup.org/unizh/resources/1.gif" alt="separation line" width="1" height="1"/></div>
             <xsl:apply-templates select="*/unizh:level"/>
           </div>
         </div>
@@ -1711,10 +1721,10 @@
     </div>
     <div class="contcol2">
       <!-- <div class="relatedbox">
-        <div bxe_xpath="/{$document-element-name}/unizh:related-content">
-          <xsl:apply-templates select="*/unizh:related-content"/>
-        </div>
-      </div> -->
+           <div bxe_xpath="/{$document-element-name}/unizh:related-content">
+             <xsl:apply-templates select="*/unizh:related-content"/>
+           </div>
+        </div> -->
       <div class="contentarea">
         <a accesskey="2" name="content" class="namedanchor"/>
 
@@ -1723,7 +1733,7 @@
             <xsl:apply-templates select="/document/xhtml:div[@id = 'link-to-parent']"/>
           </p>
           <div class="solidline">
-            <img src="resources/1.gif" alt="separation line" width="1" height="1"/>
+            <img src="http://demo.yulup.org/unizh/resources/1.gif" alt="separation line" width="1" height="1"/>
           </div>
           <div class="teamBlock">
             <div class="teamImg">
@@ -1768,7 +1778,7 @@
           </div>
           <div class="solidline">
 
-            <img src="resources/1.gif" alt="separation line" width="1" height="1"/>
+            <img src="http://demo.yulup.org/unizh/resources/1.gif" alt="separation line" width="1" height="1"/>
           </div>
           <div bxe_xpath="/{$document-element-name}/unizh:description">
             <xsl:apply-templates select="unizh:person/unizh:description"/>
