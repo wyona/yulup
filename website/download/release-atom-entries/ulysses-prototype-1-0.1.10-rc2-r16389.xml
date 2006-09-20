@@ -3,7 +3,7 @@
 <entry xmlns="http://www.w3.org/2005/Atom">
  <title>ulysses-prototype-1-0.1.10-rc2-r16389</title>
  <author><name>Michael Wechner</name></author>
-
+ <link href="http://www.yulup.org/download/index.html"/>
  <link href="ulysses-prototype-1-0.1.10-rc2-r16389.xml" rel="edit"/>
  <id>urn:uuid:download:release-atom-entries:ulysses-prototype-1-0.1.10-rc2-r16389.xml</id>
  <updated>2006-09-19T23:06:54-01:00</updated>
