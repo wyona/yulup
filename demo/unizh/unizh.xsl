@@ -45,9 +45,7 @@
       <title>UZH - <xsl:value-of select="/document/content/*/unizh:header/unizh:heading"/> - <xsl:value-of select="*/lenya:meta/dc:title"/></title>
       <link rel="neutron-introspection" type="application/neutron+xml" href="unizh-introspection.xml"/>
       <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type"/>
-      <style type="text/css">
-        @import url("http://demo.yulup.org/unizh/resources/main.css");
-      </style>
+      <link type="text/css" rel="stylesheet" href="http://demo.yulup.org/unizh/resources/main.css"/>
       <script src="http://demo.yulup.org/unizh/resources/uni.js" type="text/javascript"/>
       <script src="http://demo.yulup.org/unizh/resources/elml.js" type="text/javascript"/>
       <xsl:if test="$document-element-name = 'unizh:news'">
