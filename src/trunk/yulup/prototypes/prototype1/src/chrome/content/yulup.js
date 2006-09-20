@@ -900,7 +900,7 @@ var NeutronArchiveRegistry = {
 
     // registered mime-types
     mimeTypeMap: {
-        "application/xxx"       : "empty.nar",
+        "text/plain"            : "empty.nar",
         "application/xml"       : "xml.nar",
         "application/xhtml+xml" : "xhtml.nar",
         "application/atom+xml"  : "atom.nar"
