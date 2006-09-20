@@ -284,17 +284,17 @@ function checkWellFormedness(aDocument) {
 
 
 /**
-  * Instatiates a new object of the type configurableNsResolver
+  * Instatiates a new object of the type ConfigurableNsResolver
   *
   * @param  {nsIXMLDocument} aDocument the xml document where namespaces and prefixes are read from
   * @return {Undefined}                does not have a return value
   */
-function configurableNsResolver(aDocument) {
+function ConfigurableNsResolver(aDocument) {
     var sorceElements = null;
     var prefix        = null;
     var initialized   = false;
 
-    /* DEBUG */ dump("Ulysses:widget.js:WidgetHandler.configurableNsResolver() invoked\n");
+    /* DEBUG */ dump("Ulysses:widget.js:WidgetHandler.ConfigurableNsResolver() invoked\n");
 
     this.namespaces = new Array();
 
@@ -302,18 +302,18 @@ function configurableNsResolver(aDocument) {
 
     for (var i=0; i < sourceElements.length; i++) {
         if (aDocument.documentElement.isDefaultNamespace(sourceElements.item(i).namespaceURI)) {
-            /* DEBUG */ dump("Ulysses:common.js:configurableNsResolver() default namespace: " + sourceElements.item(i).namespaceURI + "\n");
+            /* DEBUG */ dump("Ulysses:common.js:ConfigurableNsResolver() default namespace: " + sourceElements.item(i).namespaceURI + "\n");
         } else if ((prefix = sourceElements.item(i).prefix) != null) {
             if (!this.namespaces[prefix]) {
                 this.namespaces[prefix] = sourceElements.item(i).namespaceURI;
 
-                /* DEBUG */ dump("Ulysses:common.js:configurableNsResolver(): added namespace prefix " + prefix + " with URI " + this.namespaces[prefix] + "\n");
+                /* DEBUG */ dump("Ulysses:common.js:ConfigurableNsResolver(): added namespace prefix " + prefix + " with URI " + this.namespaces[prefix] + "\n");
             }
         }
     }
 }
 
-configurableNsResolver.prototype = {
+ConfigurableNsResolver.prototype = {
     namespaces: null,
 
     lookupNamespaceURI: function(aPrefix) {

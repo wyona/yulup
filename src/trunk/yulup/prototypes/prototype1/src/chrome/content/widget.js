@@ -365,7 +365,7 @@ var WidgetHandler = {
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.getParametrizedWidgetFragment() invoked\n");
 
-        nsResolver = new configurableNsResolver(aWidget.fragment);
+        nsResolver = new ConfigurableNsResolver(aWidget.fragment);
 
         if ((attributes = WidgetDialogHandler.showWidgetInsertDialog(aWidget, nsResolver)) != null) {
             for (var i=0; i < aWidget.fragmentAttributes.length; i++) {
