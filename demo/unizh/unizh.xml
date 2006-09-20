@@ -1,346 +1,526 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document><content><html xmlns="http://www.w3.org/1999/xhtml" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" unizh:columns="3" dc:dummy="FIXME:keepNamespace" dcterms:dummy="FIXME:keepNamespace" lenya:dummy="FIXME:keepNamespace" xhtml:dummy="FIXME:keepNamespace"><unizh:header xmlns:uz="http://unizh.ch" xmlns:nav="http://apache.org/cocoon/lenya/navigation/1.0"><unizh:superscription>Universität Zürich</unizh:superscription><unizh:heading>Titel der Publikation</unizh:heading></unizh:header>
-  <lenya:meta>
-    <dc:title>Dokument- bzw. Seitentitel</dc:title>
-    <dc:description>Abstract</dc:description>
-    <dc:creator>Autor der Dokuments</dc:creator>
-    <dc:subject>Keywords</dc:subject>
-    <dc:publisher>Universität Zürich</dc:publisher>
-    <dcterms:created>date of creation</dcterms:created>
-    <dcterms:issued>date of publication</dcterms:issued>
-    <dc:language>de</dc:language>
-    <dc:rights>Universität Zürich</dc:rights>
-  </lenya:meta>
 
-  <unizh:related-content xmlns:cinclude="http://apache.org/cocoon/include/1.0">
-    <unizh:teaser>
-      <unizh:title>Title</unizh:title>
-      <p>Teaser text.</p>
-    </unizh:teaser>
-  </unizh:related-content>
-  <body>
-    <unizh:toc/>
-    <p>Paragraph</p>
-    <h2>Styles (headline 2)</h2>
-    <p>Different text styles can be used: 
-    <strong>bold</strong>
-    or 
-    <em>italic</em>
-    or 
-    <small>small</small>
-    </p>
-    <p>There is 
-    <sub>subcript</sub>
-    and 
-    <sup>superscript</sup>
-    .</p>
-    <p>Links can be set to 
-    <a href="http://www.unizh.ch/">external resources</a>
-    as well as to 
-    <a href="http://localhost:8080/lenya/unitemplate/authoring/index.html">internal pages</a>
-    .</p>
-    <p>There are also markups: 
-    <unizh:attention>warning</unizh:attention>
-    and 
-    <cite>cite</cite>
-    </p>
-    <h2>Tables</h2>
-    <table class="ornate">
-      <caption>Caption of the table type "ornate"</caption>
-      <tr align="right">
-        <td>x</td>
-        <td>y</td>
-        <td>z</td>
-      </tr>
-      <tr align="center">
-        <td>xx</td>
-        <td>yy</td>
-        <td>zz</td>
-      </tr>
-    </table>
-    <table class="basic">
-      <tr>
-        <td>The table type "basic"</td>
-        <td>No borders, no background color, no nothing</td>
-      </tr>
-    </table>
-    <h2>Lists</h2>
-    <h3>Unordered Lists Type 1-3</h3>
-    <ul class="type1">
-      <li>This is an unordered list type 1</li>
-      <li>The xml follows the xhtml standard</li>
-    </ul>
-    <ul class="type2">
-      <li>This is an unordered list type 2</li>
-      <li>The xml follows the xhtml standard</li>
-    </ul>
-    <ul class="type3">
-      <li>This is an unordered list type 3</li>
-      <li>The xml follows the xhtml standard</li>
-    </ul>
-    <h3>Ordered Lists Type 1-2</h3>
-    <ol class="type1">
-      <li>This is an ordered list type 1</li>
-      <li>The xml follows the xhtml standard</li>
-    </ol>
-    <ol class="type2">
-      <li>This is an ordered list type 2</li>
-      <li>The xml follows the xhtml standard</li>
-    </ol>
-    <unizh:children abstracts="true"/>
-  </body>
-</html></content><div xmlns="http://www.w3.org/1999/xhtml" xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:uz="http://unizh.ch" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:nav="http://apache.org/cocoon/lenya/navigation/1.0" label="Universität Zürich" root="http://www.unizh.ch" id="breadcrumb"><div href="/lenya/unitemplate/authoring/index.html" basic-url="index">UniTemplate</div><div href="/lenya/unitemplate/authoring/xhtml.html" basic-url="xhtml">Allgemeine Dokumenttypen</div><div href="/lenya/unitemplate/authoring/xhtml/3columns.html" basic-url="xhtml/3columns" current="true">3 Spalten</div></div><div xmlns="http://www.w3.org/1999/xhtml" xmlns:nav="http://apache.org/cocoon/lenya/navigation/1.0" id="servicenav"><div xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:uz="http://unizh.ch" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" id="home" href="/lenya/unitemplate/authoring/index.html">Home</div><div xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:uz="http://unizh.ch" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" id="contact" href="/lenya/unitemplate/authoring/contact.html">Kontakt</div><div xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:uz="http://unizh.ch" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" id="sitemap" href="/lenya/unitemplate/authoring/sitemap.html">Sitemap</div><div href="/lenya/unitemplate/authoring/search.html" id="search">Suche</div></div><div xmlns="http://www.w3.org/1999/xhtml" xmlns:nav="http://apache.org/cocoon/lenya/navigation/1.0" id="toolnav"><div href="3columns_de.print.html" id="print">Diese Seite drucken</div><div id="fontsize">Schrift grösser/kleiner</div><div id="simpleview" href="#">PDA-optimierte Ansicht</div></div><div xmlns="http://www.w3.org/1999/xhtml" xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:uz="http://unizh.ch" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:nav="http://apache.org/cocoon/lenya/navigation/1.0" id="menu"><xhtml:div href="/lenya/unitemplate/authoring/xhtml.html" basic-url="xhtml">Allgemeine Dokumenttypen<xhtml:div href="/lenya/unitemplate/authoring/xhtml/1column.html" basic-url="xhtml/1column">1 Spalte</xhtml:div><xhtml:div href="/lenya/unitemplate/authoring/xhtml/2columns.html" basic-url="xhtml/2columns">2 Spalten</xhtml:div><xhtml:div href="/lenya/unitemplate/authoring/xhtml/3columns.html" basic-url="xhtml/3columns" current="true">3 Spalten</xhtml:div></xhtml:div><xhtml:div href="/lenya/unitemplate/authoring/custom.html" basic-url="custom">Strukt. Dokumenttypen</xhtml:div><xhtml:div href="/lenya/unitemplate/authoring/redirect.html" basic-url="redirect">Redirect</xhtml:div><xhtml:div href="/lenya/unitemplate/authoring/Lektion.html" basic-url="Lektion">Test Lektion</xhtml:div></div><div xmlns="http://www.w3.org/1999/xhtml" xmlns:nav="http://apache.org/cocoon/lenya/navigation/1.0" id="footnav"><div xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:uz="http://unizh.ch" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" id="impressum" href="/lenya/unitemplate/authoring/impressum.html">Impressum</div></div><xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml" id="simplenav"><xhtml:div label="UP ONE LEVEL" href="/lenya/unitemplate/authoring/xhtml.html" id="up"/></xhtml:div><unizh:ancestors xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:cinclude="http://apache.org/cocoon/include/1.0" xmlns:nav="http://apache.org/cocoon/lenya/navigation/1.0"><unizh:ancestor href="/lenya/unitemplate/authoring/xhtml.html" basic-url="xhtml"><html xmlns="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" unizh:columns="3" dc:dummy="FIXME:keepNamespace" dcterms:dummy="FIXME:keepNamespace" lenya:dummy="FIXME:keepNamespace" xhtml:dummy="FIXME:keepNamespace">
-  <lenya:meta>
-    <dc:title>Allgemeine Dokumenttypen (xhtml)</dc:title>
-    <dc:description> </dc:description>
-    <dc:creator>admin1 (Administrator)</dc:creator>
-    <dc:subject/>
-    <dc:publisher>Universität Zürich</dc:publisher>
-    <dcterms:created>Wed Oct 19 14:50:12 CEST 2005</dcterms:created>
-    <dcterms:issued>date of publication</dcterms:issued>
-    <dc:language>de</dc:language>
-    <dc:rights>Universität Zürich</dc:rights>
-  </lenya:meta>
-  <unizh:related-content>
-    <unizh:teaser>
-      <unizh:title>Title</unizh:title>
-      <p>Teaser text.</p>
-    </unizh:teaser>
-  </unizh:related-content>
-  <body>
-    <p>UniCMS Standardseiten sind dreispaltige XHTML-Seiten. In seltenen Fällen kann der Seiteninhalt ein zweispaltiges Layout nötig machen, beispielsweise wenn breite Tabellen oder Bilder eingebunden werden müssen. Bei einspaltigen Seiten wird die linke Navigationsspalte nicht angezeigt. Dieser Seitentyp sollte nur für die Integration von externen Anwendungen verwendet werden.</p>
-  </body>
-</html></unizh:ancestor><unizh:ancestor href="/lenya/unitemplate/authoring/index.html" basic-url="index"><unizh:homepage xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml" dc:dummy="FIXME:keepNamespace" dcterms:dummy="FIXME:keepNamespace" lenya:dummy="FIXME:keepNamespace" unizh:tabs="false" xhtml:dummy="FIXME:keepNamespace">
-	
-  <lenya:meta>
-    <dc:title>Willkommen!</dc:title>
-    <dc:description>Abstract</dc:description>
-    <dc:creator>Autor des Dokuments</dc:creator>
-    <dc:subject>Keywords</dc:subject>
-    <dc:publisher>Universität Zürich</dc:publisher>
-    <dcterms:created>date of creation</dcterms:created>
-    <dcterms:issued>date of publication</dcterms:issued>
-    <dc:language>de</dc:language>
-    <dc:rights>Universität Zürich</dc:rights>
-  </lenya:meta>
-  <unizh:header xmlns:uz="http://unizh.ch"><unizh:superscription>Universität Zürich</unizh:superscription><unizh:heading>Titel der Publikation</unizh:heading></unizh:header>
-  
-  <unizh:related-content>
-    <unizh:teaser name="Beispiel">
-      <unizh:title>Beispiel-Teaser</unizh:title>
-      <p>Beispiel für einen Teaser.</p><a href="#" title="Teaser Link">Link</a>
-    </unizh:teaser><unizh:rss-reader image="" description="" items="1"><title>Unipublic</title><rss xmlns:i18n="http://apache.org/cocoon/i18n/2.1" xmlns:atom="http://purl.org/atom/ns#" version="2.0"><channel><language>de</language><title>Unipublic</title><link>http://www.unipublic.unizh.ch</link><lastBuildDate>Fri, 14 Jul 2006 02:21:53 +0200</lastBuildDate><description>no description available</description><item><title>Berufungen</title><description>Der Universitätsrat hat an seiner Sitzung vom 10. Juli 2006 acht ordentliche Professuren sowie eine ausserordentliche Professur neu besetzt.</description><link>http://www.unipublic.unizh.ch/campus/uni-news/2006/2258.html</link><image><title/><url>http://www.unipublic.unizh.ch/campus/uni-news/2006/2258/teaser.jpg</url><link>http://www.unipublic.unizh.ch/campus/uni-news/2006/2258.html</link><width>80</width><height>60</height></image></item><item><title>Forschen als «way of life»</title><description>Der frühere Prorektor Forschung, der Mediziner Alexander Borbély, hat neben dem Amt in der Universitätsleitung immer auch eigene Forschung betrieben und blickt so auf vierzig Jahre Schlaf- bzw. zirkadiane Rhythmusforschung. Eine Rückschau.</description><link>http://www.unipublic.unizh.ch/campus/uni-news/2006/2234.html</link><image><title>Teaser</title><url>http://www.unipublic.unizh.ch/campus/uni-news/2006/2234/teaser.jpg</url><link>http://www.unipublic.unizh.ch/campus/uni-news/2006/2234.html</link><width>80</width><height>60</height></image></item><item><title>Silber für das unimagazin</title><description>Ausgezeichnetes unimagazin: Die Zeitschrift der Universität Zürich erhielt am diesjährigen Best-of-Corporate Publishing-Award, dem grössten Wettbewerb für Unternehmenskommunikation in Europa, die Auszeichnung in Silber.</description><link>http://www.unipublic.unizh.ch/campus/uni-news/2006/2259.html</link><image><title>Pries</title><url>http://www.unipublic.unizh.ch/campus/uni-news/2006/2259/teaser.jpg</url><link>http://www.unipublic.unizh.ch/campus/uni-news/2006/2259.html</link><width>80</width><height>60</height></image></item><item><title>Mutige Drachentöter, mythische Königinnen</title><description>Die heroische Welt der Vergangenheit, mit kräftigen Farben und grosser Fabulierlust auf die Leinwand gepinselt: Die Bilder traditioneller äthiopischer Maler fesseln den Blick. Das Völkerkundemuseum der Universität Zürich verfügt über eine einmalige Dokumentation dieser verschwindenden Bildtradition. In einer umfassende Ausstellung kommt sie nun ans Licht. </description><link>http://www.unipublic.unizh.ch/magazin/gesellschaft/2006/2240.html</link><image><title>Alltag</title><url>http://www.unipublic.unizh.ch/magazin/gesellschaft/2006/2240/teaser.jpg</url><link>http://www.unipublic.unizh.ch/magazin/gesellschaft/2006/2240.html</link><width>80</width><height>60</height></image></item><item><title>Freiräume im musikalischen Spiessertum</title><description>Weshalb finden in China Videos von propagandistischen Musicals noch immer reissenden Absatz? Und welche Freiräume stehen Künstlerinnen und Künstlern in totalitären Systemen zur Verfügung? Das von den beiden Zürcher Musikwissenschaftlern Laurenz Lütteken und Hans-Joachim Hinrichsen organisierte Symposium «kontroversen» brachte erstaunliche Erkenntnisse über das «Komponieren in totalitären Staaten des 20. Jahrhunderts».</description><link>http://www.unipublic.unizh.ch/magazin/gesellschaft/2006/2222.html</link><image><title/><url>http://www.unipublic.unizh.ch/magazin/gesellschaft/2006/2222/teaser.jpg</url><link>http://www.unipublic.unizh.ch/magazin/gesellschaft/2006/2222.html</link><width>80</width><height>60</height></image></item><item><title>Gletscher ade?</title><description>Gletscher sind hervorragende Indikatoren für Veränderungen des Klimas. Eine neue Studie des Geographischen Institutes der Universität Zürich zeigt: Liegen die durchschnittlichen Sommertemperaturen Ende des 21. Jahrhunderts um fünf Grad Celsius höher als heute, werden die Alpen bis dann praktisch eisfrei sein. </description><link>http://www.unipublic.unizh.ch/magazin/umwelt/2006/2246.html</link><image><title/><url>http://www.unipublic.unizh.ch/magazin/umwelt/2006/2246/teaser.jpg</url><link>http://www.unipublic.unizh.ch/magazin/umwelt/2006/2246.html</link><width>80</width><height>60</height></image></item></channel></rss></unizh:rss-reader><unizh:rss-reader image="" description="" items="5"><title>Ibis</title><rss version="2.0">
-	<channel>
-		<title>Universität Zürich - Campus Info</title>
-		<link>http://www.agenda.unizh.ch</link>
-		<description/>
-		<language>de</language>
-		<pubDate>Mon, 17 Jul 2006 00:00:00 +0200</pubDate>
-		<lastBuildDate>Mon, 17 Jul 2006 23:02:17 +0200</lastBuildDate>
-		<docs>http://blogs.law.harvard.edu/tech/rss</docs>
-		<image>
-			<url>http://www.unizh.ch/news/rss/img/logo_mini.png</url>
-			<title>Universität Zürich - Campus Info</title>
-			<link>http://www.agenda.unizh.ch</link>
-		</image>
-		<managingEditor>theo.vondaeniken@unicom.unizh.ch</managingEditor>
-		<webMaster>webmaster@unizh.ch</webMaster><br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/neurodermitis.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Neue Broschüren</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#494</link>
-			<description>Auf der Website der Dermatologischen Klinik können Sie Broschüren bestellen oder herunterladen. Darunter aktuell Broschüren über Neurodermitis und Hautkrebs.
-Siehe unter: http://www.dermatologie.usz.ch<br/>&gt;&gt;Mehr Infos unter: <a href="http://www.dermatologie.usz.ch/">http://www.dermatologie.usz.ch</a></description>
-			<pubDate>Thu, 06 Jul 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/ (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>BrownBag am 7. Juli</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#497</link>
-			<description>Lukas Lichtensteiger, Harvard University: 
-Towards intelligent nano-robots: Embodiment at small scales
-Zeit: 17.15 Uhr / Raum: AND 2.23<br/>&gt;&gt;Mehr Infos unter: <a href="http://localhost:8080/lenya/unitemplate/authoring/xhtml/www.ifi.unizh.ch/ailabs/events/brownbags/">www.ifi.unizh.ch/ailabs/events/brownbags/</a></description>
-			<pubDate>Tue, 04 Jul 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/Fischer.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Professor Andreas Fischer als neuer Rektor vorgeschlagen</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#496</link>
-			<description>Prof. Dr. Andreas Fischer soll Prorektor Lehre und ab 2008 Nachfolger von Rektor Hans Weder werden. Der Senat schlägt dem Universitätsrat Fischer für die beiden Ämter vor. Fischer ist Ordinarius für englische Philologie und war Dekan der Philosophischen Fakultät. Die Wahl findet im August statt.</description>
-			<pubDate>Tue, 04 Jul 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/invasiv.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Gartenführungen im Botanischen Garten</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#495</link>
-			<description>Am 4. Juli beginnt im Botanischen Garten die neue Reihe wöchentlich stattfindender Gartenführungen über Mittag. Schwerpunktthema: «Invasive Pflanzen».
-www.bguz.unizh.ch<br/>&gt;&gt;Mehr Infos unter: <a href="http://www.bguz.unizh.ch/pages/gartenfuehrungen.php">http://www.bguz.unizh.ch/pages/gartenfuehrungen.php</a></description>
-			<pubDate>Mon, 03 Jul 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/ameise.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Wüstenameisen mit Schrittzähler</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#493</link>
-			<description>Eine Forschergruppe um den Zürcher Zoologie-Professor Rüdiger Wehner hat nachgewiesen, dass die Wüstenameise Cataglyphis Schritte zählt, um Distanzen zu messen. Dies erklärt, wie die Tiere wieder zu ihrem Nest zurückfinden. Die Studie wurde in der neuesten Ausgabe von «Science» (Volume 312, issue 5782) publiziert.</description>
-			<pubDate>Fri, 30 Jun 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/VMZ-Vishnu01-kl.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Indischer Gott in vielerlei Gestalt</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#490</link>
-			<description>«Vishnu. Europäische Reisende begegnen einem indischen Gott» heisst die neue Ausstellung im Völkerkundemuseum. 
-28. Juni bis 12. November 2006, Öffnungszeiten: Dienstag bis Freitag 1013 und 1417 Uhr, Samstag 1417 Uhr, Sonntag 1117 Uhr. Eintritt frei.  <br/>&gt;&gt;Mehr Infos unter: <a href="http://www.musethno.unizh.ch/de/museum/das_museum.html">http://www.musethno.unizh.ch/de/museum/das_museum.html</a></description>
-			<pubDate>Thu, 29 Jun 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/ (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>The rise of Asia</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#491</link>
-			<description>Chris Patten, letzter Governor von Hongkong und ehemaliger EU-Kommissar für Aussenbeziehungen spricht am Donnerstag, 29.6.2006 über «The rise of Asia: is it a threat?». 
-Universität Zürich Zentrum, Karl Schmid-Strasse 4, 8006 Zürich, (KO2), Raum: F 180</description>
-			<pubDate>Wed, 28 Jun 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/diplomfeier.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Promotionsfeier</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#485</link>
-			<description>Promotionsfeier der Wirtschaftswissenschaftlichen Fakultät:
+<document>
+  <content>
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" unizh:columns="3" dc:dummy="FIXME:keepNamespace" dcterms:dummy="FIXME:keepNamespace" lenya:dummy="FIXME:keepNamespace" xhtml:dummy="FIXME:keepNamespace">
+      <unizh:header xmlns:uz="http://unizh.ch" xmlns:nav="http://apache.org/cocoon/lenya/navigation/1.0">
+        <unizh:superscription>Universität Zürich</unizh:superscription>
+        <unizh:heading>Titel der Publikation</unizh:heading>
+      </unizh:header>
 
-Hauptgebäude, Aula im  2. Stock
-</description>
-			<pubDate>Wed, 28 Jun 2006 16:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/ (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Professur für Protonentherapie</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#489</link>
-			<description>Das Paul Scherrer Institut und die Universität Zürich schaffen erstmals eine Professur für Protonentherapie. Die Bestrahlung mit Protonen gilt als die modernste Form der Tumorbehandlung. Mit der Doppelprofessur wird der klinische Einsatz dieser Methode akademisch verankert und kann wissenschaftlich weiter erforscht werden.</description>
-			<pubDate>Tue, 27 Jun 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/evoluation.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Evolution in Darwins's Finches</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#480</link>
-			<description>Die Balzan-Preisträger 2005 Peter &amp; Rosemary Grant sprechen über: «Evolution in Darwin's Finches».
-Freitag, 30. Juni 2006, 16.00 Uhr
-Hörsaal 15-G-60, Universität Zürich Irchel, Winterthurerstrasse 190, 8057 Zürich
-</description>
-			<pubDate>Fri, 23 Jun 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/ (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Core IT Mathematics</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#483</link>
-			<description>Strukturen und Prozesse der Informationstechnologie durch umfassende Kompetenz in Mathematik beherrschen und zwar  mit dem weltweit einzigartigen Zweijahres-Diplomkurs "Core IT Mathematics" am Institut für Informatik. 
-Erstmals ab Januar 2007.<br/>&gt;&gt;Mehr Infos unter: <a href="http://www.weiterbildung.unizh.ch/kurse/detail.php?angebnr=83&amp;PHPSESSID=3c038694d73f910">http://www.weiterbildung.unizh.ch/kurse/detail.php?angebnr=83&amp;PHPSESSID=3c038694d73f910</a></description>
-			<pubDate>Tue, 20 Jun 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/vorschule.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Dominance in Preschool</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#479</link>
-			<description>Im Rahmen der Jacobs-Center-Kolloquien referiert Prof. A. D. Pellegrini, (Educational Psychology, University of Minnesota) über das Thema: Dominance in Preschool: Changes across the Year.
-22.6.2006, 17.15 Uhr, Raum CHN E 42, Universitätsstrasse 22</description>
-			<pubDate>Tue, 20 Jun 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/jugendliche.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Jugend, Migration, Medien</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#482</link>
-			<description>Die Tagung «Jugend, Migration, Medien» spricht alle an, die in ihrem Berufsalltag mit Kindern und Jugendlichen verschiedener Herkunft arbeiten.
-Mittwoch, 21. Juni 2006. 8.30 bis 17 Uhr, Zentrum für Weiterbildung, Schaffhauserstr. 22B, 8057 Zürich<br/>&gt;&gt;Mehr Infos unter: <a href="http://www.phzh.ch/webautor-data/359/Tagung_Jugend_NFP2.pdf">http://www.phzh.ch/webautor-data/359/Tagung_Jugend_NFP2.pdf</a></description>
-			<pubDate>Mon, 19 Jun 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/pflanze.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Fern der Heimat  invasive Pflanzen</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#481</link>
-			<description>Der Botanische Garten widmet sich in seiner Sommerausstellung der Problematik von fremden Pflanzen, welche die einheimische Flora bedrängen.
-Öffentliche Führungen zum Thema: siehe Website:www.bguz.unizh.ch<br/>&gt;&gt;Mehr Infos unter: <a href="http://www.bguz.unizh.ch/pages/gartenfuehrungen.php">http://www.bguz.unizh.ch/pages/gartenfuehrungen.php</a></description>
-			<pubDate>Mon, 19 Jun 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/titelblatt.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Neues unijournal erschienen</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#478</link>
-			<description>Im aktuellen unijournal: Prüfungsängste  und was man dagegen tun kann. Weitere Themen: Copy &amp; Paste: Plagiieren ist strafbar - nicht alle Studierende wissen das. Karaoke und Pauken: Wie es sich an einer japanischen Universität studiert. Sagt, was sie denkt: Brigitte Woggon, Professorin für Pharmakotherapie im Porträt. </description>
-			<pubDate>Mon, 19 Jun 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/mikrofone.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>«UNI sono» - Literatur am Radio</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#474</link>
-			<description>Das Deutsche Seminar präsentiert am Donnerstag, 22. Juni zusammen mit Schweizer Radio DRS 2 die Sendung «UNI sono». Germanistikstudierende stellen auf DRS 2 von 9.00 bis 12.15 Uhr neue Schweizer Literatur vor und interviewen Autoren. «UNI sono» wird live aus der Bibliothek an der Rämistrasse 69 ausgestrahlt.</description>
-			<pubDate>Fri, 16 Jun 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/literatur.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Literaturverwaltung</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#477</link>
-			<description>Im Rahmen der Lunchveranstaltungen der Informatikdienste findet am 21.6.2006 von 12.15 bis 13.15 Uhr eine Einführung in die Literaturverwaltung mit EndNote (und BibTeX) statt.
-Universität Irchel, Hörsaal 95, (Y03-G-95)</description>
-			<pubDate>Thu, 15 Jun 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/realizing.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Realizing Property Rights</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#476</link>
-			<description>Am 23. Juni findet ein Internationales Symposium zum Thema «Realizing Property Rights» statt. Zudem wird die Herausgabe des Swiss Human Rights Book gefeiert. Der erste Band wurde von Hernando de Soto (UNO, HCLEP/ILD, Lima/Peru) und Prof. Dr. Francis Cheneval (Universität Zürich) herausgegeben. Universität Zentrum, Aula, 10.15-17.00 Uhr.
-</description>
-			<pubDate>Thu, 15 Jun 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/ (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Mit nachhaltigen Lösungen zum Geschäftserfolg</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#466</link>
-			<description>Am Dienstag, 20. Juni, 18.30 Uhr spricht Gerard Kleisterlee, President &amp; CEO Philips in der Aula der Universität. Anschliessend Diskussion mit Ernst A. Brugger, CEO TSF Zurich, Reto Ringger, CEO SAM, Volker Hoffmann, Prof. for Sustainability and Technology ETHZ und Judith Wittwer, Wirtschaftsredaktorin TA.<br/>&gt;&gt;Mehr Infos unter: <a href="http://www.sustainability-zurich.org/site.asp?nid=1475&amp;lid=0&amp;sid=&amp;bkey=0&amp;dex=1">http://www.sustainability-zurich.org/site.asp?nid=1475&amp;lid=0&amp;sid=&amp;bkey=0&amp;dex=1</a></description>
-			<pubDate>Thu, 15 Jun 2006 07:00:00 GMT</pubDate>
-		</item>
-<br/>
-<b>Warning</b>:  filesize(): Stat failed for ../screens/img/pasch.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
-		<item>
-			<title>Abschiedsvorlesung von Prof. Th. Pasch</title>
-			<link>http://www.unizh.ch/news/kiosk/news.php#456</link>
-			<description>Am 23. Juni 2006 wird Prof. Dr. med. Thomas Pasch, Ordentlicher Professor für Anästhesiologie, seine Abschiedvorlesung halten. Er spricht zum Thema: «Empathie  Empirie  Evidenz  Eminenz: Der Weg der Anästhesiologie.» 14.15 Uhr, Grosser Hörsaal Ost B, UniversitätsSpital, Eingang Gloriastrasse </description>
-			<pubDate>Thu, 15 Jun 2006 07:00:00 GMT</pubDate>
-		</item>
-	</channel>
-</rss></unizh:rss-reader>
-  </unizh:related-content>
-  <body>
-    <p>
-UniCMS, das Content Management System der Universität Zürich, steht allen Institutionen der 
-Universität Zürich zur Verfügung, um dezentral und browserbasiert Webseiten zu erstellen 
-und bewirtschaften.
-    </p>
+      <lenya:meta>
+        <dc:title>Dokument- bzw. Seitentitel</dc:title>
+        <dc:description>Abstract</dc:description>
+        <dc:creator>Autor der Dokuments</dc:creator>
+        <dc:subject>Keywords</dc:subject>
+        <dc:publisher>Universität Zürich</dc:publisher>
+        <dcterms:created>date of creation</dcterms:created>
+        <dcterms:issued>date of publication</dcterms:issued>
+        <dc:language>de</dc:language>
+        <dc:rights>Universität Zürich</dc:rights>
+      </lenya:meta>
 
-<h3>Dokumentation:</h3>
-<p>
-Ausführliche Informationen zur Erstellung und Wartung einer UniCMS-Publikation finden Sie in der <a href="http://www.unicms.unizh.ch/docu.html">UniCMS Online-Dokumentation</a>.<br/>
-</p><unizh:rss-reader image="" description="" items="3"><title>Beispiel RSS-News (intern)</title><rss xmlns:index="http://apache.org/cocoon/lenya/documentindex/1.0" version="2.0"><channel><title>News</title><link>http://localhost:8080/lenya/unitemplate/authoring/custom/News.html</link><description> </description><item><title>Beispiel-Beitrag (mit Volltext)</title><link>http://localhost:8080/lenya/unitemplate/authoring/custom/News/EintragLang.html</link><description>
-    Längere News-Beiträge können in eine Zusammenfassung und einen Volltext unterteilt werden. Die Zusammenfassung erscheint in der Liste der News-Beiträge mit einem automatisch gesetzten Link auf den Volltext. Der Volltext erscheint auf einer separaten Seite und ist, im Gegensatz zur Kurzfassung, beliebig formatierbar. </description><pubDate>Wed Oct 19 14:03:19 CEST 2005</pubDate></item><item><title>Beispiel-Beitrag (Kurzfassung)</title><link>http://localhost:8080/lenya/unitemplate/authoring/custom/News.html</link><description>
-    Beispiel eines kurzen News-Eintrags. Kurzeinträge können einen Textblock, ein Bild und einen Hyperlink auf eine beliebige Zielseite enthalten.
-    </description><pubDate>Wed Oct 19 13:55:36 CEST 2005</pubDate></item></channel></rss></unizh:rss-reader>
-  </body>
-</unizh:homepage></unizh:ancestor></unizh:ancestors><unizh xmlns="http://unizh.ch">
-  <university breadcrumb="true" href="http://www.unizh.ch">university_zurich</university>
-  <publication breadcrumb="true">Unitemplate</publication>
-</unizh></document>
+      <unizh:related-content xmlns:cinclude="http://apache.org/cocoon/include/1.0">
+        <unizh:teaser>
+          <unizh:title>Title</unizh:title>
+          <p>Teaser text.</p>
+        </unizh:teaser>
+      </unizh:related-content>
+
+      <body>
+        <unizh:toc/>
+        <p>Paragraph</p>
+        <h2>Styles (headline 2)</h2>
+        <p>Different text styles can be used: 
+          <strong>bold</strong>
+          or 
+          <em>italic</em>
+          or 
+          <small>small</small>
+        </p>
+        <p>There is 
+          <sub>subcript</sub>
+          and 
+          <sup>superscript</sup>
+          .</p>
+        <p>Links can be set to 
+          <a href="http://www.unizh.ch/">external resources</a>
+          as well as to 
+          <a href="http://localhost:8080/lenya/unitemplate/authoring/index.html">internal pages</a>
+          .</p>
+        <p>There are also markups: 
+          <unizh:attention>warning</unizh:attention>
+          and 
+          <cite>cite</cite>
+        </p>
+        <h2>Tables</h2>
+        <table class="ornate">
+          <caption>Caption of the table type "ornate"</caption>
+          <tr align="right">
+            <td>x</td>
+            <td>y</td>
+            <td>z</td>
+          </tr>
+          <tr align="center">
+            <td>xx</td>
+            <td>yy</td>
+            <td>zz</td>
+          </tr>
+        </table>
+        <table class="basic">
+          <tr>
+            <td>The table type "basic"</td>
+            <td>No borders, no background color, no nothing</td>
+          </tr>
+        </table>
+        <h2>Lists</h2>
+        <h3>Unordered Lists Type 1-3</h3>
+        <ul class="type1">
+          <li>This is an unordered list type 1</li>
+          <li>The xml follows the xhtml standard</li>
+        </ul>
+        <ul class="type2">
+          <li>This is an unordered list type 2</li>
+          <li>The xml follows the xhtml standard</li>
+        </ul>
+        <ul class="type3">
+          <li>This is an unordered list type 3</li>
+          <li>The xml follows the xhtml standard</li>
+        </ul>
+        <h3>Ordered Lists Type 1-2</h3>
+        <ol class="type1">
+          <li>This is an ordered list type 1</li>
+          <li>The xml follows the xhtml standard</li>
+        </ol>
+        <ol class="type2">
+          <li>This is an ordered list type 2</li>
+          <li>The xml follows the xhtml standard</li>
+        </ol>
+        <unizh:children abstracts="true"/>
+      </body>
+    </html>
+  </content>
+
+  <div xmlns="http://www.w3.org/1999/xhtml" xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:uz="http://unizh.ch" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:nav="http://apache.org/cocoon/lenya/navigation/1.0" label="Universität Zürich" root="http://www.unizh.ch" id="breadcrumb">
+    <div href="/lenya/unitemplate/authoring/index.html" basic-url="index">UniTemplate</div>
+    <div href="/lenya/unitemplate/authoring/xhtml.html" basic-url="xhtml">Allgemeine Dokumenttypen</div>
+    <div href="/lenya/unitemplate/authoring/xhtml/3columns.html" basic-url="xhtml/3columns" current="true">3 Spalten</div>
+  </div>
+
+  <div xmlns="http://www.w3.org/1999/xhtml" xmlns:nav="http://apache.org/cocoon/lenya/navigation/1.0" id="servicenav">
+    <div xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:uz="http://unizh.ch" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" id="home" href="/lenya/unitemplate/authoring/index.html">Home</div>
+    <div xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:uz="http://unizh.ch" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" id="contact" href="/lenya/unitemplate/authoring/contact.html">Kontakt</div>
+    <div xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:uz="http://unizh.ch" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" id="sitemap" href="/lenya/unitemplate/authoring/sitemap.html">Sitemap</div>
+    <div href="/lenya/unitemplate/authoring/search.html" id="search">Suche</div>
+  </div>
+
+  <div xmlns="http://www.w3.org/1999/xhtml" xmlns:nav="http://apache.org/cocoon/lenya/navigation/1.0" id="toolnav">
+    <div href="3columns_de.print.html" id="print">Diese Seite drucken</div>
+    <div id="fontsize">Schrift grösser/kleiner</div>
+    <div id="simpleview" href="#">PDA-optimierte Ansicht</div>
+  </div>
+
+  <div xmlns="http://www.w3.org/1999/xhtml" xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:uz="http://unizh.ch" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:nav="http://apache.org/cocoon/lenya/navigation/1.0" id="menu">
+    <xhtml:div href="/lenya/unitemplate/authoring/xhtml.html" basic-url="xhtml">Allgemeine Dokumenttypen
+      <xhtml:div href="/lenya/unitemplate/authoring/xhtml/1column.html" basic-url="xhtml/1column">1 Spalte</xhtml:div>
+      <xhtml:div href="/lenya/unitemplate/authoring/xhtml/2columns.html" basic-url="xhtml/2columns">2 Spalten</xhtml:div>
+      <xhtml:div href="/lenya/unitemplate/authoring/xhtml/3columns.html" basic-url="xhtml/3columns" current="true">3 Spalten</xhtml:div>
+    </xhtml:div>
+    <xhtml:div href="/lenya/unitemplate/authoring/custom.html" basic-url="custom">Strukt. Dokumenttypen</xhtml:div>
+    <xhtml:div href="/lenya/unitemplate/authoring/redirect.html" basic-url="redirect">Redirect</xhtml:div>
+    <xhtml:div href="/lenya/unitemplate/authoring/Lektion.html" basic-url="Lektion">Test Lektion</xhtml:div>
+  </div>
+
+  <div xmlns="http://www.w3.org/1999/xhtml" xmlns:nav="http://apache.org/cocoon/lenya/navigation/1.0" id="footnav">
+    <div xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:uz="http://unizh.ch" xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" id="impressum" href="/lenya/unitemplate/authoring/impressum.html">Impressum</div>
+  </div>
+
+  <xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml" id="simplenav">
+    <xhtml:div label="UP ONE LEVEL" href="/lenya/unitemplate/authoring/xhtml.html" id="up"/>
+  </xhtml:div>
+
+  <unizh:ancestors xmlns:unizh="http://unizh.ch/doctypes/elements/1.0" xmlns:cinclude="http://apache.org/cocoon/include/1.0" xmlns:nav="http://apache.org/cocoon/lenya/navigation/1.0">
+    <unizh:ancestor href="/lenya/unitemplate/authoring/xhtml.html" basic-url="xhtml">
+      <html xmlns="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" unizh:columns="3" dc:dummy="FIXME:keepNamespace" dcterms:dummy="FIXME:keepNamespace" lenya:dummy="FIXME:keepNamespace" xhtml:dummy="FIXME:keepNamespace">
+        <lenya:meta>
+          <dc:title>Allgemeine Dokumenttypen (xhtml)</dc:title>
+          <dc:description> </dc:description>
+          <dc:creator>admin1 (Administrator)</dc:creator>
+          <dc:subject/>
+          <dc:publisher>Universität Zürich</dc:publisher>
+          <dcterms:created>Wed Oct 19 14:50:12 CEST 2005</dcterms:created>
+          <dcterms:issued>date of publication</dcterms:issued>
+          <dc:language>de</dc:language>
+          <dc:rights>Universität Zürich</dc:rights>
+        </lenya:meta>
+
+        <unizh:related-content>
+          <unizh:teaser>
+            <unizh:title>Title</unizh:title>
+            <p>Teaser text.</p>
+          </unizh:teaser>
+        </unizh:related-content>
+
+        <body>
+          <p>UniCMS Standardseiten sind dreispaltige XHTML-Seiten. In seltenen Fällen kann der Seiteninhalt ein zweispaltiges Layout nötig machen, beispielsweise wenn breite Tabellen oder Bilder eingebunden werden müssen. Bei einspaltigen Seiten wird die linke Navigationsspalte nicht angezeigt. Dieser Seitentyp sollte nur für die Integration von externen Anwendungen verwendet werden.</p>
+        </body>
+      </html>
+    </unizh:ancestor>
+
+    <unizh:ancestor href="/lenya/unitemplate/authoring/index.html" basic-url="index">
+      <unizh:homepage xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:lenya="http://apache.org/cocoon/lenya/page-envelope/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml" dc:dummy="FIXME:keepNamespace" dcterms:dummy="FIXME:keepNamespace" lenya:dummy="FIXME:keepNamespace" unizh:tabs="false" xhtml:dummy="FIXME:keepNamespace">
+        <lenya:meta>
+          <dc:title>Willkommen!</dc:title>
+          <dc:description>Abstract</dc:description>
+          <dc:creator>Autor des Dokuments</dc:creator>
+          <dc:subject>Keywords</dc:subject>
+          <dc:publisher>Universität Zürich</dc:publisher>
+          <dcterms:created>date of creation</dcterms:created>
+          <dcterms:issued>date of publication</dcterms:issued>
+          <dc:language>de</dc:language>
+          <dc:rights>Universität Zürich</dc:rights>
+        </lenya:meta>
+
+        <unizh:header xmlns:uz="http://unizh.ch">
+          <unizh:superscription>Universität Zürich</unizh:superscription>
+          <unizh:heading>Titel der Publikation</unizh:heading>
+        </unizh:header>
+
+        <unizh:related-content>
+          <unizh:teaser name="Beispiel">
+            <unizh:title>Beispiel-Teaser</unizh:title>
+            <p>Beispiel für einen Teaser.</p><a href="#" title="Teaser Link">Link</a>
+          </unizh:teaser>
+
+          <unizh:rss-reader image="" description="" items="1">
+            <title>Unipublic</title>
+            <rss xmlns:i18n="http://apache.org/cocoon/i18n/2.1" xmlns:atom="http://purl.org/atom/ns#" version="2.0">
+              <channel>
+                <language>de</language>
+                <title>Unipublic</title>
+                <link>http://www.unipublic.unizh.ch</link>
+                <lastBuildDate>Fri, 14 Jul 2006 02:21:53 +0200</lastBuildDate>
+                <description>no description available</description>
+                <item>
+                  <title>Berufungen</title>
+                  <description>Der Universitätsrat hat an seiner Sitzung vom 10. Juli 2006 acht ordentliche Professuren sowie eine ausserordentliche Professur neu besetzt.</description>
+                  <link>http://www.unipublic.unizh.ch/campus/uni-news/2006/2258.html</link>
+                  <image>
+                    <title/>
+                    <url>http://www.unipublic.unizh.ch/campus/uni-news/2006/2258/teaser.jpg</url>
+                    <link>http://www.unipublic.unizh.ch/campus/uni-news/2006/2258.html</link>
+                    <width>80</width>
+                    <height>60</height>
+                  </image>
+                </item>
+                <item>
+                  <title>Forschen als «way of life»</title>
+                  <description>Der frühere Prorektor Forschung, der Mediziner Alexander Borbély, hat neben dem Amt in der Universitätsleitung immer auch eigene Forschung betrieben und blickt so auf vierzig Jahre Schlaf- bzw. zirkadiane Rhythmusforschung. Eine Rückschau.</description>
+                  <link>http://www.unipublic.unizh.ch/campus/uni-news/2006/2234.html</link>
+                  <image>
+                    <title>Teaser</title>
+                    <url>http://www.unipublic.unizh.ch/campus/uni-news/2006/2234/teaser.jpg</url>
+                    <link>http://www.unipublic.unizh.ch/campus/uni-news/2006/2234.html</link>
+                    <width>80</width>
+                    <height>60</height>
+                  </image>
+                </item>
+                <item>
+                  <title>Silber für das unimagazin</title>
+                  <description>Ausgezeichnetes unimagazin: Die Zeitschrift der Universität Zürich erhielt am diesjährigen Best-of-Corporate Publishing-Award, dem grössten Wettbewerb für Unternehmenskommunikation in Europa, die Auszeichnung in Silber.</description>
+                  <link>http://www.unipublic.unizh.ch/campus/uni-news/2006/2259.html</link>
+                  <image>
+                    <title>Pries</title>
+                    <url>http://www.unipublic.unizh.ch/campus/uni-news/2006/2259/teaser.jpg</url>
+                    <link>http://www.unipublic.unizh.ch/campus/uni-news/2006/2259.html</link>
+                    <width>80</width>
+                    <height>60</height>
+                  </image>
+                </item>
+                <item>
+                  <title>Mutige Drachentöter, mythische Königinnen</title>
+                  <description>Die heroische Welt der Vergangenheit, mit kräftigen Farben und grosser Fabulierlust auf die Leinwand gepinselt: Die Bilder traditioneller äthiopischer Maler fesseln den Blick. Das Völkerkundemuseum der Universität Zürich verfügt über eine einmalige Dokumentation dieser verschwindenden Bildtradition. In einer umfassende Ausstellung kommt sie nun ans Licht. </description>
+                  <link>http://www.unipublic.unizh.ch/magazin/gesellschaft/2006/2240.html</link>
+                  <image>
+                    <title>Alltag</title>
+                    <url>http://www.unipublic.unizh.ch/magazin/gesellschaft/2006/2240/teaser.jpg</url>
+                    <link>http://www.unipublic.unizh.ch/magazin/gesellschaft/2006/2240.html</link>
+                    <width>80</width>
+                    <height>60</height>
+                  </image>
+                </item>
+                <item>
+                  <title>Freiräume im musikalischen Spiessertum</title>
+                  <description>Weshalb finden in China Videos von propagandistischen Musicals noch immer reissenden Absatz? Und welche Freiräume stehen Künstlerinnen und Künstlern in totalitären Systemen zur Verfügung? Das von den beiden Zürcher Musikwissenschaftlern Laurenz Lütteken und Hans-Joachim Hinrichsen organisierte Symposium «kontroversen» brachte erstaunliche Erkenntnisse über das «Komponieren in totalitären Staaten des 20. Jahrhunderts».</description>
+                  <link>http://www.unipublic.unizh.ch/magazin/gesellschaft/2006/2222.html</link>
+                  <image>
+                    <title/>
+                    <url>http://www.unipublic.unizh.ch/magazin/gesellschaft/2006/2222/teaser.jpg</url>
+                    <link>http://www.unipublic.unizh.ch/magazin/gesellschaft/2006/2222.html</link>
+                    <width>80</width>
+                    <height>60</height>
+                  </image>
+                </item>
+                <item>
+                  <title>Gletscher ade?</title>
+                  <description>Gletscher sind hervorragende Indikatoren für Veränderungen des Klimas. Eine neue Studie des Geographischen Institutes der Universität Zürich zeigt: Liegen die durchschnittlichen Sommertemperaturen Ende des 21. Jahrhunderts um fünf Grad Celsius höher als heute, werden die Alpen bis dann praktisch eisfrei sein. </description>
+                  <link>http://www.unipublic.unizh.ch/magazin/umwelt/2006/2246.html</link>
+                  <image>
+                    <title/>
+                    <url>http://www.unipublic.unizh.ch/magazin/umwelt/2006/2246/teaser.jpg</url>
+                    <link>http://www.unipublic.unizh.ch/magazin/umwelt/2006/2246.html</link>
+                    <width>80</width>
+                    <height>60</height>
+                  </image>
+                </item>
+              </channel>
+            </rss>
+          </unizh:rss-reader>
+
+          <unizh:rss-reader image="" description="" items="5">
+            <title>Ibis</title>
+            <rss version="2.0">
+	          <channel>
+		        <title>Universität Zürich - Campus Info</title>
+		        <link>http://www.agenda.unizh.ch</link>
+		        <description/>
+		        <language>de</language>
+		        <pubDate>Mon, 17 Jul 2006 00:00:00 +0200</pubDate>
+		        <lastBuildDate>Mon, 17 Jul 2006 23:02:17 +0200</lastBuildDate>
+		        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+		        <image>
+			      <url>http://www.unizh.ch/news/rss/img/logo_mini.png</url>
+			      <title>Universität Zürich - Campus Info</title>
+			      <link>http://www.agenda.unizh.ch</link>
+		        </image>
+		        <managingEditor>theo.vondaeniken@unicom.unizh.ch</managingEditor>
+		        <webMaster>webmaster@unizh.ch</webMaster><br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/neurodermitis.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Neue Broschüren</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#494</link>
+			      <description>Auf der Website der Dermatologischen Klinik können Sie Broschüren bestellen oder herunterladen. Darunter aktuell Broschüren über Neurodermitis und Hautkrebs.
+                    Siehe unter: http://www.dermatologie.usz.ch<br/>&gt;&gt;Mehr Infos unter: <a href="http://www.dermatologie.usz.ch/">http://www.dermatologie.usz.ch</a></description>
+			      <pubDate>Thu, 06 Jul 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/ (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>BrownBag am 7. Juli</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#497</link>
+			      <description>Lukas Lichtensteiger, Harvard University: 
+                    Towards intelligent nano-robots: Embodiment at small scales
+                    Zeit: 17.15 Uhr / Raum: AND 2.23<br/>&gt;&gt;Mehr Infos unter: <a href="http://localhost:8080/lenya/unitemplate/authoring/xhtml/www.ifi.unizh.ch/ailabs/events/brownbags/">www.ifi.unizh.ch/ailabs/events/brownbags/</a></description>
+			      <pubDate>Tue, 04 Jul 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/Fischer.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Professor Andreas Fischer als neuer Rektor vorgeschlagen</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#496</link>
+			      <description>Prof. Dr. Andreas Fischer soll Prorektor Lehre und ab 2008 Nachfolger von Rektor Hans Weder werden. Der Senat schlägt dem Universitätsrat Fischer für die beiden Ämter vor. Fischer ist Ordinarius für englische Philologie und war Dekan der Philosophischen Fakultät. Die Wahl findet im August statt.</description>
+			      <pubDate>Tue, 04 Jul 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/invasiv.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Gartenführungen im Botanischen Garten</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#495</link>
+			      <description>Am 4. Juli beginnt im Botanischen Garten die neue Reihe wöchentlich stattfindender Gartenführungen über Mittag. Schwerpunktthema: «Invasive Pflanzen».
+                    www.bguz.unizh.ch<br/>&gt;&gt;Mehr Infos unter: <a href="http://www.bguz.unizh.ch/pages/gartenfuehrungen.php">http://www.bguz.unizh.ch/pages/gartenfuehrungen.php</a></description>
+			      <pubDate>Mon, 03 Jul 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/ameise.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Wüstenameisen mit Schrittzähler</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#493</link>
+			      <description>Eine Forschergruppe um den Zürcher Zoologie-Professor Rüdiger Wehner hat nachgewiesen, dass die Wüstenameise Cataglyphis Schritte zählt, um Distanzen zu messen. Dies erklärt, wie die Tiere wieder zu ihrem Nest zurückfinden. Die Studie wurde in der neuesten Ausgabe von «Science» (Volume 312, issue 5782) publiziert.</description>
+			      <pubDate>Fri, 30 Jun 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/VMZ-Vishnu01-kl.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Indischer Gott in vielerlei Gestalt</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#490</link>
+			      <description>«Vishnu. Europäische Reisende begegnen einem indischen Gott» heisst die neue Ausstellung im Völkerkundemuseum. 
+                    28. Juni bis 12. November 2006, Öffnungszeiten: Dienstag bis Freitag 1013 und 1417 Uhr, Samstag 1417 Uhr, Sonntag 1117 Uhr. Eintritt frei.  <br/>&gt;&gt;Mehr Infos unter: <a href="http://www.musethno.unizh.ch/de/museum/das_museum.html">http://www.musethno.unizh.ch/de/museum/das_museum.html</a></description>
+			      <pubDate>Thu, 29 Jun 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/ (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>The rise of Asia</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#491</link>
+			      <description>Chris Patten, letzter Governor von Hongkong und ehemaliger EU-Kommissar für Aussenbeziehungen spricht am Donnerstag, 29.6.2006 über «The rise of Asia: is it a threat?». 
+                    Universität Zürich Zentrum, Karl Schmid-Strasse 4, 8006 Zürich, (KO2), Raum: F 180</description>
+			      <pubDate>Wed, 28 Jun 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/diplomfeier.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Promotionsfeier</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#485</link>
+			      <description>Promotionsfeier der Wirtschaftswissenschaftlichen Fakultät:
+
+                    Hauptgebäude, Aula im  2. Stock
+                  </description>
+			      <pubDate>Wed, 28 Jun 2006 16:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/ (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Professur für Protonentherapie</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#489</link>
+			      <description>Das Paul Scherrer Institut und die Universität Zürich schaffen erstmals eine Professur für Protonentherapie. Die Bestrahlung mit Protonen gilt als die modernste Form der Tumorbehandlung. Mit der Doppelprofessur wird der klinische Einsatz dieser Methode akademisch verankert und kann wissenschaftlich weiter erforscht werden.</description>
+			      <pubDate>Tue, 27 Jun 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/evoluation.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Evolution in Darwins's Finches</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#480</link>
+			      <description>Die Balzan-Preisträger 2005 Peter &amp; Rosemary Grant sprechen über: «Evolution in Darwin's Finches».
+                    Freitag, 30. Juni 2006, 16.00 Uhr
+                    Hörsaal 15-G-60, Universität Zürich Irchel, Winterthurerstrasse 190, 8057 Zürich
+                  </description>
+			      <pubDate>Fri, 23 Jun 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/ (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Core IT Mathematics</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#483</link>
+			      <description>Strukturen und Prozesse der Informationstechnologie durch umfassende Kompetenz in Mathematik beherrschen und zwar  mit dem weltweit einzigartigen Zweijahres-Diplomkurs "Core IT Mathematics" am Institut für Informatik. 
+                    Erstmals ab Januar 2007.<br/>&gt;&gt;Mehr Infos unter: <a href="http://www.weiterbildung.unizh.ch/kurse/detail.php?angebnr=83&amp;PHPSESSID=3c038694d73f910">http://www.weiterbildung.unizh.ch/kurse/detail.php?angebnr=83&amp;PHPSESSID=3c038694d73f910</a></description>
+			      <pubDate>Tue, 20 Jun 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/vorschule.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Dominance in Preschool</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#479</link>
+			      <description>Im Rahmen der Jacobs-Center-Kolloquien referiert Prof. A. D. Pellegrini, (Educational Psychology, University of Minnesota) über das Thema: Dominance in Preschool: Changes across the Year.
+                    22.6.2006, 17.15 Uhr, Raum CHN E 42, Universitätsstrasse 22</description>
+			      <pubDate>Tue, 20 Jun 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/jugendliche.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Jugend, Migration, Medien</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#482</link>
+			      <description>Die Tagung «Jugend, Migration, Medien» spricht alle an, die in ihrem Berufsalltag mit Kindern und Jugendlichen verschiedener Herkunft arbeiten.
+                    Mittwoch, 21. Juni 2006. 8.30 bis 17 Uhr, Zentrum für Weiterbildung, Schaffhauserstr. 22B, 8057 Zürich<br/>&gt;&gt;Mehr Infos unter: <a href="http://www.phzh.ch/webautor-data/359/Tagung_Jugend_NFP2.pdf">http://www.phzh.ch/webautor-data/359/Tagung_Jugend_NFP2.pdf</a></description>
+			      <pubDate>Mon, 19 Jun 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/pflanze.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Fern der Heimat  invasive Pflanzen</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#481</link>
+			      <description>Der Botanische Garten widmet sich in seiner Sommerausstellung der Problematik von fremden Pflanzen, welche die einheimische Flora bedrängen.
+                    Öffentliche Führungen zum Thema: siehe Website:www.bguz.unizh.ch<br/>&gt;&gt;Mehr Infos unter: <a href="http://www.bguz.unizh.ch/pages/gartenfuehrungen.php">http://www.bguz.unizh.ch/pages/gartenfuehrungen.php</a></description>
+			      <pubDate>Mon, 19 Jun 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/titelblatt.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Neues unijournal erschienen</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#478</link>
+			      <description>Im aktuellen unijournal: Prüfungsängste  und was man dagegen tun kann. Weitere Themen: Copy &amp; Paste: Plagiieren ist strafbar - nicht alle Studierende wissen das. Karaoke und Pauken: Wie es sich an einer japanischen Universität studiert. Sagt, was sie denkt: Brigitte Woggon, Professorin für Pharmakotherapie im Porträt. </description>
+			      <pubDate>Mon, 19 Jun 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/mikrofone.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>«UNI sono» - Literatur am Radio</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#474</link>
+			      <description>Das Deutsche Seminar präsentiert am Donnerstag, 22. Juni zusammen mit Schweizer Radio DRS 2 die Sendung «UNI sono». Germanistikstudierende stellen auf DRS 2 von 9.00 bis 12.15 Uhr neue Schweizer Literatur vor und interviewen Autoren. «UNI sono» wird live aus der Bibliothek an der Rämistrasse 69 ausgestrahlt.</description>
+			      <pubDate>Fri, 16 Jun 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/literatur.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Literaturverwaltung</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#477</link>
+			      <description>Im Rahmen der Lunchveranstaltungen der Informatikdienste findet am 21.6.2006 von 12.15 bis 13.15 Uhr eine Einführung in die Literaturverwaltung mit EndNote (und BibTeX) statt.
+                    Universität Irchel, Hörsaal 95, (Y03-G-95)</description>
+			      <pubDate>Thu, 15 Jun 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/realizing.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Realizing Property Rights</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#476</link>
+			      <description>Am 23. Juni findet ein Internationales Symposium zum Thema «Realizing Property Rights» statt. Zudem wird die Herausgabe des Swiss Human Rights Book gefeiert. Der erste Band wurde von Hernando de Soto (UNO, HCLEP/ILD, Lima/Peru) und Prof. Dr. Francis Cheneval (Universität Zürich) herausgegeben. Universität Zentrum, Aula, 10.15-17.00 Uhr.
+                  </description>
+			      <pubDate>Thu, 15 Jun 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/ (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Mit nachhaltigen Lösungen zum Geschäftserfolg</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#466</link>
+			      <description>Am Dienstag, 20. Juni, 18.30 Uhr spricht Gerard Kleisterlee, President &amp; CEO Philips in der Aula der Universität. Anschliessend Diskussion mit Ernst A. Brugger, CEO TSF Zurich, Reto Ringger, CEO SAM, Volker Hoffmann, Prof. for Sustainability and Technology ETHZ und Judith Wittwer, Wirtschaftsredaktorin TA.<br/>&gt;&gt;Mehr Infos unter: <a href="http://www.sustainability-zurich.org/site.asp?nid=1475&amp;lid=0&amp;sid=&amp;bkey=0&amp;dex=1">http://www.sustainability-zurich.org/site.asp?nid=1475&amp;lid=0&amp;sid=&amp;bkey=0&amp;dex=1</a></description>
+			      <pubDate>Thu, 15 Jun 2006 07:00:00 GMT</pubDate>
+		        </item>
+                <br/>
+                <b>Warning</b>:  filesize(): Stat failed for ../screens/img/pasch.jpg (errno=2 - No such file or directory) in <b>/usr/local/ftp/webroot/public_html/news/rss/cms/ibis_rss.php</b> on line <b>53</b><br/>
+		        <item>
+			      <title>Abschiedsvorlesung von Prof. Th. Pasch</title>
+			      <link>http://www.unizh.ch/news/kiosk/news.php#456</link>
+			      <description>Am 23. Juni 2006 wird Prof. Dr. med. Thomas Pasch, Ordentlicher Professor für Anästhesiologie, seine Abschiedvorlesung halten. Er spricht zum Thema: «Empathie  Empirie  Evidenz  Eminenz: Der Weg der Anästhesiologie.» 14.15 Uhr, Grosser Hörsaal Ost B, UniversitätsSpital, Eingang Gloriastrasse </description>
+			      <pubDate>Thu, 15 Jun 2006 07:00:00 GMT</pubDate>
+		        </item>
+	          </channel>
+            </rss>
+          </unizh:rss-reader>
+        </unizh:related-content>
+
+        <body>
+          <p>
+            UniCMS, das Content Management System der Universität Zürich, steht allen Institutionen der 
+            Universität Zürich zur Verfügung, um dezentral und browserbasiert Webseiten zu erstellen 
+            und bewirtschaften.
+          </p>
+
+          <h3>Dokumentation:</h3>
+          <p>
+            Ausführliche Informationen zur Erstellung und Wartung einer UniCMS-Publikation finden Sie in der <a href="http://www.unicms.unizh.ch/docu.html">UniCMS Online-Dokumentation</a>.<br/>
+          </p>
+
+          <unizh:rss-reader image="" description="" items="3">
+            <title>Beispiel RSS-News (intern)</title>
+            <rss xmlns:index="http://apache.org/cocoon/lenya/documentindex/1.0" version="2.0">
+              <channel>
+                <title>News</title>
+                <link>http://localhost:8080/lenya/unitemplate/authoring/custom/News.html</link>
+                <description> </description>
+                <item>
+                  <title>Beispiel-Beitrag (mit Volltext)</title>
+                  <link>http://localhost:8080/lenya/unitemplate/authoring/custom/News/EintragLang.html</link>
+                  <description>
+                    Längere News-Beiträge können in eine Zusammenfassung und einen Volltext unterteilt werden. Die Zusammenfassung erscheint in der Liste der News-Beiträge mit einem automatisch gesetzten Link auf den Volltext. Der Volltext erscheint auf einer separaten Seite und ist, im Gegensatz zur Kurzfassung, beliebig formatierbar. </description>
+                  <pubDate>Wed Oct 19 14:03:19 CEST 2005</pubDate>
+                </item>
+                <item>
+                  <title>Beispiel-Beitrag (Kurzfassung)</title>
+                  <link>http://localhost:8080/lenya/unitemplate/authoring/custom/News.html</link>
+                  <description>
+                    Beispiel eines kurzen News-Eintrags. Kurzeinträge können einen Textblock, ein Bild und einen Hyperlink auf eine beliebige Zielseite enthalten.
+                  </description>
+                  <pubDate>Wed Oct 19 13:55:36 CEST 2005</pubDate>
+                </item>
+              </channel>
+            </rss>
+          </unizh:rss-reader>
+        </body>
+      </unizh:homepage>
+    </unizh:ancestor>
+  </unizh:ancestors>
+
+  <unizh xmlns="http://unizh.ch">
+    <university breadcrumb="true" href="http://www.unizh.ch">university_zurich</university>
+    <publication breadcrumb="true">Unitemplate</publication>
+  </unizh>
+</document>
