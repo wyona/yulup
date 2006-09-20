@@ -4,9 +4,6 @@
 <!ENTITY editOperationRedo.label "Wiederherstellen">
 <!ENTITY editOperationUndo.label "Rückgängig">
 <!ENTITY fileOperationNew.label "Neu">
-<!ENTITY fileOperationNewEmptyMenuitem.label "Neues leeres Dokument">
-<!ENTITY fileOperationNewXMLMenuitem.label "Neues XML Dokument">
-<!ENTITY fileOperationNewXHTMLMenuitem.label "Neues XHTML Dokument">
 <!ENTITY fileOperationNewFromTemplateLocalMenuitem.label "Neue von lokaler Vorlage">
 <!ENTITY fileOperationNewFromTemplateCMSMenuitem.label "Neue von entfernter Vorlage">
 <!ENTITY fileOperationOpen.label "Öffnen">
@@ -29,9 +26,6 @@
 <!ENTITY editOperationRedo.tooltip "Letzte Operation wiederholen">
 <!ENTITY editOperationUndo.tooltip "Letzte Operation rückgängig machen">
 <!ENTITY fileOperationNew.tooltip "Neues Dokument erstellen">
-<!ENTITY fileOperationNewEmptyMenuitem.tooltip "Neues leeres Dokument erstellen">
-<!ENTITY fileOperationNewXMLMenuitem.tooltip "Neues Dokument mit XML Gerüst erstellen">
-<!ENTITY fileOperationNewXHTMLMenuitem.tooltip "Neues Dokument mit XHTML 1.1 Gerüst erstellen">
 <!ENTITY fileOperationNewFromTemplateLocalMenuitem.tooltip "Neues Dokument nach lokaler Vorlage erstellen">
 <!ENTITY fileOperationNewFromTemplateCMSMenuitem.tooltip "Neues Dokuman nach CMS Vorlage erstellen">
 <!ENTITY fileOperationOpen.tooltip "Öffne ein bestehendes Dokument">

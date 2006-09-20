@@ -151,4 +151,44 @@
     <name xml:lang="de">Well-formedness Fehler</name>
   </entity>
 
+  <entity id="new.application.xhtml.xml.label">
+    <name xml:lang="en">XHTML Document</name>
+    <name xml:lang="de">XHTML Dokument</name>
+  </entity>
+
+  <entity id="new.application.xhtml.xml.tooltip">
+    <name xml:lang="en">Create a new XHTML Document</name>
+    <name xml:lang="de">Ein neues XHTML Dokument erstellen</name>
+  </entity>
+
+  <entity id="new.application.atom.xml.label">
+    <name xml:lang="en">Atom entry</name>
+    <name xml:lang="de">Atom Eintrag</name>
+  </entity>
+
+  <entity id="new.application.atom.xml.tooltip">
+    <name xml:lang="en">Create a new Atom entry</name>
+    <name xml:lang="de">Einen neuen Atom Eintrag erstellen</name>
+  </entity>
+
+  <entity id="new.application.xml.label">
+    <name xml:lang="en">XML Document</name>
+    <name xml:lang="de">XML Dokument</name>
+  </entity>
+
+  <entity id="new.application.xml.tooltip">
+    <name xml:lang="en">Create a new XML Document</name>
+    <name xml:lang="de">Ein neues XML Dokument erstellen</name>
+  </entity>
+
+  <entity id="new.text.plain.label">
+    <name xml:lang="en">Empty Document</name>
+    <name xml:lang="de">Leeres Dokument</name>
+  </entity>
+
+  <entity id="new.text.plain.tooltip">
+    <name xml:lang="en">Create a new empty document</name>
+    <name xml:lang="de">Ein neues, leeres Dokument erstellen</name>
+  </entity>
+
 </dtd>

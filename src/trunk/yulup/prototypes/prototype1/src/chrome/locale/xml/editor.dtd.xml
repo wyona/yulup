@@ -32,21 +32,6 @@
     <name xml:lang="de">Neu</name>
   </entity>
 
-  <entity id="fileOperationNewEmptyMenuitem.label">
-    <name xml:lang="en">New empty document</name>
-    <name xml:lang="de">Neues leeres Dokument</name>
-  </entity>
-
-  <entity id="fileOperationNewXMLMenuitem.label">
-    <name xml:lang="en">New XML document</name>
-    <name xml:lang="de">Neues XML Dokument</name>
-  </entity>
-
-  <entity id="fileOperationNewXHTMLMenuitem.label">
-    <name xml:lang="en">New XHTML document</name>
-    <name xml:lang="de">Neues XHTML Dokument</name>
-  </entity>
-
   <entity id="fileOperationNewFromTemplateLocalMenuitem.label">
     <name xml:lang="en">New from local template</name>
     <name xml:lang="de">Neue von lokaler Vorlage</name>
@@ -154,21 +139,6 @@
   <entity id="fileOperationNew.tooltip">
     <name xml:lang="en">Create a new document</name>
     <name xml:lang="de">Neues Dokument erstellen</name>
-  </entity>
-
-  <entity id="fileOperationNewEmptyMenuitem.tooltip">
-    <name xml:lang="en">Create a new empty document</name>
-    <name xml:lang="de">Neues leeres Dokument erstellen</name>
-  </entity>
-
-  <entity id="fileOperationNewXMLMenuitem.tooltip">
-    <name xml:lang="en">Create a new document with an XML skeleton</name>
-    <name xml:lang="de">Neues Dokument mit XML Gerüst erstellen</name>
-  </entity>
-
-  <entity id="fileOperationNewXHTMLMenuitem.tooltip">
-    <name xml:lang="en">Create a new document with an XHTML 1.1 skeleton</name>
-    <name xml:lang="de">Neues Dokument mit XHTML 1.1 Gerüst erstellen</name>
   </entity>
 
   <entity id="fileOperationNewFromTemplateLocalMenuitem.tooltip">
