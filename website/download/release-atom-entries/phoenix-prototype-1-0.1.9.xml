@@ -3,6 +3,7 @@
 <entry xmlns="http://www.w3.org/2005/Atom">
  <title>phoenix-prototype-1-0.1.9.xml</title>
  <author><name>Michael Wechner</name></author>
+ <link href="http://www.yulup.org/download/index.html"/>
 
  <id>urn:uuid:atom-release-entries-phoenix-prototype-1-0.1.9.xml</id>
  <updated>2006-09-19T23:08:57-01:00</updated>
