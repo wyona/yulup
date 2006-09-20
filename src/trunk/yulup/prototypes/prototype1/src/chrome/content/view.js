@@ -85,6 +85,8 @@ function View(aEditorController, aModel, aBarrier) {
      * @return {DocumentStateListener}
      */
     this.constructor.DocumentStateListener = function (aModel) {
+        /* DEBUG */ YulupDebug.ASSERT(aModel != null);
+
         this.model = aModel;
     };
 
@@ -779,6 +781,8 @@ WYSIWYGModeView.prototype = {
 
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGModeView.setupDocument() invoked\n");
 
+        /* DEBUG */ YulupDebug.ASSERT(aDocument != null);
+
         // extract the preamble
         documentPreamble  = aDocument.substring(0, aDocument.search(/<body/i));
         this.documentPreamble = documentPreamble;
@@ -886,7 +890,6 @@ WYSIWYGXSLTModeView.prototype = {
      *
      * @return {Undefined} does not have a return value
      */
-
     setUp: function () {
         var wysiwygXSLTEditor        = null;
         var commandControllerContext = null;
@@ -1392,24 +1395,21 @@ WYSIWYGXSLTMouseListener.prototype = {
 
 
 function NSCheckboxStateChangeListener(aView) {
-  this.view = aView;
+    this.view = aView;
 }
 
 NSCheckboxStateChangeListener.prototype = {
-
     view: null,
 
     handleEvent: function (aNSCheckboxStateChangeEvent) {
         // hook up paragraph inserter
         if (this.view.isNamespaceAware) {
-          this.view.isNamespaceAware = false;
+            this.view.isNamespaceAware = false;
         } else {
-          this.view.isNamespaceAware = true;
+            this.view.isNamespaceAware = true;
         }
     }
 };
-
-
 
 
 /**
@@ -1442,6 +1442,8 @@ function dumpTree(aEditor) {
  */
 function WYSIWYGDOMSerialiser(aRootNode) {
     /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMSerialiser(\"" + aRootNode + "\") invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aRootNode != null);
 
     this.rootNode = aRootNode;
 }
@@ -1501,6 +1503,8 @@ WYSIWYGDOMSerialiser.prototype = {
     serialiseDOMTree: function (aNode) {
         var child = null;
 
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
+
         // if emitNodeStart() returns false, don't inspect its children
         if (this.emitNodeStart(aNode)) {
             for (child = aNode.firstChild; child != null; child = child.nextSibling) {
@@ -1522,6 +1526,8 @@ WYSIWYGDOMSerialiser.prototype = {
      */
     emitNodeStart: function (aNode) {
         var retVal = true;
+
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
 
         switch (aNode.nodeType) {
         case Components.interfaces.nsIDOMNode.ELEMENT_NODE:
@@ -1578,6 +1584,8 @@ WYSIWYGDOMSerialiser.prototype = {
      * @return {Undefined}  does not have a return value
      */
     emitNodeEnd: function (aNode) {
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
+
         switch (aNode.nodeType) {
             case Components.interfaces.nsIDOMNode.ELEMENT_NODE:
             if (aNode.hasChildNodes()) {
@@ -1601,6 +1609,8 @@ WYSIWYGDOMSerialiser.prototype = {
  */
 function WYSIWYGDOMCleaner(aRootNode) {
     /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMCleaner(\"" + aRootNode + "\") invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aRootNode != null);
 
     this.rootNode = aRootNode;
 }
@@ -1638,6 +1648,8 @@ WYSIWYGDOMCleaner.prototype = {
         var child    = null;
         var tmpChild = null;
         var remove   = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
 
         if (aNode.hasChildNodes()) {
             // the current node should be removed unless we find a child node which stays
@@ -1680,6 +1692,9 @@ WYSIWYGDOMCleaner.prototype = {
      */
     shouldRemove: function (aNode) {
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMCleaner.shouldRemove(\"" + aNode + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
+
         if (aNode.nodeType == Components.interfaces.nsIDOMNode.ELEMENT_NODE && aNode.hasAttribute("type") && aNode.getAttribute("type") == "_moz") {
             // remove this node
             return true;
@@ -1700,6 +1715,8 @@ WYSIWYGDOMCleaner.prototype = {
  */
 function WYSIWYGXSLTDOMCleaner(aRootNode) {
     /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTDOMCleaner(\"" + aRootNode + "\") invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aRootNode != null);
 
     this.rootNode = aRootNode;
 }
@@ -1732,6 +1749,8 @@ WYSIWYGXSLTDOMCleaner.prototype = {
     cleanseDOMTree: function (aNode) {
         var child = null;
 
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
+
         this.cleanseNodeStart(aNode);
         for (child = aNode.firstChild; child != null; child = child.nextSibling) {
             this.cleanseDOMTree(child);
@@ -1750,27 +1769,28 @@ WYSIWYGXSLTDOMCleaner.prototype = {
      * @return {Undefined}  does not have a return value
      */
     cleanseNodeStart: function (aNode) {
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
 
         switch (aNode.nodeType) {
             case Components.interfaces.nsIDOMNode.ELEMENT_NODE:
-            if (aNode.hasAttribute("_yulup-location-path")) {
-                // remove it
-                aNode.removeAttribute("_yulup-location-path");
-            }
-            break;
+                if (aNode.hasAttribute("_yulup-location-path")) {
+                    // remove it
+                    aNode.removeAttribute("_yulup-location-path");
+                }
+                break;
             case Components.interfaces.nsIDOMNode.TEXT_NODE:
-            break;
+                break;
             case Components.interfaces.nsIDOMNode.PROCESSING_INSTRUCTION_NODE:
-            break;
+                break;
             case Components.interfaces.nsIDOMNode.COMMENT_NODE:
-            break;
+                break;
             case Components.interfaces.nsIDOMNode.DOCUMENT_NODE:
-            break;
+                break;
             case Components.interfaces.nsIDOMNode.DOCUMENT_TYPE_NODE:
-            break;
+                break;
             default:
-            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTDOMCleaner.cleanseNodeStart: unknown node \"" + aNode.nodeName + "\" of node type \"" + aNode.nodeType + "\" encountered\n");
-            throw new YulupEditorException("Yulup:view.js:WYSIWYGXSLTDOMCleaner.cleanseNodeStart: unknown node \"" + aNode.nodeName + "\" of node type \"" + aNode.nodeType + "\" encountered.");
+                /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTDOMCleaner.cleanseNodeStart: unknown node \"" + aNode.nodeName + "\" of node type \"" + aNode.nodeType + "\" encountered\n");
+                throw new YulupEditorException("Yulup:view.js:WYSIWYGXSLTDOMCleaner.cleanseNodeStart: unknown node \"" + aNode.nodeName + "\" of node type \"" + aNode.nodeType + "\" encountered.");
         }
     },
 
@@ -1784,6 +1804,8 @@ WYSIWYGXSLTDOMCleaner.prototype = {
      * @return {Undefined}  does not have a return value
      */
     cleanseNodeEnd: function (aNode) {
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
+
         switch (aNode.nodeType) {
             case Components.interfaces.nsIDOMNode.ELEMENT_NODE:
             break;
@@ -1796,6 +1818,8 @@ WYSIWYGXSLTDOMCleaner.prototype = {
 
 function TextEditorKeyListener(aEditor) {
     dump("Yulup:view.js:TextEditorKeyListener() invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aEditor != null);
 
     this.editor = aEditor;
 }
@@ -1842,6 +1866,8 @@ TextEditorKeyListener.prototype = {
 
 function ReadlineKeyBindingsListener(aEditorElem) {
     /* DEBUG */ dump("Yulup:view.js:ReadlineKeyBindingsListener() invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aEditorElem != null);
 
     this.editorElem = aEditorElem;
 }
@@ -2061,6 +2087,8 @@ ReadlineKeyBindingsListener.prototype = {
 function GuidedTagInserterKeyListener(aView) {
     dump("Yulup:view.js:GuidedTagInserterKeyListener() invoked\n");
 
+    /* DEBUG */ YulupDebug.ASSERT(aView != null);
+
     this.view = aView;
 }
 
@@ -2087,6 +2115,10 @@ GuidedTagInserterKeyListener.prototype = {
 };
 
 function GuidedTagInserter(aView, aXULDocument, aPromptContainer) {
+    /* DEBUG */ YulupDebug.ASSERT(aView            != null);
+    /* DEBUG */ YulupDebug.ASSERT(aXULDocument     != null);
+    /* DEBUG */ YulupDebug.ASSERT(aPromptContainer != null);
+
     this.view            = aView;
     this.xulDocument     = aXULDocument;
     this.promptContainer = aPromptContainer;
@@ -2375,16 +2407,16 @@ GuidedTagInserter.prototype = {
         } else if (aEvent.type == "command") {
             switch (aEvent.target.getAttribute("id")) {
                 case "uiPromptBoxAbortButton":
-                this.finishPrompting(null, null);
-                break;
+                    this.finishPrompting(null, null);
+                    break;
                 case "uiPromptBoxNonEmptyButton":
-                this.newTag += ">";
-                this.finishPrompting(this.newTag, "</" + this.tagName + ">");
-                break;
+                    this.newTag += ">";
+                    this.finishPrompting(this.newTag, "</" + this.tagName + ">");
+                    break;
                 case "uiPromptBoxEmptyButton":
-                this.newTag += "/>";
-                this.finishPrompting(this.newTag, null);
-                break;
+                    this.newTag += "/>";
+                    this.finishPrompting(this.newTag, null);
+                    break;
                 default:
             }
         }
