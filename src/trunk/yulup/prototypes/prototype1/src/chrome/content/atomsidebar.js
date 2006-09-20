@@ -59,6 +59,9 @@ var AtomSidebar = {
         // get a handle on this sidebar
         AtomSidebar.sidebar = document.getElementById("uiYulupAtomSidebarPage");
 
+        // set up the feed info deck
+        AtomSidebar.__feedInfoDeckSetUp();
+
         // fill the sidebar
         AtomSidebar.sidebar.fillSidebar(appIntrospection);
 
@@ -217,6 +220,15 @@ var AtomSidebar = {
         }
 
         AtomSidebar.currentSelection = flatSelection;
+    },
+
+    __feedInfoDeckSetUp: function () {
+        /* DEBUG */ dump("Yulup:atomsidebar.js:AtomSidebar.__feedInfoDeckSetUp() invoked\n");
+
+        document.getElementById("uiYulupAtomSidebarFeedInfoBox").docShell.allowJavascript    = false;
+        document.getElementById("uiYulupAtomSidebarFeedInfoBox").docShell.allowPlugins       = false;
+        document.getElementById("uiYulupAtomSidebarFeedInfoBox").docShell.allowMetaRedirects = false;
+        document.getElementById("uiYulupAtomSidebarFeedInfoBox").docShell.allowSubframes     = false;
     },
 
     __deleteFinishedCallback: function (aDocumentData, aException) {

@@ -1641,7 +1641,7 @@ WYSIWYGDOMCleaner.prototype = {
      * indicated by the shouldRemove() method, or if it
      * empty because all child nodes were removed.
      * @param  {nsIDOMNode} aNode the node to serialise
-     * @return {Undefined} does not have a return value
+     * @return {Boolean} returns true if the current node should be removed, false otherwise
      */
     cleanseDOMTree: function (aNode) {
         var child    = null;
