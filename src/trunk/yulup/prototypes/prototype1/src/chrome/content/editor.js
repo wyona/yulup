@@ -665,6 +665,9 @@ var Editor = {
                 Components.utils.reportError(aException);
             } else {
                 dump("Yulup:editor.js:Editor.documentUploadFinished: received neither document data nor an exception.\n");
+
+                // report generic error
+                alert(Editor.getStringbundleString("editorDocumentUploadFailure.label"));
             }
         }
     }
