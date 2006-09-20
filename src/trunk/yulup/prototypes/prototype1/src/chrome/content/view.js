@@ -998,10 +998,10 @@ WYSIWYGXSLTModeView.prototype = {
         var sourceElements = this.domDocument.getElementsByTagName("*");
 
         for (var i= 0; i < sourceElements.length; i++) {
-          if (this.domDocument.documentElement.isDefaultNamespace(sourceElements.item(i).namespaceURI)) {
-            defaultNamespace = sourceElements.item(i).namespaceURI;
-            break;
-          }
+            if (this.domDocument.documentElement.isDefaultNamespace(sourceElements.item(i).namespaceURI)) {
+                defaultNamespace = sourceElements.item(i).namespaceURI;
+                break;
+            }
         }
 
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.fillView: default Namespace is: \"" + defaultNamespace + "\"\n");
@@ -1017,16 +1017,16 @@ WYSIWYGXSLTModeView.prototype = {
         var prefix = null;
 
         if (defaultNamespace != null) {
-          var attrs = this.domDocument.documentElement.attributes;
-          for (var i= 0; i < attrs.length; i++) {
-            var attr = attrs.item(i);
-            if (attr.nodeValue == defaultNamespace && attr.nodeName.indexOf(":") > 1) {
-              var delim = attr.nodeName.indexOf(":");
-              prefix = attr.nodeName.substr(delim + 1, attr.nodeName.length);
+            var attrs = this.domDocument.documentElement.attributes;
+            for (var i= 0; i < attrs.length; i++) {
+                var attr = attrs.item(i);
+                if (attr.nodeValue == defaultNamespace && attr.nodeName.indexOf(":") > 1) {
+                    var delim = attr.nodeName.indexOf(":");
+                    prefix = attr.nodeName.substr(delim + 1, attr.nodeName.length);
+                }
             }
-          }
 
-          /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.fillView: default namespace prefix is: \"" + prefix + "\"\n");
+            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.fillView: default namespace prefix is: \"" + prefix + "\"\n");
         }
 
 
@@ -1036,8 +1036,8 @@ WYSIWYGXSLTModeView.prototype = {
 
         xsltProcessor.importStylesheet(this.sourceTaggerXSL);
         if (defaultNamespace != null && prefix != null) {
-          xsltProcessor.setParameter(null, "default-namespace", defaultNamespace);
-          xsltProcessor.setParameter(null, "default-prefix", prefix);
+            xsltProcessor.setParameter(null, "default-namespace", defaultNamespace);
+            xsltProcessor.setParameter(null, "default-prefix", prefix);
         }
 
         var taggedSourceDocument = xsltProcessor.transformToDocument(this.domDocument);
@@ -1056,24 +1056,24 @@ WYSIWYGXSLTModeView.prototype = {
             // Apply styleTemplate to the document before document styling by xslt
             if (this.styleTemplateMode == null || this.styleTemplateMode == "pre") {
 
-              var styleTemplate = Components.classes["@mozilla.org/xml/xml-document;1"].createInstance(Components.interfaces.nsIDOMXMLDocument);
-              var documentElement = styleTemplate.importNode(this.styleTemplate.documentElement, true);
-              styleTemplate.appendChild(documentElement);
+                var styleTemplate = Components.classes["@mozilla.org/xml/xml-document;1"].createInstance(Components.interfaces.nsIDOMXMLDocument);
+                var documentElement = styleTemplate.importNode(this.styleTemplate.documentElement, true);
+                styleTemplate.appendChild(documentElement);
 
-              // Import the tagged document source
-              var sourceNode = styleTemplate.importNode(taggedSourceDocument.documentElement, true);
+                // Import the tagged document source
+                var sourceNode = styleTemplate.importNode(taggedSourceDocument.documentElement, true);
 
-              // Lookup xi:include element and include source document
-              var xincludeElem = styleTemplate.evaluate("//xi:include", styleTemplate, styleTemplate.createNSResolver(styleTemplate.documentElement), XPathResult.ANY_TYPE, null).iterateNext();
-              xincludeElem.parentNode.replaceChild(sourceNode, xincludeElem);
+                // Lookup xi:include element and include source document
+                var xincludeElem = styleTemplate.evaluate("//xi:include", styleTemplate, styleTemplate.createNSResolver(styleTemplate.documentElement), XPathResult.ANY_TYPE, null).iterateNext();
+                xincludeElem.parentNode.replaceChild(sourceNode, xincludeElem);
 
-              var serializedStyleTemplate = this.xmlSerializer.serializeToString(styleTemplate);
+                var serializedStyleTemplate = this.xmlSerializer.serializeToString(styleTemplate);
 
-              /* DEBUG */ dump("Style Template + Source: " + serializedStyleTemplate);
+                /* DEBUG */ dump("Style Template + Source: " + serializedStyleTemplate);
 
-              taggedSourceDocument = styleTemplate;
+                taggedSourceDocument = styleTemplate;
             } else {
-              /** Not yet implemented **/
+                /** Not yet implemented **/
 
             }
 
@@ -1095,7 +1095,6 @@ WYSIWYGXSLTModeView.prototype = {
 
         /* Fill the view */
         try {
-
             /* What about using this.editor.contentDocument.innerHTML = content, see
              * also https://bugzilla.mozilla.org/show_bug.cgi?id=314987#c2 */
             this.view.rebuildDocumentFromSource(serializedDoc);
@@ -1124,29 +1123,26 @@ WYSIWYGXSLTModeView.prototype = {
         return retVal;
     },
 
-
     /** returns a document style xslt that propagates _yulup-location-path attributes from a tagged
-    ** document source to the transformed xhtmlDocument.
-    ** This is needed for mapping selections and text node changes from the xhtmlDocument contained in
-    ** the view back to the underlying xml document (source).
-    ** A patched document style has
-    ** <ul>
-    ** <li>@_yulup-location-path attribute selectors pointing to the current context node in all
-    ** parent nodes of templateSelectors (xsl:apply-templates). </li>
-    ** <li>span tags with @_yulup-location-path attribute selectors surrounding nodeValue selection
-    ** directives that point to the current context node. (xsl:value-of select="."/>)</li>
-    ** <li>span tags with @_yulup-location-path attributes that concatenate a @_yulup-location-path
-    ** selector of the current context node with the nodeValue selector, when pointing to a node relative
-    ** to the current context node.(xsl:value-of select="foo/bar/@foo")</li>
-    ** <li>span tags with a @_yulup-location-path attribute that simply contains the select pattern of
-    ** the contained nodeValue selector, when using absolute node addressing (<xsl:value-of select="/foo/bar")
-    ** </li>
-    ** </ul>
-    ** Note that selectors pointing to $variables are excluded from the patching process.
-    **/
-
+     ** document source to the transformed xhtmlDocument.
+     ** This is needed for mapping selections and text node changes from the xhtmlDocument contained in
+     ** the view back to the underlying xml document (source).
+     ** A patched document style has
+     ** <ul>
+     ** <li>@_yulup-location-path attribute selectors pointing to the current context node in all
+     ** parent nodes of templateSelectors (xsl:apply-templates). </li>
+     ** <li>span tags with @_yulup-location-path attribute selectors surrounding nodeValue selection
+     ** directives that point to the current context node. (xsl:value-of select="."/>)</li>
+     ** <li>span tags with @_yulup-location-path attributes that concatenate a @_yulup-location-path
+     ** selector of the current context node with the nodeValue selector, when pointing to a node relative
+     ** to the current context node.(xsl:value-of select="foo/bar/@foo")</li>
+     ** <li>span tags with a @_yulup-location-path attribute that simply contains the select pattern of
+     ** the contained nodeValue selector, when using absolute node addressing (<xsl:value-of select="/foo/bar")
+     ** </li>
+     ** </ul>
+     ** Note that selectors pointing to $variables are excluded from the patching process.
+     **/
     patchDocumentStyle: function (aDocumentXSL) {
-
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle(\"" + aDocumentXSL + "\") invoked\n");
 
         /* Remove output method declarations to prevent mozilla from inserting crap into the generated xhtml.
@@ -1155,23 +1151,25 @@ WYSIWYGXSLTModeView.prototype = {
         */
 
         try {
-          var outputMethodNode = aDocumentXSL.evaluate("xsl:stylesheet/xsl:output", aDocumentXSL, aDocumentXSL.createNSResolver(aDocumentXSL.documentElement), XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null).iterateNext();
-	      if (outputMethodNode != null)
-	        outputMethodNode.parentNode.removeChild(outputMethodNode);
-	    } catch (e) {
-          dump(e);
+            var outputMethodNode = aDocumentXSL.evaluate("xsl:stylesheet/xsl:output", aDocumentXSL, aDocumentXSL.createNSResolver(aDocumentXSL.documentElement), XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null).iterateNext();
+            if (outputMethodNode != null)
+                outputMethodNode.parentNode.removeChild(outputMethodNode);
+	    } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
         }
 
         /* Add _yulup-location-path attribute matcher to parent nodes of template selectors */
 
         try {
-          var templateSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet/*//xsl:apply-templates", aDocumentXSL, aDocumentXSL.createNSResolver(aDocumentXSL.documentElement), XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-          for (var i=0; i< templateSelectorNodes.snapshotLength; i++) {
-            parentNode = templateSelectorNodes.snapshotItem(i).parentNode;
-            parentNode.setAttribute("_yulup-location-path", "{@_yulup-location-path}");
-          }
-        } catch (e) {
-          dump(e);
+            var templateSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet/*//xsl:apply-templates", aDocumentXSL, aDocumentXSL.createNSResolver(aDocumentXSL.documentElement), XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+            for (var i=0; i< templateSelectorNodes.snapshotLength; i++) {
+                parentNode = templateSelectorNodes.snapshotItem(i).parentNode;
+                parentNode.setAttribute("_yulup-location-path", "{@_yulup-location-path}");
+            }
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
         }
 
         /* Insert _yulup-location-path span node around nodeValue selectors.
@@ -1179,38 +1177,38 @@ WYSIWYGXSLTModeView.prototype = {
         */
 
         try {
-          var nodeValueSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet//*/xsl:value-of[not(contains(@select, '$'))]", aDocumentXSL, aDocumentXSL.createNSResolver(aDocumentXSL.documentElement), XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-	      span = aDocumentXSL.createElement("span");
+            var nodeValueSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet//*/xsl:value-of[not(contains(@select, '$'))]", aDocumentXSL, aDocumentXSL.createNSResolver(aDocumentXSL.documentElement), XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+            span = aDocumentXSL.createElement("span");
 
-          for (var i=0; i< nodeValueSelectorNodes.snapshotLength; i++) {
-            selectorNode = nodeValueSelectorNodes.snapshotItem(i);
-            var select = selectorNode.getAttribute("select");
-            var path = null;
+            for (var i=0; i< nodeValueSelectorNodes.snapshotLength; i++) {
+                selectorNode = nodeValueSelectorNodes.snapshotItem(i);
+                var select = selectorNode.getAttribute("select");
+                var path = null;
 
-            /* Check if selector uses absolute node addressing. If so set _yulup-location-path to that node.
-            ** If relative addressing is used, concatenate _yulup-locatoin-path attribute selector
-            ** of the context node with the selected node
-            **/
-            if (select.indexOf("/") == 0) {
-              path = select;
-            } else {
-              path = "{@_yulup-location-path}/" + select;
+                /* Check if selector uses absolute node addressing. If so set _yulup-location-path to that node.
+                ** If relative addressing is used, concatenate _yulup-locatoin-path attribute selector
+                ** of the context node with the selected node
+                **/
+                if (select.indexOf("/") == 0) {
+                    path = select;
+                } else {
+                    path = "{@_yulup-location-path}/" + select;
+                }
+
+                aSpan = span.cloneNode(true);
+                aSpan.setAttribute("_yulup-location-path", path);
+                aSpan.appendChild(selectorNode.cloneNode(true));
+                selectorNode.parentNode.replaceChild(aSpan, selectorNode);
             }
-
-            aSpan = span.cloneNode(true);
-            aSpan.setAttribute("_yulup-location-path", path);
-            aSpan.appendChild(selectorNode.cloneNode(true));
-            selectorNode.parentNode.replaceChild(aSpan, selectorNode);
-          }
-        } catch (e) {
-          dump(e);
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
         }
         // dump("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle: patched document =\n" + this.xmlSerializer.serializeToString(aDocumentXSL) + "\n");
     },
 
 
     /** returns a transformed document after applying aXStylesheetDocument **/
-
     xsltTransform: function (aDocument, aXStylesheetDocument) {
         var xsltProcessor = null;
 
@@ -1227,16 +1225,13 @@ WYSIWYGXSLTModeView.prototype = {
 
 
     /** returns a node in the document source based on a passed xhtmlDocument node
-    ** by looking up _yulup-location-path attributes in the ancestor-or-self axis
-    ** and then issuing an xPath query based on the gathered location path data.
-    ** Supports two modes of operation: namespace aware/unware. This is needed for
-    ** source documents that do not use namespaces in a standardized way (quite a lot in fact).
-    ** Note that no fallback mechanism from namespace aware to unaware is implemented yet.
-    **/
-
-
+     ** by looking up _yulup-location-path attributes in the ancestor-or-self axis
+     ** and then issuing an xPath query based on the gathered location path data.
+     ** Supports two modes of operation: namespace aware/unware. This is needed for
+     ** source documents that do not use namespaces in a standardized way (quite a lot in fact).
+     ** Note that no fallback mechanism from namespace aware to unaware is implemented yet.
+     **/
     getSourceXPathForXHTMLNode: function (aXHTMLNode, aIsNamespaceAware) {
-
         var xPathToolBarLabel;
         var domDocument = this.domDocument;
         var xhtmlNode;
@@ -1251,12 +1246,12 @@ WYSIWYGXSLTModeView.prototype = {
 
 
         /** Look up location path by finding nearest _yulup-location-path attribute node.
-        ** Note that _yulup-locaton-path values of elements with mixed content do not contain information
-        ** about the actual text node selected. There is no way around this because marking source text nodes
-        ** with location path information would break styling the document. Therefore text node constraints
-        ** have to be estimated based on xhtml to source pattern matching.
-        **
-        **/
+         ** Note that _yulup-locaton-path values of elements with mixed content do not contain information
+         ** about the actual text node selected. There is no way around this because marking source text nodes
+         ** with location path information would break styling the document. Therefore text node constraints
+         ** have to be estimated based on xhtml to source pattern matching.
+         **
+         **/
 
         var locationPath = null;
 
@@ -1273,15 +1268,15 @@ WYSIWYGXSLTModeView.prototype = {
 
         /* no location path data found. Update toolbar and return null */
         if (locationPath == null || locationPath == "" || locationPath == 'undefined') {
-          xPathToolBarLabel.value = "-";
-          return null;
+            xPathToolBarLabel.value = "-";
+            return null;
         }
 
         var xPathExpr = locationPath;
 
         if (!namespaceAware) {
-          xPathToolBarLabel.value = "Not yet implemented!";
-          return null;
+            xPathToolBarLabel.value = "Not yet implemented!";
+            return null;
         }
 
         /* Query the source document for xPathExpr */
@@ -1293,14 +1288,14 @@ WYSIWYGXSLTModeView.prototype = {
         /** Do a xhtml to source node mapping to add text() constaints */
 
         if (sourceNode == null) {
-          xPathToolBarLabel.value = "Error! No source node for " + xPathExpr;
-          return null;
+            xPathToolBarLabel.value = "Error! No source node for " + xPathExpr;
+            return null;
         }
 
         // Attribute or element node selected
         if (sourceNode.nodeType == 2 || aXHTMLNode.nodeType == 1) {
-          xPathToolBarLabel.value = xPathExpr;
-          return xPathExpr;
+            xPathToolBarLabel.value = xPathExpr;
+            return xPathExpr;
         }
 
         /* Find a source (text) node with a value equal to selected xhtml node and calculate text()
@@ -1311,41 +1306,37 @@ WYSIWYGXSLTModeView.prototype = {
 
         if (aXHTMLNode.nodeType == 3) {
 
-          var childNodes = sourceNode.childNodes;
-          var textNodeCount = 0;
-          var selPosition = null;
+            var childNodes = sourceNode.childNodes;
+            var textNodeCount = 0;
+            var selPosition = null;
 
-          for (var i=0; i < childNodes.length; i++) {
-            var childNode = childNodes.item(i);
-            if (childNode.nodeType == 3) {
-              textNodeCount++;
-              if(childNode.nodeValue == aXHTMLNode.nodeValue) {
-                selPosition = textNodeCount;
-              }
+            for (var i=0; i < childNodes.length; i++) {
+                var childNode = childNodes.item(i);
+                if (childNode.nodeType == 3) {
+                    textNodeCount++;
+                    if(childNode.nodeValue == aXHTMLNode.nodeValue) {
+                        selPosition = textNodeCount;
+                    }
+                }
             }
-          }
 
-          if (textNodeCount == 1) {
-            xPathExpr = xPathExpr + "/text()";
-          } else if (textNodeCount > 1 && selPosition != null) {
-            xPathExpr = xPathExpr + "/text()[" + selPosition + "]";
-          }
+            if (textNodeCount == 1) {
+                xPathExpr = xPathExpr + "/text()";
+            } else if (textNodeCount > 1 && selPosition != null) {
+                xPathExpr = xPathExpr + "/text()[" + selPosition + "]";
+            }
 
-          xPathToolBarLabel.value = xPathExpr;
-          return xPathExpr;
-      }
-
+            xPathToolBarLabel.value = xPathExpr;
+            return xPathExpr;
+        }
     },
 
 
     updateSource: function () {
-
         if (this.currentSourceNode != null && (this.currentSourceNode.nodeType == 3 || this.currentSourceNode.nodeType == 2)) {
             this.currentSourceNode.nodeValue = this.currentXHTMLNode.nodeValue;
         }
-
     }
-
 };
 
 
