@@ -709,7 +709,7 @@ WYSIWYGModeView.prototype = {
 
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGModeView.contentToString() invoked\n");
 
-        documentBody = (new WYSIWYGDOMSerialiser(this.editor.contentDocument)).serialise();
+        documentBody = (new WYSIWYGDOMSerialiser((new WYSIWYGDOMCleaner(this.editor.contentDocument)).cleanse())).serialise();
 
         return this.documentPreamble + documentBody + "\n</html>";
     },
@@ -1595,6 +1595,105 @@ WYSIWYGDOMSerialiser.prototype = {
             break;
             default:
             // nothing to do here
+        }
+    }
+};
+
+
+/**
+ * WYSIWYGDOMCleaner constructor. Instantiates a new object of
+ * type WYSIWYGDOMCleaner.
+ *
+ * @constructor
+ * @param  {nsIDOMDocument}    aRootNode the DOM document to clean
+ * @return {WYSIWYGDOMCleaner}
+ */
+function WYSIWYGDOMCleaner(aRootNode) {
+    /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMCleaner(\"" + aRootNode + "\") invoked\n");
+
+    this.rootNode = aRootNode;
+}
+
+WYSIWYGDOMCleaner.prototype = {
+    rootNode:     null,
+
+    /**
+     * Clean the body of the DOM document which was set
+     * by the constructor.
+     *
+     * @return {nsIDOMDocument} a cleaned document
+     */
+    cleanse: function () {
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMCleaner.cleanse() invoked\n");
+
+        this.cleanseDOMTree(this.rootNode);
+
+        return this.rootNode;
+    },
+
+    /**
+     * Clean a node and its subtree.
+     *
+     * Removes all nodes which are indicated as to be
+     * removed by the shouldRemove() method.
+     *
+     * Note that the current node is removed if either
+     * indicated by the shouldRemove() method, or if it
+     * empty because all child nodes were removed.
+     * @param  {nsIDOMNode} aNode the node to serialise
+     * @return {Undefined} does not have a return value
+     */
+    cleanseDOMTree: function (aNode) {
+        var child    = null;
+        var tmpChild = null;
+        var remove   = null;
+
+        if (aNode.hasChildNodes()) {
+            // the current node should be removed unless we find a child node which stays
+            remove = true;
+
+            // walk all child nodes
+            child = aNode.firstChild;
+
+            while (child != null) {
+                // iterate to sibling node because child might get removed
+                tmpChild = child;
+                child    = child.nextSibling;
+
+                if (this.cleanseDOMTree(tmpChild)) {
+                    // the child node has to be removed
+                    /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMCleaner.cleanseDOMTree: remove node \"" + tmpChild + "\"\n");
+                    aNode.removeChild(tmpChild);
+                } else {
+                    // don't remove the current node since we have found a child node which should stay
+                    remove = false;
+                }
+            }
+        } else {
+            // the current node has no child nodes, therefore removal status only depends on the current node itself
+            remove = false;
+        }
+
+        // if the current node should be removed, override the removal status as set by its children
+        return (this.shouldRemove(aNode) ? true : remove);
+    },
+
+    /**
+     * Check if the given node should be removed.
+     *
+     * All nodes which contain an attribute called "type" with
+     * value "_moz" are marked for removal.
+     *
+     * @param  {nsIDOMNode} aNode the node to check
+     * @return {Boolean} returns true if given node should be removed, false otherwise
+     */
+    shouldRemove: function (aNode) {
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMCleaner.shouldRemove(\"" + aNode + "\") invoked\n");
+        if (aNode.nodeType == Components.interfaces.nsIDOMNode.ELEMENT_NODE && aNode.hasAttribute("type") && aNode.getAttribute("type") == "_moz") {
+            // remove this node
+            return true;
+        } else {
+            return false;
         }
     }
 };
