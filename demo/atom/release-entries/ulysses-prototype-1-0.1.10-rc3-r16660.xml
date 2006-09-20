@@ -5,7 +5,9 @@
  <author><name>Michael Wechner</name></author>
 
  <id>urn:yanel-uuid:atom:release-entries:ulysses-prototype-1-0.1.10-rc3-r16660.xml</id>
+<!-- Obsolete: Will be added dynamically ...
  <link rel="edit" href="ulysses-prototype-1-0.1.10-rc3-r16660.xml"/>
+-->
  <updated>2006-09-20T09:49:56-01:00</updated>
  <published>2006-08-16T16:30:56-01:00</published>
 
