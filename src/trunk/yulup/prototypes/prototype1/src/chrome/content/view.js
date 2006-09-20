@@ -1641,6 +1641,7 @@ WYSIWYGDOMCleaner.prototype = {
      * Note that the current node is removed if either
      * indicated by the shouldRemove() method, or if it
      * empty because all child nodes were removed.
+     *
      * @param  {nsIDOMNode} aNode the node to serialise
      * @return {Boolean} returns true if the current node should be removed, false otherwise
      */
@@ -1751,12 +1752,11 @@ WYSIWYGXSLTDOMCleaner.prototype = {
 
         /* DEBUG */ YulupDebug.ASSERT(aNode != null);
 
-        this.cleanseNodeStart(aNode);
+        this.cleanseNode(aNode);
+
         for (child = aNode.firstChild; child != null; child = child.nextSibling) {
             this.cleanseDOMTree(child);
         }
-
-        this.cleanseNodeEnd(aNode);
     },
 
     /**
@@ -1768,7 +1768,7 @@ WYSIWYGXSLTDOMCleaner.prototype = {
      * @param  {nsIDOMNode} aNode the node to clean
      * @return {Undefined}  does not have a return value
      */
-    cleanseNodeStart: function (aNode) {
+    cleanseNode: function (aNode) {
         /* DEBUG */ YulupDebug.ASSERT(aNode != null);
 
         switch (aNode.nodeType) {
@@ -1789,28 +1789,8 @@ WYSIWYGXSLTDOMCleaner.prototype = {
             case Components.interfaces.nsIDOMNode.DOCUMENT_TYPE_NODE:
                 break;
             default:
-                /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTDOMCleaner.cleanseNodeStart: unknown node \"" + aNode.nodeName + "\" of node type \"" + aNode.nodeType + "\" encountered\n");
-                throw new YulupEditorException("Yulup:view.js:WYSIWYGXSLTDOMCleaner.cleanseNodeStart: unknown node \"" + aNode.nodeName + "\" of node type \"" + aNode.nodeType + "\" encountered.");
-        }
-    },
-
-    /**
-     * Clean the passed DOM node.
-     *
-     * This method should be called after the subtree of the
-     * node was visited.
-     *
-     * @param  {nsIDOMNode} aNode the node to clean
-     * @return {Undefined}  does not have a return value
-     */
-    cleanseNodeEnd: function (aNode) {
-        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
-
-        switch (aNode.nodeType) {
-            case Components.interfaces.nsIDOMNode.ELEMENT_NODE:
-            break;
-            default:
-            // nothing to do here
+                /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTDOMCleaner.cleanseNode: unknown node \"" + aNode.nodeName + "\" of node type \"" + aNode.nodeType + "\" encountered\n");
+                throw new YulupEditorException("Yulup:view.js:WYSIWYGXSLTDOMCleaner.cleanseNode: unknown node \"" + aNode.nodeName + "\" of node type \"" + aNode.nodeType + "\" encountered.");
         }
     }
 };
