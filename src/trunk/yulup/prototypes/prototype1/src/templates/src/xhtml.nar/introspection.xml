@@ -52,6 +52,5 @@
 
   <new>
     <template name="XHTML Document" mime-type="application/xhtml+xml" uri="xhtml-template.xml"/>
-    <template name="XHTML Document flavor" mime-type="application/xhtml+xml" uri="xhtml-template.xml"/>
   </new>
 </introspection>
