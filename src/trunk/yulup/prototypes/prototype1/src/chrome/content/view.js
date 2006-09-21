@@ -251,6 +251,185 @@ function View(aEditorController, aModel, aBarrier) {
         }
     };
 
+    /**
+     * TransactionListener constructor. Instantiates a new object of
+     * type TransactionListener.
+     *
+     * Note that this type implements the nsITransactionListener
+     * interface.
+     *
+     * @constructor
+     * @param  {nsIEditor}           aEditor the editor which should be acted upon
+     * @return {TransactionListener}
+     */
+    this.constructor.TransactionListener = function (aEditor) {
+        /* DEBUG */ YulupDebug.ASSERT(aEditor != null);
+
+        this.__editor = aEditor;
+    };
+
+    this.constructor.TransactionListener.prototype = {
+        __editor: null,
+
+        /**
+         * Called after a new transaction batch starts.
+         *
+         * @param  {nsITransactionManager} aManager the transaction manager that began the batch
+         * @param  {nsresult}              aResult  the nsresult returned after beginning a batch
+         * @return {Undefined} does not have a return value
+         */
+        didBeginBatch: function (aManager, aResult) {
+            return;
+        },
+
+        /**
+         * Called after the transaction manager calls the
+         * doTransaction() method of a transaction.
+         *
+         * @param  {nsITransactionManager} aManager     the transaction manager that did the transaction
+         * @param  {nsITransaction}        aTransaction the transaction that was executed
+         * @param  {nsresult}              aResult      the nsresult returned after executing the transaction
+         * @return {Undefined} does not have a return value
+         */
+        didDo: function (aManager, aTransaction, aResult) {
+            return;
+        },
+
+        /**
+         * Called after the transaction manager ends a batch.
+         *
+         * @param  {nsITransactionManager} aManager the transaction manager ending a batch
+         * @param  {nsresult}              aResult  the nsresult returned after ending a batch
+         * @return {Undefined} does not have a return value
+         */
+        didEndBatch: function (aManager, aResult) {
+            return;
+        },
+
+        /**
+         * Called after the transaction manager tries to merge a transaction,
+         * that was just executed, with the transaction at the top of the undo
+         * stack.
+         *
+         * @param  {nsITransactionManager} aManager            the transaction manager ending a batch
+         * @param  {nsITransaction}        aTopTransaction     the transaction at the top of the undo stack
+         * @param  {nsITransaction}        aTransactionToMerge the transaction to merge
+         * @param  {Boolean}               aDidMerge           true if transaction was merged, else false
+         * @param  {nsresult}              aResult             the nsresult returned after the merge attempt
+         * @return {Undefined} does not have a return value
+         */
+        didMerge: function (aManager, aTopTransaction, aTransactionToMerge, aDidMerge, aResult) {
+            return;
+        },
+
+        /**
+         * Called after the transaction manager calls the Redo()
+         * method of a transaction.
+         *
+         * @param  {nsITransactionManager} aManager     the transaction manager redoing the transaction
+         * @param  {nsITransaction}        aTransaction the transaction being redone
+         * @param  {nsresult}              aResult      the nsresult returned after redoing the transaction
+         * @return {Undefined} does not have a return value
+         */
+        didRedo: function (aManager, aTransaction, aResult) {
+            /* DEBUG */ dump("Yulup:view.js:View.TransactionListener.didRedo() invoked\n");
+
+            // scroll to current caret position
+            this.__editor.selectionController.scrollSelectionIntoView(Components.interfaces.nsISelectionController.SELECTION_NORMAL,
+                                                                      Components.interfaces.nsISelectionController.SELECTION_FOCUS_REGION,
+                                                                      false);
+        },
+
+        /**
+         * Called after the transaction manager calls the Undo()
+         * method of a transaction.
+         *
+         * @param  {nsITransactionManager} aManager     the transaction manager undoing the transaction
+         * @param  {nsITransaction}        aTransaction the transaction being undone
+         * @param  {nsresult}              aResult      the nsresult returned after undoing the transaction
+         * @return {Undefined} does not have a return value
+         */
+        didUndo: function (aManager, aTransaction, aResult) {
+            /* DEBUG */ dump("Yulup:view.js:View.TransactionListener.didUndo() invoked\n");
+
+            // scroll to current caret position
+            this.__editor.selectionController.scrollSelectionIntoView(Components.interfaces.nsISelectionController.SELECTION_NORMAL,
+                                                                      Components.interfaces.nsISelectionController.SELECTION_FOCUS_REGION,
+                                                                      false);
+        },
+
+        /**
+         * Called before the transaction manager begins a batch.
+         *
+         * @param  {nsITransactionManager} aManager the transaction manager beginning the batch
+         * @return {Undefined} does not have a return value
+         */
+        willBeginBatch: function (aManager) {
+            return;
+        },
+
+        /**
+         * Called before the transaction manager calls a transaction's
+         * doTransaction() method.
+         *
+         * @param  {nsITransactionManager} aManager      the transaction manager doing the transaction
+         * @param  {nsITransaction}        aTransaction  the transaction being executed
+         * @return {Undefined} does not have a return value
+         */
+        willDo: function (aManager, aTransaction) {
+            return;
+        },
+
+        /**
+         * Called before the transaction manager ends a batch.
+         *
+         * @param  {nsITransactionManager} aManager the transaction manager ending the batch
+         * @return {Undefined} does not have a return value
+         */
+        willEndBatch: function (aManager) {
+            return;
+        },
+
+        /**
+         * Called before the transaction manager tries to merge a transaction,
+         * that was just executed, with the transaction at the top of the
+         * undo stack.
+         *
+         * @param  {nsITransactionManager} aManager            the transaction manager ending a batch
+         * @param  {nsITransaction}        aTopTransaction     the transaction at the top of the undo stack
+         * @param  {nsITransaction}        aTransactionToMerge the transaction to merge
+         * @return {Undefined} does not have a return value
+         */
+        willMerge: function (aManager, aTopTransaction, aTransactionToMerge) {
+            return;
+        },
+
+        /**
+         * Called before the transaction manager calls the Redo() method
+         * of a transaction.
+         *
+         * @param  {nsITransactionManager} aManager      the transaction manager redoing the transaction
+         * @param  {nsITransaction}        aTransaction  the transaction being redone
+         * @return {Undefined} does not have a return value
+         */
+        willRedo: function (aManager, aTransaction) {
+            return;
+        },
+
+        /**
+         * Called before the transaction manager calls the Undo() method of
+         * a transaction
+         *
+         * @param  {nsITransactionManager} aManager      the transaction manager undoing the transaction
+         * @param  {nsITransaction}        aTransaction  the transaction being undone
+         * @return {Undefined} does not have a return value
+         */
+        willUndo: function (aManager, aTransaction) {
+            return;
+        }
+    };
+
+
     this.controller   = aEditorController;
     this.model        = aModel;
     this.barrier      = aBarrier;
@@ -450,6 +629,9 @@ SourceModeView.prototype = {
 
             // hook up EditActionListener
             this.editorImpl.addEditActionListener(new View.EditActionListener(this, this.model));
+
+            // hook up TransactionListener
+            //this.editorImpl.transactionManager.AddListener(new View.TransactionListener(this.editorImpl));
 
             this.view = sourceEditor.getEditor(sourceEditor.contentWindow);
             this.view.QueryInterface(Components.interfaces.nsIPlaintextEditor);
@@ -914,10 +1096,18 @@ WYSIWYGXSLTModeView.prototype = {
             this.view.QueryInterface(Components.interfaces.nsIHTMLObjectResizer);
             this.view.objectResizingEnabled = false;
 
+            // disable absolute positioning
+            this.view.QueryInterface(Components.interfaces.nsIHTMLAbsPosEditor);
+            this.view.absolutePositioningEnabled = false;
+
             this.view.QueryInterface(Components.interfaces.nsIHTMLEditor);
 
             // make the caret visible even if the current selection is not collapsed
             this.view.selectionController.setCaretVisibilityDuringSelection(true);
+
+            // set editor attributes
+            this.view.enableUndo(true);
+            this.view.returnInParagraphCreatesNewParagraph = false;
 
             // set the document URI
             wysiwygXSLTEditor.docShell.setCurrentURI(this.model.documentReference.getLoadURI());
