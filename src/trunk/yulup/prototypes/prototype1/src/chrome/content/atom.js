@@ -805,62 +805,64 @@ AtomFeed.prototype = {
         }
     },
 
-    __loadFinishedHandler: function (aDocumentData, aResponseStatusCode, aContext) {
+    __loadFinishedHandler: function (aDocumentData, aResponseStatusCode, aContext, aResponseHeaders, aException) {
         var domParser    = null;
         var documentRoot = null;
         var feedDOM      = null;
         var xmlBase      = null;
         var xmlLang      = null;
 
-        /* DEBUG */ dump("Yulup:atom.js:AtomFeed.__loadFinishedHandler(\"" + aDocumentData + "\", \"" + aResponseStatusCode + "\", \"" + aContext + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:atom.js:AtomFeed.__loadFinishedHandler(\"" + aDocumentData + "\", \"" + aResponseStatusCode + "\", \"" + aContext + "\", \"" + aResponseHeaders + "\", \"" + aException + "\") invoked\n");
 
         // we finished loading
         aContext.target.__loading = false;
 
-        try {
-            if (aResponseStatusCode == 200) {
-                // success, set document
-                domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"].createInstance(Components.interfaces.nsIDOMParser);
+        if (!aException) {
+            try {
+                if (aResponseStatusCode == 200) {
+                    // success, set document
+                    domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"].createInstance(Components.interfaces.nsIDOMParser);
 
-                feedDOM = domParser.parseFromString(aDocumentData, "text/xml");
+                    feedDOM = domParser.parseFromString(aDocumentData, "text/xml");
 
-                documentRoot = feedDOM.documentElement;
-                if (!((documentRoot.tagName == "parserError") || (documentRoot.namespaceURI == "http://www.mozilla.org/newlayout/xml/parsererror.xml"))) {
-                    // all is well
-                    aContext.target.feed = feedDOM;
+                    documentRoot = feedDOM.documentElement;
+                    if (!((documentRoot.tagName == "parserError") || (documentRoot.namespaceURI == "http://www.mozilla.org/newlayout/xml/parsererror.xml"))) {
+                        // all is well
+                        aContext.target.feed = feedDOM;
 
-                    // extract base and lang common attributes
-                    xmlBase = documentRoot.getAttribute("base");
-                    xmlLang = documentRoot.getAttribute("lang");
+                        // extract base and lang common attributes
+                        xmlBase = documentRoot.getAttribute("base");
+                        xmlLang = documentRoot.getAttribute("lang");
 
-                    try {
-                        if (xmlBase) {
-                            aContext.target.base = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).ioService.newURI(xmlBase, null, null);
+                        try {
+                            if (xmlBase) {
+                                aContext.target.base = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).ioService.newURI(xmlBase, null, null);
+                            }
+                        } catch (exception) {
+                            /* DEBUG */ dump("Yulup:atom.js:AtomFeed.__loadFinishedHandler: there was a problem parsing the base URI \"" + xmlBase + "\". We ignore it and use the feed URI as base URI for the descendants instead (if present).\n");
+                            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:atom.js:AtomFeed.__loadFinishedHandler", exception);
+                            Components.utils.reportError(exception);
                         }
-                    } catch (exception) {
-                        /* DEBUG */ dump("Yulup:atom.js:AtomFeed.__loadFinishedHandler: there was a problem parsing the base URI \"" + xmlBase + "\". We ignore it and use the feed URI as base URI for the descendants instead (if present).\n");
-                        /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:atom.js:AtomFeed.__loadFinishedHandler", exception);
-                        Components.utils.reportError(exception);
+
+                        aContext.target.lang = xmlLang;
+
+                        aContext.callback.call(aContext.context, aContext.target);
+
+                        return;
                     }
-
-                    aContext.target.lang = xmlLang;
-
-                    aContext.callback.call(aContext.context, aContext.target);
-
-                    return;
                 }
+            } catch (exception) {
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:atom.js:AtomFeed.__loadFinishedHandler", exception);
+                Components.utils.reportError(exception);
+
+                aContext.target.feed = null;
+                aContext.callback.call(aContext.context, aContext.target);
             }
-
-            // there is a problem with the feed
-            aContext.target.feed = null;
-            aContext.callback.call(aContext.context, aContext.target);
-        } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:atom.js:AtomFeed.__loadFinishedHandler", exception);
-            Components.utils.reportError(exception);
-
-            aContext.target.feed = null;
-            aContext.callback.call(aContext.context, aContext.target);
         }
+
+        // there is a problem with the feed
+        aContext.target.feed = null;
+        aContext.callback.call(aContext.context, aContext.target);
     },
 
     getFeedInformation: function () {

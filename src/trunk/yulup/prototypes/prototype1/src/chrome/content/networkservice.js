@@ -559,10 +559,12 @@ DownloadObserver.prototype = {
                         } catch (exception) {
                             // failed to restart request
                             this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, exception);
+                            return;
                         }
                     } else {
                         // no location header or no headers available at all; bail out
                         this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, new YulupException("Yulup:networkservice.js:DownloadObserver.onDownloadComplete: request failed, return code is \"" + aStatusCode + "\""));
+                        return;
                     }
                     break;
 
@@ -585,11 +587,13 @@ DownloadObserver.prototype = {
                              * headers were not accessible, or the specified authentication
                              * scheme is unknown. Bail out. */
                             this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, exception);
+                            return;
                         }
                     } else {
                         /* We received a 401, but the caller did not order us to authenticate,
                          * therefore he is expecting a potential authentication failure. */
                         this.request.requestFinishedCallback(aResult, responseStatusCode, this.request.context, null);
+                        return;
                     }
                     break;
 
@@ -597,12 +601,14 @@ DownloadObserver.prototype = {
                     /* Everything went fine (even if we received 401, but the caller did not order
                      * us to authenticate, therefore he is expecting a potential authentication failure). */
                     this.request.requestFinishedCallback(aResult, responseStatusCode, this.request.context, null);
+                    return;
             }
         } else {
             // request failed
             /* DEBUG */ dump("Yulup:networkservice.js:DownloadObserver.onDownloadComplete: load failed\n");
 
             this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, new YulupException("Yulup:networkservice.js:DownloadObserver.onDownloadComplete: request failed, return code is \"" + aStatusCode + "\""));
+            return;
         }
     }
 };
@@ -732,10 +738,16 @@ StreamListener.prototype = {
 
         if (Components.isSuccessCode(aStatusCode)) {
             // request was successful
-            unicodeConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+            try {
+                unicodeConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
 
-            unicodeConverter.charset = "UTF-8";
-            unicodeDoc = unicodeConverter.ConvertToUnicode(this.documentData);
+                unicodeConverter.charset = "UTF-8";
+                unicodeDoc = unicodeConverter.ConvertToUnicode(this.documentData);
+            } catch (exception) {
+                // conversion failed
+                this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, exception);
+                return;
+            }
 
             /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStopRequest: document data =\n" + unicodeDoc + "\n");
 
@@ -762,10 +774,12 @@ StreamListener.prototype = {
                         } catch (exception) {
                             // failed to restart request
                             this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, exception);
+                            return;
                         }
                     } else {
                         // no location header or no headers available at all; bail out
                         this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, new YulupException("Yulup:networkservice.js:StreamListener.onStopRequest: request failed, return code is \"" + aStatusCode + "\""));
+                        return;
                     }
                     break;
 
@@ -782,23 +796,27 @@ StreamListener.prototype = {
                              * headers were not accessible, or the specified authentication
                              * scheme is unknown. Bail out. */
                             this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, exception);
+                            return;
                         }
                     } else {
                         /* We received a 401, but the caller did not order us to authenticate,
                          * therefore he is expecting a potential authentication failure. */
                         this.request.requestFinishedCallback(unicodeDoc, responseStatusCode, this.request.context, responseHeaders, null);
+                        return;
                     }
                     break;
 
                 default:
                     // everything went fine
                     this.request.requestFinishedCallback(unicodeDoc, responseStatusCode, this.request.context, responseHeaders, null);
+                    return;
             }
         } else {
             // request failed
             /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStopRequest: load failed\n");
 
             this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, new YulupException("Yulup:networkservice.js:StreamListener.onStopRequest: request failed, return code is \"" + aStatusCode + "\""));
+            return;
         }
     },
 
