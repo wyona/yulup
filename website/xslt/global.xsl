@@ -58,10 +58,7 @@ WARNING: This file has been generated automatically. All changes will be lost.
 <a href="{$yarep.back2realm}screenshots.html">Screenshots</a><br/>
 <a href="{$yarep.back2realm}faq.html">FAQ</a><br/>
 <a href="{$yarep.back2realm}license.html">License</a><br/>
-<a href="http://yulup.wyona.org/demo/">Demo</a>
-<!--
-<a href="http://yulup.wyona.org/demo/" target="_blank">Demo</a>
--->
+<a href="http://demo.yulup.org">Demo</a>
 
 <br/><br/>
 <b>Community/Developers</b><br/>
