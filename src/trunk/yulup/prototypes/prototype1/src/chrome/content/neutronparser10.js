@@ -172,7 +172,7 @@ NeutronParser10.prototype = {
 
     __parseTemplates: function(aDocument, aNode) {
         var templates     = null;
-        var tempalte      = null;
+        var template      = null;
         var templateArray = new Array();
         var index         = 0;
         var uri           = null;

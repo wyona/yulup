@@ -157,6 +157,7 @@ WidgetManager.prototype = {
     addWidgets: function(aWidgets) {
         var widget    = null;
         var widgetDir = null;
+        var iconFile  = null;
         var ioService = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidgets(\"" + aWidgets + "\") invoked\n");
@@ -189,7 +190,7 @@ WidgetManager.prototype = {
                     // create the widget icon file
                     iconFile = widgetDir.clone();
                     iconFile.append(widget.icon);
-                    iconFile.create(Components.interfaces.nsIFile.FILE_TYPE, 0755);
+                    iconFile.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0755);
 
                     /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: tmp icon file = \"" + iconFile.path + "\"\n");
 

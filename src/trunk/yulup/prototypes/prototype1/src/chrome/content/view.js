@@ -2051,6 +2051,8 @@ TextEditorKeyListener.prototype = {
                 break;
             }
         }
+
+        return true;
     }
 };
 
@@ -2271,6 +2273,8 @@ ReadlineKeyBindingsListener.prototype = {
                 break;
             }
         }
+
+        return true;
     }
 };
 

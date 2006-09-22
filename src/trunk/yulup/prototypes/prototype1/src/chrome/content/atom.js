@@ -65,7 +65,7 @@ var APP = {
      * @param  {Array}    aResponseHeaders         the response headers
      * @param  {Error}    aException               an exception, or null if everything went well
      * @return {Undefined} does not have a return value
-     */ 
+     */
     __requestFinishedHandler: function(aDocumentData, aResponseStatusCode, aContext, aResponseHeaders) {
 
         /* DEBUG */ dump("Yulup:atom.js:APP.__requestFinishedHandler() invoked\n");
@@ -166,26 +166,29 @@ var APP = {
      * @param  {nsIDOMXMLDocument} aDocument the APP introspection document to parse
      * @param  {String}            aBaseURI  the URI of the introspection document
      * @return {APPParser}         the Atom Publishing Protocol parser best matching the used APP version
+     * @throws {AtomException}
      */
     parserFactory: function (aDocument, aBaseURI) {
-        var namespace           = null;
-        var introspectionParser = null;
+        var namespace = null;
+        var appParser = null;
 
         /* DEBUG */ dump("Yulup:atom.js:APP.parserFactory(\"" + aDocument + "\", \"" + aBaseURI + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aDocument != null);
         /* DEBUG */ YulupDebug.ASSERT(aBaseURI != null);
 
-        // extract introspection version
+        // extract APP version
         switch (aDocument.documentElement.namespaceURI) {
             case APP_09_NAMESPACE:
                 // instantiate APP 0.9 parser
-                return new APPParser09(aDocument, aBaseURI);
+                appParser = new APPParser09(aDocument, aBaseURI);
                 break;
             default:
                 // no parser available for this version
                 throw new AtomException("Yulup:atom.js:APP.parserFactory: APP version \"" + aDocument.documentElement.namespaceURI + "\" not supported.");
         }
+
+        return appParser;
     }
 };
 
@@ -224,10 +227,11 @@ var Atom = {
      * @param  {Boolean}           aStrict       indicates if the parser should be strict about validity errors or not
      * @param  {Function}          aErrorHandler an error handler with signature function (Error aError) [optional]
      * @return {AtomParser}        the Atom parser best matching the used Atom version
+     * @throws {AtomException}
      */
     parserFactory: function (aDocument, aBaseURI, aStrict, aErrorHandler) {
-        var namespace           = null;
-        var introspectionParser = null;
+        var namespace  = null;
+        var atomParser = null;
 
         /* DEBUG */ dump("Yulup:atom.js:Atom.parserFactory(\"" + aDocument + "\", \"" + aBaseURI + "\", \"" + aStrict + "\", \"" + aErrorHandler + "\") invoked\n");
 
@@ -235,16 +239,18 @@ var Atom = {
         /* DEBUG */ YulupDebug.ASSERT(aBaseURI != null);
         /* DEBUG */ YulupDebug.ASSERT(aStrict != null);
 
-        // extract introspection version
+        // extract Atom version
         switch (aDocument.documentElement.namespaceURI) {
             case ATOM_10_NAMESPACE:
                 // instantiate Atom 1.0 parser
-                return new AtomParser10(aDocument, aBaseURI, aStrict, aErrorHandler);
+                atomParser = new AtomParser10(aDocument, aBaseURI, aStrict, aErrorHandler);
                 break;
             default:
                 // no parser available for this version
                 throw new AtomException("Yulup:atom.js:Atom.parserFactory: Atom version \"" + aDocument.documentElement.namespaceURI + "\" not supported.");
         }
+
+        return atomParser;
     }
 };
 
@@ -670,7 +676,7 @@ function AtomCommon(aBaseURI, aLang) {
 
 AtomCommon.prototype = {
     base: null,
-    lang: null,
+    lang: null
 };
 
 

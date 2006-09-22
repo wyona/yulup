@@ -162,25 +162,28 @@ var NeutronAuth = {
      *
      * @param  {nsIDOMXMLDocument} aDocument the Neutron-Auth document to parse
      * @return {NeutronAuthParser} the Neutron-Auth parser best matching the used Neutron-Auth version
+     * @throws {NeutronAuthException}
      */
     __parserFactory: function (aDocument) {
-        var namespace           = null;
-        var introspectionParser = null;
+        var namespace         = null;
+        var neutronAuthParser = null;
 
         /* DEBUG */ dump("Yulup:neutronauth.js:NeutronAuth.__parserFactory(\"" + aDocument + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aDocument != null);
 
-        // extract introspection version
+        // extract Neutron-Auth version
         switch (aDocument.documentElement.namespaceURI) {
             case NEUTRON_AUTH_10_NAMESPACE:
                 // instantiate Neutron-Auth 1.0 parser
-                return new NeutronAuthParser10(aDocument);
+                neutronAuthParser = new NeutronAuthParser10(aDocument);
                 break;
             default:
                 // no parser available for this version
                 throw new NeutronAuthException("Yulup:neutronauth.js:NeutronAuth.__parserFactory: Neutron-Auth version \"" + aDocument.documentElement.namespaceURI + "\" not supported.");
         }
+
+        return neutronAuthParser;
     }
 };
 

@@ -108,7 +108,8 @@ var Authentication = {
     },
 
     save: function () {
-        var field = null;
+        var returnObject = null;
+        var field        = null;
 
         /* DEBUG */ dump("Yulup:authentication.js:Authentication.save() invoked\n");
 

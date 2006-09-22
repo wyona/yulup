@@ -64,7 +64,7 @@ var Neutron = {
      * @param  {Array}    aResponseHeaders         the response headers
      * @param  {Error}    aException               an exception, or null if everything went well
      * @return {Undefined} does not have a return value
-     */ 
+     */
     __requestFinishedHandler: function(aDocumentData, aResponseStatusCode, aContext, aResponseHeaders) {
 
         /* DEBUG */ dump("Yulup:neutron.js:Neutron.__requestFinishedHandler() invoked\n");
@@ -188,23 +188,26 @@ var Neutron = {
      * @param  {nsIDOMXMLDocument} aDocument the Neutron document to parse
      * @param  {nsIRUI}            aBaseURI  the URI of the document to which the introspection document is associated
      * @return {NeutronParser}     the Neutron parser best matching the used Neutron version
+     * @throws {NeutronException}
      */
     parserFactory: function (aDocument, aBaseURI) {
-        var namespace           = null;
-        var introspectionParser = null;
+        var namespace     = null;
+        var neutronParser = null;
 
         /* DEBUG */ dump("Yulup:neutron.js:Neutron.parserFactory(\"" + aDocument + "\", \"" + aBaseURI + "\") invoked\n");
 
-        // extract introspection version
+        // extract Neutron version
         switch (aDocument.documentElement.namespaceURI) {
             case NEUTRON_10_NAMESPACE:
                 // instantiate Neutron 1.0 parser
-                return new NeutronParser10(aDocument, aBaseURI);
+                neutronParser = new NeutronParser10(aDocument, aBaseURI);
                 break;
             default:
                 // no parser available for this version
                 throw new NeutronException("Yulup:neutron.js:Neutron.parserFactory: Neutron version \"" + aDocument.documentElement.namespaceURI + "\" not supported.");
         }
+
+        return neutronParser;
     },
 
     /**
