@@ -75,7 +75,7 @@ var NeutronAuth = {
             // user did not want to authenticate
             /* DEBUG */ dump("Yulup:neutronauth.js:NeutronAuth.authenticate: user didn't want to authenticate\n");
 
-            throw new NeutronAuthException("Yulup:neutronauth.js:NeutronAuth.authenticate: user aborted authentication");
+            throw new YulupException("Yulup:neutronauth.js:NeutronAuth.authenticate: authentication aborted.");
         }
     },
 

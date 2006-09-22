@@ -424,7 +424,8 @@ var NetworkService = {
      * @throws {YulupException}
      */
     authenticate: function (aRequest, aResponseHeaders, aDocumentData) {
-        var authScheme = null;
+        var authScheme      = null;
+        var authSchemeIdent = null;
 
         /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.authenticate(\"" + aRequest + "\", \"" + aResponseHeaders + "\", \"" + aDocumentData + "\") invoked\n");
 
@@ -444,11 +445,18 @@ var NetworkService = {
 
             if (authScheme && authScheme != "") {
                 /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.authenticate: server requested authentication scheme \"" + authScheme + "\"\n");
-                switch (authScheme) {
+
+                // extract the scheme identifier
+                authSchemeIdent = authScheme.split(" ", 1);
+
+                switch (authSchemeIdent[0]) {
                     case "NEUTRON-AUTH":
                         /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.authenticate: initiating NEUTRON-AUTH authentication\n");
                         NeutronAuth.authenticate(aDocumentData, aRequest);
                         return;
+                    case "Basic":
+                    case "Digest":
+                        throw new YulupException("Yulup:networkservice.js:NetworkService.authenticate: authentication aborted.");
                     default:
                         throw new YulupException("Yulup:networkservice.js:NetworkService.authenticate: unknown authentication scheme \"" + authScheme + "\".");
                 }
