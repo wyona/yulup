@@ -1509,7 +1509,13 @@ WYSIWYGXSLTModeView.prototype = {
         }
 
         /* Query the source document for xPathExpr (the location path found) */
-        sourceNode = domDocument.evaluate(xPathExpr, domDocument, domDocument.createNSResolver(domDocument.documentElement), XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        try {
+            sourceNode = domDocument.evaluate(xPathExpr, domDocument, domDocument.createNSResolver(domDocument.documentElement), XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        } catch (exception) {
+            // the namespace resolver does not seem to know a prefix used in the query
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+        }
 
         /* DEBUG */ dump ("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: XPath query returned source node: \"" + sourceNode + "\"\n");
 
