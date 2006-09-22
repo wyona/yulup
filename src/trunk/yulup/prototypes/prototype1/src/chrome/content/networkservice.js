@@ -420,18 +420,20 @@ var NetworkService = {
      * @param  {HTTPRequest} aRequest         the request which triggered this authentication request
      * @param  {Array}       aResponseHeaders the headers of the response which yielded a 401 Unauthorised response
      * @param  {String}      aDocumentData    the body of the response which yielded a 401 Unauthorised response
+     * @param  {Boolean}     aFirstAttempt    is this the first authentication attempt in a logical transaction
      * @return {Undefined} does not have a return value
      * @throws {YulupException}
      */
-    authenticate: function (aRequest, aResponseHeaders, aDocumentData) {
+    authenticate: function (aRequest, aResponseHeaders, aDocumentData, aFirstAttempt) {
         var authScheme      = null;
         var authSchemeIdent = null;
 
-        /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.authenticate(\"" + aRequest + "\", \"" + aResponseHeaders + "\", \"" + aDocumentData + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.authenticate(\"" + aRequest + "\", \"" + aResponseHeaders + "\", \"" + aDocumentData + "\", \"" + aFirstAttempt + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aRequest         != null);
         /* DEBUG */ YulupDebug.ASSERT(aRequest         instanceof HTTPRequest);
         /* DEBUG */ YulupDebug.ASSERT(aResponseHeaders != null);
+        /* DEBUG */ YulupDebug.ASSERT(aFirstAttempt    != null);
 
         // check if the header fields could be accessed
         if (aResponseHeaders) {
@@ -452,7 +454,7 @@ var NetworkService = {
                 switch (authSchemeIdent[0]) {
                     case "NEUTRON-AUTH":
                         /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.authenticate: initiating NEUTRON-AUTH authentication\n");
-                        NeutronAuth.authenticate(aDocumentData, aRequest);
+                        NeutronAuth.authenticate(aDocumentData, aRequest, aFirstAttempt);
                         return;
                     case "Basic":
                     case "Digest":
@@ -588,7 +590,7 @@ DownloadObserver.prototype = {
                         xmlDoc.loadDocument();
 
                         try {
-                            NetworkService.authenticate(this.request, responseHeaders, xmlDoc.documentData);
+                            NetworkService.authenticate(this.request, responseHeaders, xmlDoc.documentData, true);
                         } catch (exception) {
                             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:DownloadObserver.onDownloadComplete", exception);
                             /* We should authenticate but the server did not tell us how, the
@@ -797,7 +799,7 @@ StreamListener.prototype = {
                         /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStopRequest: we have to authenticate\n");
 
                         try {
-                            NetworkService.authenticate(this.request, responseHeaders, unicodeDoc);
+                            NetworkService.authenticate(this.request, responseHeaders, unicodeDoc, true);
                         } catch (exception) {
                             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:StreamListener.onStopRequest", exception);
                             /* We should authenticate but the server did not tell us how, the

@@ -35,27 +35,32 @@ var NeutronAuth = {
      * Authenticate using the Neutron-Auth authentication
      * scheme.
      *
-     * @param  {String}      aChallenge the authentication challenge
-     * @param  {HTTPRequest} aRequest   the request which triggered authentication
+     * @param  {String}      aChallenge    the authentication challenge
+     * @param  {HTTPRequest} aRequest      the request which triggered authentication
+     * @param  {Boolean}     aFirstAttempt is this the first authentication attempt in a logical transaction
      * @return {Undefined} does not have a return value
      * @throws {NeutronAuthException}
      */
-    authenticate: function (aChallenge, aRequest) {
+    authenticate: function (aChallenge, aRequest, aFirstAttempt) {
         var challenge   = null;
         var credentials = null;
         var response    = null;
         var context     = null;
 
-        /* DEBUG */ dump("Yulup:neutronauth.js:NeutronAuth.authenticate(\"" + aChallenge + "\", \"" + aRequest + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:neutronauth.js:NeutronAuth.authenticate(\"" + aChallenge + "\", \"" + aRequest + "\", \"" + aFirstAttempt + "\") invoked\n");
 
-        /* DEBUG */ YulupDebug.ASSERT(aChallenge != null);
-        /* DEBUG */ YulupDebug.ASSERT(aRequest   != null);
-        /* DEBUG */ YulupDebug.ASSERT(aRequest   instanceof HTTPRequest);
+        /* DEBUG */ YulupDebug.ASSERT(aChallenge    != null);
+        /* DEBUG */ YulupDebug.ASSERT(aRequest      != null);
+        /* DEBUG */ YulupDebug.ASSERT(aRequest      instanceof HTTPRequest);
+        /* DEBUG */ YulupDebug.ASSERT(aFirstAttempt != null);
 
         challenge = NeutronAuth.__parseChallenge(aChallenge);
 
-        // inform the user about the failed authentication attempt
-        Authentication.reportAuthenticationFailure(challenge.realm, challenge.message);
+        /* Inform the user about the failed authentication attempt if this
+         * is not the first attempt from the user point-of-view of a logical
+         * transaction. */
+        if (!aFirstAttempt)
+            Authentication.reportAuthenticationFailure(challenge.realm, challenge.message);
 
         if ((credentials = Authentication.showAuthenticationDialog(challenge)) != null) {
             response = NeutronAuth.__constructResponse(challenge, credentials);
@@ -96,7 +101,7 @@ var NeutronAuth = {
                 NetworkService.performHTTPRequest(aContext.request);
             } else {
                 // retry authentication with new challenge (may not be Neutron-Auth this time)
-                NetworkService.authenticate(aContext.request, aResponseHeaders, aDocumentData);
+                NetworkService.authenticate(aContext.request, aResponseHeaders, aDocumentData, false);
             }
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutronauth.js:NeutronAuth.__requestFinishedHandler", exception);
