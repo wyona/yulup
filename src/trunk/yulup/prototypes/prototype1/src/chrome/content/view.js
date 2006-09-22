@@ -481,7 +481,10 @@ View.prototype.show = function () {
                 /* We indeed switched tabs, therefore we have
                  * to synchronise the other view first. */
                 this.controller.activeView.syncToModel();
+
+                this.controller.activeView.leaveView();
             }
+
             // set currently selected view
             previousView = this.controller.activeView;
 
@@ -505,6 +508,8 @@ View.prototype.show = function () {
 
             if (this.undoRedoObserver)
                 this.undoRedoObserver.updateCommands();
+
+            this.enterView();
 
             switchSuccessful = true;
         }
@@ -560,6 +565,26 @@ View.prototype.setToModel = function() {
     /* DEBUG */ dump("Yulup:view.js:View.setToModel() invoked\n");
 
     this.syncToModel(true);
+};
+
+
+/**
+ * Perform view specific actions on view show.
+ *
+ * @return {Undefined} does not have a return value
+ */
+View.prototype.enterView = function() {
+    /* DEBUG */ dump("Yulup:view.js:View.enterView() invoked\n");
+};
+
+
+/**
+ * Perform view specific actions on view leave.
+ *
+ * @return {Undefined} does not have a return value
+ */
+View.prototype.leaveView = function() {
+    /* DEBUG */ dump("Yulup:view.js:View.leaveView() invoked\n");
 };
 
 
@@ -1151,9 +1176,6 @@ WYSIWYGXSLTModeView.prototype = {
             return;
         }
 
-        /* Set XPathToolBar to visible */
-        document.getElementById("uiYulupXPathToolBar").hidden = false;
-
         /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup::view.js:WYSIWYGXSLTModeView.setUp: arrive at view barrier (current thread count is \"" + this.barrier.noOfThreads + "\")\n");
         this.barrier.arrive();
     },
@@ -1320,14 +1342,14 @@ WYSIWYGXSLTModeView.prototype = {
      ** A patched document style has
      ** <ul>
      ** <li>@_yulup-location-path attribute selectors pointing to the current context node in all
-     ** parent nodes of templateSelectors (xsl:apply-templates). </li>
+     ** parent nodes of templateSelectors (<xsl:apply-templates>). </li>
      ** <li>span tags with @_yulup-location-path attribute selectors surrounding nodeValue selection
-     ** directives that point to the current context node (xsl:value-of select="."/>).</li>
+     ** directives that point to the current context node (<xsl:value-of select="."/>).</li>
      ** <li>span tags with @_yulup-location-path attributes that concatenate a @_yulup-location-path
      ** selector of the current context node with the nodeValue selector, when pointing to a node relative
-     ** to the current context node (xsl:value-of select="foo/bar/@foo").</li>
+     ** to the current context node (<xsl:value-of select="foo/bar/@foo>").</li>
      ** <li>span tags with a @_yulup-location-path attribute that simply contains the select pattern of
-     ** the contained nodeValue selector, when using absolute node addressing (<xsl:value-of select="/foo/bar").</li>
+     ** the contained nodeValue selector, when using absolute node addressing (<xsl:value-of select="/foo/bar">).</li>
      ** </ul>
      ** Note that selectors pointing to $variables are excluded from the patching process.
      **
@@ -1343,18 +1365,18 @@ WYSIWYGXSLTModeView.prototype = {
         ** Note that this is for cosmetic reasons only and can be removed if experience should prove that
         ** documentStyling depends on the output method specified.
         */
-
         try {
             var outputMethodNode = aDocumentXSL.evaluate("xsl:stylesheet/xsl:output", aDocumentXSL, aDocumentXSL.createNSResolver(aDocumentXSL.documentElement), XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
-            if (outputMethodNode != null)
+            if (outputMethodNode != null) {
+                /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle: removing <output> element \"" + outputMethodNode + "\"\n");
                 outputMethodNode.parentNode.removeChild(outputMethodNode);
+            }
 	    } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle", exception);
             /* DEBUG */ Components.utils.reportError(exception);
         }
 
         /* Add _yulup-location-path attribute matcher to parent nodes of template selectors */
-
         try {
             var templateSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet/*//xsl:apply-templates", aDocumentXSL, aDocumentXSL.createNSResolver(aDocumentXSL.documentElement), XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
             for (var i=0; i< templateSelectorNodes.snapshotLength; i++) {
@@ -1537,11 +1559,20 @@ WYSIWYGXSLTModeView.prototype = {
         }
     },
 
-
     updateSource: function () {
         if (this.currentSourceNode != null && (this.currentSourceNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE || this.currentSourceNode.nodeType == Components.interfaces.nsIDOMNode.ATTRIBUTE_NODE)) {
             this.currentSourceNode.nodeValue = this.currentXHTMLNode.nodeValue;
         }
+    },
+
+    enterView: function () {
+        // show XPathToolBar
+        document.getElementById("uiYulupXPathToolBar").hidden = false;
+    },
+
+    leaveView: function () {
+        // hide XPathToolBar
+        document.getElementById("uiYulupXPathToolBar").hidden = true;
     }
 };
 
