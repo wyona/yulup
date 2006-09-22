@@ -1573,6 +1573,9 @@ WYSIWYGXSLTModeView.prototype = {
     leaveView: function () {
         // hide XPathToolBar
         document.getElementById("uiYulupXPathToolBar").hidden = true;
+
+        // clear the expression display
+        document.getElementById("uiYulupXPathToolBarXPathExpression").value = "";
     }
 };
 
