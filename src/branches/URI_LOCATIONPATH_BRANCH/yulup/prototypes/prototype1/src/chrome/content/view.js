@@ -1464,6 +1464,7 @@ WYSIWYGXSLTModeView.prototype = {
         var xPathToolBarLabel = null;
         var domDocument       = null;
         var xhtmlNode         = null;
+        var xpathParseResult  = null;
         var locationPath      = null;
         var xPathExpr         = null;
         var sourceNode        = null;
@@ -1501,21 +1502,25 @@ WYSIWYGXSLTModeView.prototype = {
             return null;
         }
 
-        // parse found location path
-        dump("---------------------- start parsing found location path ----------------------\n");
-        var xpathArray = (new XPathParser(locationPath)).parse();
+        /* DEBUG */ dump("---------------------- start parsing found location path ----------------------\n");
 
-        for (var i = 0; i < xpathArray.length; i++) {
-            if (xpathArray[i].type == XPathResultNode.TYPE_STEPDELIM) {
-                dump("/");
+        // parse found location path
+        xpathParseResult = (new XPathParser(locationPath)).parse();
+
+        // reassemble XPath query
+        xPathExpr = "";
+
+        for (var i = 0; i < xpathParseResult.length; i++) {
+            if (xpathParseResult[i].getType() == XPathResultNode.TYPE_STEPDELIM) {
+                xPathExpr += "/";
             } else {
-                dump(xpathArray[i].value);
+                xPathExpr += xpathParseResult[i].getValue();
             }
         }
-        dump("\n---------------------- finished parsing found location path ----------------------\n");
-        return null;
 
-        xPathExpr = locationPath;
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: reassembled XPath: " + xPathExpr + "\n");
+
+        /* DEBUG */ dump("\n---------------------- finished parsing found location path ----------------------\n");
 
         if (!aIsNamespaceAware) {
             xPathToolBarLabel.value = "Not yet implemented!";
