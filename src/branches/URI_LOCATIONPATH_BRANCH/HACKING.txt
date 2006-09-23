@@ -1,0 +1,1 @@
+For instructions on how to build Yulup and for coding policies, see yulup/deliverables/design/development_policy.xhtml.

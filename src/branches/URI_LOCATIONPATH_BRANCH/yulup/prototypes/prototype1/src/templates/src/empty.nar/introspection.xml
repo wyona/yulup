@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<introspection xmlns="http://www.wyona.org/neutron/1.0">
+  <new>  
+    <template name="Empty Document" mime-type="text/plain" uri="empty-template.txt"/>
+  </new>
+</introspection>

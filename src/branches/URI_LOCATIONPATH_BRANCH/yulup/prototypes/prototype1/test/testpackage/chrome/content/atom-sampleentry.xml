@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--<?xml-stylesheet href="chrome://test/content/atomentry.xsl" type="application/xml"?>-->
+
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <author>
+    <name>Sam Ruby</name>
+  </author>
+  <published>2006-07-29T21:34:00-07:00</published>
+  <updated>2006-07-30T04:38:20Z</updated>
+  <link href="http://www.atomenabled.org/2006/07/tri-xml-2006-presentation.php" rel="alternate" title="Tri-XML 2006 presentation" type="text/html"/>
+  <id>tag:blogger.com,1999:blog-6356614.post-115423429120046231</id>
+  <title type="html">Tri-XML 2006 presentation</title>
+  <content type="xhtml" xml:base="http://www.atomenabled.org" xml:space="preserve">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <a href="http://rollerweblogger.org/page/roller">Dave Johnson</a> gave an <a href="http://rollerweblogger.org/page/roller?entry=tri_xml_2006_presentation">excellent talk</a> on the Atom feed format and Atom Publishing Protocol.  Here's the abstract:
+      <blockquote>
+        <span style="font-weight: bold;">Beyond blogging: Atom format and protocol</span>. Like XML-RPC and SOAP before, feeds and publishing protocols were born in the         blogopshere and quickly moved beyond blogging. Nowadays, web service providers are using         RSS/Atom feeds and REST-based publishing protocols as lightweight alternatives to SOAP. And         developers are finding new ways to combine web services from different sites into new         applications, known as "mash-ups" in the lingo of Web 2.0. If you'd like to do the same,         then attend this talk to learn about the new IETF Atom feed format (RFC-4287) and the         soon-to-be-finalized Atom protocol, which together form a strong foundation for REST-based         web services development.
+      </blockquote>Check it out!</div>
+  </content>
+  <draft xmlns="http://purl.org/atom-blog/ns#">false</draft>
+</entry>

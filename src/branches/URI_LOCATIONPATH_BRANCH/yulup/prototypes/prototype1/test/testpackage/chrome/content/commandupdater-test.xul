@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+
+<window id="uiEditorWindow"
+        orient="horizontal"
+        align="stretch"
+        onload="initEditor()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript">
+    var gEditorElem = null;
+    var gEditor     = null;
+
+    function initEditor() {
+        dump("initEditor() invoked\n");
+        // test dynamic tab insertion
+        var editorWindow             = null;
+        var editorElem               = null;
+
+        editorElem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "editor");
+        editorElem.setAttribute("type", "content");
+        editorElem.setAttribute("flex", "1");
+        editorElem.setAttribute("style", "border: 2px solid black; margin: 2px 2px 2px 2px;");
+        editorElem.setAttribute("onload", "event.stopPropagation()");
+
+        editorWindow = document.getElementById("uiEditorWindow");
+        editorWindow.appendChild(editorElem);
+
+        gEditorElem = editorElem;
+
+        window.setTimeout(continueInit, 100);
+    }
+
+    function continueInit() {
+        dump("continueInit() invoked (chocked initialisation)\n");
+
+        var editorElem = gEditorElem;
+
+        editorElem.makeEditable("text", false);
+
+        gEditor = editorElem.getEditor(editorElem.contentWindow);
+        gEditor.QueryInterface(Components.interfaces.nsIPlaintextEditor);
+
+        editorElem.contentWindow.onselect = "document.commandDispatcher.updateCommands('yulup-select');";
+        editorElem.contentWindow.onfocus  = "document.commandDispatcher.updateCommands('yulup-focus');";
+
+        //editorElem.contentWindow.addEventListener("select", goUpdateSelectEventCommands, true);
+        //editorElem.contentWindow.onselect="goUpdateSelectEventCommands()"
+        //editorElem.contentWindow.addEventListener("undo", goUpdateSelectEventCommands, true);
+        //editorElem.contentWindow.addEventListener("clipboard", goUpdateSelectEventCommands, true);
+        //editorElem.contentWindow.addEventListener("focus", goUpdateFocusEventCommands, true);
+        editorElem.contentWindow.addEventListener("keypress", function (event) { event.preventBubble(); }, true);
+
+        dump("editorElem status = \"" + editorElem.editingSession.editorStatus  + "\"\n");
+        dump("is editable = \"" + gEditor.isDocumentEditable  + "\"\n");
+    }
+
+    function addText() {
+        gEditor.insertText("Hello?");
+    }
+
+    function goUpdateSelectEventCommands(aEvent) {
+        dump("goUpdateSelectEventCommands(\"" + aEvent.type + "\") invoked\n");
+    }
+
+    function goUpdateFocusEventCommands(aEvent) {
+        dump("goUpdateFocusEventCommands(\"" + aEvent.type + "\") invoked\n");
+    }
+  </script>
+
+  <commandset id="uiYulupEditorFocusEventCommandset"
+              commandupdater="true"
+              events="yulup-focus"
+              oncommandupdate="goUpdateFocusEventCommands()"/>
+  <commandset id="uiYulupEditorSelectEventCommandset"
+              commandupdater="true"
+              events="yulup-select"
+              oncommandupdate="goUpdateSelectEventCommands()"/>
+  <commandset id="uiYulupEditorUndoEventCommandset"
+              commandupdater="true"
+              events="undo"
+              oncommandupdate="goUpdateSelectEventCommands()"/>
+  <commandset id="uiYulupEditorClipboardEventCommandset"
+              commandupdater="true"
+              events="clipboard"
+              oncommandupdate="goUpdateSelectEventCommands()"/>
+
+  <button label="Add Text" oncommand="addText()"/>
+
+</window>

@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+
+<dtd xmlns="http://yulup.wyona.org/1.0">
+
+  <entity id="editToolbarbutton.label">
+    <name xml:lang="en">Editor</name>
+  </entity>
+
+  <entity id="editMenuitem.label">
+    <name xml:lang="en">Edit Locally</name>
+    <name xml:lang="de">Lokal Bearbeiten</name>
+  </entity>
+
+  <entity id="editCheckoutNoLockMenuitem.label">
+    <name xml:lang="en">Open and Edit</name>
+    <name xml:lang="de">Öffnen und Bearbeiten</name>
+  </entity>
+
+  <entity id="editCheckoutNoLockMenu.label">
+    <name xml:lang="en">Open and Edit</name>
+    <name xml:lang="de">Öffnen und Bearbeiten</name>
+  </entity>
+
+  <entity id="editCheckoutMenuitem.label">
+    <name xml:lang="en">Checkout and Edit</name>
+    <name xml:lang="de">Auschecken und Editieren</name>
+  </entity>
+
+  <entity id="editCheckoutMenu.label">
+    <name xml:lang="en">Checkout and Edit</name>
+    <name xml:lang="de">Auschecken und Editieren</name>
+  </entity>
+
+  <entity id="editOperationNewMenu.label">
+    <name xml:lang="en">New</name>
+    <name xml:lang="de">Neu</name>
+  </entity>
+
+  <entity id="fileOperationNewAtomEntryMenuitem.label">
+    <name xml:lang="en">New Atom Entry</name>
+    <name xml:lang="de">Neuer Atom Eintrag</name>
+  </entity>
+
+  <entity id="editOperationOpenMenu.label">
+    <name xml:lang="en">Open</name>
+    <name xml:lang="de">Öffnen</name>
+  </entity>
+
+  <entity id="editAboutMenuitem.label">
+    <name xml:lang="en">About</name>
+    <name xml:lang="de">Ueber</name>
+    <name xml:lang="fr">Nous</name>
+  </entity>
+
+  <entity id="editHelpMenuitem.label">
+    <name xml:lang="en">Help</name>
+    <name xml:lang="de">Hilfe</name>
+  </entity>
+
+  <entity id="editDemoMenuitem.label">
+    <name xml:lang="en">Demosite</name>
+  </entity>
+
+  <entity id="editVersionStringMenuitem.label">
+    <name xml:lang="en">Yulup-Dev</name>
+  </entity>
+
+  <entity id="editToolbarbuttonWarnTooltip1.tooltip">
+    <name xml:lang="en">Warning:</name>
+    <name xml:lang="de">Warnung:</name>
+  </entity>
+
+  <entity id="editToolbarbuttonWarnTooltip2.tooltip">
+    <name xml:lang="en">An error occurred regarding the introspection file associated with this document.</name>
+    <name xml:lang="de">Im Zusammenhang mit dem Introspection-Objekt das mit diesem Dokument assoziiert ist trat ein Fehler auf.</name>
+  </entity>
+
+  <entity id="editToolbarbuttonWarnTooltip3.tooltip">
+    <name xml:lang="en">The file may either not exist, or is not in a suitable form.</name>
+    <name xml:lang="de">Das File existiert nicht, oder ist nicht in einer geeigneten Form.</name>
+  </entity>
+
+  <entity id="editMenuitem.tooltip">
+    <name xml:lang="en">Edit the current web page as-is</name>
+    <name xml:lang="de">Die aktuelle Webseite so wie sie derzeit dargestellt wird bearbeiten</name>
+  </entity>
+
+  <entity id="editCheckoutNoLockMenuitem.tooltip">
+    <name xml:lang="en">Open the current document from CMS and edit</name>
+    <name xml:lang="de">Das aktuelle Dokument im CMS öffnen und editieren</name>
+  </entity>
+
+  <entity id="editCheckoutNoLockMenu.tooltip">
+    <name xml:lang="en">Open one of the current fragments from CMS and edit</name>
+    <name xml:lang="de">Eines der verfügbaren Fragmente im CMS öffnen und editieren</name>
+  </entity>
+
+  <entity id="editCheckoutMenuitem.tooltip">
+    <name xml:lang="en">Check out (lock) the current document from CMS and edit</name>
+    <name xml:lang="de">Das aktuelle Dokument vom CMS auschecken (d.h. für andere Benutzer sperren) und editieren</name>
+  </entity>
+
+  <entity id="editCheckoutMenu.tooltip">
+    <name xml:lang="en">Check out (lock) one of the current fragments from CMS and edit</name>
+    <name xml:lang="de">Eines der verfügbaren Fragmente vom CMS auschecken (d.h. für andere Benutzer sperren) und editieren</name>
+  </entity>
+
+  <entity id="editOperationNewMenu.tooltip">
+    <name xml:lang="en">Create a new document</name>
+    <name xml:lang="de">Ein neues Dokument erstellen</name>
+  </entity>
+
+  <entity id="fileOperationNewAtomEntryMenuitem.tooltip">
+    <name xml:lang="en">Create a new Atom entry for the currently selected feed</name>
+    <name xml:lang="de">Einen neuen Atom Eintrag im aktuellen Feed erstellen</name>
+  </entity>
+
+  <entity id="editOperationOpenMenu.tooltip">
+    <name xml:lang="en">Open an existing document</name>
+    <name xml:lang="de">Ein bereits existierendes Dokument öffnen</name>
+  </entity>
+
+  <entity id="editAboutMenuitem.tooltip">
+    <name xml:lang="en">About Yulup</name>
+    <name xml:lang="de">Über Yulup</name>
+  </entity>
+
+  <entity id="editHelpMenuitem.tooltip">
+    <name xml:lang="en">Shows the help browser for Yulup</name>
+    <name xml:lang="de">Den Hilfe-Browser von Yulup anzeigen</name>
+  </entity>
+
+  <entity id="editDemoMenuitem.tooltip">
+    <name xml:lang="en">Takes you to the demo site</name>
+    <name xml:lang="de">Zur Demosite gehen</name>
+  </entity>
+
+  <entity id="editVersionStringMenuitem.tooltip">
+    <name xml:lang="en">The version of Yulup you are currently using</name>
+    <name xml:lang="de">Die Version von Yulup die Sie derzeit benützen</name>
+  </entity>
+
+</dtd>

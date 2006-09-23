@@ -1,0 +1,23 @@
+@namespace url("http://www.w3.org/2005/Atom");
+
+/* ----------------- Feed Information Deck ------------------ */
+
+entry {
+
+  display: block;
+}
+
+name {
+
+  display: block;
+}
+
+published {
+
+  display: block;
+}
+
+updated {
+
+  display: block;
+}
