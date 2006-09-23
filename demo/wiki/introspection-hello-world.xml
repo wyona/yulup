@@ -1,8 +1,13 @@
 <?xml version="1.0"?>
 
 <introspection xmlns="http://www.wyona.org/neutron/1.0">
-<edit mime-type="text/plain" name="Wiki Page">
-  <checkout url="hello-world.txt?yanel.resource.usecase=checkout" method="GET"/>
-  <checkin  url="hello-world.txt?yanel.resource.usecase=checkin"  method="PUT"/>
+<edit mime-type="text/plain" name="Wiki Page (unprotected)">
+  <open url="hello-wiki.txt" method="GET"/>
+  <save  url="hello-wiki.txt?yanel.resource.usecase=save"  method="PUT"/>
+</edit>
+
+<edit mime-type="text/plain" name="Wiki Page (protected)">
+  <checkout url="hello-wiki.txt?yanel.resource.usecase=checkout" method="GET"/>
+  <checkin  url="hello-wiki.txt?yanel.resource.usecase=checkin"  method="PUT"/>
 </edit>
 </introspection>
