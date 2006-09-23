@@ -63,6 +63,8 @@
   <script type="application/x-javascript"
           src="chrome://yulup/content/view.js"/>
   <script type="application/x-javascript"
+          src="chrome://yulup/content/xpathparser.js"/>
+  <script type="application/x-javascript"
           src="chrome://yulup/content/controller.js"/>
   <script type="application/x-javascript"
           src="chrome://yulup/content/neutronauth.js"/>
