@@ -1501,6 +1501,20 @@ WYSIWYGXSLTModeView.prototype = {
             return null;
         }
 
+        // parse found location path
+        dump("---------------------- start parsing found location path ----------------------\n");
+        var xpathArray = (new XPathParser(locationPath)).parse();
+
+        for (var i = 0; i < xpathArray.length; i++) {
+            if (xpathArray[i].type == XPathResultNode.TYPE_STEPDELIM) {
+                dump("/");
+            } else {
+                dump(xpathArray[i].value);
+            }
+        }
+        dump("\n---------------------- finished parsing found location path ----------------------\n");
+        return null;
+
         xPathExpr = locationPath;
 
         if (!aIsNamespaceAware) {
