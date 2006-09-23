@@ -69,7 +69,7 @@ XPathParser.prototype = {
      * @return {Array} array consisting of slashes and steps, both as strings
      */
     parse: function () {
-        return this.__drive(new Array(), this.__STATE_LOCATIONPATH, 0, new ResultNode());
+        return this.__drive(new Array(), this.__STATE_LOCATIONPATH, 0, this.__xpathLexer.getSymbol());
     },
 
     /**
@@ -96,13 +96,16 @@ XPathParser.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aExpCounter != null);
         /* DEBUG */ YulupDebug.ASSERT(aSymbol ? (aSymbol instanceof XPathToken) : true);
 
+        if (aSymbol)
+            /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__drive: symbol type = \"" + aSymbol.type + "\", value = \"" + aSymbol.value + "\"\n");
+
         if (aSymbol != null) {
             switch (aState) {
                 case this.__STATE_LOCATIONPATH:
                     switch (aSymbol.type) {
                         case XPathToken.TYPE_SLASH:
                             // step delimiter read
-                            resultNode = new XPathResultNode(ResultNode.TYPE_STEPDELIM);
+                            resultNode = new XPathResultNode(XPathResultNode.TYPE_STEPDELIM);
                             aResult.push(resultNode);
 
                             this.__drive(aResult, this.__STATE_LOCATIONPATH, aExpCounter, this.__xpathLexer.getSymbol());
@@ -110,7 +113,7 @@ XPathParser.prototype = {
                             break;
                         case XPathToken.TYPE_NAME:
                             // beginning of a step read
-                            resultNode = new XPathResultNode(ResultNode.TYPE_STEP);
+                            resultNode = new XPathResultNode(XPathResultNode.TYPE_STEP);
                             resultNode.concatValue(aSymbol.value);
                             aResult.push(resultNode);
 
@@ -138,13 +141,13 @@ XPathParser.prototype = {
                             break;
                         case XPathToken.TYPE_LSQUAREBRACKET:
                             // step continued, entering expression
-                            aResult[aResult.length - 1].concatValue(symbol.value);
+                            aResult[aResult.length - 1].concatValue(aSymbol.value);
 
                             this.__drive(aResult, this.__STATE_EXPRESSION, ++aExpCounter, this.__xpathLexer.getSymbol());
 
                             break;
                         default:
-                            throw new YulupException("Yulup:xpathparser.js:XPathParser.__drive: illegal token (type = \"" + symbol.type + "\", value = \"" + symbol.value + "\") in state STEP.");
+                            throw new YulupException("Yulup:xpathparser.js:XPathParser.__drive: illegal token (type = \"" + aSymbol.type + "\", value = \"" + aSymbol.value + "\") in state STEP.");
                     }
 
                     break;
@@ -160,14 +163,14 @@ XPathParser.prototype = {
                             break;
                         case XPathToken.TYPE_LSQUAREBRACKET:
                             // step continued, entering nested expression
-                            aResult[aResult.length - 1].concatValue(symbol.value);
+                            aResult[aResult.length - 1].concatValue(aSymbol.value);
 
                             this.__drive(aResult, this.__STATE_EXPRESSION, ++aExpCounter, this.__xpathLexer.getSymbol());
 
                             break;
                         case XPathToken.TYPE_RSQUAREBRACKET:
                             // step continued, leaving expression
-                            aResult[aResult.length - 1].concatValue(symbol.value);
+                            aResult[aResult.length - 1].concatValue(aSymbol.value);
 
                             if (--aExpCounter == 0) {
                                 this.__drive(aResult, this.__STATE_STEP, aExpCounter, this.__xpathLexer.getSymbol());
@@ -178,20 +181,20 @@ XPathParser.prototype = {
                             break;
                         case XPathToken.TYPE_DOUBLEQUOTE:
                             // step continued, entering opaque, double quote delimited, string
-                            aResult[aResult.length - 1].concatValue(symbol.value);
+                            aResult[aResult.length - 1].concatValue(aSymbol.value);
 
                             this.__drive(aResult, this.__STATE_OPAQUEDOUBLESTRING, aExpCounter, this.__xpathLexer.getSymbol());
 
                             break;
                         case XPathToken.TYPE_SINGLEQUOTE:
                             // step continued, entering opaque, single quote delimited, string
-                            aResult[aResult.length - 1].concatValue(symbol.value);
+                            aResult[aResult.length - 1].concatValue(aSymbol.value);
 
                             this.__drive(aResult, this.__STATE_OPAQUESINGLESTRING, aExpCounter, this.__xpathLexer.getSymbol());
 
                             break;
                         default:
-                            throw new YulupException("Yulup:xpathparser.js:XPathParser.__drive: illegal token (type = \"" + symbol.type + "\", value = \"" + symbol.value + "\") in state EXPRESSION.");
+                            throw new YulupException("Yulup:xpathparser.js:XPathParser.__drive: illegal token (type = \"" + aSymbol.type + "\", value = \"" + aSymbol.value + "\") in state EXPRESSION.");
                     }
 
                     break;
@@ -210,13 +213,13 @@ XPathParser.prototype = {
                             break;
                         case XPathToken.TYPE_DOUBLEQUOTE:
                             // step continued, leaving opaque, double quote delimited, string
-                            aResult[aResult.length - 1].concatValue(symbol.value);
+                            aResult[aResult.length - 1].concatValue(aSymbol.value);
 
                             this.__drive(aResult, this.__STATE_EXPRESSION, aExpCounter, this.__xpathLexer.getSymbol());
 
                             break;
                         default:
-                            throw new YulupException("Yulup:xpathparser.js:XPathParser.__drive: illegal token (type = \"" + symbol.type + "\", value = \"" + symbol.value + "\") in state OPAQUEDOUBLESTRING.");
+                            throw new YulupException("Yulup:xpathparser.js:XPathParser.__drive: illegal token (type = \"" + aSymbol.type + "\", value = \"" + aSymbol.value + "\") in state OPAQUEDOUBLESTRING.");
                     }
 
                     break;
@@ -235,13 +238,13 @@ XPathParser.prototype = {
                             break;
                         case XPathToken.TYPE_SINGLEQUOTE:
                             // step continued, leaving opaque, single quote delimited, string
-                            aResult[aResult.length - 1].concatValue(symbol.value);
+                            aResult[aResult.length - 1].concatValue(aSymbol.value);
 
                             this.__drive(aResult, this.__STATE_EXPRESSION, aExpCounter, this.__xpathLexer.getSymbol());
 
                             break;
                         default:
-                            throw new YulupException("Yulup:xpathparser.js:XPathParser.__drive: illegal token (type = \"" + symbol.type + "\", value = \"" + symbol.value + "\") in state OPAQUESINGLESTRING.");
+                            throw new YulupException("Yulup:xpathparser.js:XPathParser.__drive: illegal token (type = \"" + aSymbol.type + "\", value = \"" + aSymbol.value + "\") in state OPAQUESINGLESTRING.");
                     }
 
                     break;
@@ -269,6 +272,14 @@ XPathResultNode.TYPE_STEP      = 1;
 XPathResultNode.prototype = {
     __type : null,
     __value: null,
+
+    getType: function () {
+        return this.__type;
+    },
+
+    getValue: function () {
+        return this.__value;
+    },
 
     concatValue: function (aValue) {
         /* DEBUG */ YulupDebug.ASSERT(aValue != null);
@@ -364,7 +375,9 @@ XPathLexer.prototype = {
                         name += char;
                     } while ((char = this.__readChar()) != null && !this.__isWhitespace(char) && this.__isName(char));
 
-                    this.__putBack(1);
+                    if (char != null)
+                        this.__putBack(1);
+
                     return new XPathToken(XPathToken.TYPE_NAME, name);
             }
         } else {
