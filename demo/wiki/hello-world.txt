@@ -2,10 +2,3 @@
 
 * List Item 1
 * List Item 2
-* Hello Levi
-* Hello Ezra
-
-{{{
-Hello
- gugus
-}}}

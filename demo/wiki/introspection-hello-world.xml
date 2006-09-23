@@ -6,8 +6,10 @@
   <save  url="hello-wiki.txt?yanel.resource.usecase=save"  method="PUT"/>
 </edit>
 
+<!--
 <edit mime-type="text/plain" name="Wiki Page (protected)">
   <checkout url="hello-wiki.txt?yanel.resource.usecase=checkout" method="GET"/>
   <checkin  url="hello-wiki.txt?yanel.resource.usecase=checkin"  method="PUT"/>
 </edit>
+-->
 </introspection>
