@@ -1275,7 +1275,7 @@ WYSIWYGXSLTModeView.prototype = {
                 var sourceNode = styleTemplate.importNode(taggedSourceDocument.documentElement, true);
 
                 // Lookup xi:include element and include source document
-                var xincludeElem = styleTemplate.evaluate("//xi:include", styleTemplate, styleTemplate.createNSResolver(styleTemplate.documentElement), XPathResult.ANY_TYPE, null).iterateNext();
+                var xincludeElem = styleTemplate.evaluate("//xi:include", styleTemplate, this.__xsltNSResolver, XPathResult.ANY_TYPE, null).iterateNext();
                 xincludeElem.parentNode.replaceChild(sourceNode, xincludeElem);
 
                 var serializedStyleTemplate = this.xmlSerializer.serializeToString(styleTemplate);
@@ -1366,7 +1366,7 @@ WYSIWYGXSLTModeView.prototype = {
         ** documentStyling depends on the output method specified.
         */
         try {
-            var outputMethodNode = aDocumentXSL.evaluate("xsl:stylesheet/xsl:output", aDocumentXSL, aDocumentXSL.createNSResolver(aDocumentXSL.documentElement), XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
+            var outputMethodNode = aDocumentXSL.evaluate("xsl:stylesheet/xsl:output", aDocumentXSL, this.__xsltNSResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
             if (outputMethodNode != null) {
                 /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle: removing <output> element \"" + outputMethodNode + "\"\n");
                 outputMethodNode.parentNode.removeChild(outputMethodNode);
@@ -1378,7 +1378,7 @@ WYSIWYGXSLTModeView.prototype = {
 
         /* Add _yulup-location-path attribute matcher to parent nodes of template selectors */
         try {
-            var templateSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet/*//xsl:apply-templates", aDocumentXSL, aDocumentXSL.createNSResolver(aDocumentXSL.documentElement), XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+            var templateSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet/*//xsl:apply-templates", aDocumentXSL, this.__xsltNSResolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
             for (var i=0; i< templateSelectorNodes.snapshotLength; i++) {
                 parentNode = templateSelectorNodes.snapshotItem(i).parentNode;
                 parentNode.setAttribute("_yulup-location-path", "{@_yulup-location-path}");
@@ -1392,7 +1392,7 @@ WYSIWYGXSLTModeView.prototype = {
         ** Note that for-each directives and $variable selectors are not implemented yet.
         */
         try {
-            var nodeValueSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet//*/xsl:value-of[not(contains(@select, '$'))]", aDocumentXSL, aDocumentXSL.createNSResolver(aDocumentXSL.documentElement), XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+            var nodeValueSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet//*/xsl:value-of[not(contains(@select, '$'))]", aDocumentXSL, this.__xsltNSResolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
             span = aDocumentXSL.createElement("span");
 
             for (var i=0; i< nodeValueSelectorNodes.snapshotLength; i++) {
@@ -1569,6 +1569,26 @@ WYSIWYGXSLTModeView.prototype = {
         if (this.currentSourceNode != null && (this.currentSourceNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE || this.currentSourceNode.nodeType == Components.interfaces.nsIDOMNode.ATTRIBUTE_NODE)) {
             this.currentSourceNode.nodeValue = this.currentXHTMLNode.nodeValue;
         }
+    },
+
+    /**
+     * Resolve "xsl" and "xi" prefixes used in XPath expressions
+     * to namespaces.
+     *
+     * @param  {String} aPrefix a namespace prefix, either "xsl" or "xi"
+     * @return {String} the namespace associated with the passed in prefix
+     */
+    __xsltNSResolver: function (aPrefix) {
+        var namespace = null;
+
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.__xsltNSResolver(\"" + aPrefix + "\") invoked\n");
+
+        var namespace = {
+            "xsl": "http://www.w3.org/1999/XSL/Transform",
+            "xi" : "http://www.w3.org/2001/XInclude"
+        };
+
+        return namespace[aPrefix] || null;
     },
 
     enterView: function () {
