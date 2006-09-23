@@ -32,16 +32,15 @@
   <xsl:param name="default-prefix"/>
 
   <xsl:template match="*">
-
     <xsl:variable name="locationpath">
       <xsl:for-each select="ancestor-or-self::*">
         <xsl:variable name="qname">
           <xsl:choose>
             <xsl:when test="$default-prefix and namespace-uri() = $default-namespace and not(contains(name(), ':'))">
-              <xsl:value-of select="concat($default-prefix, ':', name())"/>
+              <xsl:value-of select="concat('&&', $default-namespace, '&&', ':', name())"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="name()"/>
+              <xsl:value-of select="concat('&&', namespace-uri(), '&&', ':', local-name())"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
@@ -52,7 +51,7 @@
           <xsl:value-of select="concat('[', $count + 1, ']')"/>
         </xsl:if>
       </xsl:for-each>
-   </xsl:variable>
+    </xsl:variable>
 
     <xsl:copy>
       <xsl:for-each select="@*">
