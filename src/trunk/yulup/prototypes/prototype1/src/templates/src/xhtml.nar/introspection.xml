@@ -47,6 +47,13 @@
           <img xmlns="" src="http://www.wyona.com/images/wyona_gross.gif" alt=""/>
         </fragment>
       </widget>
+      <widget type="upload" name="Upload" description="Upload Widget" icon="icons/upload.png">
+        <attribute name="src" xpath="img/attribute::src"/>
+        <attribute name="alt" xpath="img/attribute::alt"/>
+        <fragment>
+            <img xmlns="" src="http://www.wyona.com/images/wyona_gross.gif" alt=""/>
+        </fragment>
+      </widget>
     </widgets>
   </edit>
 
