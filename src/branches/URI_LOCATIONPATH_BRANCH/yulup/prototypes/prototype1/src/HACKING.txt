@@ -109,3 +109,28 @@ var stringArray = Array(strbundle.GetStringFromName("iPodDetected"),
 // Events
 window.addEventListener("load", startup, false);
 window.addEventListener("unload", shutdown, false);
+
+
+> Does scrollIntoView work in xul?  I am using firefox 1.5.0.6 and not having any luck.
+
+No, as scrollIntoView is implemented for HTML elements only.
+
+However, if you used a <scrollbox>, you could use the box object's ensureElementIsVisible method. 
+
+
+Well I found the solution, the event is "onclose"
+
+<window onclose="return confirmClose();">
+
+function confirmClose() {
+     if (confirm ("You want to close?")) {
+        return true,
+     } else {
+        return false;
+     }
+}
+
+
+A lexed symbol can have multiple types: e.g. the literal "div" should have type IDENT and type DIV. (Create a post-processing step after lexing IDENTs to identify DIVs, MODs, etc.).
+
+Alternatively, only produce IDENTs during lexing, and during parsing have special function matchDIV, matchMOD, or matchMULTIPLICATIVEOPERATOR to distinguish these tokens.
