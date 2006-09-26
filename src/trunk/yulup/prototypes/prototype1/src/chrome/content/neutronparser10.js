@@ -72,6 +72,63 @@ NeutronParser10.prototype = {
         return namespace[aPrefix] || null;
     },
 
+
+    /**
+     * Parse sitetree file.
+     *
+     * 
+     */
+    parseSitetree: function() {
+        var sitetree     = null;
+        var elemNode     = null;
+        var elemIterator = null;
+        var resource     = 0;
+
+        /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.parseSitetree() invoked\n");
+
+        sitetree = new Neutron10Sitetree();
+
+        if (elemNodeIterator = this.documentDOM.evaluate("neutron10:multistatus/neutron10:response", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null)) {
+            /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.parseSitetree: found one or multiple response elements\n");
+
+            while (elemNode = elemNodeIterator.iterateNext()) {
+                sitetree.resources[resource++] = this.__parseResponse(this.documentDOM, elemNode);
+            }
+        }
+
+        return sitetree;
+    },
+
+    __parseResponse: function(aDocument, aNode) {
+        var uri = null;
+
+        return {
+            href: ((uri = aDocument.evaluate("neutron10:href/text()", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != null ? this.ioService.newURI(uri, null, this.baseURI) : null),
+            properties: this.__parseProperties(aDocument, aNode)
+        };
+    },
+
+    __parseProperties: function(aDocument, aNode) {
+
+        return {
+            displayname: aDocument.evaluate("neutron10:propstat/neutron10:prop/neutron10:displayname/text()", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
+            lastmodified: aDocument.evaluate("neutron10:propstat/neutron10:prop/neutron10:lastmodified/text()", aNode,  this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
+            contenttype: aDocument.evaluate("neutron10:propstat/neutron10:prop/neutron10:contenttype/text()", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
+            resourcetype: this.__parseResourceType(aDocument, aNode)
+        };
+    },
+
+    __parseResourceType: function(aDocument, aNode) {
+        var collection = null;
+
+        if (collection = aDocument.evaluate("neutron10:propstat/neutron10:prop/neutron10:resourcetype/neutron10:collection", aNode, this.nsResolver, XPathResult.UNORDERER_NODE_ITERATOR_TYPE, null).iterateNext()) {
+            // it's a collection
+            return "collection";
+        } else {
+            return "resource";
+        }
+    },
+
     /**
      * Parse introspection file.
      *
@@ -106,7 +163,7 @@ NeutronParser10.prototype = {
 
         if (elemNode = this.documentDOM.evaluate("neutron10:introspection/neutron10:navigation", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) {
             // navigation element exists
-            introspection.navigation = this.parseNavigation(this.documentDOM, elemNode);
+            introspection.navigation = this.__parseNavigation(this.documentDOM, elemNode);
         }
 
         return introspection;
@@ -168,6 +225,28 @@ NeutronParser10.prototype = {
             uri: ((uri = aDocument.evaluate("attribute::uri", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != "" ? this.ioService.newURI(uri, null, this.baseURI) : null),
             templates: this.__parseTemplates(aDocument, aNode)
         };
+    },
+
+    __parseNavigation: function(aDocument, aNode) {
+
+        return {
+          sitetree: this.__parseSitetree(aDocument, aNode)
+        };
+    },
+
+    __parseSitetree: function(aDocument, aNode) {
+        var sitetree = null;
+
+        sitetree = aDocument.evaluate("neutron10:sitetree", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
+
+        if (sitetree) {
+            return {
+                uri: ((uri = aDocument.evaluate("attribute::href", sitetree, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != "" ? this.ioService.newURI(uri, null, this.baseURI) : null),
+                method: aDocument.evaluate("attribute::method", sitetree, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue
+            };
+        } else {
+            return null;
+        }
     },
 
     __parseTemplates: function(aDocument, aNode) {
@@ -386,6 +465,24 @@ function Neutron10Introspection() {
 Neutron10Introspection.prototype = {
     __proto__:  Introspection.prototype
 };
+
+/**
+ * Neutron10Sitetree constructor. Instantiates a new
+ * object of type Neutron10Sitetree.
+ *
+ * @constructor
+ * @return {Neutron10Sitetree} a new Neutron10Sitetree object
+ */
+function Neutron10Sitetree() {
+    /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Sitetree() invoked\n");
+
+    this.resources = new Array();
+}
+
+Neutron10Sitetree.prototype = {
+    resources: null
+};
+
 
 
 /**
