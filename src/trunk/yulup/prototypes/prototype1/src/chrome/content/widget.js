@@ -28,7 +28,9 @@
 
 const WIDGET_TMP_DIR = "yulup-widgets";
 
-const YULUP_WIDGET_INSERT_CHROME_URI = "chrome://yulup/content/widget.xul"
+const YULUP_WIDGET_INSERT_CHROME_URI = "chrome://yulup/content/widget.xul";
+
+const YULUP_RESOURCE_UPLOAD_CHROME_URI = "chrome://yulup/content/resourceupload.xul";
 
 const TIDYWIDGETFRAGMENT_CHROME_URI = "chrome://yulup/content/tidywidgetfragment.xsl";
 
@@ -182,6 +184,7 @@ WidgetManager.prototype = {
             switch (widget.attributes["type"]) {
                 case "surround":
                 case "insert":
+                case "upload":
                     // create the widget directory
                     widgetDir = this.tmpDir.clone();
                     widgetDir.append(widget.attributes["name"]);
@@ -235,6 +238,7 @@ WidgetManager.prototype = {
             switch (this.widgets[i].attributes["type"]) {
                 case "surround":
                 case "insert":
+                case "upload":
                     contextObj = {
                         widget: this.widgets[i],
                         callback: aLoadFinishedCallback
@@ -344,6 +348,326 @@ var WidgetDialogHandler = {
         return true;
     }
 };
+
+var gSelection        = null;
+var gMouseSelection   = null;
+
+var ResourceUploadDialogHandler = {
+
+    updateTreeView: function(aSitetree, aTreeParent) {
+        var uid          = null;
+        var nodeUid      = null;
+        var treeChildren = null;
+        var treeItem     = null;
+        var treeRoe      = null;
+
+        /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.updateTreeView() invoked\n");
+
+        uid = Date.now();
+
+        elem = document.createElement("treechildren");
+        elem.setAttribute("id", "children" + uid);
+        aTreeParent.appendChild(elem);
+        treeChildren = document.getElementById("children" + uid);
+
+        // initialise the tree view
+        for (var i=0; i<aSitetree.resources.length; i++) {
+
+            // generate an UID for this resource node
+            nodeUid = uid + i;
+
+            //treeitem
+            elem = document.createElement("treeitem");
+            if (aSitetree.resources[i].properties.resourcetype == "collection") {
+                elem.setAttribute("container", "true");
+            } else {
+                elem.setAttribute("container", "false");
+            }
+            elem.setAttribute("open", "false");
+            elem.setAttribute("id", "item" + nodeUid);
+            treeChildren.appendChild(elem);
+
+            //treerow
+            treeItem = document.getElementById("item" + nodeUid);
+            elem = document.createElement("treerow");
+            elem.setAttribute("id", "row" + nodeUid);
+            treeItem.appendChild(elem);
+
+            //treecell
+            treeRow = document.getElementById("row" + nodeUid);
+            elem = document.createElement("treecell");
+            elem.setAttribute("id", "cell" + nodeUid);
+            elem.setAttribute("label", aSitetree.resources[i].properties.displayname);
+            elem.setAttribute("href", aSitetree.resources[i].href.spec);
+            elem.setAttribute("resourcetype", aSitetree.resources[i].properties.resourcetype);
+
+            treeRow.appendChild(elem);
+        }
+
+        dump(new XMLSerializer().serializeToString(document.documentElement));
+    },
+
+    updateSelection: function() {
+        var tree = null;
+
+        /* DEBUG */ dump("Yulup.widget.js:ResourceUploadDialogHandler.updateSelection() invoked\n");
+
+        tree = document.getElementById("uiYulupResourceUploadTree");
+
+        gSelection = tree.currentIndex;
+    },
+
+    handleKeyUpEvent: function(aEvent) {
+        var treeItem = null;
+
+        /* DEBUG */ dump("Yulup.widget.js:ResourceUploadDialogHandler.handleKeyDownEvent() invoked\n");
+
+        treeItem = document.getElementsByTagName("treeitem")[gSelection];
+        treeCell = document.getElementsByTagName("treecell")[gSelection];
+
+        // left direction key was pressed
+        if (aEvent.keyCode == 39) {
+
+            // make shure we don't load the sitetree twice
+            if (treeItem.getAttribute("open") == "true" && !treeItem.getElementsByTagName("treechildren").length) {
+                dump("#### loading sitetree " + treeCell.getAttribute("href") + "\n");
+                ResourceUploadDialogHandler.updateResourceUploadDialog(treeCell.getAttribute("href"), treeItem);
+            }
+        }
+    },
+
+    handleMouseClickEvent: function(aEvent) {
+        var treeItem = null;
+        var treeCell = null;
+
+        /* DEBUG */ dump("Yulup.widget.js:ResourceUploadDialogHandler.handleMouseClickEvent() invoked\n");
+
+        // only expand the tree if the twisty was clicked
+        if (gMouseSelection.pseudo == "twisty") {
+
+            treeItem = document.getElementsByTagName("treeitem")[gMouseSelection.row];
+            treeCell = document.getElementsByTagName("treecell")[gMouseSelection.row];
+
+            dump("######## " + treeItem.getAttribute("open") + "\n");
+            dump("######## " + treeItem.getElementsByTagName("treechildren").length + "\n");
+
+            // make shure we don't load the sitetree twice
+            if (treeItem.getAttribute("open") == "true" && !treeItem.getElementsByTagName("treechildren").length) {
+                ResourceUploadDialogHandler.updateResourceUploadDialog(treeCell.getAttribute("href"), treeItem);
+            }
+        }
+    },
+
+    handleMouseDoubleClickEvent: function(aEvent) {
+        var treeItem = null;
+        var treeCell = null;
+
+        /* DEBUG */ dump("Yulup.widget.js:ResourceUploadDialogHandler.handleMouseDoubleClickEvent() invoked\n");
+
+        // only expand the tree if the text was clicked
+        if (gMouseSelection.pseudo == "text") {
+
+            treeItem = document.getElementsByTagName("treeitem")[gMouseSelection.row];
+            treeCell = document.getElementsByTagName("treecell")[gMouseSelection.row];
+
+            // make shure we don't load the sitetree twice
+            if (treeItem.getAttribute("open") == "true" && !treeItem.getElementsByTagName("treechildren").length) {
+                ResourceUploadDialogHandler.updateResourceUploadDialog(treeCell.getAttribute("href"), treeItem);
+            }
+        }
+    },
+
+    updateCurrentCell: function(aEvent) {
+        var tree   = null;
+        var box    = null;
+        var row    = null;
+        var col    = null;
+        var pseudo = null;
+
+        /* DEBUG */ dump("Yulup.widget.js:ResourceUploadDialogHandler.updateCurrentCell() invoked\n");
+
+        tree = document.getElementById("uiYulupResourceUploadTree");
+
+        row    = {};
+        col    = {};
+        pseudo = {};
+
+        box = tree.boxObject;
+        box.QueryInterface(Components.interfaces.nsITreeBoxObject);
+        box.getCellAt(aEvent.clientX, aEvent.clientY, row, col, pseudo);
+
+
+
+        // update the global selection object
+        gMouseSelection = {
+            row: row.value,
+            col: col.value,
+            pseudo: pseudo.value,
+        };
+
+    },
+
+    uiYulupEditorResourceUploadOnDialogLoadHandler: function() {
+        var sitetree      = null;
+        var tree          = null;
+
+        /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.uiYulupEditorWidgetInsertOnDialogLoadHandler() invoked\n");
+
+        sitetree = window.arguments[1];
+
+        tree     = document.getElementById("uiYulupResourceUploadTree");
+
+        ResourceUploadDialogHandler.updateTreeView(sitetree, tree);
+    },
+
+    initResourceUploadDialog: function() {
+        var context = null;
+
+        /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.initResourceUploadDialog() invoked\n");
+
+        if (gEditorController.editorParams.navigation && gEditorController.editorParams.navigation.sitetree.uri) {
+
+            context = {
+                uri: gEditorController.editorParams.navigation.sitetree.uri.spec,
+                baseURI: gEditorController.editorParams.navigation.sitetree.uri,
+                parentNode: null,
+                callbackFunction: ResourceUploadDialogHandler.sitetreeLoadFinished
+            };
+
+            // fetch the sitetree XML file
+            NetworkService.httpRequestGET(gEditorController.editorParams.navigation.sitetree.uri.spec, null, ResourceUploadDialogHandler.__requestFinishedHandler, context, false, true);
+        }
+
+    },
+
+    updateResourceUploadDialog: function(aURI, aParentNode) {
+        var context = null;
+        var uri     = null;
+
+        /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.updateResourceUploadDialog() invoked\n");
+
+        // resolve the resource uri relative to the sitetree base uri
+        baseURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(aURI, null, null);
+
+        context = {
+            uri: aURI,
+            baseURI: baseURI,
+            parentNode: aParentNode,
+            callbackFunction: ResourceUploadDialogHandler.sitetreeLoadFinished
+        };
+
+        // fetch the sitetree XML file
+        NetworkService.httpRequestGET(aURI, null, ResourceUploadDialogHandler.__requestFinishedHandler, context, false, true);
+    },
+
+
+    /**
+     * Callback function that gets called when the sitetree xml load
+     * request finished.
+     *
+     * @param  {String}   aDocumentData            the data returned by the request
+     * @param  {Long}     aResponseStatusCode      the status code of the response
+     * @param  {Object}   aContext                 context object containing the callback function and it's parameters
+     * @param  {Array}    aResponseHeaders         the response headers
+     * @param  {Error}    aException               an exception, or null if everything went well
+     * @return {Undefined} does not have a return value
+     */ 
+    __requestFinishedHandler: function(aDocumentData, aResponseStatusCode, aContext, aResponseHeaders) {
+
+        /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.__requestFinishedHandler() invoked\n");
+
+        if (aResponseStatusCode == 200 || aResponseStatusCode == 207) {
+            // success, call back to original caller
+            aContext.callbackFunction(aDocumentData, null, aContext);
+        } else {
+            try {
+                // parse error message (throws an exeception)
+                Neutron.response(aDocumentData);
+            } catch (exception) {
+                aContext.callbackFunction(null, exception, aContext);
+                return;
+            }
+        }
+    },
+
+    /**
+     * Callback function that gets called when the introspection request
+     * finished and after parsing a possible exception.
+     *
+     * @param  {String}    aDocumentData the document data retrieved by the request
+     * @param  {Exception} aException    the exception
+     * @param  {Object}    aContext      context object containing the function parameters
+     * @return {Undefined}               does not have a return value
+     */
+    sitetreeLoadFinished: function(aDocumentData, aException, aContext) {
+        var aURI        = null;
+        var aBaseURI    = null;
+        var domParser   = null;
+        var domDocument = null;
+        var sitetree    = null;
+
+        /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.sitetreeLoadFinished() invoked\n");
+
+        aURI     = aContext.uri;
+        aBaseURI = aContext.baseURI;
+
+        try {
+            if (aDocumentData) {
+                /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.sitetreeLoadFinished(): loading sitetree file \"" + aURI + "\" succeeded\n");
+
+                domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"].createInstance(Components.interfaces.nsIDOMParser);
+
+                domDocument  = domParser.parseFromString(aDocumentData, "text/xml");
+
+                // instantiate the parser for this version and parse the file
+                sitetree = Neutron.parserFactory(domDocument, aBaseURI).parseSitetree();
+
+                if (aContext.parentNode) {
+                    // update an existing view
+                    ResourceUploadDialogHandler.updateTreeView(sitetree, aContext.parentNode);
+                } else {
+                    // show the resource upload dialog
+                    ResourceUploadDialogHandler.showResourceUploadDialog(sitetree);
+                }
+            } else {
+                /* DEBUG */ dump("Yulup:neutron.js:ResourceUploadDialogHandler.sitetreeLoadFinished: failed to load \"" + aURI + "\"). \"" + aException + "\"\n");
+
+                if (aException && (aException instanceof NeutronProtocolException || aException instanceof NeutronAuthException)) {
+                    // report error message retrieved from response
+                    throw new YulupException(document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadError0.label") + " \"" + aURI + "\".\n" + document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadServerError.label") + ": " + aException.message + ".");
+                } else
+                    throw new YulupException(document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadError0.label") + " \"" + aURI + "\".");
+            }
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutron.js:ResourceUploadDialogHandler.sitetreeLoadFinished:", exception);
+
+            alert(document.getElementById("uiYulupOverlayStringbundle").getString("editorDocumentLoadFailure.label") + "\n\n" + exception.message);
+        }
+    },
+
+    showResourceUploadDialog: function(aSitetree) {
+        returnObject    = new Object();
+
+        if (window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupWidgetResourceUploadDialog", "modal,resizable=no", returnObject, aSitetree)) {
+            if (returnObject.returnValue) {
+                return returnObject.returnValue;
+            }
+        }
+
+        return null;
+    },
+
+    save: function () {
+        var field = null;
+
+        /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.save() invoked\n");
+
+        returnObject = window.arguments[0];
+
+        return true;
+    }
+};
+
 
 var WidgetHandler = {
 
@@ -549,6 +873,9 @@ var WidgetHandler = {
             case "insert":
             case "surround":
                 WidgetHandler.doContentWidgetCommand(widget, view, viewMode);
+            break;
+            case "upload":
+                ResourceUploadDialogHandler.initResourceUploadDialog();
             break;
         }
     }
