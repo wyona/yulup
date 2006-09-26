@@ -1,3 +1,5 @@
+<!ENTITY editorAcceptButton.label "Ok">
+<!ENTITY editorCancelButton.label "Cancel">
 <!ENTITY editOperationCopy.label "Copy">
 <!ENTITY editOperationCut.label "Cut">
 <!ENTITY editOperationPaste.label "Paste">
@@ -43,5 +45,5 @@
 <!ENTITY wysiwygViewTab.tooltip "View the WYSIWYG representation of the document">
 <!ENTITY editorWidgetInsertDialog.title "Set attributes">
 <!ENTITY editorWidgetInsert.label "Set attributes for widget ">
-<!ENTITY editorWidgetInsertAcceptButton.label "Ok">
-<!ENTITY editorWidgetInsertCancelButton.label "Cancel">
+<!ENTITY editorResourceUploadDialog.title "Resource Upload">
+<!ENTITY editorResourceUploadTree.label "Sitetree">

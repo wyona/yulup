@@ -2,6 +2,15 @@
 
 <dtd xmlns="http://yulup.wyona.org/1.0">
 
+  <entity id="editorAcceptButton.label">
+    <name xml:lang="de">Ok</name>
+  </entity>
+
+  <entity id="editorCancelButton.label">
+    <name xml:lang="en">Cancel</name>
+    <name xml:lang="de">Abbrechen</name>
+  </entity>
+
   <entity id="editOperationCopy.label">
     <name xml:lang="en">Copy</name>
     <name xml:lang="de">Kopieren</name>
@@ -226,13 +235,14 @@
     <name xml:lang="de">Setzte Attribute für das Element </name>
   </entity>
 
-  <entity id="editorWidgetInsertAcceptButton.label">
-    <name xml:lang="en">Ok</name>
+  <entity id="editorResourceUploadDialog.title">
+    <name xml:lang="en">Resource Upload</name>
+    <name xml:lang="de">Resource Hochladen</name>
   </entity>
 
-  <entity id="editorWidgetInsertCancelButton.label">
-    <name xml:lang="en">Cancel</name>
-    <name xml:lang="de">Abbrechen</name>
+  <entity id="editorResourceUploadTree.label">
+    <name xml:lang="en">Sitetree</name>
+    <name xml:lang="de">Seitenstruktur</name>
   </entity>
 
 </dtd>

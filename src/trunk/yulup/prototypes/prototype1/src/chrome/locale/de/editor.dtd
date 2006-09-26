@@ -1,3 +1,5 @@
+<!ENTITY editorAcceptButton.label "Ok">
+<!ENTITY editorCancelButton.label "Abbrechen">
 <!ENTITY editOperationCopy.label "Kopieren">
 <!ENTITY editOperationCut.label "Ausschneiden">
 <!ENTITY editOperationPaste.label "Einfügen">
@@ -43,5 +45,5 @@
 <!ENTITY wysiwygViewTab.tooltip "Die WYSIWYG Darstellung des Dokuments betrachen">
 <!ENTITY editorWidgetInsertDialog.title "Setzte Attribute">
 <!ENTITY editorWidgetInsert.label "Setzte Attribute für das Element ">
-<!ENTITY editorWidgetInsertAcceptButton.label "Ok">
-<!ENTITY editorWidgetInsertCancelButton.label "Abbrechen">
+<!ENTITY editorResourceUploadDialog.title "Resource Hochladen">
+<!ENTITY editorResourceUploadTree.label "Seitenstruktur">
