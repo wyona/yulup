@@ -597,6 +597,20 @@ Introspection.prototype = {
     },
 
     /**
+     * Return the sitetree associated with the navigation.
+     *
+     * Returns an objects.
+     *
+     * @param  {Integer} aFragment a fragment identifier
+     * @return {Objrct}  an objects
+     */
+    queryNavigation: function () {
+        // return available widgets for fragment
+        return this.navigation;
+    },
+
+
+    /**
      * Return a string representation of this capabilities
      * object.
      *
@@ -674,6 +688,13 @@ Introspection.prototype = {
                         objString += "\n";
                     }
                 }
+            }
+        }
+
+        if (this.navigation) {
+            objString += "Navigation: \n"
+            if (this.navigation.sitetree) {
+                objString += "Sitetree: URI " + this.navigation.sitetree.uri.spec + " Method " + this.navigation.sitetree.method + "\n";
             }
         }
 
