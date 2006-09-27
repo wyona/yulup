@@ -62,6 +62,7 @@ XPathParser.prototype = {
 
         /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.parse() invoked\n");
 
+        // get all symbols (could be optimised to do this on-line with one symbol look-ahead)
         while ((symbol = this.__xpathLexer.getSymbol()) != null) {
             symbolArray.push(symbol);
         }
@@ -70,9 +71,9 @@ XPathParser.prototype = {
             if (symbolArray[i].type == XPathToken.TYPE_IDENT &&
                 i + 1 < symbolArray.length                   &&
                 symbolArray[i + 1].type == XPathToken.TYPE_COLON) {
-                result.push(new XPathParserResultNode(XPathParserResultNode.TYPE_PREFIX, symbolArray[i].value));
+                result.appendNode(new XPathParserResultNode(XPathParserResultNode.TYPE_PREFIX, symbolArray[i].value));
             } else {
-                result.push(new XPathParserResultNode(XPathParserResultNode.TYPE_NORMAL, symbolArray[i].value));
+                result.appendNode(new XPathParserResultNode(XPathParserResultNode.TYPE_NORMAL, symbolArray[i].value));
             }
         }
 
@@ -88,18 +89,40 @@ function XPathParserResult() {
 XPathParserResult.prototype = {
     __resultNodes: null,
 
-    push: function (aXPathResultNode) {
+    appendNode: function (aXPathResultNode) {
         /* DEBUG */ YulupDebug.ASSERT(aXPathResultNode != null);
         /* DEBUG */ YulupDebug.ASSERT(aXPathResultNode ? aXPathResultNode instanceof XPathParserResultNode : true);
 
         this.__resultNodes.push(aXPathResultNode);
     },
 
+    removeNode: function (aPos) {
+        /* DEBUG */ YulupDebug.ASSERT(aPos != null);
+        /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos >= 0 : true);
+        /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos < this.__resultNodes.length : true);
+
+        this.__resultNodes[aPos] = null;
+    },
+
+    getNode: function (aPos) {
+        /* DEBUG */ YulupDebug.ASSERT(aPos != null);
+        /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos >= 0 : true);
+        /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos < this.__resultNodes.length : true);
+
+        return this.__resultNodes[aPos];
+    },
+
+    getLength: function () {
+        return this.__resultNodes.length;
+    },
+
     toObjectString: function () {
         var resultString = "";
 
         for (var i = 0; i < this.__resultNodes.length; i++) {
-            resultString += this.__resultNodes[i].toString();
+            if (this.__resultNodes[i]) {
+                resultString += this.__resultNodes[i].toString();
+            }
         }
 
         return resultString;
@@ -109,12 +132,15 @@ XPathParserResult.prototype = {
         var resultString = "";
 
         for (var i = 0; i < this.__resultNodes.length; i++) {
-            resultString += this.__resultNodes[i].getValue();
+            if (this.__resultNodes[i]) {
+                resultString += this.__resultNodes[i].getValue();
+            }
         }
 
         return resultString;
     }
 };
+
 
 function XPathParserResultNode(aType, aValue) {
     /* DEBUG */ YulupDebug.ASSERT(aType  != null);
@@ -137,6 +163,12 @@ XPathParserResultNode.prototype = {
 
     getValue: function () {
         return this.__value;
+    },
+
+    setValue: function (aValue) {
+        /* DEBUG */ YulupDebug.ASSERT(aValue != null);
+
+        this.__value = aValue;
     },
 
     toString: function () {
