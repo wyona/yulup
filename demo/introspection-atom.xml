@@ -6,30 +6,25 @@
   <workspace title="Yulup Demo">
     <collection title="Releases" href="entries/?yanel.resource.viewid=atom">
     </collection>
+<!--
     <collection title="News" href="entries/index.xml">
-<!--
-      <accept>entry</accept>
--->
-<!--
       <accept>application/atom+xml</accept>
--->
-<!-- NOTE: No accept element means only entries are being allowed (See the spec ...) -->
     </collection>
     <collection title="Images" href="atom-feed-images.xml">
       <accept>image/jpeg</accept>
     </collection>
+-->
   </workspace>
   <workspace title="Yulup Website">
-    <collection title="Releases" href="http://yulup.wyona.org/download/release-atom-entries/?yanel.resource.viewid=atom"/>
-    <collection title="News" href="http://yulup.wyona.org/news-entries.xml">
-<!--
-      <accept>application/atom+xml</accept>
--->
+    <collection title="Releases" href="http://www.yulup.org/download/release-atom-entries/?yanel.resource.viewid=atom">
     </collection>
-    <collection title="Emails" href="http://yulup.wyona.org/mailing-lists/development.xml">
 <!--
+    <collection title="News" href="http://www.yulup.org/news-entries.xml">
       <accept>application/atom+xml</accept>
--->
     </collection>
+    <collection title="Emails" href="http://www.yulup.org/mailing-lists/development.xml">
+      <accept>application/atom+xml</accept>
+    </collection>
+-->
   </workspace>
 </service>
