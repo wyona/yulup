@@ -1,5 +1,5 @@
 <{http://www.wyona.org/yanel/resource/1.0}atom/>
-xslt: /xslt/atomfeed2xhtml.xsl
+#xslt: /xslt/atomfeed2xhtml.xsl
 #mime-type: application/xml
 #mime-type: application/atom+xml
 feed-title: Demo Feed (Releases)
