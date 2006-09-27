@@ -44,6 +44,7 @@ Please see the <a href="../faq.html#troubleinstalltoc">FAQ</a> for troubleshooti
 
 <xsl:apply-templates select="/atom:feed/atom:entry"/>
 
+<!--
 <hr/>
 
 <p>
@@ -56,6 +57,7 @@ Please see the <a href="../faq.html#troubleinstalltoc">FAQ</a> for troubleshooti
   <li>This Feed as <a href="?yanel.resource.viewid=source">application/xml</a> or as <a href="?yanel.resource.viewid=atom">application/atom+xml</a> or as <a href="index.xml?yanel.resource.viewid=source">Directory-XML</a></li>
   <li>The Atom Introspection/Service Document as <a href="../introspection-atom.xml">application/atomserv+xml</a> or as <a href="../introspection-atom.xml?yanel.resource.viewid=source">application/xml</a></li>
 </ul>
+-->
 </body>
 </html>
 </xsl:template>

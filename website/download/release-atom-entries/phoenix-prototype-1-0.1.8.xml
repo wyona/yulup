@@ -1,22 +1,22 @@
-<?xml version="1.0"?>
-
 <entry xmlns="http://www.w3.org/2005/Atom">
- <title>phoenix-prototype-1-0.1.8.xml</title>
+ <title type="text">phoenix-prototype-1-0.1.8.xml</title>
  <author><name>Michael Wechner</name></author>
  <link href="http://www.yulup.org/download/index.html"/>
 
  <id>urn:lenya-uuid:download:release-atom-entries:phoenix-prototype-1-0.1.8.xml</id>
- <updated>2006-09-19T23:09:57-01:00</updated>
+ <updated>2006-09-27T13:14:09.255Z</updated>
  <published>2006-07-13T16:30:57-01:00</published>
 
- <summary type='html'>Phoenix Development Release: phoenix-prototype-1-0.1.8</summary>
- <content type='xhtml'>
-   <div xmlns='http://www.w3.org/1999/xhtml'>
+ <summary type="html">Phoenix Development Release: phoenix-prototype-1-0.1.8</summary>
+ <content type="xhtml">
+   <div xmlns="http://www.w3.org/1999/xhtml">
+     <a href="phoenix-prototype-1-0.1.8.xpi">phoenix-prototype-1-0.1.8.xpi</a> (July 13, 2006)
+     <br/><br/>Changelog:
      <ul>
        <li>XSLT view.</li>
        <li>Lots of under-the-hood changes.</li>
      </ul>
    </div>
  </content>
- <dc:subject xmlns:dc='http://purl.org/dc/elements/1.1/'>Phoenix Development Release: phoenix-prototype-1-0.1.8</dc:subject>
+ <dc:subject xmlns:dc="http://purl.org/dc/elements/1.1/">Phoenix Development Release: phoenix-prototype-1-0.1.8</dc:subject>
 </entry>
