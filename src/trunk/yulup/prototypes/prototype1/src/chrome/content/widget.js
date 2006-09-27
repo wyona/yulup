@@ -403,8 +403,26 @@ var ResourceUploadDialogHandler = {
 
             treeRow.appendChild(elem);
         }
+    },
 
-        dump(new XMLSerializer().serializeToString(document.documentElement));
+    showFilePicker: function() {
+        var filePicker = null;
+        var ret        = null;
+        var textBox    = null;
+
+        /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.showFilePicker() invoked\n");
+
+        filePicker = Components.classes["@mozilla.org/filepicker;1"].createInstance(Components.interfaces.nsIFilePicker);
+
+        filePicker.init(window, "Select a File", Components.interfaces.nsIFilePicker.modeOpen);
+        ret = filePicker.show();
+
+        if (ret == Components.interfaces.nsIFilePicker.returnOK) {
+            textBox = document.getElementById("uiYulupResourceUploadTextBox");
+            textBox.setAttribute("value", filePicker.fileURL.filePath);
+
+            // TODO upload the resource to the server
+        }
     },
 
     updateSelection: function() {
@@ -422,15 +440,14 @@ var ResourceUploadDialogHandler = {
 
         /* DEBUG */ dump("Yulup.widget.js:ResourceUploadDialogHandler.handleKeyDownEvent() invoked\n");
 
-        treeItem = document.getElementsByTagName("treeitem")[gSelection];
-        treeCell = document.getElementsByTagName("treecell")[gSelection];
+        treeCell = ResourceUploadDialogHandler.getCellAtRow(gSelection);
+        treeItem = treeCell.parentNode.parentNode;
 
         // left direction key was pressed
         if (aEvent.keyCode == 39) {
 
             // make shure we don't load the sitetree twice
-            if (treeItem.getAttribute("open") == "true" && !treeItem.getElementsByTagName("treechildren").length) {
-                dump("#### loading sitetree " + treeCell.getAttribute("href") + "\n");
+            if (!treeItem.getElementsByTagName("treechildren").length) {
                 ResourceUploadDialogHandler.updateResourceUploadDialog(treeCell.getAttribute("href"), treeItem);
             }
         }
@@ -445,14 +462,14 @@ var ResourceUploadDialogHandler = {
         // only expand the tree if the twisty was clicked
         if (gMouseSelection.pseudo == "twisty") {
 
-            treeItem = document.getElementsByTagName("treeitem")[gMouseSelection.row];
-            treeCell = document.getElementsByTagName("treecell")[gMouseSelection.row];
+            treeCell = gMouseSelection.cell;
+            treeItem = treeCell.parentNode.parentNode;
 
-            dump("######## " + treeItem.getAttribute("open") + "\n");
-            dump("######## " + treeItem.getElementsByTagName("treechildren").length + "\n");
+            // set the tree selection
+            document.getElementById("uiYulupResourceUploadTree").view.selection.select(gMouseSelection.row);
 
             // make shure we don't load the sitetree twice
-            if (treeItem.getAttribute("open") == "true" && !treeItem.getElementsByTagName("treechildren").length) {
+            if (!treeItem.getElementsByTagName("treechildren").length) {
                 ResourceUploadDialogHandler.updateResourceUploadDialog(treeCell.getAttribute("href"), treeItem);
             }
         }
@@ -467,14 +484,63 @@ var ResourceUploadDialogHandler = {
         // only expand the tree if the text was clicked
         if (gMouseSelection.pseudo == "text") {
 
-            treeItem = document.getElementsByTagName("treeitem")[gMouseSelection.row];
-            treeCell = document.getElementsByTagName("treecell")[gMouseSelection.row];
+            treeCell = gMouseSelection.cell;
+            treeItem = treeCell.parentNode.parentNode;
 
             // make shure we don't load the sitetree twice
-            if (treeItem.getAttribute("open") == "true" && !treeItem.getElementsByTagName("treechildren").length) {
+            if (!treeItem.getElementsByTagName("treechildren").length) {
                 ResourceUploadDialogHandler.updateResourceUploadDialog(treeCell.getAttribute("href"), treeItem);
             }
         }
+    },
+
+    /**
+     * Gets the cells XULElement at the specified row.
+     *
+     * If we want to get the XULElement corresponding to a certain
+     * Tree-cell we have to translate the tree.currentIndex property
+     * since the value does point to the n'th cell in the tree but not
+     * in the XUL file aka. getElementsByTagName("treecell")[tree.currentIndex]
+     * does not work.
+     *
+     * @param  {Integer}       aRow the row value returned by the tree implementation
+     * @return {nsIDOMElement}      the corresponding element in the document DOM
+     */
+    getCellAtRow: function(aRow) {
+        var treeItems = null;
+        var cell      = null;
+        var row       = null;
+
+        treeItems = document.getElementsByTagName("treechildren")[0].childNodes;
+
+        // wrap into an object for a call by reference
+        row = {
+            row: 0
+        };
+
+        return ResourceUploadDialogHandler.__getCellAtRow(aRow, row, treeItems);
+    },
+
+    __getCellAtRow: function(aRow, aCurrentRow, aChildNodes) {
+        var cell = null;
+
+        for (var i=0; i<aChildNodes.length; i++) {
+            if (aChildNodes[i].getAttribute("open") == "true") {
+                if (aCurrentRow.row++ == aRow) {
+                    return aChildNodes[i].firstChild.firstChild;
+                }
+                if (aChildNodes[i].childNodes.length >= 2) {
+                    if ((cell = ResourceUploadDialogHandler.__getCellAtRow(aRow, aCurrentRow, aChildNodes[i].childNodes[1].childNodes)) != null) {
+                    return cell;
+                    };
+                }
+            } else {
+                if (aCurrentRow.row++ == aRow) {
+                    return aChildNodes[i].firstChild.firstChild;
+                }
+            }
+        }
+        return null;
     },
 
     updateCurrentCell: function(aEvent) {
@@ -496,28 +562,11 @@ var ResourceUploadDialogHandler = {
         box.QueryInterface(Components.interfaces.nsITreeBoxObject);
         box.getCellAt(aEvent.clientX, aEvent.clientY, row, col, pseudo);
 
-
-
         // update the global selection object
         gMouseSelection = {
-            row: row.value,
-            col: col.value,
+            cell: ResourceUploadDialogHandler.getCellAtRow(row.value),
             pseudo: pseudo.value,
         };
-
-    },
-
-    uiYulupEditorResourceUploadOnDialogLoadHandler: function() {
-        var sitetree      = null;
-        var tree          = null;
-
-        /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.uiYulupEditorWidgetInsertOnDialogLoadHandler() invoked\n");
-
-        sitetree = window.arguments[1];
-
-        tree     = document.getElementById("uiYulupResourceUploadTree");
-
-        ResourceUploadDialogHandler.updateTreeView(sitetree, tree);
     },
 
     initResourceUploadDialog: function() {
@@ -641,30 +690,27 @@ var ResourceUploadDialogHandler = {
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutron.js:ResourceUploadDialogHandler.sitetreeLoadFinished:", exception);
 
-            alert(document.getElementById("uiYulupOverlayStringbundle").getString("editorDocumentLoadFailure.label") + "\n\n" + exception.message);
+            alert(document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadFailure.label") + "\n\n" + exception.message);
         }
+    },
+
+    uiYulupEditorResourceUploadOnDialogLoadHandler: function() {
+        var sitetree      = null;
+        var tree          = null;
+
+        /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.uiYulupEditorWidgetInsertOnDialogLoadHandler() invoked\n");
+
+        sitetree = window.arguments[0];
+        tree     = document.getElementById("uiYulupResourceUploadTree");
+
+        ResourceUploadDialogHandler.updateTreeView(sitetree, tree);
     },
 
     showResourceUploadDialog: function(aSitetree) {
-        returnObject    = new Object();
 
-        if (window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupWidgetResourceUploadDialog", "modal,resizable=no", returnObject, aSitetree)) {
-            if (returnObject.returnValue) {
-                return returnObject.returnValue;
-            }
-        }
+        /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.showResourceUploadDialog() invoked\n");
 
-        return null;
-    },
-
-    save: function () {
-        var field = null;
-
-        /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.save() invoked\n");
-
-        returnObject = window.arguments[0];
-
-        return true;
+        window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupWidgetResourceUploadDialog", "modal,resizable=no", aSitetree);
     }
 };
 
