@@ -1,5 +1,6 @@
 <!ENTITY editorAcceptButton.label "Ok">
 <!ENTITY editorCancelButton.label "Abbrechen">
+<!ENTITY editorCloseButton.label "Schliessen">
 <!ENTITY editOperationCopy.label "Kopieren">
 <!ENTITY editOperationCut.label "Ausschneiden">
 <!ENTITY editOperationPaste.label "Einfügen">
