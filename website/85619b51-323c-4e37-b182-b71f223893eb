@@ -1,17 +1,16 @@
-<?xml version="1.0"?>
-
 <entry xmlns="http://www.w3.org/2005/Atom">
-  <title>yulup-prototype-1-0.1.10-rc5-r18347</title>
+  <title type="text">yulup-prototype-1-0.1.10-rc5-r18347</title>
   <author><name>Andreas Wuest</name></author>
   <link href="http://www.yulup.org/download/index.html"/>
 
   <!-- TODO: Create these elements dynamically -->
-  <updated>2006-09-21T15:54:00-01:00</updated>
+  <updated>2006-09-27T09:21:31.693Z</updated>
 
   <published>2006-09-21T15:54:00-01:00</published>
   <summary type="html">Yulup 0.1.10 RC5 released</summary>
   <content type="xhtml">
     <div xmlns="http://www.w3.org/1999/xhtml">
+      <a href="yulup-prototype-1-0.1.10-rc5-r18347.xpi">yulup-prototype-1-0.1.10-rc5-r18347.xpi</a> (September 21, 2006)
       <ul>
         <li>Improved widget support.</li>
         <li>Sophisticated templating mechanism from local NAR.</li>
