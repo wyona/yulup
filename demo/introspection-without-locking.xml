@@ -8,4 +8,8 @@
   <save url="editable-page-without-locking.xhtml?yanel.resource.usecase=save" method="PUT"/>
 </edit>
 
+<navigation>
+  <sitetree href="sitetree.xml" method="GET"/>
+</navigation>
+
 </introspection>
