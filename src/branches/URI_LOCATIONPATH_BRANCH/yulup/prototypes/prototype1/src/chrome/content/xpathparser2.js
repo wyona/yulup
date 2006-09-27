@@ -38,13 +38,14 @@ function XPathParser(aXPath) {
 
     /* DEBUG */ YulupDebug.ASSERT(aXPath != null);
 
-    this.__xpathLexer = new XPathLexer(aXPath);
+    this.__xpathLexer  = new XPathLexer(aXPath);
+    this.__symbolArray = new Array();
 
 }
 
 XPathParser.prototype = {
     __xpathLexer : null,
-    __resultStack: null,
+    __symbolArray: null,
 
     /**
      * Parse the source string as given to the constructor.
@@ -52,7 +53,25 @@ XPathParser.prototype = {
      * @return {Array} array consisting of slashes and steps, both as strings
      */
     parse: function () {
-        return this.__drive(new Array(), this.__STATE_LOCATIONPATH, 0, this.__xpathLexer.getSymbol());
+        var symbol = null;
+
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.parse() invoked\n");
+
+        // get all symbols (could be optimised to do this on-line with one symbol look-ahead)
+        while ((symbol = this.__xpathLexer.getSymbol()) != null) {
+            this.__symbolArray.push(symbol);
+        }
+
+        return this.__ruleLocationPath(0);
+    },
+
+    __matchSymbol: function (aPos, aSymbolType) {
+        /* DEBUG */ YulupDebug.ASSERT(aPos        != null);
+        /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos >= 0 : true);
+        /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos < this.__symbolArray.length : true);
+        /* DEBUG */ YulupDebug.ASSERT(aSymbolType != null);
+
+        return (this.__symbolArray[aPos].type == aSymbolType);
     },
 
     /**
@@ -288,7 +307,7 @@ XPathParser.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: AXISNAME DOUBLECOLON
-        if (this.__matchSymbol(aPos, XPathToken.TYPE_AXISNAME)) {
+        if (this.__matchAxisName(aPos)) {
             astNode = new ASTNode(ASTNode.TYPE_AXISSPECIFIER, aPos);
             astNode.addChild(new ASTNode(ASTNode.TYPE_AXISNAME));
 
@@ -338,7 +357,7 @@ XPathParser.prototype = {
         }
 
         // alt2: "processing-instruction" LPAREN literal RPAREN
-        if (this.__matchSymbol(aPos, XPathToken.TYPE_PROCESSINGINSTRUCTION)) {
+        if (this.__matchProcessingInstruction(aPos)) {
             astNode = new ASTNode(ASTNode.TYPE_NODETEST, aPos);
 
             if (this.__matchSymbol(aPos + 1, XPathToken.TYPE_LPAREN)) {
@@ -792,7 +811,7 @@ XPathParser.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: OR andExpr orExpr2
-        if (this.__matchSymbol(aPos, XPathToken.TYPE_OR)) {
+        if (this.__matchOr(aPos)) {
             astNode = new ASTNode(ASTNode.TYPE_OREXPR2, aPos);
 
             if ((evalResult = this.__ruleAndExpr(aPos + 1)) != null) {
@@ -860,7 +879,7 @@ XPathParser.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: AND equalityExpr andExpr2
-        if (this.__matchSymbol(aPos, XPathToken.TYPE_AND)) {
+        if (this.__matchAnd(aPos)) {
             astNode = new ASTNode(ASTNode.TYPE_ANDEXPR2, aPos);
 
             if ((evalResult = this.__ruleEqualityExpr(aPos + 1)) != null) {
@@ -1460,8 +1479,8 @@ XPathParser.prototype = {
 
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
-        // alt1: IDENT
-        if (this.__matchSymbol(aPos, XPathToken.TYPE_NODETYPE)) {
+        // alt1: NODETYPE
+        if (this.__matchNodeType(aPos)) {
             astNode = new ASTNode(ASTNode.TYPE_NODETYPE, aPos);
             astNode.addChild(new ASTNode.TYPE_NODETYPE);
 
@@ -1480,6 +1499,8 @@ function ASTNode(aNodeType, aPos) {
 
     this.nodeType = aNodeType;
     this.pos      = aPos;
+
+    this.__children = new Array();
 }
 
 ASTNode.prototype = {
@@ -1676,12 +1697,30 @@ function XPathToken(aType, aValue) {
     this.value = aValue;
 }
 
-XPathToken.TYPE_SLASH          = 0;
-XPathToken.TYPE_LSQUAREBRACKET = 1;
-XPathToken.TYPE_RSQUAREBRACKET = 2;
-XPathToken.TYPE_DOUBLEQUOTE    = 3;
-XPathToken.TYPE_SINGLEQUOTE    = 4;
-XPathToken.TYPE_NAME           = 5;
+XPathToken.TYPE_SLASH                  = 0;
+XPathToken.TYPE_DOUBLESLASH            = 1;
+XPathToken.TYPE_COLON                  = 2;
+XPathToken.TYPE_DOUBLECOLON            = 3;
+XPathToken.TYPE_PERIOD                 = 4;
+XPathToken.TYPE_DOUBLEPERIOD           = 5;
+XPathToken.TYPE_COMMA                  = 6;
+XPathToken.TYPE_AT                     = 7;
+XPathToken.TYPE_BAR                    = 8;
+XPathToken.TYPE_DOLLAR                 = 9;
+XPathToken.TYPE_STAR                   = 10;
+XPathToken.TYPE_EQUALITYOPERATOR       = 11;
+XPathToken.TYPE_RELATIONALOPERATOR     = 12;
+XPathToken.TYPE_MULTIPLICATIVEOPERATOR = 13;
+XPathToken.TYPE_PLUS                   = 14;
+XPathToken.TYPE_MINUS                  = 15;
+XPathToken.TYPE_LBRACKET               = 16;
+XPathToken.TYPE_RBRACKET               = 17;
+XPathToken.TYPE_LPAREN                 = 18;
+XPathToken.TYPE_RPAREN                 = 19;
+XPathToken.TYPE_DOUBLEQUOTELITERAL     = 20;
+XPathToken.TYPE_SINGLEQUOTELITERAL     = 21;
+XPathToken.TYPE_DIGITS                 = 22;
+XPathToken.TYPE_IDENT                  = 23;
 
 XPathToken.prototype = {
     type : null,
