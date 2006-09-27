@@ -19,15 +19,9 @@
 <xsl:template match="/">
 <html>
 <head>
-<!--
-  <link rel="neutron-introspection" type="application/neutron+xml" href="introspection-{$name-without-suffix}.xml"/>
--->
-  <link rel="introspection" type="application/atomserv+xml" href="../introspection-atom.xml"/>
-  <!--
-  <link rel="introspection" type="application/atomserv+xml" href="introspection-{$name-without-suffix}.xml"/>
-  -->
-  <meta content="application/xhtml+xml; charset=UTF-8" http-equiv="Content-Type"/>
-  <title><xsl:value-of select="/atom:feed/atom:title"/> - Yulup Demo</title>
+  <title>Download</title>
+  <link rel="alternate" title="Yulup Releases" href="release-atom-entries/?yanel.resource.viewid=atom" type="application/atom+xml"/>
+  <link rel="introspection" href="introspection-atom.xml" type="application/atomserv+xml"/>
 </head>
 <body>
 <!--
