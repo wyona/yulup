@@ -1,21 +1,21 @@
-<?xml version="1.0"?>
-
 <entry xmlns="http://www.w3.org/2005/Atom">
- <title>ulysses-prototype-1-0.1.10-rc2-r16389</title>
+ <title type="text">ulysses-prototype-1-0.1.10-rc2-r16389</title>
  <author><name>Michael Wechner</name></author>
  <link href="http://www.yulup.org/download/index.html"/>
  <link href="ulysses-prototype-1-0.1.10-rc2-r16389.xml" rel="edit"/>
  <id>urn:uuid:download:release-atom-entries:ulysses-prototype-1-0.1.10-rc2-r16389.xml</id>
- <updated>2006-09-19T23:06:54-01:00</updated>
+ <updated>2006-09-27T13:08:29.384Z</updated>
  <published>2006-08-11T16:30:54-01:00</published>
 
- <summary type='html'>Release Candidate rc2: ulysses-prototype-1-0.1.10-rc2-r16389</summary>
- <content type='xhtml'>
-   <div xmlns='http://www.w3.org/1999/xhtml'>
+ <summary type="html">Release Candidate rc2: ulysses-prototype-1-0.1.10-rc2-r16389</summary>
+ <content type="xhtml">
+   <div xmlns="http://www.w3.org/1999/xhtml">
+     <a href="ulysses-prototype-1-0.1.10-rc2-r16389.xpi">ulysses-prototype-1-0.1.10-rc2-r16389.xpi</a> (August 11, 2006)
+     <br/><br/>Changelog:
      <ul>
        <li>I18n.</li>
      </ul>
    </div>
  </content>
- <dc:subject xmlns:dc='http://purl.org/dc/elements/1.1/'>Release Candidate rc2: ulysses-prototype-1-0.1.10-rc2-r16389</dc:subject>
+ <dc:subject xmlns:dc="http://purl.org/dc/elements/1.1/">Release Candidate rc2: ulysses-prototype-1-0.1.10-rc2-r16389</dc:subject>
 </entry>
