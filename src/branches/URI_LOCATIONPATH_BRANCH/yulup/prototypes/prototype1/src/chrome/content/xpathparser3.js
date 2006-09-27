@@ -45,47 +45,89 @@ function XPathParser(aXPath) {
 XPathParser.prototype = {
     __xpathLexer: null,
 
-    __STATE_LOCATIONPATH      : 0,
-    __STATE_STEP              : 1,
-    __STATE_EXPRESSION        : 2,
-    __STATE_OPAQUEDOUBLESTRING: 3,
-    __STATE_OPAQUESINGLESTRING: 4,
-
     /**
      * Parse the source string as given to the constructor.
      *
      * Note that this parser is not a complete XPath parser, but
      * creates an AST which is less detailed than the XPath itself.
      *
-     * This parser creates expressions following this grammar:
-     *   LocationPath         ::= RelativeLocationPath | AbsoluteLocationPath
-     *   RelativeLocationPath ::= Step | RelativeLocationPath '/' Step
-     *   AbsoluteLocationPath ::= '/' RelativeLocationPath?
-     *   Step                 ::= STRING | STRING '[' Expression Expression? ']' | null
-     *   Expression           ::= STRING | STRING? '"' STRING? '"' STRING? | STRING? ''' STRING? ''' STRING? | null
-     *
      * The parser returns an array consisting of slashes and steps.
      *
      * @return {Array} array consisting of slashes and steps, both as strings
      */
     parse: function () {
-        return this.__drive(new Array(), this.__STATE_LOCATIONPATH, 0, this.__xpathLexer.getSymbol());
+        var symbol      = null;
+        var symbolArray = new Array();
+        var result      = new XPathParserResult();
+
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.parse() invoked\n");
+
+        while ((symbol = this.__xpathLexer.getSymbol()) != null) {
+            symbolArray.push(symbol);
+        }
+
+        for (var i = 0; i < symbolArray.length; i++) {
+            if (symbolArray[i].type == XPathToken.TYPE_IDENT &&
+                i + 1 < symbolArray.length                   &&
+                symbolArray[i + 1].type == XPathToken.TYPE_COLON) {
+                result.push(new XPathParserResultNode(XPathParserResultNode.TYPE_PREFIX, symbolArray[i].value));
+            } else {
+                result.push(new XPathParserResultNode(XPathParserResultNode.TYPE_NORMAL, symbolArray[i].value));
+            }
+        }
+
+        return result;
     }
 };
 
 
-function XPathResultNode(aType) {
-    /* DEBUG */ YulupDebug.ASSERT(aType != null);
-
-    this.__type = aType;
-
-    this.__value = "";
+function XPathParserResult() {
+    this.__resultNodes = new Array();
 }
 
-XPathResultNode.TYPE_STEPDELIM = 0;
-XPathResultNode.TYPE_STEP      = 1;
+XPathParserResult.prototype = {
+    __resultNodes: null,
 
-XPathResultNode.prototype = {
+    push: function (aXPathResultNode) {
+        /* DEBUG */ YulupDebug.ASSERT(aXPathResultNode != null);
+        /* DEBUG */ YulupDebug.ASSERT(aXPathResultNode ? aXPathResultNode instanceof XPathParserResultNode : true);
+
+        this.__resultNodes.push(aXPathResultNode);
+    },
+
+    toObjectString: function () {
+        var resultString = "";
+
+        for (var i = 0; i < this.__resultNodes.length; i++) {
+            resultString += this.__resultNodes[i].toString();
+        }
+
+        return resultString;
+    },
+
+    toString: function () {
+        var resultString = "";
+
+        for (var i = 0; i < this.__resultNodes.length; i++) {
+            resultString += this.__resultNodes[i].getValue();
+        }
+
+        return resultString;
+    }
+};
+
+function XPathParserResultNode(aType, aValue) {
+    /* DEBUG */ YulupDebug.ASSERT(aType  != null);
+    /* DEBUG */ YulupDebug.ASSERT(aValue != null);
+
+    this.__type  = aType;
+    this.__value = aValue;
+}
+
+XPathParserResultNode.TYPE_NORMAL = 0;
+XPathParserResultNode.TYPE_PREFIX = 1;
+
+XPathParserResultNode.prototype = {
     __type : null,
     __value: null,
 
@@ -97,10 +139,21 @@ XPathResultNode.prototype = {
         return this.__value;
     },
 
-    concatValue: function (aValue) {
-        /* DEBUG */ YulupDebug.ASSERT(aValue != null);
+    toString: function () {
+        var typeString   = null;
 
-        this.__value += aValue;
+        switch (this.getType()) {
+        case XPathParserResultNode.TYPE_NORMAL:
+            typeString = "TYPE_NORMAL";
+            break;
+        case XPathParserResultNode.TYPE_PREFIX:
+            typeString = "TYPE_PREFIX";
+            break;
+        default:
+            typeString = "UNKNOWN";
+        }
+
+        return "{" + typeString + ", \"" + this.getValue() + "\"}";
     }
 };
 
@@ -114,13 +167,15 @@ XPathResultNode.prototype = {
  * @return {XPathLexer}
  */
 function XPathLexer(aXPath) {
+    /* DEBUG */ dump("Yulup:xpathparser.js:XPathLexer(\"" + aXPath + "\") invoked\n");
+
     /* DEBUG */ YulupDebug.ASSERT(aXPath != null);
 
     this.__sourceString = aXPath;
     this.__readPos      = 0;
 
     this.__whitespace = [String.fromCharCode(32), String.fromCharCode(9), String.fromCharCode(13), String.fromCharCode(10)];
-    this.__symbols    = ["/", "[", "]", "\"", "'"];
+    this.__symbols    = ["/", "[", "]", "(", ")", ".", "@", "$", ":", "*", "|", "<", ">", "=", "!", "\"", "'"];
 }
 
 XPathLexer.prototype = {
@@ -144,7 +199,7 @@ XPathLexer.prototype = {
         this.__readPos -= aNoOfChars;
     },
 
-    __isWhitespace: function (aChar) {
+    __isWhitespaceChar: function (aChar) {
         /* DEBUG */ YulupDebug.ASSERT(aChar != null);
 
         for (var i = 0; i < this.__whitespace.length; i++) {
@@ -155,7 +210,7 @@ XPathLexer.prototype = {
         return false;
     },
 
-    __isName: function (aChar) {
+    __isNameChar: function (aChar) {
         /* DEBUG */ YulupDebug.ASSERT(aChar != null);
 
         for (var i = 0; i < this.__symbols.length; i++) {
@@ -170,55 +225,93 @@ XPathLexer.prototype = {
         var char = null;
         var name = null;
 
-        while ((char = this.__readChar()) != null && this.__isWhitespace(char));
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathLexer.getSymbol() invoked\n");
+
+        while ((char = this.__readChar()) != null && this.__isWhitespaceChar(char));
 
         if (char != null) {
             switch (char) {
                 case "/":
-                    return new XPathToken(XPathToken.TYPE_SLASH, null);
+                    return new XPathToken(XPathToken.TYPE_SLASH, "/");
                 case "[":
-                    return new XPathToken(XPathToken.TYPE_LSQUAREBRACKET, "[");
+                    return new XPathToken(XPathToken.TYPE_LBRACKET, "[");
                 case "]":
-                    return new XPathToken(XPathToken.TYPE_RSQUAREBRACKET, "]");
+                    return new XPathToken(XPathToken.TYPE_RBRACKET, "]");
+                case "(":
+                    return new XPathToken(XPathToken.TYPE_LPAREN, "(");
+                case ")":
+                    return new XPathToken(XPathToken.TYPE_RPAREN, ")");
+                case ".":
+                    return new XPathToken(XPathToken.TYPE_PERIOD, ".");
+                case ",":
+                    return new XPathToken(XPathToken.TYPE_COMMA, ",");
+                case "@":
+                    return new XPathToken(XPathToken.TYPE_AT, "@");
+                case "$":
+                    return new XPathToken(XPathToken.TYPE_DOLLAR, "$");
+                case ":":
+                    if (this.__readChar() == ":") {
+                        return new XPathToken(XPathToken.TYPE_DOUBLECOLON, "::");
+                    } else {
+                        this.__putBack(1);
+                        return new XPathToken(XPathToken.TYPE_COLON, ":");
+                    }
+                case "*":
+                    return new XPathToken(XPathToken.TYPE_STAR, "*");
+                case "|":
+                    return new XPathToken(XPathToken.TYPE_BAR, "|");
+                case "<":
+                    return new XPathToken(XPathToken.TYPE_LESSTHAN, "<");
+                case ">":
+                    return new XPathToken(XPathToken.TYPE_GREATERTHAN, ">");
+                case "=":
+                    return new XPathToken(XPathToken.TYPE_EQUAL, "=");
+                case "!":
+                    return new XPathToken(XPathToken.TYPE_NOT, "!");
                 case "\"":
-                    return new XPathToken(XPathToken.TYPE_DOUBLEQUOTE, "\"");
+                    name = "";
+
+                    do {
+                        name += char;
+                    } while ((char = this.__readChar()) != null && char != "\"");
+
+                    if (char == null) {
+                        throw new YulupXPathLexerMalformedException();
+                    } else {
+                        name += char;
+                    }
+
+                    return new XPathToken(XPathToken.TYPE_DOUBLEQUOTELITERAL, name);
                 case "'":
-                    return new XPathToken(XPathToken.TYPE_SINGLEQUOTE, "'");
+                    name = "";
+
+                    do {
+                        name += char;
+                    } while ((char = this.__readChar()) != null && char != "'");
+
+                    if (char == null) {
+                        throw new YulupXPathLexerMalformedException();
+                    } else {
+                        name += char;
+                    }
+
+                    return new XPathToken(XPathToken.TYPE_SINGLEQUOTELITERAL, name);
                 default:
                     name = "";
 
                     do {
                         name += char;
-                    } while ((char = this.__readChar()) != null && !this.__isWhitespace(char) && this.__isName(char));
+                    } while ((char = this.__readChar()) != null && !this.__isWhitespaceChar(char) && this.__isNameChar(char));
 
                     if (char != null)
                         this.__putBack(1);
 
-                    return new XPathToken(XPathToken.TYPE_NAME, name);
+                    return new XPathToken(XPathToken.TYPE_IDENT, name);
             }
         } else {
             return null;
         }
     }
-};
-
-
-/**
- * LocationPathLexer constructor. Instantiates a new object of
- * type LocationPathLexer.
- *
- * @constructor
- * @param  {String}     aLocationPath the location path to tokenise
- * @return {XPathLexer}
- */
-function LocationPathLexer(aLocationPath) {
-    /* DEBUG */ YulupDebug.ASSERT(aLocationPath != null);
-
-    XPathLexer.call(this, aLocationPath);
-}
-
-LocationPathLexer.prototype = {
-    __proto__: XPathLexer
 };
 
 
@@ -232,18 +325,35 @@ LocationPathLexer.prototype = {
  * @return {XPathToken}
  */
 function XPathToken(aType, aValue) {
-    /* DEBUG */ YulupDebug.ASSERT(aType != null);
+    /* DEBUG */ dump("Yulup:xpathparser.js:XPathToken(\"" + aType + "\", \"" + aValue + "\") invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aType  != null);
+    /* DEBUG */ YulupDebug.ASSERT(aValue != null);
 
     this.type  = aType;
     this.value = aValue;
 }
 
-XPathToken.TYPE_SLASH          = 0;
-XPathToken.TYPE_LSQUAREBRACKET = 1;
-XPathToken.TYPE_RSQUAREBRACKET = 2;
-XPathToken.TYPE_DOUBLEQUOTE    = 3;
-XPathToken.TYPE_SINGLEQUOTE    = 4;
-XPathToken.TYPE_NAME           = 5;
+XPathToken.TYPE_SLASH              = 0;
+XPathToken.TYPE_LBRACKET           = 1;
+XPathToken.TYPE_RBRACKET           = 2;
+XPathToken.TYPE_LPAREN             = 3;
+XPathToken.TYPE_RPAREN             = 4;
+XPathToken.TYPE_PERIOD             = 5;
+XPathToken.TYPE_COMMA              = 6;
+XPathToken.TYPE_AT                 = 7;
+XPathToken.TYPE_DOLLAR             = 8;
+XPathToken.TYPE_DOUBLECOLON        = 9;
+XPathToken.TYPE_COLON              = 10;
+XPathToken.TYPE_STAR               = 11;
+XPathToken.TYPE_BAR                = 12;
+XPathToken.TYPE_LESSTHAN           = 13;
+XPathToken.TYPE_GREATERTHAN        = 14;
+XPathToken.TYPE_EQUAL              = 15;
+XPathToken.TYPE_NOT                = 16;
+XPathToken.TYPE_DOUBLEQUOTELITERAL = 17;
+XPathToken.TYPE_SINGLEQUOTELITERAL = 18;
+XPathToken.TYPE_IDENT              = 19;
 
 XPathToken.prototype = {
     type : null,

@@ -1507,7 +1507,12 @@ WYSIWYGXSLTModeView.prototype = {
         // parse found location path
         xpathParseResult = (new XPathParser(locationPath)).parse();
 
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: object XPath representation: \n" + xpathParseResult.toObjectString() + "\n");
+
         // reassemble XPath query
+        xPathExpr = xpathParseResult.toString();
+
+        /*
         xPathExpr = "";
 
         for (var i = 0; i < xpathParseResult.length; i++) {
@@ -1517,6 +1522,7 @@ WYSIWYGXSLTModeView.prototype = {
                 xPathExpr += xpathParseResult[i].getValue();
             }
         }
+        */
 
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: reassembled XPath: " + xPathExpr + "\n");
 
