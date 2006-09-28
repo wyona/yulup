@@ -349,9 +349,6 @@ var WidgetDialogHandler = {
     }
 };
 
-var gSelection        = null;
-var gMouseSelection   = null;
-
 var ResourceUploadDialogHandler = {
 
     showFilePicker: function() {
@@ -375,26 +372,6 @@ var ResourceUploadDialogHandler = {
 
             // TODO upload the resource to the server
         }
-    },
-
-    initResourceUploadDialog: function() {
-        var context = null;
-
-        /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.initResourceUploadDialog() invoked\n");
-
-        if (gEditorController.editorParams.navigation && gEditorController.editorParams.navigation.sitetree.uri) {
-
-            context = {
-                uri: gEditorController.editorParams.navigation.sitetree.uri.spec,
-                baseURI: gEditorController.editorParams.navigation.sitetree.uri,
-                parentNode: null,
-                callbackFunction: ResourceUploadDialogHandler.sitetreeLoadFinished
-            };
-
-            // fetch the sitetree XML file
-            NetworkService.httpRequestGET(gEditorController.editorParams.navigation.sitetree.uri.spec, null, ResourceUploadDialogHandler.__requestFinishedHandler, context, false, true);
-        }
-
     },
 
     uiYulupEditorResourceUploadOnDialogLoadHandler: function() {
