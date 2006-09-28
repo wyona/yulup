@@ -275,12 +275,7 @@ SitetreeView.prototype = {
             parentNode.appendChild(elem);
         }
 
-        this.updateRowNodeMap();
-
-        // update the box
-        this.treeBox.beginUpdateBatch();
-        this.treeBox.invalidate(aParentRow);
-        this.treeBox.endUpdateBatch();
+        this.notifyRowChanged(aParentRow);
 
     },
 
