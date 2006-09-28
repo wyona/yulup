@@ -79,7 +79,7 @@ var PersistenceService = {
         nsIFilePicker = Components.interfaces.nsIFilePicker;
         filePicker    = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 
-        filePicker.init(window, "Open File for Editing", nsIFilePicker.modeOpen);
+        filePicker.init(window, document.getElementById("uiYulupEditorStringbundle").getString("editorFilePickerOpen.label"), nsIFilePicker.modeOpen);
         filePicker.appendFilters(nsIFilePicker.filterXML);
         filePicker.appendFilter("XHTML Files", "*.xhtml; *.html");
         filePicker.appendFilters(nsIFilePicker.filterAll);
