@@ -1,5 +1,6 @@
 <!ENTITY editorAcceptButton.label "Ok">
 <!ENTITY editorCancelButton.label "Abbrechen">
+<!ENTITY editorUploadButton.label "Hochladen">
 <!ENTITY editorCloseButton.label "Schliessen">
 <!ENTITY editOperationCopy.label "Kopieren">
 <!ENTITY editOperationCut.label "Ausschneiden">
@@ -48,3 +49,4 @@
 <!ENTITY editorWidgetInsert.label "Setzte Attribute für das Element ">
 <!ENTITY editorResourceUploadDialog.title "Resource Hochladen">
 <!ENTITY editorResourceUploadTree.label "Seitenstruktur">
+<!ENTITY editorResourceUploadRemoteName.label "Dateiname auf Server">

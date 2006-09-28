@@ -11,6 +11,11 @@
     <name xml:lang="de">Abbrechen</name>
   </entity>
 
+  <entity id="editorUploadButton.label">
+      <name xml:lang="en">Upload</name>
+      <name xml:lang="de">Hochladen</name>
+  </entity>
+
   <entity id="editorCloseButton.label">
     <name xml:lang="en">Close</name>
     <name xml:lang="de">Schliessen</name>
@@ -250,4 +255,9 @@
     <name xml:lang="de">Seitenstruktur</name>
   </entity>
 
+  <entity id="editorResourceUploadRemoteName.label">
+    <name xml:lang="en">Filename on Server</name>
+    <name xml:lang="de">Dateiname auf Server</name>
+  </entity>
+  
 </dtd>

@@ -1,5 +1,6 @@
 <!ENTITY editorAcceptButton.label "Ok">
 <!ENTITY editorCancelButton.label "Cancel">
+<!ENTITY editorUploadButton.label "Upload">
 <!ENTITY editorCloseButton.label "Close">
 <!ENTITY editOperationCopy.label "Copy">
 <!ENTITY editOperationCut.label "Cut">
@@ -48,3 +49,4 @@
 <!ENTITY editorWidgetInsert.label "Set attributes for widget ">
 <!ENTITY editorResourceUploadDialog.title "Resource Upload">
 <!ENTITY editorResourceUploadTree.label "Sitetree">
+<!ENTITY editorResourceUploadRemoteName.label "Filename on Server">
