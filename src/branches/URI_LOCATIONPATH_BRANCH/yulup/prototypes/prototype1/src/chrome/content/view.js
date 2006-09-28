@@ -1518,24 +1518,33 @@ WYSIWYGXSLTModeView.prototype = {
 
         /* DEBUG */ dump("\n---------------------- finished parsing found location path ----------------------\n");
 
+        if (!xpathParseResult) {
+            xPathToolBarLabel.value = "Error parsing location path";
+            return null;
+        }
+
         /* Query the source document for xPathExpr (the location path found) */
         if (!aIsNamespaceAware) {
-            // replace prefixes
-            for (var i = 0; i < (xpathParseResult.getLength() - 2); i++) {
-                if (xpathParseResult != null && xpathParseResult.getNode(i).getType() == XPathParserResultNode.TYPE_PREFIX) {
+            var astNode = xpathParseResult;
+
+            do {
+                if (astNode.getType() == ASTNode.TYPE_PREFIX) {
                     // remove prefix node
-                    xpathParseResult.removeNode(i);
+                    astNode.setType(ASTNode.TYPE_EPSILON);
 
                     // remove the ":" node
-                    xpathParseResult.removeNode(++i);
+                    astNode = astNode.getNext();
+                    astNode.setType(ASTNode.TYPE_EPSILON);
 
                     /* Rewrite the localname to "*[local-name()='nodename']" where nodename
                      * is the currently stored value of the result node. */
-                    if (xpathParseResult.getNode(++i).getValue() != "*") {
-                        xpathParseResult.getNode(i).setValue("*[local-name()='" + xpathParseResult.getNode(i).getValue() + "']");
+                    astNode = astNode.getNext();
+                    if (astNode.getValue() != "*") {
+                        astNode.setValue("*[local-name()='" + astNode.getValue() + "']");
+                        astNode.setType(ASTNode.TYPE_LOCALNAME);
                     }
                 }
-            }
+            } while ((astNode = astNode.getNext()) != null)
 
             // serialise XPath parser result
             xPathExpr = xpathParseResult.toString();
