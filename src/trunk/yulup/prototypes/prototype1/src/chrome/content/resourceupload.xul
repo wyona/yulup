@@ -36,8 +36,9 @@
         orient="vertical"
         align="stretch"
         title="&editorResourceUploadDialog.title;"
-        buttons="accept"
-        buttonlabelaccept="&editorCloseButton.label;"
+        buttons="cancel, accept"
+        buttonlabelaccept="&editorUploadButton.label;"
+        buttonlabelcancel="&editorCancelButton.label;"
         ondialogaccept="return true"
         onload="ResourceUploadDialogHandler.uiYulupEditorResourceUploadOnDialogLoadHandler()"
         style="font: -moz-dialog; width: 400px;"
@@ -53,6 +54,8 @@
             src="chrome://yulup/content/neutron.js"/>
     <script type="application/x-javascript"
             src="chrome://yulup/content/neutronparser10.js"/>
+    <script type="application/x-javascript"
+            src="chrome://yulup/content/sitetree.js"/>
 
     <stringbundle id="uiYulupEditorStringbundle" src="chrome://yulup/locale/editor.properties"/>
 
@@ -64,7 +67,7 @@
       <rows id="uiYulupResourceUploadRows">
         <row>
           <textbox id="uiYulupResourceUploadTextBox"/>
-          <button label="Upload" oncommand="ResourceUploadDialogHandler.showFilePicker()"/>
+          <button label="&fileOperationOpen.label;" oncommand="ResourceUploadDialogHandler.showFilePicker()"/>
         </row>
       </rows>
     </grid>
@@ -75,15 +78,26 @@
           enableColumnDrag="false"
           hidecolumnpicker="true"
           rows="13"
-          seltype="single"
-          onselect="ResourceUploadDialogHandler.updateSelection()"
-          onkeyup="ResourceUploadDialogHandler.handleKeyUpEvent(event)"
-          onclick="ResourceUploadDialogHandler.handleMouseClickEvent(event)"
-          ondblclick="ResourceUploadDialogHandler.handleMouseDoubleClickEvent(event)"
-          onmousemove="ResourceUploadDialogHandler.updateCurrentCell(event)">
+          seltype="single">
       <treecols id="uiYulupResourceUploadTreeCols">
         <treecol id="uiYulupResourceUploadTreeCol" label="&editorResourceUploadTree.label;" primary="true" flex="1"/>
       </treecols>
+      <treechildren/>
     </tree>
+
+    <spacer style="height: 12px;"/>
+
+    <grid>
+      <columns>
+        <column flex="1"/>
+        <column flex="3"/>
+      </columns>
+      <rows id="uiYulupResourceUploadRows">
+        <row>
+          <label value="&editorResourceUploadRemoteName.label;"/>
+          <textbox id="uiYulupResourceUploadRemoteNameTextBox"/>
+        </row>
+      </rows>
+    </grid>
 
 </dialog>
