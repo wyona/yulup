@@ -1505,7 +1505,12 @@ WYSIWYGXSLTModeView.prototype = {
         /* DEBUG */ dump("---------------------- start parsing found location path ----------------------\n");
 
         // parse found location path
-        xpathParseResult = (new XPathParser(locationPath)).parse();
+        try {
+            xpathParseResult = (new XPathParser(locationPath)).parse();
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+        }
 
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: object XPath representation: \n" + xpathParseResult.toObjectString() + "\n");
 

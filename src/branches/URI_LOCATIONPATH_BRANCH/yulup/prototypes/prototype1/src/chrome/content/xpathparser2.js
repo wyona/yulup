@@ -54,6 +54,7 @@ XPathParser.prototype = {
      */
     parse: function () {
         var symbol = null;
+        var result = null;
 
         /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.parse() invoked\n");
 
@@ -62,23 +63,170 @@ XPathParser.prototype = {
             this.__symbolArray.push(symbol);
         }
 
-        return this.__ruleLocationPath(0);
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.parse: number of scanned tokens = " + this.__symbolArray.length + ", token stream =\n");
+        for (var i = 0; i < this.__symbolArray.length; i++) {
+            dump(this.__symbolArray[i]);
+        }
+        dump("\n");
+
+        result = this.__ruleLocationPath(0);
+
+        if (!result.astNode) {
+            /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.parse: no matching rule\n");
+            return null;
+        } else {
+            return result.astNode;
+        }
+    },
+
+    __getSymbolValue: function (aPos) {
+        /* DEBUG */ YulupDebug.ASSERT(aPos        != null);
+        /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos >= 0 : true);
+        /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos < this.__symbolArray.length : true);
+
+        return this.__symbolArray[aPos].value;
     },
 
     __matchSymbol: function (aPos, aSymbolType) {
         /* DEBUG */ YulupDebug.ASSERT(aPos        != null);
         /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos >= 0 : true);
-        /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos < this.__symbolArray.length : true);
         /* DEBUG */ YulupDebug.ASSERT(aSymbolType != null);
 
-        return (this.__symbolArray[aPos].type == aSymbolType);
+        if (aPos < this.__symbolArray.length) {
+            return (this.__symbolArray[aPos].type == aSymbolType);
+        } else {
+            return false;
+        }
+    },
+
+    __matchAxisName: function (aPos) {
+        /* DEBUG */ YulupDebug.ASSERT(aPos        != null);
+        /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos >= 0 : true);
+
+        if (aPos < this.__symbolArray.length) {
+            if (this.__symbolArray[aPos].type == XPathToken.TYPE_IDENT) {
+                switch (this.__symbolArray[aPos].value) {
+                    case "ancestor":
+                    case "ancestor-or-self":
+                    case "attribute":
+                    case "child":
+                    case "descendant":
+                    case "descendant-or-self":
+                    case "following":
+                    case "following-sibling":
+                    case "namespace":
+                    case "parent":
+                    case "preceding":
+                    case "preceding-sibling":
+                    case "self":
+                        return true;
+                    default:
+                        return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    },
+
+    __matchProcessingInstruction: function (aPos) {
+        /* DEBUG */ YulupDebug.ASSERT(aPos        != null);
+        /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos >= 0 : true);
+
+        if (aPos < this.__symbolArray.length) {
+            if (this.__symbolArray[aPos].type == XPathToken.TYPE_IDENT && this.__symbolArray[aPos].value == "processing-instruction") {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    },
+
+    __matchNodeType: function (aPos) {
+        /* DEBUG */ YulupDebug.ASSERT(aPos        != null);
+        /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos >= 0 : true);
+
+        if (aPos < this.__symbolArray.length) {
+            if (this.__symbolArray[aPos].type == XPathToken.TYPE_IDENT) {
+                switch (this.__symbolArray[aPos].value) {
+                    case "comment":
+                    case "text":
+                    case "processing-instruction":
+                    case "node":
+                        return true;
+                    default:
+                        return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    },
+
+    __matchAnd: function (aPos) {
+        /* DEBUG */ YulupDebug.ASSERT(aPos        != null);
+        /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos >= 0 : true);
+
+        if (aPos < this.__symbolArray.length) {
+            if (this.__symbolArray[aPos].type == XPathToken.TYPE_IDENT && this.__symbolArray[aPos].value == "and") {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    },
+
+    __matchOr: function (aPos) {
+        /* DEBUG */ YulupDebug.ASSERT(aPos        != null);
+        /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos >= 0 : true);
+
+        if (aPos < this.__symbolArray.length) {
+            if (this.__symbolArray[aPos].type == XPathToken.TYPE_IDENT && this.__symbolArray[aPos].value == "or") {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    },
+
+    __matchMultiplicativeOperator: function (aPos) {
+        /* DEBUG */ YulupDebug.ASSERT(aPos        != null);
+        /* DEBUG */ YulupDebug.ASSERT(aPos ? aPos >= 0 : true);
+
+        if (aPos < this.__symbolArray.length) {
+            if (this.__symbolArray[aPos].type == XPathToken.TYPE_STAR) {
+                return true;
+            } else if (this.__symbolArray[aPos].type == XPathToken.TYPE_IDENT) {
+                switch (this.__symbolArray[aPos].value) {
+                case "div":
+                case "mod":
+                    return true;
+                default:
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     },
 
     /**
      * Applies the locationPath production.
      *
-     * locationPath ::= relativeLocationPath
-     *                | absoluteLocationPath
+     * locationPath ::= absoluteLocationPath
+     *                | relativeLocationPath
      *
      * @param  {Number}         aPos curent position in the input stream
      * @result {RuleEvalResult} result of rule application, or null if rule did not match
@@ -87,19 +235,21 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleLocationPath(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
-        // alt1: relativeLocationPath
-        if ((evalResult = this.__ruleRelativeLocationPath(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_LOCATIONPATH, aPos);
+        // alt1: absoluteLocationPath
+        if ((evalResult = this.__ruleAbsoluteLocationPath(aPos)) != null) {
+            astNode = new ASTNode(ASTNode.TYPE_LOCATIONPATH, null);
             astNode.addChild(evalResult.astNode);
 
             return new RuleEvalResult(evalResult.pos, astNode);
         }
 
-        // alt2: absoluteLocationPath
-        if ((evalResult = this.__ruleAbsoluteLocationPath(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_LOCATIONPATH, aPos);
+        // alt2: relativeLocationPath
+        if ((evalResult = this.__ruleRelativeLocationPath(aPos)) != null) {
+            astNode = new ASTNode(ASTNode.TYPE_LOCATIONPATH, null);
             astNode.addChild(evalResult.astNode);
 
             return new RuleEvalResult(evalResult.pos, astNode);
@@ -122,11 +272,13 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleAbsoluteLocationPath(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: SLASH (relativeLocationPath)?
         if (this.__matchSymbol(aPos, XPathToken.TYPE_SLASH)) {
-            astNode = new ASTNode(ASTNode.TYPE_LOCATIONPATH, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_ABSOLUTELOCATIONPATH, null);
 
             if ((evalResult = this.__ruleRelativeLocationPath(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -137,7 +289,7 @@ XPathParser.prototype = {
 
         // alt2: DOUBLESLASH relativeLocationPath
         if (this.__matchSymbol(aPos, XPathToken.TYPE_DOUBLESLASH)) {
-            astNode = new ASTNode(ASTNode.TYPE_LOCATIONPATH, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_ABSOLUTELOCATIONPATH, null);
 
             if ((evalResult = this.__ruleRelativeLocationPath(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -163,11 +315,13 @@ XPathParser.prototype = {
         var astNode    = null;
         var currPos    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleRelativeLocationPath(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: step (relativeLocationPath2)?
         if ((evalResult = this.__ruleStep(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_RELATIVELOCATIONPATH, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_RELATIVELOCATIONPATH, null);
             astNode.addChild(evalResult.astNode);
 
             currPos = evalResult.pos;
@@ -198,11 +352,13 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleRelativeLocationPath2(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: SLASH step relativeLocationPath2
         if (this.__matchSymbol(aPos, XPathToken.TYPE_SLASH)) {
-            astNode = new ASTNode(ASTNode.TYPE_RELATIVELOCATIONPATH2, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_RELATIVELOCATIONPATH2, null);
 
             if ((evalResult = this.__ruleStep(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -217,7 +373,7 @@ XPathParser.prototype = {
 
         // alt2: DOUBLECOLON step relativeLocationPath2
         if (this.__matchSymbol(aPos, XPathToken.TYPE_DOUBLECOLON)) {
-            astNode = new ASTNode(ASTNode.TYPE_RELATIVELOCATIONPATH2, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_RELATIVELOCATIONPATH2, null);
 
             if ((evalResult = this.__ruleStep(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -249,11 +405,13 @@ XPathParser.prototype = {
         var astNode    = null;
         var currPos    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleStep(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: axisSpecifier nodeTest (predicate)*
         if ((evalResult = this.__ruleAxisSpecifier(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_STEP, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_STEP, null);
             astNode.addChild(evalResult.astNode);
 
             if ((evalResult = this.__ruleNodeTest(evalResult.pos)) != null) {
@@ -273,16 +431,16 @@ XPathParser.prototype = {
 
         // alt2: PERIOD
         if (this.__matchSymbol(aPos, XPathToken.TYPE_PERIOD)) {
-            astNode = new ASTNode(ASTNode.TYPE_STEP, aPos);
-            astNode.addChild(new ASTNode(ASTNode.TYPE_CURRENTNODE));
+            astNode = new ASTNode(ASTNode.TYPE_STEP, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_CURRENTNODE, this.__getSymbolValue(aPos)));
 
             return new RuleEvalResult(aPos + 1, astNode);
         }
 
         // alt3: DOUBLEPERIOD
         if (this.__matchSymbol(aPos, XPathToken.TYPE_DOUBLEPERIOD)) {
-            astNode = new ASTNode(ASTNode.TYPE_STEP, aPos);
-            astNode.addChild(new ASTNode(ASTNode.TYPE_PARENTNODE));
+            astNode = new ASTNode(ASTNode.TYPE_STEP, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_PARENTNODE, this.__getSymbolValue(aPos)));
 
             return new RuleEvalResult(aPos + 1, astNode);
         }
@@ -304,12 +462,14 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleAxisSpecifier(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: AXISNAME DOUBLECOLON
         if (this.__matchAxisName(aPos)) {
-            astNode = new ASTNode(ASTNode.TYPE_AXISSPECIFIER, aPos);
-            astNode.addChild(new ASTNode(ASTNode.TYPE_AXISNAME));
+            astNode = new ASTNode(ASTNode.TYPE_AXISSPECIFIER, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_AXISNAME, this.__getSymbolValue(aPos)));
 
             if (this.__matchSymbol(aPos + 1, XPathToken.TYPE_DOUBLECOLON)) {
                 return new RuleEvalResult(aPos + 2, astNode);
@@ -318,14 +478,14 @@ XPathParser.prototype = {
 
         // alt2: (AT)?
         if (this.__matchSymbol(aPos, XPathToken.TYPE_AT)) {
-            astNode = new ASTNode(ASTNode.TYPE_AXISSPECIFIER, aPos);
-            astNode.addChild(new ASTNode(ASTNode.TYPE_AT));
+            astNode = new ASTNode(ASTNode.TYPE_AXISSPECIFIER, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_AT, this.__getSymbolValue(aPos)));
 
             return new RuleEvalResult(aPos + 1, astNode);
         } else {
-            astNode = new ASTNode(ASTNode.TYPE_AXISSPECIFIER, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_AXISSPECIFIER, null);
 
-            return new RuleEvalResult(aPos + 1, astNode);
+            return new RuleEvalResult(aPos, astNode);
         }
 
         // no applicable rule
@@ -346,11 +506,13 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleNodeTest(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: nameTest
         if ((evalResult = this.__ruleNameTest(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_NODETEST, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_NODETEST, null);
             astNode.addChild(evalResult.astNode);
 
             return new RuleEvalResult(evalResult.pos, astNode);
@@ -358,7 +520,7 @@ XPathParser.prototype = {
 
         // alt2: "processing-instruction" LPAREN literal RPAREN
         if (this.__matchProcessingInstruction(aPos)) {
-            astNode = new ASTNode(ASTNode.TYPE_NODETEST, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_NODETEST, null);
 
             if (this.__matchSymbol(aPos + 1, XPathToken.TYPE_LPAREN)) {
                 if ((evalResult = this.__ruleLiteral(aPos + 3)) != null) {
@@ -373,7 +535,7 @@ XPathParser.prototype = {
 
         // alt3: nodeType LPAREN RPAREN
         if ((evalResult = this.__ruleNodeType(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_NODETEST, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_NODETEST, null);
             astNode.addChild(evalResult.astNode);
 
             if (this.__matchSymbol(evalResult.pos, XPathToken.TYPE_LPAREN)) {
@@ -399,11 +561,13 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__rulePredicate(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: LBRACKET orExpr RBRACKET
         if (this.__matchSymbol(aPos, XPathToken.TYPE_LBRACKET)) {
-            astNode = new ASTNode(ASTNode.TYPE_PREDICATE, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_PREDICATE, null);
 
             if ((evalResult = this.__ruleOrExpr(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -434,11 +598,13 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__rulePrimaryExpr(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: DOLLAR qName
         if (this.__matchSymbol(aPos, XPathToken.TYPE_DOLLAR)) {
-            astNode = new ASTNode(ASTNode.TYPE_PRIMARYEXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_PRIMARYEXPR, null);
 
             if ((evalResult = this.__ruleQName(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -449,7 +615,7 @@ XPathParser.prototype = {
 
         // alt2: LPAREN orExpr RPAREN
         if (this.__matchSymbol(aPos, XPathToken.TYPE_LPAREN)) {
-            astNode = new ASTNode(ASTNode.TYPE_PRIMARYEXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_PRIMARYEXPR, null);
 
             if ((evalResult = this.__ruleOrExpr(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -462,7 +628,7 @@ XPathParser.prototype = {
 
         // alt3: literal
         if ((evalResult = this.__ruleLiteral(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_PRIMARYEXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_PRIMARYEXPR, null);
             astNode.addChild(evalResult.astNode);
 
             return new RuleEvalResult(evalResult.pos, astNode);
@@ -470,7 +636,7 @@ XPathParser.prototype = {
 
         // alt4: number
         if ((evalResult = this.__ruleNumber(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_PRIMARYEXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_PRIMARYEXPR, null);
             astNode.addChild(evalResult.astNode);
 
             return new RuleEvalResult(evalResult.pos, astNode);
@@ -478,7 +644,7 @@ XPathParser.prototype = {
 
         // alt5: functionCall
         if ((evalResult = this.__ruleFunctionCall(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_PRIMARYEXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_PRIMARYEXPR, null);
             astNode.addChild(evalResult.astNode);
 
             return new RuleEvalResult(evalResult.pos, astNode);
@@ -501,18 +667,20 @@ XPathParser.prototype = {
         var astNode    = null;
         var currPos    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleFunctionCall(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: qName LPAREN (orExpr (arg)*)? RPAREN
         if ((evalResult = this.__ruleQName(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_FUNCTIONCALL, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_FUNCTIONCALL, null);
             astNode.addChild(evalResult.astNode);
 
             if (this.__matchSymbol(evalResult.pos, XPathToken.TYPE_LPAREN)) {
                 currPos = evalResult.pos + 1;
 
                 if ((evalResult = this.__ruleOrExpr(currPos)) != null) {
-                    astNode.addChild(new ASTNode(ASTNode.TYPE_OREXPR));
+                    astNode.addChild(evalResult.astNode);
 
                     currPos = evalResult.pos;
 
@@ -545,11 +713,13 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleArg(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: COMMA orExpr
         if (this.__matchSymbol(aPos, XPathToken.TYPE_COMMA)) {
-            astNode = new ASTNode(ASTNode.TYPE_ARG, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_ARG, null);
 
             if ((evalResult = this.__ruleOrExpr(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -575,11 +745,13 @@ XPathParser.prototype = {
         var astNode    = null;
         var currPos    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleUnionExpr(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: pathExpr (unionExpr2)?
         if ((evalResult = this.__rulePathExpr(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_UNIONEXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_UNIONEXPR, null);
             astNode.addChild(evalResult.astNode);
 
             currPos = evalResult.pos;
@@ -609,11 +781,13 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleUnionExpr2(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: BAR pathExpr unionExpr2
         if (this.__matchSymbol(aPos, XPathToken.TYPE_BAR)) {
-            astNode = new ASTNode(ASTNode.TYPE_UNIONEXPR2, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_UNIONEXPR2, null);
 
             if ((evalResult = this.__rulePathExpr(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -645,11 +819,13 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__rulePathExpr(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: locationPath
         if ((evalResult = this.__ruleLocationPath(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_PATHEXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_PATHEXPR, null);
             astNode.addChild(evalResult.astNode);
 
             return new RuleEvalResult(evalResult.pos, astNode);
@@ -657,7 +833,7 @@ XPathParser.prototype = {
 
         // alt2: filterExpr
         if ((evalResult = this.__ruleFilterExpr(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_PATHEXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_PATHEXPR, null);
             astNode.addChild(evalResult.astNode);
 
             return new RuleEvalResult(evalResult.pos, astNode);
@@ -665,7 +841,7 @@ XPathParser.prototype = {
 
         // alt3: filterExpr SLASH relativeLocationPath
         if ((evalResult = this.__ruleFilterExpr(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_PATHEXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_PATHEXPR, null);
             astNode.addChild(evalResult.astNode);
 
             if (this.__matchSymbol(evalResult.pos, XPathToken.TYPE_SLASH)) {
@@ -679,7 +855,7 @@ XPathParser.prototype = {
 
         // alt4: filterExpr DOUBLESLASH relativeLocationPath
         if ((evalResult = this.__ruleFilterExpr(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_PATHEXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_PATHEXPR, null);
             astNode.addChild(evalResult.astNode);
 
             if (this.__matchSymbol(evalResult.pos, XPathToken.TYPE_DOUBLESLASH)) {
@@ -708,11 +884,13 @@ XPathParser.prototype = {
         var astNode    = null;
         var currPos    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleFilterExpr(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: primaryExpr (filterExpr2)?
         if ((evalResult = this.__rulePrimaryExpr(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_FILTEREXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_FILTEREXPR, null);
             astNode.addChild(evalResult.astNode);
 
             currPos = evalResult.pos;
@@ -742,11 +920,13 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleFilterExpr2(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: predicate filterExpr2
         if ((evalResult = this.__rulePredicate(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_FILTEREXPR2, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_FILTEREXPR2, null);
             astNode.addChild(evalResult.astNode);
 
             if ((evalResult = this.__ruleFilterExpr2(evalResult.pos)) != null) {
@@ -774,11 +954,13 @@ XPathParser.prototype = {
         var astNode    = null;
         var currPos    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleOrExpr(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: andExpr (orExpr2)?
         if ((evalResult = this.__ruleAndExpr(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_OREXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_OREXPR, null);
             astNode.addChild(evalResult.astNode);
 
             currPos = evalResult.pos;
@@ -808,11 +990,13 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleOrExpr2(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: OR andExpr orExpr2
         if (this.__matchOr(aPos)) {
-            astNode = new ASTNode(ASTNode.TYPE_OREXPR2, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_OREXPR2, null);
 
             if ((evalResult = this.__ruleAndExpr(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -842,11 +1026,13 @@ XPathParser.prototype = {
         var astNode    = null;
         var currPos    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleAndExpr(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: equalityExpr (andExpr2)?
         if ((evalResult = this.__ruleEqualityExpr(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_ANDEXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_ANDEXPR, null);
             astNode.addChild(evalResult.astNode);
 
             currPos = evalResult.pos;
@@ -876,11 +1062,13 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleAndExpr2(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: AND equalityExpr andExpr2
         if (this.__matchAnd(aPos)) {
-            astNode = new ASTNode(ASTNode.TYPE_ANDEXPR2, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_ANDEXPR2, null);
 
             if ((evalResult = this.__ruleEqualityExpr(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -910,11 +1098,13 @@ XPathParser.prototype = {
         var astNode    = null;
         var currPos    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleEqualityExpr(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: relationalExpr (equalityExpr2)?
         if ((evalResult = this.__ruleRelationalExpr(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_EQUALITYEXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_EQUALITYEXPR, null);
             astNode.addChild(evalResult.astNode);
 
             currPos = evalResult.pos;
@@ -944,12 +1134,14 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleEqualityExpr2(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: EQUALITYOPERATOR relationalExpr equalityExpr2
         if (this.__matchSymbol(aPos, XPathToken.TYPE_EQUALITYOPERATOR)) {
-            astNode = new ASTNode(ASTNode.TYPE_EQUALITYEXPR2, aPos);
-            astNode.addChild(new ASTNode.TYPE_EQUALITYOPERATOR);
+            astNode = new ASTNode(ASTNode.TYPE_EQUALITYEXPR2, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_EQUALITYOPERATOR, this.__getSymbolValue(aPos)));
 
             if ((evalResult = this.__ruleRelationalExpr(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -979,11 +1171,13 @@ XPathParser.prototype = {
         var astNode    = null;
         var currPos    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleRelationalExpr(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: additiveExpr (relationalExpr2)?
         if ((evalResult = this.__ruleAdditiveExpr(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_RELATIONALEXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_RELATIONALEXPR, null);
             astNode.addChild(evalResult.astNode);
 
             currPos = evalResult.pos;
@@ -1013,12 +1207,14 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleRelationalExpr2(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: RELATIONALOPERATOR additiveExpr relationalExpr2
         if (this.__matchSymbol(aPos, XPathToken.TYPE_RELATIONALOPERATOR)) {
-            astNode = new ASTNode(ASTNode.TYPE_RELATIONALEXPR2, aPos);
-            astNode.addChild(new ASTNode.TYPE_RELATIONALOPERATOR);
+            astNode = new ASTNode(ASTNode.TYPE_RELATIONALEXPR2, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_RELATIONALOPERATOR, this.__getSymbolValue(aPos)));
 
             if ((evalResult = this.__ruleAdditiveExpr(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -1048,11 +1244,13 @@ XPathParser.prototype = {
         var astNode    = null;
         var currPos    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleAdditiveExpr(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: multiplicativeExpr (additiveExpr2)?
         if ((evalResult = this.__ruleMultiplicativeExpr(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_ADDITIVEEXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_ADDITIVEEXPR, null);
             astNode.addChild(evalResult.astNode);
 
             currPos = evalResult.pos;
@@ -1083,12 +1281,14 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleAdditiveExpr2(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: PLUS multiplicativeExpr additiveExpr2
         if (this.__matchSymbol(aPos, XPathToken.TYPE_PLUS)) {
-            astNode = new ASTNode(ASTNode.TYPE_ADDITIVEEXPR2, aPos);
-            astNode.addChild(new ASTNode.TYPE_PLUS);
+            astNode = new ASTNode(ASTNode.TYPE_ADDITIVEEXPR2, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_PLUS, this.__getSymbolValue(aPos)));
 
             if ((evalResult = this.__ruleMultiplicativeExpr(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -1103,8 +1303,8 @@ XPathParser.prototype = {
 
         // alt1: MINUS multiplicativeExpr additiveExpr2
         if (this.__matchSymbol(aPos, XPathToken.TYPE_MINUS)) {
-            astNode = new ASTNode(ASTNode.TYPE_ADDITIVEEXPR2, aPos);
-            astNode.addChild(new ASTNode.TYPE_MINUS);
+            astNode = new ASTNode(ASTNode.TYPE_ADDITIVEEXPR2, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_MINUS, this.__getSymbolValue(aPos)));
 
             if ((evalResult = this.__ruleMultiplicativeExpr(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -1134,11 +1334,13 @@ XPathParser.prototype = {
         var astNode    = null;
         var currPos    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleMultiplicativeExpr(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: unaryExpr (multiplicativeExpr2)?
         if ((evalResult = this.__ruleUnaryExpr(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_MULTIPLICATIVEEXPR, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_MULTIPLICATIVEEXPR, null);
             astNode.addChild(evalResult.astNode);
 
             currPos = evalResult.pos;
@@ -1168,12 +1370,14 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleMultiplicativeExpr2(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: MULTIPLICATIVEOPERATOR unaryExpr multiplicativeExpr2
-        if (this.__matchSymbol(aPos, XPathToken.TYPE_MULTIPLICATIVEOPERATOR)) {
-            astNode = new ASTNode(ASTNode.TYPE_MULTIPLICATIVEEXPR2, aPos);
-            astNode.addChild(new ASTNode.TYPE_MULTIPLICATIVEOPERATOR);
+        if (this.__matchMultiplicativeOperator(aPos)) {
+            astNode = new ASTNode(ASTNode.TYPE_MULTIPLICATIVEEXPR2, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_MULTIPLICATIVEOPERATOR, this.__getSymbolValue(aPos)));
 
             if ((evalResult = this.__ruleUnaryExpr(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -1203,11 +1407,13 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleUnaryExpr(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: unionExpr
-        if ((evalResult = this.__ruleUnionExpr(evalResult.pos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_UNARYEXPR, aPos);
+        if ((evalResult = this.__ruleUnionExpr(aPos)) != null) {
+            astNode = new ASTNode(ASTNode.TYPE_UNARYEXPR, null);
             astNode.addChild(evalResult.astNode);
 
             return new RuleEvalResult(evalResult.pos, astNode);
@@ -1215,8 +1421,8 @@ XPathParser.prototype = {
 
         // alt2: MINUS unaryExpr
         if (this.__matchSymbol(aPos, XPathToken.TYPE_MINUS)) {
-            astNode = new ASTNode(ASTNode.TYPE_UNARYEXPR, aPos);
-            astNode.addChild(new ASTNode.TYPE_MINUS);
+            astNode = new ASTNode(ASTNode.TYPE_UNARYEXPR, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_MINUS, this.__getSymbolValue(aPos)));
 
             if ((evalResult = this.__ruleUnaryExpr(aPos + 1)) != null) {
                 astNode.addChild(evalResult.astNode);
@@ -1242,20 +1448,22 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleLiteral(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: DOUBLEQUOTELITERAL
         if (this.__matchSymbol(aPos, XPathToken.TYPE_DOUBLEQUOTELITERAL)) {
-            astNode = new ASTNode(ASTNode.TYPE_LITERAL, aPos);
-            astNode.addChild(new ASTNode.TYPE_DOUBLEQUOTELITERAL);
+            astNode = new ASTNode(ASTNode.TYPE_LITERAL, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_DOUBLEQUOTELITERAL, this.__getSymbolValue(aPos)));
 
             return new RuleEvalResult(aPos + 1, astNode);
         }
 
         // alt2: SINGLEQUOTELITERAL
         if (this.__matchSymbol(aPos, XPathToken.TYPE_SINGLEQUOTELITERAL)) {
-            astNode = new ASTNode(ASTNode.TYPE_LITERAL, aPos);
-            astNode.addChild(new ASTNode.TYPE_SINGLEQUOTELITERAL);
+            astNode = new ASTNode(ASTNode.TYPE_LITERAL, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_SINGLEQUOTELITERAL, this.__getSymbolValue(aPos)));
 
             return new RuleEvalResult(aPos + 1, astNode);
         }
@@ -1278,22 +1486,24 @@ XPathParser.prototype = {
         var astNode    = null;
         var currPos    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleNumber(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: DIGITS (PERIOD (DIGITS)?)?
         if (this.__matchSymbol(aPos, XPathToken.TYPE_DIGITS)) {
-            astNode = new ASTNode(ASTNode.TYPE_NUMBER, aPos);
-            astNode.addChild(new ASTNode.TYPE_DIGITS);
+            astNode = new ASTNode(ASTNode.TYPE_NUMBER, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_DIGITS, this.__getSymbolValue(aPos)));
 
             currPos = aPos + 1;
 
             if (this.__matchSymbol(currPos, XPathToken.TYPE_PERIOD)) {
-                astNode.addChild(new ASTNode.TYPE_PERIOD);
+                astNode.addChild(new ASTNode(ASTNode.TYPE_PERIOD, this.__getSymbolValue(aPos)));
 
                 currPos++;
 
                 if (this.__matchSymbol(currPos, XPathToken.TYPE_DIGITS)) {
-                    astNode.addChild(new ASTNode.TYPE_DIGITS);
+                    astNode.addChild(new ASTNode(ASTNode.TYPE_DIGITS, this.__getSymbolValue(aPos)));
 
                     currPos++;
                 }
@@ -1304,11 +1514,11 @@ XPathParser.prototype = {
 
         // alt2: PERIOD DIGITS
         if (this.__matchSymbol(aPos, XPathToken.TYPE_PERIOD)) {
-            astNode = new ASTNode(ASTNode.TYPE_NUMBER, aPos);
-            astNode.addChild(new ASTNode.TYPE_PERIOD);
+            astNode = new ASTNode(ASTNode.TYPE_NUMBER, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_PERIOD, this.__getSymbolValue(aPos)));
 
             if (this.__matchSymbol(aPos + 1, XPathToken.TYPE_DIGITS)) {
-                astNode.addChild(new ASTNode.TYPE_DIGITS);
+                astNode.addChild(new ASTNode(ASTNode.TYPE_DIGITS, this.__getSymbolValue(aPos)));
 
                 return new RuleEvalResult(aPos + 2, astNode);
             }
@@ -1332,19 +1542,21 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleNameTest(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: STAR
         if (this.__matchSymbol(aPos, XPathToken.TYPE_STAR)) {
-            astNode = new ASTNode(ASTNode.TYPE_NAMETEST, aPos);
-            astNode.addChild(new ASTNode.TYPE_STAR);
+            astNode = new ASTNode(ASTNode.TYPE_NAMETEST, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_STAR, this.__getSymbolValue(aPos)));
 
             return new RuleEvalResult(aPos + 1, astNode);
         }
 
         // alt2: qName
         if ((evalResult = this.__ruleQName(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_NAMETEST, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_NAMETEST, null);
             astNode.addChild(evalResult.astNode);
 
             return new RuleEvalResult(evalResult.pos, astNode);
@@ -1352,14 +1564,14 @@ XPathParser.prototype = {
 
         // alt3: ncName COLON STAR
         if ((evalResult = this.__ruleNCName(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_NAMETEST, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_NAMETEST, null);
             astNode.addChild(evalResult.astNode);
 
             if (this.__matchSymbol(evalResult.pos, XPathToken.TYPE_COLON)) {
-                astNode.addChild(new ASTNode.TYPE_COLON);
+                astNode.addChild(new ASTNode(ASTNode.TYPE_COLON, this.__getSymbolValue(aPos)));
 
                 if (this.__matchSymbol(evalResult.pos + 1, XPathToken.TYPE_STAR)) {
-                    astNode.addChild(new ASTNode.TYPE_STAR);
+                    astNode.addChild(new ASTNode(ASTNode.TYPE_STAR, this.__getSymbolValue(aPos)));
 
                     return new RuleEvalResult(evalResult.pos + 2, astNode);
                 }
@@ -1383,15 +1595,17 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleQName(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: prefix COLON ncName
         if ((evalResult = this.__rulePrefix(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_QNAME, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_QNAME, null);
             astNode.addChild(evalResult.astNode);
 
             if (this.__matchSymbol(evalResult.pos, XPathToken.TYPE_COLON)) {
-                astNode.addChild(new ASTNode.TYPE_COLON);
+                astNode.addChild(new ASTNode(ASTNode.TYPE_COLON, this.__getSymbolValue(aPos)));
 
                 if ((evalResult = this.__ruleNCName(evalResult.pos + 1)) != null) {
                     astNode.addChild(evalResult.astNode);
@@ -1403,7 +1617,7 @@ XPathParser.prototype = {
 
         // alt2: ncName
         if ((evalResult = this.__ruleNCName(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_QNAME, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_QNAME, null);
             astNode.addChild(evalResult.astNode);
 
             return new RuleEvalResult(evalResult.pos, astNode);
@@ -1425,11 +1639,13 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__rulePrefix(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: ncName
         if ((evalResult = this.__ruleNCName(aPos)) != null) {
-            astNode = new ASTNode(ASTNode.TYPE_PREFIX, aPos);
+            astNode = new ASTNode(ASTNode.TYPE_PREFIX, null);
             astNode.addChild(evalResult.astNode);
 
             return new RuleEvalResult(evalResult.pos, astNode);
@@ -1451,12 +1667,14 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleNCName(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: IDENT
         if (this.__matchSymbol(aPos, XPathToken.TYPE_IDENT)) {
-            astNode = new ASTNode(ASTNode.TYPE_NCNAME, aPos);
-            astNode.addChild(new ASTNode.TYPE_NCNAME);
+            astNode = new ASTNode(ASTNode.TYPE_NCNAME, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_IDENT, this.__getSymbolValue(aPos)));
 
             return new RuleEvalResult(aPos + 1, astNode);
         }
@@ -1477,12 +1695,14 @@ XPathParser.prototype = {
         var evalResult = null;
         var astNode    = null;
 
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleNodeType(\"" + aPos + "\") invoked\n");
+
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
         // alt1: NODETYPE
         if (this.__matchNodeType(aPos)) {
-            astNode = new ASTNode(ASTNode.TYPE_NODETYPE, aPos);
-            astNode.addChild(new ASTNode.TYPE_NODETYPE);
+            astNode = new ASTNode(ASTNode.TYPE_NODETYPE, null);
+            astNode.addChild(new ASTNode(ASTNode.TYPE_IDENT, this.__getSymbolValue(aPos)));
 
             return new RuleEvalResult(aPos + 1, astNode);
         }
@@ -1493,27 +1713,94 @@ XPathParser.prototype = {
 };
 
 
-function ASTNode(aNodeType, aPos) {
+function ASTNode(aNodeType, aValue) {
     /* DEBUG */ YulupDebug.ASSERT(aNodeType != null);
-    /* DEBUG */ YulupDebug.ASSERT(aPos      != null);
+
+    if (aValue)
+        /* DEBUG */ dump("Yulup:xpathparser.js:ASTNode(\"" + aNodeType + "\", \"" + aValue + "\") invoked\n");
 
     this.nodeType = aNodeType;
-    this.pos      = aPos;
+    this.value    = (aValue ? aValue : null);
 
     this.__children = new Array();
 }
+
+ASTNode.TYPE_LOCATIONPATH = 0;
+ASTNode.TYPE_ABSOLUTELOCATIONPATH = 1;
+ASTNode.TYPE_RELATIVELOCATIONPATH = 2;
+ASTNode.TYPE_RELATIVELOCATIONPATH2 = 3;
+ASTNode.TYPE_STEP = 4;
+ASTNode.TYPE_CURRENTNODE = 5;
+ASTNode.TYPE_PARENTNODE = 6;
+ASTNode.TYPE_AXISSPECIFIER = 7;
+ASTNode.TYPE_AXISNAME = 8;
+ASTNode.TYPE_AT = 9;
+ASTNode.TYPE_NODETEST = 10;
+ASTNode.TYPE_PREDICATE = 11;
+ASTNode.TYPE_PRIMARYEXPR = 12;
+ASTNode.TYPE_FUNCTIONCALL = 13;
+ASTNode.TYPE_ARG = 14;
+ASTNode.TYPE_UNIONEXPR = 15;
+ASTNode.TYPE_UNIONEXPR2 = 16;
+ASTNode.TYPE_PATHEXPR = 17;
+ASTNode.TYPE_FILTEREXPR = 18;
+ASTNode.TYPE_FILTEREXPR2 = 19;
+ASTNode.TYPE_OREXPR = 20;
+ASTNode.TYPE_OREXPR2 = 21;
+ASTNode.TYPE_ANDEXPR = 22;
+ASTNode.TYPE_ANDEXPR2 = 23;
+ASTNode.TYPE_EQUALITYEXPR = 24;
+ASTNode.TYPE_EQUALITYEXPR2 = 25;
+ASTNode.TYPE_EQUALITYOPERATOR = 26;
+ASTNode.TYPE_RELATIONALEXPR = 27;
+ASTNode.TYPE_RELATIONALEXPR2 = 28;
+ASTNode.TYPE_RELATIONALOPERATOR = 29;
+ASTNode.TYPE_ADDITIVEEXPR = 30;
+ASTNode.TYPE_ADDITIVEEXPR2 = 31;
+ASTNode.TYPE_PLUS = 32;
+ASTNode.TYPE_MINUS = 33;
+ASTNode.TYPE_MULTIPLICATIVEEXPR = 34;
+ASTNode.TYPE_MULTIPLICATIVEEXPR2 = 35;
+ASTNode.TYPE_MULTIPLICATIVEOPERATOR = 36;
+ASTNode.TYPE_UNARYEXPR = 37;
+ASTNode.TYPE_LITERAL = 38;
+ASTNode.TYPE_DOUBLEQUOTELITERAL = 39;
+ASTNode.TYPE_SINGLEQUOTELITERAL = 40;
+ASTNode.TYPE_NUMBER = 41;
+ASTNode.TYPE_DIGITS = 42;
+ASTNode.TYPE_PERIOD = 43;
+ASTNode.TYPE_NAMETEST = 44;
+ASTNode.TYPE_STAR = 45;
+ASTNode.TYPE_COLON = 46;
+ASTNode.TYPE_QNAME = 47;
+ASTNode.TYPE_PREFIX = 48;
+ASTNode.TYPE_NCNAME = 49;
+ASTNode.TYPE_IDENT = 50;
+ASTNode.TYPE_NODETYPE = 51;
 
 ASTNode.prototype = {
     __children: null,
 
     nodeType: null,
-    pos     : null,
+    value    : null,
 
     addChild: function (aChild) {
         /* DEBUG */ YulupDebug.ASSERT(aChild != null);
         /* DEBUG */ YulupDebug.ASSERT(aChild ? aChild instanceof ASTNode : true);
 
         this.__children.push(aChild);
+    },
+
+    toObjectString: function () {
+        var resultString = null;
+
+        resultString = "{" + this.nodeType + ", (";
+
+        for (var i = 0; i < this.__children.length; i++) {
+            resultString += ", " + this.__children[i].toObjectString();
+        }
+
+        return resultString + "), \"" + (this.value ? this.value : "") + "\"}";
     }
 };
 
@@ -1533,37 +1820,6 @@ RuleEvalResult.prototpye = {
 };
 
 
-function XPathResultNode(aType) {
-    /* DEBUG */ YulupDebug.ASSERT(aType != null);
-
-    this.__type = aType;
-
-    this.__value = "";
-}
-
-XPathResultNode.TYPE_STEPDELIM = 0;
-XPathResultNode.TYPE_STEP      = 1;
-
-XPathResultNode.prototype = {
-    __type : null,
-    __value: null,
-
-    getType: function () {
-        return this.__type;
-    },
-
-    getValue: function () {
-        return this.__value;
-    },
-
-    concatValue: function (aValue) {
-        /* DEBUG */ YulupDebug.ASSERT(aValue != null);
-
-        this.__value += aValue;
-    }
-};
-
-
 /**
  * XPathLexer constructor. Instantiates a new object of
  * type XPathLexer.
@@ -1578,15 +1834,17 @@ function XPathLexer(aXPath) {
     this.__sourceString = aXPath;
     this.__readPos      = 0;
 
-    this.__whitespace = [String.fromCharCode(32), String.fromCharCode(9), String.fromCharCode(13), String.fromCharCode(10)];
-    this.__symbols    = ["/", "[", "]", "\"", "'"];
+    this.__whitespaceChars = [String.fromCharCode(32), String.fromCharCode(9), String.fromCharCode(13), String.fromCharCode(10)];
+    this.__nonNameChars    = ["/", ":", ".", ",", "@", "|", "$", "*", "=", "!", "<", ">", "[", "]", "\"", "'"];
+    this.__digitChars      = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 }
 
 XPathLexer.prototype = {
-    __whitespace  : null,
-    __symbols     : null,
-    __sourceString: null,
-    __readPos     : null,
+    __whitespaceChars: null,
+    __nonNameChars   : null,
+    __digitChars     : null,
+    __sourceString   : null,
+    __readPos        : null,
 
     __readChar: function () {
         if (this.__readPos != this.__sourceString.length) {
@@ -1603,57 +1861,160 @@ XPathLexer.prototype = {
         this.__readPos -= aNoOfChars;
     },
 
-    __isWhitespace: function (aChar) {
+    __isWhitespaceChar: function (aChar) {
         /* DEBUG */ YulupDebug.ASSERT(aChar != null);
 
-        for (var i = 0; i < this.__whitespace.length; i++) {
-            if (aChar == this.__whitespace[i])
+        for (var i = 0; i < this.__whitespaceChars.length; i++) {
+            if (aChar == this.__whitespaceChars[i])
                 return true;
         }
 
         return false;
     },
 
-    __isName: function (aChar) {
+    __isNameChar: function (aChar) {
         /* DEBUG */ YulupDebug.ASSERT(aChar != null);
 
-        for (var i = 0; i < this.__symbols.length; i++) {
-            if (aChar == this.__symbols[i])
+        for (var i = 0; i < this.__nonNameChars.length; i++) {
+            if (aChar == this.__nonNameChars[i])
                 return false;
         }
 
         return true;
     },
 
+    __isDigitChar: function (aChar) {
+        /* DEBUG */ YulupDebug.ASSERT(aChar != null);
+
+        for (var i = 0; i < this.__digitChars.length; i++) {
+            if (aChar == this.__digitChars[i])
+                return true;
+        }
+
+        return false;
+    },
+
     getSymbol: function () {
         var char = null;
         var name = null;
 
-        while ((char = this.__readChar()) != null && this.__isWhitespace(char));
+        /* DEBUG */ dump("Yulup:xpathparser.js:XPathLexer.getSymbol() invoked\n");
+
+        while ((char = this.__readChar()) != null && this.__isWhitespaceChar(char));
 
         if (char != null) {
             switch (char) {
                 case "/":
-                    return new XPathToken(XPathToken.TYPE_SLASH, null);
+                    if (this.__readChar() == "/") {
+                        return new XPathToken(XPathToken.TYPE_DOUBLESLASH, "//");
+                    } else {
+                        this.__putBack(1);
+                        return new XPathToken(XPathToken.TYPE_SLASH, "/");
+                    }
+                case ":":
+                    if (this.__readChar() == ":") {
+                        return new XPathToken(XPathToken.TYPE_DOUBLECOLON, "::");
+                    } else {
+                        this.__putBack(1);
+                        return new XPathToken(XPathToken.TYPE_COLON, ":");
+                    }
+                case ".":
+                    if (this.__readChar() == ".") {
+                        return new XPathToken(XPathToken.TYPE_DOUBLEPERIOD, "..");
+                    } else {
+                        this.__putBack(1);
+                        return new XPathToken(XPathToken.TYPE_PERIOD, ".");
+                    }
+                case ",":
+                    return new XPathToken(XPathToken.TYPE_COMMA, ",");
+                case "@":
+                    return new XPathToken(XPathToken.TYPE_AT, "@");
+                case "|":
+                    return new XPathToken(XPathToken.TYPE_BAR, "|");
+                case "$":
+                    return new XPathToken(XPathToken.TYPE_DOLLAR, "$");
+                case "*":
+                    return new XPathToken(XPathToken.TYPE_STAR, "*");
+                case "=":
+                    return new XPathToken(XPathToken.TYPE_EQUALITYOPERATOR, "=");
+                case "!":
+                    if (this.__readChar() == "=") {
+                        return new XPathToken(XPathToken.TYPE_EQUALITYOPERATOR, "!=");
+                    } else {
+                        throw new YulupXPathParserInvalidCharacterException();
+                    }
+                case "<":
+                    if (this.__readChar() == "=") {
+                        return new XPathToken(XPathToken.TYPE_RELATIONALOPERATOR, "<=");
+                    } else {
+                        this.__putBack(1);
+                        return new XPathToken(XPathToken.TYPE_RELATIONALOPERATOR, "<");
+                    }
+                case ">":
+                    if (this.__readChar() == "=") {
+                        return new XPathToken(XPathToken.TYPE_RELATIONALOPERATOR, ">=");
+                    } else {
+                        this.__putBack(1);
+                        return new XPathToken(XPathToken.TYPE_RELATIONALOPERATOR, ">");
+                    }
                 case "[":
-                    return new XPathToken(XPathToken.TYPE_LSQUAREBRACKET, "[");
+                    return new XPathToken(XPathToken.TYPE_LBRACKET, "[");
                 case "]":
-                    return new XPathToken(XPathToken.TYPE_RSQUAREBRACKET, "]");
+                    return new XPathToken(XPathToken.TYPE_RBRACKET, "]");
+                case "(":
+                    return new XPathToken(XPathToken.TYPE_LPAREN, "(");
+                case ")":
+                    return new XPathToken(XPathToken.TYPE_RPAREN, ")");
                 case "\"":
-                    return new XPathToken(XPathToken.TYPE_DOUBLEQUOTE, "\"");
+                    name = "";
+
+                    do {
+                        name += char;
+                    } while ((char = this.__readChar()) != null && char != "\"");
+
+                    if (char == null) {
+                        throw new YulupXPathLexerMalformedException();
+                    } else {
+                        name += char;
+                    }
+
+                    return new XPathToken(XPathToken.TYPE_DOUBLEQUOTELITERAL, name);
                 case "'":
-                    return new XPathToken(XPathToken.TYPE_SINGLEQUOTE, "'");
+                    name = "";
+
+                    do {
+                        name += char;
+                    } while ((char = this.__readChar()) != null && char != "'");
+
+                    if (char == null) {
+                        throw new YulupXPathLexerMalformedException();
+                    } else {
+                        name += char;
+                    }
+
+                    return new XPathToken(XPathToken.TYPE_SINGLEQUOTELITERAL, name);
+                case "0": case "1": case "2": case "3": case "4": case "5": case "6": case "7": case "8": case "9":
+                    name = "";
+
+                    do {
+                        name += char;
+                    } while ((char = this.__readChar()) != null && !this.__isWhitespaceChar(char) && this.__isDigitChar(char));
+
+                    if (char != null)
+                        this.__putBack(1);
+
+                    return new XPathToken(XPathToken.TYPE_DIGITS, name);
                 default:
                     name = "";
 
                     do {
                         name += char;
-                    } while ((char = this.__readChar()) != null && !this.__isWhitespace(char) && this.__isName(char));
+                    } while ((char = this.__readChar()) != null && !this.__isWhitespaceChar(char) && this.__isNameChar(char));
 
                     if (char != null)
                         this.__putBack(1);
 
-                    return new XPathToken(XPathToken.TYPE_NAME, name);
+                    return new XPathToken(XPathToken.TYPE_IDENT, name);
             }
         } else {
             return null;
@@ -1663,35 +2024,17 @@ XPathLexer.prototype = {
 
 
 /**
- * LocationPathLexer constructor. Instantiates a new object of
- * type LocationPathLexer.
- *
- * @constructor
- * @param  {String}     aLocationPath the location path to tokenise
- * @return {XPathLexer}
- */
-function LocationPathLexer(aLocationPath) {
-    /* DEBUG */ YulupDebug.ASSERT(aLocationPath != null);
-
-    XPathLexer.call(this, aLocationPath);
-}
-
-LocationPathLexer.prototype = {
-    __proto__: XPathLexer
-};
-
-
-/**
  * XPathToken constructor. Instantiates a new object of
  * type XPathToken.
  *
  * @constructor
  * @param  {Number}     aType  the type of the token
- * @param  {String}     aValue the value of the token, or null if of valueless type
+ * @param  {String}     aValue the value of the token
  * @return {XPathToken}
  */
 function XPathToken(aType, aValue) {
-    /* DEBUG */ YulupDebug.ASSERT(aType != null);
+    /* DEBUG */ YulupDebug.ASSERT(aType  != null);
+    /* DEBUG */ YulupDebug.ASSERT(aValue != null);
 
     this.type  = aType;
     this.value = aValue;
@@ -1724,5 +2067,9 @@ XPathToken.TYPE_IDENT                  = 23;
 
 XPathToken.prototype = {
     type : null,
-    value: null
+    value: null,
+
+    toString: function () {
+        return "{" + this.type + ", \"" + this.value + "\"}";
+    }
 };
