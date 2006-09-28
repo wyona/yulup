@@ -128,7 +128,7 @@ var PersistenceService = {
         nsIFilePicker = Components.interfaces.nsIFilePicker;
         filePicker    = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 
-        filePicker.init(window, "Save File As...", nsIFilePicker.modeSave);
+        filePicker.init(window, document.getElementById("uiYulupEditorStringbundle").getString("editorFilePickerSaveAs.label"), nsIFilePicker.modeSave);
 
         // query model for file name and suffix
         if (aDocumentName && aDocumentSuffix) {
