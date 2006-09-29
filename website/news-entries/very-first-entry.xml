@@ -1,19 +1,20 @@
 <atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns="http://www.w3.org/2005/Atom">
- <atom:title type="text">Very First Entry</atom:title>
+ <atom:title type="text">Yulup supports Atom</atom:title>
  <atom:author><atom:name>Michael H. Wechner</atom:name></atom:author>
 
  <atom:id>urn:yanel-uuid:atom:release-entries:ulysses-prototype-1-0.1.10-rc3-r16660.xml</atom:id>
- <atom:updated>2006-09-29T14:34:54.507Z</atom:updated>
+ <atom:updated>2006-09-30T00:34:11.803Z</atom:updated>
  <atom:published>2006-08-16T16:30:56-01:00</atom:published>
 
- <atom:summary type="html">very first entry</atom:summary>
+<!-- 
+<atom:summary type="html">Yulup supports APP and the Atom format.</atom:summary>
+-->
  <atom:content type="xhtml">
    <xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
-     <xhtml:ul>
-       <xhtml:li>Very</xhtml:li>
-       <xhtml:li>first</xhtml:li>
-       <xhtml:li>Entry</xhtml:li>
-     </xhtml:ul>
+     <xhtml:p>
+       Yulup supports the Atom Publishing Protocol and the Atom format. A demo can be found
+       at <xhtml:a href="http://demo.yulup.org/atom/entries/">http://demo.yulup.org/atom/entries/</xhtml:a>.
+     </xhtml:p>
    </xhtml:div>
  </atom:content>
  <dc:subject xmlns:dc="http://purl.org/dc/elements/1.1/">Very first entry</dc:subject>
