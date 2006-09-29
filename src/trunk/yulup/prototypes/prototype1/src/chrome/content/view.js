@@ -1125,6 +1125,10 @@ WYSIWYGXSLTModeView.prototype = {
             this.view.QueryInterface(Components.interfaces.nsIHTMLAbsPosEditor);
             this.view.absolutePositioningEnabled = false;
 
+            // disable inline table editing
+            this.view.QueryInterface(Components.interfaces.nsIHTMLInlineTableEditor);
+            this.view.inlineTableEditingEnabled = false;
+
             this.view.QueryInterface(Components.interfaces.nsIHTMLEditor);
 
             // make the caret visible even if the current selection is not collapsed
