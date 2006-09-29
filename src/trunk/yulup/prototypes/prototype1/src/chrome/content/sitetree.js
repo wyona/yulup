@@ -118,8 +118,8 @@ SitetreeNode.prototype = {
 /**
   * Instantiates an object of the type SitetreeView.
   *
-  * @param  {Sitetree} the sitetree object which hold the data for this view.
-  * @return {SitetreeView}
+  * @param  {nsIURI}           aURI       the sitetree URI.
+  * @return {nsITreeSelection} aSelection the tree selection object.
   */
 function SitetreeView(aURI, aSelection) {
     var elem = null;
@@ -227,7 +227,7 @@ SitetreeView.prototype = {
                 domDocument  = domParser.parseFromString(aDocumentData, "text/xml");
 
                 // instantiate the parser for this version and parse the file
-                sitetree = Neutron.parserFactory(domDocument, aBaseURI).parseSitetree();
+                sitetree = new NeutronParser10(domDocument, aBaseURI).parseSitetree();
 
                 // update the model
                 aContext.view.updateSitetreeDOM(aContext.parentRow, sitetree);
