@@ -1538,6 +1538,9 @@ WYSIWYGXSLTModeView.prototype = {
 
                         // insert predicate [local-name()='nodename']
                         astNode.insert(new ASTNodeValue("[local-name()='" + localPart + "']"));
+                    } else {
+                        // replace name test by QName with prefix null and localname "*"
+                        astNode.setQName(new ASTNodeQName(null, "*"));
                     }
                 }
             } while ((astNode = astNode.getNext()) != null)
