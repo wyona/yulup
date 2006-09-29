@@ -50,6 +50,7 @@ function EditorParameters(aURI, aContentType, aSchemas, aStyles, aStyleTemplate,
     this.styles        = aStyles;
     this.styleTemplate = aStyleTemplate;
     this.widgets       = aWidgets;
+    this.templates     = true;
 }
 
 EditorParameters.prototype = {
@@ -60,6 +61,7 @@ EditorParameters.prototype = {
     styles       : null,
     styleTemplate: null,
     widgets      : null,
+    templates    : null,
 
     mergeIntrospectionParams: function (aIntrospectionObject) {
         /* DEBUG */ dump("Yulup:editorparams.js:EditorParameters.mergeIntrospectionParams() invoked\n");
