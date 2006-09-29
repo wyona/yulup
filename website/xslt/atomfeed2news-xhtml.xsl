@@ -19,8 +19,8 @@
 <xsl:template match="/">
 <html>
 <head>
-  <title>Download</title>
-  <link rel="alternate" title="Yulup Releases" href="release-atom-entries/?yanel.resource.viewid=atom" type="application/atom+xml"/>
+  <title>News</title>
+  <link rel="alternate" title="Yulup News" href="news-entries.html?yanel.resource.viewid=atom" type="application/atom+xml"/>
   <link rel="introspection" href="news-entries/introspection-atom.xml" type="application/atomserv+xml"/>
 <!--
   <link rel="introspection" href="download/introspection-atom.xml" type="application/atomserv+xml"/>
@@ -31,19 +31,12 @@
 <h1><xsl:value-of select="/atom:feed/atom:title"/></h1>
 -->
 
-<h2>Download</h2>
+<h2>News</h2>
 
+<!--
 <h3>System Requirements</h3>
 <p>Yulup requires <a href="http://www.mozilla.com/firefox/">Mozilla Firefox</a> with a minimum version of 1.5 to function. The Yulup editor is a platform-independent application, and can therefore be run on every machine which also runs Firefox.</p>
-
-<h3>Troubleshooting Installation</h3>
-<p>
-Please see the <a href="../faq.html#troubleinstalltoc">FAQ</a> for troubleshooting installation.
-</p>
-
-
-<h2>Prototype 1</h2>
-<p>Prototype 1 is a first release to explore the capabilities of the Mozilla built-in editor widget. Note that this is nowhere near the final product, and only serves as a means to test new ideas and try out existing facilities. Nevertheless, we try to keep the releases of prototype 1 as functional as possible.</p>
+-->
 
 <xsl:apply-templates select="/atom:feed/atom:entry"/>
 
@@ -66,21 +59,17 @@ Please see the <a href="../faq.html#troubleinstalltoc">FAQ</a> for troubleshooti
 </xsl:template>
 
 <xsl:template match="atom:entry">
-<!--
 <h3><xsl:value-of select="atom:title"/></h3>
 <p>
 <xsl:value-of select="atom:summary"/>
 </p>
--->
 
 <xsl:copy-of select="atom:content/*"/>
 <br/>
 
-<!--
 <font size="-1">Last Published (Updated): <xsl:value-of select="atom:updated"/></font>
 <br/>
 <font size="-1">First Published: <xsl:value-of select="atom:published"/></font>
--->
 </xsl:template>
 
 </xsl:stylesheet>
