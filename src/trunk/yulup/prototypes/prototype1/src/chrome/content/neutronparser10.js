@@ -436,7 +436,8 @@ NeutronParser10.prototype = {
         while (attribute = attributes.iterateNext()) {
             attributeArray[index++] = {
                 name: aDocument.evaluate("attribute::name", attribute, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
-                xpath: aDocument.evaluate("attribute::xpath", attribute, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue
+                xpath: aDocument.evaluate("attribute::xpath", attribute, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
+                type: aDocument.evaluate("attribute::type", attribute, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue
             }
         }
 
