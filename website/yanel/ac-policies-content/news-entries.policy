@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<policy xmlns="http://www.wyona.org/security/1.0">
+
+  <role id="view">
+    <world permission="true"/>
+<!-- Actually we want to block reading the single entries, but this would require to rename the feed, which we could of course ;-) -->
+<!--
+    <world permission="false"/>
+    <user id="ulysses" permission="true"/>
+-->
+  </role>
+
+  <role id="write">
+    <user id="ulysses" permission="true"/>
+  </role>
+
+  <role id="delete">
+    <user id="ulysses" permission="true"/>
+  </role>
+
+</policy>
