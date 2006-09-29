@@ -264,7 +264,7 @@
             var contentBox    = null;
             var generatorText = null;
 
-            /* DEBUG */ dump("Yulup:atomsidebar.xml:atomsidebar.__buildFeedInfoPanel(\"" + aAtomFeedInfo + "\") invoked\n");
+            /* DEBUG */ dump("Yulup:atomsidebar.xml:atomsidebar.__buildFeedInfoBox(\"" + aAtomFeedInfo + "\") invoked\n");
 
             contentBox = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "vbox");
 
@@ -325,6 +325,14 @@
                 updatedBox.appendChild(this.__createSimpleTextDescriptionElement("atom-value", aAtomFeedInfo.updated.date));
 
                 contentBox.appendChild(updatedBox);
+            }
+
+            if (aAtomFeedInfo.links.length > 0) {
+                for (var i = 0; i < aAtomFeedInfo.links.length; i++) {
+                    if (aAtomFeedInfo.links[i].rel == null && aAtomFeedInfo.links[i].type == null) {
+                        contentBox.appendChild(this.__createURIDescriptionElement("atom-value", aAtomFeedInfo.links[i].href.spec, (aAtomFeedInfo.links[i].title ? aAtomFeedInfo.links[i].title : aAtomFeedInfo.links[i].href.spec)));
+                    }
+                }
             }
 
             return contentBox;

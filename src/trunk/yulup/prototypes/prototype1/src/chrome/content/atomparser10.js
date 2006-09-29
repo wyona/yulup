@@ -71,7 +71,7 @@ function AtomParser10(aDocument, aBaseURI, aStrict, aErrorHandler) {
 }
 
 AtomParser10.prototype = {
-    __proto__: AtomParser,
+    __proto__: AtomParser.prototype,
 
     ioService    : null,
     xmlSerialiser: null,
