@@ -155,7 +155,7 @@ function YulupEditController(aParameterObject) {
         } else {
             if (aException) {
                 // TODO: Widget-loading exception handling needs some spec coverage
-                UlyssedDebug.dumpExceptionToConsole(aException);
+                YulupDebug.dumpExceptionToConsole(aException);
                 Components.utils.reportError(aException);
             }
         }
@@ -275,7 +275,7 @@ function YulupEditController(aParameterObject) {
         /* DEBUG */ YulupDebug.ASSERT(gEditorController != null && gEditorController.editStateController);
 
         // load widgets
-        if (gEditorController.editorParams.widgets && gEditorController.editorParams.templates) {
+        if (gEditorController.editorParams.widgets) {
             // init load barrier
             gEditorController.loadBarrier = new Barrier(2, YulupEditController.enterStageViewInitialisation, null);
 

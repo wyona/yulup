@@ -77,7 +77,7 @@ EditorParameters.prototype = {
             if (aIntrospectionObject.fragments[0].styleTemplate) {
                 this.__mergeStyleTemplate(aIntrospectionObject.fragments[0].styleTemplate);
             }
-            if (aIntrospectionObject.fragments[0].widgets) {
+            if (aIntrospectionObject.fragments[0].widgets && this.templates) {
                 this.__mergeWidgets(aIntrospectionObject.fragments[0].widgets);
             }
         }
