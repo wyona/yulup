@@ -280,6 +280,49 @@ SitetreeView.prototype = {
     },
 
     /**
+     * Get the collection URI of the currently selected node.
+     *
+     * @return {nsIURI} the collection uri
+     */ 
+    getCurrentCollectionURI: function() {
+        var node = null;
+
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeVIew.getCurrentCollectionURI() invoked\n");
+
+        node = this.getSitetreeNodeAtRow(this.selection.currentIndex);
+
+        if (node != null) {
+            if (node.isContainer == true) {
+                return node.uri;
+            } else if (node.parentNode != null) {
+                return node.parentNode.uri;
+            }
+        }
+
+        return null;
+    },
+
+    /**
+     * Get the resource URI of the currently selected node.
+     *
+     * @return {nsIURI} the collection uri
+     */ 
+    getCurrentResourceURI: function() {
+        var node = null;
+
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeVIew.getCurrentResourceURI() invoked\n");
+
+        node = this.getSitetreeNodeAtRow(this.selection.currentIndex);
+
+        if (node != null) {
+            return node.uri;
+        }
+
+        return null;
+    },
+
+
+    /**
      * Updates the SitetreeNode to row mappings.
      *
      * @return {Undefined} does not have a return value
