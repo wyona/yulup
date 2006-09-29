@@ -1464,6 +1464,7 @@ WYSIWYGXSLTModeView.prototype = {
         var xPathToolBarLabel = null;
         var domDocument       = null;
         var xhtmlNode         = null;
+        var xpathParseResult  = null;
         var locationPath      = null;
         var xPathExpr         = null;
         var sourceNode        = null;
@@ -1501,20 +1502,72 @@ WYSIWYGXSLTModeView.prototype = {
             return null;
         }
 
-        xPathExpr = locationPath;
+        /* DEBUG */ dump("---------------------- start parsing found location path ----------------------\n");
 
-        if (!aIsNamespaceAware) {
-            xPathToolBarLabel.value = "Not yet implemented!";
+        // parse found location path
+        try {
+            xpathParseResult = (new XPathParser(locationPath)).parse();
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+        }
+
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: object XPath representation: \n" + xpathParseResult.toObjectString() + "\n");
+
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: parsed XPath: " + xpathParseResult.toString() + "\n");
+
+        /* DEBUG */ dump("\n---------------------- finished parsing found location path ----------------------\n");
+
+        if (!xpathParseResult) {
+            xPathToolBarLabel.value = "Error parsing location path";
             return null;
         }
 
         /* Query the source document for xPathExpr (the location path found) */
-        try {
-            sourceNode = domDocument.evaluate(xPathExpr, domDocument, domDocument.createNSResolver(domDocument.documentElement), XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-        } catch (exception) {
-            // the namespace resolver does not seem to know a prefix used in the query
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode", exception);
-            /* DEBUG */ Components.utils.reportError(exception);
+        if (!aIsNamespaceAware) {
+            var astNode = xpathParseResult;
+
+            do {
+                if (astNode.getType() == ASTNode.TYPE_PREFIX) {
+                    // remove prefix node
+                    astNode.setType(ASTNode.TYPE_EPSILON);
+
+                    // remove the ":" node
+                    astNode = astNode.getNext();
+                    astNode.setType(ASTNode.TYPE_EPSILON);
+
+                    /* Rewrite the localname to "*[local-name()='nodename']" where nodename
+                     * is the currently stored value of the result node. */
+                    astNode = astNode.getNext();
+                    if (astNode.getValue() != "*") {
+                        astNode.setValue("*[local-name()='" + astNode.getValue() + "']");
+                        astNode.setType(ASTNode.TYPE_LOCALNAME);
+                    }
+                }
+            } while ((astNode = astNode.getNext()) != null)
+
+            // serialise XPath parser result
+            xPathExpr = xpathParseResult.toString();
+
+            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: stripped XPath: " + xPathExpr + "\n");
+
+            try {
+                sourceNode = domDocument.evaluate(xPathExpr, domDocument, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            } catch (exception) {
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode", exception);
+                /* DEBUG */ Components.utils.reportError(exception);
+            }
+        } else {
+            // serialise XPath parser result
+            xPathExpr = xpathParseResult.toString();
+
+            try {
+                sourceNode = domDocument.evaluate(xPathExpr, domDocument, domDocument.createNSResolver(domDocument.documentElement), XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            } catch (exception) {
+                // the namespace resolver does not seem to know a prefix used in the query
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode", exception);
+                /* DEBUG */ Components.utils.reportError(exception);
+            }
         }
 
         /* DEBUG */ dump ("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: XPath query returned source node: \"" + sourceNode + "\"\n");
