@@ -1,23 +1,21 @@
-<?xml version="1.0"?>
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns="http://www.w3.org/2005/Atom">
+ <atom:title type="text">ulysses-prototype-1-0.1.10-rc1-r16251</atom:title>
+ <atom:author><atom:name>Michael H. Wechner</atom:name></atom:author>
 
-<entry xmlns="http://www.w3.org/2005/Atom">
- <title>ulysses-prototype-1-0.1.10-rc1-r16251</title>
- <author><name>Michael Wechner</name></author>
-
- <id>urn:yanel-uuid:atom:release-entries:ulysses-prototype-1-0.1.10-rc1-r16251.xml</id>
- <link rel="edit" href="ulysses-prototype-1-0.1.10-rc1-r16251.xml"/>
- <updated>2006-09-20T09:52:55-01:00</updated>
+ <atom:id>urn:yanel-uuid:atom:release-entries:ulysses-prototype-1-0.1.10-rc1-r16251.xml</atom:id>
+ <link href="ulysses-prototype-1-0.1.10-rc1-r16251.xml" rel="edit"/>
+ <updated>2006-09-29T09:16:02.470Z</updated>
  <published>2006-08-08T16:30:55-01:00</published>
 
- <summary type='html'>Release Candidate rc1: ulysses-prototype-1-0.1.10-rc1-r16251</summary>
- <content type='xhtml'>
-   <div xmlns='http://www.w3.org/1999/xhtml'>
-     <ul>
-       <li>Renamed to Ulysses.</li>
-       <li>Guided tag insertion.</li>
-       <li>Minor Bugfixes and Enhancements.</li>
-     </ul>
-   </div>
- </content>
- <dc:subject xmlns:dc='http://purl.org/dc/elements/1.1/'>Release Candidate rc1: ulysses-prototype-1-0.1.10-rc1-r16251</dc:subject>
-</entry>
+ <atom:summary type="html">Release Candidate rc1: ulysses-prototype-1-0.1.10-rc1-r16251</atom:summary>
+ <atom:content type="xhtml">
+   <xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
+     <xhtml:ul>
+       <xhtml:li>Renamed to Ulysses.</xhtml:li>
+       <xhtml:li>Guided tag insertion.</xhtml:li>
+       <xhtml:li>Minor Bugfixes and Enhancements.</xhtml:li>
+     </xhtml:ul>
+   </xhtml:div>
+ </atom:content>
+ <dc:subject xmlns:dc="http://purl.org/dc/elements/1.1/">Release Candidate rc1: ulysses-prototype-1-0.1.10-rc1-r16251</dc:subject>
+</atom:entry>
