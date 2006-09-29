@@ -146,6 +146,21 @@ SitetreeView.prototype = {
     rowNodeMap  : null,
 
     /**
+     * The nsISupports QueryInterface method.
+     */
+    QueryInterface: function (aUUID) {
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.QueryInterface(\"" + aUUID + "\") invoked\n");
+
+        if (aUUID.equals(Components.interfaces.nsISupports) ||
+            aUUID.equals(Components.interfaces.nsITreeView) ||
+            aUUID.equals(Components.interfaces.wyIYulupSitreeView)) {
+            return this;
+        } else {
+            throw Components.results.NS_NOINTERFACE;
+        }
+    },
+
+    /**
      * Load the sitetree XML file over the network.
      *
      * @param  {Integer}   aParentRow the row where new sitetree nodes get appended.

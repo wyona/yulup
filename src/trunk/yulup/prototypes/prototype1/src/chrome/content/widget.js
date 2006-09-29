@@ -441,6 +441,7 @@ var ResourceUploadDialogHandler = {
             // TODO upload the resource to the server
             // get the selected collection
             tree = document.getElementById("uiYulupResourceUploadTree");
+            dump("!!!!!!!!!!!!!!!!!!!!!!!!!! " + tree.view.QueryInterface(Components.interfaces.wyIYulupSitreeView).getCurrentCollectionURI() + "\n");
         }
     },
 

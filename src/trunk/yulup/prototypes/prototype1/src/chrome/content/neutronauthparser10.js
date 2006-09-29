@@ -47,7 +47,7 @@ function NeutronAuthParser10(aDocument) {
 }
 
 NeutronAuthParser10.prototype = {
-    __proto__: NeutronAuthParser,
+    __proto__: NeutronAuthParser.prototype,
 
     documentDOM: null,
     baseURI    : null,
