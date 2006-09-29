@@ -3,7 +3,7 @@
  <atom:author><atom:name>Michael H. Wechner</atom:name></atom:author>
 
  <atom:id>urn:yanel-uuid:atom:release-entries:ulysses-prototype-1-0.1.10-rc3-r16660.xml</atom:id>
- <atom:updated>2006-09-29T09:09:17.069Z</atom:updated>
+ <atom:updated>2006-09-29T14:34:54.507Z</atom:updated>
  <atom:published>2006-08-16T16:30:56-01:00</atom:published>
 
  <atom:summary type="html">very first entry</atom:summary>
@@ -11,7 +11,7 @@
    <xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">
      <xhtml:ul>
        <xhtml:li>Very</xhtml:li>
-       <xhtml:li>First</xhtml:li>
+       <xhtml:li>first</xhtml:li>
        <xhtml:li>Entry</xhtml:li>
      </xhtml:ul>
    </xhtml:div>
