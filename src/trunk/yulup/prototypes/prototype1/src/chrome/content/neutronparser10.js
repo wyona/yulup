@@ -66,7 +66,8 @@ NeutronParser10.prototype = {
         /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.nsResolver(\"" + aPrefix + "\") invoked\n");
 
         var namespace = {
-            "neutron10" : "http://www.wyona.org/neutron/1.0"
+            "neutron10" : "http://www.wyona.org/neutron/1.0",
+            "D"         : "DAV:"
         };
 
         return namespace[aPrefix] || null;
@@ -88,7 +89,7 @@ NeutronParser10.prototype = {
 
         sitetree = new Neutron10Sitetree();
 
-        if (elemNodeIterator = this.documentDOM.evaluate("neutron10:multistatus/neutron10:response", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null)) {
+        if (elemNodeIterator = this.documentDOM.evaluate("D:multistatus/D:response", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null)) {
             /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.parseSitetree: found one or multiple response elements\n");
 
             while (elemNode = elemNodeIterator.iterateNext()) {
@@ -103,7 +104,7 @@ NeutronParser10.prototype = {
         var uri = null;
 
         return {
-            href: ((uri = aDocument.evaluate("neutron10:href/text()", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != null ? this.ioService.newURI(uri, null, this.baseURI) : null),
+            href: ((uri = aDocument.evaluate("D:href/text()", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != null ? this.ioService.newURI(uri, null, this.baseURI) : null),
             properties: this.__parseProperties(aDocument, aNode)
         };
     },
@@ -111,9 +112,9 @@ NeutronParser10.prototype = {
     __parseProperties: function(aDocument, aNode) {
 
         return {
-            displayname: aDocument.evaluate("neutron10:propstat/neutron10:prop/neutron10:displayname/text()", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
-            lastmodified: aDocument.evaluate("neutron10:propstat/neutron10:prop/neutron10:lastmodified/text()", aNode,  this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
-            contenttype: aDocument.evaluate("neutron10:propstat/neutron10:prop/neutron10:contenttype/text()", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
+            displayname: aDocument.evaluate("D:propstat/D:prop/D:displayname/text()", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
+            lastmodified: aDocument.evaluate("D:propstat/D:prop/D:lastmodified/text()", aNode,  this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
+            contenttype: aDocument.evaluate("D:propstat/D:prop/D:contenttype/text()", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
             resourcetype: this.__parseResourceType(aDocument, aNode)
         };
     },
@@ -121,7 +122,7 @@ NeutronParser10.prototype = {
     __parseResourceType: function(aDocument, aNode) {
         var collection = null;
 
-        if (collection = aDocument.evaluate("neutron10:propstat/neutron10:prop/neutron10:resourcetype/neutron10:collection", aNode, this.nsResolver, XPathResult.UNORDERER_NODE_ITERATOR_TYPE, null).iterateNext()) {
+        if (collection = aDocument.evaluate("D:propstat/D:prop/D:resourcetype/D:collection", aNode, this.nsResolver, XPathResult.UNORDERER_NODE_ITERATOR_TYPE, null).iterateNext()) {
             // it's a collection
             return "collection";
         } else {
