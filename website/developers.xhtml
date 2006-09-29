@@ -69,9 +69,12 @@ If the source has been checked out from SVN, then one can install Yulup as follo
 <p>Assume a path snippet <tt>$CURRENT</tt> which currently points to <tt>public/yulup/src/trunk/yulup/prototypes/prototype1/src</tt>.</p>
 <ul>
   <li><p>Edit <tt>$CURRENT/install.rdf</tt> and bump version number contained in the &lt;em:version> element (XPath: RDF/Description/em:version).</p></li>
+<!-- TODO: These items have become obsolete. Review and confirm before deleting. -->
+<!--
   <li><p>Edit <tt>$CURRENT/chrome/locale/xml/yulup.dtd.xml</tt> and bump version number.</p></li>
   <li><p>In directory <tt>$CURRENT/chrome/locale</tt>, issue "ant".</p></li>
-  <li><p>In directory <tt>$CURRENT</tt>, issue "ant".</p></li>
+-->
+  <li><p>In directory <tt>$CURRENT</tt>, issue "ant" (make sure that <a href="http://ant.apache.org">Apache Ant</a> is installed).</p></li>
 </ul>
 <p>
 The new package can then be found in <tt>public/website/yulup/download</tt> (the <tt>update.rdf</tt> file in the <tt>download</tt> directory is modified automatically to include the new release).
