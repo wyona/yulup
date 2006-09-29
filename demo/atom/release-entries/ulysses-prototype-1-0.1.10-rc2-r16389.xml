@@ -1,21 +1,19 @@
-<?xml version="1.0"?>
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns="http://www.w3.org/2005/Atom">
+ <atom:title type="text">ulysses-prototype-1-0.1.10-rc2-r16389</atom:title>
+ <atom:author><atom:name>Michael H. Wechner</atom:name></atom:author>
 
-<entry xmlns="http://www.w3.org/2005/Atom">
- <title>ulysses-prototype-1-0.1.10-rc2-r16389</title>
- <author><name>Michael Wechner</name></author>
-
- <id>urn:yanel-uuid:atom:release-entries:ulysses-prototype-1-0.1.10-rc2-r16389.xml</id>
- <link rel="edit" href="ulysses-prototype-1-0.1.10-rc2-r16389.xml"/>
- <updated>2006-09-20T09:53:54-01:00</updated>
+ <atom:id>urn:yanel-uuid:atom:release-entries:ulysses-prototype-1-0.1.10-rc2-r16389.xml</atom:id>
+ <link href="ulysses-prototype-1-0.1.10-rc2-r16389.xml" rel="edit"/>
+ <updated>2006-09-29T09:12:16.462Z</updated>
  <published>2006-08-11T16:30:54-01:00</published>
 
- <summary type='html'>Release Candidate rc2: ulysses-prototype-1-0.1.10-rc2-r16389</summary>
- <content type='xhtml'>
-   <div xmlns='http://www.w3.org/1999/xhtml'>
+ <atom:summary type="html">Release Candidate rc2: ulysses-prototype-1-0.1.10-rc2-r16389</atom:summary>
+ <atom:content type="xhtml">
+   <div xmlns="http://www.w3.org/1999/xhtml">
      <ul>
        <li>I18n.</li>
      </ul>
    </div>
- </content>
- <dc:subject xmlns:dc='http://purl.org/dc/elements/1.1/'>Release Candidate rc2: ulysses-prototype-1-0.1.10-rc2-r16389</dc:subject>
-</entry>
+ </atom:content>
+ <dc:subject xmlns:dc="http://purl.org/dc/elements/1.1/">Release Candidate rc2: ulysses-prototype-1-0.1.10-rc2-r16389</dc:subject>
+</atom:entry>
