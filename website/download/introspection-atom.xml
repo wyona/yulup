@@ -3,8 +3,14 @@
 <service xmlns="http://purl.org/atom/app#">
   <workspace title="Yulup Website">
     <collection title="Releases" href="release-atom-entries/?yanel.resource.viewid=atom">
+<!--
+    <collection title="Releases" href="download/release-atom-entries/?yanel.resource.viewid=atom">
+-->
     </collection>
     <collection title="News" href="../news-entries.html?yanel.resource.viewid=atom">
+<!--
+    <collection title="News" href="news-entries.html?yanel.resource.viewid=atom">
+-->
     </collection>
   </workspace>
 </service>
