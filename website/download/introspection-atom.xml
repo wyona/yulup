@@ -7,7 +7,7 @@
     <collection title="Releases" href="download/release-atom-entries/?yanel.resource.viewid=atom">
 -->
     </collection>
-    <collection title="News" href="../news-entries.html?yanel.resource.viewid=atom">
+    <collection title="News" href="../news-entries/?yanel.resource.viewid=atom">
 <!--
     <collection title="News" href="news-entries.html?yanel.resource.viewid=atom">
 -->
