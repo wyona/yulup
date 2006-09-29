@@ -272,7 +272,7 @@ XPathParser.prototype = {
 
         // alt1: SLASH (relativeLocationPath)?
         if (this.__matchSymbol(aPos, XPathToken.TYPE_SLASH)) {
-            astNode = new ASTNode(ASTNode.TYPE_ABSOLUTELOCATIONPATH, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleRelativeLocationPath(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
@@ -283,7 +283,7 @@ XPathParser.prototype = {
 
         // alt2: DOUBLESLASH relativeLocationPath
         if (this.__matchSymbol(aPos, XPathToken.TYPE_DOUBLESLASH)) {
-            astNode = new ASTNode(ASTNode.TYPE_ABSOLUTELOCATIONPATH, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleRelativeLocationPath(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
@@ -351,7 +351,7 @@ XPathParser.prototype = {
 
         // alt1: SLASH step relativeLocationPath2
         if (this.__matchSymbol(aPos, XPathToken.TYPE_SLASH)) {
-            astNode = new ASTNode(ASTNode.TYPE_RELATIVELOCATIONPATH2, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleStep(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
@@ -366,7 +366,7 @@ XPathParser.prototype = {
 
         // alt2: DOUBLECOLON step relativeLocationPath2
         if (this.__matchSymbol(aPos, XPathToken.TYPE_DOUBLECOLON)) {
-            astNode = new ASTNode(ASTNode.TYPE_RELATIVELOCATIONPATH2, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleStep(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
@@ -380,7 +380,7 @@ XPathParser.prototype = {
         }
 
         // alt3: ()
-        return new RuleEvalResult(aPos, new ASTNode(ASTNode.TYPE_EPSILON, null));
+        return new RuleEvalResult(aPos, new ASTNodeEpsilon());
 
         // no applicable rule
         return null;
@@ -426,14 +426,14 @@ XPathParser.prototype = {
 
         // alt2: PERIOD
         if (this.__matchSymbol(aPos, XPathToken.TYPE_PERIOD)) {
-            astNode = new ASTNode(ASTNode.TYPE_CURRENTNODE, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             return new RuleEvalResult(aPos + 1, astNode);
         }
 
         // alt3: DOUBLEPERIOD
         if (this.__matchSymbol(aPos, XPathToken.TYPE_DOUBLEPERIOD)) {
-            astNode = new ASTNode(ASTNode.TYPE_PARENTNODE, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             return new RuleEvalResult(aPos + 1, astNode);
         }
@@ -463,12 +463,12 @@ XPathParser.prototype = {
         if (this.__matchAxisName(aPos)) {
             /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleAxisSpecifier: alt1 AXISNAME matched\n");
 
-            astNode = new ASTNode(ASTNode.TYPE_AXISNAME, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if (this.__matchSymbol(aPos + 1, XPathToken.TYPE_DOUBLECOLON)) {
                 /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleAxisSpecifier: alt1 AXISNAME DOUBLECOLON matched\n");
 
-                astNode.concatenate(new ASTNode(ASTNode.TYPE_AXISDELIMITER, this.__getSymbolValue(aPos + 1)));
+                astNode.concatenate(new ASTNodeValue(this.__getSymbolValue(aPos + 1)));
 
                 return new RuleEvalResult(aPos + 2, astNode);
             }
@@ -478,13 +478,13 @@ XPathParser.prototype = {
         if (this.__matchSymbol(aPos, XPathToken.TYPE_AT)) {
             /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleAxisSpecifier: alt2 AT matched\n");
 
-            astNode = new ASTNode(ASTNode.TYPE_AT, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             return new RuleEvalResult(aPos + 1, astNode);
         } else {
             /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleAxisSpecifier: alt2 () matched\n");
 
-            astNode = new ASTNode(ASTNode.TYPE_EPSILON, null);
+            astNode = new ASTNodeEpsilon();
 
             return new RuleEvalResult(aPos, astNode);
         }
@@ -518,16 +518,16 @@ XPathParser.prototype = {
 
         // alt2: "processing-instruction" LPAREN literal RPAREN
         if (this.__matchProcessingInstruction(aPos)) {
-            astNode = new ASTNode(ASTNode.TYPE_NODETEST, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if (this.__matchSymbol(aPos + 1, XPathToken.TYPE_LPAREN)) {
-                astNode.concatenate(new ASTNode(ASTNode.TYPE_NODETEST, this.__getSymbolValue(aPos + 1)));
+                astNode.concatenate(new ASTNodeValue(this.__getSymbolValue(aPos + 1)));
 
                 if ((evalResult = this.__ruleLiteral(aPos + 2)) != null) {
                     astNode.concatenate(evalResult.astNode);
 
                     if (this.__matchSymbol(evalResult.pos, XPathToken.TYPE_RPAREN)) {
-                        astNode.concatenate(new ASTNode(ASTNode.TYPE_NODETEST, this.__getSymbolValue(evalResult.pos)));
+                        astNode.concatenate(new ASTNodeValue(this.__getSymbolValue(evalResult.pos)));
 
                         return new RuleEvalResult(evalResult.pos, astNode);
                     }
@@ -540,10 +540,10 @@ XPathParser.prototype = {
             astNode = evalResult.astNode;
 
             if (this.__matchSymbol(evalResult.pos, XPathToken.TYPE_LPAREN)) {
-                astNode.concatenate(new ASTNode(ASTNode.TYPE_NODETEST, this.__getSymbolValue(evalResult.pos)));
+                astNode.concatenate(new ASTNodeValue(this.__getSymbolValue(evalResult.pos)));
 
                 if (this.__matchSymbol(evalResult.pos + 1, XPathToken.TYPE_RPAREN)) {
-                    astNode.concatenate(new ASTNode(ASTNode.TYPE_NODETEST, this.__getSymbolValue(evalResult.pos + 1)));
+                    astNode.concatenate(new ASTNodeValue(this.__getSymbolValue(evalResult.pos + 1)));
 
                     return new RuleEvalResult(evalResult.pos + 2, astNode);
                 }
@@ -572,13 +572,13 @@ XPathParser.prototype = {
 
         // alt1: LBRACKET orExpr RBRACKET
         if (this.__matchSymbol(aPos, XPathToken.TYPE_LBRACKET)) {
-            astNode = new ASTNode(ASTNode.TYPE_PREDICATE, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleOrExpr(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
 
                 if (this.__matchSymbol(evalResult.pos, XPathToken.TYPE_RBRACKET)) {
-                    astNode.concatenate(new ASTNode(ASTNode.TYPE_PREDICATE, this.__getSymbolValue(evalResult.pos)));
+                    astNode.concatenate(new ASTNodeValue(this.__getSymbolValue(evalResult.pos)));
 
                     return new RuleEvalResult(evalResult.pos + 1, astNode);
                 }
@@ -611,7 +611,7 @@ XPathParser.prototype = {
 
         // alt1: DOLLAR qName
         if (this.__matchSymbol(aPos, XPathToken.TYPE_DOLLAR)) {
-            astNode = new ASTNode(ASTNode.TYPE_PRIMARYEXPR, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleQName(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
@@ -622,13 +622,13 @@ XPathParser.prototype = {
 
         // alt2: LPAREN orExpr RPAREN
         if (this.__matchSymbol(aPos, XPathToken.TYPE_LPAREN)) {
-            astNode = new ASTNode(ASTNode.TYPE_PRIMARYEXPR, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleOrExpr(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
 
                 if (this.__matchSymbol(evalResult.pos, XPathToken.TYPE_RPAREN)) {
-                    astNode.concatenate(new ASTNode(ASTNode.TYPE_PRIMARYEXPR, this.__getSymbolValue(evalResult.pos)));
+                    astNode.concatenate(new ASTNodeValue(this.__getSymbolValue(evalResult.pos)));
 
                     return new RuleEvalResult(evalResult.pos + 1, astNode);
                 }
@@ -676,7 +676,7 @@ XPathParser.prototype = {
             astNode = evalResult.astNode;
 
             if (this.__matchSymbol(evalResult.pos, XPathToken.TYPE_LPAREN)) {
-                astNode.concatenate(new ASTNode(ASTNode.TYPE_FUNCTIONCALL, this.__getSymbolValue(evalResult.pos)));
+                astNode.concatenate(new ASTNodeValue(this.__getSymbolValue(evalResult.pos)));
 
                 currPos = evalResult.pos + 1;
 
@@ -693,7 +693,7 @@ XPathParser.prototype = {
                 }
 
                 if (this.__matchSymbol(currPos + 1, XPathToken.TYPE_RPAREN)) {
-                    astNode.concatenate(new ASTNode(ASTNode.TYPE_FUNCTIONCALL, this.__getSymbolValue(currPos + 1)));
+                    astNode.concatenate(new ASTNodeValue(this.__getSymbolValue(currPos + 1)));
 
                     return new RuleEvalResult(currPos + 2, astNode);
                 }
@@ -722,7 +722,7 @@ XPathParser.prototype = {
 
         // alt1: COMMA orExpr
         if (this.__matchSymbol(aPos, XPathToken.TYPE_COMMA)) {
-            astNode = new ASTNode(ASTNode.TYPE_ARG, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleOrExpr(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
@@ -789,7 +789,7 @@ XPathParser.prototype = {
 
         // alt1: BAR pathExpr unionExpr2
         if (this.__matchSymbol(aPos, XPathToken.TYPE_BAR)) {
-            astNode = new ASTNode(ASTNode.TYPE_UNIONEXPR2, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__rulePathExpr(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
@@ -803,7 +803,7 @@ XPathParser.prototype = {
         }
 
         // alt2: ()
-        return new RuleEvalResult(aPos, new ASTNode(ASTNode.TYPE_EPSILON, null));
+        return new RuleEvalResult(aPos, new ASTNodeEpsilon(null));
 
         // no applicable rule
         return null;
@@ -843,7 +843,7 @@ XPathParser.prototype = {
             astNode = evalResult.astNode;
 
             if (this.__matchSymbol(evalResult.pos, XPathToken.TYPE_SLASH)) {
-                astNode.concatenate(new ASTNode(ASTNode.TYPE_PATHEXPR, this.__getSymbolValue(evalResult.pos)));
+                astNode.concatenate(new ASTNodeValue(this.__getSymbolValue(evalResult.pos)));
 
                 if ((evalResult = this.__ruleRelativeLocationPath(evalResult.pos + 1)) != null) {
                     astNode.concatenate(evalResult.astNode);
@@ -858,7 +858,7 @@ XPathParser.prototype = {
             astNode = evalResult.astNode;
 
             if (this.__matchSymbol(evalResult.pos, XPathToken.TYPE_DOUBLESLASH)) {
-                astNode.concatenate(new ASTNode(ASTNode.TYPE_PATHEXPR, this.__getSymbolValue(evalResult.pos)));
+                astNode.concatenate(new ASTNodeValue(this.__getSymbolValue(evalResult.pos)));
 
                 if ((evalResult = this.__ruleRelativeLocationPath(evalResult.pos + 1)) != null) {
                     astNode.concatenate(evalResult.astNode);
@@ -937,7 +937,7 @@ XPathParser.prototype = {
         }
 
         // alt2: ()
-        return new RuleEvalResult(aPos, new ASTNode(ASTNode.TYPE_EPSILON, null));
+        return new RuleEvalResult(aPos, new ASTNodeEpsilon());
 
         // no applicable rule
         return null;
@@ -997,7 +997,7 @@ XPathParser.prototype = {
 
         // alt1: OR andExpr orExpr2
         if (this.__matchOr(aPos)) {
-            astNode = new ASTNode(ASTNode.TYPE_OREXPR2, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleAndExpr(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
@@ -1011,7 +1011,7 @@ XPathParser.prototype = {
         }
 
         // alt2: ()
-        return new RuleEvalResult(aPos, new ASTNode(ASTNode.TYPE_EPSILON, null));
+        return new RuleEvalResult(aPos, new ASTNodeEpsilon());
 
         // no applicable rule
         return null;
@@ -1071,7 +1071,7 @@ XPathParser.prototype = {
 
         // alt1: AND equalityExpr andExpr2
         if (this.__matchAnd(aPos)) {
-            astNode = new ASTNode(ASTNode.TYPE_ANDEXPR2, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleEqualityExpr(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
@@ -1085,7 +1085,7 @@ XPathParser.prototype = {
         }
 
         // alt2: ()
-        return new RuleEvalResult(aPos, new ASTNode(ASTNode.TYPE_EPSILON, null));
+        return new RuleEvalResult(aPos, new ASTNodeEpsilon());
 
         // no applicable rule
         return null;
@@ -1145,7 +1145,7 @@ XPathParser.prototype = {
 
         // alt1: EQUALITYOPERATOR relationalExpr equalityExpr2
         if (this.__matchSymbol(aPos, XPathToken.TYPE_EQUALITYOPERATOR)) {
-            astNode = new ASTNode(ASTNode.TYPE_EQUALITYOPERATOR, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleRelationalExpr(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
@@ -1159,7 +1159,7 @@ XPathParser.prototype = {
         }
 
         // alt2: ()
-        return new RuleEvalResult(aPos, new ASTNode(ASTNode.TYPE_EPSILON, null));
+        return new RuleEvalResult(aPos, new ASTNodeEpsilon());
 
         // no applicable rule
         return null;
@@ -1219,7 +1219,7 @@ XPathParser.prototype = {
 
         // alt1: RELATIONALOPERATOR additiveExpr relationalExpr2
         if (this.__matchSymbol(aPos, XPathToken.TYPE_RELATIONALOPERATOR)) {
-            astNode = new ASTNode(ASTNode.TYPE_RELATIONALOPERATOR, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleAdditiveExpr(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
@@ -1233,7 +1233,7 @@ XPathParser.prototype = {
         }
 
         // alt2: ()
-        return new RuleEvalResult(aPos, new ASTNode(ASTNode.TYPE_EPSILON, null));
+        return new RuleEvalResult(aPos, new ASTNodeEpsilon());
 
         // no applicable rule
         return null;
@@ -1294,7 +1294,7 @@ XPathParser.prototype = {
 
         // alt1: PLUS multiplicativeExpr additiveExpr2
         if (this.__matchSymbol(aPos, XPathToken.TYPE_PLUS)) {
-            astNode = new ASTNode(ASTNode.TYPE_PLUS, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleMultiplicativeExpr(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
@@ -1309,7 +1309,7 @@ XPathParser.prototype = {
 
         // alt1: MINUS multiplicativeExpr additiveExpr2
         if (this.__matchSymbol(aPos, XPathToken.TYPE_MINUS)) {
-            astNode = new ASTNode(ASTNode.TYPE_MINUS, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleMultiplicativeExpr(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
@@ -1323,7 +1323,7 @@ XPathParser.prototype = {
         }
 
         // alt3: ()
-        return new RuleEvalResult(aPos, new ASTNode(ASTNode.TYPE_EPSILON, null));
+        return new RuleEvalResult(aPos, new ASTNodeEpsilon());
 
         // no applicable rule
         return null;
@@ -1383,7 +1383,7 @@ XPathParser.prototype = {
 
         // alt1: MULTIPLICATIVEOPERATOR unaryExpr multiplicativeExpr2
         if (this.__matchMultiplicativeOperator(aPos)) {
-            astNode = new ASTNode(ASTNode.TYPE_MULTIPLICATIVEOPERATOR, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleUnaryExpr(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
@@ -1397,7 +1397,7 @@ XPathParser.prototype = {
         }
 
         // alt2: ()
-        return new RuleEvalResult(aPos, new ASTNode(ASTNode.TYPE_EPSILON, null));
+        return new RuleEvalResult(aPos, new ASTNodeEpsilon());
 
         // no applicable rule
         return null;
@@ -1427,7 +1427,7 @@ XPathParser.prototype = {
 
         // alt2: MINUS unaryExpr
         if (this.__matchSymbol(aPos, XPathToken.TYPE_MINUS)) {
-            astNode = new ASTNode(ASTNode.TYPE_MINUS, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if ((evalResult = this.__ruleUnaryExpr(aPos + 1)) != null) {
                 astNode.concatenate(evalResult.astNode);
@@ -1459,14 +1459,14 @@ XPathParser.prototype = {
 
         // alt1: DOUBLEQUOTELITERAL
         if (this.__matchSymbol(aPos, XPathToken.TYPE_DOUBLEQUOTELITERAL)) {
-            astNode = new ASTNode(ASTNode.TYPE_DOUBLEQUOTELITERAL, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             return new RuleEvalResult(aPos + 1, astNode);
         }
 
         // alt2: SINGLEQUOTELITERAL
         if (this.__matchSymbol(aPos, XPathToken.TYPE_SINGLEQUOTELITERAL)) {
-            astNode = new ASTNode(ASTNode.TYPE_SINGLEQUOTELITERAL, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             return new RuleEvalResult(aPos + 1, astNode);
         }
@@ -1495,16 +1495,16 @@ XPathParser.prototype = {
 
         // alt1: DIGITS (PERIOD (DIGITS)?)?
         if (this.__matchSymbol(aPos, XPathToken.TYPE_DIGITS)) {
-            astNode = new ASTNode(ASTNode.TYPE_DIGITS, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
             currPos = aPos + 1;
 
             if (this.__matchSymbol(currPos, XPathToken.TYPE_PERIOD)) {
-                astNode.concatenate(new ASTNode(ASTNode.TYPE_PERIOD, this.__getSymbolValue(currPos)));
+                astNode.concatenate(new ASTNodeValue(this.__getSymbolValue(currPos)));
 
                 currPos++;
 
                 if (this.__matchSymbol(currPos, XPathToken.TYPE_DIGITS)) {
-                    astNode.concatenate(new ASTNode(ASTNode.TYPE_DIGITS, this.__getSymbolValue(currPos)));
+                    astNode.concatenate(new ASTNodeValue(this.__getSymbolValue(currPos)));
 
                     currPos++;
                 }
@@ -1515,10 +1515,10 @@ XPathParser.prototype = {
 
         // alt2: PERIOD DIGITS
         if (this.__matchSymbol(aPos, XPathToken.TYPE_PERIOD)) {
-            astNode = new ASTNode(ASTNode.TYPE_PERIOD, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             if (this.__matchSymbol(aPos + 1, XPathToken.TYPE_DIGITS)) {
-                astNode.concatenate(new ASTNode(ASTNode.TYPE_DIGITS, this.__getSymbolValue(aPos + 1)));
+                astNode.concatenate(new ASTNodeValue(this.__getSymbolValue(aPos + 1)));
 
                 return new RuleEvalResult(aPos + 2, astNode);
             }
@@ -1548,25 +1548,23 @@ XPathParser.prototype = {
 
         // alt1: STAR
         if (this.__matchSymbol(aPos, XPathToken.TYPE_STAR)) {
-            astNode = new ASTNode(ASTNode.TYPE_STAR, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeNameTest(new ASTNodeQName(null, this.__getSymbolValue(aPos)));
 
             return new RuleEvalResult(aPos + 1, astNode);
         }
 
         // alt2: qName
         if ((evalResult = this.__ruleQName(aPos)) != null) {
-            return evalResult;
+            astNode = new ASTNodeNameTest(evalResult.astNode);
+
+            return new RuleEvalResult(evalResult.pos, astNode);
         }
 
-        // alt3: prefix COLON STAR
-        if ((evalResult = this.__rulePrefix(aPos)) != null) {
-            astNode = evalResult.astNode;
-
+        // alt3: ncName COLON STAR
+        if ((evalResult = this.__ruleNCName(aPos)) != null) {
             if (this.__matchSymbol(evalResult.pos, XPathToken.TYPE_COLON)) {
-                astNode.concatenate(new ASTNode(ASTNode.TYPE_COLON, this.__getSymbolValue(evalResult.pos)));
-
                 if (this.__matchSymbol(evalResult.pos + 1, XPathToken.TYPE_STAR)) {
-                    astNode.concatenate(new ASTNode(ASTNode.TYPE_STAR, this.__getSymbolValue(evalResult.pos + 1)));
+                    astNode = new ASTNodeNameTest(new ASTNodeQName(evalResult.astNode.getValue(), this.__getSymbolValue(evalResult.pos + 1)));
 
                     return new RuleEvalResult(evalResult.pos + 2, astNode);
                 }
@@ -1580,7 +1578,7 @@ XPathParser.prototype = {
     /**
      * Applies the qName production.
      *
-     * qName ::= prefix COLON ncName
+     * qName ::= ncName COLON ncName
      *         | ncName
      *
      * @param  {Number}         aPos curent position in the input stream
@@ -1588,21 +1586,22 @@ XPathParser.prototype = {
      */
     __ruleQName: function (aPos) {
         var evalResult = null;
+        var prefix     = null;
+        var localName  = null;
         var astNode    = null;
 
         /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__ruleQName(\"" + aPos + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aPos != null);
 
-        // alt1: prefix COLON ncName
-        if ((evalResult = this.__rulePrefix(aPos)) != null) {
-            astNode = evalResult.astNode;
+        // alt1: ncName COLON ncName
+        if ((evalResult = this.__ruleNCName(aPos)) != null) {
+            prefix = evalResult.astNode.getValue();
 
             if (this.__matchSymbol(evalResult.pos, XPathToken.TYPE_COLON)) {
-                astNode.concatenate(new ASTNode(ASTNode.TYPE_COLON, this.__getSymbolValue(evalResult.pos)));
-
                 if ((evalResult = this.__ruleNCName(evalResult.pos + 1)) != null) {
-                    astNode.concatenate(evalResult.astNode);
+                    localName = evalResult.astNode.getValue();
+                    astNode   = new ASTNodeQName(prefix, localName);
 
                     return new RuleEvalResult(evalResult.pos, astNode);
                 }
@@ -1611,35 +1610,9 @@ XPathParser.prototype = {
 
         // alt2: ncName
         if ((evalResult = this.__ruleNCName(aPos)) != null) {
-            return evalResult;
-        }
+            astNode = new ASTNodeQName(null, evalResult.astNode.getValue());
 
-        // no applicable rule
-        return null;
-    },
-
-    /**
-     * Applies the prefix production.
-     *
-     * prefix ::= ncName
-     *
-     * @param  {Number}         aPos curent position in the input stream
-     * @result {RuleEvalResult} result of rule application, or null if rule did not match
-     */
-    __rulePrefix: function (aPos) {
-        var evalResult = null;
-        var astNode    = null;
-
-        /* DEBUG */ dump("Yulup:xpathparser.js:XPathParser.__rulePrefix(\"" + aPos + "\") invoked\n");
-
-        /* DEBUG */ YulupDebug.ASSERT(aPos != null);
-
-        // alt1: ncName
-        if ((evalResult = this.__ruleNCName(aPos)) != null) {
-            // rewrite AST node type to indicate that this NCName is indeed a prefix
-            evalResult.astNode.nodeType = ASTNode.TYPE_PREFIX;
-
-            return evalResult;
+            return new RuleEvalResult(evalResult.pos, astNode);
         }
 
         // no applicable rule
@@ -1664,7 +1637,7 @@ XPathParser.prototype = {
 
         // alt1: IDENT
         if (this.__matchSymbol(aPos, XPathToken.TYPE_IDENT)) {
-            astNode = new ASTNode(ASTNode.TYPE_IDENT, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             return new RuleEvalResult(aPos + 1, astNode);
         }
@@ -1691,7 +1664,7 @@ XPathParser.prototype = {
 
         // alt1: NODETYPE
         if (this.__matchNodeType(aPos)) {
-            astNode = new ASTNode(ASTNode.TYPE_NODETYPE, this.__getSymbolValue(aPos));
+            astNode = new ASTNodeValue(this.__getSymbolValue(aPos));
 
             return new RuleEvalResult(aPos + 1, astNode);
         }
@@ -1702,100 +1675,14 @@ XPathParser.prototype = {
 };
 
 
-function ASTNode(aNodeType, aValue) {
-    /* DEBUG */ YulupDebug.ASSERT(aNodeType != null);
-    /* DEBUG */ YulupDebug.ASSERT(aNodeType != ASTNode.TYPE_EPSILON ? aValue != null : !aValue);
-
-    /* DEBUG */ dump("Yulup:xpathparser.js:ASTNode(\"" + aNodeType + "\", \"" + aValue + "\") invoked\n");
-
-    this.nodeType = aNodeType;
-    this.value    = aValue;
-}
-
-ASTNode.TYPE_LOCATIONPATH = 0;
-ASTNode.TYPE_ABSOLUTELOCATIONPATH = 1;
-ASTNode.TYPE_RELATIVELOCATIONPATH = 2;
-ASTNode.TYPE_RELATIVELOCATIONPATH2 = 3;
-ASTNode.TYPE_STEP = 4;
-ASTNode.TYPE_CURRENTNODE = 5;
-ASTNode.TYPE_PARENTNODE = 6;
-ASTNode.TYPE_AXISSPECIFIER = 7;
-ASTNode.TYPE_AXISNAME = 8;
-ASTNode.TYPE_AT = 9;
-ASTNode.TYPE_NODETEST = 10;
-ASTNode.TYPE_PREDICATE = 11;
-ASTNode.TYPE_PRIMARYEXPR = 12;
-ASTNode.TYPE_FUNCTIONCALL = 13;
-ASTNode.TYPE_ARG = 14;
-ASTNode.TYPE_UNIONEXPR = 15;
-ASTNode.TYPE_UNIONEXPR2 = 16;
-ASTNode.TYPE_PATHEXPR = 17;
-ASTNode.TYPE_FILTEREXPR = 18;
-ASTNode.TYPE_FILTEREXPR2 = 19;
-ASTNode.TYPE_OREXPR = 20;
-ASTNode.TYPE_OREXPR2 = 21;
-ASTNode.TYPE_ANDEXPR = 22;
-ASTNode.TYPE_ANDEXPR2 = 23;
-ASTNode.TYPE_EQUALITYEXPR = 24;
-ASTNode.TYPE_EQUALITYEXPR2 = 25;
-ASTNode.TYPE_EQUALITYOPERATOR = 26;
-ASTNode.TYPE_RELATIONALEXPR = 27;
-ASTNode.TYPE_RELATIONALEXPR2 = 28;
-ASTNode.TYPE_RELATIONALOPERATOR = 29;
-ASTNode.TYPE_ADDITIVEEXPR = 30;
-ASTNode.TYPE_ADDITIVEEXPR2 = 31;
-ASTNode.TYPE_PLUS = 32;
-ASTNode.TYPE_MINUS = 33;
-ASTNode.TYPE_MULTIPLICATIVEEXPR = 34;
-ASTNode.TYPE_MULTIPLICATIVEEXPR2 = 35;
-ASTNode.TYPE_MULTIPLICATIVEOPERATOR = 36;
-ASTNode.TYPE_UNARYEXPR = 37;
-ASTNode.TYPE_LITERAL = 38;
-ASTNode.TYPE_DOUBLEQUOTELITERAL = 39;
-ASTNode.TYPE_SINGLEQUOTELITERAL = 40;
-ASTNode.TYPE_NUMBER = 41;
-ASTNode.TYPE_DIGITS = 42;
-ASTNode.TYPE_PERIOD = 43;
-ASTNode.TYPE_NAMETEST = 44;
-ASTNode.TYPE_STAR = 45;
-ASTNode.TYPE_COLON = 46;
-ASTNode.TYPE_QNAME = 47;
-ASTNode.TYPE_PREFIX = 48;
-ASTNode.TYPE_NCNAME = 49;
-ASTNode.TYPE_IDENT = 50;
-ASTNode.TYPE_NODETYPE = 51;
-ASTNode.TYPE_AXISDELIMITER = 52;
-ASTNode.TYPE_LOCALNAME = 53;
-ASTNode.TYPE_EPSILON = 54;
+function ASTNode() {}
 
 ASTNode.prototype = {
     __next    : null,
-
-    nodeType: null,
-    value    : null,
+    __previous: null,
 
     getNext: function () {
         return this.__next;
-    },
-
-    getType: function () {
-        return this.nodeType;
-    },
-
-    setType: function (aType) {
-        /* DEBUG */ YulupDebug.ASSERT(aType != null);
-
-        this.nodeType = aType;
-    },
-
-    getValue: function () {
-        return this.value;
-    },
-
-    setValue: function (aValue) {
-        /* DEBUG */ YulupDebug.ASSERT(aValue != null);
-
-        this.value = aValue;
     },
 
     /**
@@ -1821,8 +1708,8 @@ ASTNode.prototype = {
 
         successor = aSuccessor;
 
-        while (successor != null && successor.nodeType == ASTNode.TYPE_EPSILON) {
-            successor = successor.getNext();
+        while (successor != null && successor instanceof ASTNodeEpsilon) {
+            successor = successor.__next;
         }
 
         if (successor) {
@@ -1830,16 +1717,141 @@ ASTNode.prototype = {
                 this.__next.concatenate(successor);
             } else {
                 this.__next = successor;
+                successor.__previous = this;
             }
         }
     },
 
+    remove: function () {
+        if (this.__previous) {
+            this.__previous.__next = this.__next;
+        }
+
+        if (this.__next) {
+            this.__next.__previous = this.__previous;
+        }
+
+        this.__next     = null;
+        this.__previous = null;
+    },
+
     toObjectString: function () {
-        return "{" + this.nodeType + ", \"" + this.value + "\"}" + (this.__next ? this.__next.toObjectString() : "");
+        return "{BASE}" + (this.__next ? this.__next.toObjectString() : "");
     },
 
     toString: function () {
-        return (this.nodeType != ASTNode.TYPE_EPSILON ? this.value : "") + (this.__next ? this.__next.toString() : "");
+        return (this.__next ? this.__next.toString() : "");
+    }
+};
+
+
+function ASTNodeEpsilon() {
+    ASTNode.call(this);
+}
+
+ASTNodeEpsilon.prototype = {
+    __proto__: ASTNode.prototype,
+
+    toObjectString: function () {
+        return "{EPSILON}" + (this.__next ? this.__next.toObjectString() : "");
+    },
+
+    toString: function () {
+        return (this.__next ? this.__next.toString() : "");
+    }
+};
+
+
+function ASTNodeValue(aValue) {
+    /* DEBUG */ YulupDebug.ASSERT(aValue != null);
+
+    ASTNode.call(this);
+
+    this.__value = aValue;
+}
+
+ASTNodeValue.prototype = {
+    __proto__: ASTNode.prototype,
+
+    __value: null,
+
+    getValue: function () {
+        return this.__value;
+    },
+
+    setValue: function (aValue) {
+        /* DEBUG */ YulupDebug.ASSERT(aValue != null);
+
+        this.__value = aValue;
+    },
+
+    toObjectString: function () {
+        return "{VALUE, \"" + this.__value + "\"}" + (this.__next ? this.__next.toObjectString() : "");
+    },
+
+    toString: function () {
+        return this.__value + (this.__next ? this.__next.toString() : "");
+    }
+};
+
+
+function ASTNodeNameTest(aQName) {
+    /* DEBUG */ YulupDebug.ASSERT(aQName != null);
+    /* DEBUG */ YulupDebug.ASSERT(aQName instanceof ASTNodeQName);
+
+    ASTNode.call(this);
+
+    this.__qName = aQName;
+}
+
+ASTNodeNameTest.prototype = {
+    __proto__: ASTNode.prototype,
+
+    __qName: null,
+
+    getQName: function () {
+        return this.__qName;
+    },
+
+    toObjectString: function () {
+        return "{NAMETEST, " + (this.__qName ? this.__qName.toObjectString() : this.__qName) + "\"}" + (this.__next ? this.__next.toObjectString() : "");
+    },
+
+    toString: function () {
+        return (this.__qName ? this.__qName : "") + (this.__next ? this.__next.toString() : "");
+    }
+};
+
+
+function ASTNodeQName(aPrefix, aLocalPart) {
+    /* DEBUG */ YulupDebug.ASSERT(aLocalPart != null);
+
+    ASTNode.call(this);
+
+    this.__prefix    = aPrefix;
+    this.__localPart = aLocalPart;
+}
+
+ASTNodeQName.prototype = {
+    __proto__: ASTNode.prototype,
+
+    __prefix   : null,
+    __localPart: null,
+
+    getPrefix: function () {
+        return this.__prefix;
+    },
+
+    getLocalPart: function () {
+        return this.__localPart;
+    },
+
+    toObjectString: function () {
+        return "{QNAME, \"" + this.__prefix + ":" + this.__localPart + "\"}";
+    },
+
+    toString: function () {
+        return (this.__prefix ? this.__prefix + ":" : "") + this.__localPart;
     }
 };
 
