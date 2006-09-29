@@ -1,19 +1,19 @@
-<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns="http://www.w3.org/2005/Atom">
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/2005/Atom">
  <atom:title type="text">ulysses-prototype-1-0.1.10-rc2-r16389</atom:title>
  <atom:author><atom:name>Michael H. Wechner</atom:name></atom:author>
 
  <atom:id>urn:yanel-uuid:atom:release-entries:ulysses-prototype-1-0.1.10-rc2-r16389.xml</atom:id>
  <link href="ulysses-prototype-1-0.1.10-rc2-r16389.xml" rel="edit"/>
- <updated>2006-09-29T09:12:16.462Z</updated>
+ <updated>2006-09-29T15:02:21.430Z</updated>
  <published>2006-08-11T16:30:54-01:00</published>
 
  <atom:summary type="html">Release Candidate rc2: ulysses-prototype-1-0.1.10-rc2-r16389</atom:summary>
  <atom:content type="xhtml">
-   <div xmlns="http://www.w3.org/1999/xhtml">
-     <ul>
-       <li>I18n.</li>
-     </ul>
-   </div>
+   <xhtml:div>
+     <xhtml:ul>
+       <xhtml:li>I18n.</xhtml:li>
+     </xhtml:ul>
+   </xhtml:div>
  </atom:content>
  <dc:subject xmlns:dc="http://purl.org/dc/elements/1.1/">Release Candidate rc2: ulysses-prototype-1-0.1.10-rc2-r16389</dc:subject>
 </atom:entry>
