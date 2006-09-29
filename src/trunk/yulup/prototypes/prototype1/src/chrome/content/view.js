@@ -599,7 +599,7 @@ View.prototype.leaveView = function() {
  */
 View.prototype.rewriteURIs = function() {
     var ioService   = null;
-    var imageNodes  = null;
+    var targetNodes = null;
     var refURI      = null;
     var originalURI = null;
     var newURI      = null;
@@ -607,21 +607,43 @@ View.prototype.rewriteURIs = function() {
     /* DEBUG */ dump("Yulup:view.js:View.rewriteURIs() invoked\n");
 
     if (this.model.documentReference && (refURI = this.model.documentReference.getLoadURI()) != null) {
-        ioService  = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-        imageNodes = this.editor.contentDocument.images;
+        ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 
-        for (var i = 0; i < imageNodes.length; i++) {
-            originalURI = imageNodes.item(i).getAttribute("src");
+        // image URI rewriting
+        targetNodes = this.editor.contentDocument.images;
 
-            /* DEBUG */ dump("Yulup:view.js:View.rewriteURIs: rewriting URI \"" + originalURI + "\"\n");
+        for (var i = 0; i < targetNodes.length; i++) {
+            originalURI = targetNodes.item(i).getAttribute("src");
+
+            /* DEBUG */ dump("Yulup:view.js:View.rewriteURIs: rewriting image URI \"" + originalURI + "\"\n");
 
             try {
                 newURI = ioService.newURI(originalURI, null, refURI);
 
-                imageNodes.item(i).setAttribute("src", newURI.spec);
-                imageNodes.item(i).setAttribute("_yulupOriginalURI", originalURI);
+                targetNodes.item(i).setAttribute("src", newURI.spec);
+                targetNodes.item(i).setAttribute("_yulupOriginalURI", originalURI);
 
-                /* DEBUG */ dump("Yulup:view.js:View.rewriteURIs: new URI is \"" + imageNodes.item(i).getAttribute("src") + "\"\n");
+                /* DEBUG */ dump("Yulup:view.js:View.rewriteURIs: new image URI is \"" + targetNodes.item(i).getAttribute("src") + "\"\n");
+            } catch (exception) {
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:View.rewriteURIs", exception);
+            }
+        }
+
+        // link URI rewriting
+        targetNodes = this.editor.contentDocument.links;
+
+        for (var i = 0; i < targetNodes.length; i++) {
+            originalURI = targetNodes.item(i).getAttribute("href");
+
+            /* DEBUG */ dump("Yulup:view.js:View.rewriteURIs: rewriting link URI \"" + originalURI + "\"\n");
+
+            try {
+                newURI = ioService.newURI(originalURI, null, refURI);
+
+                targetNodes.item(i).setAttribute("href", newURI.spec);
+                targetNodes.item(i).setAttribute("_yulupOriginalURI", originalURI);
+
+                /* DEBUG */ dump("Yulup:view.js:View.rewriteURIs: new link URI is \"" + targetNodes.item(i).getAttribute("href") + "\"\n");
             } catch (exception) {
                 /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:View.rewriteURIs", exception);
             }
