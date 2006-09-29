@@ -275,7 +275,7 @@ function YulupEditController(aParameterObject) {
         /* DEBUG */ YulupDebug.ASSERT(gEditorController != null && gEditorController.editStateController);
 
         // load widgets
-        if (gEditorController.editorParams.widgets) {
+        if (gEditorController.editorParams.widgets && gEditorController.editorParams.templates) {
             // init load barrier
             gEditorController.loadBarrier = new Barrier(2, YulupEditController.enterStageViewInitialisation, null);
 

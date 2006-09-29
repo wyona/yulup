@@ -159,6 +159,7 @@ function NeutronEditorParameters(aURI, aIntrospectionObject, aFragment, aLoadSty
     this.screenName     = aIntrospectionObject.queryFragmentName(aFragment);
     this.loadStyle      = aLoadStyle;
     this.navigation     = aIntrospectionObject.queryNavigation();
+    this.templates      = aIntrospectionObject.queryTemplateWidgets(aFragment);
 }
 
 NeutronEditorParameters.prototype = {
