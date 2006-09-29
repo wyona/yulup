@@ -1512,7 +1512,7 @@ WYSIWYGXSLTModeView.prototype = {
             /* DEBUG */ Components.utils.reportError(exception);
         }
 
-        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: object XPath representation: \n" + xpathParseResult.toObjectString() + "\n");
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: object XPath representation:\n" + xpathParseResult.toObjectString() + "\n");
 
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: parsed XPath: " + xpathParseResult.toString() + "\n");
 
@@ -1526,22 +1526,18 @@ WYSIWYGXSLTModeView.prototype = {
         /* Query the source document for xPathExpr (the location path found) */
         if (!aIsNamespaceAware) {
             var astNode = xpathParseResult;
+            var localPart = null;
 
             do {
-                if (astNode.getType() == ASTNode.TYPE_PREFIX) {
-                    // remove prefix node
-                    astNode.setType(ASTNode.TYPE_EPSILON);
+                if (astNode instanceof ASTNodeNameTest) {
+                    localPart = astNode.getQName().getLocalPart();
 
-                    // remove the ":" node
-                    astNode = astNode.getNext();
-                    astNode.setType(ASTNode.TYPE_EPSILON);
+                    if (localPart != "*") {
+                        // replace name test by QName with prefix null and localname "*"
+                        astNode.setQName(new ASTNodeQName(null, "*"));
 
-                    /* Rewrite the localname to "*[local-name()='nodename']" where nodename
-                     * is the currently stored value of the result node. */
-                    astNode = astNode.getNext();
-                    if (astNode.getValue() != "*") {
-                        astNode.setValue("*[local-name()='" + astNode.getValue() + "']");
-                        astNode.setType(ASTNode.TYPE_LOCALNAME);
+                        // insert predicate [local-name()='nodename']
+                        astNode.insert(new ASTNodeValue("[local-name()='" + localPart + "']"));
                     }
                 }
             } while ((astNode = astNode.getNext()) != null)
@@ -1549,7 +1545,8 @@ WYSIWYGXSLTModeView.prototype = {
             // serialise XPath parser result
             xPathExpr = xpathParseResult.toString();
 
-            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: stripped XPath: " + xPathExpr + "\n");
+            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: rewritten XPath object representation:\n" + xpathParseResult.toObjectString() + "\n");
+            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: rewritten XPath: " + xPathExpr + "\n");
 
             try {
                 sourceNode = domDocument.evaluate(xPathExpr, domDocument, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
