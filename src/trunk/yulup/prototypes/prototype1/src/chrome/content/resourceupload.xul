@@ -39,7 +39,7 @@
         buttons="cancel, accept"
         buttonlabelaccept="&editorUploadButton.label;"
         buttonlabelcancel="&editorCancelButton.label;"
-        ondialogaccept="return true"
+        ondialogaccept="return ResourceUploadDialogHandler.uploadResource()"
         onload="ResourceUploadDialogHandler.uiYulupEditorResourceUploadOnDialogLoadHandler()"
         style="font: -moz-dialog; width: 400px;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">

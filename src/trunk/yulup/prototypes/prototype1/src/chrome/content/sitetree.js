@@ -4,12 +4,12 @@
   *
   * @return {SitetreeDocument}
   */
-function SitetreeDocument() {
+function SitetreeDocument(aURI) {
 
     /* DEBUG */ dump("Yulup:sitetree.js:SitetreeDocument() invoked\n");
 
     this.name            = null;
-    this.uri             = null;
+    this.uri             = aURI;
     this.level           = 0;
     this.isOpen          = false;
     this.isContainer     = false;
@@ -126,11 +126,12 @@ function SitetreeView(aURI, aSelection) {
 
     /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView(\"" + aURI + ", \"" + aSelection +  "\") invoked\n");
 
-    this.uri         = aURI;
-    this.selection   = aSelection;
-    this.rowCount    = 0;
-    this.sitetreeDOM = new SitetreeDocument();
-    this.rowNodeMap  = new Array();
+    this.uri             = aURI;
+    this.selection       = aSelection;
+    this.rowCount        = 0;
+    this.sitetreeDOM     = new SitetreeDocument(this.uri);
+    this.rowNodeMap      = new Array();
+    this.wrappedJSObject = this;
 
     // load the sitetree XML
     this.loadSitetreeXML(this.uri, -1);
@@ -144,7 +145,8 @@ SitetreeView.prototype = {
     rowCount    : null,
     sitetreeDOM : null,
     rowNodeMap  : null,
-
+    wrappedJSObject: null,
+    
     /**
      * The nsISupports QueryInterface method.
      */
@@ -302,7 +304,7 @@ SitetreeView.prototype = {
     getCurrentCollectionURI: function() {
         var node = null;
 
-        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeVIew.getCurrentCollectionURI() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.getCurrentCollectionURI() invoked\n");
 
         node = this.getSitetreeNodeAtRow(this.selection.currentIndex);
 
@@ -312,9 +314,9 @@ SitetreeView.prototype = {
             } else if (node.parentNode != null) {
                 return node.parentNode.uri;
             }
+        } else {
+            return this.sitetreeDOM.uri;
         }
-
-        return null;
     },
 
     /**

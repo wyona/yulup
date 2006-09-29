@@ -422,7 +422,6 @@ var ResourceUploadDialogHandler = {
         var filePicker = null;
         var ret        = null;
         var textBox    = null;
-        var tree       = null;
 
         /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.showFilePicker() invoked\n");
 
@@ -437,11 +436,6 @@ var ResourceUploadDialogHandler = {
 
             textBox = document.getElementById("uiYulupResourceUploadRemoteNameTextBox");
             textBox.setAttribute("value", filePicker.fileURL.fileName);
-
-            // TODO upload the resource to the server
-            // get the selected collection
-            tree = document.getElementById("uiYulupResourceUploadTree");
-            dump("!!!!!!!!!!!!!!!!!!!!!!!!!! " + tree.view.QueryInterface(Components.interfaces.wyIYulupSitreeView).getCurrentCollectionURI() + "\n");
         }
     },
 
@@ -460,6 +454,22 @@ var ResourceUploadDialogHandler = {
         /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.showResourceUploadDialog() invoked\n");
 
         window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupWidgetResourceUploadDialog", "modal,resizable=no", aURI);
+    },
+
+    uploadResource: function() {
+        var collectionURI = null;
+        var resourceURI   = null;
+        var resourceName  = null;
+
+        /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.uploadResource() invoked\n");
+
+        collectionURI = document.getElementById("uiYulupResourceUploadTree").view.wrappedJSObject.getCurrentCollectionURI();
+
+        resourceURI = document.getElementById("uiYulupResourceUploadTextBox").getAttribute("value");
+
+        resourceName = document.getElementById("uiYulupResourceUploadRemoteNameTextBox").getAttribute("value");
+
+        // TODO upload file to server
     }
 };
 
