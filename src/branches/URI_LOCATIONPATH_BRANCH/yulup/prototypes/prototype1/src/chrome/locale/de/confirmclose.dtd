@@ -1,7 +1,0 @@
-<!ENTITY editorConfirmCloseDialog.title "Yulup beenden">
-<!ENTITY editorConfirmCloseDescription.label "Das Dokument wurde verändert. Soll der Editor wirklich beendet werden?">
-<!ENTITY editorConfirmCloseCancelButton.label "Beenden">
-<!ENTITY editorConfirmCloseAcceptButton.label "Speichern und beenden">
-<!ENTITY editorConfirmCloseCancelButton.tooltip "Beenden ohne zu Speichern">
-<!ENTITY editorConfirmCloseAcceptButton.tooltip "Die ausgewählte Aktion ausführen">
-<!ENTITY confirmCloseMenulist.accesskey "S">

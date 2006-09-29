@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-
-<dtd xmlns="http://yulup.wyona.org/1.0">
-
-  <entity id="placeholder.label">
-    <name xml:lang="en">Text goes here</name>
-  </entity>
-
-</dtd>
