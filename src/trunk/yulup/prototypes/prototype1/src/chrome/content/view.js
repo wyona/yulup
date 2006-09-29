@@ -589,6 +589,48 @@ View.prototype.leaveView = function() {
 
 
 /**
+ * Rewrite image URIs to display images which are
+ * referenced relatively to the current location.
+ *
+ * Inserts a "_yulupOriginalURI" attribute which
+ * contains the original URI of the image.
+ *
+ * @return {Undefined} does not have a return value
+ */
+View.prototype.rewriteURIs = function() {
+    var ioService   = null;
+    var imageNodes  = null;
+    var refURI      = null;
+    var originalURI = null;
+    var newURI      = null;
+
+    /* DEBUG */ dump("Yulup:view.js:View.rewriteURIs() invoked\n");
+
+    if (this.model.documentReference && (refURI = this.model.documentReference.getLoadURI()) != null) {
+        ioService  = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+        imageNodes = this.editor.contentDocument.images;
+
+        for (var i = 0; i < imageNodes.length; i++) {
+            originalURI = imageNodes.item(i).getAttribute("src");
+
+            /* DEBUG */ dump("Yulup:view.js:View.rewriteURIs: rewriting URI \"" + originalURI + "\"\n");
+
+            try {
+                newURI = ioService.newURI(originalURI, null, refURI);
+
+                imageNodes.item(i).setAttribute("src", newURI.spec);
+                imageNodes.item(i).setAttribute("_yulupOriginalURI", originalURI);
+
+                /* DEBUG */ dump("Yulup:view.js:View.rewriteURIs: new URI is \"" + imageNodes.item(i).getAttribute("src") + "\"\n");
+            } catch (exception) {
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:View.rewriteURIs", exception);
+            }
+        }
+    }
+};
+
+
+/**
  * SourceModeView constructor. Instantiates a new object of
  * type SourceModeView.
  *
@@ -750,7 +792,7 @@ SourceModeView.prototype = {
             this.view.beginningOfDocument();
 
             // print document to console
-            /* DEBUG */ dumpTree(this.controller.activeView.editor);
+            ///* DEBUG */ dumpTree(this.controller.activeView.editor);
 
             // scroll to the beginning of the document
             this.editor.contentWindow.scrollTo(0, 0);
@@ -1313,6 +1355,9 @@ WYSIWYGXSLTModeView.prototype = {
              * also https://bugzilla.mozilla.org/show_bug.cgi?id=314987#c2 */
             this.view.rebuildDocumentFromSource(serializedDoc);
             this.view.beginningOfDocument(); // FIXME: cursor should be set to first editable node!
+
+            // rewrite URIs
+            this.rewriteURIs();
 
             /* View is now pristine again */
             this.view.resetModificationCount();
