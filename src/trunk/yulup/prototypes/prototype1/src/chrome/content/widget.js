@@ -32,6 +32,8 @@ const YULUP_WIDGET_INSERT_CHROME_URI = "chrome://yulup/content/widget.xul";
 
 const YULUP_RESOURCE_UPLOAD_CHROME_URI = "chrome://yulup/content/resourceupload.xul";
 
+const YULUP_RESOURCE_SELECT_CHROME_URI = "chrome://yulup/content/resourceselect.xul";
+
 const TIDYWIDGETFRAGMENT_CHROME_URI = "chrome://yulup/content/tidywidgetfragment.xsl";
 
 /**
@@ -275,16 +277,18 @@ var gWidgetFragmentAttributes = null;
 var WidgetDialogHandler = {
 
     uiYulupEditorWidgetInsertOnDialogLoadHandler: function() {
-        var widget     = null;
-        var nsResolver = null;
-        var widgetRows = null;
-        var label      = null;
-        var elem       = null;
+        var widget      = null;
+        var nsResolver  = null;
+        var sitetreeURI = null;
+        var widgetRows  = null;
+        var label       = null;
+        var elem        = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetDialogHandler.uiYulupEditorWidgetInsertOnDialogLoadHandler() invoked\n");
 
-        widget     = window.arguments[1];
-        nsResolver = window.arguments[2];
+        widget      = window.arguments[1];
+        nsResolver  = window.arguments[2];
+        sitetreeURI = window.arguments[3];
 
         gWidgetFragmentAttributes = widget.fragmentAttributes;
 
@@ -313,15 +317,34 @@ var WidgetDialogHandler = {
 
             // set the attribute default value
             elem.setAttribute("value", widget.fragment.evaluate(widget.fragmentAttributes[i].xpath, widget.fragment, nsResolver, XPathResult.STRING_TYPE, null).stringValue);
-
             document.getElementById("row" + i).appendChild(elem);
+
+            // add a type specific action button
+            switch (widget.fragmentAttributes[i].type) {
+                case "resource":
+
+                    elem = document.createElement("button");
+                    elem.setAttribute("id", "button" + widget.fragmentAttributes[i].name);
+                    elem.setAttribute("label", document.getElementById("uiYulupEditorStringbundle").getString("editorWidgetInsertSelect.label"));
+
+                    // the resource attribute type needs a sitetree URI
+                    if (sitetreeURI == null) {
+                        elem.setAttribute("disabled", "true");
+                    } else {
+                        elem.setAttribute("oncommand", "ResourceSelectDialogHandler.doSelectCommand(\"" + sitetreeURI.spec + "\", \"" + widget.fragmentAttributes[i].name + "\")");
+                    }
+
+                    document.getElementById("row" + i).appendChild(elem);
+
+                break;
+            }
         }
     },
 
-    showWidgetInsertDialog: function(aWidget, aNSResolver) {
+    showWidgetInsertDialog: function(aWidget, aNSResolver, aSitetreeURI) {
         returnObject    = new Object();
 
-        if (window.openDialog(YULUP_WIDGET_INSERT_CHROME_URI, "yulupWidgetInsertDialog", "modal,resizable=no", returnObject, aWidget, aNSResolver)) {
+        if (window.openDialog(YULUP_WIDGET_INSERT_CHROME_URI, "yulupWidgetInsertDialog", "modal,resizable=no", returnObject, aWidget, aNSResolver, aSitetreeURI)) {
             if (returnObject.returnValue) {
                 return returnObject.returnValue;
             }
@@ -349,12 +372,57 @@ var WidgetDialogHandler = {
     }
 };
 
+var ResourceSelectDialogHandler = {
+
+    uiYulupEditorResourceSelectOnDialogLoadHandler: function() {
+        var tree          = null;
+        var sitetreeURI   = null;
+
+        /* DEBUG */ dump("Yulup:widget.js:ResourceSelectDialogHandler.uiYulupEditorResourceSelectOnDialogLoadHandler() invoked\n");
+
+        tree = document.getElementById("uiYulupResourceSelectTree");
+
+        sitetreeURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(window.arguments[0], null, null);
+
+
+        tree.view = new SitetreeView(sitetreeURI, tree.selection);
+    },
+
+    save: function () {
+        var tree = null;
+
+        /* DEBUG */ dump("Yulup:widget.js:ResourceSelectDialogHandler.save() invoked\n");
+
+        returnObject = window.arguments[1];
+
+        tree = document.getElementById("uiYulupResourceSelectTree");
+
+        // TODO fetch tree selection
+
+        return true;
+    },
+
+    doSelectCommand: function(aURI, aTextBoxId) {
+        var returnObject = null;
+
+        /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.showResourceUploadDialog() invoked\n");
+
+        returnObject = new Object();
+
+        if (window.openDialog(YULUP_RESOURCE_SELECT_CHROME_URI, "yulupWidgetResourceSelectDialog", "modal,resizable=no", aURI, returnObject)) {
+            document.getElementById(aTextBoxId).setAttribute("value", "treeselection");
+        }
+    }
+
+};
+
 var ResourceUploadDialogHandler = {
 
     showFilePicker: function() {
         var filePicker = null;
         var ret        = null;
         var textBox    = null;
+        var tree       = null;
 
         /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.showFilePicker() invoked\n");
 
@@ -371,6 +439,8 @@ var ResourceUploadDialogHandler = {
             textBox.setAttribute("value", filePicker.fileURL.fileName);
 
             // TODO upload the resource to the server
+            // get the selected collection
+            tree = document.getElementById("uiYulupResourceUploadTree");
         }
     },
 
@@ -403,20 +473,25 @@ var WidgetHandler = {
      * @return {Undefined}         does not have a return value
      */
     getParametrizedWidgetFragment: function(aWidget) {
-        var customAttrValue = null;
-        var attrXpath       = null;
-        var attrIterator    = null;
-        var attrElement     = null;
-        var newFragment     = null;
-        var namespaces      = null;
-        var nsResolver      = null;
+        var customAttrValue  = null;
+        var attrXpath        = null;
+        var attrIterator     = null;
+        var attrElement      = null;
+        var newFragment      = null;
+        var namespaces       = null;
+        var nsResolver       = null;
         var resolverFunction = null;
+        var sitetreeURI      = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.getParametrizedWidgetFragment() invoked\n");
 
         nsResolver = new ConfigurableNsResolver(aWidget.fragment);
 
-        if ((attributes = WidgetDialogHandler.showWidgetInsertDialog(aWidget, nsResolver)) != null) {
+        if (gEditorController.editorParams.navigation && gEditorController.editorParams.navigation.sitetree) {
+            sitetreeURI = gEditorController.editorParams.navigation.sitetree.uri;
+        }
+
+        if ((attributes = WidgetDialogHandler.showWidgetInsertDialog(aWidget, nsResolver, sitetreeURI)) != null) {
             for (var i=0; i < aWidget.fragmentAttributes.length; i++) {
 
                 // get the user defined attribute value
@@ -435,7 +510,11 @@ var WidgetHandler = {
                     attrElement.nodeValue = customAttrValue;
                 }
             }
+
+            return true;
         }
+
+        return false;
     },
 
     /**
@@ -481,7 +560,9 @@ var WidgetHandler = {
         xmlSerializer = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer);
 
         if (aWidget.fragmentAttributes && aWidget.fragment) {
-            WidgetHandler.getParametrizedWidgetFragment(aWidget);
+            if (!WidgetHandler.getParametrizedWidgetFragment(aWidget)) {
+                return;
+            }
         }
 
         if (aWidget.fragment) {

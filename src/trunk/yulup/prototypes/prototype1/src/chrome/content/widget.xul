@@ -45,6 +45,8 @@
         style="font: -moz-dialog;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+  <stringbundle id="uiYulupEditorStringbundle" src="chrome://yulup/locale/editor.properties"/>
+
   <script type="application/x-javascript"
           src="chrome://yulup/content/widget.js"/>
 
@@ -54,7 +56,8 @@
     <grid>
       <columns>
         <column flex="1"/>
-        <column flex="2"/>
+        <column flex="3"/>
+        <column flex="1"/>
       </columns>
       <rows id="uiYulupEditorWidgetInsertRows">
       </rows>
