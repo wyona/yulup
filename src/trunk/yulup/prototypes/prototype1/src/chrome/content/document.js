@@ -102,6 +102,17 @@ Document.prototype = {
     },
 
     /**
+     * Get the base URI of this document.
+     *
+     * Note that this currently returns the loadURI.
+     *
+     * @return {nsIURI} returns the base URI of this document
+     */
+    getBaseURI: function () {
+        return this.loadURI;
+    },
+
+    /**
      * Get the basename of the document, i.e. the part of the
      * file name in front of the extension.
      *
