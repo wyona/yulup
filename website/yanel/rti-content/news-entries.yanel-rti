@@ -1,0 +1,4 @@
+<{http://www.wyona.org/yanel/resource/1.0}atom/>
+feed-title: News
+entries-path: /news-entries
+xslt: /xslt/atomfeed2news-xhtml.xsl
