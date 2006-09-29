@@ -1467,6 +1467,8 @@ WYSIWYGXSLTModeView.prototype = {
         var xpathParseResult  = null;
         var locationPath      = null;
         var xPathExpr         = null;
+        var astNode           = null;
+        var localPart         = null;
         var sourceNode        = null;
 
         /* DEBUG */ YulupDebug.ASSERT(aXHTMLNode        != null);
@@ -1525,8 +1527,7 @@ WYSIWYGXSLTModeView.prototype = {
 
         /* Query the source document for xPathExpr (the location path found) */
         if (!aIsNamespaceAware) {
-            var astNode = xpathParseResult;
-            var localPart = null;
+            astNode = xpathParseResult;
 
             do {
                 if (astNode instanceof ASTNodeNameTest) {
