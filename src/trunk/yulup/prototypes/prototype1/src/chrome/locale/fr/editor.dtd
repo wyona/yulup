@@ -48,5 +48,6 @@
 <!ENTITY editorWidgetInsertDialog.title "Set attributes">
 <!ENTITY editorWidgetInsert.label "Set attributes for widget ">
 <!ENTITY editorResourceUploadDialog.title "Resource Upload">
-<!ENTITY editorResourceUploadTree.label "Sitetree">
+<!ENTITY editorResourceSelectDialog.title "Select Resource">
+<!ENTITY editorResourceTree.label "Sitetree">
 <!ENTITY editorResourceUploadRemoteName.label "Filename on Server">
