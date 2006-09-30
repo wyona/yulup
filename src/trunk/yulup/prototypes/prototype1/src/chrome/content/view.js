@@ -139,6 +139,7 @@ function View(aEditorController, aModel, aBarrier) {
         }
     };
 
+
     /**
      * EditActionListener constructor. Instantiates a new object of
      * type EditActionListener.
@@ -446,6 +447,7 @@ function View(aEditorController, aModel, aBarrier) {
 View.prototype.controller       = null;
 View.prototype.model            = null;
 View.prototype.undoRedoObserver = null;
+View.prototype.uriRewriter      = null;
 
 /**
  * Show this view.
@@ -585,70 +587,6 @@ View.prototype.enterView = function() {
  */
 View.prototype.leaveView = function() {
     /* DEBUG */ dump("Yulup:view.js:View.leaveView() invoked\n");
-};
-
-
-/**
- * Rewrite image URIs to display images which are
- * referenced relatively to the current location.
- *
- * Inserts a "_yulupOriginalURI" attribute which
- * contains the original URI of the image.
- *
- * @return {Undefined} does not have a return value
- */
-View.prototype.rewriteURIs = function() {
-    var ioService   = null;
-    var targetNodes = null;
-    var refURI      = null;
-    var originalURI = null;
-    var newURI      = null;
-
-    /* DEBUG */ dump("Yulup:view.js:View.rewriteURIs() invoked\n");
-
-    if (this.model.documentReference && (refURI = this.model.documentReference.getLoadURI()) != null) {
-        ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-
-        // image URI rewriting
-        targetNodes = this.editor.contentDocument.images;
-
-        for (var i = 0; i < targetNodes.length; i++) {
-            originalURI = targetNodes.item(i).getAttribute("src");
-
-            /* DEBUG */ dump("Yulup:view.js:View.rewriteURIs: rewriting image URI \"" + originalURI + "\"\n");
-
-            try {
-                newURI = ioService.newURI(originalURI, null, refURI);
-
-                targetNodes.item(i).setAttribute("src", newURI.spec);
-                targetNodes.item(i).setAttribute("_yulupOriginalURI", originalURI);
-
-                /* DEBUG */ dump("Yulup:view.js:View.rewriteURIs: new image URI is \"" + targetNodes.item(i).getAttribute("src") + "\"\n");
-            } catch (exception) {
-                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:View.rewriteURIs", exception);
-            }
-        }
-
-        // link URI rewriting
-        targetNodes = this.editor.contentDocument.links;
-
-        for (var i = 0; i < targetNodes.length; i++) {
-            originalURI = targetNodes.item(i).getAttribute("href");
-
-            /* DEBUG */ dump("Yulup:view.js:View.rewriteURIs: rewriting link URI \"" + originalURI + "\"\n");
-
-            try {
-                newURI = ioService.newURI(originalURI, null, refURI);
-
-                targetNodes.item(i).setAttribute("href", newURI.spec);
-                targetNodes.item(i).setAttribute("_yulupOriginalURI", originalURI);
-
-                /* DEBUG */ dump("Yulup:view.js:View.rewriteURIs: new link URI is \"" + targetNodes.item(i).getAttribute("href") + "\"\n");
-            } catch (exception) {
-                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:View.rewriteURIs", exception);
-            }
-        }
-    }
 };
 
 
@@ -889,6 +827,8 @@ function WYSIWYGModeView(aEditorController, aModel, aShowViewCommand, aBarrier) 
 
     this.editor = this.editviewElem.getView();
 
+    this.uriRewriter = new URIRewriter(this);
+
     /* DEBUG */ dump("Yulup:view.js:WYSIWYGModeView: this.editor = \"" + this.editor + "\"\n");
 }
 
@@ -961,6 +901,9 @@ WYSIWYGModeView.prototype = {
             wysiwygEditor.commandManager.addCommandObserver(this.undoRedoObserver, "cmd_undo");
             wysiwygEditor.commandManager.addCommandObserver(this.undoRedoObserver, "cmd_redo");
 
+            // hook up URI rewriter
+            this.editor.contentDocument.addEventListener("DOMNodeInserted", this.uriRewriter, true);
+
             /* DEBUG */ dump("Yulup:view.js:WYSIWYGModeView.setUp: initialisation completed\n");
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGModeView.setUp", exception);
@@ -1008,6 +951,9 @@ WYSIWYGModeView.prototype = {
 
             // print document to console
             /* DEBUG */ dumpTree(this.controller.activeView.editor);
+
+            // rewrite URIs
+            this.uriRewriter.rewriteURIs();
 
             // view is now pristine again
             this.view.resetModificationCount();
@@ -1237,6 +1183,9 @@ WYSIWYGXSLTModeView.prototype = {
             wysiwygXSLTEditor.commandManager.addCommandObserver(this.undoRedoObserver, "cmd_undo");
             wysiwygXSLTEditor.commandManager.addCommandObserver(this.undoRedoObserver, "cmd_redo");
 
+            // hook up URI rewriter
+            this.editor.contentDocument.addEventListener("DOMNodeInserted", this.uriRewriter, true);
+
             /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.setUp: initialisation completed\n");
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.setUp", exception);
@@ -1379,7 +1328,7 @@ WYSIWYGXSLTModeView.prototype = {
             this.view.beginningOfDocument(); // FIXME: cursor should be set to first editable node!
 
             // rewrite URIs
-            this.rewriteURIs();
+            this.uriRewriter.rewriteURIs();
 
             /* View is now pristine again */
             this.view.resetModificationCount();
@@ -1928,6 +1877,19 @@ WYSIWYGDOMSerialiser.prototype = {
         switch (aNode.nodeType) {
         case Components.interfaces.nsIDOMNode.ELEMENT_NODE:
             this.outputString += "<" + aNode.nodeName.toLowerCase();
+
+            if (aNode.__yulupOriginalURI) {
+                switch (aNode.nodeName.toLowerCase()) {
+                case "img":
+                    aNode.setAttribute("src", aNode.__yulupOriginalURI);
+                    break;
+                case "a":
+                case "link":
+                    aNode.setAttribute("href", aNode.__yulupOriginalURI);
+                    break;
+                default:
+                }
+            }
 
             if (aNode.hasAttributes()) {
                 // emit the attributes
@@ -2799,6 +2761,148 @@ GuidedTagInserter.prototype = {
                     break;
                 default:
             }
+        }
+    }
+};
+
+
+/**
+ * URIRewriter constructor. Instantiates a new object of
+ * type URIRewriter.
+ *
+ * Rewrites URIs on the go as DOM nodes are created as
+ * well as on request.
+ *
+ * Note that this type implements the nsIDOMEventListener
+ * interface.
+ *
+ * @constructor
+ * @param  {View}        aView the view to operate on
+ * @return {URIRewriter}
+ */
+function URIRewriter(aView) {
+    /* DEBUG */ YulupDebug.ASSERT(aView != null);
+    /* DEBUG */ YulupDebug.ASSERT(aView instanceof View);
+
+    this.__view = aView;
+
+    this.__ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+};
+
+URIRewriter.prototype = {
+    __view     : null,
+    __ioService: null,
+
+    /**
+     * Rewrite image URIs to display images which are
+     * referenced relatively to the current location.
+     *
+     * Adds a __yulupOriginalURI property which
+     * contains the original URI of the image.
+     *
+     * @return {Undefined} does not have a return value
+     */
+    rewriteURIs: function() {
+        var targetNodes = null;
+        var baseURI     = null;
+
+        /* DEBUG */ dump("Yulup:view.js:URIRewriter.rewriteURIs() invoked\n");
+
+        if (this.__view.model.documentReference && (baseURI = this.__view.model.documentReference.getBaseURI()) != null) {
+            // image URI rewriting
+            targetNodes = this.__view.editor.contentDocument.images;
+
+            for (var i = 0; i < targetNodes.length; i++) {
+                this.__rewriteImgURI(targetNodes.item(i), baseURI);
+            }
+
+            // anchor URI rewriting
+            targetNodes = this.__view.editor.contentDocument.links;
+
+            for (var i = 0; i < targetNodes.length; i++) {
+                this.__rewriteAURI(targetNodes.item(i), baseURI);
+            }
+
+            // link URI rewriting
+            targetNodes = this.__view.editor.contentDocument.getElementsByTagName("link");
+
+            for (var i = 0; i < targetNodes.length; i++) {
+                this.__rewriteLinkURI(targetNodes.item(i), baseURI);
+            }
+        }
+    },
+
+    handleEvent: function (aEvent) {
+        var baseURI     = null;
+
+        /* DEBUG */ dump("Yulup:view.js:URIRewriter.handleEvent(\"" + aEvent.target + "\") invoked\n");
+
+        if (this.__view.model.documentReference && (baseURI = this.__view.model.documentReference.getBaseURI()) != null) {
+            if (aEvent.target instanceof HTMLImageElement) {
+                this.__rewriteImgURI(aEvent.target, baseURI);
+            } else if (aEvent.target instanceof HTMLAnchorElement) {
+                this.__rewriteAURI(aEvent.target, baseURI);
+            }
+        }
+    },
+
+    __rewriteImgURI: function(aNode, aBaseURI) {
+        var originalURI = null;
+        var newURI      = null;
+
+        originalURI = aNode.getAttribute("src");
+
+        /* DEBUG */ dump("Yulup:view.js:URIRewriter.__rewriteImgURI: rewriting image URI \"" + originalURI + "\"\n");
+
+        try {
+            newURI = this.__ioService.newURI(originalURI, null, aBaseURI);
+
+            aNode.setAttribute("src", newURI.spec);
+            aNode.__yulupOriginalURI = originalURI;
+
+            /* DEBUG */ dump("Yulup:view.js:URIRewriter.__rewriteImgURI: new image URI is \"" + aNode.getAttribute("src") + "\"\n");
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:URIRewriter.__rewriteImgURI", exception);
+        }
+    },
+
+    __rewriteAURI: function(aNode, aBaseURI) {
+        var originalURI = null;
+        var newURI      = null;
+
+        originalURI = aNode.getAttribute("href");
+
+        /* DEBUG */ dump("Yulup:view.js:URIRewriter.__rewriteAURI: rewriting anchor URI \"" + originalURI + "\"\n");
+
+        try {
+            newURI = this.__ioService.newURI(originalURI, null, aBaseURI);
+
+            aNode.setAttribute("href", newURI.spec);
+            aNode.__yulupOriginalURI = originalURI;
+
+            /* DEBUG */ dump("Yulup:view.js:URIRewriter.__rewriteAURI: new anchor URI is \"" + aNode.getAttribute("href") + "\"\n");
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:URIRewriter.__rewriteAURI", exception);
+        }
+    },
+
+    __rewriteLinkURI: function(aNode, aBaseURI) {
+        var originalURI = null;
+        var newURI      = null;
+
+        originalURI = aNode.getAttribute("href");
+
+        /* DEBUG */ dump("Yulup:view.js:URIRewriter.__rewriteLinkURI: rewriting link URI \"" + originalURI + "\"\n");
+
+        try {
+            newURI = this.__ioService.newURI(originalURI, null, aBaseURI);
+
+            aNode.setAttribute("href", newURI.spec);
+            aNode.__yulupOriginalURI = originalURI;
+
+            /* DEBUG */ dump("Yulup:view.js:URIRewriter.__rewriteLinkURI: new link URI is \"" + aNode.getAttribute("href") + "\"\n");
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:URIRewriter.__rewriteLinkURI", exception);
         }
     }
 };
