@@ -45,7 +45,7 @@
       <title>UZH - <xsl:value-of select="/document/content/*/unizh:header/unizh:heading"/> - <xsl:value-of select="*/lenya:meta/dc:title"/></title>
       <link rel="neutron-introspection" type="application/neutron+xml" href="unizh-introspection.xml"/>
       <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type"/>
-      <link type="text/css" rel="stylesheet" href="http://demo.yulup.org/unizh/resources/main.css"/>
+      <link type="text/css" rel="stylesheet" href="resources/main.css"/>
       <script src="http://demo.yulup.org/unizh/resources/uni.js" type="text/javascript"/>
       <script src="http://demo.yulup.org/unizh/resources/elml.js" type="text/javascript"/>
       <xsl:if test="$document-element-name = 'unizh:news'">
@@ -767,7 +767,7 @@
         </xsl:variable>
         <object height="{$height}" width="{$width}">
 
-          <param name="movie" value="{$nodeid}/{@src}"/><embed height="{$height}" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" src="http://demo.yulup.org/unizh/resources/{@src}" type="application/x-shockwave-flash" width="{$width}"/>
+          <param name="movie" value="{$nodeid}/{@src}"/><embed height="{$height}" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" src="resources/{@src}" type="application/x-shockwave-flash" width="{$width}"/>
         </object>
       </xsl:when>
       <xsl:otherwise>
