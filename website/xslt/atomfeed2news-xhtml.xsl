@@ -46,6 +46,10 @@
 
 <p>
 <a href="http://www.feedvalidator.org/check.cgi?url=http%3A//www.yulup.org/news-entries/?yanel.resource.viewid=atom"><img src="images/valid-atom.png" alt="[Valid Atom 1.0]" title="Validate my Atom 1.0 feed" border="0"/></a>
+
+&#160;&#160;&#160;
+
+<a href="news-entries/?yanel.resource.viewid=atom"><img src="images/feed-icon-16x16.png" border="0"/></a>
 </p>
 
 <!--
