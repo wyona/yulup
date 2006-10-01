@@ -62,7 +62,7 @@ WARNING: This file has been generated automatically. All changes will be lost.
 
   <link rel="stylesheet" href="{$yarep.back2realm}css/common.css" title="Standard Style"/>
 
-  <link rel="alternate" type="application/atom+xml" href="{$yarep.back2realm}news-entries.xml" title="Yulup News"/>
+  <link rel="alternate" type="application/atom+xml" href="{$yarep.back2realm}news-entries/?yanel.resource.viewid=atom" title="Yulup News"/>
 
 <xsl:comment>Name: <xsl:value-of select="$yanel.path.name"/> (without suffix: <xsl:value-of select="$name-without-suffix"/>), Path: <xsl:value-of select="$yanel.path"/>, Back 2 Realm: <xsl:value-of select="$yarep.back2realm"/>, Back 2 Context: <xsl:value-of select="$yanel.back2context"/></xsl:comment>
 
