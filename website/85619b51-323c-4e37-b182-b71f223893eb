@@ -2,9 +2,9 @@
   <title type="text">yulup-prototype-1-0.1.10-rc5-r18347</title>
   <author><name>Andreas Wuest</name></author>
   <link href="http://www.yulup.org/download/index.html"/>
+  <id>urn:uuid:TODO-rc5</id>
 
-  <!-- TODO: Create these elements dynamically -->
-  <updated>2006-09-27T16:48:38.976Z</updated>
+  <updated>2006-10-01T19:48:21.907Z</updated>
 
   <published>2006-09-21T15:54:00-01:00</published>
   <summary type="html">Yulup 0.1.10 RC5 released</summary>
