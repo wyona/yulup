@@ -2,3 +2,4 @@
 feed-title: News
 entries-path: /news-entries
 xslt: /xslt/atomfeed2news-xhtml.xsl
+author: Yulup Editorial Team
