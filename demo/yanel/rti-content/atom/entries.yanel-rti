@@ -4,3 +4,4 @@
 #mime-type: application/atom+xml
 feed-title: Demo Feed (Releases)
 #entries-path: /atom/news-entries/
+author: Yulup Demo Community
