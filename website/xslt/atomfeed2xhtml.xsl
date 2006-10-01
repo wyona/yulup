@@ -44,13 +44,12 @@ Please see the <a href="../faq.html#troubleinstalltoc">FAQ</a> for troubleshooti
 
 <xsl:apply-templates select="/atom:feed/atom:entry"/>
 
-<!--
-<hr/>
 
 <p>
-<a href="http://www.feedvalidator.org/check.cgi?url=http%3A//yulup.wyona.org/demo/atom/entries/?yanel.resource.viewid=atom"><img src="../../valid-atom.png" alt="[Valid Atom 1.0]" title="Validate my Atom 1.0 feed" border="0"/></a>
+<a href="http://www.feedvalidator.org/check.cgi?url=http%3A//www.yulup.org/download/release-atom-entries/?yanel.resource.viewid=atom"><img src="../images/valid-atom.png" alt="[Valid Atom 1.0]" title="Validate my Atom 1.0 feed" border="0"/></a>
 </p>
 
+<!--
 <hr/>
 
 <ul>
