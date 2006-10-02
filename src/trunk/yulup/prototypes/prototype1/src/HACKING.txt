@@ -134,3 +134,11 @@ function confirmClose() {
 A lexed symbol can have multiple types: e.g. the literal "div" should have type IDENT and type DIV. (Create a post-processing step after lexing IDENTs to identify DIVs, MODs, etc.).
 
 Alternatively, only produce IDENTs during lexing, and during parsing have special function matchDIV, matchMOD, or matchMULTIPLICATIVEOPERATOR to distinguish these tokens.
+
+
++            // remove default override stylesheet
++            this.view.QueryInterface(Components.interfaces.nsIEditorStyleSheets);
++            this.view.removeOverrideStyleSheet("resource:/res/EditorOverride.css");
++
++            this.view.QueryInterface(Components.interfaces.nsIHTMLEditor);
++
