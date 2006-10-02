@@ -24,7 +24,13 @@
   <title><xsl:value-of select="/hp:homepage/hp:title"/></title>
   <link rel="neutron-introspection" type="application/neutron+xml" href="introspection-index.xml"/>
   <link rel="stylesheet" href="{$yarep.back2realm}css/common.css" title="Standard Style"/>
+  <link rel="alternate" type="application/atom+xml" href="{$yarep.back2realm}atom.xml" title="Yulup News (Atom Feed)"/>
+<!--
+  <link rel="alternate" type="application/atom+xml" href="{$yarep.back2realm}atom.xml?yanel.resource.viewid=atom" title="Yulup News"/>
+-->
+<!--
   <link rel="alternate" type="application/atom+xml" href="{$yarep.back2realm}news-entries/?yanel.resource.viewid=atom" title="Yulup News"/>
+-->
   <meta name="generator" content="Wyona Yanel"/>
   <!-- See http://en.wikipedia.org/wiki/Favicon -->
   <link href="{$yarep.back2realm}images/favicon.png" rel="icon" type="image/png"/>

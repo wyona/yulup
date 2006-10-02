@@ -6,14 +6,14 @@
   xmlns="http://www.w3.org/2005/Atom"
 >
 
-<!--
-<xsl:template match="/">
-<xsl:apply-templates/>
-</xsl:template>
--->
-
 <xsl:template match="/atom:feed/atom:link[@rel='self']">
+  <link rel="self" href="http://127.0.0.1:8080/ulysses-website/atom.xml"/>
+<!--
+  <link rel="self" href="http://127.0.0.1:8080/ulysses-website/atom.xml?yanel.resource.viewid=atom"/>
+-->
+<!--
   <link rel="self" href="http://www.yulup.org/news-entries-atom.xml"/>
+-->
 </xsl:template>
 
 <xsl:template match="*" priority="-1">

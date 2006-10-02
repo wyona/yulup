@@ -2,9 +2,10 @@
  <atom:title type="text">Yulup supports Atom</atom:title>
  <atom:author><atom:name>Michael H. Wechner</atom:name></atom:author>
 
- <atom:id>urn:yanel-uuid:atom:release-entries:ulysses-prototype-1-0.1.10-rc3-r16660.xml</atom:id>
+ <atom:id>urn:yanel-path:news-entries:first-entry.xml</atom:id>
  <atom:updated>2006-09-30T01:14:15.892Z</atom:updated>
  <atom:published>2006-09-29T16:30:56-01:00</atom:published>
+ <atom:link href="http://127.0.0.1:8080/ulysses-website/news-entries/first-entry.xml"/>
 
 <!-- 
 <atom:summary type="html">Yulup supports APP and the Atom format.</atom:summary>
