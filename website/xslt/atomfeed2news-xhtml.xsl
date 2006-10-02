@@ -19,12 +19,9 @@
 <xsl:template match="/">
 <html>
 <head>
-  <title>News</title>
-  <link rel="alternate" title="Yulup News" href="news-entries.html?yanel.resource.viewid=atom" type="application/atom+xml"/>
+  <title>Yulup News</title>
+  <link rel="alternate" title="Yulup News" href="atom.xml" type="application/atom+xml"/>
   <link rel="introspection" href="news-entries/introspection-atom.xml" type="application/atomserv+xml"/>
-<!--
-  <link rel="introspection" href="download/introspection-atom.xml" type="application/atomserv+xml"/>
--->
 </head>
 <body>
 <!--
