@@ -1,4 +1,4 @@
 <{http://www.wyona.org/yanel/resource/1.0}atom/>
 feed-title: Releases
-author: Release Manager
+author: Yulup Release Manager
 xslt: /xslt/atomfeed2xhtml.xsl
