@@ -1099,6 +1099,8 @@ WYSIWYGXSLTModeView.prototype = {
     currentSourceSelectionPath: null,
     currentXHTMLNode          : null,
     currentSourceNode         : null,
+    nsAwareLocationPathCache  : null,
+    nsUnawareLocationPathCache: null,
 
     /**
      * Initialise the current view.
@@ -1319,6 +1321,10 @@ WYSIWYGXSLTModeView.prototype = {
         /* DEBUG */ dump("######## Yulup:view.js:WYSIWYGXSLTModeView.fillView: transformed document =\n" + serializedDoc + "\n");
 
         this.model.preserveDirty = true;
+
+        // initialise location path caches
+        this.nsAwareLocationPathCache   = new Object;
+        this.nsUnawareLocationPathCache = new Object;
 
         /* Fill the view */
         try {
@@ -1571,52 +1577,58 @@ WYSIWYGXSLTModeView.prototype = {
             return null;
         }
 
-        /* DEBUG */ dump("---------------------- start parsing found location path ----------------------\n");
-
-        // parse found location path
-        try {
-            xpathParseResult = (new XPathParser(locationPath)).parse();
-        } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode", exception);
-            /* DEBUG */ Components.utils.reportError(exception);
-        }
-
-        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: object XPath representation:\n" + xpathParseResult.toObjectString() + "\n");
-
-        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: parsed XPath: " + xpathParseResult.toString() + "\n");
-
-        /* DEBUG */ dump("\n---------------------- finished parsing found location path ----------------------\n");
-
-        if (!xpathParseResult) {
-            xPathToolBarLabel.value = "Error parsing location path";
-            return null;
-        }
-
         /* Query the source document for xPathExpr (the location path found) */
         if (!aIsNamespaceAware) {
-            astNode = xpathParseResult;
+            // check the cache (undefined means not cached, null means cached but not available)
+            if (this.nsUnawareLocationPathCache[locationPath] == undefined) {
+                xpathParseResult = this.parseLocationPath(locationPath);
 
-            do {
-                if (astNode instanceof ASTNodeNameTest) {
-                    localPart = astNode.getQName().getLocalPart();
+                if (!xpathParseResult) {
+                    xPathToolBarLabel.value = "Error parsing location path";
 
-                    if (localPart != "*") {
-                        // replace name test by QName with prefix null and localname "*"
-                        astNode.setQName(new ASTNodeQName(null, "*"));
+                    // cache it
+                    this.nsUnawareLocationPathCache[locationPath] = null;
 
-                        // insert predicate [local-name()='nodename']
-                        astNode.insert(new ASTNodeValue("[local-name()='" + localPart + "']"));
-                    } else {
-                        // replace name test by QName with prefix null and localname "*"
-                        astNode.setQName(new ASTNodeQName(null, "*"));
-                    }
+                    return null;
                 }
-            } while ((astNode = astNode.getNext()) != null)
 
-            // serialise XPath parser result
-            xPathExpr = xpathParseResult.toString();
+                astNode = xpathParseResult;
 
-            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: rewritten XPath object representation:\n" + xpathParseResult.toObjectString() + "\n");
+                do {
+                    if (astNode instanceof ASTNodeNameTest) {
+                        localPart = astNode.getQName().getLocalPart();
+
+                        if (localPart != "*") {
+                            // replace name test by QName with prefix null and localname "*"
+                            astNode.setQName(new ASTNodeQName(null, "*"));
+
+                            // insert predicate [local-name()='nodename']
+                            astNode.insert(new ASTNodeValue("[local-name()='" + localPart + "']"));
+                        } else {
+                            // replace name test by QName with prefix null and localname "*"
+                            astNode.setQName(new ASTNodeQName(null, "*"));
+                        }
+                    }
+                } while ((astNode = astNode.getNext()) != null);
+
+                /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: rewritten XPath object representation:\n" + xpathParseResult.toObjectString() + "\n");
+
+                // serialise XPath parser result
+                xPathExpr = xpathParseResult.toString();
+
+                // cache it
+                this.nsUnawareLocationPathCache[locationPath] = xPathExpr;
+            } else {
+                xPathExpr = this.nsUnawareLocationPathCache[locationPath];
+
+                /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: use namespace-unaware cached version: " + xPathExpr + "\n");
+
+                if (!xPathExpr) {
+                    xPathToolBarLabel.value = "Error parsing location path";
+                    return null;
+                }
+            }
+
             /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: rewritten XPath: " + xPathExpr + "\n");
 
             try {
@@ -1626,8 +1638,34 @@ WYSIWYGXSLTModeView.prototype = {
                 /* DEBUG */ Components.utils.reportError(exception);
             }
         } else {
-            // serialise XPath parser result
-            xPathExpr = xpathParseResult.toString();
+            // check the cache (undefined means not cached, null means cached but not available)
+            if (this.nsAwareLocationPathCache[locationPath] == undefined) {
+                xpathParseResult = this.parseLocationPath(locationPath);
+
+                if (!xpathParseResult) {
+                    xPathToolBarLabel.value = "Error parsing location path";
+
+                    // cache it
+                    this.nsAwareLocationPathCache[locationPath] = null;
+
+                    return null;
+                }
+
+                // serialise XPath parser result
+                xPathExpr = xpathParseResult.toString();
+
+                // cache it
+                this.nsAwareLocationPathCache[locationPath] = xPathExpr;
+            } else {
+                xPathExpr = this.nsAwareLocationPathCache[locationPath];
+
+                /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: use namespace-aware cached version: " + xPathExpr + "\n");
+
+                if (!xPathExpr) {
+                    xPathToolBarLabel.value = "Error parsing location path";
+                    return null;
+                }
+            }
 
             try {
                 sourceNode = domDocument.evaluate(xPathExpr, domDocument, domDocument.createNSResolver(domDocument.documentElement), XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -1684,6 +1722,29 @@ WYSIWYGXSLTModeView.prototype = {
 
             return xPathExpr;
         }
+    },
+
+    parseLocationPath: function (aLocationPath) {
+        var xpathParseResult = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aLocationPath != null);
+
+        /* DEBUG */ dump("---------------------- start parsing found location path ----------------------\n");
+
+        // parse found location path
+        try {
+            xpathParseResult = (new XPathParser(aLocationPath)).parse();
+
+            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: object XPath representation:\n" + xpathParseResult.toObjectString() + "\n");
+            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: parsed XPath: " + xpathParseResult.toString() + "\n");
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+        }
+
+        /* DEBUG */ dump("\n---------------------- finished parsing found location path ----------------------\n");
+
+        return xpathParseResult;
     },
 
     updateSource: function () {
