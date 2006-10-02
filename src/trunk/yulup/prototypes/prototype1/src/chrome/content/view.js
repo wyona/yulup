@@ -1377,6 +1377,18 @@ WYSIWYGXSLTModeView.prototype = {
      ** @return {nsIDOMXMLDocument} the patched document style
      **/
     patchDocumentStyle: function (aDocumentXSL) {
+        var outputMethodNode       = null;
+        var templateSelectorNodes  = null;
+        var parentNode             = null;
+        var nodeValueSelectorNodes = null;
+        var spanNodeTemplate       = null;
+        var spanNode               = null;
+        var selectorNode           = null;
+        var select                 = null;
+        var path                   = null;
+        var divNodeTemplate        = null;
+        var divNode                = null;
+
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle(\"" + aDocumentXSL + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aDocumentXSL != null);
@@ -1386,7 +1398,7 @@ WYSIWYGXSLTModeView.prototype = {
         ** documentStyling depends on the output method specified.
         */
         try {
-            var outputMethodNode = aDocumentXSL.evaluate("xsl:stylesheet/xsl:output", aDocumentXSL, this.__xsltNSResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
+            outputMethodNode = aDocumentXSL.evaluate("xsl:stylesheet/xsl:output", aDocumentXSL, this.__xsltNSResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
             if (outputMethodNode != null) {
                 /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle: removing <output> element \"" + outputMethodNode + "\"\n");
                 outputMethodNode.parentNode.removeChild(outputMethodNode);
@@ -1398,7 +1410,7 @@ WYSIWYGXSLTModeView.prototype = {
 
         /* Add _yulup-location-path attribute matcher to parent nodes of template selectors */
         try {
-            var templateSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet/*//xsl:apply-templates", aDocumentXSL, this.__xsltNSResolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+            templateSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet/*//xsl:apply-templates", aDocumentXSL, this.__xsltNSResolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
             for (var i=0; i< templateSelectorNodes.snapshotLength; i++) {
                 parentNode = templateSelectorNodes.snapshotItem(i).parentNode;
                 parentNode.setAttribute("_yulup-location-path", "{@_yulup-location-path}");
@@ -1412,13 +1424,13 @@ WYSIWYGXSLTModeView.prototype = {
         ** Note that for-each directives and $variable selectors are not implemented yet.
         */
         try {
-            var nodeValueSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet//*/xsl:value-of[not(contains(@select, '$'))]", aDocumentXSL, this.__xsltNSResolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-            span = aDocumentXSL.createElement("span");
+            nodeValueSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet//*/xsl:value-of[not(contains(@select, '$'))]", aDocumentXSL, this.__xsltNSResolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+            spanNodeTemplate       = aDocumentXSL.createElement("span");
 
             for (var i=0; i< nodeValueSelectorNodes.snapshotLength; i++) {
                 selectorNode = nodeValueSelectorNodes.snapshotItem(i);
-                var select = selectorNode.getAttribute("select");
-                var path = null;
+                select       = selectorNode.getAttribute("select");
+                path         = null;
 
                 /* Check if selector uses absolute node addressing. If so set _yulup-location-path to that node.
                 ** If relative addressing is used, concatenate _yulup-locatoin-path attribute selector
@@ -1430,10 +1442,45 @@ WYSIWYGXSLTModeView.prototype = {
                     path = "{@_yulup-location-path}/" + select;
                 }
 
-                aSpan = span.cloneNode(true);
-                aSpan.setAttribute("_yulup-location-path", path);
-                aSpan.appendChild(selectorNode.cloneNode(true));
-                selectorNode.parentNode.replaceChild(aSpan, selectorNode);
+                spanNode = spanNodeTemplate.cloneNode(true);
+                spanNode.setAttribute("_yulup-location-path", path);
+                spanNode.appendChild(selectorNode.cloneNode(true));
+                selectorNode.parentNode.replaceChild(spanNode, selectorNode);
+            }
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+        }
+
+        /* Insert _yulup-location-path div node around nodeValue copy-of selectors.
+        ** Note that for-each directives and $variable selectors are not implemented yet.
+        */
+        nodeValueSelectorNodes = null;
+        select                 = null;
+
+        try {
+            nodeValueSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet//*/xsl:copy-of[not(contains(@select, '$'))]", aDocumentXSL, this.__xsltNSResolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+            divNodeTemplate        = aDocumentXSL.createElement("div");
+
+            for (var i=0; i< nodeValueSelectorNodes.snapshotLength; i++) {
+                selectorNode = nodeValueSelectorNodes.snapshotItem(i);
+                select       = selectorNode.getAttribute("select");
+                path         = null;
+
+                /* Check if selector uses absolute node addressing. If so set _yulup-location-path to that node.
+                ** If relative addressing is used, concatenate _yulup-locatoin-path attribute selector
+                ** of the context node with the selected node
+                **/
+                if (select.indexOf("/") == 0) {
+                    path = select;
+                } else {
+                    path = "{@_yulup-location-path}/" + select;
+                }
+
+                divNode = divNodeTemplate.cloneNode(true);
+                divNode.setAttribute("_yulup-location-path", path);
+                divNode.appendChild(selectorNode.cloneNode(true));
+                selectorNode.parentNode.replaceChild(divNode, selectorNode);
             }
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle", exception);
