@@ -50,6 +50,7 @@ const NSIDOCENC_OutputEncodeHTMLEntities   = (1 << 16);
 const SOURCETAGGER_CHROME_URI = "chrome://yulup/content/sourcetagger.xsl";
 
 const XUL_NAMESPACE_URI = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+const XSL_NAMESPACE_URI = "http://www.w3.org/1999/XSL/Transform";
 
 // TODO: make this configurable via the preferences system
 const INSERT_TAB_STRING = "  ";
@@ -1392,8 +1393,6 @@ WYSIWYGXSLTModeView.prototype = {
         var selectorNode           = null;
         var select                 = null;
         var path                   = null;
-        var divNodeTemplate        = null;
-        var divNode                = null;
 
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle(\"" + aDocumentXSL + "\") invoked\n");
 
@@ -1458,7 +1457,8 @@ WYSIWYGXSLTModeView.prototype = {
             /* DEBUG */ Components.utils.reportError(exception);
         }
 
-        /* Insert _yulup-location-path div node around nodeValue copy-of selectors.
+        /* Insert _yulup-location-path into the parent node of nodeValue copy-of selectors,
+        ** if the parent is not in the XSL namespace.
         ** Note that for-each directives and $variable selectors are not implemented yet.
         */
         nodeValueSelectorNodes = null;
@@ -1466,27 +1466,27 @@ WYSIWYGXSLTModeView.prototype = {
 
         try {
             nodeValueSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet//*/xsl:copy-of[not(contains(@select, '$'))]", aDocumentXSL, this.__xsltNSResolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-            divNodeTemplate        = aDocumentXSL.createElement("div");
 
             for (var i=0; i< nodeValueSelectorNodes.snapshotLength; i++) {
                 selectorNode = nodeValueSelectorNodes.snapshotItem(i);
-                select       = selectorNode.getAttribute("select");
-                path         = null;
 
-                /* Check if selector uses absolute node addressing. If so set _yulup-location-path to that node.
-                ** If relative addressing is used, concatenate _yulup-locatoin-path attribute selector
-                ** of the context node with the selected node
-                **/
-                if (select.indexOf("/") == 0) {
-                    path = select;
-                } else {
-                    path = "{@_yulup-location-path}/" + select;
+                // check if the selector node's parent is not in namespace XSL
+                if (selectorNode.parentNode && selectorNode.parentNode.namespaceURI != XSL_NAMESPACE_URI) {
+                    select = selectorNode.getAttribute("select");
+                    path   = null;
+
+                    /* Check if selector uses absolute node addressing. If so set _yulup-location-path to that node.
+                    ** If relative addressing is used, concatenate _yulup-locatoin-path attribute selector
+                    ** of the context node with the selected node
+                    **/
+                    if (select.indexOf("/") == 0) {
+                        path = select;
+                    } else {
+                        path = "{@_yulup-location-path}/" + select;
+                    }
+
+                    selectorNode.parentNode.setAttribute("_yulup-location-path", path);
                 }
-
-                divNode = divNodeTemplate.cloneNode(true);
-                divNode.setAttribute("_yulup-location-path", path);
-                divNode.appendChild(selectorNode.cloneNode(true));
-                selectorNode.parentNode.replaceChild(divNode, selectorNode);
             }
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle", exception);
