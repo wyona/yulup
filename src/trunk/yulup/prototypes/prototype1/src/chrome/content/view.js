@@ -49,8 +49,9 @@ const NSIDOCENC_OutputEncodeHTMLEntities   = (1 << 16);
 // URIs for the source-tagger and ID-copier XSLT stylesheets
 const SOURCETAGGER_CHROME_URI = "chrome://yulup/content/sourcetagger.xsl";
 
-const XUL_NAMESPACE_URI = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
-const XSL_NAMESPACE_URI = "http://www.w3.org/1999/XSL/Transform";
+const XUL_NAMESPACE_URI   = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+const XSL_NAMESPACE_URI   = "http://www.w3.org/1999/XSL/Transform";
+const YULUP_NAMESPACE_URI = "http://www.yulup.org/Editor/LocationPath";
 
 // TODO: make this configurable via the preferences system
 const INSERT_TAB_STRING = "  ";
@@ -1316,6 +1317,12 @@ WYSIWYGXSLTModeView.prototype = {
         /* Remove extranous and adjacent Text nodes. */
         xhtmlDocument.normalize();
 
+        // shuffle around _yulup-location-path attributes placed in yulup:substitute elements
+        this.substitutePlaceholders(xhtmlDocument);
+
+        /* Remove extranous and adjacent Text nodes. */
+        xhtmlDocument.normalize();
+
         /* Serialize the xhtml document before filling the view */
         serializedDoc = this.xmlSerializer.serializeToString(xhtmlDocument);
 
@@ -1358,6 +1365,54 @@ WYSIWYGXSLTModeView.prototype = {
         this.model.preserveDirty = false;
 
         return retVal;
+    },
+
+    substitutePlaceholders: function (xhtmlDocument) {
+        var subsElements = null;
+        var subsElement  = null;
+        var subsChildren = null;
+        var isText       = null;
+
+        subsElements = xhtmlDocument.getElementsByTagNameNS(YULUP_NAMESPACE_URI, "substitute");
+
+        /* Iterate over all yulup:substitute elements. The fact that NodeLists
+         * are "live" and the removal of the element after processing guarantees
+         * that the NodeList decreases strictly and the loop eventually terminates. */
+        while (subsElements.length > 0) {
+            subsElement = subsElements.item(0);
+            isText      = false;
+
+            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.substitutePlaceholders: processing node \"" + subsElement + "\"\n");
+
+            // check for parent node availability
+            if (subsElement.parentNode) {
+                // check if one of the child nodes of the yulup:substitute element is a text node
+                subsChildren = subsElement.childNodes;
+
+                for (var j = 0; j < subsChildren.length; j++) {
+                    if (subsChildren.item(j).nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+                        isText = true;
+                        break;
+                    }
+                }
+
+                if (isText) {
+                    /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.substitutePlaceholders: move location path to parent node\n");
+                    // move _yulup-location-path attribute of the yulup:substitute element to the parent node
+                    subsElement.parentNode.setAttribute("_yulup-location-path", subsElement.getAttribute("_yulup-location-path"));
+                }
+
+                // replace yulup:substitute element by its children
+                while (subsElement.hasChildNodes()) {
+                    subsElement.parentNode.insertBefore(subsElement.firstChild, subsElement);
+                }
+
+                // remove yulup:substitute element
+                subsElement.parentNode.removeChild(subsElement);
+            }
+
+            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.substitutePlaceholders: finished processing node \"" + subsElement + "\"\n");
+        }
     },
 
     /** Returns a document style xslt that propagates "_yulup-location-path" attributes from a tagged
@@ -1457,8 +1512,7 @@ WYSIWYGXSLTModeView.prototype = {
             /* DEBUG */ Components.utils.reportError(exception);
         }
 
-        /* Insert _yulup-location-path into the parent node of nodeValue copy-of selectors,
-        ** if the parent is not in the XSL namespace.
+        /* Insert _yulup-location-path yulup:substitute node around nodeValue selectors.
         ** Note that for-each directives and $variable selectors are not implemented yet.
         */
         nodeValueSelectorNodes = null;
@@ -1469,30 +1523,28 @@ WYSIWYGXSLTModeView.prototype = {
 
             for (var i=0; i< nodeValueSelectorNodes.snapshotLength; i++) {
                 selectorNode = nodeValueSelectorNodes.snapshotItem(i);
+                select       = selectorNode.getAttribute("select");
+                path         = null;
 
-                // check if the selector node's parent is not in namespace XSL
-                if (selectorNode.parentNode && selectorNode.parentNode.namespaceURI != XSL_NAMESPACE_URI) {
-                    select = selectorNode.getAttribute("select");
-                    path   = null;
-
-                    /* Check if selector uses absolute node addressing. If so set _yulup-location-path to that node.
-                    ** If relative addressing is used, concatenate _yulup-locatoin-path attribute selector
-                    ** of the context node with the selected node
-                    **/
-                    if (select.indexOf("/") == 0) {
-                        path = select;
-                    } else {
-                        path = "{@_yulup-location-path}/" + select;
-                    }
-
-                    selectorNode.parentNode.setAttribute("_yulup-location-path", path);
+                /* Check if selector uses absolute node addressing. If so set _yulup-location-path to that node.
+                ** If relative addressing is used, concatenate _yulup-locatoin-path attribute selector
+                ** of the context node with the selected node
+                **/
+                if (select.indexOf("/") == 0) {
+                    path = select;
+                } else {
+                    path = "{@_yulup-location-path}/" + select;
                 }
+
+                subsNode = aDocumentXSL.createElementNS(YULUP_NAMESPACE_URI, "substitute");
+                subsNode.setAttribute("_yulup-location-path", path);
+                subsNode.appendChild(selectorNode.cloneNode(true));
+                selectorNode.parentNode.replaceChild(subsNode, selectorNode);
             }
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle", exception);
             /* DEBUG */ Components.utils.reportError(exception);
         }
-        // dump("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle: patched document =\n" + this.xmlSerializer.serializeToString(aDocumentXSL) + "\n");
     },
 
     /**
