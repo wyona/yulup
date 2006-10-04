@@ -1367,13 +1367,41 @@ WYSIWYGXSLTModeView.prototype = {
         return retVal;
     },
 
-    substitutePlaceholders: function (xhtmlDocument) {
+    insertPlaceholder: function (aSelectorNode, aDocumentXSL) {
+        var selector    = null;
+        var path        = null;
+        var subsElement = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aSelectorNode != null);
+        /* DEBUG */ YulupDebug.ASSERT(aDocumentXSL != null);
+
+        selector = aSelectorNode.getAttribute("select");
+        path     = null;
+
+        /* Check if selector uses absolute node addressing. If so set _yulup-location-path to that
+         * node. If relative addressing is used, concatenate _yulup-locatoin-path attribute selector
+         * of the context node with the selected node. */
+        if (selector.indexOf("/") == 0) {
+            path = selector;
+        } else {
+            path = "{@_yulup-location-path}/" + selector;
+        }
+
+        subsElement = aDocumentXSL.createElementNS(YULUP_NAMESPACE_URI, "substitute");
+        subsElement.setAttribute("_yulup-location-path", path);
+        subsElement.appendChild(aSelectorNode.cloneNode(true));
+        aSelectorNode.parentNode.replaceChild(subsElement, aSelectorNode);
+    },
+
+    substitutePlaceholders: function (aXHTMLDocument) {
         var subsElements = null;
         var subsElement  = null;
         var subsChildren = null;
         var isText       = null;
 
-        subsElements = xhtmlDocument.getElementsByTagNameNS(YULUP_NAMESPACE_URI, "substitute");
+        /* DEBUG */ YulupDebug.ASSERT(aXHTMLDocument != null);
+
+        subsElements = aXHTMLDocument.getElementsByTagNameNS(YULUP_NAMESPACE_URI, "substitute");
 
         /* Iterate over all yulup:substitute elements. The fact that NodeLists
          * are "live" and the removal of the element after processing guarantees
@@ -1513,8 +1541,7 @@ WYSIWYGXSLTModeView.prototype = {
         }
 
         /* Insert _yulup-location-path yulup:substitute node around nodeValue selectors.
-        ** Note that for-each directives and $variable selectors are not implemented yet.
-        */
+         * Note that for-each directives and $variable selectors are not implemented yet. */
         nodeValueSelectorNodes = null;
         select                 = null;
 
@@ -1522,24 +1549,7 @@ WYSIWYGXSLTModeView.prototype = {
             nodeValueSelectorNodes = aDocumentXSL.evaluate("xsl:stylesheet//*/xsl:copy-of[not(contains(@select, '$'))]", aDocumentXSL, this.__xsltNSResolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 
             for (var i=0; i< nodeValueSelectorNodes.snapshotLength; i++) {
-                selectorNode = nodeValueSelectorNodes.snapshotItem(i);
-                select       = selectorNode.getAttribute("select");
-                path         = null;
-
-                /* Check if selector uses absolute node addressing. If so set _yulup-location-path to that node.
-                ** If relative addressing is used, concatenate _yulup-locatoin-path attribute selector
-                ** of the context node with the selected node
-                **/
-                if (select.indexOf("/") == 0) {
-                    path = select;
-                } else {
-                    path = "{@_yulup-location-path}/" + select;
-                }
-
-                subsNode = aDocumentXSL.createElementNS(YULUP_NAMESPACE_URI, "substitute");
-                subsNode.setAttribute("_yulup-location-path", path);
-                subsNode.appendChild(selectorNode.cloneNode(true));
-                selectorNode.parentNode.replaceChild(subsNode, selectorNode);
+                this.insertPlaceholder(nodeValueSelectorNodes.snapshotItem(i), aDocumentXSL);
             }
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle", exception);
