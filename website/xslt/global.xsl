@@ -129,6 +129,8 @@ WARNING: This file has been generated automatically. All changes will be lost.
 
 <b>Community/Developers</b><br/>
 
+<a href="{$yarep.back2realm}roadmap.html">Roadmap</a><br/>
+
 <a href="{$yarep.back2realm}developers.html">Get/Install the Source</a><br/>
 
 <a href="{$yarep.back2realm}mailing-lists.html">Mailing Lists</a><br/>
