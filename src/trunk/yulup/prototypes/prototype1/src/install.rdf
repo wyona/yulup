@@ -31,12 +31,12 @@
     <em:version>0.1.10-rc7-rXXXXX-dev</em:version>
     <em:type>2</em:type>
 
-    <!-- Target application is Mozilla Firefox 1.5.0.* -->
+    <!-- Target application is Mozilla Firefox 1.5.0 - 2.0.0.* -->
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>1.5.0</em:minVersion>
-        <em:maxVersion>1.5.0.*</em:maxVersion>
+        <em:maxVersion>2.0.0.*</em:maxVersion>
       </Description>
     </em:targetApplication>
     <!-- Target application is Mozilla Suite 1.7.* -->
