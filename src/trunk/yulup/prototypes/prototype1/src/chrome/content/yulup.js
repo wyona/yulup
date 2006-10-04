@@ -856,7 +856,7 @@ WebProgressListener.prototype = {
         var transState = "";
         var stateType  = "";
 
-        /* DEBUG */ dump("Yulup:yulup.js:webProgressListener.onStateChange(\"" + aWebProgress + "\", \"" + aRequest + "\", \"" + aStateFlags + "\", \"" + aStatus + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:yulup.js:WebProgressListener.onStateChange(\"" + aWebProgress + "\", \"" + aRequest + "\", \"" + aStateFlags + "\", \"" + aStatus + "\") invoked\n");
 
         // get transition state of request
         /* DEBUG */ if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_START) transState += "STATE_START ";
@@ -871,7 +871,7 @@ WebProgressListener.prototype = {
         /* DEBUG */ if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK) stateType += "STATE_IS_NETWORK ";
         /* DEBUG */ if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW) stateType += "STATE_IS_WINDOW";
 
-        /* DEBUG */ dump("Yulup:yulup.js:webProgressListener.onStateChange: state type: \"" + stateType + "\", status is: \"" + transState + "\"\n");
+        /* DEBUG */ dump("Yulup:yulup.js:WebProgressListener.onStateChange: state type: \"" + stateType + "\", status is: \"" + transState + "\"\n");
 
         if ((aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW) && (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)) {
             /* Document has finished loading. Make sure we are not in a
