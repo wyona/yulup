@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<introspection xmlns="http://www.wyona.org/neutron/1.0">
+
+<edit mime-type="application/xhtml+xml" name="Testpage Andi 1">
+  <open url="testpage_andi_1.xhtml" method="GET"/>
+  <save url="testpage_andi_1.xhtml?yanel.resource.usecase=save" method="PUT"/>
+</edit>
+
+<navigation>
+  <sitetree href="sitetree.xml" method="GET"/>
+</navigation>
+
+</introspection>
