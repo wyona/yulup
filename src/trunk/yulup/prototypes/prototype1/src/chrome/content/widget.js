@@ -569,6 +569,10 @@ var WidgetHandler = {
         var scrollX         = null;
         var scrollY         = null;
 
+        /* DEBUG */ YulupDebug.ASSERT(aWidget   != null);
+        /* DEBUG */ YulupDebug.ASSERT(aView     != null);
+        /* DEBUG */ YulupDebug.ASSERT(aViewMode != null);
+
         /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doContentWidgetCommand() invoked\n");
 
         xmlSerializer = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer);
@@ -594,7 +598,7 @@ var WidgetHandler = {
                 } else if (aViewMode == 2) {
                     xPath = aView.getSourceXPathForXHTMLNode(aView.currentXHTMLNode, aView.isNamespaceAware);
 
-                    /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand() insert XPath " + xPath + "\n");
+                    /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doContentWidgetCommand: insert XPath " + xPath + "\n");
 
                     modelDOM = gEditorController.activeView.model.getDocumentDOM();
 
@@ -633,7 +637,7 @@ var WidgetHandler = {
                 } else if (aViewMode == 2) {
                     xPath = aView.getSourceXPathForXHTMLNode(aView.currentXHTMLNode, aView.isNamespaceAware);
 
-                    /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand() surround XPath " + xPath + "\n");
+                    /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doContentWidgetCommand: surround XPath " + xPath + "\n");
 
                     modelDOM = aView.model.getDocumentDOM();
 
@@ -675,6 +679,8 @@ var WidgetHandler = {
         var view            = null;
         var viewMode        = null;
 
+        /* DEBUG */ YulupDebug.ASSERT(aWidgetName != null);
+
         widget = gEditorController.widgetManager.getWidgetByName(aWidgetName);
         view   = gEditorController.activeView;
 
@@ -686,7 +692,7 @@ var WidgetHandler = {
             viewMode = 3;
         }
 
-        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand() view mode " + viewMode + "\n");
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand: view mode " + viewMode + "\n");
 
         switch (widget.attributes["type"]) {
             case "insert":
