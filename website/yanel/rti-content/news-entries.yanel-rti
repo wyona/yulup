@@ -3,3 +3,4 @@ feed-title: News
 entries-path: /news-entries
 xslt: /xslt/atomfeed2news-xhtml.xsl
 author: Yulup Editorial Team
+self-url: http://www.yulup.org:9190/ulysses/news-entries/?yanel.resource.viewid=atom
