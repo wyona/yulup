@@ -60,7 +60,15 @@
 
 <font size="-1">Updated: <xsl:value-of select="atom:updated"/></font>
 <br/>
-<font size="-1">First Published: <xsl:value-of select="atom:published"/></font>
+<font size="-1">Published: <xsl:value-of select="atom:published"/></font>
+<!--
+<br/>
+<font size="-1">Posted By: <xsl:value-of select="atom:author"/></font>
+-->
+<!--
+<br/>
+<font size="-1">Perma Link: <a href="http://www.yulup.org/news-entries/{atom:link/@href}">http://www.yulup.org/news-entries/<xsl:value-of select="atom:link/@href"/></a></font>
+-->
 <br/><br/>
 </xsl:template>
 
