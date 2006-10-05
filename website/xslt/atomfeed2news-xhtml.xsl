@@ -52,9 +52,8 @@
 
 <xsl:template match="atom:entry">
 <h3><xsl:value-of select="atom:title"/></h3>
-<p>
-<xsl:value-of select="atom:summary"/>
-</p>
+
+<xsl:apply-templates select="atom:summary"/>
 
 <xsl:copy-of select="atom:content/*"/>
 <br/>
@@ -63,6 +62,10 @@
 <br/>
 <font size="-1">First Published: <xsl:value-of select="atom:published"/></font>
 <br/><br/>
+</xsl:template>
+
+<xsl:template match="atom:summary">
+<p><xsl:value-of select="."/></p>
 </xsl:template>
 
 </xsl:stylesheet>

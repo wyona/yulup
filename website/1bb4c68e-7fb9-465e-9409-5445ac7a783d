@@ -3,10 +3,13 @@
   <atom:author>
     <atom:name>Michael Wechner</atom:name>
   </atom:author>
-  <atom:summary type="html"/>
+  <atom:id>urn:uuid:TODO-rc6</atom:id>
+<!--
+  <atom:summary type="html">0.1.10-rc6 released</atom:summary>
+-->
   <atom:content type="xhtml">
     <xhtml:div>
-    Download Yulup release candidate 6 from the <a href="../download/index.html">Download page</a>.
+    Download Yulup release candidate 6 from the <xhtml:a href="../download/index.html">Download page</xhtml:a>.
     </xhtml:div>
   </atom:content>
-<atom:updated>2006-10-05T20:15:51.847Z</atom:updated><atom:published>2006-10-05T20:10:33.728Z</atom:published></atom:entry>
+<atom:updated>2006-10-05T20:31:48.719Z</atom:updated><atom:published>2006-10-05T20:10:33.728Z</atom:published></atom:entry>
