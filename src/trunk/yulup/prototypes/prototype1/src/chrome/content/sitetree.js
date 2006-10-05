@@ -1,9 +1,37 @@
+/*
+ * ***** BEGIN LICENSE BLOCK *****
+ * Copyright 2006 Wyona AG Zurich
+ *
+ * This file is part of Yulup.
+ *
+ * Yulup is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * Yulup is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Yulup; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * ***** END LICENSE BLOCK *****
+ */
 
 /**
-  * Instantiates a new object of the type SitetreeDocument.
-  *
-  * @return {SitetreeDocument}
-  */
+ * @author Gregor Imboden
+ *
+ */
+
+
+/**
+ * Instantiates a new object of the type SitetreeDocument.
+ *
+ * @return {SitetreeDocument}
+ */
 function SitetreeDocument(aURI) {
 
     /* DEBUG */ dump("Yulup:sitetree.js:SitetreeDocument() invoked\n");
@@ -146,7 +174,7 @@ SitetreeView.prototype = {
     sitetreeDOM : null,
     rowNodeMap  : null,
     wrappedJSObject: null,
-    
+
     /**
      * The nsISupports QueryInterface method.
      */
@@ -195,7 +223,7 @@ SitetreeView.prototype = {
      * @param  {Array}    aResponseHeaders         the response headers
      * @param  {Error}    aException               an exception, or null if everything went well
      * @return {Undefined} does not have a return value
-     */ 
+     */
     __requestFinishedHandler: function(aDocumentData, aResponseStatusCode, aContext, aResponseHeaders) {
 
         /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.__requestFinishedHandler() invoked\n");
@@ -300,7 +328,7 @@ SitetreeView.prototype = {
      * Get the collection URI of the currently selected node.
      *
      * @return {nsIURI} the collection uri
-     */ 
+     */
     getCurrentCollectionURI: function() {
         var node = null;
 
@@ -323,7 +351,7 @@ SitetreeView.prototype = {
      * Get the resource URI of the currently selected node.
      *
      * @return {nsIURI} the collection uri
-     */ 
+     */
     getCurrentResourceURI: function() {
         var node = null;
 
