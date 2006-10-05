@@ -30,9 +30,11 @@
 /**
  * Instantiates a new object of the type SitetreeDocument.
  *
+ * @param  {nsIURI}           aURI the sitetree URI
  * @return {SitetreeDocument}
  */
 function SitetreeDocument(aURI) {
+    /* DEBUG */ YulupDebug.ASSERT(aURI != null);
 
     /* DEBUG */ dump("Yulup:sitetree.js:SitetreeDocument() invoked\n");
 
@@ -58,6 +60,8 @@ SitetreeDocument.prototype = {
      * @return {Undefined}    does not have a return value
      */
     appendChild: function(aNode) {
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
+
         /* DEBUG */ dump("Yulup:sitetree.js:SitetreeDocument.appendChild() invoked\n");
 
         aNode.parentNode = this;
@@ -81,6 +85,9 @@ SitetreeDocument.prototype = {
     createElement: function(aName, aURI) {
         var elem = null;
 
+        /* DEBUG */ YulupDebug.ASSERT(aName != null);
+        /* DEBUG */ YulupDebug.ASSERT(aURI  != null);
+
         /* DEBUG */ dump("Yulup:sitetree.js:SitetreeDocument.createElement() invoked\n");
 
         elem = new SitetreeNode(aName, aURI);
@@ -88,9 +95,19 @@ SitetreeDocument.prototype = {
 
         return elem;
     }
-}
+};
 
+
+/**
+ * Instantiates a new object of the type SitetreeNode.
+ *
+ * @param  {String}       aName the name of the node
+ * @param  {nsIURI}       aURI  the sitetree URI
+ * @return {SitetreeNode}
+ */
 function SitetreeNode(aName, aURI) {
+    /* DEBUG */ YulupDebug.ASSERT(aName != null);
+    /* DEBUG */ YulupDebug.ASSERT(aURI  != null);
 
     /* DEBUG */ dump("Yulup:sitetree.js:SitetreeNode() invoked\n");
 
@@ -121,6 +138,8 @@ SitetreeNode.prototype = {
      * @return {Undefined}    does not have a return value
      */
     appendChild: function(aNode) {
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
+
         /* DEBUG */ dump("Yulup:sitetree.js:SitetreeNode.appendChild() invoked\n");
 
         aNode.parentNode = this;
@@ -135,22 +154,31 @@ SitetreeNode.prototype = {
     },
 
     removeChild: function(aOldChild) {
+        /* DEBUG */ YulupDebug.ASSERT(aOldChild != null);
+
         /* DEBUG */ dump("Yulup:sitetree.js:SitetreeNode.removeChild() invoked\n");
     },
 
     replaceChild: function(aNewChild, aOldChild) {
+        /* DEBUG */ YulupDebug.ASSERT(aNewChild != null);
+        /* DEBUG */ YulupDebug.ASSERT(aOldChild != null);
+
         /* DEBUG */ dump("Yulup:sitetree.js:SitetreeNode.replaceChild() invoked\n");
     }
-}
+};
+
 
 /**
   * Instantiates an object of the type SitetreeView.
   *
-  * @param  {nsIURI}           aURI       the sitetree URI.
-  * @return {nsITreeSelection} aSelection the tree selection object.
+  * @param  {nsIURI}           aURI       the sitetree URI
+  * @return {nsITreeSelection} aSelection the tree selection object
   */
 function SitetreeView(aURI, aSelection) {
     var elem = null;
+
+    /* DEBUG */ YulupDebug.ASSERT(aURI       != null);
+    /* DEBUG */ YulupDebug.ASSERT(aSelection != null);
 
     /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView(\"" + aURI + ", \"" + aSelection +  "\") invoked\n");
 
@@ -165,14 +193,13 @@ function SitetreeView(aURI, aSelection) {
     this.loadSitetreeXML(this.uri, -1);
 }
 
-
 SitetreeView.prototype = {
-    uri         : null,
-    selection   : null,
-    treeBox     : null,
-    rowCount    : null,
-    sitetreeDOM : null,
-    rowNodeMap  : null,
+    uri            : null,
+    selection      : null,
+    treeBox        : null,
+    rowCount       : null,
+    sitetreeDOM    : null,
+    rowNodeMap     : null,
     wrappedJSObject: null,
 
     /**
@@ -193,11 +220,15 @@ SitetreeView.prototype = {
     /**
      * Load the sitetree XML file over the network.
      *
-     * @param  {Integer}   aParentRow the row where new sitetree nodes get appended.
+     * @param  {nsIURI}    aURI       the URI of the sitetree document
+     * @param  {Number}    aParentRow the row where new sitetree nodes get appended.
      * @return {Undefined}            does not have a return value
      */
     loadSitetreeXML: function(aURI, aParentRow) {
         var context = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aURI       != null);
+        /* DEBUG */ YulupDebug.ASSERT(aParentRow != null);
 
         /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.loadSitetreeXML() invoked\n");
 
@@ -225,6 +256,8 @@ SitetreeView.prototype = {
      * @return {Undefined} does not have a return value
      */
     __requestFinishedHandler: function(aDocumentData, aResponseStatusCode, aContext, aResponseHeaders) {
+        /* DEBUG */ YulupDebug.ASSERT(aResponseStatusCode != null);
+        /* DEBUG */ YulupDebug.ASSERT(aContext            != null);
 
         /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.__requestFinishedHandler() invoked\n");
 
@@ -257,6 +290,8 @@ SitetreeView.prototype = {
         var domParser   = null;
         var domDocument = null;
         var sitetree    = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aContext != null);
 
         /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.sitetreeLoadFinished() invoked\n");
 
@@ -302,6 +337,9 @@ SitetreeView.prototype = {
      */
     updateSitetreeDOM: function(aParentRow, aSitetree) {
         var parentNode = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aParentRow != null);
+        /* DEBUG */ YulupDebug.ASSERT(aSitetree  != null);
 
         /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.updateSitetreeDOM() invoked\n");
 
@@ -388,10 +426,13 @@ SitetreeView.prototype = {
      * Returns the SitetreeNode corresponding to the specified row.
      *
      * @param {Object}  aCurrentRow the current row
-     * @param {Integer} aRow        the specified row
+     * @param {Number}  aRow        the specified row
      */
     __buildRowNodeMap: function(aCurrentRow, aChildNodes) {
         var node = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aCurrentRow != null);
+        /* DEBUG */ YulupDebug.ASSERT(aChildNodes != null);
 
         ///* DEBUG */ dump("Yulup:sitetree.js:__buildRowNodeMap(\"" + aCurrentRow.row + "\")invoked\n");
 
@@ -413,6 +454,7 @@ SitetreeView.prototype = {
      * @return {SitetreeNode}      the SitetreeNode
      */
     getSitetreeNodeAtRow: function(aRow) {
+        /* DEBUG */ YulupDebug.ASSERT(aRow != null);
 
         ///* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.getSitetreeNodeAtRow(\"" + aRow + "\") invoked\n");
 
@@ -426,6 +468,8 @@ SitetreeView.prototype = {
      * @return {Integer}            the row index of this node or -1
      */
     getRowOfSitetreeNode: function(aNode) {
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
+
         ///* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.getRowOfSitetreeNode(\"" + aRow + "\") invoked\n");
 
         for (var i=0; i<this.rowNodeMap.length; i++) {
@@ -464,6 +508,9 @@ SitetreeView.prototype = {
     getCellText: function(aRow, aCol) {
         var node = null;
 
+        /* DEBUG */ YulupDebug.ASSERT(aRow != null);
+        /* DEBUG */ YulupDebug.ASSERT(aCol != null);
+
         ///* DEBUG */ dump("Yulup:sitetree.js:getCellText() invoked\n");
 
         node = this.getSitetreeNodeAtRow(aRow);
@@ -488,6 +535,8 @@ SitetreeView.prototype = {
     getLevel: function(aIndex) {
         var node = null;
 
+        /* DEBUG */ YulupDebug.ASSERT(aIndex != null);
+
         ///* DEBUG */ dump("Yulup:sitetree.js:getLevel() invoked\n");
 
         node = this.getSitetreeNodeAtRow(aIndex);
@@ -502,11 +551,13 @@ SitetreeView.prototype = {
     /**
      * Methods used by the tree to draw thread lines in the tree.
      *
-     * @param {Integer} aRowIndex the current row
-     * @param {Integer}           the row index of the parrent node belonging to aRowIndex
+     * @param {Number} aRowIndex the current row
+     * @param {Number}           the row index of the parrent node belonging to aRowIndex
      */
     getParentIndex: function(aRowIndex) {
         var node = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aRowIndex != null);
 
         ///* DEBUG */ dump("Yulup:sitetree.js:getParentIndex() invoked\n");
 
@@ -528,7 +579,10 @@ SitetreeView.prototype = {
     },
 
     hasNextSibling: function(aRowIndex, aAfterIndex) {
-        var node     = null;
+        var node = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aRowIndex   != null);
+        /* DEBUG */ YulupDebug.ASSERT(aAfterIndex != null);
 
         /* DEBUG */ dump("Yulup:sitetree.js:hasNextSibling() invoked\n");
 
@@ -545,6 +599,8 @@ SitetreeView.prototype = {
 
     isContainer: function(aIndex) {
         var node = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aIndex != null);
 
         ///* DEBUG */ dump("Yulup:sitetree.js:isContainer() invoked\n");
 
@@ -565,6 +621,8 @@ SitetreeView.prototype = {
 
     isContainerOpen: function(aIndex) {
         var node = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aIndex != null);
 
         ///* DEBUG */ dump("Yulup:sitetree.js:isContainerOpen() invoked\n");
 
@@ -624,6 +682,7 @@ SitetreeView.prototype = {
     },
 
     notifyRowChanged: function(aRow) {
+        /* DEBUG */ YulupDebug.ASSERT(aRow != null);
 
         /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.notifyRowChanged() invoked\n");
 
@@ -644,6 +703,8 @@ SitetreeView.prototype = {
      */
     toggleOpenState: function(aIndex) {
         var node = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aIndex != null);
 
         /* DEBUG */ dump("Yulup:sitetree.js:toggleOpenState() invoked\n");
 
