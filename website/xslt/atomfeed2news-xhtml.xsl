@@ -30,16 +30,7 @@
 
 <h2>News</h2>
 
-<!--
-<h3>System Requirements</h3>
-<p>Yulup requires <a href="http://www.mozilla.com/firefox/">Mozilla Firefox</a> with a minimum version of 1.5 to function. The Yulup editor is a platform-independent application, and can therefore be run on every machine which also runs Firefox.</p>
--->
-
 <xsl:apply-templates select="/atom:feed/atom:entry"/>
-
-<!--
-<hr/>
--->
 
 <p>
 <a href="http://www.feedvalidator.org/check.cgi?url=http%3A//www.yulup.org/news-entries/?yanel.resource.viewid=atom"><img src="images/valid-atom.png" alt="[Valid Atom 1.0]" title="Validate my Atom 1.0 feed" border="0"/></a>
@@ -50,8 +41,6 @@
 </p>
 
 <!--
-<hr/>
-
 <ul>
   <li>This Feed as <a href="?yanel.resource.viewid=source">application/xml</a> or as <a href="?yanel.resource.viewid=atom">application/atom+xml</a> or as <a href="index.xml?yanel.resource.viewid=source">Directory-XML</a></li>
   <li>The Atom Introspection/Service Document as <a href="../introspection-atom.xml">application/atomserv+xml</a> or as <a href="../introspection-atom.xml?yanel.resource.viewid=source">application/xml</a></li>
@@ -73,6 +62,7 @@
 <font size="-1">Updated: <xsl:value-of select="atom:updated"/></font>
 <br/>
 <font size="-1">First Published: <xsl:value-of select="atom:published"/></font>
+<br/><br/>
 </xsl:template>
 
 </xsl:stylesheet>
