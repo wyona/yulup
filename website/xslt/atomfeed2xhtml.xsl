@@ -35,7 +35,7 @@
 
 <h3>Troubleshooting Installation</h3>
 <p>
-Please see the <a href="../faq.html#troubleinstalltoc">FAQ</a> for troubleshooting installation.
+Please see the <a href="../faq.html#troubleinstalltoc">FAQ</a> for troubleshooting the installation.
 </p>
 
 
