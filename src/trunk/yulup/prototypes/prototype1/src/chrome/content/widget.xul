@@ -48,6 +48,8 @@
   <stringbundle id="uiYulupEditorStringbundle" src="chrome://yulup/locale/editor.properties"/>
 
   <script type="application/x-javascript"
+          src="chrome://yulup/content/common.js"/>
+  <script type="application/x-javascript"
           src="chrome://yulup/content/widget.js"/>
 
   <vbox id="uiYulupWidgetInsertVbox">

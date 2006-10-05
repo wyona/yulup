@@ -174,16 +174,14 @@ SitetreeNode.prototype = {
   * @param  {nsIURI}           aURI       the sitetree URI
   * @return {nsITreeSelection} aSelection the tree selection object
   */
-function SitetreeView(aURI, aSelection) {
+function SitetreeView(aURI) {
     var elem = null;
 
-    /* DEBUG */ YulupDebug.ASSERT(aURI       != null);
-    /* DEBUG */ YulupDebug.ASSERT(aSelection != null);
+    /* DEBUG */ YulupDebug.ASSERT(aURI != null);
 
-    /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView(\"" + aURI + ", \"" + aSelection +  "\") invoked\n");
+    /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView(\"" + aURI + "\") invoked\n");
 
     this.uri             = aURI;
-    this.selection       = aSelection;
     this.rowCount        = 0;
     this.sitetreeDOM     = new SitetreeDocument(this.uri);
     this.rowNodeMap      = new Array();
@@ -203,21 +201,6 @@ SitetreeView.prototype = {
     wrappedJSObject: null,
 
     /**
-     * The nsISupports QueryInterface method.
-     */
-    QueryInterface: function (aUUID) {
-        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.QueryInterface(\"" + aUUID + "\") invoked\n");
-
-        if (aUUID.equals(Components.interfaces.nsISupports) ||
-            aUUID.equals(Components.interfaces.nsITreeView) ||
-            aUUID.equals(Components.interfaces.wyIYulupSitreeView)) {
-            return this;
-        } else {
-            throw Components.results.NS_NOINTERFACE;
-        }
-    },
-
-    /**
      * Load the sitetree XML file over the network.
      *
      * @param  {nsIURI}    aURI       the URI of the sitetree document
@@ -233,11 +216,11 @@ SitetreeView.prototype = {
         /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.loadSitetreeXML() invoked\n");
 
         context = {
-            uri: aURI.spec,
-            baseURI: aURI,
-            parentRow: aParentRow,
+            uri             : aURI.spec,
+            baseURI         : aURI,
+            parentRow       : aParentRow,
             callbackFunction: this.sitetreeLoadFinished,
-            view: this
+            view            : this
         };
 
         // fetch the sitetree XML file

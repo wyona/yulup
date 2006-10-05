@@ -272,7 +272,6 @@ WidgetManager.prototype = {
 var gWidgetFragmentAttributes = null;
 
 var WidgetDialogHandler = {
-
     uiYulupEditorWidgetInsertOnDialogLoadHandler: function() {
         var widget      = null;
         var nsResolver  = null;
@@ -381,7 +380,7 @@ var ResourceSelectDialogHandler = {
         sitetreeURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(window.arguments[0], null, null);
 
 
-        tree.view = new SitetreeView(sitetreeURI, tree.selection);
+        tree.view = new SitetreeView(sitetreeURI);
     },
 
     save: function () {
@@ -393,7 +392,10 @@ var ResourceSelectDialogHandler = {
 
         tree = document.getElementById("uiYulupResourceSelectTree");
 
-        // TODO fetch tree selection
+        // fetch tree selection and write it to the returnObject
+        returnObject.returnValue = tree.view.wrappedJSObject.getCurrentResourceURI();
+
+        /* DEBUG */ dump("Yulup:widget.js:ResourceSelectDialogHandler.save: URI to return is \"" + returnObject.returnValue + "\"\n");
 
         return true;
     },
@@ -401,19 +403,24 @@ var ResourceSelectDialogHandler = {
     doSelectCommand: function(aURI, aTextBoxId) {
         var returnObject = null;
 
-        /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.showResourceUploadDialog() invoked\n");
+        /* DEBUG */ YulupDebug.ASSERT(aURI       != null);
+        /* DEBUG */ YulupDebug.ASSERT(aTextBoxId != null);
+
+        /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialogHandler.doSelectCommand() invoked\n");
 
         returnObject = new Object();
 
         if (window.openDialog(YULUP_RESOURCE_SELECT_CHROME_URI, "yulupWidgetResourceSelectDialog", "modal,resizable=no", aURI, returnObject)) {
-            document.getElementById(aTextBoxId).setAttribute("value", "treeselection");
+            if (returnObject.returnValue) {
+                /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialogHandler.doSelectCommand: inserting URI \"" + returnObject.returnValue.spec + "\"\n");
+                document.getElementById(aTextBoxId).setAttribute("value", returnObject.returnValue.spec);
+            }
         }
     }
 
 };
 
 var ResourceUploadDialogHandler = {
-
     showFilePicker: function() {
         var filePicker = null;
         var ret        = null;
@@ -436,17 +443,16 @@ var ResourceUploadDialogHandler = {
     },
 
     uiYulupEditorResourceUploadOnDialogLoadHandler: function() {
-        var tree          = null;
+        var tree = null;
 
-        /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.uiYulupEditorWidgetInsertOnDialogLoadHandler() invoked\n");
+        /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.uiYulupEditorResourceUploadOnDialogLoadHandler() invoked\n");
 
         tree = document.getElementById("uiYulupResourceUploadTree");
 
-        tree.view = new SitetreeView(window.arguments[0], tree.selection);
+        tree.view = new SitetreeView(window.arguments[0]);
     },
 
     showResourceUploadDialog: function(aURI) {
-
         /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.showResourceUploadDialog() invoked\n");
 
         window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupWidgetResourceUploadDialog", "modal,resizable=no", aURI);
@@ -466,6 +472,7 @@ var ResourceUploadDialogHandler = {
         resourceName = document.getElementById("uiYulupResourceUploadRemoteNameTextBox").getAttribute("value");
 
         // TODO upload file to server
+        /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.uploadResource: implement file upload\n");
     }
 };
 

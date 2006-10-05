@@ -302,12 +302,12 @@ function ConfigurableNsResolver(aDocument) {
 
     for (var i=0; i < sourceElements.length; i++) {
         if (aDocument.documentElement.isDefaultNamespace(sourceElements.item(i).namespaceURI)) {
-            /* DEBUG */ dump("Ulysses:common.js:ConfigurableNsResolver() default namespace: " + sourceElements.item(i).namespaceURI + "\n");
+            /* DEBUG */ dump("Ulysses:common.js:ConfigurableNsResolver: default namespace: " + sourceElements.item(i).namespaceURI + "\n");
         } else if ((prefix = sourceElements.item(i).prefix) != null) {
             if (!this.namespaces[prefix]) {
                 this.namespaces[prefix] = sourceElements.item(i).namespaceURI;
 
-                /* DEBUG */ dump("Ulysses:common.js:ConfigurableNsResolver(): added namespace prefix " + prefix + " with URI " + this.namespaces[prefix] + "\n");
+                /* DEBUG */ dump("Ulysses:common.js:ConfigurableNsResolver: added namespace prefix " + prefix + " with URI " + this.namespaces[prefix] + "\n");
             }
         }
     }
