@@ -28,13 +28,10 @@
 
 const WIDGET_TMP_DIR = "yulup-widgets";
 
-const YULUP_WIDGET_INSERT_CHROME_URI = "chrome://yulup/content/widget.xul";
-
+const YULUP_WIDGET_INSERT_CHROME_URI   = "chrome://yulup/content/widget.xul";
 const YULUP_RESOURCE_UPLOAD_CHROME_URI = "chrome://yulup/content/resourceupload.xul";
-
 const YULUP_RESOURCE_SELECT_CHROME_URI = "chrome://yulup/content/resourceselect.xul";
-
-const TIDYWIDGETFRAGMENT_CHROME_URI = "chrome://yulup/content/tidywidgetfragment.xsl";
+const TIDYWIDGETFRAGMENT_CHROME_URI    = "chrome://yulup/content/tidywidgetfragment.xsl";
 
 /**
   * Instantiates a new Object of the type Widget
@@ -373,7 +370,6 @@ var WidgetDialogHandler = {
 };
 
 var ResourceSelectDialogHandler = {
-
     uiYulupEditorResourceSelectOnDialogLoadHandler: function() {
         var tree          = null;
         var sitetreeURI   = null;
