@@ -87,6 +87,76 @@ var NetworkService = {
     },
 
     /**
+     * Perform a file upload over HTTP
+     *
+     * @param  {String}       aURI                     the target URI of the upload request
+     * @param  {nsILocalFile} aFile                    the file to upload
+     * @param  {Array}        aHeaderArray             a two-dimensional array, the first dimension containing the header the arrays, the second dimension containing the header name as a string in field 0, and the header value as a string in field 1
+     * @param  {Function}     aCallbackFunction        the function to call when the load has finished of type function(String aDocumentData, Number aResponseStatusCode, Object aContext, Array aResponseHeaders, Error aException)
+     * @param  {Object}       aContext                 a context, or null if unused by the caller
+     * @param  {Boolean}      aRetrieveResponseHeaders set to true if the response headers should be passed to the callback, false otherwise
+     * @param  {Boolean}      aHandleAuthentication    set to true if authenciation should be handled automatically upon a 401 response, or if the response should simply be passed back to the caller as other responses
+     * @return {Undefined} does not have a return value
+     * @throws {YulupException}
+     */
+    httpRequestUploadFile: function (aURI, aFile, aHeaderArray, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication) {
+        var request         = null;
+        var fileInputStream = null;
+        var ioService       = null;
+        var channel         = null;
+        var streamListener  = null;
+
+        /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.httpRequestUploadFile(\"" + aURI + "\", \"" + aFile + "\", \"" + aHeaderArray + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\", \"" + aRetrieveResponseHeaders + "\", \"" + aHandleAuthentication + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aURI                     != null);
+        /* DEBUG */ YulupDebug.ASSERT(aFile                    != null);
+        /* DEBUG */ YulupDebug.ASSERT(aCallbackFunction        != null);
+        /* DEBUG */ YulupDebug.ASSERT(typeof(aCallbackFunction)        == "function");
+        /* DEBUG */ YulupDebug.ASSERT(aRetrieveResponseHeaders != null);
+        /* DEBUG */ YulupDebug.ASSERT(typeof(aRetrieveResponseHeaders) == "boolean");
+        /* DEBUG */ YulupDebug.ASSERT(aHandleAuthentication    != null);
+        /* DEBUG */ YulupDebug.ASSERT(typeof(aHandleAuthentication)    == "boolean");
+
+        request = new HTTPRequestUploadFile(aURI, aFile, aHeaderArray, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication);
+
+        try {
+            fileInputStream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+            fileInputStream.init(aFile, PR_RDONLY, PERMS_FILE, Components.interfaces.nsIFileInputStream.CLOSE_ON_EOF);
+
+            ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+
+            channel = ioService.newChannelFromURI(ioService.newURI(aURI, null, null));
+
+            // install the notification callback handler
+            channel.notificationCallbacks = new ChannelNotificationCallback();
+
+            channel.QueryInterface(Components.interfaces.nsIUploadChannel);
+            channel.setUploadStream(fileInputStream, "multipart/form-data", -1);
+
+            channel.QueryInterface(Components.interfaces.nsIHttpChannel);
+            channel.setRequestHeader("Neutron", SUPPORTED_NEUTRON_VERSIONS, false);
+            channel.setRequestHeader("WWW-Authenticate", SUPPORTED_AUTHENTICATION_SCHEMES, false);
+
+            if (aHeaderArray) {
+                for (var i = 0; i < aHeaderArray.length; i++) {
+                    channel.setRequestHeader(aHeaderArray[i][0], aHeaderArray[i][1], false);
+                }
+            }
+
+            channel.requestMethod = "POST";
+
+            streamListener = new StreamListener(request, channel);
+
+            channel.asyncOpen(streamListener, null);
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:NetworkService.httpRequestUploadFile", exception);
+            Components.utils.reportError(exception);
+
+            throw new YulupException("Yulup:networkservice.js:NetworkService.httpRequestUploadFile: unable to upload file \"" + aFileURI + "\" to \"" + aURI + "\". \"" + exception + "\".");
+        }
+    },
+
+    /**
      * Perform an HTTP GET request.
      *
      * @param  {String}    aURI                     the target URI of the GET request
@@ -408,6 +478,11 @@ var NetworkService = {
 
         if (aRequest instanceof HTTPRequestFetchToFile) {
             NetworkService.httpFetchToFile(aRequest.uri, aRequest.file, aRequest.requestFinishedCallback, aRequest.context, aRequest.handleAuthentication);
+            return;
+        }
+
+        if (aRequest instanceof HTTPRequestUploadFile) {
+            NetworkService.httpFetchToFile(aRequest.uri, aRequest.file, aRequest.headerArray, aRequest.requestFinishedCallback, aRequest.context, aRequest.retrieveResponseHeaders, aRequest.handleAuthentication);
             return;
         }
 
@@ -1008,6 +1083,27 @@ HTTPRequestFetchToFile.prototype = {
     __proto__:  HTTPRequest.prototype,
 
     file: null
+};
+
+
+function HTTPRequestUploadFile(aURI, aFile, aHeaderArray, aRequestFinishedCallback, aContext, aRetrieveResponseHeaders, aHandleAuthentication) {
+    /* DEBUG */ YulupDebug.ASSERT(aFile                            != null);
+    /* DEBUG */ YulupDebug.ASSERT(aRetrieveResponseHeaders         != null);
+    /* DEBUG */ YulupDebug.ASSERT(typeof(aRetrieveResponseHeaders) == "boolean");
+
+    HTTPRequest.call(this, aURI, aRequestFinishedCallback, aContext, aHandleAuthentication);
+
+    this.file                    = aFile;
+    this.headerArray             = aHeaderArray;
+    this.retrieveResponseHeaders = aRetrieveResponseHeaders;
+}
+
+HTTPRequestUploadFile.prototype = {
+    __proto__:  HTTPRequest.prototype,
+
+    file                   : null,
+    headerArray            : null,
+    retrieveResponseHeaders: false
 };
 
 

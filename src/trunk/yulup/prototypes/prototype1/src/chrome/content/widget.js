@@ -514,6 +514,9 @@ var ResourceUploadDialogHandler = {
         // TODO upload file to server
         /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.uploadResource: implement file upload\n");
 
+        // issue this call via setTimer or something to make it independent of the environment destruction by the dialog close
+        NetworkService.httpRequestUploadFile(collectionURI.spec, PersistenceService.getFileDescriptor(resourceURI), null, null, null, null, true);
+
         return true;
     }
 };
