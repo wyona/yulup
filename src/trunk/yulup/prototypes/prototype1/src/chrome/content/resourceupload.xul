@@ -60,10 +60,11 @@
             src="chrome://yulup/content/sitetree.js"/>
 
     <stringbundle id="uiYulupEditorStringbundle" src="chrome://yulup/locale/editor.properties"/>
+    <stringbundle id="uiYulupMainStringbundle" src="chrome://yulup/locale/yulup.properties"/>
 
     <hbox align="center">
       <textbox flex="3" id="uiYulupResourceUploadTextBox"/>
-      <button flex="1" label="&fileOperationOpen.label;" oncommand="ResourceUploadDialogHandler.showFilePicker()"/>
+      <button flex="1" id="uiYulupResourceUploadShowFilePickerButton" label="&fileOperationOpen.label;" oncommand="ResourceUploadDialogHandler.showFilePicker()"/>
     </hbox>
 
     <spacer style="height: 12px;"/>

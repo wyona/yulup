@@ -289,7 +289,7 @@ var WidgetDialogHandler = {
         gWidgetFragmentAttributes = widget.fragmentAttributes;
 
         widgetRows = document.getElementById("uiYulupEditorWidgetInsertRows");
-        label = document.getElementById("uiYulupWidgetInsertAuthenticationLabel");
+        label      = document.getElementById("uiYulupWidgetInsertAuthenticationLabel");
 
         // set the dialog top-label
         label.setAttribute("value", label.getAttribute("value") + "\"" +widget.attributes["name"] + "\"");
@@ -298,6 +298,7 @@ var WidgetDialogHandler = {
 
             elem = document.createElement("row");
             elem.setAttribute("id", "row" + i);
+            elem.setAttribute("align", "center");
             widgetRows.appendChild(elem);
 
             elem = document.createElement("label");
@@ -384,7 +385,8 @@ var ResourceSelectDialogHandler = {
     },
 
     save: function () {
-        var tree = null;
+        var tree        = null;
+        var resourceURI = null;
 
         /* DEBUG */ dump("Yulup:widget.js:ResourceSelectDialogHandler.save() invoked\n");
 
@@ -392,8 +394,19 @@ var ResourceSelectDialogHandler = {
 
         tree = document.getElementById("uiYulupResourceSelectTree");
 
-        // fetch tree selection and write it to the returnObject
-        returnObject.returnValue = tree.view.wrappedJSObject.getCurrentResourceURI();
+        // fetch tree selection
+        resourceURI = tree.view.wrappedJSObject.getCurrentResourceURI();
+
+        if (!resourceURI) {
+            alert(document.getElementById("uiYulupEditorStringbundle").getString("yulupResourceSelectionNoResourceProvided.label"));
+
+            document.getElementById("uiYulupResourceSelectTree").focus();
+
+            return false;
+        }
+
+        // write tree selection to the returnObject
+        returnObject.returnValue = resourceURI;
 
         /* DEBUG */ dump("Yulup:widget.js:ResourceSelectDialogHandler.save: URI to return is \"" + returnObject.returnValue + "\"\n");
 
@@ -465,14 +478,43 @@ var ResourceUploadDialogHandler = {
 
         /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.uploadResource() invoked\n");
 
+        resourceURI   = document.getElementById("uiYulupResourceUploadTextBox").value;
+        resourceName  = document.getElementById("uiYulupResourceUploadRemoteNameTextBox").value;
         collectionURI = document.getElementById("uiYulupResourceUploadTree").view.wrappedJSObject.getCurrentCollectionURI();
 
-        resourceURI = document.getElementById("uiYulupResourceUploadTextBox").getAttribute("value");
+        /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.uploadResource: file to upload = \"" + resourceURI + "\", remote resource name = \"" + resourceName + "\", target collection = \"" + (collectionURI ? collectionURI.spec : collectionURI) + "\"\n");
 
-        resourceName = document.getElementById("uiYulupResourceUploadRemoteNameTextBox").getAttribute("value");
+        // check if a file to upload was selected
+        if (!resourceURI || resourceURI == "") {
+            alert(document.getElementById("uiYulupMainStringbundle").getString("yulupResourceUploadNoFileProvided.label"));
+
+            document.getElementById("uiYulupResourceUploadShowFilePickerButton").focus();
+
+            return false;
+        }
+
+        // check if a target resource was selected
+        if (!collectionURI) {
+            alert(document.getElementById("uiYulupMainStringbundle").getString("yulupResourceUploadNoTargetResourceProvided.label"));
+
+            document.getElementById("uiYulupResourceUploadTree").focus();
+
+            return false;
+        }
+
+        // check if a remote file name was given
+        if (!resourceName || resourceName == "") {
+            alert(document.getElementById("uiYulupMainStringbundle").getString("yulupResourceUploadNoResourceNameProvided.label"));
+
+            document.getElementById("uiYulupResourceUploadRemoteNameTextBox").focus();
+
+            return false;
+        }
 
         // TODO upload file to server
         /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.uploadResource: implement file upload\n");
+
+        return true;
     }
 };
 

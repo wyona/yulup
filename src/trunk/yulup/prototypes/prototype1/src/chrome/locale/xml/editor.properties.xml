@@ -166,6 +166,11 @@
     <name xml:lang="de">Well-formedness Fehler</name>
   </entity>
 
+  <entity id="yulupResourceSelectionNoResourceProvided.label">
+    <name xml:lang="en">You first have to select a resource on the remote host.</name>
+    <name xml:lang="de">Es muss zuerst eine Resource auf dem Server angegeben werden.</name>
+  </entity>
+
   <entity id="new.application.xhtml.xml.label">
     <name xml:lang="en">XHTML Document</name>
     <name xml:lang="de">XHTML Dokument</name>

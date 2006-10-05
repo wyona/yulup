@@ -22,4 +22,19 @@
     <name xml:lang="de">Das Laden der Introspektion ist fehlgeschlagen.</name>
   </entity>
 
+  <entity id="yulupResourceUploadNoFileProvided.label">
+    <name xml:lang="en">You first have to specify the file which you want to upload.</name>
+    <name xml:lang="de">Es muss zuerst eine Datei zum Hochladen angegeben werden.</name>
+  </entity>
+
+  <entity id="yulupResourceUploadNoTargetResourceProvided.label">
+    <name xml:lang="en">You first have to select a target on the remote host.</name>
+    <name xml:lang="de">Es muss zuerst ein Zielverzeichnis auf dem Server angegeben werden.</name>
+  </entity>
+
+  <entity id="yulupResourceUploadNoResourceNameProvided.label">
+    <name xml:lang="en">You first have to specify the name for the uploaded resource on the remote host.</name>
+    <name xml:lang="de">Es muss zuerst eine Name für die Datei auf dem Server angegeben werden.</name>
+  </entity>
+
 </dtd>
