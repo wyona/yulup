@@ -681,7 +681,7 @@ SitetreeView.prototype = {
     /**
      * Toggles the open state of a node.
      *
-     * @param  {Integer}   aIndex the row index
+     * @param  {Number}    aIndex the row index
      * @return {Undefined} does not have a return value
      */
     toggleOpenState: function(aIndex) {
@@ -699,18 +699,19 @@ SitetreeView.prototype = {
         if (node) {
             if (node.isOpen == true) {
                 node.isOpen = false;
+
                 // collapse the tree at aIndex
                 this.notifyRowChanged(aIndex);
             } else {
-                node.isOpen = true;
-            }
+                if (node.firstChild == null) {
+                    // load the sitetree XML
+                    this.loadSitetreeXML(node.uri, aIndex);
+                } else {
+                    // expand the tree at aIndex
+                    this.notifyRowChanged(aIndex);
+                }
 
-            if (node.firstChild == null) {
-                // load the sitetree XML
-                this.loadSitetreeXML(node.uri, aIndex);
-            } else {
-                // expand the tree at aIndex
-                this.notifyRowChanged(aIndex);
+                node.isOpen = true;
             }
         }
     }
