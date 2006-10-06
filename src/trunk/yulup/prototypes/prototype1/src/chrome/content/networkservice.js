@@ -1026,8 +1026,14 @@ ChannelNotificationCallback.prototype = {
      * The nsIProgressEventSink onProgress method.
      */
     onProgress: function (aRequest, aContext, aProgress, aProgressMax) {
-        if (this.__progressListener)
-            this.__progressListener.onProgress(aProgress, aProgressMax);
+        try {
+            if (this.__progressListener)
+                this.__progressListener.onProgress(aProgress, aProgressMax);
+        } catch (exception) {
+            // we don't want to fail here
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:ChannelNotificationCallback.onProgress", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+        }
     },
 
     /**
