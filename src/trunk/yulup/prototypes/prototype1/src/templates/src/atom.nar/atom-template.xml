@@ -5,10 +5,7 @@
   <atom:author>
     <atom:name></atom:name>
   </atom:author>
-  <atom:id></atom:id>
-  <atom:link href=""/>
-  <atom:published>yyyy-mm-ddThh:mm:ss-hh:mm</atom:published>
-  <atom:summary type="html"></atom:summary>
+  <atom:id>urn:</atom:id>
   <atom:content type="xhtml">
     <xhtml:div>
     </xhtml:div>
