@@ -67,8 +67,8 @@
     <stringbundle id="uiYulupMainStringbundle" src="chrome://yulup/locale/yulup.properties"/>
 
     <hbox align="center">
-      <textbox flex="3" id="uiYulupResourceUploadTextBox"/>
-      <button flex="1" id="uiYulupResourceUploadShowFilePickerButton" label="&fileOperationOpen.label;" oncommand="ResourceUploadDialogHandler.showFilePicker()"/>
+      <textbox flex="1" id="uiYulupResourceUploadTextBox"/>
+      <button id="uiYulupResourceUploadShowFilePickerButton" label="&fileOperationOpen.label;" oncommand="ResourceUploadDialogHandler.showFilePicker()"/>
     </hbox>
 
     <spacer style="height: 12px;"/>
@@ -76,7 +76,7 @@
     <tree id="uiYulupResourceUploadTree"
           enableColumnDrag="false"
           hidecolumnpicker="true"
-          rows="13"
+          flex="1"
           seltype="single">
       <treecols id="uiYulupResourceUploadTreeCols">
         <treecol id="uiYulupResourceUploadTreeCol" label="&editorResourceTree.label;" primary="true" flex="1"/>
@@ -87,8 +87,8 @@
     <spacer style="height: 12px;"/>
 
     <hbox align="center">
-      <label flex="1" value="&editorResourceUploadRemoteName.label;:" control="uiYulupResourceUploadRemoteNameTextBox"/>
-      <textbox flex="3" id="uiYulupResourceUploadRemoteNameTextBox"/>
+      <label value="&editorResourceUploadRemoteName.label;:" control="uiYulupResourceUploadRemoteNameTextBox"/>
+      <textbox flex="1" id="uiYulupResourceUploadRemoteNameTextBox"/>
     </hbox>
 
 </dialog>
