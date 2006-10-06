@@ -4,3 +4,4 @@ entries-path: /news-entries
 xslt: /xslt/patch-atom-link-self.xsl
 author: Yulup Editorial Team
 mime-type: application/xml
+entries-url: http://www.yulup.org/news-entries/
