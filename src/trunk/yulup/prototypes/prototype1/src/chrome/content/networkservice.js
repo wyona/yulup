@@ -124,7 +124,7 @@ var NetworkService = {
 
         try {
             fileInputStream     = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
-            fileInputStream.init(aFile, PR_RDONLY, PERMS_FILE, Components.interfaces.nsIFileInputStream.CLOSE_ON_EOF);
+            fileInputStream.init(aFile, PR_RDONLY, -1, Components.interfaces.nsIFileInputStream.CLOSE_ON_EOF);
 
             bufferedInputStream = Components.classes["@mozilla.org/network/buffered-input-stream;1"].createInstance(Components.interfaces.nsIBufferedInputStream);
             bufferedInputStream.init(fileInputStream, 1024);
@@ -149,7 +149,7 @@ var NetworkService = {
                 }
             }
 
-            channel.requestMethod = "POST";
+            channel.requestMethod = "PUT";
 
             streamListener = new StreamListener(request, channel);
 
