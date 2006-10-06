@@ -2753,6 +2753,7 @@ GuidedTagInserter.prototype = {
         promptEmptyTagFalseButton.setAttribute("label", Editor.getStringbundleString("editorGuidedTagInserterNonEmptyButton.label"));
         promptEmptyTagFalseButton.setAttribute("tooltiptext", Editor.getStringbundleString("editorGuidedTagInserterNonEmptyButton.tooltip"));
         promptEmptyTagFalseButton.setAttribute("id", "uiPromptBoxNonEmptyButton");
+        promptEmptyTagFalseButton.setAttribute("default", "true");
         promptEmptyTagFalseButton.addEventListener("command", this, true);
 
         promptEmptyTagTrueButton = this.xulDocument.createElementNS(XUL_NAMESPACE_URI, "button");
