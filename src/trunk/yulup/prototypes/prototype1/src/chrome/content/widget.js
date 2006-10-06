@@ -466,15 +466,46 @@ var ResourceUploadDialogHandler = {
     },
 
     showResourceUploadDialog: function(aURI) {
+        var returnObject = null;
+
         /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.showResourceUploadDialog() invoked\n");
 
-        window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupWidgetResourceUploadDialog", "modal,resizable=no", aURI);
+        returnObject = {
+            resourceURI  : null,
+            collectionURI: null,
+            resourceName : null
+        };
+
+        window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupWidgetResourceUploadDialog", "modal,resizable=no", aURI, returnObject);
+
+        if (returnObject.resourceURI && returnObject.collectionURI && returnObject.resourceName) {
+            // upload file to server
+
+            /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.uploadResource: implement file upload\n");
+
+            NetworkService.httpRequestUploadFile(returnObject.collectionURI.spec, PersistenceService.getFileDescriptor(returnObject.resourceURI), null, null, null, null, null, true);
+
+            /*
+            var dialog  = Components.classes["@mozilla.org/progressdialog;1"].createInstance(Components.interfaces.nsIProgressDialog);
+            var persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"].createInstance(Components.interfaces.nsIWebBrowserPersist);
+
+            var ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+            var sourceURI = ioService.newFileURI(PersistenceService.getFileDescriptor(returnObject.resourceURI), null, null);
+
+            dialog.init(sourceURI, returnObject.collectionURI, returnObject.resourceName, null, Date.now()*1000, null, persist);
+            dialog.open(null);
+
+            persist.progressListener = dialog;
+            persist.saveURI(sourceURI, null, null, null, null, returnObject.collectionURI);
+            */
+        }
     },
 
     uploadResource: function() {
         var collectionURI = null;
         var resourceURI   = null;
         var resourceName  = null;
+        var returnObject  = null;
 
         /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.uploadResource() invoked\n");
 
@@ -511,13 +542,17 @@ var ResourceUploadDialogHandler = {
             return false;
         }
 
-        // TODO upload file to server
-        /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.uploadResource: implement file upload\n");
+        if (window.arguments[1]) {
+            returnObject = window.arguments[1];
 
-        // issue this call via setTimer or something to make it independent of the environment destruction by the dialog close
-        NetworkService.httpRequestUploadFile(collectionURI.spec, PersistenceService.getFileDescriptor(resourceURI), null, null, null, null, true);
+            returnObject.resourceURI   = resourceURI;
+            returnObject.resourceName  = resourceName;
+            returnObject.collectionURI = collectionURI;
 
-        return true;
+            return true;
+        }
+
+        return false;
     }
 };
 
