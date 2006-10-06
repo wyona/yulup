@@ -74,6 +74,8 @@
           src="chrome://yulup/content/authentication.js"/>
   <script type="application/x-javascript"
           src="chrome://yulup/content/newmenu.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/progressdialog.js"/>
 
   <commandset id="uiYulupEditorFocusEventCommandset"
               commandupdater="true"

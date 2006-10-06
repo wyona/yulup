@@ -65,6 +65,14 @@
     <name xml:lang="en">Yulup-Dev</name>
   </entity>
 
+  <entity id="yulupProgressDialog.title">
+    <name xml:lang="en">Progress</name>
+  </entity>
+
+  <entity id="yulupProgressDialogCloseButton.label">
+    <name xml:lang="en">Close</name>
+  </entity>
+
   <entity id="editToolbarbuttonWarnTooltip1.tooltip">
     <name xml:lang="en">Warning:</name>
     <name xml:lang="de">Warnung:</name>

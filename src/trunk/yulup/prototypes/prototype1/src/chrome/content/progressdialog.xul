@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<!--
+# ***** BEGIN LICENSE BLOCK *****
+# Copyright 2006 Wyona AG Zurich
+#
+# This file is part of Yulup.
+#
+# Yulup is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Yulup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Yulup; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# ***** END LICENSE BLOCK *****
+-->
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://yulup/locale/yulup.dtd">
+
+<dialog id="uiYulupProgressDialog"
+        orient="vertical"
+        align="stretch"
+        title="&yulupProgressDialog.title;"
+        buttons="accept"
+        buttonlabelaccept="&yulupProgressDialogCloseButton.label;"
+        onload="window.arguments[0].onLoadHandler();"
+        style="font: -moz-dialog;"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script type="application/x-javascript"
+            src="chrome://yulup/content/common.js"/>
+    <script type="application/x-javascript"
+            src="chrome://yulup/content/progressdialog.js"/>
+
+    <label id="uiYulupProgressDialogActionLabel" style="font-weight: bolder;"/>
+    <label id="uiYulupProgressDialogDocumentNameLabel"/>
+
+    <spacer style="height: 8px;"/>
+
+    <progressmeter id="uiYulupProgressDialogProgressMeter" mode="undetermined" value="0%"/>
+
+    <hbox align="center" pack="end">
+      <label id="uiYulupProgressDialogProgressLabel" value="0 KiB" style="font-size: x-small;"/>
+    </hbox>
+
+    <spacer style="height: 12px;"/>
+
+</dialog>

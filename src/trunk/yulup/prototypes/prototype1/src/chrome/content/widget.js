@@ -497,7 +497,9 @@ var ResourceUploadDialogHandler = {
                 mimeType = "application/octet-stream";
             }
 
-            NetworkService.httpRequestUploadFile(returnObject.collectionURI.spec, sourceFile, null, mimeType, null, null, null, true);
+            var progressDialog = new ProgressDialog(window, "Uploading file", returnObject.collectionURI.spec);
+
+            NetworkService.httpRequestUploadFile(returnObject.collectionURI.spec, sourceFile, null, mimeType, null, null, null, true, progressDialog);
 
             /*
             var dialog  = Components.classes["@mozilla.org/progressdialog;1"].createInstance(Components.interfaces.nsIProgressDialog);
