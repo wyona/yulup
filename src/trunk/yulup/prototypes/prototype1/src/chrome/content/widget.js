@@ -467,6 +467,9 @@ var ResourceUploadDialogHandler = {
 
     showResourceUploadDialog: function(aURI) {
         var returnObject = null;
+        var mimeService  = null;
+        var sourceFile   = null;
+        var mimeType     = null;
 
         /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.showResourceUploadDialog() invoked\n");
 
@@ -483,7 +486,18 @@ var ResourceUploadDialogHandler = {
 
             /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.uploadResource: implement file upload\n");
 
-            NetworkService.httpRequestUploadFile(returnObject.collectionURI.spec, PersistenceService.getFileDescriptor(returnObject.resourceURI), null, null, null, null, null, true);
+            // figure out MIME type
+            mimeService = Components.classes["@mozilla.org/mime;1"].getService(Components.interfaces.nsIMIMEService);
+            sourceFile  = PersistenceService.getFileDescriptor(returnObject.resourceURI);
+
+            try {
+                mimeType = mimeService.getTypeFromFile(sourceFile);
+            } catch (exception) {
+                // could not figure out MIME type, fall back to generic octet-stream
+                mimeType = "application/octet-stream";
+            }
+
+            NetworkService.httpRequestUploadFile(returnObject.collectionURI.spec, sourceFile, null, mimeType, null, null, null, true);
 
             /*
             var dialog  = Components.classes["@mozilla.org/progressdialog;1"].createInstance(Components.interfaces.nsIProgressDialog);
