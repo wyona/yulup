@@ -31,8 +31,10 @@
         orient="vertical"
         align="stretch"
         title="&yulupProgressDialog.title;"
+        persist="screenX screenY"
         buttons="accept"
         buttonlabelaccept="&yulupProgressDialogCloseButton.label;"
+        ondialogaccept="return window.arguments[0].onCloseHandler()"
         onload="window.arguments[0].onLoadHandler();"
         style="font: -moz-dialog;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -43,7 +45,7 @@
             src="chrome://yulup/content/progressdialog.js"/>
 
     <label id="uiYulupProgressDialogActionLabel" style="font-weight: bolder;"/>
-    <label id="uiYulupProgressDialogDocumentNameLabel"/>
+    <label id="uiYulupProgressDialogDocumentNameLabel" crop="end"/>
 
     <spacer style="height: 8px;"/>
 

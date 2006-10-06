@@ -38,7 +38,7 @@ function ProgressDialog(aWindow, aAction, aDocumentName) {
     this.__action       = aAction;
     this.__documentName = aDocumentName;
 
-    this.__dialog = aWindow.openDialog(YULUP_PROGRESSDIALOG_CHROME_URI, "yulupProgressDialog" + Date.now(), "resizable=no", this);
+    this.__dialog = aWindow.openDialog(YULUP_PROGRESSDIALOG_CHROME_URI, "yulupProgressDialog" + Date.now(), "resizable=yes", this);
 }
 
 ProgressDialog.prototype = {
@@ -62,11 +62,19 @@ ProgressDialog.prototype = {
         this.__dialog.document.getElementById("uiYulupProgressDialogDocumentNameLabel").setAttribute("value", this.__documentName);
     },
 
+    onCloseHandler: function () {
+        this.__init = false;
+
+        return true;
+    },
+
     closeDialog: function () {
         /* DEBUG */ dump("Yulup:progressdialog.js:ProgressDialog.closeDialog() invoked\n");
 
-        // close the dialog box
-        this.__dialog.document.getElementById("uiYulupProgressDialog").acceptDialog();
+        if (this.__init) {
+            // close the dialog box
+            this.__dialog.document.getElementById("uiYulupProgressDialog").acceptDialog();
+        }
     },
 
     onProgress: function (aProgress, aProgressMax) {
@@ -107,12 +115,14 @@ ProgressDialog.prototype = {
 
         /* DEBUG */ dump("Yulup:progressdialog.js:ProgressDialog.requestFinished() invoked\n");
 
-        byteProgress = (this.__currentPos / 1024);
-        this.__dialog.document.getElementById("uiYulupProgressDialogProgressLabel").setAttribute("value", "Finished (" + byteProgress.toFixed(2) + " KiB)");
+        if (this.__init) {
+            byteProgress = (this.__currentPos / 1024);
+            this.__dialog.document.getElementById("uiYulupProgressDialogProgressLabel").setAttribute("value", "Finished (" + byteProgress.toFixed(2) + " KiB)");
 
-        progressDialog = this;
+            progressDialog = this;
 
-        // close the dialog box after a short timeout
-        this.__dialog.setTimeout(function() { progressDialog.closeDialog(); }, 2000);
+            // close the dialog box after a short timeout
+            this.__dialog.setTimeout(function() { progressDialog.closeDialog(); }, 2000);
+        }
     }
 };

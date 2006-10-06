@@ -36,12 +36,14 @@
         orient="vertical"
         align="stretch"
         title="&editorResourceUploadDialog.title;"
+        persist="screenX screenY width height"
         buttons="cancel, accept"
         buttonlabelaccept="&editorUploadButton.label;"
         buttonlabelcancel="&editorCancelButton.label;"
         ondialogaccept="return ResourceUploadDialogHandler.uploadResource()"
         onload="ResourceUploadDialogHandler.uiYulupEditorResourceUploadOnDialogLoadHandler()"
-        style="font: -moz-dialog; width: 400px;"
+        mindwidth="400"
+        style="font: -moz-dialog;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <script type="application/x-javascript"

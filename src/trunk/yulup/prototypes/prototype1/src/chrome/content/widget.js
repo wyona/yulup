@@ -479,11 +479,9 @@ var ResourceUploadDialogHandler = {
             resourceName : null
         };
 
-        window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupWidgetResourceUploadDialog", "modal,resizable=no", aURI, returnObject);
+        window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupWidgetResourceUploadDialog", "modal,resizable=yes", aURI, returnObject);
 
         if (returnObject.resourceURI && returnObject.collectionURI && returnObject.resourceName) {
-            // upload file to server
-
             /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.uploadResource: implement file upload\n");
 
             // figure out MIME type
@@ -499,6 +497,7 @@ var ResourceUploadDialogHandler = {
 
             var progressDialog = new ProgressDialog(window, "Uploading file", returnObject.collectionURI.spec);
 
+            // upload file to server
             NetworkService.httpRequestUploadFile(returnObject.collectionURI.spec, sourceFile, null, mimeType, null, null, null, true, progressDialog);
 
             /*
