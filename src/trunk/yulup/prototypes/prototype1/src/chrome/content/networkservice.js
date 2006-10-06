@@ -97,10 +97,11 @@ var NetworkService = {
      * @param  {Object}       aContext                 a context, or null if unused by the caller
      * @param  {Boolean}      aRetrieveResponseHeaders set to true if the response headers should be passed to the callback, false otherwise
      * @param  {Boolean}      aHandleAuthentication    set to true if authenciation should be handled automatically upon a 401 response, or if the response should simply be passed back to the caller as other responses
+     * @param  {Object}       aProgressListener        an object which can receive progress notifications
      * @return {Undefined} does not have a return value
      * @throws {YulupException}
      */
-    httpRequestUploadFile: function (aURI, aFile, aHeaderArray, aContentType, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication) {
+    httpRequestUploadFile: function (aURI, aFile, aHeaderArray, aContentType, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener) {
         var request             = null;
         var fileInputStream     = null;
         var bufferedInputStream = null;
@@ -108,7 +109,7 @@ var NetworkService = {
         var channel             = null;
         var streamListener      = null;
 
-        /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.httpRequestUploadFile(\"" + aURI + "\", \"" + aFile + "\", \"" + aHeaderArray + "\", \"" + aContentType + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\", \"" + aRetrieveResponseHeaders + "\", \"" + aHandleAuthentication + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.httpRequestUploadFile(\"" + aURI + "\", \"" + aFile + "\", \"" + aHeaderArray + "\", \"" + aContentType + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\", \"" + aRetrieveResponseHeaders + "\", \"" + aHandleAuthentication + "\", \"" + aProgressListener + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aURI                     != null);
         /* DEBUG */ YulupDebug.ASSERT(aFile                    != null);
@@ -120,7 +121,7 @@ var NetworkService = {
         /* DEBUG */ YulupDebug.ASSERT(aHandleAuthentication    != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aHandleAuthentication)    == "boolean");
 
-        request = new HTTPRequestUploadFile(aURI, aFile, aHeaderArray, aContentType, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication);
+        request = new HTTPRequestUploadFile(aURI, aFile, aHeaderArray, aContentType, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener);
 
         try {
             fileInputStream     = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
@@ -134,7 +135,7 @@ var NetworkService = {
             channel = ioService.newChannelFromURI(ioService.newURI(aURI, null, null));
 
             // install the notification callback handler
-            channel.notificationCallbacks = new ChannelNotificationCallback();
+            channel.notificationCallbacks = new ChannelNotificationCallback(aProgressListener);
 
             channel.QueryInterface(Components.interfaces.nsIUploadChannel);
             channel.setUploadStream(bufferedInputStream, aContentType, -1);
@@ -171,16 +172,17 @@ var NetworkService = {
      * @param  {Object}    aContext                 a context, or null if unused by the caller
      * @param  {Boolean}   aRetrieveResponseHeaders set to true if the response headers should be passed to the callback, false otherwise
      * @param  {Boolean}   aHandleAuthentication    set to true if authenciation should be handled automatically upon a 401 response, or if the response should simply be passed back to the caller as other responses
+     * @param  {Object}    aProgressListener        an object which can receive progress notifications
      * @return {Undefined} does not have a return value
      * @throws {YulupException}
      */
-    httpRequestGET: function (aURI, aHeaderArray, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication) {
+    httpRequestGET: function (aURI, aHeaderArray, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener) {
         var request        = null;
         var ioService      = null;
         var channel        = null;
         var streamListener = null;
 
-        /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.httpRequestGET(\"" + aURI + "\", \"" + aHeaderArray + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\", \"" + aRetrieveResponseHeaders + "\", \"" + aHandleAuthentication + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.httpRequestGET(\"" + aURI + "\", \"" + aHeaderArray + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\", \"" + aRetrieveResponseHeaders + "\", \"" + aHandleAuthentication + "\", \"" + aProgressListener + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aURI                     != null);
         /* DEBUG */ YulupDebug.ASSERT(aCallbackFunction        != null);
@@ -190,7 +192,7 @@ var NetworkService = {
         /* DEBUG */ YulupDebug.ASSERT(aHandleAuthentication    != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aHandleAuthentication)    == "boolean");
 
-        request = new HTTPRequestGET(aURI, aHeaderArray, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication);
+        request = new HTTPRequestGET(aURI, aHeaderArray, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener);
 
         try {
             ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
@@ -198,7 +200,7 @@ var NetworkService = {
             channel = ioService.newChannelFromURI(ioService.newURI(aURI, null, null));
 
             // install the notification callback handler
-            channel.notificationCallbacks = new ChannelNotificationCallback();
+            channel.notificationCallbacks = new ChannelNotificationCallback(aProgressListener);
 
             try {
                 channel.QueryInterface(Components.interfaces.nsIHttpChannel);
@@ -242,13 +244,14 @@ var NetworkService = {
      * @param  {Object}    aContext                 a context, or null if unused by the caller
      * @param  {Boolean}   aRetrieveResponseHeaders set to true if the response headers should be passed to the callback, false otherwise
      * @param  {Boolean}   aHandleAuthentication    set to true if authenciation should be handled automatically upon a 401 response, or if the response should simply be passed back to the caller as other responses
+     * @param  {Object}    aProgressListener        an object which can receive progress notifications
      * @return {Undefined} does not have a return value
      * @throws {YulupException}
      */
-    httpRequestPUT: function (aURI, aHeaderArray, aDocumentData, aContentType, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication) {
+    httpRequestPUT: function (aURI, aHeaderArray, aDocumentData, aContentType, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener) {
         var request = null;
 
-        /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.httpRequestPUT(\"" + aURI + "\", \"" + aHeaderArray + "\", \"" + /*aDocumentData +*/ "\", \"" + aContentType + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\", \"" + aRetrieveResponseHeaders + "\", \"" + aHandleAuthentication + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.httpRequestPUT(\"" + aURI + "\", \"" + aHeaderArray + "\", \"" + /*aDocumentData +*/ "\", \"" + aContentType + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\", \"" + aRetrieveResponseHeaders + "\", \"" + aHandleAuthentication + "\", \"" + aProgressListener + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aURI                     != null);
         /* DEBUG */ YulupDebug.ASSERT(aDocumentData            != null);
@@ -260,7 +263,7 @@ var NetworkService = {
         /* DEBUG */ YulupDebug.ASSERT(aHandleAuthentication    != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aHandleAuthentication)    == "boolean");
 
-        request = new HTTPRequestPUT(aURI, aHeaderArray, aDocumentData, aContentType, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication);
+        request = new HTTPRequestPUT(aURI, aHeaderArray, aDocumentData, aContentType, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener);
 
         try {
             NetworkService.__httpRequestPUTPOST(request, "PUT");
@@ -283,13 +286,14 @@ var NetworkService = {
      * @param  {Object}    aContext                 a context, or null if unused by the caller
      * @param  {Boolean}   aRetrieveResponseHeaders set to true if the response headers should be passed to the callback, false otherwise
      * @param  {Boolean}   aHandleAuthentication    set to true if authenciation should be handled automatically upon a 401 response, or if the response should simply be passed back to the caller as other responses
+     * @param  {Object}    aProgressListener        an object which can receive progress notifications
      * @return {Undefined} does not have a return value
      * @throws {YulupException}
      */
-    httpRequestPOST: function (aURI, aHeaderArray, aDocumentData, aContentType, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication) {
+    httpRequestPOST: function (aURI, aHeaderArray, aDocumentData, aContentType, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener) {
         var request = null;
 
-        /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.httpRequestPOST(\"" + aURI + "\", \"" + aHeaderArray + "\", \"" + /*aDocumentData +*/ "\", \"" + aContentType + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\", \"" + aRetrieveResponseHeaders + "\", \"" + aHandleAuthentication + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.httpRequestPOST(\"" + aURI + "\", \"" + aHeaderArray + "\", \"" + /*aDocumentData +*/ "\", \"" + aContentType + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\", \"" + aRetrieveResponseHeaders + "\", \"" + aHandleAuthentication + "\", \"" + aProgressListener + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aURI                     != null);
         /* DEBUG */ YulupDebug.ASSERT(aDocumentData            != null);
@@ -301,7 +305,7 @@ var NetworkService = {
         /* DEBUG */ YulupDebug.ASSERT(aHandleAuthentication    != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aHandleAuthentication)    == "boolean");
 
-        request = new HTTPRequestPOST(aURI, aHeaderArray, aDocumentData, aContentType, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication);
+        request = new HTTPRequestPOST(aURI, aHeaderArray, aDocumentData, aContentType, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener);
 
         try {
             NetworkService.__httpRequestPUTPOST(request, "POST");
@@ -360,7 +364,7 @@ var NetworkService = {
             channel = ioService.newChannelFromURI(ioService.newURI(aRequest.uri, null, null));
 
             // install the notification callback handler
-            channel.notificationCallbacks = new ChannelNotificationCallback();
+            channel.notificationCallbacks = new ChannelNotificationCallback(aRequest.progressListener);
 
             channel.QueryInterface(Components.interfaces.nsIUploadChannel);
             channel.setUploadStream(stringInputStream, aRequest.contentType, -1);
@@ -395,16 +399,17 @@ var NetworkService = {
      * @param  {Object}    aContext                 a context, or null if unused by the caller
      * @param  {Boolean}   aRetrieveResponseHeaders set to true if the response headers should be passed to the callback, false otherwise
      * @param  {Boolean}   aHandleAuthentication    set to true if authenciation should be handled automatically upon a 401 response, or if the response should simply be passed back to the caller as other responses
+     * @param  {Object}    aProgressListener        an object which can receive progress notifications
      * @return {Undefined} does not have a return value
      * @throws {YulupException}
      */
-    httpRequestDELETE: function (aURI, aHeaderArray, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication) {
+    httpRequestDELETE: function (aURI, aHeaderArray, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener) {
         var request           = null;
         var ioService         = null;
         var channel           = null;
         var streamListener    = null;
 
-        /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.httpRequestDELETE(\"" + aURI + "\", \"" + aHeaderArray + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\") invoked\n");
+        /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.httpRequestDELETE(\"" + aURI + "\", \"" + aHeaderArray + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\", \"" + aRetrieveResponseHeaders + "\", \"" + aHandleAuthentication + "\", \"" + aProgressListener + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aURI                     != null);
         /* DEBUG */ YulupDebug.ASSERT(aCallbackFunction        != null);
@@ -414,7 +419,7 @@ var NetworkService = {
         /* DEBUG */ YulupDebug.ASSERT(aHandleAuthentication    != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aHandleAuthentication)    == "boolean");
 
-        request = new HTTPRequestDELETE(aURI, aHeaderArray, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication);
+        request = new HTTPRequestDELETE(aURI, aHeaderArray, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener);
 
         try {
             ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
@@ -422,7 +427,7 @@ var NetworkService = {
             channel = ioService.newChannelFromURI(ioService.newURI(aURI, null, null));
 
             // install the notification callback handler
-            channel.notificationCallbacks = new ChannelNotificationCallback();
+            channel.notificationCallbacks = new ChannelNotificationCallback(aProgressListener);
 
             channel.QueryInterface(Components.interfaces.nsIHttpChannel);
             channel.setRequestHeader("Neutron", SUPPORTED_NEUTRON_VERSIONS, false);
@@ -463,22 +468,22 @@ var NetworkService = {
 
         // dispatch request
         if (aRequest instanceof HTTPRequestGET) {
-            NetworkService.httpRequestGET(aRequest.uri, aRequest.headerArray, aRequest.requestFinishedCallback, aRequest.context, aRequest.retrieveResponseHeaders, aRequest.handleAuthentication);
+            NetworkService.httpRequestGET(aRequest.uri, aRequest.headerArray, aRequest.requestFinishedCallback, aRequest.context, aRequest.retrieveResponseHeaders, aRequest.handleAuthentication, aRequest.progressListener);
             return;
         }
 
         if (aRequest instanceof HTTPRequestPUT) {
-            NetworkService.httpRequestPUT(aRequest.uri, aRequest.headerArray, aRequest.documentData, aRequest.contentType, aRequest.requestFinishedCallback, aRequest.context, aRequest.retrieveResponseHeaders, aRequest.handleAuthentication);
+            NetworkService.httpRequestPUT(aRequest.uri, aRequest.headerArray, aRequest.documentData, aRequest.contentType, aRequest.requestFinishedCallback, aRequest.context, aRequest.retrieveResponseHeaders, aRequest.handleAuthentication, aRequest.progressListener);
             return;
         }
 
         if (aRequest instanceof HTTPRequestPOST) {
-            NetworkService.httpRequestPOST(aRequest.uri, aRequest.headerArray, aRequest.documentData, aRequest.contentType, aRequest.requestFinishedCallback, aRequest.context, aRequest.retrieveResponseHeaders, aRequest.handleAuthentication);
+            NetworkService.httpRequestPOST(aRequest.uri, aRequest.headerArray, aRequest.documentData, aRequest.contentType, aRequest.requestFinishedCallback, aRequest.context, aRequest.retrieveResponseHeaders, aRequest.handleAuthentication, aRequest.progressListener);
             return;
         }
 
         if (aRequest instanceof HTTPRequestDELETE) {
-            NetworkService.httpRequestDELETE(aRequest.uri, aRequest.headerArray, aRequest.requestFinishedCallback, aRequest.context, aRequest.retrieveResponseHeaders, aRequest.handleAuthentication);
+            NetworkService.httpRequestDELETE(aRequest.uri, aRequest.headerArray, aRequest.requestFinishedCallback, aRequest.context, aRequest.retrieveResponseHeaders, aRequest.handleAuthentication, aRequest.progressListener);
             return;
         }
 
@@ -488,7 +493,7 @@ var NetworkService = {
         }
 
         if (aRequest instanceof HTTPRequestUploadFile) {
-            NetworkService.httpFetchToFile(aRequest.uri, aRequest.file, aRequest.headerArray, aRequest.contentType, aRequest.requestFinishedCallback, aRequest.context, aRequest.retrieveResponseHeaders, aRequest.handleAuthentication);
+            NetworkService.httpFetchToFile(aRequest.uri, aRequest.file, aRequest.headerArray, aRequest.contentType, aRequest.requestFinishedCallback, aRequest.context, aRequest.retrieveResponseHeaders, aRequest.handleAuthentication, aRequest.progressListener);
             return;
         }
 
@@ -835,7 +840,9 @@ StreamListener.prototype = {
                 unicodeConverter.charset = "UTF-8";
                 unicodeDoc = unicodeConverter.ConvertToUnicode(this.documentData);
             } catch (exception) {
-                // conversion failed
+                // conversion failed; bail out
+                if (this.request.progressListener)
+                    this.request.progressListener.requestFinished();
                 this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, exception);
                 return;
             }
@@ -864,11 +871,15 @@ StreamListener.prototype = {
                             NetworkService.performHTTPRequest(this.request);
                         } catch (exception) {
                             // failed to restart request
+                            if (this.request.progressListener)
+                                this.request.progressListener.requestFinished();
                             this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, exception);
                             return;
                         }
                     } else {
                         // no location header or no headers available at all; bail out
+                        if (this.request.progressListener)
+                            this.request.progressListener.requestFinished();
                         this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, new YulupException("Yulup:networkservice.js:StreamListener.onStopRequest: request failed, return code is \"" + aStatusCode + "\""));
                         return;
                     }
@@ -886,12 +897,16 @@ StreamListener.prototype = {
                             /* We should authenticate but the server did not tell us how, the
                              * headers were not accessible, or the specified authentication
                              * scheme is unknown. Bail out. */
+                            if (this.request.progressListener)
+                                this.request.progressListener.requestFinished();
                             this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, exception);
                             return;
                         }
                     } else {
                         /* We received a 401, but the caller did not order us to authenticate,
                          * therefore he is expecting a potential authentication failure. */
+                        if (this.request.progressListener)
+                            this.request.progressListener.requestFinished();
                         this.request.requestFinishedCallback(unicodeDoc, responseStatusCode, this.request.context, responseHeaders, null);
                         return;
                     }
@@ -899,6 +914,8 @@ StreamListener.prototype = {
 
                 default:
                     // everything went fine
+                    if (this.request.progressListener)
+                        this.request.progressListener.requestFinished();
                     this.request.requestFinishedCallback(unicodeDoc, responseStatusCode, this.request.context, responseHeaders, null);
                     return;
             }
@@ -906,6 +923,8 @@ StreamListener.prototype = {
             // request failed
             /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStopRequest: load failed\n");
 
+            if (this.request.progressListener)
+                this.request.progressListener.requestFinished();
             this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, new YulupException("Yulup:networkservice.js:StreamListener.onStopRequest: request failed, return code is \"" + aStatusCode + "\""));
             return;
         }
@@ -961,14 +980,17 @@ StreamListener.prototype = {
 };
 
 
-function ChannelNotificationCallback() {
+function ChannelNotificationCallback(aProgressListener) {
     /* DEBUG */ dump("Yulup:networkservice.js:ChannelNotificationCallback() invoked\n");
 
-    this.authPrompter = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher).getNewAuthPrompter(null);
+    this.__progressListener = aProgressListener;
+
+    this.__authPrompter = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher).getNewAuthPrompter(null);
 }
 
 ChannelNotificationCallback.prototype = {
-    authPrompter: null,
+    __progressListener: null,
+    __authPrompter    : null,
 
     /**
      * The nsISupports QueryInterface method.
@@ -981,7 +1003,7 @@ ChannelNotificationCallback.prototype = {
             aUUID.equals(Components.interfaces.nsIProgressEventSink)) {
             return this;
         } else if (aUUID.equals(Components.interfaces.nsIAuthPrompt)) {
-            return this.authPrompter;
+            return this.__authPrompter;
         } else {
             throw Components.results.NS_NOINTERFACE;
         }
@@ -992,6 +1014,7 @@ ChannelNotificationCallback.prototype = {
      */
     getInterface: function (aUUID) {
         /* DEBUG */ dump("Yulup:networkservice.js:ChannelNotificationCallback.getInterface(\"" + aUUID + "\") invoked\n");
+
         try {
             return this.QueryInterface(aUUID);
         } catch (exception) {
@@ -1003,7 +1026,8 @@ ChannelNotificationCallback.prototype = {
      * The nsIProgressEventSink onProgress method.
      */
     onProgress: function (aRequest, aContext, aProgress, aProgressMax) {
-        // not implemented
+        if (this.__progressListener)
+            this.__progressListener.onProgress(aProgress, aProgressMax);
     },
 
     /**
@@ -1054,9 +1078,10 @@ HTTPResponseHeaderVisitor.prototype = {
  * @param  {Function}  aRequestFinishedCallback the function to call when the load has finished of type function(String aDocumentData, Number aResponseStatusCode, Object aContext, Array aResponseHeaders, Error aException)
  * @param  {Object}    aContext                 a context, or null if unused by the caller
  * @param  {Boolean}   aHandleAuthentication    set to true if authenciation should be handled automatically upon a 401 response, or if the response should simply be passed back to the caller as other responses
+ * @param  {Object}    aProgressListener        an object which can receive progress notifications
  * @return {HTTPRequest}
  */
-function HTTPRequest(aURI, aRequestFinishedCallback, aContext, aHandleAuthentication) {
+function HTTPRequest(aURI, aRequestFinishedCallback, aContext, aHandleAuthentication, aProgressListener) {
     /* DEBUG */ YulupDebug.ASSERT(aURI                     != null);
     /* DEBUG */ YulupDebug.ASSERT(aRequestFinishedCallback != null);
     /* DEBUG */ YulupDebug.ASSERT(typeof(aRequestFinishedCallback) == "function");
@@ -1067,20 +1092,22 @@ function HTTPRequest(aURI, aRequestFinishedCallback, aContext, aHandleAuthentica
     this.requestFinishedCallback = aRequestFinishedCallback;
     this.context                 = aContext;
     this.handleAuthentication    = aHandleAuthentication;
+    this.progressListener        = aProgressListener;
 }
 
 HTTPRequest.prototype = {
     uri                    : null,
     requestFinishedCallback: null,
     context                : null,
-    handleAuthentication   : false
+    handleAuthentication   : false,
+    progressListener       : null
 };
 
 
 function HTTPRequestFetchToFile(aURI, aFile, aRequestFinishedCallback, aContext, aHandleAuthentication) {
     /* DEBUG */ YulupDebug.ASSERT(aFile != null);
 
-    HTTPRequest.call(this, aURI, aRequestFinishedCallback, aContext, aHandleAuthentication);
+    HTTPRequest.call(this, aURI, aRequestFinishedCallback, aContext, aHandleAuthentication, null);
 
     this.file = aFile;
 }
@@ -1092,13 +1119,13 @@ HTTPRequestFetchToFile.prototype = {
 };
 
 
-function HTTPRequestUploadFile(aURI, aFile, aHeaderArray, aContentType, aRequestFinishedCallback, aContext, aRetrieveResponseHeaders, aHandleAuthentication) {
+function HTTPRequestUploadFile(aURI, aFile, aHeaderArray, aContentType, aRequestFinishedCallback, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener) {
     /* DEBUG */ YulupDebug.ASSERT(aFile                            != null);
     /* DEBUG */ YulupDebug.ASSERT(aContentType                     != null);
     /* DEBUG */ YulupDebug.ASSERT(aRetrieveResponseHeaders         != null);
     /* DEBUG */ YulupDebug.ASSERT(typeof(aRetrieveResponseHeaders) == "boolean");
 
-    HTTPRequest.call(this, aURI, aRequestFinishedCallback, aContext, aHandleAuthentication);
+    HTTPRequest.call(this, aURI, aRequestFinishedCallback, aContext, aHandleAuthentication, aProgressListener);
 
     this.file                    = aFile;
     this.headerArray             = aHeaderArray;
@@ -1116,11 +1143,11 @@ HTTPRequestUploadFile.prototype = {
 };
 
 
-function HTTPRequestGET(aURI, aHeaderArray, aRequestFinishedCallback, aContext, aRetrieveResponseHeaders, aHandleAuthentication) {
+function HTTPRequestGET(aURI, aHeaderArray, aRequestFinishedCallback, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener) {
     /* DEBUG */ YulupDebug.ASSERT(aRetrieveResponseHeaders         != null);
     /* DEBUG */ YulupDebug.ASSERT(typeof(aRetrieveResponseHeaders) == "boolean");
 
-    HTTPRequest.call(this, aURI, aRequestFinishedCallback, aContext, aHandleAuthentication);
+    HTTPRequest.call(this, aURI, aRequestFinishedCallback, aContext, aHandleAuthentication, aProgressListener);
 
     this.headerArray             = aHeaderArray;
     this.retrieveResponseHeaders = aRetrieveResponseHeaders;
@@ -1134,13 +1161,13 @@ HTTPRequestGET.prototype = {
 };
 
 
-function HTTPRequestPUT(aURI, aHeaderArray, aDocumentData, aContentType, aRequestFinishedCallback, aContext, aRetrieveResponseHeaders, aHandleAuthentication) {
+function HTTPRequestPUT(aURI, aHeaderArray, aDocumentData, aContentType, aRequestFinishedCallback, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener) {
     /* DEBUG */ YulupDebug.ASSERT(aDocumentData                    != null);
     /* DEBUG */ YulupDebug.ASSERT(aContentType                     != null);
     /* DEBUG */ YulupDebug.ASSERT(aRetrieveResponseHeaders         != null);
     /* DEBUG */ YulupDebug.ASSERT(typeof(aRetrieveResponseHeaders) == "boolean");
 
-    HTTPRequest.call(this, aURI, aRequestFinishedCallback, aContext, aHandleAuthentication);
+    HTTPRequest.call(this, aURI, aRequestFinishedCallback, aContext, aHandleAuthentication, aProgressListener);
 
     this.headerArray             = aHeaderArray;
     this.documentData            = aDocumentData;
@@ -1158,13 +1185,13 @@ HTTPRequestPUT.prototype = {
 };
 
 
-function HTTPRequestPOST(aURI, aHeaderArray, aDocumentData, aContentType, aRequestFinishedCallback, aContext, aRetrieveResponseHeaders, aHandleAuthentication) {
+function HTTPRequestPOST(aURI, aHeaderArray, aDocumentData, aContentType, aRequestFinishedCallback, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener) {
     /* DEBUG */ YulupDebug.ASSERT(aDocumentData                    != null);
     /* DEBUG */ YulupDebug.ASSERT(aContentType                     != null);
     /* DEBUG */ YulupDebug.ASSERT(aRetrieveResponseHeaders         != null);
     /* DEBUG */ YulupDebug.ASSERT(typeof(aRetrieveResponseHeaders) == "boolean");
 
-    HTTPRequest.call(this, aURI, aRequestFinishedCallback, aContext, aHandleAuthentication);
+    HTTPRequest.call(this, aURI, aRequestFinishedCallback, aContext, aHandleAuthentication, aProgressListener);
 
     this.headerArray             = aHeaderArray;
     this.documentData            = aDocumentData;
@@ -1182,11 +1209,11 @@ HTTPRequestPOST.prototype = {
 };
 
 
-function HTTPRequestDELETE(aURI, aHeaderArray, aRequestFinishedCallback, aContext, aRetrieveResponseHeaders, aHandleAuthentication) {
+function HTTPRequestDELETE(aURI, aHeaderArray, aRequestFinishedCallback, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener) {
     /* DEBUG */ YulupDebug.ASSERT(aRetrieveResponseHeaders         != null);
     /* DEBUG */ YulupDebug.ASSERT(typeof(aRetrieveResponseHeaders) == "boolean");
 
-    HTTPRequest.call(this, aURI, aRequestFinishedCallback, aContext, aHandleAuthentication);
+    HTTPRequest.call(this, aURI, aRequestFinishedCallback, aContext, aHandleAuthentication, aProgressListener);
 
     this.headerArray             = aHeaderArray;
     this.retrieveResponseHeaders = aRetrieveResponseHeaders;
