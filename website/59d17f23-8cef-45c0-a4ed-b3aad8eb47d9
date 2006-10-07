@@ -1,7 +1,6 @@
 <entry xmlns="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <title type="text">yulup-prototype-1-0.1.10-rc6-r18938</title>
   <author><name>Andreas Wuest</name></author>
-  <link href="http://www.yulup.org/download/index.html"/>
   <id>urn:uuid:TODO-rc6</id>
 
   <summary type="html">Yulup 0.1.10 RC6 released</summary>
@@ -17,4 +16,4 @@
       </xhtml:ul>
     </xhtml:div>
   </content>
-<updated>2006-10-05T17:43:35.563Z</updated><published>2006-10-05T17:42:31.159Z</published></entry>
+<updated>2006-10-07T01:25:39.977Z</updated><published>2006-10-05T17:42:31.159Z</published></entry>

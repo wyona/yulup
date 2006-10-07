@@ -1,11 +1,12 @@
 <entry xmlns="http://www.w3.org/2005/Atom">
  <title type="text">ulysses-prototype-1-0.1.10-rc3-r16660</title>
  <author><name>Michael Wechner</name></author>
- <link href="http://www.yulup.org/download/index.html"/>
 
  <id>urn:uuid:download:release-atom-entries:ulysses-prototype-1-0.1.10-rc3-r16660.xml</id>
+<!--
  <link href="ulysses-prototype-1-0.1.10-rc3-r16660.xml" rel="self"/>
- <updated>2006-09-27T13:02:19.644Z</updated>
+-->
+ <updated>2006-10-07T01:26:47.750Z</updated>
  <published>2006-08-16T16:30:56-01:00</published>
 
  <summary type="html">Release Candidate rc3: ulysses-prototype-1-0.1.10-rc3-r16660</summary>
