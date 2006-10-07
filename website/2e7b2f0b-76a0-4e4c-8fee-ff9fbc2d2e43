@@ -3,8 +3,10 @@
   <author><name>Michael Wechner</name></author>
  
   <!-- TODO: Create these elements dynamically -->
+<!--
   <id>urn:lenya-uuid:download:release-atom-entries:1158338664184.xml</id>
-  <updated>2006-10-07T01:27:51.857Z</updated>
+-->
+  <updated>2006-10-07T01:32:29.811Z</updated>
 
 
   <published>2006-09-15T17:21:13-01:00</published>
