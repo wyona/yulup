@@ -1,0 +1,7 @@
+<{http://www.wyona.org/yanel/resource/1.0}atom/>
+feed-title: Releases
+entries-path: /download/release-atom-entries
+xslt: /xslt/patch-atom-link-self.xsl
+author: Yulup Release Manager
+mime-type: application/xml
+entries-url: http://www.yulup.org/download/release-atom-entries/

@@ -20,7 +20,7 @@
 <html>
 <head>
   <title>Download</title>
-  <link rel="alternate" title="Yulup Releases" href="release-atom-entries/?yanel.resource.viewid=atom" type="application/atom+xml"/>
+  <link rel="alternate" title="Yulup Releases" href="atom.xml" type="application/atom+xml"/>
   <link rel="introspection" href="introspection-atom.xml" type="application/atomserv+xml"/>
 </head>
 <body>
