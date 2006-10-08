@@ -109,17 +109,10 @@ WARNING: This file has been generated automatically. All changes will be lost.
 <b>All You Need</b><br/>
 
 <a href="{$yarep.back2realm}en/about.html">About</a><br/>
-
 <a href="{$yarep.back2realm}download/index.html">Download</a><br/>
-
-<a href="{$yarep.back2realm}en/documentation.html">Documentation</a><br/>
-
 <a href="{$yarep.back2realm}screenshots.html">Screenshots</a><br/>
-
 <a href="{$yarep.back2realm}faq.html">FAQ</a><br/>
-
 <a href="{$yarep.back2realm}license.html">License</a><br/>
-
 <a href="http://demo.yulup.org">Demo</a><br/>
 <a href="{$yarep.back2realm}news.html">News</a>
 
@@ -129,16 +122,13 @@ WARNING: This file has been generated automatically. All changes will be lost.
 
 <b>Community/Developers</b><br/>
 
-<a href="{$yarep.back2realm}en/roadmap/index.html">Roadmap</a><br/>
-
 <a href="{$yarep.back2realm}developers.html">Get/Install the Source</a><br/>
-
 <a href="{$yarep.back2realm}mailing-lists.html">Mailing Lists</a><br/>
-
 <a href="http://bugzilla.wyona.com/cgi-bin/bugzilla/buglist.cgi?short_desc_type=allwordssubstr&amp;short_desc=&amp;product=Yulup&amp;long_desc_type=allwordssubstr&amp;long_desc=&amp;bug_file_loc_type=allwordssubstr&amp;bug_file_loc=&amp;bug_status=NEW&amp;bug_status=ASSIGNED&amp;bug_status=REOPENED&amp;emailassigned_to1=1&amp;emailtype1=substring&amp;email1=&amp;emailassigned_to2=1&amp;emailreporter2=1&amp;emailcc2=1&amp;emailtype2=substring&amp;email2=&amp;bugidtype=include&amp;bug_id=&amp;votes=&amp;changedin=&amp;chfieldfrom=&amp;chfieldto=Now&amp;chfieldvalue=&amp;cmdtype=doit&amp;namedcmd=Mobi&amp;newqueryname=&amp;order=Reuse+same+sort+as+last+time&amp;field0-0-0=noop&amp;type0-0-0=noop&amp;value0-0-0=">Task/Bug Tracker</a><br/>
-
-<a href="{$yarep.back2realm}acknowledgements.html">Acknowledgements</a><br/>
+<a href="{$yarep.back2realm}en/roadmap/index.html">Roadmap</a><br/>
+<a href="{$yarep.back2realm}en/documentation.html">Documentation</a><br/>
 <a href="{$yarep.back2realm}wiki/">Wiki</a><br/>
+<a href="{$yarep.back2realm}acknowledgements.html">Acknowledgements</a><br/>
 
 </td>
 
