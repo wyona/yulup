@@ -119,6 +119,7 @@ function SitetreeNode(aName, aURI) {
     this.parentNode      = null;
     this.firstChild      = null;
     this.childNodes      = new Array();
+    this.unavailable     = false;
 }
 
 SitetreeNode.prototype = {
@@ -130,6 +131,7 @@ SitetreeNode.prototype = {
     firstChild      : null,
     parentNode      : null,
     childNodes      : null,
+    unavailable     : null,
 
     /**
      * Appends a childnode to this SitetreeNode.
@@ -310,7 +312,10 @@ SitetreeView.prototype = {
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:sitetree.js:SitetreeView.sitetreeLoadFinished:", exception);
 
-            alert(document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadFailure.label") + "\n\n" + exception.message);
+            //alert(document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadFailure.label") + "\n\n" + exception.message);
+
+            // update the model
+            aContext.view.updateSitetreeDOM(aContext.parentRow, null);
         }
     },
 
@@ -318,14 +323,13 @@ SitetreeView.prototype = {
      * Update the DOM for this SitetreeView.
      *
      * @param  {Integer}   aParentRow the row where new nodes will be apenden
-     * @param  {Sitetree}  aSitetree  the sitetree
+     * @param  {Sitetree}  aSitetree  the sitetree, or null, if not available
      * @return {Undefined}
      */
     updateSitetreeDOM: function(aParentRow, aSitetree) {
         var parentNode = null;
 
         /* DEBUG */ YulupDebug.ASSERT(aParentRow != null);
-        /* DEBUG */ YulupDebug.ASSERT(aSitetree  != null);
 
         /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.updateSitetreeDOM() invoked\n");
 
@@ -336,12 +340,19 @@ SitetreeView.prototype = {
             parentNode = this.getSitetreeNodeAtRow(aParentRow);
         }
 
-        for (var i=0; i<aSitetree.resources.length; i++) {
-            elem = this.sitetreeDOM.createElement(aSitetree.resources[i].properties.displayname, aSitetree.resources[i].href);
-            if (aSitetree.resources[i].properties.resourcetype == "collection") {
-                elem.isContainer = true;
+        if (aSitetree) {
+            parentNode.unavailable = false;
+
+            for (var i=0; i<aSitetree.resources.length; i++) {
+                elem = this.sitetreeDOM.createElement(aSitetree.resources[i].properties.displayname, aSitetree.resources[i].href);
+                if (aSitetree.resources[i].properties.resourcetype == "collection") {
+                    elem.isContainer = true;
+                }
+                parentNode.appendChild(elem);
             }
-            parentNode.appendChild(elem);
+        } else {
+            parentNode.isOpen      = false;
+            parentNode.unavailable = true;
         }
 
         this.notifyRowChanged(aParentRow);
@@ -491,7 +502,11 @@ SitetreeView.prototype = {
         node = this.getSitetreeNodeAtRow(aRow);
 
         if (node != null && node.isContainer) {
-            aProperties.AppendElement(this.__atomService.getAtom("collection"));
+            if (!node.unavailable) {
+                aProperties.AppendElement(this.__atomService.getAtom("collection"));
+            } else {
+                aProperties.AppendElement(this.__atomService.getAtom("collection-unavailable"));
+            }
         }
     },
 
