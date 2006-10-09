@@ -187,11 +187,14 @@ function SitetreeView(aURI) {
     this.rowNodeMap      = new Array();
     this.wrappedJSObject = this;
 
+    this.__atomService = Components.classes["@mozilla.org/atom-service;1"].getService(Components.interfaces.nsIAtomService);
+
     // load the sitetree XML
     this.loadSitetreeXML(this.uri, -1);
 }
 
 SitetreeView.prototype = {
+    __atomServide  : null,
     uri            : null,
     selection      : null,
     treeBox        : null,
@@ -481,7 +484,15 @@ SitetreeView.prototype = {
     },
 
     getCellProperties: function(aRow, aCol, aProperties) {
+        var node = null;
+
         ///* DEBUG */ dump("Yulup:sitetree.js:getCellProperties() invoked\n");
+
+        node = this.getSitetreeNodeAtRow(aRow);
+
+        if (node != null && node.isContainer) {
+            aProperties.AppendElement(this.__atomService.getAtom("collection"));
+        }
     },
 
     getCellValue: function(aRow, aCol) {
