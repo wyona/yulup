@@ -61,10 +61,12 @@ var ResourceUploadDialog = {
     },
 
     showResourceUploadDialog: function(aURI) {
-        var returnObject = null;
-        var mimeService  = null;
-        var sourceFile   = null;
-        var mimeType     = null;
+        var returnObject   = null;
+        var mimeService    = null;
+        var sourceFile     = null;
+        var targetURI      = null;
+        var mimeType       = null;
+        var progressDialog = null;
 
         /* DEBUG */ dump("Yulup:resourceupload.js:ResourceUploadDialog.showResourceUploadDialog() invoked\n");
 
@@ -88,10 +90,13 @@ var ResourceUploadDialog = {
                 mimeType = "application/octet-stream";
             }
 
-            var progressDialog = new ProgressDialog(window, "Uploading file", returnObject.collectionURI.spec);
+            // construct target URI
+            targetURI = returnObject.collectionURI.spec + "/" + returnObject.resourceName;
+
+            progressDialog = new ProgressDialog(window, "Uploading file", returnObject.collectionURI.spec);
 
             // upload file to server
-            NetworkService.httpRequestUploadFile(returnObject.collectionURI.spec, sourceFile, null, mimeType, ResourceUploadDialog.__uploadRequestFinishedHandler, ResourceUploadDialog.__resourceUploadFinished, false, true, progressDialog);
+            NetworkService.httpRequestUploadFile(targetURI, sourceFile, null, mimeType, ResourceUploadDialog.__uploadRequestFinishedHandler, ResourceUploadDialog.__resourceUploadFinished, false, true, progressDialog);
         }
     },
 

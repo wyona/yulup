@@ -371,6 +371,8 @@ SitetreeView.prototype = {
 
         node = this.getSitetreeNodeAtRow(this.selection.currentIndex);
 
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.getCurrentCollectionURI: currently selected node = \"" + node + "\"\n");
+
         if (node != null) {
             if (node.isContainer == true) {
                 return node.uri;
