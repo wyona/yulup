@@ -43,6 +43,7 @@ function ProgressDialog(aWindow, aAction, aDocumentName) {
 
 ProgressDialog.prototype = {
     __init        : false,
+    __closed      : false,
     __dialog      : null,
     __action      : null,
     __documentName: null,
@@ -58,12 +59,19 @@ ProgressDialog.prototype = {
 
         this.__init = true;
 
+        if (this.__closed) {
+            // the onLoadHandler was called too late, the request has already finished
+            this.closeDialog();
+
+            return;
+        }
+
         this.__dialog.document.getElementById("uiYulupProgressDialogActionLabel").setAttribute("value", this.__action + ":");
         this.__dialog.document.getElementById("uiYulupProgressDialogDocumentNameLabel").setAttribute("value", this.__documentName);
     },
 
     onCloseHandler: function () {
-        this.__init = false;
+        this.__init   = false;
 
         return true;
     },
@@ -115,6 +123,8 @@ ProgressDialog.prototype = {
 
         /* DEBUG */ dump("Yulup:progressdialog.js:ProgressDialog.requestFinished() invoked\n");
 
+        this.__closed = true;
+
         if (this.__init) {
             byteProgress = (this.__currentPos / 1024);
             this.__dialog.document.getElementById("uiYulupProgressDialogProgressLabel").setAttribute("value", "Finished (" + byteProgress.toFixed(2) + " KiB)");
@@ -122,7 +132,7 @@ ProgressDialog.prototype = {
             progressDialog = this;
 
             // close the dialog box after a short timeout
-            this.__dialog.setTimeout(function() { progressDialog.closeDialog(); }, 2000);
+            this.__dialog.setTimeout(function() { progressDialog.closeDialog(); }, 4000);
         }
     }
 };
