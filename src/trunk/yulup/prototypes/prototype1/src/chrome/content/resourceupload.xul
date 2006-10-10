@@ -41,8 +41,8 @@
         buttons="cancel, accept"
         buttonlabelaccept="&editorUploadButton.label;"
         buttonlabelcancel="&editorCancelButton.label;"
-        ondialogaccept="return ResourceUploadDialogHandler.uploadResource()"
-        onload="ResourceUploadDialogHandler.uiYulupEditorResourceUploadOnDialogLoadHandler()"
+        ondialogaccept="return ResourceUploadDialog.uploadResource()"
+        onload="ResourceUploadDialog.uiYulupEditorResourceUploadOnDialogLoadHandler()"
         mindwidth="400"
         style="font: -moz-dialog;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -62,6 +62,8 @@
     <script type="application/x-javascript"
             src="chrome://yulup/content/neutronauth.js"/>
     <script type="application/x-javascript"
+            src="chrome://yulup/content/resourceupload.js"/>
+    <script type="application/x-javascript"
             src="chrome://yulup/content/sitetree.js"/>
 
     <stringbundle id="uiYulupEditorStringbundle" src="chrome://yulup/locale/editor.properties"/>
@@ -69,7 +71,7 @@
 
     <hbox align="center">
       <textbox flex="1" id="uiYulupResourceUploadTextBox"/>
-      <button id="uiYulupResourceUploadShowFilePickerButton" label="&fileOperationOpen.label;" oncommand="ResourceUploadDialogHandler.showFilePicker()"/>
+      <button id="uiYulupResourceUploadShowFilePickerButton" label="&fileOperationOpen.label;" oncommand="ResourceUploadDialog.showFilePicker()"/>
     </hbox>
 
     <spacer style="height: 12px;"/>

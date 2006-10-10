@@ -21,6 +21,8 @@
 <!ENTITY fileOperationSaveAs.label "Save As...">
 <!ENTITY fileOperationSaveAsLocalMenuitem.label "Save to file system as...">
 <!ENTITY fileOperationSaveAsCMSMenuitem.label "Checkin to CMS as...">
+<!ENTITY fileOperationUpload.label "Upload">
+<!ENTITY fileOperationUpload.tooltip "Upload a resouce to the server">
 <!ENTITY sourceViewTab.label "Source">
 <!ENTITY wysiwygViewTab.label "WYSIWYG">
 <!ENTITY waitDescription.label "Opening the document">

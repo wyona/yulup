@@ -545,6 +545,11 @@ var Editor = {
         return templateString;
     },
 
+    resourceUpload: function () {
+        // open dialog
+        ResourceUploadDialog.showResourceUploadDialog(gEditorController.editorParams.navigation.sitetree.uri);
+    },
+
     goUpdateCommand: function (aCommand) {
         var controller = null;
         var enabled    = null;

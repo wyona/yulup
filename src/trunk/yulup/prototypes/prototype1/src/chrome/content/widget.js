@@ -29,7 +29,6 @@
 const WIDGET_TMP_DIR = "yulup-widgets";
 
 const YULUP_WIDGET_INSERT_CHROME_URI   = "chrome://yulup/content/widget.xul";
-const YULUP_RESOURCE_UPLOAD_CHROME_URI = "chrome://yulup/content/resourceupload.xul";
 const YULUP_RESOURCE_SELECT_CHROME_URI = "chrome://yulup/content/resourceselect.xul";
 const TIDYWIDGETFRAGMENT_CHROME_URI    = "chrome://yulup/content/tidywidgetfragment.xsl";
 
@@ -183,7 +182,6 @@ WidgetManager.prototype = {
             switch (widget.attributes["type"]) {
                 case "surround":
                 case "insert":
-                case "upload":
                     // create the widget directory
                     widgetDir = this.tmpDir.clone();
                     widgetDir.append(widget.attributes["name"]);
@@ -237,7 +235,6 @@ WidgetManager.prototype = {
             switch (this.widgets[i].attributes["type"]) {
                 case "surround":
                 case "insert":
-                case "upload":
                     contextObj = {
                         widget: this.widgets[i],
                         callback: aLoadFinishedCallback
@@ -431,193 +428,6 @@ var ResourceSelectDialogHandler = {
         }
     }
 
-};
-
-var ResourceUploadDialogHandler = {
-    showFilePicker: function() {
-        var filePicker = null;
-        var ret        = null;
-        var textBox    = null;
-
-        /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.showFilePicker() invoked\n");
-
-        filePicker = Components.classes["@mozilla.org/filepicker;1"].createInstance(Components.interfaces.nsIFilePicker);
-
-        filePicker.init(window, "Select a File", Components.interfaces.nsIFilePicker.modeOpen);
-        ret = filePicker.show();
-
-        if (ret == Components.interfaces.nsIFilePicker.returnOK) {
-            textBox = document.getElementById("uiYulupResourceUploadTextBox");
-            textBox.setAttribute("value", filePicker.fileURL.filePath);
-
-            textBox = document.getElementById("uiYulupResourceUploadRemoteNameTextBox");
-            textBox.setAttribute("value", filePicker.fileURL.fileName);
-        }
-    },
-
-    uiYulupEditorResourceUploadOnDialogLoadHandler: function() {
-        var tree = null;
-
-        /* DEBUG */ dump("Yulup:widget.js:ResourceUploadDialogHandler.uiYulupEditorResourceUploadOnDialogLoadHandler() invoked\n");
-
-        tree = document.getElementById("uiYulupResourceUploadTree");
-
-        tree.view = new SitetreeView(window.arguments[0]);
-    },
-
-    showResourceUploadDialog: function(aURI) {
-        var returnObject = null;
-        var mimeService  = null;
-        var sourceFile   = null;
-        var mimeType     = null;
-
-        /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.showResourceUploadDialog() invoked\n");
-
-        returnObject = {
-            resourceURI  : null,
-            collectionURI: null,
-            resourceName : null
-        };
-
-        window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupWidgetResourceUploadDialog", "modal,resizable=yes", aURI, returnObject);
-
-        if (returnObject.resourceURI && returnObject.collectionURI && returnObject.resourceName) {
-            /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.uploadResource: implement file upload\n");
-
-            // figure out MIME type
-            mimeService = Components.classes["@mozilla.org/mime;1"].getService(Components.interfaces.nsIMIMEService);
-            sourceFile  = PersistenceService.getFileDescriptor(returnObject.resourceURI);
-
-            try {
-                mimeType = mimeService.getTypeFromFile(sourceFile);
-            } catch (exception) {
-                // could not figure out MIME type, fall back to generic octet-stream
-                mimeType = "application/octet-stream";
-            }
-
-            var progressDialog = new ProgressDialog(window, "Uploading file", returnObject.collectionURI.spec);
-
-            // upload file to server
-            NetworkService.httpRequestUploadFile(returnObject.collectionURI.spec, sourceFile, null, mimeType, ResourceUploadDialogHandler.__uploadRequestFinishedHandler, ResourceUploadDialogHandler.__resourceUploadFinished, false, true, progressDialog);
-        }
-    },
-
-    uploadResource: function() {
-        var collectionURI = null;
-        var resourceURI   = null;
-        var resourceName  = null;
-        var returnObject  = null;
-
-        /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.uploadResource() invoked\n");
-
-        resourceURI   = document.getElementById("uiYulupResourceUploadTextBox").value;
-        resourceName  = document.getElementById("uiYulupResourceUploadRemoteNameTextBox").value;
-        collectionURI = document.getElementById("uiYulupResourceUploadTree").view.wrappedJSObject.getCurrentCollectionURI();
-
-        /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.uploadResource: file to upload = \"" + resourceURI + "\", remote resource name = \"" + resourceName + "\", target collection = \"" + (collectionURI ? collectionURI.spec : collectionURI) + "\"\n");
-
-        // check if a file to upload was selected
-        if (!resourceURI || resourceURI == "") {
-            alert(document.getElementById("uiYulupMainStringbundle").getString("yulupResourceUploadNoFileProvided.label"));
-
-            document.getElementById("uiYulupResourceUploadShowFilePickerButton").focus();
-
-            return false;
-        }
-
-        // check if a target resource was selected
-        if (!collectionURI) {
-            alert(document.getElementById("uiYulupMainStringbundle").getString("yulupResourceUploadNoTargetResourceProvided.label"));
-
-            document.getElementById("uiYulupResourceUploadTree").focus();
-
-            return false;
-        }
-
-        // check if a remote file name was given
-        if (!resourceName || resourceName == "") {
-            alert(document.getElementById("uiYulupMainStringbundle").getString("yulupResourceUploadNoResourceNameProvided.label"));
-
-            document.getElementById("uiYulupResourceUploadRemoteNameTextBox").focus();
-
-            return false;
-        }
-
-        if (window.arguments[1]) {
-            returnObject = window.arguments[1];
-
-            returnObject.resourceURI   = resourceURI;
-            returnObject.resourceName  = resourceName;
-            returnObject.collectionURI = collectionURI;
-
-            return true;
-        }
-
-        return false;
-    },
-
-    __uploadRequestFinishedHandler: function (aDocumentData, aResponseStatusCode, aRequestFinishedCallback, aResponseHeaders, aException) {
-        /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.__uploadRequestFinishedHandler() invoked\n");
-
-        /* DEBUG */ YulupDebug.ASSERT(aResponseStatusCode              != null);
-        /* DEBUG */ YulupDebug.ASSERT(aRequestFinishedCallback         != null);
-        /* DEBUG */ YulupDebug.ASSERT(typeof(aRequestFinishedCallback) == "function");
-
-        if (aResponseStatusCode == 200 && !aException) {
-            // success, call back to original caller
-            aRequestFinishedCallback(aDocumentData, null);
-        } else {
-            if (aException) {
-                aRequestFinishedCallback(null, aException);
-            } else if (aDocumentData) {
-                try {
-                    // parse error message (throws an exeception)
-                    Neutron.response(aDocumentData);
-                } catch (exception) {
-                    aRequestFinishedCallback(null, exception);
-                    return;
-                }
-            } else {
-                aRequestFinishedCallback(null, null);
-            }
-        }
-    },
-
-    /**
-     * Callback function to handle finished document uploads.
-     *
-     * @param  {String}    aDocumentData the response document as sent by the remote host
-     * @param  {Error}     aException    an exception as returned by the server (e.g. a Neutron exception)
-     * @return {Undefined} does not have a return value
-     */
-    __resourceUploadFinished: function (aDocumentData, aException) {
-        /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.__resourceUploadFinished(\"" + aDocumentData + "\", \"" + aException + "\") invoked\n");
-
-        if (aException == null) {
-            // report success
-            alert(Editor.getStringbundleString("editorDocumentUploadSuccess.label"));
-
-        } else {
-            if (aException && (aException instanceof NeutronProtocolException || aException instanceof NeutronAuthException)) {
-                // report error message retrieved from response
-                alert(Editor.getStringbundleString("editorDocumentUploadServerError.label") + ": \n\n" + aException.message);
-            } else if (aException) {
-                dump("Yulup:widet.js:ResourceUploadDialogHandler.__resourceUploadFinished: an error occurred during parsing the response message: " + aException.toString() + "\n");
-
-                // report generic error
-                alert(Editor.getStringbundleString("editorDocumentUploadFailure.label"));
-
-                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:widet.js:ResourceUploadDialogHandler.__resourceUploadFinished", aException);
-
-                Components.utils.reportError(aException);
-            } else {
-                dump("Yulup:widet.js:ResourceUploadDialogHandler.__resourceUploadFinished: received neither document data nor an exception.\n");
-
-                // report generic error
-                alert(Editor.getStringbundleString("editorDocumentUploadFailure.label"));
-            }
-        }
-    }
 };
 
 
@@ -842,12 +652,7 @@ var WidgetHandler = {
             case "insert":
             case "surround":
                 WidgetHandler.doContentWidgetCommand(widget, view, viewMode);
-            break;
-            case "upload":
-              if (gEditorController.editorParams.navigation && gEditorController.editorParams.navigation.sitetree.uri) {
-                  ResourceUploadDialogHandler.showResourceUploadDialog(gEditorController.editorParams.navigation.sitetree.uri);
-              }
-            break;
+                break;
         }
     }
 };

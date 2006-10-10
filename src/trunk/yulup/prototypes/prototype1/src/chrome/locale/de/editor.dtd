@@ -21,6 +21,8 @@
 <!ENTITY fileOperationSaveAs.label "Speichern unter...">
 <!ENTITY fileOperationSaveAsLocalMenuitem.label "Auf Festplatte speichern als...">
 <!ENTITY fileOperationSaveAsCMSMenuitem.label "Ins CMS einchecken als...">
+<!ENTITY fileOperationUpload.label "Hochladen">
+<!ENTITY fileOperationUpload.tooltip "Eine Ressource auf den Server hochladen">
 <!ENTITY sourceViewTab.label "Quelltext">
 <!ENTITY wysiwygViewTab.label "WYSIWYG">
 <!ENTITY waitDescription.label "Dokument wird geöffnet">

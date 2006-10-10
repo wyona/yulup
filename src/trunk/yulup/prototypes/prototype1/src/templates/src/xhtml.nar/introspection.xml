@@ -47,7 +47,6 @@
           <img xmlns="" src="http://www.yulup.org/images/whale-logo.gif" alt="Yulup Logo"/>
         </fragment>
       </widget>
-      <widget type="upload" name="Upload" description="Upload Widget" icon="icons/upload.png"/>
     </widgets>
   </edit>
 

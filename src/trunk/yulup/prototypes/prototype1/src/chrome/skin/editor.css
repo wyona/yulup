@@ -120,6 +120,11 @@ editcontroller {
   -moz-image-region: rect(48px 24px 72px 0px);
 }
 
+#uiFileOperationUpload {
+  list-style-image: url("chrome://yulup/skin/icons/yulup-upload.png");
+  -moz-image-region: rect(0px 24px 24px 0px);
+  -moz-box-orient: vertical;
+}
 
 #uiEditOperationUndo {
   list-style-image: url("chrome://yulup/skin/icons/yulup-undo-redo.png");

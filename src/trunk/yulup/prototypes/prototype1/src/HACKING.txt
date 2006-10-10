@@ -142,3 +142,11 @@ Alternatively, only produce IDENTs during lexing, and during parsing have specia
 +
 +            this.view.QueryInterface(Components.interfaces.nsIHTMLEditor);
 +
+
+
+
+            case "upload":
+              if (gEditorController.editorParams.navigation && gEditorController.editorParams.navigation.sitetree.uri) {
+                  ResourceUploadDialogHandler.showResourceUploadDialog(gEditorController.editorParams.navigation.sitetree.uri);
+              }
+            break;

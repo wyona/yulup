@@ -612,6 +612,11 @@ YulupEditStateController.prototype = {
                 document.getElementById("uiYulupEditorWaitDescription").setAttribute("hidden", true);
                 document.getElementById("broadcaster_yulup_openfailed").setAttribute("disabled", false);
 
+                // activate "upload" button if sitetree available
+                if (gEditorController.editorParams.navigation && gEditorController.editorParams.navigation.sitetree.uri) {
+                    document.getElementById("uiFileOperationUpload").setAttribute("disabled", false);
+                }
+
                 break;
             case "editorinitialised":
                 switch (this.currentState) {
@@ -637,6 +642,11 @@ YulupEditStateController.prototype = {
 
                         // deactivate "save" menu
                         document.getElementById("uiFileOperationSave").setAttribute("disabled", true);
+
+                        // activate "upload" button if sitetree available
+                        if (gEditorController.editorParams.navigation && gEditorController.editorParams.navigation.sitetree.uri) {
+                            document.getElementById("uiFileOperationUpload").setAttribute("disabled", false);
+                        }
 
                         // activate widgets, if present
                         if (document.getElementById('uiYulupWidgetToolbarbuttons').hasChildNodes()) {

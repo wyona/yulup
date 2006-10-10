@@ -116,6 +116,16 @@
     <name xml:lang="de">Ins CMS einchecken als...</name>
   </entity>
 
+  <entity id="fileOperationUpload.label">
+    <name xml:lang="en">Upload</name>
+    <name xml:lang="de">Hochladen</name>
+  </entity>
+
+  <entity id="fileOperationUpload.tooltip">
+    <name xml:lang="en">Upload a resouce to the server</name>
+    <name xml:lang="de">Eine Ressource auf den Server hochladen</name>
+  </entity>
+
   <entity id="sourceViewTab.label">
     <name xml:lang="en">Source</name>
     <name xml:lang="de">Quelltext</name>
