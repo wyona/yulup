@@ -498,21 +498,7 @@ var ResourceUploadDialogHandler = {
             var progressDialog = new ProgressDialog(window, "Uploading file", returnObject.collectionURI.spec);
 
             // upload file to server
-            NetworkService.httpRequestUploadFile(returnObject.collectionURI.spec, sourceFile, null, mimeType, null, null, null, true, progressDialog);
-
-            /*
-            var dialog  = Components.classes["@mozilla.org/progressdialog;1"].createInstance(Components.interfaces.nsIProgressDialog);
-            var persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"].createInstance(Components.interfaces.nsIWebBrowserPersist);
-
-            var ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-            var sourceURI = ioService.newFileURI(PersistenceService.getFileDescriptor(returnObject.resourceURI), null, null);
-
-            dialog.init(sourceURI, returnObject.collectionURI, returnObject.resourceName, null, Date.now()*1000, null, persist);
-            dialog.open(null);
-
-            persist.progressListener = dialog;
-            persist.saveURI(sourceURI, null, null, null, null, returnObject.collectionURI);
-            */
+            NetworkService.httpRequestUploadFile(returnObject.collectionURI.spec, sourceFile, null, mimeType, ResourceUploadDialogHandler.__uploadRequestFinishedHandler, ResourceUploadDialogHandler.__resourceUploadFinished, false, true, progressDialog);
         }
     },
 
@@ -568,6 +554,69 @@ var ResourceUploadDialogHandler = {
         }
 
         return false;
+    },
+
+    __uploadRequestFinishedHandler: function (aDocumentData, aResponseStatusCode, aRequestFinishedCallback, aResponseHeaders, aException) {
+        /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.__uploadRequestFinishedHandler() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aResponseStatusCode              != null);
+        /* DEBUG */ YulupDebug.ASSERT(aRequestFinishedCallback         != null);
+        /* DEBUG */ YulupDebug.ASSERT(typeof(aRequestFinishedCallback) == "function");
+
+        if (aResponseStatusCode == 200 && !aException) {
+            // success, call back to original caller
+            aRequestFinishedCallback(aDocumentData, null);
+        } else {
+            if (aException) {
+                aRequestFinishedCallback(null, aException);
+            } else if (aDocumentData) {
+                try {
+                    // parse error message (throws an exeception)
+                    Neutron.response(aDocumentData);
+                } catch (exception) {
+                    aRequestFinishedCallback(null, exception);
+                    return;
+                }
+            } else {
+                aRequestFinishedCallback(null, null);
+            }
+        }
+    },
+
+    /**
+     * Callback function to handle finished document uploads.
+     *
+     * @param  {String}    aDocumentData the response document as sent by the remote host
+     * @param  {Error}     aException    an exception as returned by the server (e.g. a Neutron exception)
+     * @return {Undefined} does not have a return value
+     */
+    __resourceUploadFinished: function (aDocumentData, aException) {
+        /* DEBUG */ dump("Yulup:widet.js:ResourceUploadDialogHandler.__resourceUploadFinished(\"" + aDocumentData + "\", \"" + aException + "\") invoked\n");
+
+        if (aException == null) {
+            // report success
+            alert(Editor.getStringbundleString("editorDocumentUploadSuccess.label"));
+
+        } else {
+            if (aException && (aException instanceof NeutronProtocolException || aException instanceof NeutronAuthException)) {
+                // report error message retrieved from response
+                alert(Editor.getStringbundleString("editorDocumentUploadServerError.label") + ": \n\n" + aException.message);
+            } else if (aException) {
+                dump("Yulup:widet.js:ResourceUploadDialogHandler.__resourceUploadFinished: an error occurred during parsing the response message: " + aException.toString() + "\n");
+
+                // report generic error
+                alert(Editor.getStringbundleString("editorDocumentUploadFailure.label"));
+
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:widet.js:ResourceUploadDialogHandler.__resourceUploadFinished", aException);
+
+                Components.utils.reportError(aException);
+            } else {
+                dump("Yulup:widet.js:ResourceUploadDialogHandler.__resourceUploadFinished: received neither document data nor an exception.\n");
+
+                // report generic error
+                alert(Editor.getStringbundleString("editorDocumentUploadFailure.label"));
+            }
+        }
     }
 };
 
