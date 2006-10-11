@@ -260,7 +260,7 @@ function YulupEditController(aParameterObject) {
         // get template nar file for this document type
         if ((templateArchiveURI = gEditorController.archiveRegistry.getArchiveURI(gEditorController.editorParams.contentType)) != null) {
             gEditorController.templateArchive = new NeutronArchive(templateArchiveURI);
-            // load the local archive 
+            // load the local archive
             gEditorController.templateArchive.loadNeutronArchive(null, true);
             gEditorController.templateArchive.extractNeutronArchive();
             gEditorController.editorParams.mergeIntrospectionParams(gEditorController.templateArchive.introspection);
@@ -642,6 +642,9 @@ YulupEditStateController.prototype = {
 
                         // deactivate "save" menu
                         document.getElementById("uiFileOperationSave").setAttribute("disabled", true);
+
+                        // activate "save as to cms" menuitem
+                        document.getElementById("uiFileOperationSaveAsCMSMenuitem").setAttribute("disabled", false);
 
                         // activate "upload" button if sitetree available
                         if (gEditorController.editorParams.navigation && gEditorController.editorParams.navigation.sitetree.uri) {

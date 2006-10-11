@@ -513,12 +513,31 @@ var Editor = {
      * @return {Boolean} return true on success, false otherwise
      */
     saveAsToCMS: function () {
+        var serverURI = null;
+        var targetURI = null;
+
         /* DEBUG */ dump("Yulup:editor.js:Editor.saveAsToCMS() invoked\n");
 
-        throw new YulupEditorException("Yulup:editor.js:Editor.saveAsToCMS: method not implemented.");
+        //throw new YulupEditorException("Yulup:editor.js:Editor.saveAsToCMS: method not implemented.");
 
-        // report success
-        gEditorController.model.unsetDirty();
+        // query for server address
+
+        // show document upload dialog
+        targetURI = ResourceUploadDialog.showDocumentUploadDialog(serverURI, gEditorController.document.getDocumentName());
+
+        if (targetURI) {
+            // retarget the document to selected URI
+            gEditorController.document.retargetTo(targetURI);
+
+            try {
+                gEditorController.document.uploadDocument(gEditorController.model.getDocument(), Editor.documentUploadFinished);
+            } catch (exception) {
+                /* DEBUG */ dump("Yulup:editor.js:Editor.saveAsToCMS: an error occurred saving to CMS: " + exception.toString() + "\n");
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.saveAsToCMS", exception);
+
+                return false;
+            }
+        }
 
         return true;
     },

@@ -136,13 +136,30 @@ Document.prototype = {
     },
 
     /**
+     * Get the document name, which is either null if not available,
+     * the base name of the document if no extension is available,
+     * or the base name concatenated with the extension, separated
+     * by a dot (".").
+     *
+     * @return {String} the document name, or null if not available
+     */
+    getDocumentName: function () {
+        /* DEBUG */ dump("Yulup:document.js:Document.getDocumentName() invoked\n");
+        if (this.documentBaseName) {
+            return (this.documentExtension ? this.documentBaseName + "." + this.documentExtension : this.documentBaseName);
+        } else {
+            return null;
+        }
+    },
+
+    /**
      * Get the screen name of the document.
      *
      * @return {String} the document's screen name
      */
     getScreenName: function () {
         /* DEBUG */ dump("Yulup:document.js:Document.getScreenName() invoked\n");
-        return (this.screenName ? this.screenName : ((this.documentBaseName && this.documentExtension) ? this.documentBaseName + "." + this.documentExtension : null));
+        return (this.screenName ? this.screenName : this.getDocumentName());
     },
 
     /**
@@ -255,6 +272,24 @@ Document.prototype = {
     isSaveable: function () {
         /* DEBUG */ dump("Yulup:document.js:Document.isSaveable() invoked\n");
         return (this.localSavePath ? true : false);
+    },
+
+    /**
+     * Retarget the document to a new location.
+     *
+     * @param  {nsIURI}    aURI the new URI of the document
+     * @return {Undefined} does not have a return value
+     */
+    retargetTo: function (aURI) {
+        /* DEBUG */ dump("Yulup:document.js:Document.retargetTo() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aURI != null);
+
+        this.loadURI = aURI;
+
+        aURI.QueryInterface(Components.interfaces.nsIURL);
+        this.documentBaseName  = aURI.fileBaseName;
+        this.documentExtension = aURI.fileExtension;
     },
 
     /**

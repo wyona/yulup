@@ -51,9 +51,15 @@ var ResourceUploadDialog = {
 
         /* DEBUG */ dump("Yulup:resourceupload.js:ResourceUploadDialog.uiYulupEditorResourceUploadOnDialogLoadHandler() invoked\n");
 
+        if (window.arguments[0]) {
+            document.getElementById("uiYulupResourceSelect").removeAttribute("hidden");
+        } else if (window.arguments[3]) {
+            document.getElementById("uiYulupResourceUploadRemoteNameTextBox").value = window.arguments[3];
+        }
+
         tree = document.getElementById("uiYulupResourceUploadTree");
 
-        tree.view = new SitetreeView(window.arguments[0]);
+        tree.view = new SitetreeView(window.arguments[1]);
         tree.view.wrappedJSObject.selectionChangeObserver = ResourceUploadDialog.onSelectionChangeListener;
     },
 
@@ -64,6 +70,12 @@ var ResourceUploadDialog = {
             document.getElementById("uiYulupResourceUploadRemoteNameTextBox").value = aNode.name;
     },
 
+    /**
+     * Show the resource upload dialog.
+     *
+     * @param  {nsIURI} aURI          the entry URI
+     * @return {Undefined} does not have a return value
+     */
     showResourceUploadDialog: function(aURI) {
         var returnObject   = null;
         var mimeService    = null;
@@ -74,13 +86,15 @@ var ResourceUploadDialog = {
 
         /* DEBUG */ dump("Yulup:resourceupload.js:ResourceUploadDialog.showResourceUploadDialog() invoked\n");
 
+        /* DEBUG */ YulupDebug.ASSERT(aURI != null);
+
         returnObject = {
             resourceURI  : null,
             collectionURI: null,
             resourceName : null
         };
 
-        window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupWidgetResourceUploadDialog", "modal,resizable=yes", aURI, returnObject);
+        window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupResourceUploadDialog", "modal,resizable=yes", true, aURI, returnObject);
 
         if (returnObject.resourceURI && returnObject.collectionURI && returnObject.resourceName) {
             // figure out MIME type
@@ -97,10 +111,44 @@ var ResourceUploadDialog = {
             // construct target URI
             targetURI = returnObject.collectionURI.spec + "/" + returnObject.resourceName;
 
-            progressDialog = new ProgressDialog(window, "Uploading file", returnObject.collectionURI.spec);
+            progressDialog = new ProgressDialog(window, "Uploading file", targetURI);
 
             // upload file to server
             NetworkService.httpRequestUploadFile(targetURI, sourceFile, null, mimeType, ResourceUploadDialog.__uploadRequestFinishedHandler, ResourceUploadDialog.__resourceUploadFinished, false, true, progressDialog);
+        }
+    },
+
+    /**
+     * Show the document upload dialog.
+     *
+     * @param  {nsIURI} aURI          the entry URI
+     * @param  {String} aDocumentName a proposed name for the document name on the server
+     * @return {String} the selected target URI or null if none was selected
+     */
+    showDocumentUploadDialog: function(aURI, aDocumentName) {
+        var returnObject   = null;
+        var mimeService    = null;
+        var sourceFile     = null;
+        var targetURI      = null;
+        var mimeType       = null;
+        var progressDialog = null;
+
+        /* DEBUG */ dump("Yulup:resourceupload.js:ResourceUploadDialog.showDocumentUploadDialog() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aURI != null);
+
+        returnObject = {
+            collectionURI: null,
+            resourceName : null
+        };
+
+        window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupDocumentUploadDialog", "modal,resizable=yes", false, aURI, returnObject, aDocumentName);
+
+        if (returnObject.collectionURI && returnObject.resourceName) {
+            // return target URI
+            return returnObject.collectionURI.spec + "/" + returnObject.resourceName;
+        } else {
+            return null;
         }
     },
 
@@ -112,14 +160,16 @@ var ResourceUploadDialog = {
 
         /* DEBUG */ dump("Yulup:resourceupload.js:ResourceUploadDialog.uploadResource() invoked\n");
 
-        resourceURI   = document.getElementById("uiYulupResourceUploadTextBox").value;
+        if (window.arguments[0])
+            resourceURI   = document.getElementById("uiYulupResourceUploadTextBox").value;
+
         resourceName  = document.getElementById("uiYulupResourceUploadRemoteNameTextBox").value;
         collectionURI = document.getElementById("uiYulupResourceUploadTree").view.wrappedJSObject.getCurrentCollectionURI();
 
         /* DEBUG */ dump("Yulup:resourceupload.js:ResourceUploadDialog.uploadResource: file to upload = \"" + resourceURI + "\", remote resource name = \"" + resourceName + "\", target collection = \"" + (collectionURI ? collectionURI.spec : collectionURI) + "\"\n");
 
         // check if a file to upload was selected
-        if (!resourceURI || resourceURI == "") {
+        if (window.arguments[0] && (!resourceURI || resourceURI == "")) {
             alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupResourceUploadNoFileProvided.label"));
 
             document.getElementById("uiYulupResourceUploadShowFilePickerButton").focus();
@@ -145,10 +195,12 @@ var ResourceUploadDialog = {
             return false;
         }
 
-        if (window.arguments[1]) {
-            returnObject = window.arguments[1];
+        if (window.arguments[2]) {
+            returnObject = window.arguments[2];
 
-            returnObject.resourceURI   = resourceURI;
+            if (window.arguments[0])
+                returnObject.resourceURI   = resourceURI;
+
             returnObject.resourceName  = resourceName;
             returnObject.collectionURI = collectionURI;
 
