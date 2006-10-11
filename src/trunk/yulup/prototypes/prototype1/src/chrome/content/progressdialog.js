@@ -124,6 +124,7 @@ ProgressDialog.prototype = {
 
     requestFinished: function () {
         var byteProgress   = 0;
+        var finishedLabel  = null;
         var progressDialog = null;
 
         /* DEBUG */ dump("Yulup:progressdialog.js:ProgressDialog.requestFinished() invoked\n");
@@ -131,8 +132,10 @@ ProgressDialog.prototype = {
         this.__closed = true;
 
         if (this.__init) {
-            byteProgress = (this.__currentPos / 1024);
-            this.__dialog.document.getElementById("uiYulupProgressDialogProgressLabel").value = "Finished (" + (this.__currentPos > 1048576 ? (byteProgress / 1024).toFixed(2) + " MiB" : byteProgress.toFixed(2) + " KiB") + ")";
+            byteProgress  = (this.__currentPos / 1024);
+            finishedLabel = this.__dialog.document.getElementById("uiYulupProgressDialogStringbundle").getString("requestFinished.label");
+
+            this.__dialog.document.getElementById("uiYulupProgressDialogProgressLabel").value = finishedLabel + " (" + (this.__currentPos > 1048576 ? (byteProgress / 1024).toFixed(2) + " MiB" : byteProgress.toFixed(2) + " KiB") + ")";
 
             /* DEBUG */ dump("Yulup:progressdialog.js:ProgressDialog.requestFinished: finished set\n");
 

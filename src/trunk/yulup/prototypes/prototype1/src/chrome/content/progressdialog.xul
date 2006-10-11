@@ -39,22 +39,24 @@
         style="font: -moz-dialog;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-    <script type="application/x-javascript"
-            src="chrome://yulup/content/common.js"/>
-    <script type="application/x-javascript"
-            src="chrome://yulup/content/progressdialog.js"/>
+  <stringbundle id="uiYulupProgressDialogStringbundle" src="chrome://yulup/locale/progressdialog.properties"/>
 
-    <label id="uiYulupProgressDialogActionLabel" style="font-weight: bolder;"/>
-    <label id="uiYulupProgressDialogDocumentNameLabel" crop="end"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/common.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/progressdialog.js"/>
 
-    <spacer style="height: 8px;"/>
+  <label id="uiYulupProgressDialogActionLabel" style="font-weight: bolder;"/>
+  <label id="uiYulupProgressDialogDocumentNameLabel" crop="end"/>
 
-    <progressmeter id="uiYulupProgressDialogProgressMeter" mode="undetermined" value="0"/>
+  <spacer style="height: 8px;"/>
 
-    <hbox align="center" pack="end">
-      <label id="uiYulupProgressDialogProgressLabel" value="0 KiB" style="font-size: x-small;"/>
-    </hbox>
+  <progressmeter id="uiYulupProgressDialogProgressMeter" mode="undetermined" value="0"/>
 
-    <spacer style="height: 12px;"/>
+  <hbox align="center" pack="end">
+    <label id="uiYulupProgressDialogProgressLabel" value="0 KiB" style="font-size: x-small;"/>
+  </hbox>
+
+  <spacer style="height: 12px;"/>
 
 </dialog>

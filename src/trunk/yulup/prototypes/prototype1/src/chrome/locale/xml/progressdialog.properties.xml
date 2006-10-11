@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<dtd xmlns="http://yulup.wyona.org/1.0">
+
+  <entity id="requestFinished.label">
+    <name xml:lang="en">Finished</name>
+    <name xml:lang="de">Fertig</name>
+  </entity>
+
+</dtd>
