@@ -841,8 +841,7 @@ StreamListener.prototype = {
                 unicodeDoc = unicodeConverter.ConvertToUnicode(this.documentData);
             } catch (exception) {
                 // conversion failed; bail out
-                if (this.request.progressListener)
-                    this.request.progressListener.requestFinished();
+                this.__requestFinished();
                 this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, exception);
                 return;
             }
@@ -871,15 +870,13 @@ StreamListener.prototype = {
                             NetworkService.performHTTPRequest(this.request);
                         } catch (exception) {
                             // failed to restart request
-                            if (this.request.progressListener)
-                                this.request.progressListener.requestFinished();
+                            this.__requestFinished();
                             this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, exception);
                             return;
                         }
                     } else {
                         // no location header or no headers available at all; bail out
-                        if (this.request.progressListener)
-                            this.request.progressListener.requestFinished();
+                        this.__requestFinished();
                         this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, new YulupException("Yulup:networkservice.js:StreamListener.onStopRequest: request failed, return code is \"" + aStatusCode + "\""));
                         return;
                     }
@@ -897,16 +894,14 @@ StreamListener.prototype = {
                             /* We should authenticate but the server did not tell us how, the
                              * headers were not accessible, or the specified authentication
                              * scheme is unknown. Bail out. */
-                            if (this.request.progressListener)
-                                this.request.progressListener.requestFinished();
+                            this.__requestFinished();
                             this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, exception);
                             return;
                         }
                     } else {
                         /* We received a 401, but the caller did not order us to authenticate,
                          * therefore he is expecting a potential authentication failure. */
-                        if (this.request.progressListener)
-                            this.request.progressListener.requestFinished();
+                        this.__requestFinished();
                         this.request.requestFinishedCallback(unicodeDoc, responseStatusCode, this.request.context, responseHeaders, null);
                         return;
                     }
@@ -914,8 +909,7 @@ StreamListener.prototype = {
 
                 default:
                     // everything went fine
-                    if (this.request.progressListener)
-                        this.request.progressListener.requestFinished();
+                    this.__requestFinished();
                     this.request.requestFinishedCallback(unicodeDoc, responseStatusCode, this.request.context, responseHeaders, null);
                     return;
             }
@@ -923,8 +917,7 @@ StreamListener.prototype = {
             // request failed
             /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStopRequest: load failed\n");
 
-            if (this.request.progressListener)
-                this.request.progressListener.requestFinished();
+            this.__requestFinished();
             this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, new YulupException("Yulup:networkservice.js:StreamListener.onStopRequest: request failed, return code is \"" + aStatusCode + "\""));
             return;
         }
@@ -974,7 +967,23 @@ StreamListener.prototype = {
             this.channel = aNewChannel;
 
             // make sure we have the notification callback handler installed in the new channel as well
-            this.channel.notificationCallbacks = new ChannelNotificationCallback();
+            this.channel.notificationCallbacks = new ChannelNotificationCallback(aOldChannel.notificationCallbacks.wrappedJSObject.getProgressListener());
+        }
+    },
+
+    /**
+     * Inform progress listener about finished request.
+     *
+     * @return {Undefined} does not have a return value
+     */
+    __requestFinished: function () {
+        try {
+            if (this.request.progressListener)
+                this.request.progressListener.requestFinished();
+        } catch (exception) {
+            // we don't want to fail here
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:StreamListener.__requestFinished", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
         }
     }
 };
@@ -986,11 +995,14 @@ function ChannelNotificationCallback(aProgressListener) {
     this.__progressListener = aProgressListener;
 
     this.__authPrompter = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher).getNewAuthPrompter(null);
+
+    this.wrappedJSObject = this;
 }
 
 ChannelNotificationCallback.prototype = {
     __progressListener: null,
     __authPrompter    : null,
+    wrappedJSObject   : null,
 
     /**
      * The nsISupports QueryInterface method.
@@ -1041,6 +1053,10 @@ ChannelNotificationCallback.prototype = {
      */
     onStatus: function (aRequest, aContext, aStatus, aStatusArg) {
         // not implemented
+    },
+
+    getProgressListener: function () {
+        return this.__progressListener;
     }
 };
 
