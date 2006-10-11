@@ -112,8 +112,8 @@
   </entity>
 
   <entity id="fileOperationSaveAsCMSMenuitem.label">
-    <name xml:lang="en">Checkin to CMS as...</name>
-    <name xml:lang="de">Ins CMS einchecken als...</name>
+    <name xml:lang="en">Save to CMS as...</name>
+    <name xml:lang="de">Im CMS speichern als...</name>
   </entity>
 
   <entity id="fileOperationUpload.label">
@@ -231,8 +231,8 @@
   </entity>
 
   <entity id="fileOperationSaveAsCMSMenuitem.tooltip">
-    <name xml:lang="en">Checkin document to CMS as...</name>
-    <name xml:lang="de">Dokument ins CMS einchecken als...</name>
+    <name xml:lang="en">Save document to CMS as...</name>
+    <name xml:lang="de">Dokument im CMS speichern als...</name>
   </entity>
 
   <entity id="sourceViewTab.tooltip">

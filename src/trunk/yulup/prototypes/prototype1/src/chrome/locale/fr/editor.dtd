@@ -20,7 +20,7 @@
 <!ENTITY fileOperationCheckinCMSMenuitem.label "Check back in to CMS">
 <!ENTITY fileOperationSaveAs.label "Save As...">
 <!ENTITY fileOperationSaveAsLocalMenuitem.label "Save to file system as...">
-<!ENTITY fileOperationSaveAsCMSMenuitem.label "Checkin to CMS as...">
+<!ENTITY fileOperationSaveAsCMSMenuitem.label "Save to CMS as...">
 <!ENTITY fileOperationUpload.label "Upload">
 <!ENTITY fileOperationUpload.tooltip "Upload a resouce to the server">
 <!ENTITY sourceViewTab.label "Source">
@@ -44,7 +44,7 @@
 <!ENTITY fileOperationCheckinCMSMenuitem.tooltip "Check document back in to the CMS (releases the lock)">
 <!ENTITY fileOperationSaveAs.tooltip "Save document as...">
 <!ENTITY fileOperationSaveAsLocalMenuitem.tooltip "Save dcoument to file system as...">
-<!ENTITY fileOperationSaveAsCMSMenuitem.tooltip "Checkin document to CMS as...">
+<!ENTITY fileOperationSaveAsCMSMenuitem.tooltip "Save document to CMS as...">
 <!ENTITY sourceViewTab.tooltip "View the source code of the document">
 <!ENTITY wysiwygViewTab.tooltip "View the WYSIWYG representation of the document">
 <!ENTITY editorWidgetInsertDialog.title "Set attributes">

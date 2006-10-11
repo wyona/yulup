@@ -20,7 +20,7 @@
 <!ENTITY fileOperationCheckinCMSMenuitem.label "Ins CMS einchecken">
 <!ENTITY fileOperationSaveAs.label "Speichern unter...">
 <!ENTITY fileOperationSaveAsLocalMenuitem.label "Auf Festplatte speichern als...">
-<!ENTITY fileOperationSaveAsCMSMenuitem.label "Ins CMS einchecken als...">
+<!ENTITY fileOperationSaveAsCMSMenuitem.label "Im CMS speichern als...">
 <!ENTITY fileOperationUpload.label "Hochladen">
 <!ENTITY fileOperationUpload.tooltip "Eine Ressource auf den Server hochladen">
 <!ENTITY sourceViewTab.label "Quelltext">
@@ -44,7 +44,7 @@
 <!ENTITY fileOperationCheckinCMSMenuitem.tooltip "Dokument im CMS speichern (Sperrung aufeben)">
 <!ENTITY fileOperationSaveAs.tooltip "Dokument Speichern unter...">
 <!ENTITY fileOperationSaveAsLocalMenuitem.tooltip "Dokument auf Festplatte speichern als...">
-<!ENTITY fileOperationSaveAsCMSMenuitem.tooltip "Dokument ins CMS einchecken als...">
+<!ENTITY fileOperationSaveAsCMSMenuitem.tooltip "Dokument im CMS speichern als...">
 <!ENTITY sourceViewTab.tooltip "Den Quelltext des Dokuments betrachten">
 <!ENTITY wysiwygViewTab.tooltip "Die WYSIWYG Darstellung des Dokuments betrachen">
 <!ENTITY editorWidgetInsertDialog.title "Setzte Attribute">
