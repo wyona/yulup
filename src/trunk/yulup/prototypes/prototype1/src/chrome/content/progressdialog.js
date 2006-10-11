@@ -102,7 +102,7 @@ ProgressDialog.prototype = {
                 if (this.__dialog.document.getElementById("uiYulupProgressDialogProgressMeter").mode != "undetermined")
                     this.__dialog.document.getElementById("uiYulupProgressDialogProgressMeter").mode = "undetermined";
 
-                this.__dialog.document.getElementById("uiYulupProgressDialogProgressLabel").setAttribute("value", byteProgress.toFixed(2) + " KiB");
+                this.__dialog.document.getElementById("uiYulupProgressDialogProgressLabel").value = (aProgress > 1048576 ? (byteProgress / 1024).toFixed(2) + " MiB" : byteProgress.toFixed(2) + " KiB");
             } else {
                 percentProgress = Math.ceil((aProgress / aProgressMax) * 100);
 
@@ -115,7 +115,7 @@ ProgressDialog.prototype = {
 
                 byteMax = (aProgressMax / 1024);
 
-                this.__dialog.document.getElementById("uiYulupProgressDialogProgressLabel").setAttribute("value", byteProgress.toFixed(2) + " KiB / " + byteMax.toFixed(2) + " KiB");
+                this.__dialog.document.getElementById("uiYulupProgressDialogProgressLabel").value = (aProgress > 1048576 ? (byteProgress / 1024).toFixed(2) + " MiB" : byteProgress.toFixed(2) + " KiB") + " / " + (aProgressMax > 1048576 ? (byteMax / 1024).toFixed(2) + " MiB" : byteMax.toFixed(2) + " KiB");
             }
         }
 
@@ -132,7 +132,9 @@ ProgressDialog.prototype = {
 
         if (this.__init) {
             byteProgress = (this.__currentPos / 1024);
-            this.__dialog.document.getElementById("uiYulupProgressDialogProgressLabel").setAttribute("value", "Finished (" + byteProgress.toFixed(2) + " KiB)");
+            this.__dialog.document.getElementById("uiYulupProgressDialogProgressLabel").value = "Finished (" + (this.__currentPos > 1048576 ? (byteProgress / 1024).toFixed(2) + " MiB" : byteProgress.toFixed(2) + " KiB") + ")";
+
+            /* DEBUG */ dump("Yulup:progressdialog.js:ProgressDialog.requestFinished: finished set\n");
 
             progressDialog = this;
 
