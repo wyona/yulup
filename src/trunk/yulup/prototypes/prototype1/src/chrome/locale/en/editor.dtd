@@ -26,6 +26,8 @@
 <!ENTITY sourceViewTab.label "Source">
 <!ENTITY wysiwygViewTab.label "WYSIWYG">
 <!ENTITY waitDescription.label "Opening the document">
+<!ENTITY yulupServerURIDialog.title "Enter server URI">
+<!ENTITY yulupServerURIDialogLabel.label "Enter the URI of the server you want to upload the document to">
 <!ENTITY editOperationCopy.tooltip "Copy selection to clipboard">
 <!ENTITY editOperationCut.tooltip "Cut selection and copy to clipboard">
 <!ENTITY editOperationPaste.tooltip "Paste from clipboard">

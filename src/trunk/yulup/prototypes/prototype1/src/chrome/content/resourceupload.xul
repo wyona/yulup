@@ -67,6 +67,7 @@
             src="chrome://yulup/content/sitetree.js"/>
 
     <stringbundle id="uiYulupOverlayStringbundle" src="chrome://yulup/locale/yulup.properties"/>
+    <stringbundle id="uiYulupEditorStringbundle" src="chrome://yulup/locale/editor.properties"/>
 
     <hbox id="uiYulupResourceSelect" align="center" hidden="true">
       <textbox flex="1" id="uiYulupResourceUploadTextBox"/>

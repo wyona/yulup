@@ -26,6 +26,8 @@
 <!ENTITY sourceViewTab.label "Quelltext">
 <!ENTITY wysiwygViewTab.label "WYSIWYG">
 <!ENTITY waitDescription.label "Dokument wird geöffnet">
+<!ENTITY yulupServerURIDialog.title "Server URI eingeben">
+<!ENTITY yulupServerURIDialogLabel.label "Bitten die URI des Servers angeben, auf den das Dokument hochgeladen werden soll">
 <!ENTITY editOperationCopy.tooltip "Auswahl in Zwischenablage kopieren">
 <!ENTITY editOperationCut.tooltip "Auswahl ausschneiden und in Zwischenablage kopieren">
 <!ENTITY editOperationPaste.tooltip "Aus der Zwischenablage einfügen">

@@ -173,13 +173,16 @@ SitetreeNode.prototype = {
 /**
   * Instantiates an object of the type SitetreeView.
   *
-  * @param  {nsIURI}           aURI       the sitetree URI
+  * @param  {nsIURI}           aURI           the sitetree URI
+  * @param  {Function}         aErrorListener an error listener which is called if the root node fails to load
   * @return {nsITreeSelection} aSelection the tree selection object
   */
-function SitetreeView(aURI) {
+function SitetreeView(aURI, aErrorListener) {
     var elem = null;
 
-    /* DEBUG */ YulupDebug.ASSERT(aURI != null);
+    /* DEBUG */ YulupDebug.ASSERT(aURI           != null);
+    /* DEBUG */ YulupDebug.ASSERT(aErrorListener != null);
+    /* DEBUG */ YulupDebug.ASSERT(typeof(aErrorListener) == "function");
 
     /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView(\"" + aURI + "\") invoked\n");
 
@@ -189,6 +192,8 @@ function SitetreeView(aURI) {
     this.rowNodeMap      = new Array();
     this.wrappedJSObject = this;
 
+    this.__errorListener = aErrorListener;
+
     this.__atomService = Components.classes["@mozilla.org/atom-service;1"].getService(Components.interfaces.nsIAtomService);
 
     // load the sitetree XML
@@ -196,7 +201,8 @@ function SitetreeView(aURI) {
 }
 
 SitetreeView.prototype = {
-    __atomServide          : null,
+    __atomService          : null,
+    __errorListener        : null,
     uri                    : null,
     selection              : null,
     treeBox                : null,
@@ -226,7 +232,8 @@ SitetreeView.prototype = {
             baseURI         : aURI,
             parentRow       : aParentRow,
             callbackFunction: this.sitetreeLoadFinished,
-            view            : this
+            view            : this,
+            errorListener   : this.__errorListener
         };
 
         // fetch the sitetree XML file
@@ -311,12 +318,23 @@ SitetreeView.prototype = {
                     throw new YulupException(document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadError0.label") + " \"" + aURI + "\".");
             }
         } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:sitetree.js:SitetreeView.sitetreeLoadFinished:", exception);
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:sitetree.js:SitetreeView.sitetreeLoadFinished", exception);
 
             //alert(document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadFailure.label") + "\n\n" + exception.message);
 
             // update the model
             aContext.view.updateSitetreeDOM(aContext.parentRow, null);
+
+            if (aContext.parentRow == -1) {
+                // the root node failed to load, this is really bad
+                try {
+                    aContext.errorListener();
+                } catch (exception) {
+                    // we don't want to fail here
+                    /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:sitetree.js:SitetreeView.sitetreeLoadFinished", exception);
+                    /* DEBUG */ Components.utils.reportError(exception);
+                }
+            }
         }
     },
 

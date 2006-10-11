@@ -513,14 +513,35 @@ var Editor = {
      * @return {Boolean} return true on success, false otherwise
      */
     saveAsToCMS: function () {
-        var serverURI = null;
-        var targetURI = null;
+        var ioService       = null;
+        var serverURIString = null;
+        var serverURI       = null;
+        var targetURI       = null;
 
         /* DEBUG */ dump("Yulup:editor.js:Editor.saveAsToCMS() invoked\n");
 
         //throw new YulupEditorException("Yulup:editor.js:Editor.saveAsToCMS: method not implemented.");
 
         // query for server address
+        serverURIString = ServerURIPrompt.showServerURIDialog();
+
+        if (!serverURIString || serverURIString == "") {
+            return false;
+        }
+
+        ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+
+        try {
+            serverURI = ioService.newURI(serverURIString, null, null);
+        } catch (exception) {
+            /* DEBUG */ dump("Yulup:editor.js:Editor.saveAsToCMS: server URI \"" + serverURIString + "\" is not a valid URI: " + exception.toString() + "\n");
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.saveAsToCMS", exception);
+
+            // TODO: i18n
+            alert("The entered URI \"" + serverURIString + "\" is not a valid URI.");
+
+            return false;
+        }
 
         // show document upload dialog
         targetURI = ResourceUploadDialog.showDocumentUploadDialog(serverURI, gEditorController.document.getDocumentName());
@@ -528,6 +549,9 @@ var Editor = {
         if (targetURI) {
             // retarget the document to selected URI
             gEditorController.document.retargetTo(targetURI);
+
+            // determine content type
+            
 
             try {
                 gEditorController.document.uploadDocument(gEditorController.model.getDocument(), Editor.documentUploadFinished);

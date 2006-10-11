@@ -29,7 +29,7 @@
 const YULUP_RESOURCE_UPLOAD_CHROME_URI = "chrome://yulup/content/resourceupload.xul";
 
 var ResourceUploadDialog = {
-    showFilePicker: function() {
+    showFilePicker: function () {
         var filePicker = null;
         var ret        = null;
 
@@ -46,7 +46,7 @@ var ResourceUploadDialog = {
         }
     },
 
-    uiYulupEditorResourceUploadOnDialogLoadHandler: function() {
+    uiYulupEditorResourceUploadOnDialogLoadHandler: function () {
         var tree = null;
 
         /* DEBUG */ dump("Yulup:resourceupload.js:ResourceUploadDialog.uiYulupEditorResourceUploadOnDialogLoadHandler() invoked\n");
@@ -59,7 +59,7 @@ var ResourceUploadDialog = {
 
         tree = document.getElementById("uiYulupResourceUploadTree");
 
-        tree.view = new SitetreeView(window.arguments[1]);
+        tree.view = new SitetreeView(window.arguments[1], ResourceUploadDialog.sitetreeErrorListener);
         tree.view.wrappedJSObject.selectionChangeObserver = ResourceUploadDialog.onSelectionChangeListener;
     },
 
@@ -76,7 +76,7 @@ var ResourceUploadDialog = {
      * @param  {nsIURI} aURI          the entry URI
      * @return {Undefined} does not have a return value
      */
-    showResourceUploadDialog: function(aURI) {
+    showResourceUploadDialog: function (aURI) {
         var returnObject   = null;
         var mimeService    = null;
         var sourceFile     = null;
@@ -89,12 +89,20 @@ var ResourceUploadDialog = {
         /* DEBUG */ YulupDebug.ASSERT(aURI != null);
 
         returnObject = {
+            error        : null,
             resourceURI  : null,
             collectionURI: null,
             resourceName : null
         };
 
         window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupResourceUploadDialog", "modal,resizable=yes", true, aURI, returnObject);
+
+        if (returnObject.error) {
+            // TODO: i18n
+            alert("The sitetree failed to load.");
+
+            return;
+        }
 
         if (returnObject.resourceURI && returnObject.collectionURI && returnObject.resourceName) {
             // figure out MIME type
@@ -111,6 +119,7 @@ var ResourceUploadDialog = {
             // construct target URI
             targetURI = returnObject.collectionURI.spec + "/" + returnObject.resourceName;
 
+            // TODO: i18n
             progressDialog = new ProgressDialog(window, "Uploading file", targetURI);
 
             // upload file to server
@@ -125,7 +134,7 @@ var ResourceUploadDialog = {
      * @param  {String} aDocumentName a proposed name for the document name on the server
      * @return {String} the selected target URI or null if none was selected
      */
-    showDocumentUploadDialog: function(aURI, aDocumentName) {
+    showDocumentUploadDialog: function (aURI, aDocumentName) {
         var returnObject   = null;
         var mimeService    = null;
         var sourceFile     = null;
@@ -138,11 +147,19 @@ var ResourceUploadDialog = {
         /* DEBUG */ YulupDebug.ASSERT(aURI != null);
 
         returnObject = {
+            error        : null,
             collectionURI: null,
             resourceName : null
         };
 
         window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupDocumentUploadDialog", "modal,resizable=yes", false, aURI, returnObject, aDocumentName);
+
+        if (returnObject.error) {
+            // TODO: i18n
+            alert("The sitetree failed to load.");
+
+            return null;
+        }
 
         if (returnObject.collectionURI && returnObject.resourceName) {
             // return target URI
@@ -152,7 +169,7 @@ var ResourceUploadDialog = {
         }
     },
 
-    uploadResource: function() {
+    uploadResource: function () {
         var collectionURI = null;
         var resourceURI   = null;
         var resourceName  = null;
@@ -208,6 +225,19 @@ var ResourceUploadDialog = {
         }
 
         return false;
+    },
+
+    sitetreeErrorListener: function () {
+        returnObject = null;
+
+        if (window.arguments[2]) {
+            returnObject = window.arguments[2];
+
+            returnObject.error = true;
+        }
+
+        // close the dialog
+        document.getElementById("uiYulupEditorResourceUploadDialog").cancelDialog();
     },
 
     __uploadRequestFinishedHandler: function (aDocumentData, aResponseStatusCode, aRequestFinishedCallback, aResponseHeaders, aException) {

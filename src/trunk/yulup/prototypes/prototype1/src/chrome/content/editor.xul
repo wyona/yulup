@@ -81,6 +81,8 @@
           src="chrome://yulup/content/resourceupload.js"/>
   <script type="application/x-javascript"
           src="chrome://yulup/content/progressdialog.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/serveruriprompt.js"/>
 
   <commandset id="uiYulupEditorFocusEventCommandset"
               commandupdater="true"
