@@ -123,12 +123,12 @@
     <name xml:lang="de">Einen neuen Atom Eintrag im aktuellen Feed erstellen</name>
   </entity>
 
-  <entity id="fileOperationUpload.label">
+  <entity id="fileOperationUploadMenuitem.label">
     <name xml:lang="en">Upload</name>
     <name xml:lang="de">Hochladen</name>
   </entity>
 
-  <entity id="fileOperationUpload.tooltip">
+  <entity id="fileOperationUploadMenuitem.tooltip">
     <name xml:lang="en">Upload a resouce to the server</name>
     <name xml:lang="de">Eine Ressource auf den Server hochladen</name>
   </entity>
