@@ -32,7 +32,6 @@ var ResourceUploadDialog = {
     showFilePicker: function() {
         var filePicker = null;
         var ret        = null;
-        var textBox    = null;
 
         /* DEBUG */ dump("Yulup:resourceupload.js:ResourceUploadDialog.showFilePicker() invoked\n");
 
@@ -42,11 +41,8 @@ var ResourceUploadDialog = {
         ret = filePicker.show();
 
         if (ret == Components.interfaces.nsIFilePicker.returnOK) {
-            textBox = document.getElementById("uiYulupResourceUploadTextBox");
-            textBox.setAttribute("value", filePicker.fileURL.filePath);
-
-            textBox = document.getElementById("uiYulupResourceUploadRemoteNameTextBox");
-            textBox.setAttribute("value", filePicker.fileURL.fileName);
+            document.getElementById("uiYulupResourceUploadTextBox").value           = filePicker.file.path;
+            document.getElementById("uiYulupResourceUploadRemoteNameTextBox").value = filePicker.file.leafName;
         }
     },
 
@@ -58,6 +54,14 @@ var ResourceUploadDialog = {
         tree = document.getElementById("uiYulupResourceUploadTree");
 
         tree.view = new SitetreeView(window.arguments[0]);
+        tree.view.wrappedJSObject.selectionChangeObserver = ResourceUploadDialog.onSelectionChangeListener;
+    },
+
+    onSelectionChangeListener: function (aNode) {
+        /* DEBUG */ dump("Yulup:resourceupload.js:ResourceUploadDialog.onSelectionChangeListener() invoked\n");
+
+        if (!aNode.isContainer)
+            document.getElementById("uiYulupResourceUploadRemoteNameTextBox").value = aNode.name;
     },
 
     showResourceUploadDialog: function(aURI) {

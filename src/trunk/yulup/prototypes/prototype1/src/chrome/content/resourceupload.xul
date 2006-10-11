@@ -80,7 +80,8 @@
           enableColumnDrag="false"
           hidecolumnpicker="true"
           flex="1"
-          seltype="single">
+          seltype="single"
+          onselect="this.view.selectionChanged()">
       <treecols id="uiYulupResourceUploadTreeCols">
         <treecol id="uiYulupResourceUploadTreeCol" label="&editorResourceTree.label;" primary="true" flex="1"/>
       </treecols>

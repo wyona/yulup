@@ -196,14 +196,15 @@ function SitetreeView(aURI) {
 }
 
 SitetreeView.prototype = {
-    __atomServide  : null,
-    uri            : null,
-    selection      : null,
-    treeBox        : null,
-    rowCount       : null,
-    sitetreeDOM    : null,
-    rowNodeMap     : null,
-    wrappedJSObject: null,
+    __atomServide          : null,
+    uri                    : null,
+    selection              : null,
+    treeBox                : null,
+    rowCount               : null,
+    sitetreeDOM            : null,
+    rowNodeMap             : null,
+    selectionChangeObserver: null,
+    wrappedJSObject        : null,
 
     /**
      * Load the sitetree XML file over the network.
@@ -648,6 +649,8 @@ SitetreeView.prototype = {
 
     isEditable: function(aRow, aCol) {
         /* DEBUG */ dump("Yulup:sitetree.js:isEditable() invoked\n");
+
+        return false;
     },
 
     isSeparator: function(aIndex, aCol) {
@@ -675,7 +678,17 @@ SitetreeView.prototype = {
     },
 
     selectionChanged: function() {
+        var node = null;
+
         /* DEBUG */ dump("Yulup:sitetree.js:selectionChanged() invoked\n");
+
+        if (this.selectionChangeObserver) {
+            node = this.getSitetreeNodeAtRow(this.selection.currentIndex);
+
+            if (node != null) {
+                this.selectionChangeObserver(node);
+            }
+        }
     },
 
     setCellText: function(aRow, aCol, aValue) {
