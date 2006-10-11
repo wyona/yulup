@@ -23,8 +23,8 @@
 <!ENTITY editCheckoutMenu.tooltip "Eines der verfügbaren Fragmente vom CMS auschecken (d.h. für andere Benutzer sperren) und editieren">
 <!ENTITY editOperationNewMenu.tooltip "Ein neues Dokument erstellen">
 <!ENTITY fileOperationNewAtomEntryMenuitem.tooltip "Einen neuen Atom Eintrag im aktuellen Feed erstellen">
-<!ENTITY fileOperationUpload.label "Hochladen">
-<!ENTITY fileOperationUpload.tooltip "Eine Ressource auf den Server hochladen">
+<!ENTITY fileOperationUploadMenuitem.label "Hochladen">
+<!ENTITY fileOperationUploadMenuitem.tooltip "Eine Ressource auf den Server hochladen">
 <!ENTITY editOperationOpenMenu.tooltip "Ein bereits existierendes Dokument öffnen">
 <!ENTITY editAboutMenuitem.tooltip "Über Yulup">
 <!ENTITY editHelpMenuitem.tooltip "Den Hilfe-Browser von Yulup anzeigen">

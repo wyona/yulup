@@ -23,8 +23,8 @@
 <!ENTITY editCheckoutMenu.tooltip "Check out (lock) one of the current fragments from CMS and edit">
 <!ENTITY editOperationNewMenu.tooltip "Create a new document">
 <!ENTITY fileOperationNewAtomEntryMenuitem.tooltip "Create a new Atom entry for the currently selected feed">
-<!ENTITY fileOperationUpload.label "Upload">
-<!ENTITY fileOperationUpload.tooltip "Upload a resouce to the server">
+<!ENTITY fileOperationUploadMenuitem.label "Upload">
+<!ENTITY fileOperationUploadMenuitem.tooltip "Upload a resouce to the server">
 <!ENTITY editOperationOpenMenu.tooltip "Open an existing document">
 <!ENTITY editAboutMenuitem.tooltip "About Yulup">
 <!ENTITY editHelpMenuitem.tooltip "Shows the help browser for Yulup">

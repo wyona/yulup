@@ -133,6 +133,13 @@
 
         <menuseparator/>
 
+        <menuitem id="uiYulupUploadMenuitem"
+                  oncommand="resourceUpload()"
+                  label="&fileOperationUploadMenuitem.label;" tooltiptext="&fileOperationUploadMenuitem.tooltip;"
+                  disabled="false"/>
+
+        <menuseparator/>
+
         <menu id="uiYulupOperationNewMenu"
               label="&editOperationNewMenu.label;" tooltiptext="&editOperationNewMenu.tooltip;"
               disabled="false">
