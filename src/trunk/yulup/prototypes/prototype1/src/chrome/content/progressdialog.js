@@ -99,18 +99,23 @@ ProgressDialog.prototype = {
             byteProgress = (aProgress / 1024);
 
             if (aProgressMax == -1) {
-                this.__dialog.document.getElementById("uiYulupProgressDialogProgressMeter").setAttribute("mode", "undetermined");
+                if (this.__dialog.document.getElementById("uiYulupProgressDialogProgressMeter").mode != "undetermined")
+                    this.__dialog.document.getElementById("uiYulupProgressDialogProgressMeter").mode = "undetermined";
 
                 this.__dialog.document.getElementById("uiYulupProgressDialogProgressLabel").setAttribute("value", byteProgress.toFixed(2) + " KiB");
             } else {
-                percentProgress = (aProgressMax / aProgress) * 100;
+                percentProgress = Math.ceil((aProgress / aProgressMax) * 100);
 
-                this.__dialog.document.getElementById("uiYulupProgressDialogProgressMeter").setAttribute("value", percentProgress + "%");
-                this.__dialog.document.getElementById("uiYulupProgressDialogProgressMeter").setAttribute("mode", "determined");
+                if (this.__dialog.document.getElementById("uiYulupProgressDialogProgressMeter").mode != "determined")
+                    this.__dialog.document.getElementById("uiYulupProgressDialogProgressMeter").mode = "determined";
+
+                this.__dialog.document.getElementById("uiYulupProgressDialogProgressMeter").value = percentProgress;
+
+                /* DEBUG */ dump("Yulup:progressdialog.js:ProgressDialog.onProgress: percentProgress = \"" + percentProgress + "\"\n");
 
                 byteMax = (aProgressMax / 1024);
 
-                this.__dialog.document.getElementById("uiYulupProgressDialogProgressLabel").setAttribute("value", byteProgress.toFixed(2) + " KiB / " + byteMax.toFixed(2) + " Kib");
+                this.__dialog.document.getElementById("uiYulupProgressDialogProgressLabel").setAttribute("value", byteProgress.toFixed(2) + " KiB / " + byteMax.toFixed(2) + " KiB");
             }
         }
 

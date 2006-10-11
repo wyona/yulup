@@ -49,7 +49,7 @@
 
     <spacer style="height: 8px;"/>
 
-    <progressmeter id="uiYulupProgressDialogProgressMeter" mode="undetermined" value="0%"/>
+    <progressmeter id="uiYulupProgressDialogProgressMeter" mode="undetermined" value="0"/>
 
     <hbox align="center" pack="end">
       <label id="uiYulupProgressDialogProgressLabel" value="0 KiB" style="font-size: x-small;"/>
