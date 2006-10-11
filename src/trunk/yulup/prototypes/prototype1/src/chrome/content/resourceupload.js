@@ -120,7 +120,7 @@ var ResourceUploadDialog = {
 
         // check if a file to upload was selected
         if (!resourceURI || resourceURI == "") {
-            alert(document.getElementById("uiYulupMainStringbundle").getString("yulupResourceUploadNoFileProvided.label"));
+            alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupResourceUploadNoFileProvided.label"));
 
             document.getElementById("uiYulupResourceUploadShowFilePickerButton").focus();
 
@@ -129,7 +129,7 @@ var ResourceUploadDialog = {
 
         // check if a target resource was selected
         if (!collectionURI) {
-            alert(document.getElementById("uiYulupMainStringbundle").getString("yulupResourceUploadNoTargetResourceProvided.label"));
+            alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupResourceUploadNoTargetResourceProvided.label"));
 
             document.getElementById("uiYulupResourceUploadTree").focus();
 
@@ -138,7 +138,7 @@ var ResourceUploadDialog = {
 
         // check if a remote file name was given
         if (!resourceName || resourceName == "") {
-            alert(document.getElementById("uiYulupMainStringbundle").getString("yulupResourceUploadNoResourceNameProvided.label"));
+            alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupResourceUploadNoResourceNameProvided.label"));
 
             document.getElementById("uiYulupResourceUploadRemoteNameTextBox").focus();
 
@@ -197,17 +197,17 @@ var ResourceUploadDialog = {
 
         if (aException == null) {
             // report success
-            alert(Editor.getStringbundleString("editorDocumentUploadSuccess.label"));
+            alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupDocumentUploadSuccess.label"));
 
         } else {
             if (aException && (aException instanceof NeutronProtocolException || aException instanceof NeutronAuthException)) {
                 // report error message retrieved from response
-                alert(Editor.getStringbundleString("editorDocumentUploadServerError.label") + ": \n\n" + aException.message);
+                alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupDocumentUploadServerError.label") + ": \n\n" + aException.message);
             } else if (aException) {
                 dump("Yulup:resourceupload.js:ResourceUploadDialog.__resourceUploadFinished: an error occurred during parsing the response message: " + aException.toString() + "\n");
 
                 // report generic error
-                alert(Editor.getStringbundleString("editorDocumentUploadFailure.label"));
+                alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupDocumentUploadFailure.label"));
 
                 /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:resourceupload.js:ResourceUploadDialog.__resourceUploadFinished", aException);
 
@@ -216,7 +216,7 @@ var ResourceUploadDialog = {
                 dump("Yulup:resourceupload.js:ResourceUploadDialog.__resourceUploadFinished: received neither document data nor an exception.\n");
 
                 // report generic error
-                alert(Editor.getStringbundleString("editorDocumentUploadFailure.label"));
+                alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupDocumentUploadFailure.label"));
             }
         }
     }

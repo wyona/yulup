@@ -333,6 +333,11 @@ function checkoutFromCMS(aFragment) {
     }
 }
 
+function resourceUpload() {
+    // open dialog
+    ResourceUploadDialog.showResourceUploadDialog(gCurrentNeutronIntrospection.queryNavigation().sitetree.uri);
+}
+
 /**
  * Load the Yulup demosite into the currently active tab.
  *
@@ -394,6 +399,7 @@ function Yulup() {
     this.yulupEditMenuCheckoutNoLockMenu             = document.getElementById("uiYulupEditCheckoutNoLockMenu");
     this.yulupEditMenuCheckoutMenupopup              = document.getElementById("uiYulupEditCheckoutMenupopup");
     this.yulupEditMenuCheckoutNoLockMenupopup        = document.getElementById("uiYulupEditCheckoutNoLockMenupopup");
+    this.yulupEditMenuResourceUploadMenutitem        = document.getElementById("uiYulupUploadMenuitem");
     this.yulupEditMenuRealmSeparator                 = document.getElementById("uiYulupRealmSeparator");
     this.yulupEditMenuExtrasSeparator                = document.getElementById("uiYulupExtrasSeparator");
     this.yulupOperationNewFromTemplateLocalMenu      = document.getElementById("uiYulupOperationNewFromTemplateLocalMenu");
@@ -445,6 +451,7 @@ Yulup.prototype = {
     yulupEditMenuCheckoutNoLockMenupopup        : null,
     yulupEditMenuCheckoutMenuitemLabel          : null,
     yulupEditMenuCheckoutNoLockMenuitemLabel    : null,
+    yulupEditMenuResourceUploadMenutitem        : null,
     yulupOperationNewFromTemplateLocalMenu      : null,
     yulupOperationNewFromTemplateLocalMenupopup : null,
     instancesManager                            : null,
@@ -576,9 +583,6 @@ Yulup.prototype = {
 
                     return;
                 }
-
-                // introspection file ok
-                this.introspectionStateChanged("success");
             } else {
                 // no introspection file associated
                 this.introspectionStateChanged("none");
@@ -689,6 +693,8 @@ Yulup.prototype = {
                     this.yulupEditMenuCheckoutMenuitem.removeAttribute("hidden");
                     this.yulupEditMenuCheckoutNoLockMenuitem.removeAttribute("hidden");
 
+                    this.yulupEditMenuResourceUploadMenutitem.setAttribute("disabled", "true");
+
                     this.yulupEditMenu.setAttribute("introspection", "no");
                     this.yulupEditMenu.removeAttribute("tooltip");
                     this.yulupEditMenu.setAttribute("tooltiptext", document.getElementById("uiYulupOverlayStringbundle").getString("editToolbarbutton.tooltip"));
@@ -704,6 +710,12 @@ Yulup.prototype = {
                 if (gCurrentNeutronIntrospection) {
                     this.buildFragmentsMenu(gCurrentNeutronIntrospection.queryOpenFragments(), this.yulupEditMenuCheckoutNoLockMenuitem, this.yulupEditMenuCheckoutNoLockMenu, this.yulupEditMenuCheckoutNoLockMenupopup, "checkoutNoLockFromCMS");
                     this.buildFragmentsMenu(gCurrentNeutronIntrospection.queryCheckoutFragments(), this.yulupEditMenuCheckoutMenuitem, this.yulupEditMenuCheckoutMenu, this.yulupEditMenuCheckoutMenupopup, "checkoutFromCMS");
+
+                    if (gCurrentNeutronIntrospection.queryNavigation()          &&
+                        gCurrentNeutronIntrospection.queryNavigation().sitetree &&
+                        gCurrentNeutronIntrospection.queryNavigation().sitetree.uri) {
+                        this.yulupEditMenuResourceUploadMenutitem.removeAttribute("disabled");
+                    }
                 }
 
                 if (this.currentAPPIntrospection) {
@@ -743,6 +755,8 @@ Yulup.prototype = {
 
                 this.yulupEditMenuCheckoutMenuitem.setAttribute("disabled", "true");
                 this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("disabled", "true");
+
+                this.yulupEditMenuResourceUploadMenutitem.setAttribute("disabled", "true");
 
                 this.yulupEditMenuCheckoutMenuitem.removeAttribute("hidden");
                 this.yulupEditMenuCheckoutNoLockMenuitem.removeAttribute("hidden");
@@ -1014,7 +1028,7 @@ var NeutronArchiveRegistry = {
      * @return {Boolean}           true if the template was registered otherwise false
      */
     registerTemplate: function(aURI, aMimeType, aName) {
- 
+
         /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchiveRegistry.registerTemplate(\"" + aURI.spec + "\", \"" + aMimeType + "\", \"" + aName + "\") invoked\n");
 
         if (!NeutronArchiveRegistry.getTemplateByName(aName)) {

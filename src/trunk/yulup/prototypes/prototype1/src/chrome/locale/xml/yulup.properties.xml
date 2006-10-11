@@ -17,6 +17,26 @@
     <name xml:lang="de">Von einem Realm abmelden</name>
   </entity>
 
+  <entity id="yulupDocumentUploadSuccess.label">
+    <name xml:lang="en">Document saved successfully.</name>
+    <name xml:lang="de">Das Dokument wurde erfolgreich gespeichert.</name>
+  </entity>
+
+  <entity id="yulupDocumentUploadError.label">
+    <name xml:lang="en">Unable to save</name>
+    <name xml:lang="de">Das Speichern schlug fehl von</name>
+  </entity>
+
+  <entity id="yulupDocumentUploadServerError.label">
+    <name xml:lang="en">Saving document did not succeed. The server replied with the following message</name>
+    <name xml:lang="de">Das Dokument konnte nicht gespeichert werden. Der Server antwortete mit der folgenden Nachricht</name>
+  </entity>
+
+  <entity id="yulupDocumentUploadFailure.label">
+    <name xml:lang="en">Document could not be saved.</name>
+    <name xml:lang="de">Das Dokument konnte nicht gespeichert werden.</name>
+  </entity>
+
   <entity id="yulupIntrospectionLoadFailure.label">
     <name xml:lang="en">Failed to load introspection.</name>
     <name xml:lang="de">Das Laden der Introspektion ist fehlgeschlagen.</name>

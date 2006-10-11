@@ -77,7 +77,7 @@ NeutronParser10.prototype = {
     /**
      * Parse sitetree file.
      *
-     * 
+     *
      */
     parseSitetree: function() {
         var sitetree     = null;
@@ -237,6 +237,7 @@ NeutronParser10.prototype = {
 
     __parseSitetree: function(aDocument, aNode) {
         var sitetree = null;
+        var uri      = null;
 
         sitetree = aDocument.evaluate("neutron10:sitetree", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
 
