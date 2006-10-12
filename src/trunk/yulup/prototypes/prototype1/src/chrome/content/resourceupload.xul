@@ -42,6 +42,7 @@
         buttonlabelaccept="&editorUploadButton.label;"
         buttonlabelcancel="&editorCancelButton.label;"
         ondialogaccept="return ResourceUploadDialog.uploadResource()"
+        ondialogcancel="return ResourceUploadDialog.cancelDialog()"
         onload="ResourceUploadDialog.uiYulupEditorResourceUploadOnDialogLoadHandler()"
         mindwidth="400"
         style="font: -moz-dialog;"

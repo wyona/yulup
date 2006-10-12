@@ -281,7 +281,7 @@ Document.prototype = {
      * @return {Undefined} does not have a return value
      */
     retargetTo: function (aURI) {
-        /* DEBUG */ dump("Yulup:document.js:Document.retargetTo() invoked\n");
+        /* DEBUG */ dump("Yulup:document.js:Document.retargetTo(\"" + aURI + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aURI != null);
 
@@ -443,6 +443,24 @@ NeutronDocument.prototype = {
      */
     getLoadStyle: function () {
         return this.loadStyle;
+    },
+
+    /**
+     * Retarget the document to a new location.
+     *
+     * @param  {nsIURI}    aURI the new URI of the document
+     * @return {Undefined} does not have a return value
+     */
+    retargetTo: function (aURI) {
+        /* DEBUG */ dump("Yulup:document.js:NeutronDocument.retargetTo(\"" + aURI + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aURI != null);
+
+        this.uploadURI  = aURI;
+        this.saveMethod = "PUT";
+
+        // call super method
+        Document.prototype.retargetTo.call(this, aURI);
     },
 
     /**

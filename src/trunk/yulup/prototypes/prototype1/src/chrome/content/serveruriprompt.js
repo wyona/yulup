@@ -68,6 +68,18 @@ var ServerURIPrompt = {
         return true;
     },
 
+    cancelDialog: function () {
+        var returnObject = null;
+
+        returnObject = returnObject = window.arguments[0];
+
+        if (returnObject) {
+            returnObject.serverURI = null;
+        }
+
+        return true;
+    },
+
     /**
     * Add the textbox value to the form-history
     *
@@ -75,18 +87,17 @@ var ServerURIPrompt = {
     * @return {Undefined} does not have a return value
     */
     addToFormHistory: function (aValue) {
-        var fieldValue  = null;
         var formHistory = null;
 
-        /* DEBUG */ dump("Yulup:serveruriprompt.js:ServerURIPrompt.addToFormHistory() invoked\n");
+        /* DEBUG */ dump("Yulup:serveruriprompt.js:ServerURIPrompt.addToFormHistory(\"" + aValue + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aValue != null);
 
         if (aValue && aValue != "") {
-            // get a handle at the form-history component
+            // get a handle on the form-history component
             formHistory = Components.classes["@mozilla.org/satchel/form-history;1"].getService(Components.interfaces.nsIFormHistory);
 
-            formHistory.addEntry(SERVERURIPROMPT_FORM_HISTORY_ID, fieldValue);
+            formHistory.addEntry(SERVERURIPROMPT_FORM_HISTORY_ID, aValue);
         }
     }
 };

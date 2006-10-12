@@ -34,6 +34,7 @@
         persist="screenX screenY"
         buttons="cancel, accept"
         ondialogaccept="return ServerURIPrompt.returnServerURI()"
+        ondialogcancel="return ServerURIPrompt.cancelDialog()"
         onload="ServerURIPrompt.onLoadHandler()"
         style="font: -moz-dialog;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -48,5 +49,6 @@
              autocompletesearchparam="yulup-serveruriprompt"
              type="autocomplete"
              autocompletesearch="form-history"
-             onchange="ServerURIPrompt.addToFormHistory(this.value)"/>
+             tabscrolling="true"
+             enablehistory="true"/>
 </dialog>

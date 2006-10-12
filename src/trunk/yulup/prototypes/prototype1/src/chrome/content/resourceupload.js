@@ -89,7 +89,7 @@ var ResourceUploadDialog = {
         /* DEBUG */ YulupDebug.ASSERT(aURI != null);
 
         returnObject = {
-            error        : null,
+            error        : false,
             resourceURI  : null,
             collectionURI: null,
             resourceName : null
@@ -147,7 +147,7 @@ var ResourceUploadDialog = {
         /* DEBUG */ YulupDebug.ASSERT(aURI != null);
 
         returnObject = {
-            error        : null,
+            error        : false,
             collectionURI: null,
             resourceName : null
         };
@@ -216,7 +216,7 @@ var ResourceUploadDialog = {
             returnObject = window.arguments[2];
 
             if (window.arguments[0])
-                returnObject.resourceURI   = resourceURI;
+                returnObject.resourceURI = resourceURI;
 
             returnObject.resourceName  = resourceName;
             returnObject.collectionURI = collectionURI;
@@ -225,6 +225,20 @@ var ResourceUploadDialog = {
         }
 
         return false;
+    },
+
+    cancelDialog: function () {
+        if (window.arguments[2]) {
+            returnObject = window.arguments[2];
+
+            if (window.arguments[0])
+                returnObject.resourceURI = null;
+
+            returnObject.resourceName  = null;
+            returnObject.collectionURI = null;
+        }
+
+        return true;
     },
 
     sitetreeErrorListener: function () {

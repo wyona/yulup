@@ -372,6 +372,7 @@ var Editor = {
 
         if (!saveSucceeded) {
             // save did not succeed, warn user
+            // TODO: i18n
             alert("Saving document did not succeed.");
         }
     },
@@ -516,6 +517,7 @@ var Editor = {
         var ioService       = null;
         var serverURIString = null;
         var serverURI       = null;
+        var targetURIString = null;
         var targetURI       = null;
 
         /* DEBUG */ dump("Yulup:editor.js:Editor.saveAsToCMS() invoked\n");
@@ -525,7 +527,10 @@ var Editor = {
         // query for server address
         serverURIString = ServerURIPrompt.showServerURIDialog();
 
-        if (!serverURIString || serverURIString == "") {
+        if (!serverURIString) {
+            // user cancelled
+            return true;
+        } else if (serverURIString == "") {
             return false;
         }
 
@@ -534,7 +539,7 @@ var Editor = {
         try {
             serverURI = ioService.newURI(serverURIString, null, null);
         } catch (exception) {
-            /* DEBUG */ dump("Yulup:editor.js:Editor.saveAsToCMS: server URI \"" + serverURIString + "\" is not a valid URI: " + exception.toString() + "\n");
+            /* DEBUG */ dump("Yulup:editor.js:Editor.saveAsToCMS: server URI \"" + serverURIString + "\" is not a valid URI: " + exception + "\n");
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.saveAsToCMS", exception);
 
             // TODO: i18n
@@ -544,9 +549,26 @@ var Editor = {
         }
 
         // show document upload dialog
-        targetURI = ResourceUploadDialog.showDocumentUploadDialog(serverURI, gEditorController.document.getDocumentName());
+        targetURIString = ResourceUploadDialog.showDocumentUploadDialog(serverURI, gEditorController.document.getDocumentName());
 
-        if (targetURI) {
+        if (!targetURIString) {
+            // user cancelled
+            return true;
+        } else {
+            try {
+                targetURI = ioService.newURI(targetURIString, null, null);
+            } catch (exception) {
+                /* DEBUG */ dump("Yulup:editor.js:Editor.saveAsToCMS: target URI \"" + targetURIString + "\" is not a valid URI: " + exception + "\n");
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.saveAsToCMS", exception);
+
+                // TODO: i18n
+                alert("The target location \"" + targetURIString + "\" is not a valid URI.");
+
+                return false;
+            }
+
+            /* DEBUG */ dump("Yulup:editor.js:Editor.saveAsToCMS: target URI = \"" + targetURI.spec + "\"\n");
+
             // retarget the document to selected URI
             gEditorController.document.retargetTo(targetURI);
 
