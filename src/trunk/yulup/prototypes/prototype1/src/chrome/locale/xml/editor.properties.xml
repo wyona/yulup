@@ -76,6 +76,21 @@
     <name xml:lang="de">Das Dokument konnte nicht gespeichert werden.</name>
   </entity>
 
+  <entity id="editorDocumentSaveFailure.label">
+    <name xml:lang="en">Saving document did not succeed.</name>
+    <name xml:lang="de">Das Dokument konnte nicht gespeichert werden.</name>
+  </entity>
+
+  <entity id="editorURINotValidFailure.label">
+    <name xml:lang="en">The entered URI is not a valid URI</name>
+    <name xml:lang="de">Die eingegebene URI ist nicht in Ordnung</name>
+  </entity>
+
+  <entity id="editorTargetLocationNotValidFailure.label">
+    <name xml:lang="en">The target location is not a valid URI</name>
+    <name xml:lang="de">Der angegebene Zielort ist nicht in Ordnung</name>
+  </entity>
+
   <entity id="editorTabSwitchError.label">
     <name xml:lang="en">An internal error occurred during switching the view.</name>
     <name xml:lang="de">Ein programminternes Problem trat während dem Wechseln des Reiters auf.</name>

@@ -98,8 +98,7 @@ var ResourceUploadDialog = {
         window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupResourceUploadDialog", "modal,resizable=yes", true, aURI, returnObject);
 
         if (returnObject.error) {
-            // TODO: i18n
-            alert("The sitetree failed to load.");
+            alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupSitetreeLoadFailure.label"));
 
             return;
         }
@@ -119,8 +118,7 @@ var ResourceUploadDialog = {
             // construct target URI
             targetURI = returnObject.collectionURI.spec + "/" + returnObject.resourceName;
 
-            // TODO: i18n
-            progressDialog = new ProgressDialog(window, "Uploading file", targetURI);
+            progressDialog = new ProgressDialog(window, document.getElementById("uiYulupOverlayStringbundle").getString("yulupResourceUploadProgressDialogTitle.label"), targetURI);
 
             // upload file to server
             NetworkService.httpRequestUploadFile(targetURI, sourceFile, null, mimeType, ResourceUploadDialog.__uploadRequestFinishedHandler, ResourceUploadDialog.__resourceUploadFinished, false, true, progressDialog);
@@ -155,8 +153,7 @@ var ResourceUploadDialog = {
         window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupDocumentUploadDialog", "modal,resizable=yes", false, aURI, returnObject, aDocumentName);
 
         if (returnObject.error) {
-            // TODO: i18n
-            alert("The sitetree failed to load.");
+            alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupSitetreeLoadFailure.label"));
 
             return null;
         }

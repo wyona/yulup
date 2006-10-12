@@ -57,4 +57,14 @@
     <name xml:lang="de">Es muss zuerst eine Name für die Datei auf dem Server angegeben werden.</name>
   </entity>
 
+  <entity id="yulupSitetreeLoadFailure.label">
+    <name xml:lang="en">The remote directory failed to load.</name>
+    <name xml:lang="de">Die Verzeichnishierarchie auf dem Server konnte nicht geladen werden.</name>
+  </entity>
+
+  <entity id="yulupResourceUploadProgressDialogTitle.label">
+    <name xml:lang="en">Uploading File</name>
+    <name xml:lang="de">Datei Hochladen</name>
+  </entity>
+
 </dtd>

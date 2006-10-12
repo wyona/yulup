@@ -372,8 +372,7 @@ var Editor = {
 
         if (!saveSucceeded) {
             // save did not succeed, warn user
-            // TODO: i18n
-            alert("Saving document did not succeed.");
+            alert(Editor.getStringbundleString("editorDocumentSaveFailure.label"));
         }
     },
 
@@ -542,8 +541,7 @@ var Editor = {
             /* DEBUG */ dump("Yulup:editor.js:Editor.saveAsToCMS: server URI \"" + serverURIString + "\" is not a valid URI: " + exception + "\n");
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.saveAsToCMS", exception);
 
-            // TODO: i18n
-            alert("The entered URI \"" + serverURIString + "\" is not a valid URI.");
+            alert(Editor.getStringbundleString("editorURINotValidFailure.label") + ": \"" + serverURIString + "\".");
 
             return false;
         }
@@ -561,8 +559,7 @@ var Editor = {
                 /* DEBUG */ dump("Yulup:editor.js:Editor.saveAsToCMS: target URI \"" + targetURIString + "\" is not a valid URI: " + exception + "\n");
                 /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.saveAsToCMS", exception);
 
-                // TODO: i18n
-                alert("The target location \"" + targetURIString + "\" is not a valid URI.");
+                alert(Editor.getStringbundleString("editorTargetLocationNotValidFailure.label") + ": \"" + targetURIString + "\".");
 
                 return false;
             }
