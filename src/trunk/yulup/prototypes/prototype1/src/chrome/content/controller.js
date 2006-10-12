@@ -709,7 +709,8 @@ YulupEditStateController.prototype = {
                 }
                 break;
             case "saved":
-                if (this.currentState == this.STATE_DOCUMENTREADY_MODIFIED) {
+                if (this.currentState == this.STATE_DOCUMENTREADY_MODIFIED ||
+                    this.currentState == this.STATE_DOCUMENTREADY_PRISTINE) {
                     this.currentState = this.STATE_DOCUMENTREADY_PRISTINE;
                     // deactivate "save" menu
                     document.getElementById("uiFileOperationSave").setAttribute("disabled", true);
