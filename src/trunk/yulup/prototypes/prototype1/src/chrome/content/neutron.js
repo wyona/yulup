@@ -129,18 +129,13 @@ var Neutron = {
 
                 /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished: introspection = \n" + introspection.toString());
             } else {
-                /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished: failed to load \"" + aURI + "\"). \"" + aException + "\"\n");
+                /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished: failed to load introspection document \"" + aURI + "\". \"" + aException + "\"\n");
 
-                if (aException && (aException instanceof NeutronProtocolException || aException instanceof NeutronAuthException)) {
-                    // report error message retrieved from response
-                    throw new YulupException(document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadError0.label") + " \"" + aURI + "\".\n" + document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadServerError.label") + ": " + aException.message + ".");
-                } else
-                    throw new YulupException(document.getElementById("uiYulupEditorStringbundle").getString("editorDocumentLoadError0.label") + " \"" + aURI + "\".");
+                // set the introspection state
+                aYulup.introspectionStateChanged("failed");
             }
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutron.js:Neutron.introspectionLoadFinished", exception);
-
-            alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupIntrospectionLoadFailure.label") + "\n\n" + exception.message);
 
             // set the introspection state
             aYulup.introspectionStateChanged("failed");
