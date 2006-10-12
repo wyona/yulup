@@ -217,7 +217,7 @@ var NetworkService = {
             }
 
             channel.QueryInterface(Components.interfaces.nsIRequest);
-            // don't use a cached version of the document
+            // don't use a cached version of the document (DO NOT REMOVE THIS, e.g. introspection document load relies on this property)
             channel.loadFlags  = Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
             // don't notify nsIProgressEventSink listeners (keeps the throbber from turning)
             channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BACKGROUND;
