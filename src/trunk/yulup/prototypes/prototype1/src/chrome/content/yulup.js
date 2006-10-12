@@ -873,19 +873,19 @@ WebProgressListener.prototype = {
         /* DEBUG */ dump("Yulup:yulup.js:WebProgressListener.onStateChange(\"" + aWebProgress + "\", \"" + aRequest + "\", \"" + aStateFlags + "\", \"" + aStatus + "\") invoked\n");
 
         // get transition state of request
-        /* DEBUG */ if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_START) transState += "STATE_START ";
-        /* DEBUG */ if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_REDIRECTING) transState += "STATE_REDIRECTING ";
-        /* DEBUG */ if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_TRANSFERRING) transState += "STATE_TRANSFERRING ";
-        /* DEBUG */ if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_NEGOTIATING) transState += "STATE_NEGOTIATING ";
-        /* DEBUG */ if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP) transState += "STATE_STOP";
+        if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_START) transState += "STATE_START ";
+        if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_REDIRECTING) transState += "STATE_REDIRECTING ";
+        if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_TRANSFERRING) transState += "STATE_TRANSFERRING ";
+        if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_NEGOTIATING) transState += "STATE_NEGOTIATING ";
+        if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP) transState += "STATE_STOP";
 
         // get state type of request
-        /* DEBUG */ if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_REQUEST) stateType += "STATE_IS_REQUEST ";
-        /* DEBUG */ if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_DOCUMENT) stateType += "STATE_IS_DOCUMENT ";
-        /* DEBUG */ if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK) stateType += "STATE_IS_NETWORK ";
-        /* DEBUG */ if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW) stateType += "STATE_IS_WINDOW";
+        if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_REQUEST) stateType += "STATE_IS_REQUEST ";
+        if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_DOCUMENT) stateType += "STATE_IS_DOCUMENT ";
+        if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_NETWORK) stateType += "STATE_IS_NETWORK ";
+        if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW) stateType += "STATE_IS_WINDOW";
 
-        /* DEBUG */ dump("Yulup:yulup.js:WebProgressListener.onStateChange: state type: \"" + stateType + "\", status is: \"" + transState + "\"\n");
+        /* DEBUG */ dump("Yulup:yulup.js:WebProgressListener.onStateChange: state type = \"" + stateType + "\", status is = \"" + transState + "\", is loading document = \"" + aWebProgress.isLoadingDocument + "\"\n");
 
         if ((aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_IS_WINDOW) && (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)) {
             /* Document has finished loading. Make sure we are not in a
@@ -893,6 +893,24 @@ WebProgressListener.prototype = {
             if (!this.yulup.isTabEditor(self.getBrowser().selectedBrowser.currentURI)) {
                 this.yulup.introspectionDetector();
             }
+        }
+
+        // crude hack to stop the throbber from turning upon XUL interaction
+        if (transState == "STATE_START " && stateType == "STATE_IS_REQUEST " && !aWebProgress.isLoadingDocument) {
+            /* DEBUG */ dump("Yulup:yulup.js:WebProgressListener.onStateChange: stop the throb\n");
+
+            window.setTimeout(function() {
+                                  var progressPanel = null;
+                                  var throbber      = null;
+                                  var stopButton    = null;
+
+                                  if ((progressPanel = document.getElementById("statusbar-progresspanel")) != null)
+                                      progressPanel.collapsed = true;
+                                  if ((throbber      = document.getElementById("navigator-throbber")) != null)
+                                      throbber.removeAttribute("busy");
+                                  if ((stopButton    = document.getElementById("Browser:Stop")) != null)
+                                      stopButton.setAttribute("disabled", "true");
+                              }, 0);
         }
     },
 
