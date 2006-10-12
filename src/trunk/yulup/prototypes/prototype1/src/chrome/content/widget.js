@@ -292,7 +292,6 @@ var WidgetDialogHandler = {
         label.setAttribute("value", label.getAttribute("value") + "\"" +widget.attributes["name"] + "\"");
 
         for (var i=0; i < widget.fragmentAttributes.length; i++) {
-
             elem = document.createElement("row");
             elem.setAttribute("id", "row" + i);
             elem.setAttribute("align", "center");

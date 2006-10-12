@@ -59,8 +59,7 @@
         <column flex="1"/>
         <column flex="2"/>
       </columns>
-      <rows id="uiYulupEditorAuthenticationRows">
-      </rows>
+      <rows id="uiYulupEditorAuthenticationRows"/>
     </grid>
   </vbox>
 </dialog>

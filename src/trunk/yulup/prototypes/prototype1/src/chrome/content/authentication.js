@@ -58,6 +58,7 @@ var Authentication = {
         for (field in gAuthException.params) {
             elem = document.createElement("row");
             elem.setAttribute("id", "row" + field);
+            elem.setAttribute("align", "center");
             uiAuthenticationRows.appendChild(elem);
 
             elem = document.createElement("label");

@@ -61,8 +61,7 @@
         <column flex="3"/>
         <column flex="1"/>
       </columns>
-      <rows id="uiYulupEditorWidgetInsertRows">
-      </rows>
+      <rows id="uiYulupEditorWidgetInsertRows"/>
     </grid>
   </vbox>
 </dialog>
