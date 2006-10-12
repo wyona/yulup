@@ -33,7 +33,7 @@
   %editorDTD;
 ]>
 
-<dialog id="uiYulupEditorResourceUploadDialog"
+<dialog id="uiYulupEditorResourceSelectDialog"
         orient="vertical"
         align="stretch"
         title="&editorResourceSelectDialog.title;"

@@ -376,8 +376,20 @@ var ResourceSelectDialogHandler = {
 
         sitetreeURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(window.arguments[0], null, null);
 
+        tree.view = new SitetreeView(sitetreeURI, ResourceSelectDialogHandler.sitetreeErrorListener);
+    },
 
-        tree.view = new SitetreeView(sitetreeURI);
+    sitetreeErrorListener: function () {
+        returnObject = null;
+
+        if (window.arguments[1]) {
+            returnObject = window.arguments[1];
+
+            returnObject.error = true;
+        }
+
+        // close the dialog
+        document.getElementById("uiYulupEditorResourceSelectDialog").cancelDialog();
     },
 
     save: function () {
@@ -417,7 +429,10 @@ var ResourceSelectDialogHandler = {
 
         /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialogHandler.doSelectCommand() invoked\n");
 
-        returnObject = new Object();
+        returnObject = {
+            error: null,
+            returnValue: null
+        };
 
         if (window.openDialog(YULUP_RESOURCE_SELECT_CHROME_URI, "yulupWidgetResourceSelectDialog", "modal,resizable=no", aURI, returnObject)) {
             if (returnObject.returnValue) {

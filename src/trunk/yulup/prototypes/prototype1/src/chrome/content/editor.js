@@ -572,9 +572,6 @@ var Editor = {
             // retarget the document to selected URI
             gEditorController.document.retargetTo(targetURI);
 
-            // determine content type
-            
-
             try {
                 gEditorController.document.uploadDocument(gEditorController.model.getDocument(), Editor.documentUploadFinished);
             } catch (exception) {
