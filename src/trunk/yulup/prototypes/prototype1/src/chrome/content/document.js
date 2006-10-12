@@ -320,6 +320,8 @@ Document.prototype = {
 
         /* DEBUG */ dump("Yulup:document.js:Document.saveDocument(\"" + aLocalFile + "\", \"" + aDocumentData + "\") invoked\n");
 
+        /* DEBUG */ YulupDebug.ASSERT(aDocumentData != null);
+
         if (aLocalFile) {
             // we have a path, therefore persist the document
             if (PersistenceService.persistToFile(aLocalFile, aDocumentData)) {
@@ -343,6 +345,73 @@ Document.prototype = {
 
         // user aborted or an error occurred during saving
         return false;
+    },
+
+    /**
+     * Upload the document to the target as specified by the aURI
+     * in the constructor.
+     *
+     * @param  {String}    aDocumentData           the document data to upload
+     * @param  {Function}  aUploadFinishedCallback the function to call when the upload has finished
+     * @return {Undefined} does not have a return value
+     */
+    uploadDocument: function (aDocumentData, aUploadFinishedCallback) {
+        /* DEBUG */ dump("Yulup:document.js:NeutronDocument.uploadDocument() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aDocumentData                   != null);
+        /* DEBUG */ YulupDebug.ASSERT(aUploadFinishedCallback         != null);
+        /* DEBUG */ YulupDebug.ASSERT(typeof(aUploadFinishedCallback) == "function");
+
+        NetworkService.httpRequestPUT(this.loadURI.spec, null, aDocumentData, this.contentType, this.__requestFinishedHandler, aUploadFinishedCallback, false, true);
+    },
+
+    /**
+     * The handler which gets called via a callback after a request has
+     * finished.
+     *
+     * Calls aRequestFinishedCallback upon completion. If
+     * the request succeeded, aRequestFinishedCallback(String, null)
+     * is called (where String might be "" if the request was a
+     * PUT or POST request). aRequestFinishedCallback(null, NeutronException)
+     * if the server threw a Neutron exception during the request.
+     * aRequestFinishedCallback(null, Error) if an internal error
+     * occurred while fullfilling the request.
+     *
+     * Don't use "this" inside this method because the callback
+     * will not provide a pointer to it. If you need "this", you
+     * must wrap this handler in an anonymous function when you
+     * pass it to httpRequestGET().
+     *
+     * @param  {String}   aDocumentData            the data returned by the request
+     * @param  {Long}     aResponseStatusCode      the status code of the response
+     * @param  {Function} aRequestFinishedCallback a function with the signature function(String, Error)
+     * @param  {Array}    aResponseHeaders         the response headers
+     * @param  {Error}    aException               an exception, or null if everything went well
+     * @return {Undefined} does not have a return value
+     */
+    __requestFinishedHandler: function (aDocumentData, aResponseStatusCode, aRequestFinishedCallback, aResponseHeaders, aException) {
+        /* DEBUG */ dump("Yulup:document.js:Document.__requestFinishedHandler() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aResponseStatusCode              != null);
+        /* DEBUG */ YulupDebug.ASSERT(aRequestFinishedCallback         != null);
+        /* DEBUG */ YulupDebug.ASSERT(typeof(aRequestFinishedCallback) == "function");
+
+        if (aResponseStatusCode == 200) {
+            // success, call back to original caller
+            aRequestFinishedCallback(aDocumentData, null);
+        } else {
+            if (aException) {
+                aRequestFinishedCallback(null, aException);
+            } else {
+                try {
+                    // parse error message (throws an exeception)
+                    Neutron.response(aDocumentData);
+                } catch (exception) {
+                    aRequestFinishedCallback(null, exception);
+                    return;
+                }
+            }
+        }
     }
 };
 
@@ -496,6 +565,7 @@ NeutronDocument.prototype = {
     uploadDocument: function (aDocumentData, aUploadFinishedCallback) {
         /* DEBUG */ dump("Yulup:document.js:NeutronDocument.uploadDocument() invoked\n");
 
+        /* DEBUG */ YulupDebug.ASSERT(aDocumentData                   != null);
         /* DEBUG */ YulupDebug.ASSERT(aUploadFinishedCallback         != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aUploadFinishedCallback) == "function");
 
@@ -845,6 +915,7 @@ AtomDocument.prototype = {
 
         /* DEBUG */ dump("Yulup:document.js:AtomDocument.uploadDocument() invoked\n");
 
+        /* DEBUG */ YulupDebug.ASSERT(aDocumentData                   != null);
         /* DEBUG */ YulupDebug.ASSERT(aUploadFinishedCallback         != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aUploadFinishedCallback) == "function");
 
