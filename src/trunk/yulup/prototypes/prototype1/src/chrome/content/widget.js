@@ -594,49 +594,57 @@ var WidgetHandler = {
                 }
             break;
             case "surround":
-                if (aViewMode == 1) {
-                    tidyedFragment.firstChild.appendChild(tidyedFragment.createTextNode(aView.view.selection));
-                    fragmentData = xmlSerializer.serializeToString(tidyedFragment);
-                    aView.view.insertText(fragmentData);
-                } else if (aViewMode == 3) {
-                    tidyedFragment.firstChild.appendChild(tidyedFragment.createTextNode(aView.view.selection));
-                    fragmentData = xmlSerializer.serializeToString(tidyedFragment);
-                    aView.view.insertHTML(fragmentData);
-                } else if (aViewMode == 2) {
-                    xPath = aView.getSourceXPathForXHTMLNode(aView.currentXHTMLNode, aView.isNamespaceAware);
+                // TODO: find out if we should insert or remove
+                if (true) {
+                    // we insert
+                    if (aViewMode == 1) {
+                        // source mode view
+                        tidyedFragment.firstChild.appendChild(tidyedFragment.createTextNode(aView.view.selection));
+                        fragmentData = xmlSerializer.serializeToString(tidyedFragment);
+                        aView.view.insertText(fragmentData);
+                    } else if (aViewMode == 3) {
+                        // xhtml view
+                        if (!aView.view.selection.isCollapsed) {
+                            // if selection is not collapsed insert the fragment
+                            WidgetHandler.__surroundSelection(aView.view, aView.view.selection, tidyedFragment.firstChild);
+                        }
+                    } else if (aViewMode == 2) {
+                        // xslt mode view
+                        xPath = aView.getSourceXPathForXHTMLNode(aView.currentXHTMLNode, aView.isNamespaceAware);
 
-                    /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doContentWidgetCommand: surround XPath " + xPath + "\n");
+                        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doContentWidgetCommand: surround XPath " + xPath + "\n");
 
-                    modelDOM = aView.model.getDocumentDOM();
+                        modelDOM = aView.model.getDocumentDOM();
 
-                    modelNode = modelDOM.evaluate(xPath, modelDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+                        modelNode = modelDOM.evaluate(xPath, modelDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
 
-                    modelNode = modelNode.iterateNext();
+                        modelNode = modelNode.iterateNext();
 
-                    if (modelNode.nodeType != 1 && modelNode.nodeType != 3) {
-                        // only element and text nodes shall be surrounded
-                        return;
+                        if (modelNode.nodeType != 1 && modelNode.nodeType != 3) {
+                            // only element and text nodes shall be surrounded
+                            return;
+                        }
+
+                        tidyedFragment.firstChild.appendChild(modelNode.cloneNode(true));
+
+                        // insert the widget fragment into the model
+                        modelNode.parentNode.replaceChild(tidyedFragment.firstChild, modelNode);
+
+                        //DOMSerialiser.serialiseDOMTree(dom);
+
+                        // preserve scroll position
+                        scrollX = aView.editor.contentWindow.scrollX;
+                        scrollY = aView.editor.contentWindow.scrollY;
+
+                        // TODO find a better way to sync the view with the model
+                        aView.fillView();
+
+                        // restore scroll position
+                        aView.editor.contentWindow.scrollTo(scrollX, scrollY);
+
+                        aView.view.incrementModificationCount(1);
+                        aView.model.setDirty();
                     }
-
-                    tidyedFragment.firstChild.appendChild(modelNode.cloneNode(true));
-
-                    // insert the widget fragment into the model
-                    modelNode.parentNode.replaceChild(tidyedFragment.firstChild, modelNode);
-
-                    //DOMSerialiser.serialiseDOMTree(dom);
-
-                    // preserve scroll position
-                    scrollX = aView.editor.contentWindow.scrollX;
-                    scrollY = aView.editor.contentWindow.scrollY;
-
-                    // TODO find a better way to sync the view with the model
-                    aView.fillView();
-
-                    // restore scroll position
-                    aView.editor.contentWindow.scrollTo(scrollX, scrollY);
-
-                    aView.view.incrementModificationCount(1);
-                    aView.model.setDirty();
                 }
             break;
         }
@@ -668,6 +676,36 @@ var WidgetHandler = {
                 WidgetHandler.doContentWidgetCommand(widget, view, viewMode);
                 break;
         }
+    },
+
+    __surroundSelection: function (aEditor, aSelection, aNewParent) {
+        var xmlSerializer = null;
+        var node          = null;
+        var newParent     = null;
+
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.__surroundSelection(\"" + aEditor + "\", \"" + aSelection + "\", \"" + aNewParent + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aEditor    != null);
+        /* DEBUG */ YulupDebug.ASSERT(aSelection != null);
+        /* DEBUG */ YulupDebug.ASSERT(aNewParent != null);
+
+        var xmlSerializer = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer);
+
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.__surroundSelection: new parent = \"" + aNewParent + "\" (\"" + xmlSerializer.serializeToString(aNewParent) + "\")\n");
+
+        // clone contents of selected range
+        node = aSelection.getRangeAt(0).cloneContents();
+
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.__surroundSelection: selected range = \"" + node + "\" (\"" + xmlSerializer.serializeToString(node) + "\")\n");
+
+        // surround cloned selection
+        newParent = node.ownerDocument.importNode(aNewParent, true);
+        newParent.appendChild(node);
+
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.__surroundSelection: surrounded stub = \"" + newParent + "\" (\"" + xmlSerializer.serializeToString(newParent) + "\")\n");
+
+        // insert cloned selection at current selection
+        aEditor.insertHTML(xmlSerializer.serializeToString(newParent));
     }
 };
 
