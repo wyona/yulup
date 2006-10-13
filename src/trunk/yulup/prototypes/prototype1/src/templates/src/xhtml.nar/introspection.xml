@@ -8,6 +8,26 @@
           <b xmlns=""/>
         </fragment>
       </widget>
+      <widget type="surround" name="Italic" description="Italic Widget" icon="icons/bold.png">
+        <fragment>
+          <i xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Underline" description="Underline Widget" icon="icons/bold.png">
+        <fragment>
+          <u xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Strike" description="Strike Widget" icon="icons/bold.png">
+        <fragment>
+          <strike xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Monospace" description="Monospace Widget" icon="icons/bold.png">
+        <fragment>
+          <tt xmlns=""/>
+        </fragment>
+      </widget>
       <widget type="insert" name="Table" description="Table Widget" icon="icons/table.png">
         <attribute name="Border" xpath="table/attribute::border"/>
         <attribute name="Padding" xpath="table/attribute::cellpadding"/>

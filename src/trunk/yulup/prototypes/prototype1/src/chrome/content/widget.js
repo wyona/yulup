@@ -205,7 +205,7 @@ WidgetManager.prototype = {
 
     requestFinishedHandler: function(aResultFile, aResponseStatusCode, aContext) {
 
-        /* DEBUG */ dump("Yulup:widget.js:WidgetManager.requestFinishedHandler(\"" + aResultFile.path + "\", \"" + aResponseStatusCode + "\", \"" + aContext + "\") invoked\n");
+        ///* DEBUG */ dump("Yulup:widget.js:WidgetManager.requestFinishedHandler(\"" + aResultFile.path + "\", \"" + aResponseStatusCode + "\", \"" + aContext + "\") invoked\n");
 
         if (aResponseStatusCode == 200) {
             aContext.callback(aResultFile, null, aContext.widget);
