@@ -46,8 +46,8 @@ editcontroller {
 /* note: rect(top_edge right_edge bottom_edge left_edge) */
 
 #uiFileOperationNew {
-  list-style-image: url("chrome://yulup/skin/icons/yulup-new.png");
-  -moz-image-region: rect(0px 23px 24px 0px);
+  list-style-image: url("chrome://yulup/skin/icons/yulup2-new.png");
+  -moz-image-region: rect(0px 23px 23px 0px);
   -moz-box-orient: vertical;
 }
 
@@ -56,17 +56,17 @@ editcontroller {
 }
 
 #uiFileOperationNew[disabled="false"]:active {
-  -moz-image-region: rect(24px 23px 48px 0px);
+  -moz-image-region: rect(24px 23px 47px 0px);
 }
 
 #uiFileOperationNew[disabled="true"] {
-  -moz-image-region: rect(48px 23px 72px 0px);
+  -moz-image-region: rect(48px 23px 71px 0px);
 }
 
 
 #uiFileOperationOpen {
-  list-style-image: url("chrome://yulup/skin/icons/yulup-open.png");
-  -moz-image-region: rect(0px 24px 24px 0px);
+  list-style-image: url("chrome://yulup/skin/icons/yulup2-open.png");
+  -moz-image-region: rect(0px 23px 23px 0px);
   -moz-box-orient: vertical;
 }
 
@@ -75,17 +75,17 @@ editcontroller {
 }
 
 #uiFileOperationOpen[disabled="false"]:active {
-  -moz-image-region: rect(24px 24px 48px 0px);
+  -moz-image-region: rect(24px 23px 47px 0px);
 }
 
 #uiFileOperationOpen[disabled="true"] {
-  -moz-image-region: rect(48px 24px 72px 0px);
+  -moz-image-region: rect(48px 23px 71px 0px);
 }
 
 
 #uiFileOperationSave {
-  list-style-image: url("chrome://yulup/skin/icons/yulup-save.png");
-  -moz-image-region: rect(0px 24px 24px 0px);
+  list-style-image: url("chrome://yulup/skin/icons/yulup2-save.png");
+  -moz-image-region: rect(0px 23px 23px 0px);
   -moz-box-orient: vertical;
 }
 
@@ -94,17 +94,17 @@ editcontroller {
 }
 
 #uiFileOperationSave[disabled="false"]:active {
-  -moz-image-region: rect(24px 24px 48px 0px);
+  -moz-image-region: rect(24px 23px 47px 0px);
 }
 
 #uiFileOperationSave[disabled="true"] {
-  -moz-image-region: rect(48px 24px 72px 0px);
+  -moz-image-region: rect(48px 23px 71px 0px);
 }
 
 
 #uiFileOperationSaveAs {
-  list-style-image: url("chrome://yulup/skin/icons/yulup-save.png");
-  -moz-image-region: rect(0px 24px 24px 0px);
+  list-style-image: url("chrome://yulup/skin/icons/yulup2-saveas.png");
+  -moz-image-region: rect(0px 23px 23px 0px);
   -moz-box-orient: vertical;
 }
 
@@ -113,16 +113,16 @@ editcontroller {
 }
 
 #uiFileOperationSaveAs[disabled="false"]:active {
-  -moz-image-region: rect(24px 24px 48px 0px);
+  -moz-image-region: rect(24px 23px 47px 0px);
 }
 
 #uiFileOperationSaveAs[disabled="true"] {
-  -moz-image-region: rect(48px 24px 72px 0px);
+  -moz-image-region: rect(48px 23px 71px 0px);
 }
 
 #uiFileOperationUpload {
-  list-style-image: url("chrome://yulup/skin/icons/yulup-upload.png");
-  -moz-image-region: rect(0px 24px 24px 0px);
+  list-style-image: url("chrome://yulup/skin/icons/yulup2-upload.png");
+  -moz-image-region: rect(0px 21px 21px 0px);
   -moz-box-orient: vertical;
 }
 
