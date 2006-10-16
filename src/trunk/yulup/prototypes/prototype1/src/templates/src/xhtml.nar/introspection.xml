@@ -8,17 +8,17 @@
           <b xmlns=""/>
         </fragment>
       </widget>
-      <widget type="surround" name="Italic" description="Italic Widget" icon="icons/bold.png">
+      <widget type="surround" name="Italic" description="Italic Widget" icon="icons/italic.png">
         <fragment>
           <i xmlns=""/>
         </fragment>
       </widget>
-      <widget type="surround" name="Underline" description="Underline Widget" icon="icons/bold.png">
+      <widget type="surround" name="Underline" description="Underline Widget" icon="icons/underline.png">
         <fragment>
           <u xmlns=""/>
         </fragment>
       </widget>
-      <widget type="surround" name="Strike" description="Strike Widget" icon="icons/bold.png">
+      <widget type="surround" name="Strike" description="Strike Widget" icon="icons/strikethrough.png">
         <fragment>
           <strike xmlns=""/>
         </fragment>
