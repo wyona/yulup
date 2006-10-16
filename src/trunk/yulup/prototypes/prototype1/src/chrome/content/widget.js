@@ -600,7 +600,10 @@ var WidgetHandler = {
                     if (aViewMode == 1) {
                         // source mode view
                         tidyedFragment.firstChild.appendChild(tidyedFragment.createTextNode(aView.view.selection));
-                        fragmentData = xmlSerializer.serializeToString(tidyedFragment);
+
+                        /* Don't use @mozilla.org/xmlextras/xmlserializer;1 here because we
+                         * don't want the tags contained on the text node to be escaped. */
+                        fragmentData = (new WYSIWYGDOMSerialiser(tidyedFragment)).serialiseXML();
                         aView.view.insertText(fragmentData);
                     } else if (aViewMode == 3) {
                         // xhtml view

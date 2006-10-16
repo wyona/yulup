@@ -1975,8 +1975,6 @@ WYSIWYGDOMSerialiser.prototype = {
      * @return {String} a serialisation of the document body
      */
     serialiseXML: function () {
-        var bodyNode = null;
-
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMSerialiser.serialiseXML() invoked\n");
 
         this.outputString = "";
