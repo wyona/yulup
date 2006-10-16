@@ -135,7 +135,7 @@ editcontroller {
 }
 
 #uiEditOperationUndo {
-  list-style-image: url("chrome://yulup/skin/icons/yulup-undo-redo.png");
+  list-style-image: url("chrome://yulup/skin/icons/yulup-undo.png");
   -moz-image-region: rect(0px 25px 24px 0px);
   -moz-box-orient: vertical;
 }
@@ -150,7 +150,7 @@ editcontroller {
 
 
 #uiEditOperationRedo {
-  list-style-image: url("chrome://yulup/skin/icons/yulup-undo-redo.png");
+  list-style-image: url("chrome://yulup/skin/icons/yulup-redo.png");
   -moz-image-region: rect(0px 52px 24px 25px);
   -moz-box-orient: vertical;
 }
