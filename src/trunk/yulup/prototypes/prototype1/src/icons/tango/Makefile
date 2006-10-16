@@ -4,9 +4,9 @@ all: $(png)
 
 build/%.png: %.png
 	@printf "\nBuilding icon $@\n"
-	convert $< $@.1.png
-	convert $< -modulate  50 $@.2.png
-	convert $< -modulate 140 $@.3.png
+	convert $< -resize 24x24 $@.1.png
+	convert $< -resize 24x24 -modulate  50 $@.2.png
+	convert $< -resize 24x24 -modulate 140 $@.3.png
 	convert $@.1.png $@.2.png $@.3.png -append $@
 	rm $@.1.png $@.2.png $@.3.png
 
