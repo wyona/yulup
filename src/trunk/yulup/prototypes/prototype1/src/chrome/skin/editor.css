@@ -46,7 +46,7 @@ editcontroller {
 /* note: rect(top_edge right_edge bottom_edge left_edge) */
 
 #uiFileOperationNew {
-  list-style-image: url("chrome://yulup/skin/icons/yulup2-new.png");
+  list-style-image: url("chrome://yulup/skin/icons/yulup3-new.png");
   -moz-image-region: rect(0px 23px 23px 0px);
   -moz-box-orient: vertical;
 }
@@ -65,7 +65,7 @@ editcontroller {
 
 
 #uiFileOperationOpen {
-  list-style-image: url("chrome://yulup/skin/icons/yulup2-open.png");
+  list-style-image: url("chrome://yulup/skin/icons/yulup3-open.png");
   -moz-image-region: rect(0px 23px 23px 0px);
   -moz-box-orient: vertical;
 }
@@ -84,7 +84,7 @@ editcontroller {
 
 
 #uiFileOperationSave {
-  list-style-image: url("chrome://yulup/skin/icons/yulup2-save.png");
+  list-style-image: url("chrome://yulup/skin/icons/yulup3-save.png");
   -moz-image-region: rect(0px 23px 23px 0px);
   -moz-box-orient: vertical;
 }
@@ -103,7 +103,7 @@ editcontroller {
 
 
 #uiFileOperationSaveAs {
-  list-style-image: url("chrome://yulup/skin/icons/yulup2-saveas.png");
+  list-style-image: url("chrome://yulup/skin/icons/yulup3-saveas.png");
   -moz-image-region: rect(0px 23px 23px 0px);
   -moz-box-orient: vertical;
 }
@@ -121,9 +121,17 @@ editcontroller {
 }
 
 #uiFileOperationUpload {
-  list-style-image: url("chrome://yulup/skin/icons/yulup2-upload.png");
-  -moz-image-region: rect(0px 21px 21px 0px);
+  list-style-image: url("chrome://yulup/skin/icons/yulup3-upload.png");
+  -moz-image-region: rect(0px 23px 23px 0px);
   -moz-box-orient: vertical;
+}
+
+#uiFileOperationUpload[disabled="false"]:active {
+  -moz-image-region: rect(24px 23px 47px 0px);
+}
+
+#uiFileOperationUpload[disabled="true"] {
+  -moz-image-region: rect(48px 23px 71px 0px);
 }
 
 #uiEditOperationUndo {
