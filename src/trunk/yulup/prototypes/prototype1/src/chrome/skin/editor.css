@@ -165,47 +165,47 @@ editcontroller {
 
 
 #uiEditOperationCut {
-  list-style-image: url("chrome://yulup/skin/icons/compose-toolbar-small.png");
-  -moz-image-region: rect(0px 192px 24px 168px);
+  list-style-image: url("chrome://yulup/skin/icons/yulup-cut.png");
+  -moz-image-region: rect(0px 25px 23px 0px);
   -moz-box-orient: vertical;
 }
 
 #uiEditOperationCut[disabled="false"]:active {
-  -moz-image-region: rect(24px 192px 48px 168px);
+  -moz-image-region: rect(24px 25px 47px 0px);
 }
 
 #uiEditOperationCut[disabled="true"] {
-  -moz-image-region: rect(48px 192px 72px 168px);
+  -moz-image-region: rect(48px 25px 71px 0px);
 }
 
 
 #uiEditOperationCopy {
-  list-style-image: url("chrome://yulup/skin/icons/compose-toolbar-small.png");
-  -moz-image-region: rect(0px 216px 24px 192px);
+  list-style-image: url("chrome://yulup/skin/icons/yulup-copy.png");
+  -moz-image-region: rect(0px 25px 23px 0px);
   -moz-box-orient: vertical;
 }
 
 #uiEditOperationCopy[disabled="false"]:active {
-  -moz-image-region: rect(24px 216px 48px 192px);
+  -moz-image-region: rect(24px 25px 47px 0px);
 }
 
 #uiEditOperationCopy[disabled="true"] {
-  -moz-image-region: rect(48px 216px 72px 192px);
+  -moz-image-region: rect(48px 25px 71px 0px);
 }
 
 
 #uiEditOperationPaste {
-  list-style-image: url("chrome://yulup/skin/icons/compose-toolbar-small.png");
-  -moz-image-region: rect(0px 239px 24px 216px);
+  list-style-image: url("chrome://yulup/skin/icons/yulup-paste.png");
+  -moz-image-region: rect(0px 25px 23px 0px);
   -moz-box-orient: vertical;
 }
 
 #uiEditOperationPaste[disabled="false"]:active {
-  -moz-image-region: rect(24px 239px 48px 216px);
+  -moz-image-region: rect(24px 25px 47px 0px);
 }
 
 #uiEditOperationPaste[disabled="true"] {
-  -moz-image-region: rect(48px 239px 72px 216px);
+  -moz-image-region: rect(48px 25px 71px 0px);
 }
 
 /* -------------------- Footer Toolbars  -------------------- */
