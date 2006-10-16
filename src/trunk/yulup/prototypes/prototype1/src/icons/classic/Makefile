@@ -5,7 +5,7 @@ all: $(png)
 build/%.png: %.png
 	@printf "\nBuilding icon $@\n"
 
-deploy-yulup:
+deploy-yulup: $(png)
 	cp yulup-*.png ../../chrome/skin/icons/
 
 clean:
