@@ -3,7 +3,7 @@
 <dtd xmlns="http://yulup.wyona.org/1.0">
 
   <entity id="editToolbarbutton.label">
-    <name xml:lang="en">Editor</name>
+    <name xml:lang="en">Yulup</name>
   </entity>
 
   <entity id="editMenuitem.label">
