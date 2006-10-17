@@ -2,6 +2,7 @@
 <!ENTITY editorCancelButton.label "Cancel">
 <!ENTITY editorUploadButton.label "Upload">
 <!ENTITY editorCloseButton.label "Close">
+<!ENTITY editorToolboxToggleTextItem.label "Show icons only">
 <!ENTITY editOperationCopy.label "Copy">
 <!ENTITY editOperationCut.label "Cut">
 <!ENTITY editOperationPaste.label "Paste">

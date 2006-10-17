@@ -2,6 +2,7 @@
 <!ENTITY editorCancelButton.label "Abbrechen">
 <!ENTITY editorUploadButton.label "Hochladen">
 <!ENTITY editorCloseButton.label "Schliessen">
+<!ENTITY editorToolboxToggleTextItem.label "Nur Icons zeigen">
 <!ENTITY editOperationCopy.label "Kopieren">
 <!ENTITY editOperationCut.label "Ausschneiden">
 <!ENTITY editOperationPaste.label "Einfügen">

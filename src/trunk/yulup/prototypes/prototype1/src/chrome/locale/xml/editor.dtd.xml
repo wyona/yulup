@@ -21,6 +21,11 @@
     <name xml:lang="de">Schliessen</name>
   </entity>
 
+  <entity id="editorToolboxToggleTextItem.label">
+    <name xml:lang="en">Show icons only</name>
+    <name xml:lang="de">Nur Icons zeigen</name>
+  </entity>
+
   <entity id="editOperationCopy.label">
     <name xml:lang="en">Copy</name>
     <name xml:lang="de">Kopieren</name>

@@ -45,6 +45,10 @@ editcontroller {
 /* for gnome icons see bin/share/icons/gnome/24x24/stock/generic */
 /* note: rect(top_edge right_edge bottom_edge left_edge) */
 
+toolbox[showiconsonly="true"] .toolbarbutton-text {
+  display: none;
+}
+
 #uiFileOperationNew {
   list-style-image: url("chrome://yulup/skin/icons/yulup-new.png");
   -moz-image-region: rect(0px 25px 23px 0px);

@@ -27,8 +27,61 @@
  */
 
 const YULUP_EXTENSION_ID = "yulup-prototype-1@wyona.com";
+const YULUP_PREF_BRANCH  = "extensions.yulup.";
+const NAMESPACE_XUL      = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
-const NAMESPACE_XUL = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+var YulupPreferences = {
+    __getBranch: function (aBranch) {
+        var preferences = null;
+
+        preferences = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+
+        return preferences.getBranch(YULUP_PREF_BRANCH + aBranch);
+    },
+
+    getBoolPref: function (aBranch, aItem) {
+        var branch = null;
+
+        /* DEBUG */ dump("Yulup:common.js:YulupPreferences.getBoolPref(\"" + aBranch + "\", \"" + aItem + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aBranch != null);
+        /* DEBUG */ YulupDebug.ASSERT(aItem   != null);
+
+        try {
+            if ((branch = YulupPreferences.__getBranch(aBranch)) != null) {
+                return branch.getBoolPref(aItem);
+            } else {
+                return null;
+            }
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupPreferences.getBoolPref", exception);
+            return null;
+        }
+    },
+
+    setBoolPref: function (aBranch, aItem, aValue) {
+        var branch = null;
+
+        /* DEBUG */ dump("Yulup:common.js:YulupPreferences.setBoolPref(\"" + aBranch + "\", \"" + aItem + "\", \"" + aValue + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aBranch != null);
+        /* DEBUG */ YulupDebug.ASSERT(aItem   != null);
+        /* DEBUG */ YulupDebug.ASSERT(aValue  != null);
+        /* DEBUG */ YulupDebug.ASSERT(typeof(aValue) == "boolean");
+
+        try {
+            if ((branch = YulupPreferences.__getBranch(aBranch)) != null) {
+                branch.setBoolPref(aItem, aValue);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupPreferences.setBoolPref", exception);
+            return false;
+        }
+    }
+};
 
 /**
  * YulupException constructor. Instantiates a new object of

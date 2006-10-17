@@ -48,6 +48,7 @@ var Editor = {
     onLoadListener: function () {
         var instanceID      = null;
         var parameterObject = null;
+        var showIconsOnly   = null;
 
         /* DEBUG */ dump("Yulup:editor.js:Editor.onLoadListener() invoked\n");
 
@@ -60,6 +61,16 @@ var Editor = {
 
             // set window title
             document.title = EDITOR_WINDOW_TITLE;
+
+            // update toolbar according to prefs
+            if ((showIconsOnly = YulupPreferences.getBoolPref("editor.toolbox.", "showiconsonly")) != null) {
+                document.getElementById("uiYulupEditorToolbox").setAttribute("showiconsonly", showIconsOnly);
+            } else {
+                document.getElementById("uiYulupEditorToolbox").setAttribute("showiconsonly", false);
+            }
+
+            // show toolbox
+            document.getElementById("uiYulupEditorToolbox").removeAttribute("hidden");
 
             // get a handle on the main browser window
             gMainBrowserWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
@@ -607,6 +618,24 @@ var Editor = {
     resourceUpload: function () {
         // open dialog
         ResourceUploadDialog.showResourceUploadDialog(gEditorController.editorParams.navigation.sitetree.uri);
+    },
+
+    updateToolboxContextMenu: function () {
+        document.getElementById("uiYulupEditorToolboxToggleTextItem").setAttribute("checked", document.getElementById("uiYulupEditorToolbox").getAttribute("showiconsonly") == "true");
+    },
+
+    toggleToolbarButtonText: function () {
+        if (document.getElementById("uiYulupEditorToolbox").getAttribute("showiconsonly") != "true") {
+            document.getElementById("uiYulupEditorToolbox").setAttribute("showiconsonly", "true");
+
+            // persist current state
+            YulupPreferences.setBoolPref("editor.toolbox.", "showiconsonly", true);
+        } else {
+            document.getElementById("uiYulupEditorToolbox").setAttribute("showiconsonly", "false");
+
+            // persist current state
+            YulupPreferences.setBoolPref("editor.toolbox.", "showiconsonly", false);
+        }
     },
 
     goUpdateCommand: function (aCommand) {

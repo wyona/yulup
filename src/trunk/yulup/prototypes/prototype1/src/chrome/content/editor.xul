@@ -125,7 +125,17 @@
     <broadcaster id="broadcaster_yulup_neutronfromcheckout" disabled="true"/>
   </broadcasterset>
 
-  <toolbox>
+  <popupset>
+    <popup id="uiYulupEditorToolboxContextMenu"
+           onpopupshowing="Editor.updateToolboxContextMenu()">
+      <menuitem id="uiYulupEditorToolboxToggleTextItem"
+                label="&editorToolboxToggleTextItem.label;"
+                type="checkbox"
+                oncommand="Editor.toggleToolbarButtonText()"/>
+    </popup>
+  </popupset>
+
+  <toolbox id="uiYulupEditorToolbox" context="uiYulupEditorToolboxContextMenu" hidden="true" showiconsonly="true">
     <toolbar id="uiYulupEditorToolbar"
              toolbarname="Yulup Editor Toolbar">
       <box id="uiYulupFileOperationsToolbarbuttons">

@@ -43,6 +43,9 @@
         <exclude name="src/"/>
       </fileset>
     </copy>
+    <copy todir="../pkg/tmp/defaults">
+      <fileset dir="./defaults"/>
+    </copy>
     <copy file="./install.rdf" todir="../pkg/tmp"/>
     <!-- exclude install.js for now since it is non-functional -->
     <!--<copy file="./install.js" todir="../pkg/tmp"/>-->
