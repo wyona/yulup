@@ -1,0 +1,20 @@
+<entry xmlns="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <title type="text">yulup-prototype-1-0.1.10-rc7-r19420</title>
+  <author><name>Andreas Wuest</name></author>
+  <id>urn:uuid:TODO-rc7</id>
+
+  <summary type="html">Yulup 0.1.10 RC7 released</summary>
+  <content type="xhtml">
+    <xhtml:div>
+      <xhtml:a href="yulup-prototype-1-0.1.10-rc7-r19420.xpi">yulup-prototype-1-0.1.10-rc7-r19420.xpi</xhtml:a> (October 17, 2006)
+      <xhtml:br/><xhtml:br/>Changelog:
+      <xhtml:ul>
+        <xhtml:li>Improved widget handling.</xhtml:li>
+        <xhtml:li>New editor theme.</xhtml:li>
+        <xhtml:li>Toolbar buttons' text can be hidden via context menu.</xhtml:li>
+        <xhtml:li>Resource and document upload via sitetree.</xhtml:li>
+        <xhtml:li>Several bugfixes.</xhtml:li>
+      </xhtml:ul>
+    </xhtml:div>
+  </content>
+<updated>2006-10-17T22:59:25.205Z</updated><published>2006-10-17T22:59:25.205Z</published></entry>
