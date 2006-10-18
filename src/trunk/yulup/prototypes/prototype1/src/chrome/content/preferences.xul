@@ -33,21 +33,22 @@
             orient="vertical"
             align="stretch"
             title="&prefWindow.title;"
+            onload="PreferencesDialog.onLoadHandler()"
             persist="screenX screenY"
             xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript"
           src="chrome://yulup/content/common.js"/>
-  <!--<script type="application/x-javascript"
-          src="chrome://yulup/content/preferences.js"/>-->
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/preferences.js"/>
 
   <prefpane id="uiYulupGeneralPrefPane" label="&generalPrefPane.label;">
     <groupbox>
       <caption label="&editorThemeGroupbox.label;"/>
       <label value="&editorThemeMenulistLabel.label;:" control="uiEditorThemeMenulist"/>
-      <menulist id="uiEditorThemeMenulist">
+      <menulist id="uiEditorThemeMenulist" disabled="true">
         <menupopup>
-          <menuitem label="&editorThemeDefaultTheme.label;"/>
+          <menuitem value="default" label="&editorThemeDefaultTheme.label;"/>
         </menupopup>
       </menulist>
     </groupbox>
