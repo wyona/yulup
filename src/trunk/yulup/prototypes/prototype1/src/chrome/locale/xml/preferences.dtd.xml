@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<dtd xmlns="http://yulup.wyona.org/1.0">
+
+  <entity id="prefWindow.title">
+    <name xml:lang="en">Yulup Preferences</name>
+    <name xml:lang="de">Yulup Einstellungen</name>
+  </entity>
+
+  <entity id="generalPrefPane.label">
+    <name xml:lang="en">General</name>
+    <name xml:lang="de">Allgemein</name>
+  </entity>
+
+  <entity id="editorThemeGroupbox.label">
+    <name xml:lang="en">Editor Theme</name>
+    <name xml:lang="de">Editor Aussehen</name>
+  </entity>
+
+  <entity id="editorThemeMenulistLabel.label">
+    <name xml:lang="en">Choose the editor theme</name>
+    <name xml:lang="de">Aussehen auswählen</name>
+  </entity>
+
+  <entity id="editorThemeDefaultTheme.label">
+    <name xml:lang="en">Default</name>
+    <name xml:lang="de">Standard</name>
+  </entity>
+
+</dtd>

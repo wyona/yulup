@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<!--
+# ***** BEGIN LICENSE BLOCK *****
+# Copyright 2006 Wyona AG Zurich
+#
+# This file is part of Yulup.
+#
+# Yulup is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Yulup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Yulup; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# ***** END LICENSE BLOCK *****
+-->
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://browser/skin/preferences/preferences.css" type="text/css"?>
+<!--<?xml-stylesheet href="chrome://yulup/skin/preferences.css" type="text/css"?>-->
+
+<!DOCTYPE prefwindow  SYSTEM "chrome://yulup/locale/preferences.dtd">
+
+<prefwindow id="uiYulupPrefWindow"
+            orient="vertical"
+            align="stretch"
+            title="&prefWindow.title;"
+            persist="screenX screenY"
+            xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/common.js"/>
+  <!--<script type="application/x-javascript"
+          src="chrome://yulup/content/preferences.js"/>-->
+
+  <prefpane id="uiYulupGeneralPrefPane" label="&generalPrefPane.label;">
+    <groupbox>
+      <caption label="&editorThemeGroupbox.label;"/>
+      <label value="&editorThemeMenulistLabel.label;:" control="uiEditorThemeMenulist"/>
+      <menulist id="uiEditorThemeMenulist">
+        <menupopup>
+          <menuitem label="&editorThemeDefaultTheme.label;"/>
+        </menupopup>
+      </menulist>
+    </groupbox>
+  </prefpane>
+</prefwindow>

@@ -63,6 +63,7 @@
     <em:contributor>Michael Wechner (Wyona Inc.)</em:contributor>
     <em:contributor>Gregor Imboden (Wyona Inc.)</em:contributor>
     <em:contributor>Thomas Comiotto (University of Zurich)</em:contributor>
+    <em:optionsURL>chrome://yulup/content/preferences.xul</em:optionsURL>
     <em:iconURL>chrome://yulup/skin/icons/yulup-logo.png</em:iconURL>
     <em:homepageURL>http://www.yulup.org/</em:homepageURL>
     <em:updateURL>http://www.yulup.org/download/update.rdf</em:updateURL>

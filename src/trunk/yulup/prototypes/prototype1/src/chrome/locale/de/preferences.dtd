@@ -1,0 +1,5 @@
+<!ENTITY prefWindow.title "Yulup Einstellungen">
+<!ENTITY generalPrefPane.label "Allgemein">
+<!ENTITY editorThemeGroupbox.label "Editor Aussehen">
+<!ENTITY editorThemeMenulistLabel.label "Aussehen auswählen">
+<!ENTITY editorThemeDefaultTheme.label "Standard">
