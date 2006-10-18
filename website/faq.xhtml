@@ -49,7 +49,7 @@
 
 <p><span style="font-weight: bolder;">Q.</span> When I click on one of the download links below, Firefox tells me something along the lines of "Software installation is currently disabled. Click Edit Options... to enable it and try again." When clicking on "Edit Options...", the preferences dialog is opened but there is no relevant option to reenable software installation.</p>
 
-<p><span style="font-weight: bolder;">A.</span> The option to enable software installation was removed from the user interface, without implementing a replacement. This is a known bug (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=310737">https://bugzilla.mozilla.org/show_bug.cgi?id=310737</a>) and is fixed in Firefox 2 alpha 2. For users of Firefox 1.5.0.x, a workaround is to open the URI "about:config", scroll down to the option "xpinstall.enabled", right click on that name, and select "Toggle" from the context menu, such that the "Value" column reads "true".</p>
+<p><span style="font-weight: bolder;">A.</span> The option to enable software installation was removed from the user interface, without implementing a replacement. This is a known <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=310737">bug</a> and is fixed in Firefox 2 alpha 2. For users of Firefox 1.5.0.x, a workaround is to open the URI "about:config", scroll down to the option "xpinstall.enabled", right click on that name, and select "Toggle" from the context menu, such that the "Value" column reads "true".</p>
 
 <p>Note that this bug must not necessarily show up with your installation, since the "xpinstall.enabled" is set to "true" by default, and could only have been changed by you yourself (or your administrator) in an earlier release or manually by using "about:config".</p>
 
@@ -59,9 +59,9 @@
 
 <a name="noupdates"/>
 
-<p><span style="font-weight: bolder;">Q.</span> Cannot upgrade to a newer version.</p>
+<p><span style="font-weight: bolder;">Q.</span> Cannot upgrade to a newer version although a newer version is indeed available (Extension Manager reports: "No updates were found for Wyona Yulup").</p>
 
-<p><span style="font-weight: bolder;">A.</span> Delete your local profile and restart Firefox (warning: this deletes all your bookmarks, etc., therefore you might want to create a backup copy of your profile folder first, and afterwards migrate your old bookmarks to your new profile).</p>
+<p><span style="font-weight: bolder;">A.</span> Clear your browser cache (Preferences -> Privacy -> Cache -> Clear Cache Now) then try again to update. Alternative 1: Uninstall Yulup and reinstall afresh from the Yulup website. Alternative 2: Delete your local profile and restart Firefox (warning: this deletes all your bookmarks, etc., therefore you might want to create a backup copy of your profile folder first, and afterwards migrate your old bookmarks to your new profile).</p>
 
 
 
@@ -83,39 +83,6 @@
 
 
 <pre>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
