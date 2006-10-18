@@ -11,7 +11,9 @@ build/%.png: %.png
 	rm $@.1.png $@.2.png $@.3.png
 
 deploy-yulup: $(png)
-	cp build/yulup-*.png ../../chrome/skin/icons/
+	mkdir ../../chrome/skin/icons/industrial
+	cp toolbox.css ../../chrome/skin/icons/industrial
+	cp build/yulup-*.png ../../chrome/skin/icons/industrial
 
 clean:
 	-rm build/*.png

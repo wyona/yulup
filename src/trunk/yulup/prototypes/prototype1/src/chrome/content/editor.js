@@ -49,6 +49,7 @@ var Editor = {
         var instanceID      = null;
         var parameterObject = null;
         var showIconsOnly   = null;
+        var cssProcInstr    = null;
 
         /* DEBUG */ dump("Yulup:editor.js:Editor.onLoadListener() invoked\n");
 
@@ -68,6 +69,9 @@ var Editor = {
             } else {
                 document.getElementById("uiYulupEditorToolbox").setAttribute("showiconsonly", false);
             }
+
+            // add toolbox stylesheet according to preferred theme
+            document.styleSheets.item(1).insertRule("@import url(chrome://yulup/skin/toolbox.css);", 0);
 
             // show toolbox
             document.getElementById("uiYulupEditorToolbox").removeAttribute("hidden");

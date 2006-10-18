@@ -6,7 +6,9 @@ build/%.png: %.png
 	@printf "\nBuilding icon $@\n"
 
 deploy-yulup: $(png)
-	cp yulup-*.png ../../chrome/skin/icons/
+	mkdir ../../chrome/skin/icons/classic
+	cp toolbox.css ../../chrome/skin/icons/classic/
+	cp yulup-*.png ../../chrome/skin/icons/classic/
 
 clean:
 	-rm build/*.png
