@@ -80,6 +80,26 @@ var YulupPreferences = {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupPreferences.setBoolPref", exception);
             return false;
         }
+    },
+
+    getCharPref: function (aBranch, aItem) {
+        var branch = null;
+
+        /* DEBUG */ dump("Yulup:common.js:YulupPreferences.getCharPref(\"" + aBranch + "\", \"" + aItem + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aBranch != null);
+        /* DEBUG */ YulupDebug.ASSERT(aItem   != null);
+
+        try {
+            if ((branch = YulupPreferences.__getBranch(aBranch)) != null) {
+                return branch.getCharPref(aItem);
+            } else {
+                return null;
+            }
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupPreferences.getCharPref", exception);
+            return null;
+        }
     }
 };
 
