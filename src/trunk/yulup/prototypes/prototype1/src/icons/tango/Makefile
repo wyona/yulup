@@ -12,13 +12,13 @@ build/%.png: %.png
 	rm $@.1.png $@.2.png $@.3.png
 
 deploy-theme: $(png)
-	mkdir ../../chrome/skin/icons/tango
+	mkdir ../../chrome/skin/icons/themes/Tango
 	cp theme.tango.css ../../chrome/skin/
-	cp build/yulup-*.png ../../chrome/skin/icons/tango/
+	cp build/yulup-*.png ../../chrome/skin/icons/themes/Tango/
 
 remove-theme:
 	-rm ../../chrome/skin/theme.tango.css
-	-rm -r ../../chrome/skin/icons/tango
+	-rm -r ../../chrome/skin/icons/themes/Tango
 
 clean:
 	-rm build/*.png

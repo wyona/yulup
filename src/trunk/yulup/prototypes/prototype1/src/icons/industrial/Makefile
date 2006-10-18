@@ -11,13 +11,13 @@ build/%.png: %.png
 	rm $@.1.png $@.2.png $@.3.png
 
 deploy-theme: $(png)
-	mkdir ../../chrome/skin/icons/industrial
+	mkdir ../../chrome/skin/icons/themes/Industrial
 	cp theme.industrial.css ../../chrome/skin/
-	cp build/yulup-*.png ../../chrome/skin/icons/industrial
+	cp build/yulup-*.png ../../chrome/skin/icons/themes/Industrial
 
 remove-theme:
 	-rm ../../chrome/skin/theme.industrial.css
-	-rm -r ../../chrome/skin/icons/industrial
+	-rm -r ../../chrome/skin/icons/themes/Industrial
 
 clean:
 	-rm build/*.png
