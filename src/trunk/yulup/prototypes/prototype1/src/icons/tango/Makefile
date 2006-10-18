@@ -11,10 +11,14 @@ build/%.png: %.png
 	convert $@.1.png $@.2.png $@.3.png -append $@
 	rm $@.1.png $@.2.png $@.3.png
 
-deploy-yulup: $(png)
+deploy-theme: $(png)
 	mkdir ../../chrome/skin/icons/tango
-	cp toolbox.css ../../chrome/skin/icons/tango/
+	cp theme.tango.css ../../chrome/skin/
 	cp build/yulup-*.png ../../chrome/skin/icons/tango/
+
+remove-theme:
+	-rm ../../chrome/skin/theme.tango.css
+	-rm -r ../../chrome/skin/icons/tango
 
 clean:
 	-rm build/*.png

@@ -10,10 +10,14 @@ build/%.png: %.png
 	convert $@.1.png $@.2.png $@.3.png -append $@
 	rm $@.1.png $@.2.png $@.3.png
 
-deploy-yulup: $(png)
+deploy-theme: $(png)
 	mkdir ../../chrome/skin/icons/industrial
-	cp toolbox.css ../../chrome/skin/icons/industrial
+	cp theme.industrial.css ../../chrome/skin/
 	cp build/yulup-*.png ../../chrome/skin/icons/industrial
+
+remove-theme:
+	-rm ../../chrome/skin/theme.industrial.css
+	-rm -r ../../chrome/skin/icons/industrial
 
 clean:
 	-rm build/*.png
