@@ -12,7 +12,7 @@ build/%.png: %.png
 	convert $@.1.png $@.2.png $@.3.png -append $@
 	rm $@.1.png $@.2.png $@.3.png
 
-deploy-theme: $(png)
+deploy-theme: remove-theme $(png)
 	@printf "\nDeplyoing theme in $(dir)\n"
 	mkdir $(dir)
 	cp $(css) ../../chrome/skin/

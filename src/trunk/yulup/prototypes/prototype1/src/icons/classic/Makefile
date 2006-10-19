@@ -7,7 +7,7 @@ all: $(png)
 build/%.png: %.png
 	@printf "\nBuilding icon $@\n"
 
-deploy-theme: $(png)
+deploy-theme: remove-theme $(png)
 	@printf "\nDeplyoing theme in $(dir)\n"
 	mkdir $(dir)
 	cp $(css) ../../chrome/skin/
