@@ -72,9 +72,9 @@ var Editor = {
 
             // add toolbox stylesheet according to preferred theme
             if ((themeID = YulupPreferences.getCharPref("editor.", "theme")) != null) {
-                document.styleSheets.item(1).insertRule("@import url(chrome://yulup/skin/theme." + themeID + ".css);", 0);
-            } else {
-                document.styleSheets.item(1).insertRule("@import url(chrome://yulup/skin/theme.default.css);", 0);
+                if (themeID != "default") {
+                    document.styleSheets.item(2).insertRule("@import url(chrome://yulup/skin/theme." + themeID + ".css);", 0);
+                }
             }
 
             // show toolbox

@@ -40,6 +40,12 @@ editcontroller {
   -moz-box-flex: 0 !important;
 }
 
+/* ------------------------ Toolbox  ------------------------ */
+
+toolbox[showiconsonly="true"] .toolbarbutton-text {
+  display: none;
+}
+
 /* -------------------- Footer Toolbars  -------------------- */
 
 .uiEditorFooterToolBar {

@@ -4,10 +4,6 @@
 /* for gnome icons see bin/share/icons/gnome/24x24/stock/generic */
 /* note: rect(top_edge right_edge bottom_edge left_edge) */
 
-toolbox[showiconsonly="true"] .toolbarbutton-text {
-  display: none;
-}
-
 #uiFileOperationNew {
   list-style-image: url("chrome://yulup/skin/icons/default/yulup-new.png");
   -moz-image-region: rect(0px 25px 23px 0px);
@@ -83,6 +79,7 @@ toolbox[showiconsonly="true"] .toolbarbutton-text {
   -moz-image-region: rect(48px 25px 71px 0px);
 }
 
+
 #uiFileOperationUpload {
   list-style-image: url("chrome://yulup/skin/icons/default/yulup-upload.png");
   -moz-image-region: rect(0px 25px 23px 0px);
@@ -96,6 +93,7 @@ toolbox[showiconsonly="true"] .toolbarbutton-text {
 #uiFileOperationUpload[disabled="true"] {
   -moz-image-region: rect(48px 25px 71px 0px);
 }
+
 
 #uiEditOperationUndo {
   list-style-image: url("chrome://yulup/skin/icons/default/yulup-undo.png");
