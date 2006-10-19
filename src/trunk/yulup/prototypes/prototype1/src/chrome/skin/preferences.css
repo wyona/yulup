@@ -56,13 +56,6 @@ radio[pane=uiYulupEditorPrefPane]:active {
   border: 1px solid red;
 }
 
-description {
-  font: small-caption;
-  font-weight: normal;
-  line-height: 1.3em;
-  margin-bottom: 4px !important;
-}
-
 prefpane button {
   -moz-appearance: button-small;
 }

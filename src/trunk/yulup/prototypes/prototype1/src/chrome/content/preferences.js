@@ -103,7 +103,7 @@ var PreferencesDialog = {
         }
 
         // install preference connectors
-        menulist.setAttribute("preference", "pref_theme");
+        menulist.setAttribute("preference", "pref_editor_theme");
 
         // enable preferences
         menulist.removeAttribute("disabled");

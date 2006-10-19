@@ -1,6 +1,12 @@
 <!ENTITY prefWindow.title "Yulup Einstellungen">
 <!ENTITY generalPrefPane.label "Allgemein">
+<!ENTITY generalDefaultServerGroupbox.label "Standard CMS">
+<!ENTITY generalDefaultServerTextboxLabel.label "URI des standard CMS eingeben">
 <!ENTITY editorPrefPane.label "Editor">
-<!ENTITY editorThemeGroupbox.label "Editor Aussehen">
+<!ENTITY editorKeyBindingsGroupbox.label "Tastaturkürzel">
+<!ENTITY editorKeyBindingsMenulistLabel.label "Tastaturkürzelschema auswählen">
+<!ENTITY editorKeyBindingsNone.label "Keines">
+<!ENTITY editorKeyBindingsReadline.label "Readline (Emacs)">
+<!ENTITY editorThemeGroupbox.label "Aussehen">
 <!ENTITY editorThemeMenulistLabel.label "Aussehen auswählen">
 <!ENTITY editorThemeDefaultTheme.label "Standard">

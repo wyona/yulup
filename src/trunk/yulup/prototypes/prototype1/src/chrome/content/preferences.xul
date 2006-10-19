@@ -29,6 +29,7 @@
 <!DOCTYPE prefwindow  SYSTEM "chrome://yulup/locale/preferences.dtd">
 
 <prefwindow id="uiYulupPrefWindow"
+            type="prefwindow"
             orient="vertical"
             align="stretch"
             title="&prefWindow.title;"
@@ -36,20 +37,40 @@
             persist="screenX screenY"
             xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <script type="application/x-javascript"
-          src="chrome://yulup/content/common.js"/>
-  <script type="application/x-javascript"
-          src="chrome://yulup/content/preferences.js"/>
-  <script type="application/x-javascript"
-          src="chrome://yulup/content/persistenceservice.js"/>
-
   <prefpane id="uiYulupGeneralPrefPane" label="&generalPrefPane.label;">
+    <preferences>
+      <preference id="pref_general_defaultserver"
+                  name="extensions.yulup.neutron.defaultserver"
+                  type="unichar"/>
+    </preferences>
+
+    <groupbox>
+      <caption label="&generalDefaultServerGroupbox.label;"/>
+      <label value="&generalDefaultServerTextboxLabel.label;:" control="uiGeneralDefaultServerTextbox"/>
+      <textbox id="uiGeneralDefaultServerTextbox" preference="pref_general_defaultserver" style="min-width: 300px;"/>
+    </groupbox>
   </prefpane>
 
   <prefpane id="uiYulupEditorPrefPane" label="&editorPrefPane.label;">
     <preferences>
-      <preference id="pref_theme" name="extensions.yulup.editor.theme" type="unichar"/>
+      <preference id="pref_editor_keybinding"
+                  name="extensions.yulup.editor.keybinding"
+                  type="string"/>
+      <preference id="pref_editor_theme"
+                  name="extensions.yulup.editor.theme"
+                  type="unichar"/>
     </preferences>
+
+    <groupbox>
+      <caption label="&editorKeyBindingsGroupbox.label;"/>
+      <label value="&editorKeyBindingsMenulistLabel.label;:" control="uiEditorKeyBindingsMenulist"/>
+      <menulist id="uiEditorKeyBindingsMenulist" preference="pref_editor_keybinding">
+        <menupopup>
+          <menuitem value="none" label="&editorKeyBindingsNone.label;"/>
+          <menuitem value="readline" label="&editorKeyBindingsReadline.label;"/>
+        </menupopup>
+      </menulist>
+    </groupbox>
 
     <groupbox>
       <caption label="&editorThemeGroupbox.label;"/>
@@ -61,4 +82,13 @@
       </menulist>
     </groupbox>
   </prefpane>
+
+  <!-- scripts have to go here because of bug https://bugzilla.mozilla.org/show_bug.cgi?id=296418 -->
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/common.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/preferences.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/persistenceservice.js"/>
+
 </prefwindow>

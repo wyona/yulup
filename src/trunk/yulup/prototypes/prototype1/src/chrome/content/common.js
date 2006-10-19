@@ -39,6 +39,31 @@ var YulupPreferences = {
         return preferences.getBranch(YULUP_PREF_BRANCH + aBranch);
     },
 
+    /**
+     * Add a preferences change observer to the specified branch.
+     *
+     * Note that you have to store the returned branch in a
+     * durable place, because a) you have to call removeObserver
+     * on that very same object in order to remove the observer,
+     * and b) so that that the branch is not garbage collected
+     * and the observer destroyed.
+     */
+    addObserver: function (aBranch, aObserver) {
+        var branch = null;
+
+        /* DEBUG */ dump("Yulup:common.js:YulupPreferences.addObserver(\"" + aBranch + "\", \"" + aObserver + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aBranch   != null);
+        /* DEBUG */ YulupDebug.ASSERT(aObserver != null);
+
+        if ((branch = YulupPreferences.__getBranch(aBranch)) != null) {
+            branch.QueryInterface(Components.interfaces.nsIPrefBranch2);
+            branch.addObserver("", aObserver, false);
+        }
+
+        return branch;
+    },
+
     getBoolPref: function (aBranch, aItem) {
         var branch = null;
 

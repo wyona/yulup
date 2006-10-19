@@ -166,6 +166,9 @@ var Editor = {
             }
         }
 
+        // remove theme change observer
+        gEditorController.themesPref.removeObserver("", gEditorController.themesPrefObserver);
+
         // remove onbeforeunload listener
         window.removeEventListener("beforeunload", Editor.onBeforeUnloadListener, false);
 
@@ -809,5 +812,24 @@ UndoRedoObserver.prototype = {
             Editor.goUpdateCommand(aTopic);
             //window.updateCommands("undo");
         }
+    }
+};
+
+
+function ThemeChangedObserver(aDocument) {
+    this.__document = aDocument;
+}
+
+ThemeChangedObserver.prototype = {
+    __document: null,
+
+    observe: function (aSubject, aTopic, aData) {
+        /* DEBUG */ dump("Yulup:editor.js:ThemeChangedObserver.observe(\"" + aSubject + "\", \"" + aTopic + "\", \"" + aData + "\") invoked\n");
+
+        if (aTopic != "nsPref:changed")
+            return;
+
+        if (aData == "theme")
+            return;
     }
 };

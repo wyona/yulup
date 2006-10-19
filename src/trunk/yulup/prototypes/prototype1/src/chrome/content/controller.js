@@ -426,6 +426,8 @@ function YulupEditController(aParameterObject) {
 
     // public instance attributes
     this.initialised         = false;
+    this.themesPref          = null;
+    this.themesPrefObserver  = null;
     this.editorMode          = null;
     this.editorParams        = null;
     this.model               = null;
@@ -442,6 +444,10 @@ function YulupEditController(aParameterObject) {
     this.archiveRegistry     = null;
     this.archive             = null;
     this.templateArchive     = null;
+
+    // install theme change observer
+    this.themesPrefObserver = new ThemeChangedObserver(document);
+    this.themesPref = YulupPreferences.addObserver("editor.", this.themesPrefObserver);
 
     if (aParameterObject) {
         /* Parameters did reach us, therefore we can remove our

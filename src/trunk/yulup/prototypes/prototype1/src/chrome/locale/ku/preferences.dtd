@@ -1,6 +1,12 @@
 <!ENTITY prefWindow.title "Yulup Preferences">
 <!ENTITY generalPrefPane.label "General">
+<!ENTITY generalDefaultServerGroupbox.label "Default CMS">
+<!ENTITY generalDefaultServerTextboxLabel.label "Enter the URI of your default CMS">
 <!ENTITY editorPrefPane.label "Editor">
-<!ENTITY editorThemeGroupbox.label "Editor Theme">
-<!ENTITY editorThemeMenulistLabel.label "Choose the editor theme">
+<!ENTITY editorKeyBindingsGroupbox.label "Key Bindings">
+<!ENTITY editorKeyBindingsMenulistLabel.label "Select a key binding">
+<!ENTITY editorKeyBindingsNone.label "None">
+<!ENTITY editorKeyBindingsReadline.label "Readline (Emacs)">
+<!ENTITY editorThemeGroupbox.label "Appearance">
+<!ENTITY editorThemeMenulistLabel.label "Choose the editor appearance">
 <!ENTITY editorThemeDefaultTheme.label "Default">
