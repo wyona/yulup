@@ -1,4 +1,6 @@
 png := $(patsubst %.png,build/%.png,$(wildcard *.png))
+dir := ../../chrome/skin/icons/themes/Industrial
+css := theme.industrial.css
 
 all: $(png)
 
@@ -11,15 +13,17 @@ build/%.png: %.png
 	rm $@.1.png $@.2.png $@.3.png
 
 deploy-theme: $(png)
-	mkdir ../../chrome/skin/icons/themes/Industrial
-	cp theme.industrial.css ../../chrome/skin/
-	cp build/yulup-*.png ../../chrome/skin/icons/themes/Industrial
+	@printf "\nDeplyoing theme in $(dir)\n"
+	mkdir $(dir)
+	cp $(css) ../../chrome/skin/
+	cp build/yulup-*.png $(dir)
 
 remove-theme:
-	-rm ../../chrome/skin/theme.industrial.css
-	-rm -r ../../chrome/skin/icons/themes/Industrial
+	@printf "\nRemoving theme from $(dir)\n"
+	-rm ../../chrome/skin/$(css)
+	-rm -r $(dir)
 
 clean:
 	-rm build/*.png
 
-.PHONY: clean
+.PHONY: all deploy-theme remove-theme clean
