@@ -24,8 +24,7 @@
 -->
 
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://browser/skin/preferences/preferences.css" type="text/css"?>
-<!--<?xml-stylesheet href="chrome://yulup/skin/preferences.css" type="text/css"?>-->
+<?xml-stylesheet href="chrome://yulup/skin/preferences.css" type="text/css"?>
 
 <!DOCTYPE prefwindow  SYSTEM "chrome://yulup/locale/preferences.dtd">
 
@@ -41,8 +40,17 @@
           src="chrome://yulup/content/common.js"/>
   <script type="application/x-javascript"
           src="chrome://yulup/content/preferences.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/persistenceservice.js"/>
 
   <prefpane id="uiYulupGeneralPrefPane" label="&generalPrefPane.label;">
+  </prefpane>
+
+  <prefpane id="uiYulupEditorPrefPane" label="&editorPrefPane.label;">
+    <preferences>
+      <preference id="pref_theme" name="extensions.yulup.editor.theme" type="unichar"/>
+    </preferences>
+
     <groupbox>
       <caption label="&editorThemeGroupbox.label;"/>
       <label value="&editorThemeMenulistLabel.label;:" control="uiEditorThemeMenulist"/>

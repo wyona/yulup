@@ -26,6 +26,8 @@
  *
  */
 
+const YULUP_THEME_CHROME_URI = "chrome://yulup/skin/icons/themes";
+
 var PreferencesDialog = {
     /**
      * Initialise the dialog.
@@ -34,8 +36,12 @@ var PreferencesDialog = {
      */
     onLoadHandler: function () {
         var menulist         = null;
-        var fileProtoHandler = null;
+        var ioService        = null;
+        var chromeRegistry   = null;
+        var fileURI          = null;
         var file             = null;
+        var dirEntries       = null;
+        var themeDirectory   = null;
         var themeID          = null;
         var themeValue       = null;
         var selectedItem     = null;
@@ -44,9 +50,36 @@ var PreferencesDialog = {
 
         menulist = document.getElementById("uiEditorThemeMenulist");
 
-        // get all available themes
-        //fileProtoHandler = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).getProtocolHandler("file").QueryInterface(Components.interfaces.nsIFileProtocolHandler);
-        //file = fileProtoHandler.getFileFromURLSpec(YULUP_THEME_CHROME_URI);
+        // discover all available themes
+        try {
+            ioService      = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+            chromeRegistry = Components.classes["@mozilla.org/chrome/chrome-registry;1"].getService(Components.interfaces.nsIChromeRegistry);
+
+            fileURI = chromeRegistry.convertChromeURL(ioService.newURI(YULUP_THEME_CHROME_URI, null, null));
+
+            /* DEBUG */ dump("Yulup:preferences.js:PreferencesDialog.onLoadHandler: fileURI.spec = \"" + fileURI.spec + "\"\n");
+
+            file = fileURI.QueryInterface(Components.interfaces.nsIFileURL).file;
+
+            /* DEBUG */ dump("Yulup:preferences.js:PreferencesDialog.onLoadHandler: file = \"" + file + "\"\n");
+
+            if (file.isDirectory()) {
+                dirEntries = file.directoryEntries;
+
+                while (dirEntries.hasMoreElements()) {
+                    themeDirectory = dirEntries.getNext().QueryInterface(Components.interfaces.nsIFile);
+
+                    /* DEBUG */ dump("Yulup:preferences.js:PreferencesDialog.onLoadHandler: theme dir entry = \"" + themeDirectory.leafName + "\"\n");
+
+                    if (themeDirectory.isDirectory) {
+                        menulist.appendItem(themeDirectory.leafName, themeDirectory.leafName.toLowerCase(), null);
+                    }
+                }
+            }
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:preferences.js:PreferencesDialog.onLoadHandler", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+        }
 
         // get current theme
         if ((themeID = YulupPreferences.getCharPref("editor.", "theme")) != null) {
@@ -69,25 +102,10 @@ var PreferencesDialog = {
             menulist.selectedIndex = 0;
         }
 
-        // install theme menulist change handler
-        menulist.addEventListener("ValueChange", PreferencesDialog.themeChangedHandler, false);
+        // install preference connectors
+        menulist.setAttribute("preference", "pref_theme");
 
         // enable preferences
         menulist.removeAttribute("disabled");
-    },
-
-    themeChangedHandler: function (aEvent) {
-        var value = null;
-
-        /* DEBUG */ dump("Yulup:preferences.js:PreferencesDialog.themeChangedHandler(\"" + aEvent + "\") invoked\n");
-
-        // get selected value
-        value = document.getElementById("uiEditorThemeMenulist").selectedItem.value;
-
-        // presist new value
-        YulupPreferences.setCharPref("editor.", "theme", value);
-
-        // we consumed this event
-        aEvent.stopPropagation();
     }
 };

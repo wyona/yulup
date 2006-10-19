@@ -1,5 +1,6 @@
 <!ENTITY prefWindow.title "Yulup Preferences">
 <!ENTITY generalPrefPane.label "General">
+<!ENTITY editorPrefPane.label "Editor">
 <!ENTITY editorThemeGroupbox.label "Editor Theme">
 <!ENTITY editorThemeMenulistLabel.label "Choose the editor theme">
 <!ENTITY editorThemeDefaultTheme.label "Default">
