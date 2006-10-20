@@ -32,7 +32,16 @@ const SERVERURIPROMPT_FORM_HISTORY_ID = "yulup-serveruriprompt";
 
 var ServerURIPrompt = {
     onLoadHandler: function () {
+        var serverURI = null;
+
         /* DEBUG */ dump("Yulup:serveruriprompt.js:ServerURIPrompt.onLoadHandler() invoked\n");
+
+        // prefill textbox with default URI if available
+        if ((serverURI = YulupPreferences.getCharPref("neutron.", "defaultserver")) != null) {
+            if (serverURI != "") {
+                document.getElementById("uiYulupServerURIPromptTextBox").value = serverURI;
+            }
+        }
     },
 
     /**
