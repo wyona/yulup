@@ -638,11 +638,12 @@ SourceModeView.prototype = {
      * @return {Undefined} does not have a return value
      */
     setUp: function () {
-        /* DEBUG */ dump("Yulup:view.js:SourceModeView.setUp() invoked\n");
-
         var sourceEditor             = null;
+        var keyBinding               = null;
         var commandControllerContext = null;
         var commandTable             = null;
+
+        /* DEBUG */ dump("Yulup:view.js:SourceModeView.setUp() invoked\n");
 
         try {
             /* DEBUG */ dump("Yulup:view.js:SourceModeView.setUp: this = \"" + this + "\"\n");
@@ -680,8 +681,16 @@ SourceModeView.prototype = {
             sourceEditor.contentWindow.addEventListener("keypress", new TextEditorKeyListener(this.view), true);
             sourceEditor.contentWindow.addEventListener("keypress", new GuidedTagInserterKeyListener(this), true);
 
-            // TODO: make this configurable via the preferences system
-            if (true) {
+            if ((keyBinding = YulupPreferences.getCharPref("editor.", "keybinding")) != null) {
+                switch (keyBinding) {
+                    case "readline":
+                        sourceEditor.contentWindow.addEventListener("keypress", new ReadlineKeyBindingsListener(sourceEditor), true);
+                        break;
+                    case "none":
+                    default:
+                }
+            } else {
+                // default to readline
                 sourceEditor.contentWindow.addEventListener("keypress", new ReadlineKeyBindingsListener(sourceEditor), true);
             }
 
@@ -847,10 +856,12 @@ WYSIWYGModeView.prototype = {
      * @return {Undefined} does not have a return value
      */
     setUp: function () {
-        /* DEBUG */ dump("Yulup:view.js:WYSIWYGModeView.setUp() invoked\n");
         var wysiwygEditor            = null;
+        var keyBinding               = null;
         var commandControllerContext = null;
         var commandTable             = null;
+
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGModeView.setUp() invoked\n");
 
         try {
             /* DEBUG */ dump("Yulup:view.js:WYSIWYGModeView.setUp: this.editor = \"" + this.editor + "\"\n");
@@ -884,8 +895,16 @@ WYSIWYGModeView.prototype = {
              * http://lxr.mozilla.org/mozilla1.8.0/source/editor/libeditor/html/nsHTMLEditor.cpp#1209). */
             this.view.updateBaseURL();
 
-            // TODO: make this configurable via the preferences system
-            if (true) {
+            if ((keyBinding = YulupPreferences.getCharPref("editor.", "keybinding")) != null) {
+                switch (keyBinding) {
+                    case "readline":
+                        wysiwygEditor.contentWindow.addEventListener("keypress", new ReadlineKeyBindingsListener(wysiwygEditor), true);
+                        break;
+                    case "none":
+                    default:
+                }
+            } else {
+                // default to readline
                 wysiwygEditor.contentWindow.addEventListener("keypress", new ReadlineKeyBindingsListener(wysiwygEditor), true);
             }
 
@@ -1113,6 +1132,7 @@ WYSIWYGXSLTModeView.prototype = {
      */
     setUp: function () {
         var wysiwygXSLTEditor        = null;
+        var keyBinding               = null;
         var commandControllerContext = null;
         var commandTable             = null;
 
@@ -1162,8 +1182,16 @@ WYSIWYGXSLTModeView.prototype = {
 
             wysiwygXSLTEditor.contentWindow.addEventListener("keyup", new WYSIWYGXSLTKeyListener(this), true);
 
-            // TODO: make this configurable via the preferences system
-            if (true) {
+            if ((keyBinding = YulupPreferences.getCharPref("editor.", "keybinding")) != null) {
+                switch (keyBinding) {
+                    case "readline":
+                        wysiwygXSLTEditor.contentWindow.addEventListener("keypress", new ReadlineKeyBindingsListener(wysiwygXSLTEditor), true);
+                        break;
+                    case "none":
+                    default:
+                }
+            } else {
+                // default to readline
                 wysiwygXSLTEditor.contentWindow.addEventListener("keypress", new ReadlineKeyBindingsListener(wysiwygXSLTEditor), true);
             }
 
