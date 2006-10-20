@@ -102,10 +102,28 @@ var PreferencesDialog = {
             menulist.selectedIndex = 0;
         }
 
+        // install keypress handler for input validation
+        document.getElementById("uiEditorTabspacesTextbox").inputField.addEventListener("keypress", PreferencesDialog.spacesTextboxKeypressHandler, false);
+
         // install preference connectors
         menulist.setAttribute("preference", "pref_editor_theme");
 
         // enable preferences
         menulist.removeAttribute("disabled");
+    },
+
+    spacesTextboxKeypressHandler: function (aEvent) {
+        /* DEBUG */ dump("Yulup:preferences.js:PreferencesDialog.spacesTextboxKeypressHandler(\"" + aEvent + "\") invoked\n");
+
+        if (aEvent.keyCode == 0) {
+            switch (String.fromCharCode(aEvent.charCode)) {
+                case "0": case "1": case "2": case "3": case "4": case "5": case "6": case "7": case "8": case "9":
+                    // allow
+                    break;
+                default:
+                    // cancel the keypress
+                    aEvent.preventDefault();
+            }
+        }
     }
 };

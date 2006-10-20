@@ -47,6 +47,16 @@
     <name xml:lang="de">Readline (Emacs)</name>
   </entity>
 
+  <entity id="editorKeyBindingsUseSpacesForTabLabel.label">
+    <name xml:lang="en">Use spaces instead of tab</name>
+    <name xml:lang="de">Leerzeichen anstatt Tab verwenden</name>
+  </entity>
+
+  <entity id="editorKeyBindingsNoOfSpacesLabel.label">
+    <name xml:lang="en">Number of spaces</name>
+    <name xml:lang="de">Anzahl Leerzeichen</name>
+  </entity>
+
   <entity id="editorThemeGroupbox.label">
     <name xml:lang="en">Appearance</name>
     <name xml:lang="de">Aussehen</name>

@@ -56,6 +56,12 @@
       <preference id="pref_editor_keybinding"
                   name="extensions.yulup.editor.keybinding"
                   type="string"/>
+      <preference id="pref_editor_usetabspaces"
+                  name="extensions.yulup.editor.usetabspaces"
+                  type="bool"/>
+      <preference id="pref_editor_tabspaces"
+                  name="extensions.yulup.editor.tabspaces"
+                  type="int"/>
       <preference id="pref_editor_theme"
                   name="extensions.yulup.editor.theme"
                   type="unichar"/>
@@ -70,6 +76,15 @@
           <menuitem value="readline" label="&editorKeyBindingsReadline.label;"/>
         </menupopup>
       </menulist>
+
+      <separator class="thin"/>
+
+      <hbox align="center">
+        <checkbox label="&editorKeyBindingsUseSpacesForTabLabel.label;" preference="pref_editor_usetabspaces"/>
+        <separator style="width: 20px;"/>
+        <textbox id="uiEditorTabspacesTextbox" preference="pref_editor_tabspaces"  maxlength="2" size="2"/>
+        <label value="&editorKeyBindingsNoOfSpacesLabel.label;" control="uiEditorTabspacesTextbox"/>
+      </hbox>
     </groupbox>
 
     <groupbox>

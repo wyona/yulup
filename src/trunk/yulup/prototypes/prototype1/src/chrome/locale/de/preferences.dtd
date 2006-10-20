@@ -7,6 +7,8 @@
 <!ENTITY editorKeyBindingsMenulistLabel.label "Tastaturkürzelschema auswählen">
 <!ENTITY editorKeyBindingsNone.label "Keines">
 <!ENTITY editorKeyBindingsReadline.label "Readline (Emacs)">
+<!ENTITY editorKeyBindingsUseSpacesForTabLabel.label "Leerzeichen anstatt Tab verwenden">
+<!ENTITY editorKeyBindingsNoOfSpacesLabel.label "Anzahl Leerzeichen">
 <!ENTITY editorThemeGroupbox.label "Aussehen">
 <!ENTITY editorThemeMenulistLabel.label "Aussehen auswählen">
 <!ENTITY editorThemeDefaultTheme.label "Standard">
