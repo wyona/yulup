@@ -31,12 +31,16 @@ const YULUP_PREF_BRANCH  = "extensions.yulup.";
 const NAMESPACE_XUL      = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
 var YulupPreferences = {
-    __getBranch: function (aBranch) {
+    __branch: null,
+
+    __getBranch: function () {
         var preferences = null;
 
-        preferences = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+        if (!YulupPreferences.__branch) {
+            YulupPreferences.__branch = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch(YULUP_PREF_BRANCH);
+        }
 
-        return preferences.getBranch(YULUP_PREF_BRANCH + aBranch);
+        return YulupPreferences.__branch;
     },
 
     /**
@@ -47,6 +51,10 @@ var YulupPreferences = {
      * on that very same object in order to remove the observer,
      * and b) so that that the branch is not garbage collected
      * and the observer destroyed.
+     *
+     * @param  {String}      aBranch   the branch to add the observer to
+     * @param  {nsIObserver} aObserver the observer to add
+     * @return {nsIPrefBranch} the branch to which the observer was added
      */
     addObserver: function (aBranch, aObserver) {
         var branch = null;
@@ -56,9 +64,9 @@ var YulupPreferences = {
         /* DEBUG */ YulupDebug.ASSERT(aBranch   != null);
         /* DEBUG */ YulupDebug.ASSERT(aObserver != null);
 
-        if ((branch = YulupPreferences.__getBranch(aBranch)) != null) {
+        if ((branch = YulupPreferences.__getBranch()) != null) {
             branch.QueryInterface(Components.interfaces.nsIPrefBranch2);
-            branch.addObserver("", aObserver, false);
+            branch.addObserver(aBranch, aObserver, false);
         }
 
         return branch;
@@ -73,8 +81,8 @@ var YulupPreferences = {
         /* DEBUG */ YulupDebug.ASSERT(aItem   != null);
 
         try {
-            if ((branch = YulupPreferences.__getBranch(aBranch)) != null) {
-                return branch.getBoolPref(aItem);
+            if ((branch = YulupPreferences.__getBranch()) != null) {
+                return branch.getBoolPref(aBranch + aItem);
             } else {
                 return null;
             }
@@ -95,8 +103,8 @@ var YulupPreferences = {
         /* DEBUG */ YulupDebug.ASSERT(typeof(aValue) == "boolean");
 
         try {
-            if ((branch = YulupPreferences.__getBranch(aBranch)) != null) {
-                branch.setBoolPref(aItem, aValue);
+            if ((branch = YulupPreferences.__getBranch()) != null) {
+                branch.setBoolPref(aBranch + aItem, aValue);
                 return true;
             } else {
                 return false;
@@ -116,8 +124,8 @@ var YulupPreferences = {
         /* DEBUG */ YulupDebug.ASSERT(aItem   != null);
 
         try {
-            if ((branch = YulupPreferences.__getBranch(aBranch)) != null) {
-                return branch.getCharPref(aItem);
+            if ((branch = YulupPreferences.__getBranch()) != null) {
+                return branch.getCharPref(aBranch + aItem);
             } else {
                 return null;
             }
