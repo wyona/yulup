@@ -4,6 +4,8 @@
 <!ENTITY editCheckoutNoLockMenu.label "Öffnen und Bearbeiten">
 <!ENTITY editCheckoutMenuitem.label "Auschecken und Editieren">
 <!ENTITY editCheckoutMenu.label "Auschecken und Editieren">
+<!ENTITY editDeleteMenuitem.label "Löschen">
+<!ENTITY editDeleteMenu.label "Löschen">
 <!ENTITY editOperationNewMenu.label "Neu">
 <!ENTITY fileOperationNewAtomEntryMenuitem.label "Neuer Atom Eintrag">
 <!ENTITY editOperationOpenMenu.label "Öffnen">
@@ -22,6 +24,8 @@
 <!ENTITY editCheckoutNoLockMenu.tooltip "Eines der verfügbaren Fragmente im CMS öffnen und editieren">
 <!ENTITY editCheckoutMenuitem.tooltip "Das aktuelle Dokument vom CMS auschecken (d.h. für andere Benutzer sperren) und editieren">
 <!ENTITY editCheckoutMenu.tooltip "Eines der verfügbaren Fragmente vom CMS auschecken (d.h. für andere Benutzer sperren) und editieren">
+<!ENTITY editDeleteMenuitem.tooltip "Das aktuelle Dokument im CMS löschen">
+<!ENTITY editDeleteMenu.tooltip "Eines der verfügbaren Fragmente im CMS löschen">
 <!ENTITY editOperationNewMenu.tooltip "Ein neues Dokument erstellen">
 <!ENTITY fileOperationNewAtomEntryMenuitem.tooltip "Einen neuen Atom Eintrag im aktuellen Feed erstellen">
 <!ENTITY fileOperationUploadMenuitem.label "Hochladen">

@@ -129,6 +129,16 @@
               hidden="true">
           <menupopup id="uiYulupEditCheckoutMenupopup"/>
         </menu>
+        <menuitem id="uiYulupEditDeleteMenuitem"
+                  oncommand="deleteFromCMS(0)"
+                  label="&editDeleteMenuitem.label;" tooltiptext="&editDeleteMenuitem.tooltip;"
+                  disabled="true"/>
+        <menu id="uiYulupEditDeleteMenu"
+              label="&editDeleteMenu.label;" tooltiptext="&editDeleteMenu.tooltip;"
+              disabled="true"
+              hidden="true">
+          <menupopup id="uiYulupEditDeleteMenupopup"/>
+        </menu>
 
         <menuseparator/>
 

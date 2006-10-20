@@ -31,6 +31,16 @@
     <name xml:lang="de">Auschecken und Editieren</name>
   </entity>
 
+  <entity id="editDeleteMenuitem.label">
+    <name xml:lang="en">Delete</name>
+    <name xml:lang="de">Löschen</name>
+  </entity>
+
+  <entity id="editDeleteMenu.label">
+    <name xml:lang="en">Delete</name>
+    <name xml:lang="de">Löschen</name>
+  </entity>
+
   <entity id="editOperationNewMenu.label">
     <name xml:lang="en">New</name>
     <name xml:lang="de">Neu</name>
@@ -116,6 +126,16 @@
   <entity id="editCheckoutMenu.tooltip">
     <name xml:lang="en">Check out (lock) one of the current fragments from CMS and edit</name>
     <name xml:lang="de">Eines der verfügbaren Fragmente vom CMS auschecken (d.h. für andere Benutzer sperren) und editieren</name>
+  </entity>
+
+  <entity id="editDeleteMenuitem.tooltip">
+    <name xml:lang="en">Delete the current document from CMS</name>
+    <name xml:lang="de">Das aktuelle Dokument im CMS löschen</name>
+  </entity>
+
+  <entity id="editDeleteMenu.tooltip">
+    <name xml:lang="en">Delete one of the current fragments from CMS</name>
+    <name xml:lang="de">Eines der verfügbaren Fragmente im CMS löschen</name>
   </entity>
 
   <entity id="editOperationNewMenu.tooltip">

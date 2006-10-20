@@ -4,6 +4,8 @@
 <!ENTITY editCheckoutNoLockMenu.label "Open and Edit">
 <!ENTITY editCheckoutMenuitem.label "Checkout and Edit">
 <!ENTITY editCheckoutMenu.label "Checkout and Edit">
+<!ENTITY editDeleteMenuitem.label "Delete">
+<!ENTITY editDeleteMenu.label "Delete">
 <!ENTITY editOperationNewMenu.label "New">
 <!ENTITY fileOperationNewAtomEntryMenuitem.label "New Atom Entry">
 <!ENTITY editOperationOpenMenu.label "Open">
@@ -22,6 +24,8 @@
 <!ENTITY editCheckoutNoLockMenu.tooltip "Open one of the current fragments from CMS and edit">
 <!ENTITY editCheckoutMenuitem.tooltip "Check out (lock) the current document from CMS and edit">
 <!ENTITY editCheckoutMenu.tooltip "Check out (lock) one of the current fragments from CMS and edit">
+<!ENTITY editDeleteMenuitem.tooltip "Delete the current document from CMS">
+<!ENTITY editDeleteMenu.tooltip "Delete one of the current fragments from CMS">
 <!ENTITY editOperationNewMenu.tooltip "Create a new document">
 <!ENTITY fileOperationNewAtomEntryMenuitem.tooltip "Create a new Atom entry for the currently selected feed">
 <!ENTITY fileOperationUploadMenuitem.label "Upload">
