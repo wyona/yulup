@@ -8,6 +8,7 @@
 <!ENTITY fileOperationNewAtomEntryMenuitem.label "Neuer Atom Eintrag">
 <!ENTITY editOperationOpenMenu.label "Öffnen">
 <!ENTITY editAboutMenuitem.label "Ueber">
+<!ENTITY editPreferencesMenuitem.label "Einstellungen">
 <!ENTITY editHelpMenuitem.label "Hilfe">
 <!ENTITY editDemoMenuitem.label "Demosite">
 <!ENTITY editVersionStringMenuitem.label "Yulup-Dev">
@@ -27,6 +28,7 @@
 <!ENTITY fileOperationUploadMenuitem.tooltip "Eine Ressource auf den Server hochladen">
 <!ENTITY editOperationOpenMenu.tooltip "Ein bereits existierendes Dokument öffnen">
 <!ENTITY editAboutMenuitem.tooltip "Über Yulup">
+<!ENTITY editPreferencesMenuitem.tooltip "Änderungen an den Yulup Einstellungen vornehmen">
 <!ENTITY editHelpMenuitem.tooltip "Den Hilfe-Browser von Yulup anzeigen">
 <!ENTITY editDemoMenuitem.tooltip "Zur Demosite gehen">
 <!ENTITY editVersionStringMenuitem.tooltip "Die Version von Yulup die Sie derzeit benützen">

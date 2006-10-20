@@ -96,6 +96,10 @@
         </menupopup>
       </menulist>
     </groupbox>
+
+    <separator class="thin"/>
+
+    <description id="uiEditorPrefChangeNote">&editorPrefChangeNote.label;</description>
   </prefpane>
 
   <!-- scripts have to go here because of bug https://bugzilla.mozilla.org/show_bug.cgi?id=296418 -->

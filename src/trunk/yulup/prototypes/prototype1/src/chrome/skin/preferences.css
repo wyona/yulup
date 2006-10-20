@@ -1,7 +1,3 @@
-prefwindow {
-  padding: 0 !important;
-}
-
 .windowDialog {
   padding: 12px;
   font: -moz-dialog;
@@ -75,4 +71,9 @@ prefpane .groupbox-title {
 caption {
   border-bottom: 1px solid #ECECEC;
   padding: 4px 4px 0px 0px !important;
+}
+
+#uiEditorPrefChangeNote {
+  font-size: x-small;
+  padding-bottom: 4px;
 }

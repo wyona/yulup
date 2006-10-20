@@ -72,4 +72,9 @@
     <name xml:lang="de">Standard</name>
   </entity>
 
+  <entity id="editorPrefChangeNote.label">
+    <name xml:lang="en">Note that editor preference changes only take effect after the editor is restarted.</name>
+    <name xml:lang="de">Die Editoreinstellungen treten erst nach einem Neustart des Editors in Effekt.</name>
+  </entity>
+
 </dtd>

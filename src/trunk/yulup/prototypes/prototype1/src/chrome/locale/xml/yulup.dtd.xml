@@ -52,6 +52,11 @@
     <name xml:lang="fr">Nous</name>
   </entity>
 
+  <entity id="editPreferencesMenuitem.label">
+    <name xml:lang="en">Preferences</name>
+    <name xml:lang="de">Einstellungen</name>
+  </entity>
+
   <entity id="editHelpMenuitem.label">
     <name xml:lang="en">Help</name>
     <name xml:lang="de">Hilfe</name>
@@ -141,6 +146,11 @@
   <entity id="editAboutMenuitem.tooltip">
     <name xml:lang="en">About Yulup</name>
     <name xml:lang="de">Über Yulup</name>
+  </entity>
+
+  <entity id="editPreferencesMenuitem.tooltip">
+    <name xml:lang="en">Change the Yulup settings</name>
+    <name xml:lang="de">Änderungen an den Yulup Einstellungen vornehmen</name>
   </entity>
 
   <entity id="editHelpMenuitem.tooltip">

@@ -26,9 +26,10 @@
  *
  */
 
-const YULUP_EDITOR_CHROME_URI = "chrome://yulup/content/editor.xul";
-const YULUP_ABOUT_CHROME_URI  = "chrome://yulup/content/about.xul";
-const YULUP_DEMO_SITE_URI     = "http://demo.yulup.org/";
+const YULUP_EDITOR_CHROME_URI      = "chrome://yulup/content/editor.xul";
+const YULUP_ABOUT_CHROME_URI       = "chrome://yulup/content/about.xul";
+const YULUP_PREFERENCES_CHROME_URI = "chrome://yulup/content/preferences.xul";
+const YULUP_DEMO_SITE_URI          = "http://demo.yulup.org/";
 
 const INTROSPECTION_TYPE_NEUTRON = 0;
 const INTROSPECTION_TYPE_APP     = 1;
@@ -336,6 +337,20 @@ function checkoutFromCMS(aFragment) {
 function resourceUpload() {
     // open dialog
     ResourceUploadDialog.showResourceUploadDialog(gCurrentNeutronIntrospection.queryNavigation().sitetree.uri);
+}
+
+function openYulupPreferences() {
+    var instantApply = null;
+    var features     = null;
+
+    try {
+        instantApply = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).getBoolPref("browser.preferences.instantApply");
+        features = "chrome,titlebar,toolbar" + (instantApply ? ",dialog=no" : ",modal");
+    } catch (exception) {
+        features = "chrome,titlebar,toolbar,modal";
+    }
+
+    window.openDialog(YULUP_PREFERENCES_CHROME_URI, "yulupPreferencesWindow", features);
 }
 
 /**

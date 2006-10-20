@@ -184,6 +184,9 @@
 
         <menuseparator id="uiYulupExtrasSeparator"/>
 
+        <menuitem id="uiYulupEditPreferencesMenuitem"
+                  label="&editPreferencesMenuitem.label;" tooltiptext="&editPreferencesMenuitem.tooltip;"
+                  oncommand="openYulupPreferences()"/>
         <menuitem id="uiYulupEditHelpMenuitem"
                   label="&editHelpMenuitem.label;" tooltiptext="&editHelpMenuitem.tooltip;"
                   disabled="true"/>
