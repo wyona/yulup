@@ -166,9 +166,6 @@ var Editor = {
             }
         }
 
-        // remove theme change observer
-        gEditorController.themesPref.removeObserver("editor.", gEditorController.themesPrefObserver);
-
         // remove onbeforeunload listener
         window.removeEventListener("beforeunload", Editor.onBeforeUnloadListener, false);
 
@@ -811,43 +808,6 @@ UndoRedoObserver.prototype = {
         if (this.__active) {
             Editor.goUpdateCommand(aTopic);
             //window.updateCommands("undo");
-        }
-    }
-};
-
-
-function ThemeChangedObserver(aDocument) {
-    this.__document = aDocument;
-}
-
-ThemeChangedObserver.prototype = {
-    __document: null,
-
-    observe: function (aSubject, aTopic, aData) {
-        var themeID = null;
-
-        /* DEBUG */ dump("Yulup:editor.js:ThemeChangedObserver.observe(\"" + aSubject + "\", \"" + aTopic + "\", \"" + aData + "\") invoked\n");
-
-        if (aTopic != "nsPref:changed")
-            return;
-
-        if (aData == "editor.theme") {
-            if ((themeID = YulupPreferences.getCharPref("editor.", "theme")) != null) {
-                if (themeID != "default") {
-                    // specific theme
-                    if (document.styleSheets.item(2).cssRules.item(0).type == Components.interfaces.nsIDOMCSSRule.IMPORT_RULE) {
-                        document.styleSheets.item(2).insertRule("@import url(chrome://yulup/skin/theme." + themeID + ".css);", 1);
-                        document.styleSheets.item(2).deleteRule(0);
-                    } else {
-                        document.styleSheets.item(2).insertRule("@import url(chrome://yulup/skin/theme." + themeID + ".css);", 0);
-                    }
-                } else {
-                    // default theme
-                    if (document.styleSheets.item(2).cssRules.item(0).type == Components.interfaces.nsIDOMCSSRule.IMPORT_RULE) {
-                        document.styleSheets.item(2).deleteRule(0);
-                    }
-                }
-            }
         }
     }
 };
