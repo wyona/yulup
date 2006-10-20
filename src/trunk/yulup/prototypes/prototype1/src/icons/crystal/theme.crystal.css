@@ -4,7 +4,7 @@
 /* note: rect(top_edge right_edge bottom_edge left_edge) */
 
 #uiFileOperationNew {
-  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-new.png") !important;
+  list-style-image: url("chrome://yulup/skin/icons/themes/Crystal/yulup-new.png") !important;
   -moz-image-region: rect(0px 25px 23px 0px) !important;
 }
 
@@ -18,7 +18,7 @@
 
 
 #uiFileOperationOpen {
-  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-open.png") !important;
+  list-style-image: url("chrome://yulup/skin/icons/themes/Crystal/yulup-open.png") !important;
   -moz-image-region: rect(0px 25px 23px 0px) !important;
 }
 
@@ -32,7 +32,7 @@
 
 
 #uiFileOperationSave {
-  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-save.png") !important;
+  list-style-image: url("chrome://yulup/skin/icons/themes/Crystal/yulup-save.png") !important;
   -moz-image-region: rect(0px 25px 23px 0px) !important;
 }
 
@@ -46,7 +46,7 @@
 
 
 #uiFileOperationSaveAs {
-  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-saveas.png") !important;
+  list-style-image: url("chrome://yulup/skin/icons/themes/Crystal/yulup-saveas.png") !important;
   -moz-image-region: rect(0px 25px 23px 0px) !important;
 }
 
@@ -60,7 +60,7 @@
 
 
 #uiFileOperationUpload {
-  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-upload.png") !important;
+  list-style-image: url("chrome://yulup/skin/icons/themes/Crystal/yulup-upload.png") !important;
   -moz-image-region: rect(0px 25px 23px 0px) !important;
 }
 
@@ -74,7 +74,7 @@
 
 
 #uiEditOperationUndo {
-  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-undo.png") !important;
+  list-style-image: url("chrome://yulup/skin/icons/themes/Crystal/yulup-undo.png") !important;
   -moz-image-region: rect(0px 25px 23px 0px) !important;
 }
 
@@ -88,7 +88,7 @@
 
 
 #uiEditOperationRedo {
-  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-redo.png") !important;
+  list-style-image: url("chrome://yulup/skin/icons/themes/Crystal/yulup-redo.png") !important;
   -moz-image-region: rect(0px 25px 23px 0px) !important;
 }
 
@@ -102,7 +102,7 @@
 
 
 #uiEditOperationCut {
-  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-cut.png") !important;
+  list-style-image: url("chrome://yulup/skin/icons/themes/Crystal/yulup-cut.png") !important;
   -moz-image-region: rect(0px 25px 23px 0px) !important;
 }
 
@@ -116,7 +116,7 @@
 
 
 #uiEditOperationCopy {
-  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-copy.png") !important;
+  list-style-image: url("chrome://yulup/skin/icons/themes/Crystal/yulup-copy.png") !important;
   -moz-image-region: rect(0px 25px 23px 0px) !important;
 }
 
@@ -130,7 +130,7 @@
 
 
 #uiEditOperationPaste {
-  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-paste.png") !important;
+  list-style-image: url("chrome://yulup/skin/icons/themes/Crystal/yulup-paste.png") !important;
   -moz-image-region: rect(0px 25px 23px 0px) !important;
 }
 

@@ -1,6 +1,6 @@
 png := $(patsubst %.png,build/%.png,$(wildcard *.png))
-dir := ../../chrome/skin/icons/themes/Industrial
-css := theme.industrial.css
+dir := ../../chrome/skin/icons/themes/Crystal
+css := theme.crystal.css
 
 all: $(png)
 
