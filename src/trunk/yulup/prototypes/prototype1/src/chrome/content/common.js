@@ -88,6 +88,7 @@ var YulupPreferences = {
             }
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupPreferences.getBoolPref", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
             return null;
         }
     },
@@ -111,6 +112,7 @@ var YulupPreferences = {
             }
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupPreferences.setBoolPref", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
             return false;
         }
     },
@@ -131,6 +133,28 @@ var YulupPreferences = {
             }
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupPreferences.getCharPref", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+            return null;
+        }
+    },
+
+    getIntPref: function (aBranch, aItem) {
+        var branch = null;
+
+        /* DEBUG */ dump("Yulup:common.js:YulupPreferences.getIntPref(\"" + aBranch + "\", \"" + aItem + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aBranch != null);
+        /* DEBUG */ YulupDebug.ASSERT(aItem   != null);
+
+        try {
+            if ((branch = YulupPreferences.__getBranch()) != null) {
+                return branch.getIntPref(aBranch + aItem);
+            } else {
+                return null;
+            }
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupPreferences.getIntPref", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
             return null;
         }
     }

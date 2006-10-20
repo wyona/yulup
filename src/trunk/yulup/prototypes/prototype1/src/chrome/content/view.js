@@ -53,8 +53,7 @@ const XUL_NAMESPACE_URI   = "http://www.mozilla.org/keymaster/gatekeeper/there.i
 const XSL_NAMESPACE_URI   = "http://www.w3.org/1999/XSL/Transform";
 const YULUP_NAMESPACE_URI = "http://www.yulup.org/Editor/LocationPath";
 
-// TODO: make this configurable via the preferences system
-const INSERT_TAB_STRING = "  ";
+const DEFAULT_NO_OF_TAB_SPACES = 2;
 
 /**
  * View constructor. Instantiates a new object of
@@ -640,6 +639,8 @@ SourceModeView.prototype = {
     setUp: function () {
         var sourceEditor             = null;
         var keyBinding               = null;
+        var useTabSpaces             = null;
+        var noOfTabSpaces            = null;
         var commandControllerContext = null;
         var commandTable             = null;
 
@@ -678,7 +679,19 @@ SourceModeView.prototype = {
             // set the document URI
             //sourceEditor.docShell.setCurrentURI(this.model.documentURI);
 
-            sourceEditor.contentWindow.addEventListener("keypress", new TextEditorKeyListener(this.view), true);
+            // determine tab settings
+            if ((useTabSpaces = YulupPreferences.getBoolPref("editor.", "usetabspaces")) == null) {
+                useTabSpaces = true;
+            }
+
+            if (useTabSpaces) {
+                if ((noOfTabSpaces = YulupPreferences.getIntPref("editor.", "tabspaces")) == null) {
+                    // use a sane default
+                    noOfTabSpaces = DEFAULT_NO_OF_TAB_SPACES;
+                }
+            }
+
+            sourceEditor.contentWindow.addEventListener("keypress", new TextEditorKeyListener(this.view, useTabSpaces, noOfTabSpaces), true);
             sourceEditor.contentWindow.addEventListener("keypress", new GuidedTagInserterKeyListener(this), true);
 
             if ((keyBinding = YulupPreferences.getCharPref("editor.", "keybinding")) != null) {
@@ -2327,16 +2340,31 @@ WYSIWYGXSLTDOMCleaner.prototype = {
 };
 
 
-function TextEditorKeyListener(aEditor) {
+function TextEditorKeyListener(aEditor, aUseSpaces, aNoOfSpaces) {
     dump("Yulup:view.js:TextEditorKeyListener() invoked\n");
 
     /* DEBUG */ YulupDebug.ASSERT(aEditor != null);
+    /* DEBUG */ YulupDebug.ASSERT(aUseSpaces != null);
+    /* DEBUG */ YulupDebug.ASSERT(typeof(aUseSpaces)  == "boolean");
+    /* DEBUG */ YulupDebug.ASSERT(aUseSpaces ? aNoOfSpaces != null : true);
+    /* DEBUG */ YulupDebug.ASSERT(aUseSpaces ? typeof(aNoOfSpaces) == "number" : true);
+    /* DEBUG */ YulupDebug.ASSERT(aUseSpaces ? aNoOfSpaces >= 0 : true);
 
-    this.editor = aEditor;
+    this.__editor    = aEditor;
+    this.__useSpaces = aUseSpaces;
+    this.__spaces    = "";
+
+    if (aUseSpaces) {
+        for (var i = 0; i < aNoOfSpaces; i++) {
+            this.__spaces += " ";
+        }
+    }
 }
 
 TextEditorKeyListener.prototype = {
-    editor: null,
+    __editor   : null,
+    __useSpaces: null,
+    __spaces   : null,
 
     handleEvent: function (aKeyEvent) {
         var isAnyModifierKeyButShift = null;
@@ -2358,16 +2386,18 @@ TextEditorKeyListener.prototype = {
             case Components.interfaces.nsIDOMKeyEvent.DOM_VK_TAB:
                 dump("key event = DOM_VK_TAB\n");
 
-                if (isAnyModifierKeyButShift)
+                if (this.__useSpaces) {
+                    if (isAnyModifierKeyButShift)
+                        return true;
+
+                    // else we insert the tab straight through
+                    this.__editor.QueryInterface(Components.interfaces.nsIPlaintextEditor);
+                    this.__editor.insertText(this.__spaces);
+
+                    // we consumed this event
+                    aKeyEvent.preventDefault();
                     return true;
-
-                // else we insert the tab straight through
-                this.editor.QueryInterface(Components.interfaces.nsIPlaintextEditor);
-                this.editor.insertText(INSERT_TAB_STRING);
-
-                // we consumed this event
-                aKeyEvent.preventDefault();
-                return true;
+                }
                 break;
             }
         }
