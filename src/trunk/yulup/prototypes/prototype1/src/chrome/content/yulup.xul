@@ -203,6 +203,9 @@
         <menuitem id="uiYulupEditDemoMenuitem"
                   oncommand="showDemoSite()"
                   label="&editDemoMenuitem.label;" tooltiptext="&editDemoMenuitem.tooltip;"/>
+        <menuitem id="uiYulupEditAboutYulupMenuitem"
+                  oncommand="showAboutYulup()"
+                  label="&editAboutYulupMenuitem.label;" tooltiptext="&editAboutYulupMenuitem.tooltip;"/>
 
         <menuseparator/>
 
