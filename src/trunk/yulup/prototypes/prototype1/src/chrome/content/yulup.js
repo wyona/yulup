@@ -336,8 +336,42 @@ function checkoutFromCMS(aFragment) {
 }
 
 function resourceUpload() {
+    var sitetreeURI     = null;
+    var serverURIString = null;
+    var ioService       = null;
+
+    // check for sitetree URI
+    if (gCurrentNeutronIntrospection                            &&
+        gCurrentNeutronIntrospection.queryNavigation()          &&
+        gCurrentNeutronIntrospection.queryNavigation().sitetree &&
+        gCurrentNeutronIntrospection.queryNavigation().sitetree.uri) {
+        sitetreeURI = gCurrentNeutronIntrospection.queryNavigation().sitetree.uri;
+    } else {
+        // query for server address
+        serverURIString = ServerURIPrompt.showServerURIDialog();
+
+        if (!serverURIString) {
+            // user cancelled
+            return true;
+        } else if (serverURIString == "") {
+            return false;
+        }
+
+        ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+
+        try {
+            sitetreeURI = ioService.newURI(serverURIString, null, null);
+        } catch (exception) {
+            /* DEBUG */ dump("Yulup:yulup.js:resourceUpload: server URI \"" + serverURIString + "\" is not a valid URI: " + exception + "\n");
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:resourceUpload", exception);
+
+            alert(document.getElementById("uiYulupEditorStringbundle").getString("editorURINotValidFailure.label") + ": \"" + serverURIString + "\".");
+            return false;
+        }
+    }
+
     // open dialog
-    ResourceUploadDialog.showResourceUploadDialog(gCurrentNeutronIntrospection.queryNavigation().sitetree.uri);
+    ResourceUploadDialog.showResourceUploadDialog(sitetreeURI);
 }
 
 function openYulupPreferences() {
@@ -424,7 +458,7 @@ function Yulup() {
     this.yulupEditMenuCheckoutNoLockMenu             = document.getElementById("uiYulupEditCheckoutNoLockMenu");
     this.yulupEditMenuCheckoutMenupopup              = document.getElementById("uiYulupEditCheckoutMenupopup");
     this.yulupEditMenuCheckoutNoLockMenupopup        = document.getElementById("uiYulupEditCheckoutNoLockMenupopup");
-    this.yulupEditMenuResourceUploadMenutitem        = document.getElementById("uiYulupUploadMenuitem");
+    this.yulupEditMenuResourceUploadMenuitem         = document.getElementById("uiYulupUploadMenuitem");
     this.yulupEditMenuRealmSeparator                 = document.getElementById("uiYulupRealmSeparator");
     this.yulupEditMenuExtrasSeparator                = document.getElementById("uiYulupExtrasSeparator");
     this.yulupOperationNewFromTemplateLocalMenu      = document.getElementById("uiYulupOperationNewFromTemplateLocalMenu");
@@ -476,7 +510,7 @@ Yulup.prototype = {
     yulupEditMenuCheckoutNoLockMenupopup        : null,
     yulupEditMenuCheckoutMenuitemLabel          : null,
     yulupEditMenuCheckoutNoLockMenuitemLabel    : null,
-    yulupEditMenuResourceUploadMenutitem        : null,
+    yulupEditMenuResourceUploadMenuitem        : null,
     yulupOperationNewFromTemplateLocalMenu      : null,
     yulupOperationNewFromTemplateLocalMenupopup : null,
     instancesManager                            : null,
@@ -703,6 +737,8 @@ Yulup.prototype = {
                  * nothing has to be done. (This is the regular case
                  * when you are just surfing the web.) */
                 if (this.currentState != "none") {
+                    gCurrentNeutronIntrospection = null;
+
                     // restore menu item labels
                     this.yulupEditMenuCheckoutMenuitem.setAttribute("label", this.yulupEditMenuCheckoutMenuitemLabel);
                     this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("label", this.yulupEditMenuCheckoutNoLockMenuitemLabel);
@@ -717,8 +753,6 @@ Yulup.prototype = {
 
                     this.yulupEditMenuCheckoutMenuitem.removeAttribute("hidden");
                     this.yulupEditMenuCheckoutNoLockMenuitem.removeAttribute("hidden");
-
-                    this.yulupEditMenuResourceUploadMenutitem.setAttribute("disabled", "true");
 
                     this.yulupEditMenu.setAttribute("introspection", "no");
                     this.yulupEditMenu.removeAttribute("tooltip");
@@ -735,12 +769,6 @@ Yulup.prototype = {
                 if (gCurrentNeutronIntrospection) {
                     this.buildFragmentsMenu(gCurrentNeutronIntrospection.queryOpenFragments(), this.yulupEditMenuCheckoutNoLockMenuitem, this.yulupEditMenuCheckoutNoLockMenu, this.yulupEditMenuCheckoutNoLockMenupopup, "checkoutNoLockFromCMS");
                     this.buildFragmentsMenu(gCurrentNeutronIntrospection.queryCheckoutFragments(), this.yulupEditMenuCheckoutMenuitem, this.yulupEditMenuCheckoutMenu, this.yulupEditMenuCheckoutMenupopup, "checkoutFromCMS");
-
-                    if (gCurrentNeutronIntrospection.queryNavigation()          &&
-                        gCurrentNeutronIntrospection.queryNavigation().sitetree &&
-                        gCurrentNeutronIntrospection.queryNavigation().sitetree.uri) {
-                        this.yulupEditMenuResourceUploadMenutitem.removeAttribute("disabled");
-                    }
                 }
 
                 if (this.currentAPPIntrospection) {
@@ -769,6 +797,8 @@ Yulup.prototype = {
 
                 break;
             case "failed":
+                gCurrentNeutronIntrospection = null;
+
                 // restore menu item labels
                 this.yulupEditMenuCheckoutMenuitem.setAttribute("label", this.yulupEditMenuCheckoutMenuitemLabel);
                 this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("label", this.yulupEditMenuCheckoutNoLockMenuitemLabel);
@@ -780,8 +810,6 @@ Yulup.prototype = {
 
                 this.yulupEditMenuCheckoutMenuitem.setAttribute("disabled", "true");
                 this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("disabled", "true");
-
-                this.yulupEditMenuResourceUploadMenutitem.setAttribute("disabled", "true");
 
                 this.yulupEditMenuCheckoutMenuitem.removeAttribute("hidden");
                 this.yulupEditMenuCheckoutNoLockMenuitem.removeAttribute("hidden");

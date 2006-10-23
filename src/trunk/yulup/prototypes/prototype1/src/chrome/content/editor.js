@@ -540,8 +540,6 @@ var Editor = {
 
         /* DEBUG */ dump("Yulup:editor.js:Editor.saveAsToCMS() invoked\n");
 
-        //throw new YulupEditorException("Yulup:editor.js:Editor.saveAsToCMS: method not implemented.");
-
         // query for server address
         serverURIString = ServerURIPrompt.showServerURIDialog();
 
