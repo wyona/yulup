@@ -9,7 +9,7 @@
 <!ENTITY editOperationNewMenu.label "New">
 <!ENTITY fileOperationNewAtomEntryMenuitem.label "New Atom Entry">
 <!ENTITY editOperationOpenMenu.label "Open">
-<!ENTITY editAboutMenuitem.label "Nous">
+<!ENTITY editAboutYulupMenuitem.label "Nous">
 <!ENTITY editPreferencesMenuitem.label "Preferences">
 <!ENTITY editHelpMenuitem.label "Help">
 <!ENTITY editDemoMenuitem.label "Demosite">
@@ -31,7 +31,7 @@
 <!ENTITY fileOperationUploadMenuitem.label "Upload">
 <!ENTITY fileOperationUploadMenuitem.tooltip "Upload a resouce to the server">
 <!ENTITY editOperationOpenMenu.tooltip "Open an existing document">
-<!ENTITY editAboutMenuitem.tooltip "About Yulup">
+<!ENTITY editAboutYulupMenuitem.tooltip "About Yulup">
 <!ENTITY editPreferencesMenuitem.tooltip "Change the Yulup settings">
 <!ENTITY editHelpMenuitem.tooltip "Shows the help browser for Yulup">
 <!ENTITY editDemoMenuitem.tooltip "Takes you to the demo site">
