@@ -14,4 +14,9 @@
     <name xml:lang="en">shift accel</name>
   </entity>
 
+  <entity id="neutronSidebarResourceTree.label">
+    <name xml:lang="en">Sitetree</name>
+    <name xml:lang="de">Seitenstruktur</name>
+  </entity>
+
 </dtd>

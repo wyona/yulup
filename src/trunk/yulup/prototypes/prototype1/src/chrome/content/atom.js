@@ -38,6 +38,7 @@ var APP = {
      *
      * @param  {String}       aURI     URI of remote host to query for introspection file
      * @param  {nsIURI}       aBaseURI the URI of the document to which the introspection document is associated
+     * @param  {Yulup}        aYulup   a reference to the active yulup instance
      * @return {Undefined}             does not have a return value
      */
     fetchIntrospection: function (aURI, aBaseURI, aYulup) {
