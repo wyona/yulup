@@ -88,6 +88,16 @@
     <name xml:lang="en">Close</name>
   </entity>
 
+  <entity id="uiYulupResourceSourceCaption.label">
+    <name xml:lang="en">Local source</name>
+    <name xml:lang="de">Lokale Quelle</name>
+  </entity>
+
+  <entity id="uiYulupResourceTargetCaption.label">
+    <name xml:lang="en">Remote target</name>
+    <name xml:lang="de">Entferntes Ziel</name>
+  </entity>
+
   <entity id="editToolbarbuttonWarnTooltip1.tooltip">
     <name xml:lang="en">Warning:</name>
     <name xml:lang="de">Warnung:</name>

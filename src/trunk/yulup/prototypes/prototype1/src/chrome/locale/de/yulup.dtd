@@ -16,6 +16,8 @@
 <!ENTITY editVersionStringMenuitem.label "Yulup-Dev">
 <!ENTITY yulupProgressDialog.title "Progress">
 <!ENTITY yulupProgressDialogCloseButton.label "Close">
+<!ENTITY uiYulupResourceSourceCaption.label "Lokale Quelle">
+<!ENTITY uiYulupResourceTargetCaption.label "Entferntes Ziel">
 <!ENTITY editToolbarbuttonWarnTooltip1.tooltip "Warnung:">
 <!ENTITY editToolbarbuttonWarnTooltip2.tooltip "Im Zusammenhang mit dem Introspection-Objekt das mit diesem Dokument assoziiert ist trat ein Fehler auf.">
 <!ENTITY editToolbarbuttonWarnTooltip3.tooltip "Das File existiert nicht, oder ist nicht in einer geeigneten Form.">
