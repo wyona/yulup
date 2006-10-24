@@ -1,0 +1,6 @@
+<!ENTITY workspaceWizard.title "Workspace Einstellungen">
+<!ENTITY workspaceLocationDescription.label "Der Workspace wird benützt für bla bla bla.">
+<!ENTITY workspaceLocationTextboxLabel.label "Ort für Workspace auswählen">
+<!ENTITY workspaceLocationSelectorButton.label "Auswählen">
+<!ENTITY workspaceAlwaysDownloadDescription.label "Dokumente, die im Editor geöffnet werden, können automatisch in den Workspace abgelegt werden. Dies ermöglicht bla bla bla.">
+<!ENTITY workspaceAlwaysDownloadDescriptionCheckbox.label "Automatisch eine lokale Kopie speichern">

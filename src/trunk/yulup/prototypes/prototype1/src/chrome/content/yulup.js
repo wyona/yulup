@@ -29,6 +29,7 @@
 const YULUP_EDITOR_CHROME_URI      = "chrome://yulup/content/editor.xul";
 const YULUP_ABOUT_CHROME_URI       = "chrome://yulup/content/about.xul";
 const YULUP_PREFERENCES_CHROME_URI = "chrome://yulup/content/preferences/preferences.xul";
+const YULUP_WS_WIZARD_CHROME_URI   = "chrome://yulup/content/wizards/workspacewizard.xul";
 const YULUP_DEMO_SITE_URI          = "http://demo.yulup.org/";
 const YULUP_WEB_SITE_URI           = "http://www.yulup.org/";
 
@@ -49,6 +50,9 @@ window.addEventListener('load', initYulup, false);
  * @return {Undefined}
  */
 function initYulup() {
+    var workspace = null;
+    var wsOk      = true;
+
     /* DEBUG */ dump("Yulup:yulup.js:initYulup() invoked\n");
 
     gMainBrowserWindow = window;
@@ -57,6 +61,21 @@ function initYulup() {
 
     // initialize the template registry
     NeutronArchiveRegistry.loadLocalTemplates();
+
+    // check if workspace is configured
+    if ((workspace = YulupPreferences.getCharPref("workspace.", "location")) != null) {
+        // check if workspace exists
+        
+
+        wsOk = false;
+    } else {
+        wsOk = false;
+    }
+
+    if (!wsOk) {
+        // launch workspace wizard
+        
+    }
 
     new Yulup();
 }

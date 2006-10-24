@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<dtd xmlns="http://yulup.wyona.org/1.0">
+
+  <entity id="workspaceFilePicker.title">
+    <name xml:lang="en">Select Workspace Directory</name>
+    <name xml:lang="de">Workspace Verzeichnis Auswählen</name>
+  </entity>
+
+</dtd>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+
+<!--
+# ***** BEGIN LICENSE BLOCK *****
+# Copyright 2006 Wyona AG Zurich
+#
+# This file is part of Yulup.
+#
+# Yulup is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Yulup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Yulup; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# ***** END LICENSE BLOCK *****
+-->
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!--<?xml-stylesheet href="chrome://yulup/skin/workspacewizard.css" type="text/css"?>-->
+
+<!DOCTYPE wizard  SYSTEM "chrome://yulup/locale/workspacewizard.dtd">
+
+<wizard id="uiYulupWorkspaceWizard"
+        orient="vertical"
+        align="stretch"
+        title="&workspaceWizard.title;"
+        onload="WorkspaceWizard.onLoadHandler()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <wizardpage>
+    <description>&workspaceLocationDescription.label;</description>
+    <label value="&workspaceLocationTextboxLabel.label;:" control="uiWorkspaceLocationTextbox"/>
+    <hbox align="center">
+      <textbox id="uiWorkspaceLocationTextbox" style="min-width: 300px;"/>
+      <button label="&workspaceLocationSelectorButton.label;" oncommand="WorkspaceWizard.selectDirectory()"/>
+    </hbox>
+  </wizardpage>
+
+  <wizardpage>
+    <description>&workspaceAlwaysDownloadDescription.label;</description>
+    <checkbox label="&workspaceAlwaysDownloadDescriptionCheckbox.label;"/>
+  </wizardpage>
+
+  <!-- scripts have to go here because of bug https://bugzilla.mozilla.org/show_bug.cgi?id=296418 -->
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/common.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/wizards/workspacewizard.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/persistenceservice.js"/>
+
+  <stringbundle id="uiYulupWorkspaceWizardStringbundle" src="chrome://yulup/locale/workspacewizard.properties"/>
+
+</wizard>
