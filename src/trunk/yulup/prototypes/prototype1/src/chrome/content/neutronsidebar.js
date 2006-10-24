@@ -48,21 +48,22 @@ var NeutronSidebar = {
             .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
             .getInterface(Components.interfaces.nsIDOMWindow);
 
-        // retrieve APP introspection document from Yulup, if any
+        // retrieve Neutron introspection document from Yulup, if any
         if (mainBrowserWindow.yulup.currentNeutronIntrospection                            &&
             mainBrowserWindow.yulup.currentNeutronIntrospection.queryNavigation()          &&
             mainBrowserWindow.yulup.currentNeutronIntrospection.queryNavigation().sitetree &&
             mainBrowserWindow.yulup.currentNeutronIntrospection.queryNavigation().sitetree.uri) {
             serverURI = mainBrowserWindow.yulup.currentNeutronIntrospection.queryNavigation().sitetree.uri;
-        } else if ((serverURIString = YulupPreferences.getCharPref("neutron.", "defaultserver")) == null) {
+            /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.onLoadListener: use sitetree uri (\"" + serverURI + "\") from Neutron introspection\n");
+        } else if ((serverURIString = YulupPreferences.getCharPref("neutron.", "defaultserver")) != null) {
             // get default URI from preferences
+            if (serverURIString != "") {
+                serverURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(serverURIString, null, null)
+            } else
+                return false;
+        } else {
             return false;
         }
-
-        if (serverURIString != "") {
-            serverURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(serverURIString, null, null)
-        } else
-            return false;
 
         tree = document.getElementById("uiYulupNeutronSidebarSiteTree");
         tree.view = new SitetreeView(serverURI, NeutronSidebar.sitetreeErrorListener);

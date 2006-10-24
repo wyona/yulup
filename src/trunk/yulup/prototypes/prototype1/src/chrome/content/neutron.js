@@ -97,15 +97,15 @@ var Neutron = {
         var domParser           = null;
         var xmlSerializer       = null;
         var introspection       = null;
-        var aURI                = aContext.URI;
-        var aBaseURI            = aContext.baseURI;
-        var aYulup              = aContext.yulup;
+        var uri                 = aContext.URI;
+        var baseURI             = aContext.baseURI;
+        var yulup               = aContext.yulup;
 
         /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished() invoked\n");
 
         try {
             if (aDocumentData) {
-                /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspection: loading introspection file \"" + aURI + "\" succeeded\n");
+                /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspection: loading introspection file \"" + uri + "\" succeeded\n");
 
                 if ((wellFormednessError = checkWellFormedness(aDocumentData)) != null) {
                     throw new YulupException(Neutron.createWellFormednessAlertString(wellFormednessError));
@@ -116,29 +116,29 @@ var Neutron = {
                 domDocument  = domParser.parseFromString(aDocumentData, "text/xml");
 
                 // instantiate the parser for this version and parse the file
-                introspection = Neutron.parserFactory(domDocument, aBaseURI).parseIntrospection();
+                introspection = Neutron.parserFactory(domDocument, baseURI).parseIntrospection();
 
                 introspection.introspectionDocument = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(domDocument);
-                introspection.introspectionURI      = aURI;
+                introspection.introspectionURI      = uri;
 
                 // set the global introspection object
-                gCurrentNeutronIntrospection = introspection;
+                yulup.currentNeutronIntrospection = introspection;
 
                 // set the introspection state
-                aYulup.introspectionStateChanged("success");
+                yulup.introspectionStateChanged("success");
 
-                /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished: introspection = \n" + introspection.toString());
+                /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished: introspection object = \n" + introspection.toString());
             } else {
-                /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished: failed to load introspection document \"" + aURI + "\". \"" + aException + "\"\n");
+                /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished: failed to load introspection document \"" + uri + "\". \"" + aException + "\"\n");
 
                 // set the introspection state
-                aYulup.introspectionStateChanged("failed");
+                yulup.introspectionStateChanged("failed");
             }
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutron.js:Neutron.introspectionLoadFinished", exception);
 
             // set the introspection state
-            aYulup.introspectionStateChanged("failed");
+            yulup.introspectionStateChanged("failed");
         }
     },
 

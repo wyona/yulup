@@ -500,6 +500,7 @@ function Yulup() {
 }
 
 Yulup.prototype = {
+    __currentNeutronIntrospection               : null,
     yulupEditMenu                               : null,
     yulupEditMenuEditMenuitem                   : null,
     yulupEditMenuCheckoutMenuitem               : null,
@@ -510,12 +511,21 @@ Yulup.prototype = {
     yulupEditMenuCheckoutNoLockMenupopup        : null,
     yulupEditMenuCheckoutMenuitemLabel          : null,
     yulupEditMenuCheckoutNoLockMenuitemLabel    : null,
-    yulupEditMenuResourceUploadMenuitem        : null,
+    yulupEditMenuResourceUploadMenuitem         : null,
     yulupOperationNewFromTemplateLocalMenu      : null,
     yulupOperationNewFromTemplateLocalMenupopup : null,
     instancesManager                            : null,
     activeWebProgressListener                   : null,
     currentState                                : null,
+
+    get currentNeutronIntrospection() {
+        return this.__currentNeutronIntrospection;
+    },
+
+    set currentNeutronIntrospection(aValue) {
+        this.__currentNeutronIntrospection = aValue;
+        gCurrentNeutronIntrospection       = aValue;
+    },
 
     /**
      * Install a webprogress listener in the tabbrowser.
