@@ -27,6 +27,11 @@
     <name xml:lang="de">Auswählen</name>
   </entity>
 
+  <entity id="generalWorkspaceAlwaysDownload.label">
+    <name xml:lang="en">Always save local copy</name>
+    <name xml:lang="de">Automatisch eine lokale Kopie speichern</name>
+  </entity>
+
   <entity id="generalDefaultServerGroupbox.label">
     <name xml:lang="en">Default CMS</name>
     <name xml:lang="de">Standard CMS</name>

@@ -39,9 +39,12 @@
 
   <prefpane id="uiYulupGeneralPrefPane" label="&generalPrefPane.label;">
     <preferences>
-      <preference id="pref_general_workspace"
-                  name="extensions.yulup.workspace"
+      <preference id="pref_general_workspace_location"
+                  name="extensions.yulup.workspace.location"
                   type="unichar"/>
+      <preference id="pref_general_workspace_alwaysdownload"
+                  name="extensions.yulup.workspace.alwaysdownload"
+                  type="bool"/>
       <preference id="pref_general_defaultserver"
                   name="extensions.yulup.neutron.defaultserver"
                   type="unichar"/>
@@ -51,9 +54,10 @@
       <caption label="&generalWorkspaceGroupbox.label;"/>
       <label value="&generalWorkspaceTextboxLabel.label;:" control="uiGeneralWorkspaceTextbox"/>
       <hbox align="center">
-        <textbox id="uiGeneralWorkspaceTextbox" preference="pref_general_workspace" style="min-width: 300px;"/>
+        <textbox id="uiGeneralWorkspaceTextbox" preference="pref_general_workspace_location" style="min-width: 300px;"/>
         <button label="&generalWorkspaceSelectorButton.label;" oncommand="PreferencesDialog.selectDirectory()"/>
       </hbox>
+      <checkbox label="&generalWorkspaceAlwaysDownload.label;" preference="pref_general_workspace_alwaysdownload"/>
     </groupbox>
 
     <groupbox>

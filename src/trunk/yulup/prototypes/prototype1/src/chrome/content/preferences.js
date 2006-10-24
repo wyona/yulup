@@ -130,7 +130,7 @@ var PreferencesDialog = {
 
             /* DEBUG */ dump("Yulup:preferences.js:PreferencesDialog.selectFolder: selected target: \"" + target.spec + "\"\n");
 
-            document.getElementById("pref_general_workspace").value = target.spec;
+            document.getElementById("pref_general_workspace_location").value = target.spec;
         }
     },
 
