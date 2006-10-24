@@ -28,9 +28,9 @@
 
 const YULUP_EDITOR_CHROME_URI      = "chrome://yulup/content/editor.xul";
 const YULUP_ABOUT_CHROME_URI       = "chrome://yulup/content/about.xul";
-const YULUP_PREFERENCES_CHROME_URI = "chrome://yulup/content/preferences.xul";
+const YULUP_PREFERENCES_CHROME_URI = "chrome://yulup/content/preferences/preferences.xul";
 const YULUP_DEMO_SITE_URI          = "http://demo.yulup.org/";
-const YULUP_WEB_SITE_URI          = "http://www.yulup.org/";
+const YULUP_WEB_SITE_URI           = "http://www.yulup.org/";
 
 const INTROSPECTION_TYPE_NEUTRON = 0;
 const INTROSPECTION_TYPE_APP     = 1;
