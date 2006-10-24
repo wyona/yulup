@@ -112,6 +112,28 @@ var PreferencesDialog = {
         menulist.removeAttribute("disabled");
     },
 
+    selectDirectory: function () {
+        var target     = null;
+        var filePicker = null;
+
+        /* DEBUG */ dump("Yulup:preferences.js:PreferencesDialog.selectFolder() invoked\n");
+
+        // open file picker dialog for local file system
+        filePicker = Components.classes["@mozilla.org/filepicker;1"].createInstance(Components.interfaces.nsIFilePicker);
+
+        filePicker.init(window, document.getElementById("uiYulupPrefWindowStringbundle").getString("generalWorkspaceFilePicker.title"), Components.interfaces.nsIFilePicker.modeGetFolder);
+
+        if (filePicker.show() == Components.interfaces.nsIFilePicker.returnOK) {
+            // cast nsIFileURL to nsIURI
+            target = filePicker.fileURL;
+            target.QueryInterface(Components.interfaces.nsIURI);
+
+            /* DEBUG */ dump("Yulup:preferences.js:PreferencesDialog.selectFolder: selected target: \"" + target.spec + "\"\n");
+
+            document.getElementById("pref_general_workspace").value = target.spec;
+        }
+    },
+
     spacesTextboxKeypressHandler: function (aEvent) {
         /* DEBUG */ dump("Yulup:preferences.js:PreferencesDialog.spacesTextboxKeypressHandler(\"" + aEvent + "\") invoked\n");
 

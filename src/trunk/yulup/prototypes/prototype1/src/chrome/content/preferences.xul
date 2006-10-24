@@ -39,10 +39,22 @@
 
   <prefpane id="uiYulupGeneralPrefPane" label="&generalPrefPane.label;">
     <preferences>
+      <preference id="pref_general_workspace"
+                  name="extensions.yulup.workspace"
+                  type="unichar"/>
       <preference id="pref_general_defaultserver"
                   name="extensions.yulup.neutron.defaultserver"
                   type="unichar"/>
     </preferences>
+
+    <groupbox>
+      <caption label="&generalWorkspaceGroupbox.label;"/>
+      <label value="&generalWorkspaceTextboxLabel.label;:" control="uiGeneralWorkspaceTextbox"/>
+      <hbox align="center">
+        <textbox id="uiGeneralWorkspaceTextbox" preference="pref_general_workspace" style="min-width: 300px;"/>
+        <button label="&generalWorkspaceSelectorButton.label;" oncommand="PreferencesDialog.selectDirectory()"/>
+      </hbox>
+    </groupbox>
 
     <groupbox>
       <caption label="&generalDefaultServerGroupbox.label;"/>
@@ -109,5 +121,7 @@
           src="chrome://yulup/content/preferences.js"/>
   <script type="application/x-javascript"
           src="chrome://yulup/content/persistenceservice.js"/>
+
+  <stringbundle id="uiYulupPrefWindowStringbundle" src="chrome://yulup/locale/preferences.properties"/>
 
 </prefwindow>

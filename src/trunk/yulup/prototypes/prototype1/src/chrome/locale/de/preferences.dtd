@@ -1,5 +1,8 @@
 <!ENTITY prefWindow.title "Yulup Einstellungen">
 <!ENTITY generalPrefPane.label "Allgemein">
+<!ENTITY generalWorkspaceGroupbox.label "Workspace">
+<!ENTITY generalWorkspaceTextboxLabel.label "Ort des Workspaces auswählen">
+<!ENTITY generalWorkspaceSelectorButton.label "Auswählen">
 <!ENTITY generalDefaultServerGroupbox.label "Standard CMS">
 <!ENTITY generalDefaultServerTextboxLabel.label "URI des standard CMS eingeben">
 <!ENTITY editorPrefPane.label "Editor">

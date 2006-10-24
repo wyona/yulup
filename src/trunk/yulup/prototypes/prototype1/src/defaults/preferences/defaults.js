@@ -4,3 +4,4 @@ pref("extensions.yulup.editor.keybinding", "readline");
 pref("extensions.yulup.editor.usetabspaces", true);
 pref("extensions.yulup.editor.tabspaces", 2);
 pref("extensions.yulup.editor.theme", "default");
+pref("extensions.yulup.workspace", "");
