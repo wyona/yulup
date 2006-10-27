@@ -7,8 +7,23 @@
     <name xml:lang="de">Workspace Einstellungen</name>
   </entity>
 
-  <entity id="workspaceLocationDescription.label">
-    <name xml:lang="en">The workspace is used for bla bla bla.</name>
+  <entity id="workspaceLocationPageDescription.label">
+    <name xml:lang="en">Configure the Workspace Location</name>
+    <name xml:lang="de">Workspace Ablage konfigurieren</name>
+  </entity>
+
+  <entity id="workspaceLocationDescription_0.label">
+    <name xml:lang="en">The workspace is used for storing documents locally. This enables you to download documents to your local filesystem and then work on the document whilst being offline.</name>
+    <name xml:lang="de">Der Workspace wird benützt für bla bla bla.</name>
+  </entity>
+
+  <entity id="workspaceLocationDescription_1.label">
+    <name xml:lang="en">After becoming online again, Yulup will compare the modified documents to the versions on the CMS, and inform you about potential conflicts with documents which were changed on the server in the meantime.</name>
+    <name xml:lang="de">Der Workspace wird benützt für bla bla bla.</name>
+  </entity>
+
+  <entity id="workspaceLocationDescription_2.label">
+    <name xml:lang="en">Furthermore, you can edit the documents stored in the workspace from outside of Yulup. Also, you can add resources to your workspace, and the next time you tell Yulup to sync with the server, these resources are automatically uploaded to the CMS.</name>
     <name xml:lang="de">Der Workspace wird benützt für bla bla bla.</name>
   </entity>
 
@@ -22,7 +37,12 @@
     <name xml:lang="de">Auswählen</name>
   </entity>
 
-  <entity id="workspaceAlwaysDownloadDescription.label">
+  <entity id="workspaceAlwaysDownloadPageDescription.label">
+    <name xml:lang="en">Configure Document Auto Save</name>
+    <name xml:lang="de">Automatisches speichern konfigurieren</name>
+  </entity>
+
+  <entity id="workspaceAlwaysDownloadDescription_0.label">
     <name xml:lang="en">Documents opened in the editor can automatically be save to the workspace. This enables you to bla bla bla.</name>
     <name xml:lang="de">Dokumente, die im Editor geöffnet werden, können automatisch in den Workspace abgelegt werden. Dies ermöglicht bla bla bla.</name>
   </entity>
@@ -30,6 +50,21 @@
   <entity id="workspaceAlwaysDownloadDescriptionCheckbox.label">
     <name xml:lang="en">Always save local copy</name>
     <name xml:lang="de">Automatisch eine lokale Kopie speichern</name>
+  </entity>
+
+  <entity id="workspaceConclusionDescription_0.label">
+    <name xml:lang="en">You have chosen the following configuration:</name>
+    <name xml:lang="de">Sie haben die folgenden Einstellungen vorgenommen:</name>
+  </entity>
+
+  <entity id="workspaceConclusionPathConfig.label">
+    <name xml:lang="en">Workspace Path</name>
+    <name xml:lang="de">Workspace Pfad</name>
+  </entity>
+
+  <entity id="workspaceConclusionDownloadConfig.label">
+    <name xml:lang="en">Always store</name>
+    <name xml:lang="de">Immer speichern</name>
   </entity>
 
 </dtd>

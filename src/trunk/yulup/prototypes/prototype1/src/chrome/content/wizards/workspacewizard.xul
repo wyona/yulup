@@ -33,20 +33,52 @@
         align="stretch"
         title="&workspaceWizard.title;"
         onload="WorkspaceWizard.onLoadHandler()"
+        persist="screenX screenY"
+        style="min-width: 30em;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <wizardpage>
-    <description>&workspaceLocationDescription.label;</description>
+  <wizardpage label="&workspaceLocationPageDescription.label;">
+    <description>&workspaceLocationDescription_0.label;</description>
+    <description>&workspaceLocationDescription_1.label;</description>
+    <description>&workspaceLocationDescription_2.label;</description>
+
+    <separator/>
+
     <label value="&workspaceLocationTextboxLabel.label;:" control="uiWorkspaceLocationTextbox"/>
     <hbox align="center">
-      <textbox id="uiWorkspaceLocationTextbox" style="min-width: 300px;"/>
+      <textbox id="uiWorkspaceLocationTextbox" flex="1"/>
       <button label="&workspaceLocationSelectorButton.label;" oncommand="WorkspaceWizard.selectDirectory()"/>
     </hbox>
   </wizardpage>
 
-  <wizardpage>
-    <description>&workspaceAlwaysDownloadDescription.label;</description>
+  <wizardpage label="&workspaceAlwaysDownloadPageDescription.label;">
+    <description>&workspaceAlwaysDownloadDescription_0.label;</description>
+
+    <separator/>
+
     <checkbox label="&workspaceAlwaysDownloadDescriptionCheckbox.label;"/>
+  </wizardpage>
+
+  <wizardpage>
+    <description>&workspaceConclusionDescription_0.label;</description>
+    <groupbox>
+      <grid flex="1">
+        <columns>
+          <column/>
+          <column flex="1"/>
+        </columns>
+        <rows>
+          <row>
+            <label value="&workspaceConclusionPathConfig.label;:"/>
+            <label value="foo"/>
+          </row>
+          <row>
+            <label value="&workspaceConclusionDownloadConfig.label;:"/>
+            <label value="bar"/>
+          </row>
+        </rows>
+      </grid>
+    </groupbox>
   </wizardpage>
 
   <!-- scripts have to go here because of bug https://bugzilla.mozilla.org/show_bug.cgi?id=296418 -->

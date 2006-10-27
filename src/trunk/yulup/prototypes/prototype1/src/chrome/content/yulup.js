@@ -74,7 +74,7 @@ function initYulup() {
 
     if (!wsOk) {
         // launch workspace wizard
-        
+        window.openDialog(YULUP_WS_WIZARD_CHROME_URI, "yulupWorkspaceWizard", "resizable=no")
     }
 
     new Yulup();
