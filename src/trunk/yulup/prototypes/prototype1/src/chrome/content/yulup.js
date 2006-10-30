@@ -50,11 +50,6 @@ window.addEventListener('load', initYulup, false);
  * @return {Undefined}
  */
 function initYulup() {
-    var workspace = null;
-    var fileURI   = null;
-    var file      = null;
-    var wsOk      = false;
-
     /* DEBUG */ dump("Yulup:yulup.js:initYulup() invoked\n");
 
     gMainBrowserWindow = window;
@@ -65,24 +60,7 @@ function initYulup() {
     NeutronArchiveRegistry.loadLocalTemplates();
 
     // check if workspace is configured
-    if (((workspace = YulupPreferences.getCharPref("workspace.", "location")) != null) && workspace != "") {
-        // check if workspace exists
-        try {
-            fileURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(workspace, null, null);
-
-            file = fileURI.QueryInterface(Components.interfaces.nsIFileURL).file;
-
-            if (file.exists() && file.isDirectory() && file.isWritable()) {
-                /* DEBUG */ dump("Yulup:yulup.js:initYulup: \"" + file.path + "\" is indeed a directory, exists and is writable\n");
-                wsOk = true;
-            }
-        } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:initYulup", exception);
-            /* DEBUG */ Components.utils.reportError(exception);
-        }
-    }
-
-    if (!wsOk) {
+    if (!WorkspaceService.getWorkspacePath()) {
         // launch workspace wizard
         window.openDialog(YULUP_WS_WIZARD_CHROME_URI, "yulupWorkspaceWizard", "resizable=no")
     }

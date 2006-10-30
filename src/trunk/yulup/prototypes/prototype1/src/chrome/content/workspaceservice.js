@@ -30,10 +30,34 @@ var WorkspaceService = {
     /**
      * Returns the path to the workspace.
      *
-     * @return {String} the workspace path
+     * @return {String} the workspace path, or null if not available
      */
-    __getWorkspacePath: function () {
+    getWorkspacePath: function () {
+        var workspace = null;
+        var fileURI   = null;
+        var file      = null;
+        var wsOk      = false;
 
+        /* DEBUG */ dump("Yulup:workspaceservice.js:getWorkspacePath() invoked\n");
+
+        if (((workspace = YulupPreferences.getCharPref("workspace.", "location")) != null) && workspace != "") {
+            // check if workspace exists and is writable
+            try {
+                fileURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(workspace, null, null);
+
+                file = fileURI.QueryInterface(Components.interfaces.nsIFileURL).file;
+
+                if (file.exists() && file.isDirectory() && file.isWritable()) {
+                    /* DEBUG */ dump("Yulup:workspaceservice.js:getWorkspacePath: \"" + file.path + "\" is indeed a directory, exists and is writable\n");
+                    wsOk = true;
+                }
+            } catch (exception) {
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:workspaceservice.js:getWorkspacePath", exception);
+                /* DEBUG */ Components.utils.reportError(exception);
+            }
+        }
+
+        return (wsOk ? workspace : null);
     },
 
     /**
