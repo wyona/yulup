@@ -35,7 +35,7 @@
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-        <em:minVersion>1.5.0</em:minVersion>
+        <em:minVersion>1.5.0.*</em:minVersion>
         <em:maxVersion>2.0.0.*</em:maxVersion>
       </Description>
     </em:targetApplication>
@@ -66,6 +66,7 @@
     <em:optionsURL>chrome://yulup/content/preferences/preferences.xul</em:optionsURL>
     <em:iconURL>chrome://yulup/skin/icons/yulup-logo.png</em:iconURL>
     <em:homepageURL>http://www.yulup.org/</em:homepageURL>
+    <!-- NOTE: Please comment the following for uploading the XPI to Mozilla Add-ons -->
     <em:updateURL>http://www.yulup.org/download/update.rdf</em:updateURL>
   </Description>
 </RDF>
