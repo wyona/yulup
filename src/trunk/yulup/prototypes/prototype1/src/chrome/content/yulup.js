@@ -63,7 +63,7 @@ function initYulup() {
     NeutronArchiveRegistry.loadLocalTemplates();
 
     // check if workspace is configured
-    if ((workspace = YulupPreferences.getCharPref("workspace.", "location")) != null) {
+    if (((workspace = YulupPreferences.getCharPref("workspace.", "location")) != null) && workspace != "") {
         // check if workspace exists
         
 
