@@ -104,7 +104,7 @@ var ServerURIPrompt = {
 
         if (aValue && aValue != "") {
             // get a handle on the form-history component
-            formHistory = Components.classes["@mozilla.org/satchel/form-history;1"].getService(Components.interfaces.nsIFormHistory);
+            formHistory = Components.classes["@mozilla.org/satchel/form-history;1"].getService(Components.interfaces.nsIFormHistory ? Components.interfaces.nsIFormHistory : Components.interfaces.nsIFormHistory2);
 
             formHistory.addEntry(SERVERURIPROMPT_FORM_HISTORY_ID, aValue);
         }
