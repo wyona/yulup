@@ -34,6 +34,19 @@ var WorkspaceWizard = {
      */
     onLoadHandler: function () {
         /* DEBUG */ dump("Yulup:workspacewizard.js:WorkspaceWizard.onLoadHandler() invoked\n");
+
+        // disable advance
+        document.getElementById("uiYulupWorkspaceWizard").canAdvance = false;
+
+        // resize window to content
+        window.sizeToContent();
+    },
+
+    onWizardFinishHandler: function () {
+        /* DEBUG */ dump("Yulup:workspacewizard.js:WorkspaceWizard.onWizardFinishHandler() invoked\n");
+
+        YulupPreferences.setCharPref("workspace.", "location", document.getElementById("uiWorkspaceLocationTextbox").value);
+        YulupPreferences.setBoolPref("workspace.", "alwaysdownload", document.getElementById("uiWorkspaceAlwaysDownloadDescriptionCheckbox").checked);
     },
 
     selectDirectory: function () {
@@ -56,5 +69,24 @@ var WorkspaceWizard = {
 
             document.getElementById("uiWorkspaceLocationTextbox").value = target.spec;
         }
+
+        WorkspaceWizard.checkLocationInput();
+    },
+
+    checkLocationInput: function () {
+        /* DEBUG */ dump("Yulup:workspacewizard.js:WorkspaceWizard.checkLocationInput() invoked\n");
+
+        if (document.getElementById("uiWorkspaceLocationTextbox").value && document.getElementById("uiWorkspaceLocationTextbox").value != "") {
+            document.getElementById("uiYulupWorkspaceWizard").canAdvance = true;
+        } else {
+            document.getElementById("uiYulupWorkspaceWizard").canAdvance = false;
+        }
+    },
+
+    showConclusionPage: function () {
+        /* DEBUG */ dump("Yulup:workspacewizard.js:WorkspaceWizard.showConclusionPage() invoked\n");
+
+        document.getElementById("uiWorkspaceConclusionPathConfig").value = document.getElementById("uiWorkspaceLocationTextbox").value;
+        document.getElementById("uiWorkspaceConclusionDownloadConfig").value = document.getElementById("uiWorkspaceAlwaysDownloadDescriptionCheckbox").checked;
     }
 };

@@ -67,7 +67,7 @@ function initYulup() {
         // check if workspace exists
         
 
-        wsOk = false;
+        wsOk = true;
     } else {
         wsOk = false;
     }

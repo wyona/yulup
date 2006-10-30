@@ -138,6 +138,30 @@ var YulupPreferences = {
         }
     },
 
+    setCharPref: function (aBranch, aItem, aValue) {
+        var branch = null;
+
+        /* DEBUG */ dump("Yulup:common.js:YulupPreferences.setCharPref(\"" + aBranch + "\", \"" + aItem + "\", \"" + aValue + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aBranch != null);
+        /* DEBUG */ YulupDebug.ASSERT(aItem   != null);
+        /* DEBUG */ YulupDebug.ASSERT(aValue  != null);
+        /* DEBUG */ YulupDebug.ASSERT(typeof(aValue) == "string");
+
+        try {
+            if ((branch = YulupPreferences.__getBranch()) != null) {
+                branch.setCharPref(aBranch + aItem, aValue);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupPreferences.setCharPref", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+            return false;
+        }
+    },
+
     getIntPref: function (aBranch, aItem) {
         var branch = null;
 

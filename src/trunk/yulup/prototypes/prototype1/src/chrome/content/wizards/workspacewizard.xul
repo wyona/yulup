@@ -33,6 +33,7 @@
         align="stretch"
         title="&workspaceWizard.title;"
         onload="WorkspaceWizard.onLoadHandler()"
+        onwizardfinish="WorkspaceWizard.onWizardFinishHandler()"
         persist="screenX screenY"
         style="min-width: 30em;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -46,7 +47,7 @@
 
     <label value="&workspaceLocationTextboxLabel.label;:" control="uiWorkspaceLocationTextbox"/>
     <hbox align="center">
-      <textbox id="uiWorkspaceLocationTextbox" flex="1"/>
+      <textbox id="uiWorkspaceLocationTextbox" flex="1" oninput="WorkspaceWizard.checkLocationInput()"/>
       <button label="&workspaceLocationSelectorButton.label;" oncommand="WorkspaceWizard.selectDirectory()"/>
     </hbox>
   </wizardpage>
@@ -56,10 +57,10 @@
 
     <separator/>
 
-    <checkbox label="&workspaceAlwaysDownloadDescriptionCheckbox.label;"/>
+    <checkbox id="uiWorkspaceAlwaysDownloadDescriptionCheckbox" label="&workspaceAlwaysDownloadDescriptionCheckbox.label;"/>
   </wizardpage>
 
-  <wizardpage>
+  <wizardpage onpageshow="WorkspaceWizard.showConclusionPage()">
     <description>&workspaceConclusionDescription_0.label;</description>
     <groupbox>
       <grid flex="1">
@@ -70,11 +71,11 @@
         <rows>
           <row>
             <label value="&workspaceConclusionPathConfig.label;:"/>
-            <label value="foo"/>
+            <label id="uiWorkspaceConclusionPathConfig"/>
           </row>
           <row>
             <label value="&workspaceConclusionDownloadConfig.label;:"/>
-            <label value="bar"/>
+            <label id="uiWorkspaceConclusionDownloadConfig"/>
           </row>
         </rows>
       </grid>
