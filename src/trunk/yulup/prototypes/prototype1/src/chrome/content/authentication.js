@@ -102,7 +102,7 @@ var Authentication = {
         // get the value of the textbox element
         fieldValue = document.getElementById(aField).value;
 
-        // get a handle for the form-history component
+        // get a handle on the form-history component
         formHistory = Components.classes["@mozilla.org/satchel/form-history;1"].getService(Components.interfaces.nsIFormHistory ? Components.interfaces.nsIFormHistory : Components.interfaces.nsIFormHistory2);
 
         formHistory.addEntry(AUTHENTICATION_FORM_HISTORY_ID, fieldValue);
