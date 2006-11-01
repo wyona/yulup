@@ -28,6 +28,40 @@
 
 var WorkspaceService = {
     /**
+     * Maps a URI to a location in the workspace.
+     *
+     * @param  {nsIURI}  aURI the URI
+     * @return {nsIFile} the file the URI points to
+     */
+    __translateURI: function (aURI) {
+        var url      = null;
+        var hostname = null;
+        var path     = null;
+        var resource = null;
+
+        url = aURI.QueryInterface(Components.interface.nsIURL);
+
+        // extract domain
+        hostname = aURI.host;
+
+        // extract path and resource name
+        path     = url.directory;
+        resource = url.fileName;
+    },
+
+    /**
+     * Change to the indicated directory and return
+     * its file descriptor. If the directory does not
+     * exists, it is created first.
+     *
+     * @param  {String}  aDirName the name of the directory to change to
+     * @return {nsIFile} returns the changed to directory, or null if not succeeded
+     */
+    __changeOrCreate: function (aDirName) {
+
+    },
+
+    /**
      * Returns the path to the workspace.
      *
      * @return {String} the workspace path, or null if not available
@@ -58,16 +92,6 @@ var WorkspaceService = {
         }
 
         return (wsOk ? workspace : null);
-    },
-
-    /**
-     * Maps a URI to a location in the workspace.
-     *
-     * @param  {nsIURI}  aURI the URI
-     * @return {nsIFile} the file the URI points to
-     */
-    __translateURI: function (aURI) {
-
     },
 
     /**
@@ -105,9 +129,19 @@ var WorkspaceService = {
      * @return {Boolean} returns true if the resouce was successfully added to the workspace, false otherwise
      */
     addResource: function (aURI, aDocument, aMetadata) {
+        var target   = null;
+        var document = null;
+
+        // get target file descriptor
+        target = PersistenceService.getFileDescriptor(WorkspaceService.__translateURI(aURI));
+
         if (!aDocument) {
             // fetch object first
+        } else {
+            document = aDocument;
         }
+
+        PersistenceService.persistToFile(target, document);
     },
 
     /**
