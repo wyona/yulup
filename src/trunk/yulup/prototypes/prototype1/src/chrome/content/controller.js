@@ -46,7 +46,7 @@ function YulupEditController(aParameterObject) {
      * Note that you have to switch the tab to the view
      * by yourself.
      *
-     * @param  {View}      aView the view to show
+     * @param  {View}      aView  the view to show
      * @param  {String}    aTitle a window title
      * @return {Undefined} does not have a return value
      */
@@ -176,6 +176,8 @@ function YulupEditController(aParameterObject) {
     this.constructor.documentLoadFinished = function (aDocumentData, aException) {
         /* DEBUG */ dump("Yulup:controller.js:YulupEditController.documentLoadFinished() invoked\n");
 
+        /* DEBUG */ YulupDebug.ASSERT(aDocumentData ? typeof(aDocumentData) == "string" : true);
+        /* DEBUG */ YulupDebug.ASSERT(aException    ? typeof(aException)    == "error"  : true);
         /* DEBUG */ YulupDebug.ASSERT(gEditorController && gEditorController.editStateController);
 
         try {
@@ -331,7 +333,7 @@ function YulupEditController(aParameterObject) {
 
         try {
             try {
-                // note that the loadBarrier.arrive() is called in documentLoadFinshed
+                // note that the loadBarrier.arrive() is called in documentLoadFinished
                 gEditorController.document.loadDocument(YulupEditController.documentLoadFinished);
             } catch (exception) {
                 /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:controller.js:YulupEditController", exception);

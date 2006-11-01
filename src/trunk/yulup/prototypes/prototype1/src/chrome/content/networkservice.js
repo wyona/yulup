@@ -26,10 +26,10 @@
  *
  */
 
-// See "DAV: bind" at http://greenbytes.de/tech/webdav/draft-ietf-webdav-bind-14.html#rfc.section.7.1
-const SUPPORTED_NEUTRON_VERSIONS =  "1.0-dev";
-// See WWW-Authenticate at http://www.ietf.org/rfc/rfc2617.txt
-// See Authorization at http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
+// see "DAV: bind" at http://greenbytes.de/tech/webdav/draft-ietf-webdav-bind-14.html#rfc.section.7.1
+const SUPPORTED_NEUTRON_VERSIONS       =  "1.0-dev";
+
+// see WWW-Authenticate at http://www.ietf.org/rfc/rfc2617.txt and Authorization at http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
 const SUPPORTED_AUTHENTICATION_SCHEMES =  "Neutron-Auth";
 
 var NetworkService = {

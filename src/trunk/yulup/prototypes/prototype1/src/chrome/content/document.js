@@ -305,7 +305,25 @@ Document.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aLoadFinishedCallback         != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aLoadFinishedCallback) == "function");
 
-        NetworkService.httpRequestGET(this.loadURI.spec, null, aLoadFinishedCallback, null, false, true);
+        NetworkService.httpRequestGET(this.loadURI.spec, null, this.__requestFinishedHandler, aLoadFinishedCallback, false, true);
+    },
+
+    /**
+     * Upload the document to the target as specified by the aURI
+     * in the constructor.
+     *
+     * @param  {String}    aDocumentData           the document data to upload
+     * @param  {Function}  aUploadFinishedCallback the function to call when the upload has finished
+     * @return {Undefined} does not have a return value
+     */
+    uploadDocument: function (aDocumentData, aUploadFinishedCallback) {
+        /* DEBUG */ dump("Yulup:document.js:NeutronDocument.uploadDocument() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aDocumentData                   != null);
+        /* DEBUG */ YulupDebug.ASSERT(aUploadFinishedCallback         != null);
+        /* DEBUG */ YulupDebug.ASSERT(typeof(aUploadFinishedCallback) == "function");
+
+        NetworkService.httpRequestPUT(this.loadURI.spec, null, aDocumentData, this.contentType, this.__requestFinishedHandler, aUploadFinishedCallback, false, true);
     },
 
     /**
@@ -345,24 +363,6 @@ Document.prototype = {
 
         // user aborted or an error occurred during saving
         return false;
-    },
-
-    /**
-     * Upload the document to the target as specified by the aURI
-     * in the constructor.
-     *
-     * @param  {String}    aDocumentData           the document data to upload
-     * @param  {Function}  aUploadFinishedCallback the function to call when the upload has finished
-     * @return {Undefined} does not have a return value
-     */
-    uploadDocument: function (aDocumentData, aUploadFinishedCallback) {
-        /* DEBUG */ dump("Yulup:document.js:NeutronDocument.uploadDocument() invoked\n");
-
-        /* DEBUG */ YulupDebug.ASSERT(aDocumentData                   != null);
-        /* DEBUG */ YulupDebug.ASSERT(aUploadFinishedCallback         != null);
-        /* DEBUG */ YulupDebug.ASSERT(typeof(aUploadFinishedCallback) == "function");
-
-        NetworkService.httpRequestPUT(this.loadURI.spec, null, aDocumentData, this.contentType, this.__requestFinishedHandler, aUploadFinishedCallback, false, true);
     },
 
     /**
