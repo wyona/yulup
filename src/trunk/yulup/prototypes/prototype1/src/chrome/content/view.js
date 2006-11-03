@@ -1937,7 +1937,9 @@ function WYSIWYGXSLTSelectionListener(aView) {
 }
 
 WYSIWYGXSLTSelectionListener.prototype = {
-    __view: null,
+    __view                : null,
+    __prevNode            : null,
+    __prevIsNamespaceAware: null,
 
     notifySelectionChanged: function (aDocument, aSelection, aReason) {
         var node        = null;
@@ -1950,21 +1952,27 @@ WYSIWYGXSLTSelectionListener.prototype = {
 
         this.__view.currentXHTMLNode = node;
 
-        xpath = this.__view.getSourceXPathForXHTMLNode(node, this.__view.isNamespaceAware);
+        // check if the current selection is at the same node as the previous selection
+        if (this.__prevNode != node || this.__prevIsNamespaceAware != this.__view.isNamespaceAware) {
+            this.__prevNode = node;
+            this.__prevIsNamespaceAware = this.__view.isNamespaceAware;
 
-        if (xpath != null && xpath != this.__view.currentSourceSelectionPath) {
-            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTSelectionListener.notifySelectionChanged: XPath of selected node is: \"" + xpath + "\"\n");
+            xpath = this.__view.getSourceXPathForXHTMLNode(node, this.__view.isNamespaceAware);
 
-            sourceNode = domDocument.evaluate(xpath, domDocument, domDocument.createNSResolver(domDocument.documentElement), XPathResult.ANY_TYPE, null).iterateNext();
+            if (xpath != null && xpath != this.__view.currentSourceSelectionPath) {
+                /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTSelectionListener.notifySelectionChanged: XPath of selected node is: \"" + xpath + "\"\n");
 
-            if (sourceNode != null) {
-                /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTSelectionListener.notifySelectionChanged: setting source node \"" + sourceNode + "\" with XPath \"" + xpath + "\" as new current node\n");
-                this.__view.currentSourceSelectionPath = xpath;
-                this.__view.currentSourceNode = sourceNode;
+                sourceNode = domDocument.evaluate(xpath, domDocument, domDocument.createNSResolver(domDocument.documentElement), XPathResult.ANY_TYPE, null).iterateNext();
 
-            } else {
-                this.__view.currentSourceSelectionPath = null;
-                this.__view.currentSourceNode = null;
+                if (sourceNode != null) {
+                    /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTSelectionListener.notifySelectionChanged: setting source node \"" + sourceNode + "\" with XPath \"" + xpath + "\" as new current node\n");
+                    this.__view.currentSourceSelectionPath = xpath;
+                    this.__view.currentSourceNode = sourceNode;
+
+                } else {
+                    this.__view.currentSourceSelectionPath = null;
+                    this.__view.currentSourceNode = null;
+                }
             }
         }
     }
