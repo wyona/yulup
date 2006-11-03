@@ -1844,6 +1844,8 @@ WYSIWYGXSLTModeView.prototype = {
     },
 
     updateSource: function () {
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.updateSource() invoked\n");
+
         if (this.currentSourceNode != null && (this.currentSourceNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE || this.currentSourceNode.nodeType == Components.interfaces.nsIDOMNode.ATTRIBUTE_NODE)) {
             this.currentSourceNode.nodeValue = this.currentXHTMLNode.nodeValue;
         }
@@ -1932,6 +1934,8 @@ LocationPathSelectionListener.prototype = {
         var domDocument = null;
         var xpath       = null;
         var sourceNode  = null;
+
+        /* DEBUG */ dump("Yulup:view.js:LocationPathSelectionListener.notifySelectionChanged() invoked\n");
 
         node        = aSelection.focusNode;
         domDocument = this.__view.domDocument;
