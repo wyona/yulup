@@ -1218,7 +1218,7 @@ WYSIWYGXSLTModeView.prototype = {
             /** No selection events fired onSelectionChanged so we have to use a mouse listener for keeping track of selection changes **/
             wysiwygXSLTEditor.contentWindow.addEventListener("mousedown", new WYSIWYGXSLTMouseListener(this), true);
 
-            wysiwygXSLTEditor.contentWindow.addEventListener("mousedown", new WYSIWYGXSLTMouseListener(this), true);
+            //wysiwygXSLTEditor.contentWindow.addEventListener("mousedown", new WYSIWYGXSLTMouseListener(this), true);
             var nsCheckbox = document.getElementById("uiYulupXPathToolBarNSAwareCheckbox");
             nsCheckbox.addEventListener('CheckboxStateChange', new NSCheckboxStateChangeListener(this), true);
 
