@@ -1229,9 +1229,6 @@ WYSIWYGXSLTModeView.prototype = {
                                                                  aKeyEvent.preventBubble();
                                                              }, true);
 
-            /** No selection events fired onSelectionChanged so we have to use a mouse listener for keeping track of selection changes **/
-            //wysiwygXSLTEditor.contentWindow.addEventListener("mousedown", new WYSIWYGXSLTMouseListener(this), true);
-
             // hook up selection listeners
             wysiwygXSLTEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new CutCopySelectionListener(this));
             wysiwygXSLTEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new LocationPathSelectionListener(this));
@@ -1915,47 +1912,6 @@ CutCopySelectionListener.prototype = {
     notifySelectionChanged: function (aDocument, aSelection, aReason) {
         if (this.__view.cutCopyObserver)
             this.__view.cutCopyObserver.updateCommands();
-    }
-};
-
-
-function WYSIWYGXSLTMouseListener(aView) {
-    /* DEBUG */ YulupDebug.ASSERT(aView != null);
-
-    this.view = aView;
-}
-
-WYSIWYGXSLTMouseListener.prototype = {
-    view: null,
-
-    handleEvent: function (aMouseEvent) {
-        var node        = null;
-        var domDocument = null;
-        var xpath       = null;
-        var sourceNode  = null;
-
-        node        = aMouseEvent.explicitOriginalTarget; // (Mozilla bug 185889)
-        domDocument = this.view.domDocument;
-
-        this.view.currentXHTMLNode = node;
-
-        xpath = this.view.getSourceXPathForXHTMLNode(node, this.view.isNamespaceAware);
-
-        if (xpath != null && xpath != this.view.currentSourceSelectionPath) {
-            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTMouseListener.handleEvent: XPath of selected node is: \"" + xpath + "\"\n");
-
-            sourceNode = domDocument.evaluate(xpath, domDocument, domDocument.createNSResolver(domDocument.documentElement), XPathResult.ANY_TYPE, null).iterateNext();
-
-            if (sourceNode != null) {
-                /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTMouseListener.handleEvent: setting source node \"" + sourceNode + "\" with XPath \"" + xpath + "\" as new current node\n");
-                this.view.currentSourceSelectionPath = xpath;
-                this.view.currentSourceNode = sourceNode;
-
-            } else {
-                this.view.currentSourceSelectionPath = null;
-                this.view.currentSourceNode = null;
-            }
-        }
     }
 };
 
