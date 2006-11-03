@@ -773,11 +773,13 @@ var Editor = {
 };
 
 
-function UndoRedoObserver () {
+function EditCommandUpdater () {
+    /* DEBUG */ dump("Yulup:editor.js:EditCommandUpdater() invoked\n");
+
     this.__active = false;
 }
 
-UndoRedoObserver.prototype = {
+EditCommandUpdater.prototype = {
     __active: null,
 
     activate: function () {
@@ -786,7 +788,18 @@ UndoRedoObserver.prototype = {
 
     deactivate: function () {
         this.__active = false;
-    },
+    }
+};
+
+
+function UndoRedoObserver () {
+    /* DEBUG */ dump("Yulup:editor.js:UndoRedoObserver() invoked\n");
+
+    this.__proto__.__proto__.constructor.call(this);
+}
+
+UndoRedoObserver.prototype = {
+    __proto__: EditCommandUpdater.prototype,
 
     disableCommands: function () {
         Editor.goSetCommandEnabled("cmd_undo", false);
@@ -801,11 +814,34 @@ UndoRedoObserver.prototype = {
     },
 
     observe: function (aSubject, aTopic, aData) {
-        /* DEBUG */ dump("Yulup:view.js:undoObserver(\"" + aSubject + "\", \"" + aTopic + "\", \"" + aData + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:editor.js:UndoRedoObserver.observe(\"" + aSubject + "\", \"" + aTopic + "\", \"" + aData + "\") invoked\n");
 
         if (this.__active) {
             Editor.goUpdateCommand(aTopic);
             //window.updateCommands("undo");
+        }
+    }
+};
+
+
+function CutCopyObserver () {
+    /* DEBUG */ dump("Yulup:editor.js:CutCopyObserver() invoked\n");
+
+    this.__proto__.__proto__.constructor.call(this);
+}
+
+CutCopyObserver.prototype = {
+    __proto__: EditCommandUpdater.prototype,
+
+    disableCommands: function () {
+        Editor.goSetCommandEnabled("cmd_cut", false);
+        Editor.goSetCommandEnabled("cmd_copy", false);
+    },
+
+    updateCommands: function () {
+        if (this.__active) {
+            Editor.goUpdateCommand("cmd_cut");
+            Editor.goUpdateCommand("cmd_copy");
         }
     }
 };

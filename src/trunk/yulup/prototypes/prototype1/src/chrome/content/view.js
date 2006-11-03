@@ -441,13 +441,18 @@ function View(aEditorController, aModel, aBarrier) {
     this.editorImpl   = null;
     this.isFilled     = false;
 
-    // instantiate undo/redo observer
+    // instantiate undo/redo and cut/copy observers
     this.undoRedoObserver = new UndoRedoObserver();
+    this.cutCopyObserver  = new CutCopyObserver();
+
+    this.commandUpdaters = [ this.undoRedoObserver, this.cutCopyObserver ];
 }
 
 View.prototype.controller       = null;
 View.prototype.model            = null;
+View.commandUpdaters            = null;
 View.prototype.undoRedoObserver = null;
+View.prototype.cutCopyObserver  = null;
 View.prototype.uriRewriter      = null;
 
 /**
@@ -498,19 +503,21 @@ View.prototype.show = function () {
              * with a document), then fill the view. */
             if (isViewModified || !this.isFilled) {
                 // fill view
-                if (this.undoRedoObserver) {
-                    this.undoRedoObserver.deactivate();
-                    this.undoRedoObserver.disableCommands();
+                for (var i = 0; i < this.commandUpdaters.length; i++) {
+                    this.commandUpdaters[i].deactivate();
+                    this.commandUpdaters[i].disableCommands();
                 }
 
                 this.fillView();
 
-                if (this.undoRedoObserver)
-                    this.undoRedoObserver.activate();
+                for (var i = 0; i < this.commandUpdaters.length; i++) {
+                    this.commandUpdaters[i].activate();
+                }
             }
 
-            if (this.undoRedoObserver)
-                this.undoRedoObserver.updateCommands();
+            for (var i = 0; i < this.commandUpdaters.length; i++) {
+                this.commandUpdaters[i].updateCommands();
+            }
 
             this.enterView();
 
@@ -716,6 +723,9 @@ SourceModeView.prototype = {
 
             // activate guided tag insertion
             this.guidedTagInserter = new GuidedTagInserter(this, document, document.getElementById("uiYulupEditorPromptBox"));
+
+            // hook up selection listener
+            sourceEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new CutCopySelectionListener(this));
 
             // clear undo and redo stacks
             this.editorImpl.transactionManager.clear();
@@ -927,6 +937,9 @@ WYSIWYGModeView.prototype = {
             wysiwygEditor.contentWindow.addEventListener("keypress", function (aKeyEvent) {
                                                              aKeyEvent.preventBubble();
                                                          }, true);
+
+            // hook up selection listener
+            wysiwygEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new CutCopySelectionListener(this));
 
             // clear undo and redo stacks
             this.editorImpl.transactionManager.clear();
@@ -1218,7 +1231,8 @@ WYSIWYGXSLTModeView.prototype = {
             /** No selection events fired onSelectionChanged so we have to use a mouse listener for keeping track of selection changes **/
             //wysiwygXSLTEditor.contentWindow.addEventListener("mousedown", new WYSIWYGXSLTMouseListener(this), true);
 
-            // hook up selection listener
+            // hook up selection listeners
+            wysiwygXSLTEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new CutCopySelectionListener(this));
             wysiwygXSLTEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new LocationPathSelectionListener(this));
 
             //wysiwygXSLTEditor.contentWindow.addEventListener("mousedown", new WYSIWYGXSLTMouseListener(this), true);
@@ -1885,6 +1899,22 @@ WYSIWYGXSLTKeyListener.prototype = {
     handleEvent: function (aKeyEvent) {
         // hook up paragraph inserter
         this.view.updateSource();
+    }
+};
+
+
+function CutCopySelectionListener(aView) {
+    /* DEBUG */ YulupDebug.ASSERT(aView != null);
+
+    this.__view = aView;
+}
+
+CutCopySelectionListener.prototype = {
+    __view: null,
+
+    notifySelectionChanged: function (aDocument, aSelection, aReason) {
+        if (this.__view.cutCopyObserver)
+            this.__view.cutCopyObserver.updateCommands();
     }
 };
 
