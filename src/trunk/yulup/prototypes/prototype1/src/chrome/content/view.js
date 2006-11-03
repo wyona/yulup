@@ -1802,6 +1802,8 @@ WYSIWYGXSLTModeView.prototype = {
 
             return xPathExpr;
         }
+
+        return null;
     },
 
     parseLocationPath: function (aLocationPath) {

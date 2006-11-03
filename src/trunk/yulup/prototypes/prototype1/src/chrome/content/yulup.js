@@ -379,6 +379,8 @@ function resourceUpload() {
 
     // open dialog
     ResourceUploadDialog.showResourceUploadDialog(sitetreeURI);
+
+    return true;
 }
 
 function openYulupPreferences() {

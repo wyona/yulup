@@ -342,6 +342,8 @@ AtomTreeView.prototype = {
 
         if (aColumn.id == "titleColumn")
             return this.atomFeed.getEntry(aRow).getTitle();
+        else
+            return null;
     },
 
     /**

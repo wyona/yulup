@@ -1962,39 +1962,39 @@ XPathLexer.prototype = {
     },
 
     getSymbol: function () {
-        var char = null;
+        var c    = null;
         var name = null;
 
         /* DEBUG */ dump("Yulup:xpathparser.js:XPathLexer.getSymbol() invoked\n");
 
-        while ((char = this.__readChar()) != null && this.__isWhitespaceChar(char));
+        while ((c = this.__readChar()) != null && this.__isWhitespaceChar(c));
 
-        if (char != null) {
-            switch (char) {
+        if (c != null) {
+            switch (c) {
                 case "/":
-                    if ((char = this.__readChar()) == "/") {
+                    if ((c = this.__readChar()) == "/") {
                         return new XPathToken(XPathToken.TYPE_DOUBLESLASH, "//");
                     }
 
-                    if (char != null)
+                    if (c != null)
                         this.__putBack(1);
 
                     return new XPathToken(XPathToken.TYPE_SLASH, "/");
                 case ":":
-                    if ((char = this.__readChar()) == ":") {
+                    if ((c = this.__readChar()) == ":") {
                         return new XPathToken(XPathToken.TYPE_DOUBLECOLON, "::");
                     }
 
-                    if (char != null)
+                    if (c != null)
                         this.__putBack(1);
 
                     return new XPathToken(XPathToken.TYPE_COLON, ":");
                 case ".":
-                    if ((char = this.__readChar()) == ".") {
+                    if ((c = this.__readChar()) == ".") {
                         return new XPathToken(XPathToken.TYPE_DOUBLEPERIOD, "..");
                     }
 
-                    if (char != null)
+                    if (c != null)
                         this.__putBack(1);
 
                     return new XPathToken(XPathToken.TYPE_PERIOD, ".");
@@ -2017,20 +2017,20 @@ XPathLexer.prototype = {
                         throw new YulupXPathParserInvalidCharacterException();
                     }
                 case "<":
-                    if ((char = this.__readChar()) == "=") {
+                    if ((c = this.__readChar()) == "=") {
                         return new XPathToken(XPathToken.TYPE_RELATIONALOPERATOR, "<=");
                     }
 
-                    if (char != null)
+                    if (c != null)
                         this.__putBack(1);
 
                     return new XPathToken(XPathToken.TYPE_RELATIONALOPERATOR, "<");
                 case ">":
-                    if ((char = this.__readChar()) == "=") {
+                    if ((c = this.__readChar()) == "=") {
                         return new XPathToken(XPathToken.TYPE_RELATIONALOPERATOR, ">=");
                     }
 
-                    if (char != null)
+                    if (c != null)
                         this.__putBack(1);
 
                     return new XPathToken(XPathToken.TYPE_RELATIONALOPERATOR, ">");
@@ -2046,13 +2046,13 @@ XPathLexer.prototype = {
                     name = "";
 
                     do {
-                        name += char;
-                    } while ((char = this.__readChar()) != null && char != "\"");
+                        name += c;
+                    } while ((c = this.__readChar()) != null && c != "\"");
 
-                    if (char == null) {
+                    if (c == null) {
                         throw new YulupXPathLexerMalformedException();
                     } else {
-                        name += char;
+                        name += c;
                     }
 
                     return new XPathToken(XPathToken.TYPE_DOUBLEQUOTELITERAL, name);
@@ -2060,13 +2060,13 @@ XPathLexer.prototype = {
                     name = "";
 
                     do {
-                        name += char;
-                    } while ((char = this.__readChar()) != null && char != "'");
+                        name += c;
+                    } while ((c = this.__readChar()) != null && c != "'");
 
-                    if (char == null) {
+                    if (c == null) {
                         throw new YulupXPathLexerMalformedException();
                     } else {
-                        name += char;
+                        name += c;
                     }
 
                     return new XPathToken(XPathToken.TYPE_SINGLEQUOTELITERAL, name);
@@ -2074,10 +2074,10 @@ XPathLexer.prototype = {
                     name = "";
 
                     do {
-                        name += char;
-                    } while ((char = this.__readChar()) != null && !this.__isWhitespaceChar(char) && this.__isDigitChar(char));
+                        name += c;
+                    } while ((c = this.__readChar()) != null && !this.__isWhitespaceChar(c) && this.__isDigitChar(c));
 
-                    if (char != null)
+                    if (c != null)
                         this.__putBack(1);
 
                     return new XPathToken(XPathToken.TYPE_DIGITS, name);
@@ -2085,10 +2085,10 @@ XPathLexer.prototype = {
                     name = "";
 
                     do {
-                        name += char;
-                    } while ((char = this.__readChar()) != null && !this.__isWhitespaceChar(char) && this.__isNameChar(char));
+                        name += c;
+                    } while ((c = this.__readChar()) != null && !this.__isWhitespaceChar(c) && this.__isNameChar(c));
 
-                    if (char != null)
+                    if (c != null)
                         this.__putBack(1);
 
                     return new XPathToken(XPathToken.TYPE_IDENT, name);

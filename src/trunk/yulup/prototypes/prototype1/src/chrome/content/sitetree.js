@@ -381,7 +381,7 @@ SitetreeView.prototype = {
     /**
      * Get the collection URI of the currently selected node.
      *
-     * @return {nsIURI} the collection uri
+     * @return {nsIURI} the collection uri or null if not available
      */
     getCurrentCollectionURI: function() {
         var node = null;
@@ -401,6 +401,8 @@ SitetreeView.prototype = {
         } else {
             return this.sitetreeDOM.uri;
         }
+
+        return null;
     },
 
     /**
