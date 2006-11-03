@@ -124,8 +124,9 @@ function View(aEditorController, aModel, aBarrier) {
      * interface.
      *
      * DO NOT hook up such a listener unless bug
-     * https://bugzilla.mozilla.org/show_bug.cgi?id=345335 gets
-     * fixed (browser crashes with sig EXC_BAD_ACCESS).
+     * https://bugzilla.mozilla.org/show_bug.cgi?id=278677 gets
+     * fixed (browser crashes with sig EXC_BAD_ACCESS). (Fixed
+     * in 1.9, i.e. goes into FF3.)
      *
      * @constructor
      * @return {EditorObserver}
@@ -1235,7 +1236,6 @@ WYSIWYGXSLTModeView.prototype = {
             wysiwygXSLTEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new CutCopySelectionListener(this));
             wysiwygXSLTEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new LocationPathSelectionListener(this));
 
-            //wysiwygXSLTEditor.contentWindow.addEventListener("mousedown", new WYSIWYGXSLTMouseListener(this), true);
             var nsCheckbox = document.getElementById("uiYulupXPathToolBarNSAwareCheckbox");
             nsCheckbox.addEventListener('CheckboxStateChange', new NSCheckboxStateChangeListener(this), true);
 
