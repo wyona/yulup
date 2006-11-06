@@ -1844,10 +1844,38 @@ WYSIWYGXSLTModeView.prototype = {
     },
 
     updateSource: function () {
+        var tmpNode  = null;
+        var aggrText = null;
+
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.updateSource() invoked\n");
 
         if (this.currentSourceNode != null && (this.currentSourceNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE || this.currentSourceNode.nodeType == Components.interfaces.nsIDOMNode.ATTRIBUTE_NODE)) {
-            this.currentSourceNode.nodeValue = this.currentXHTMLNode.nodeValue;
+            /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.updateSource: nodeValue of currently selected node = \"" + this.currentXHTMLNode.nodeValue + "\"\n");
+
+            if (this.currentXHTMLNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+                // aggregate text to propagate from all direct TEXT_NODE siblings
+                tmpNode = this.currentXHTMLNode;
+
+                // walk backwards through the siblings and find first text node sibling
+                while (tmpNode.previousSibling && (tmpNode.previousSibling.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE)) {
+                    tmpNode = tmpNode.previousSibling;
+                }
+
+                // walk forward through the siblings and aggregate all text
+                aggrText = tmpNode.data;
+                while (tmpNode.nextSibling && (tmpNode.nextSibling.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE)) {
+                    tmpNode = tmpNode.nextSibling;
+                    aggrText += tmpNode.data;
+                }
+
+                /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.updateSource: propagating aggregated nodeValue = \"" + aggrText + "\"\n");
+
+                this.currentSourceNode.nodeValue = aggrText;
+            } else {
+                /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.updateSource: propagating nodeValue = \"" + this.currentXHTMLNode.nodeValue + "\"\n");
+
+                this.currentSourceNode.nodeValue = this.currentXHTMLNode.nodeValue;
+            }
         }
     },
 
@@ -1896,6 +1924,8 @@ WYSIWYGXSLTKeyListener.prototype = {
     view: null,
 
     handleEvent: function (aKeyEvent) {
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTKeyListener.handleEvent() invoked\n");
+
         // hook up paragraph inserter
         this.view.updateSource();
     }
@@ -1955,7 +1985,7 @@ LocationPathSelectionListener.prototype = {
                 sourceNode = domDocument.evaluate(xpath, domDocument, domDocument.createNSResolver(domDocument.documentElement), XPathResult.ANY_TYPE, null).iterateNext();
 
                 if (sourceNode != null) {
-                    /* DEBUG */ dump("Yulup:view.js:LocationPathSelectionListener.notifySelectionChanged: setting source node \"" + sourceNode + "\" with XPath \"" + xpath + "\" as new current node\n");
+                    /* DEBUG */ dump("Yulup:view.js:LocationPathSelectionListener.notifySelectionChanged: setting source node \"" + sourceNode + "\" (\"" + sourceNode.nodeValue + "\") with XPath \"" + xpath + "\" as new current node\n");
                     this.__view.currentSourceSelectionPath = xpath;
                     this.__view.currentSourceNode = sourceNode;
 
@@ -1965,6 +1995,8 @@ LocationPathSelectionListener.prototype = {
                 }
             }
         }
+
+        /* DEBUG */ dump("Yulup:view.js:LocationPathSelectionListener.notifySelectionChanged: current source node is: \"" + this.__view.currentSourceNode + "\" (\"" + (this.__view.currentSourceNode ? this.__view.currentSourceNode.nodeValue : this.__view.currentSourceNode) + "\")\n");
     }
 };
 
