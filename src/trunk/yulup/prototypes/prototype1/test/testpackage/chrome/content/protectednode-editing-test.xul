@@ -70,6 +70,8 @@
 
         commandController = Components.classes["@mozilla.org/embedcomp/base-command-controller;1"].createInstance(Components.interfaces.nsIControllerContext);
         commandController.init(null);
+
+        // the context set via setCommandContext is passed as the third argument to each doCommand* call
         commandController.setCommandContext(editorElem);
         editorElem.contentWindow.controllers.insertControllerAt(0, commandController);
 
