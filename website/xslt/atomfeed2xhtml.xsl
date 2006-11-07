@@ -51,6 +51,9 @@ Please see the <a href="../faq.html#troubleinstalltoc">FAQ</a> for troubleshooti
 
 &#160;
 <a href="http://www.yulup.org/download/release-atom-entries/?yanel.resource.viewid=atom"><img src="../images/feed-icon-16x16.png" border="0"/></a>
+
+&#160;
+<a href="release-atom-entries-as-rss.xml">RSS 2.0</a>
 </p>
 
 <!--
