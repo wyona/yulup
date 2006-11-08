@@ -1154,10 +1154,11 @@ WYSIWYGXSLTModeView.prototype = {
      * @return {Undefined} does not have a return value
      */
     setUp: function () {
-        var wysiwygXSLTEditor = null;
-        var keyBinding        = null;
-        var commandController = null;
-        var commandTable      = null;
+        var wysiwygXSLTEditor      = null;
+        var keyBinding             = null;
+        var selectionChangeHandler = null;
+        var commandController      = null;
+        var commandTable           = null;
 
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.setUp() invoked\n");
 
@@ -1225,9 +1226,11 @@ WYSIWYGXSLTModeView.prototype = {
                                                                  aKeyEvent.preventBubble();
                                                              }, true);
 
+            selectionChangeHandler = new WYSIWYGXSLTSelectionChangeHandler(this);
+
             // hook up selection listeners
             wysiwygXSLTEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new CutCopySelectionListener(this));
-            wysiwygXSLTEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new LocationPathSelectionListener(this));
+            wysiwygXSLTEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new LocationPathSelectionListener(selectionChangeHandler));
 
             var nsCheckbox = document.getElementById("uiYulupXPathToolBarNSAwareCheckbox");
             nsCheckbox.addEventListener('CheckboxStateChange', new NSCheckboxStateChangeListener(this), true);
@@ -1251,9 +1254,9 @@ WYSIWYGXSLTModeView.prototype = {
 
             commandTable = commandController.QueryInterface(Components.interfaces.nsIInterfaceRequestor).getInterface(Components.interfaces.nsIControllerCommandTable);
 
-            commandTable.registerCommand("cmd_cut", new WYSIWYGXSLTCutCommand());
-            commandTable.registerCommand("cmd_cutOrDelete", new WYSIWYGXSLTCutOrDeleteCommand());
-            commandTable.registerCommand("cmd_paste", new WYSIWYGXSLTPasteCommand());
+            commandTable.registerCommand("cmd_cut", new WYSIWYGXSLTCutCommand(this, selectionChangeHandler));
+            commandTable.registerCommand("cmd_cutOrDelete", new WYSIWYGXSLTCutOrDeleteCommand(this, selectionChangeHandler));
+            commandTable.registerCommand("cmd_paste", new WYSIWYGXSLTPasteCommand(this, selectionChangeHandler));
 
             /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.setUp: initialisation completed\n");
         } catch (exception) {
@@ -1958,24 +1961,41 @@ CutCopySelectionListener.prototype = {
 };
 
 
-function LocationPathSelectionListener(aView) {
+function LocationPathSelectionListener(aSelectionChangeHandler) {
+    /* DEBUG */ YulupDebug.ASSERT(aSelectionChangeHandler != null);
+
+    this.__selectionChangeHandler = aSelectionChangeHandler;
+}
+
+LocationPathSelectionListener.prototype = {
+    __selectionChangeHandler: null,
+
+    notifySelectionChanged: function (aDocument, aSelection, aReason) {
+        /* DEBUG */ dump("Yulup:view.js:LocationPathSelectionListener.notifySelectionChanged() invoked\n");
+
+        this.__selectionChangeHandler.selectionChanged(aSelection);
+    }
+};
+
+function WYSIWYGXSLTSelectionChangeHandler(aView) {
     /* DEBUG */ YulupDebug.ASSERT(aView != null);
 
     this.__view = aView;
 }
 
-LocationPathSelectionListener.prototype = {
+WYSIWYGXSLTSelectionChangeHandler.prototype = {
     __view                : null,
     __prevNode            : null,
     __prevIsNamespaceAware: null,
 
-    notifySelectionChanged: function (aDocument, aSelection, aReason) {
+    // TODO: we could also move this code directly into the XSLT mode view
+    selectionChanged: function (aSelection) {
         var node        = null;
         var domDocument = null;
         var xpath       = null;
         var sourceNode  = null;
 
-        /* DEBUG */ dump("Yulup:view.js:LocationPathSelectionListener.notifySelectionChanged() invoked\n");
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTSelectionChangeHandler.selectionChanged() invoked\n");
 
         node        = aSelection.focusNode;
         domDocument = this.__view.domDocument;
@@ -1990,12 +2010,12 @@ LocationPathSelectionListener.prototype = {
             xpath = this.__view.getSourceXPathForXHTMLNode(node, this.__view.isNamespaceAware);
 
             if (xpath != null && xpath != this.__view.currentSourceSelectionPath) {
-                /* DEBUG */ dump("Yulup:view.js:LocationPathSelectionListener.notifySelectionChanged: XPath of selected node is: \"" + xpath + "\"\n");
+                /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTSelectionChangeHandler.selectionChanged: XPath of selected node is: \"" + xpath + "\"\n");
 
                 sourceNode = domDocument.evaluate(xpath, domDocument, domDocument.createNSResolver(domDocument.documentElement), XPathResult.ANY_TYPE, null).iterateNext();
 
                 if (sourceNode != null) {
-                    /* DEBUG */ dump("Yulup:view.js:LocationPathSelectionListener.notifySelectionChanged: setting source node \"" + sourceNode + "\" (\"" + sourceNode.nodeValue + "\") with XPath \"" + xpath + "\" as new current node\n");
+                    /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTSelectionChangeHandler.selectionChanged: setting source node \"" + sourceNode + "\" (\"" + sourceNode.nodeValue + "\") with XPath \"" + xpath + "\" as new current node\n");
                     this.__view.currentSourceSelectionPath = xpath;
                     this.__view.currentSourceNode = sourceNode;
 
@@ -2006,7 +2026,7 @@ LocationPathSelectionListener.prototype = {
             }
         }
 
-        /* DEBUG */ dump("Yulup:view.js:LocationPathSelectionListener.notifySelectionChanged: current source node is: \"" + this.__view.currentSourceNode + "\" (\"" + (this.__view.currentSourceNode ? this.__view.currentSourceNode.nodeValue : this.__view.currentSourceNode) + "\")\n");
+        /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTSelectionChangeHandler.selectionChanged: current source node is: \"" + this.__view.currentSourceNode + "\" (\"" + (this.__view.currentSourceNode ? this.__view.currentSourceNode.nodeValue : this.__view.currentSourceNode) + "\")\n");
     }
 };
 
@@ -2019,14 +2039,27 @@ LocationPathSelectionListener.prototype = {
  *
  * @constructor
  */
-function WYSIWYGXSLTCutCommand() {}
+function WYSIWYGXSLTCutCommand(aView, aSelectionChangeHandler) {
+    /* DEBUG */ YulupDebug.ASSERT(aView                   != null);
+    /* DEBUG */ YulupDebug.ASSERT(aSelectionChangeHandler != null);
+
+    this.__view                   = aView;
+    this.__selectionChangeHandler = aSelectionChangeHandler;
+}
 
 WYSIWYGXSLTCutCommand.prototype = {
+    __view                  : null,
+    __selectionChangeHandler: null,
+
     doCommand: function (aCommandName, aCommandContext) {
         dump("Yulup:view.js:WYSIWYGXSLTCutCommand.doCommand(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
 
         if ("cmd_cut" == aCommandName) {
             aCommandContext.cut();
+
+            this.__selectionChangeHandler.selectionChanged(aCommandContext.selection);
+            this.__view.updateSource();
+
             return true;
         } else {
             return false;
@@ -2071,9 +2104,18 @@ WYSIWYGXSLTCutCommand.prototype = {
  *
  * @constructor
  */
-function WYSIWYGXSLTCutOrDeleteCommand() {}
+function WYSIWYGXSLTCutOrDeleteCommand(aView, aSelectionChangeHandler) {
+    /* DEBUG */ YulupDebug.ASSERT(aView                   != null);
+    /* DEBUG */ YulupDebug.ASSERT(aSelectionChangeHandler != null);
+
+    this.__view                   = aView;
+    this.__selectionChangeHandler = aSelectionChangeHandler;
+}
 
 WYSIWYGXSLTCutOrDeleteCommand.prototype = {
+    __view                  : null,
+    __selectionChangeHandler: null,
+
     doCommand: function (aCommandName, aCommandContext) {
         dump("Yulup:view.js:WYSIWYGXSLTCutOrDeleteCommand.doCommand(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
 
@@ -2083,6 +2125,10 @@ WYSIWYGXSLTCutOrDeleteCommand.prototype = {
             } else {
                 aCommandContext.cut();
             }
+
+            this.__selectionChangeHandler.selectionChanged(aCommandContext.selection);
+            this.__view.updateSource();
+
             return true;
         } else {
             return false;
@@ -2128,9 +2174,18 @@ WYSIWYGXSLTCutOrDeleteCommand.prototype = {
  *
  * @constructor
  */
-function WYSIWYGXSLTPasteCommand() {}
+function WYSIWYGXSLTPasteCommand(aView, aSelectionChangeHandler) {
+    /* DEBUG */ YulupDebug.ASSERT(aView                   != null);
+    /* DEBUG */ YulupDebug.ASSERT(aSelectionChangeHandler != null);
+
+    this.__view                   = aView;
+    this.__selectionChangeHandler = aSelectionChangeHandler;
+}
 
 WYSIWYGXSLTPasteCommand.prototype = {
+    __view                  : null,
+    __selectionChangeHandler: null,
+
     doCommand: function (aCommandName, aCommandContext) {
         dump("Yulup:view.js:WYSIWYGXSLTPasteCommand.doCommand(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
 
@@ -2139,6 +2194,10 @@ WYSIWYGXSLTPasteCommand.prototype = {
              * clipboard, extract the text and insert it afterwards. We don't want
              * to be able to paste XML into the view, only plaintext! */
             aCommandContext.paste(Components.interfaces.nsIClipboard.kGlobalClipboard);
+
+            this.__selectionChangeHandler.selectionChanged(aCommandContext.selection);
+            this.__view.updateSource();
+
             return true;
         } else {
             return false;
