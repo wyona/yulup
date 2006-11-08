@@ -9,17 +9,17 @@
 }
 
 #uiYulupEditToolbarbutton[introspection="no"] {
-  list-style-image: url("chrome://yulup/skin/icons/yulup-edit.png");
+  list-style-image: url("chrome://yulup/skin/icons/yulup-menu-inactive.png");
   -moz-image-region: rect(0px 32px 32px 0px);
 }
 
 #uiYulupEditToolbarbutton[introspection="ok"] {
-  list-style-image: url("chrome://yulup/skin/icons/yulup-edit-green.png");
+  list-style-image: url("chrome://yulup/skin/icons/yulup-menu-active.png");
   -moz-image-region: rect(0px 32px 32px 0px);
 }
 
 #uiYulupEditToolbarbutton[introspection="warn"] {
-  list-style-image: url("chrome://yulup/skin/icons/yulup-edit-red.png");
+  list-style-image: url("chrome://yulup/skin/icons/yulup-menu-failure.png");
   -moz-image-region: rect(0px 32px 32px 0px);
 }
 
@@ -37,17 +37,17 @@ toolbar[iconsize="small"] > #uiYulupEditToolbarbutton {
 }
 
 toolbar[iconsize="small"] > #uiYulupEditToolbarbutton[introspection="no"] {
-  list-style-image: url("chrome://yulup/skin/icons/yulup-edit-small.png");
+  list-style-image: url("chrome://yulup/skin/icons/yulup-menu-inactive-small.png");
   -moz-image-region: rect(0px 24px 24px 0px);
 }
 
 toolbar[iconsize="small"] > #uiYulupEditToolbarbutton[introspection="ok"] {
-  list-style-image: url("chrome://yulup/skin/icons/yulup-edit-small-green.png");
+  list-style-image: url("chrome://yulup/skin/icons/yulup-menu-active-small.png");
   -moz-image-region: rect(0px 24px 24px 0px);
 }
 
 toolbar[iconsize="small"] > #uiYulupEditToolbarbutton[introspection="warn"] {
-  list-style-image: url("chrome://yulup/skin/icons/yulup-edit-small-red.png");
+  list-style-image: url("chrome://yulup/skin/icons/yulup-menu-failure-small.png");
   -moz-image-region: rect(0px 24px 24px 0px);
 }
 
