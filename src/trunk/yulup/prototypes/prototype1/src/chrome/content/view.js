@@ -1541,7 +1541,7 @@ WYSIWYGXSLTModeView.prototype = {
                 /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle: removing <output> element \"" + outputMethodNode + "\"\n");
                 outputMethodNode.parentNode.removeChild(outputMethodNode);
             }
-	    } catch (exception) {
+        } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGXSLTModeView.patchDocumentStyle", exception);
             /* DEBUG */ Components.utils.reportError(exception);
         }
