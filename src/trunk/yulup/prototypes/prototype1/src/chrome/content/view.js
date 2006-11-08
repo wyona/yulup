@@ -645,12 +645,10 @@ SourceModeView.prototype = {
      * @return {Undefined} does not have a return value
      */
     setUp: function () {
-        var sourceEditor             = null;
-        var keyBinding               = null;
-        var useTabSpaces             = null;
-        var noOfTabSpaces            = null;
-        var commandControllerContext = null;
-        var commandTable             = null;
+        var sourceEditor  = null;
+        var keyBinding    = null;
+        var useTabSpaces  = null;
+        var noOfTabSpaces = null;
 
         /* DEBUG */ dump("Yulup:view.js:SourceModeView.setUp() invoked\n");
 
@@ -880,10 +878,8 @@ WYSIWYGModeView.prototype = {
      * @return {Undefined} does not have a return value
      */
     setUp: function () {
-        var wysiwygEditor            = null;
-        var keyBinding               = null;
-        var commandControllerContext = null;
-        var commandTable             = null;
+        var wysiwygEditor = null;
+        var keyBinding    = null;
 
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGModeView.setUp() invoked\n");
 
@@ -1158,10 +1154,10 @@ WYSIWYGXSLTModeView.prototype = {
      * @return {Undefined} does not have a return value
      */
     setUp: function () {
-        var wysiwygXSLTEditor        = null;
-        var keyBinding               = null;
-        var commandControllerContext = null;
-        var commandTable             = null;
+        var wysiwygXSLTEditor = null;
+        var keyBinding        = null;
+        var commandController = null;
+        var commandTable      = null;
 
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.setUp() invoked\n");
 
@@ -1244,6 +1240,20 @@ WYSIWYGXSLTModeView.prototype = {
 
             // hook up URI rewriter
             this.editor.contentDocument.addEventListener("DOMNodeInserted", this.uriRewriter, true);
+
+            // add our own command handlers
+            commandController = Components.classes["@mozilla.org/embedcomp/base-command-controller;1"].createInstance(Components.interfaces.nsIControllerContext);
+            commandController.init(null);
+
+            // the context set via setCommandContext is passed as the third argument to each doCommand* call
+            commandController.setCommandContext(this.editorImpl);
+            wysiwygXSLTEditor.contentWindow.controllers.insertControllerAt(0, commandController);
+
+            commandTable = commandController.QueryInterface(Components.interfaces.nsIInterfaceRequestor).getInterface(Components.interfaces.nsIControllerCommandTable);
+
+            commandTable.registerCommand("cmd_cut", new WYSIWYGXSLTCutCommand());
+            commandTable.registerCommand("cmd_cutOrDelete", new WYSIWYGXSLTCutOrDeleteCommand());
+            commandTable.registerCommand("cmd_paste", new WYSIWYGXSLTPasteCommand());
 
             /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.setUp: initialisation completed\n");
         } catch (exception) {
@@ -1997,6 +2007,173 @@ LocationPathSelectionListener.prototype = {
         }
 
         /* DEBUG */ dump("Yulup:view.js:LocationPathSelectionListener.notifySelectionChanged: current source node is: \"" + this.__view.currentSourceNode + "\" (\"" + (this.__view.currentSourceNode ? this.__view.currentSourceNode.nodeValue : this.__view.currentSourceNode) + "\")\n");
+    }
+};
+
+
+/**
+ * WYSIWYGXSLTCutCommand constructor. Instantiates a new object of
+ * type WYSIWYGXSLTCutCommand.
+ *
+ * Implements nsIControllerCommand.
+ *
+ * @constructor
+ */
+function WYSIWYGXSLTCutCommand() {}
+
+WYSIWYGXSLTCutCommand.prototype = {
+    doCommand: function (aCommandName, aCommandContext) {
+        dump("Yulup:view.js:WYSIWYGXSLTCutCommand.doCommand(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+        if ("cmd_cut" == aCommandName) {
+            aCommandContext.cut();
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    doCommandParams: function (aCommandName, aParams, aCommandContext) {
+        dump("Yulup:view.js:WYSIWYGXSLTCutCommand.doCommandParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+
+        return this.doCommand(aCommandName, aCommandContext);
+    },
+
+    getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
+        var canCut = false;
+
+        dump("Yulup:view.js:WYSIWYGXSLTCutCommand.getCommandStateParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+
+        canCut = this.isCommandEnabled(aCommandName, aCommandContext);
+        aParams.setBooleanValue("state_enabled", canCut);
+    },
+
+    isCommandEnabled: function (aCommandName, aCommandContext) {
+        var retVal = false;
+
+        dump("Yulup:view.js:WYSIWYGXSLTCutCommand.isCommandEnabled(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+        if (aCommandName == "cmd_cut") {
+            retVal = aCommandContext.canCut();
+        }
+
+        dump("Yulup:view.js:WYSIWYGXSLTCutCommand.isCommandEnabled: " + aCommandName + " retVal = \"" + retVal + "\"\n");
+
+        return retVal;
+    }
+};
+
+/**
+ * WYSIWYGXSLTCutOrDeleteCommand constructor. Instantiates a new object of
+ * type WYSIWYGXSLTCutOrDeleteCommand.
+ *
+ * Implements nsIControllerCommand.
+ *
+ * @constructor
+ */
+function WYSIWYGXSLTCutOrDeleteCommand() {}
+
+WYSIWYGXSLTCutOrDeleteCommand.prototype = {
+    doCommand: function (aCommandName, aCommandContext) {
+        dump("Yulup:view.js:WYSIWYGXSLTCutOrDeleteCommand.doCommand(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+        if ("cmd_cutOrDelete" == aCommandName) {
+            if (aCommandContext.selection && aCommandContext.selection.isCollapsed) {
+                aCommandContext.deleteSelection(Components.interfaces.nsIEditor.eNext);
+            } else {
+                aCommandContext.cut();
+            }
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    doCommandParams: function (aCommandName, aParams, aCommandContext) {
+        dump("Yulup:view.js:WYSIWYGXSLTCutOrDeleteCommand.doCommandParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+
+        return this.doCommand(aCommandName, aCommandContext);
+    },
+
+    getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
+        var canCutOrDelete = false;
+
+        dump("Yulup:view.js:WYSIWYGXSLTCutOrDeleteCommand.getCommandStateParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+
+        canCutOrDelete = this.isCommandEnabled(aCommandName, aCommandContext);
+        aParams.setBooleanValue("state_enabled", canCutOrDelete);
+    },
+
+    isCommandEnabled: function (aCommandName, aCommandContext) {
+        var retVal = false;
+
+        dump("Yulup:view.js:WYSIWYGXSLTCutOrDeleteCommand.isCommandEnabled(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+        if (aCommandName == "cmd_cutOrDelete") {
+            retVal = aCommandContext.canCut();
+        }
+
+        dump("Yulup:view.js:WYSIWYGXSLTCutOrDeleteCommand.isCommandEnabled: " + aCommandName + " retVal = \"" + retVal + "\"\n");
+
+        return retVal;
+    }
+};
+
+
+/**
+ * WYSIWYGXSLTPasteCommand constructor. Instantiates a new object of
+ * type WYSIWYGXSLTPasteCommand.
+ *
+ * Implements nsIControllerCommand.
+ *
+ * @constructor
+ */
+function WYSIWYGXSLTPasteCommand() {}
+
+WYSIWYGXSLTPasteCommand.prototype = {
+    doCommand: function (aCommandName, aCommandContext) {
+        dump("Yulup:view.js:WYSIWYGXSLTPasteCommand.doCommand(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+        if ("cmd_paste" == aCommandName) {
+            /* Instead of pasting directly, we should take the contents of the
+             * clipboard, extract the text and insert it afterwards. We don't want
+             * to be able to paste XML into the view, only plaintext! */
+            aCommandContext.paste(Components.interfaces.nsIClipboard.kGlobalClipboard);
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    doCommandParams: function (aCommandName, aParams, aCommandContext) {
+        dump("Yulup:view.js:WYSIWYGXSLTPasteCommand.doCommandParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+
+        return this.doCommand(aCommandName, aCommandContext);
+    },
+
+    getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
+        var canPaste = false;
+
+        dump("Yulup:view.js:WYSIWYGXSLTPasteCommand.getCommandStateParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+
+        canPaste = this.isCommandEnabled(aCommandName, aCommandContext);
+        aParams.setBooleanValue("state_enabled", canPaste);
+    },
+
+    isCommandEnabled: function (aCommandName, aCommandContext) {
+        var retVal = false;
+
+        dump("Yulup:view.js:WYSIWYGXSLTPasteCommand.isCommandEnabled(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+        if (aCommandName == "cmd_paste") {
+            /* In addition to canPaste(), we should also look at the actual
+             * clipboard contents to find out if it's in a format we can paste. */
+            retVal = aCommandContext.canPaste(Components.interfaces.nsIClipboard.kGlobalClipboard);
+        }
+
+        dump("Yulup:view.js:WYSIWYGXSLTPasteCommand.isCommandEnabled: " + aCommandName + " retVal = \"" + retVal + "\"\n");
+
+        return retVal;
     }
 };
 
