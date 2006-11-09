@@ -1,0 +1,12 @@
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <atom:title type="text">Yulup 0.1.10-rc8 released</atom:title>
+  <atom:author>
+    <atom:name>Michael Wechner</atom:name>
+  </atom:author>
+  <atom:id>urn:</atom:id>
+  <atom:content type="xhtml">
+    <xhtml:div>
+    Download Yulup release candidate 7 from the <a href="download/index.html">Download page</a>.
+    </xhtml:div>
+  </atom:content>
+<atom:updated>2006-11-10T00:34:00.619Z</atom:updated><atom:published>2006-11-10T00:34:00.619Z</atom:published></atom:entry>
