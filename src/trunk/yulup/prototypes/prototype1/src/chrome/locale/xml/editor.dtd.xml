@@ -262,12 +262,12 @@
 
   <entity id="editorWidgetInsertDialog.title">
     <name xml:lang="en">Set attributes</name>
-    <name xml:lang="de">Setzte Attribute</name>
+    <name xml:lang="de">Setze Attribute</name>
   </entity>
 
   <entity id="editorWidgetInsert.label">
     <name xml:lang="en">Set attributes for widget </name>
-    <name xml:lang="de">Setzte Attribute für das Element </name>
+    <name xml:lang="de">Setze Attribute für das Element </name>
   </entity>
 
   <entity id="editorResourceUploadDialog.title">
