@@ -49,7 +49,7 @@ toolbox[showiconsonly="true"] .toolbarbutton-text {
 /* -------------------- Footer Toolbars  -------------------- */
 
 .uiEditorFooterToolBar {
-  background-image: url("chrome://global/skin/icons/white-gray-gradient.gif");
+  background-image: url("chrome://yulup/skin/icons/white-gray-gradient.png");
   background-repeat: repeat-x;
   background-position: bottom right;
   padding-left: 6px;
@@ -62,13 +62,12 @@ toolbox[showiconsonly="true"] .toolbarbutton-text {
 
 .uiEditorFooterToolBarCloseButton {
   padding-right: 4px !important;
-  list-style-image: url("chrome://global/skin/icons/closetab.png") !important;
-  list-style-image: none;
+  list-style-image: url("chrome://yulup/skin/icons/footer-close.png") !important;
   border: none;
 }
 
 .uiEditorFooterToolBarCloseButton:hover:active {
-  list-style-image: url("chrome://global/skin/icons/closetab-active.png") !important;
+  list-style-image: url("chrome://yulup/skin/icons/footer-close-active.png") !important;
 }
 
 .uiEditorFooterToolBarCloseButton > label {
