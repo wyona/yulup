@@ -5,7 +5,8 @@ locale  yulup es        chrome/locale/es/
 locale  yulup fr        chrome/locale/fr/
 locale  yulup ku        chrome/locale/ku/
 locale  yulup tr        chrome/locale/tr/
-skin    yulup pinstripe chrome/skin/
+skin    yulup pinstripe chrome/skin/pinstripe/
+skin    yulup winstripe chrome/skin/winstripe/
 overlay chrome://browser/content/browser.xul chrome://yulup/content/yulup.xul
 overlay chrome://browser/content/browser.xul chrome://yulup/content/atomsidebar-overlay.xul
 overlay chrome://browser/content/browser.xul chrome://yulup/content/neutronsidebar-overlay.xul
