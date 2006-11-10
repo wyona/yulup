@@ -57,18 +57,22 @@ toolbox[showiconsonly="true"] .toolbarbutton-text {
   border-top: 1px solid #b3b3b3;
   border-bottom: none;
   padding-right: 2px;
-  color: #565656;
 }
 
 .uiEditorFooterToolBarCloseButton {
   padding-right: 4px !important;
-  list-style-image: url("chrome://global/skin/icons/closetab.png") !important;
-  list-style-image: none;
+  list-style-image: url("chrome://global/skin/icons/close.png") !important;
+  -moz-image-region: rect(0px, 16px, 16px, 0px);
+  -moz-appearance: none;
   border: none;
 }
 
+uiEditorFooterToolBarCloseButton:hover {
+  -moz-image-region: rect(0px, 32px, 16px, 16px);
+}
+
 .uiEditorFooterToolBarCloseButton:hover:active {
-  list-style-image: url("chrome://global/skin/icons/closetab-active.png") !important;
+  -moz-image-region: rect(0px, 48px, 16px, 32px);
 }
 
 .uiEditorFooterToolBarCloseButton > label {
