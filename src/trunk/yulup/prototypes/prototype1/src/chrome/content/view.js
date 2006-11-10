@@ -1866,6 +1866,7 @@ WYSIWYGXSLTModeView.prototype = {
             /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.updateSource: nodeValue of currently selected node = \"" + this.currentXHTMLNode.nodeValue + "\"\n");
 
             if (this.currentXHTMLNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+                // TODO: simply aggregate all children because the parent node can only contain text nodes!
                 // aggregate text to propagate from all direct TEXT_NODE siblings
                 tmpNode = this.currentXHTMLNode;
 

@@ -45,6 +45,7 @@
         ondialogcancel="return ResourceUploadDialog.cancelDialog()"
         onload="ResourceUploadDialog.uiYulupEditorResourceUploadOnDialogLoadHandler()"
         mindwidth="400"
+        minheight="400"
         style="font: -moz-dialog;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

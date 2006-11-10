@@ -51,6 +51,14 @@ var ResourceUploadDialog = {
 
         /* DEBUG */ dump("Yulup:resourceupload.js:ResourceUploadDialog.uiYulupEditorResourceUploadOnDialogLoadHandler() invoked\n");
 
+        // coerce the window to have a min height of 400 because of bug https://bugzilla.mozilla.org/show_bug.cgi?id=291331
+        if (document.getElementById("uiYulupEditorResourceUploadDialog").height < 400)
+            document.getElementById("uiYulupEditorResourceUploadDialog").height = 400;
+
+        // coerce the window to have a min width of 400 because of bug https://bugzilla.mozilla.org/show_bug.cgi?id=291331
+        if (document.getElementById("uiYulupEditorResourceUploadDialog").width < 400)
+            document.getElementById("uiYulupEditorResourceUploadDialog").width = 400;
+
         if (window.arguments[0]) {
             document.getElementById("uiYulupResourceSelect").removeAttribute("hidden");
         } else if (window.arguments[3]) {
