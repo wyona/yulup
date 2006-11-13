@@ -1857,8 +1857,8 @@ WYSIWYGXSLTModeView.prototype = {
     },
 
     updateSource: function () {
-        var tmpNode  = null;
-        var aggrText = null;
+        var textNodes = null;
+        var aggrText  = null;
 
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.updateSource() invoked\n");
 
@@ -1866,20 +1866,12 @@ WYSIWYGXSLTModeView.prototype = {
             /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.updateSource: nodeValue of currently selected node = \"" + this.currentXHTMLNode.nodeValue + "\"\n");
 
             if (this.currentXHTMLNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
-                // TODO: simply aggregate all children because the parent node can only contain text nodes!
-                // aggregate text to propagate from all direct TEXT_NODE siblings
-                tmpNode = this.currentXHTMLNode;
+                // note that by the virtue of the location_path insertion, the parent node can only contain text nodes
+                textNodes = this.currentXHTMLNode.parentNode.childNodes;
 
-                // walk backwards through the siblings and find first text node sibling
-                while (tmpNode.previousSibling && (tmpNode.previousSibling.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE)) {
-                    tmpNode = tmpNode.previousSibling;
-                }
-
-                // walk forward through the siblings and aggregate all text
-                aggrText = tmpNode.data;
-                while (tmpNode.nextSibling && (tmpNode.nextSibling.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE)) {
-                    tmpNode = tmpNode.nextSibling;
-                    aggrText += tmpNode.data;
+                aggrText = "";
+                for (var i = 0; i < textNodes.length; i++) {
+                    aggrText += textNodes.item(i).data;
                 }
 
                 /* DEBUG */ dump("Yulup:view.js:WYSIWYGXSLTModeView.updateSource: propagating aggregated nodeValue = \"" + aggrText + "\"\n");
