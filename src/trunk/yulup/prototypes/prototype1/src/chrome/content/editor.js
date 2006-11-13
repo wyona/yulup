@@ -152,7 +152,6 @@ var Editor = {
             /* DEBUG */ dump("Yulup:editor.js:Editor.onBeforeUnloadListener: not a controlled shutdown\n");
 
             aEvent.QueryInterface(Components.interfaces.nsIDOMBeforeUnloadEvent);
-            // TODO: i18n
             aEvent.returnValue = Editor.getStringbundleString("editorCloseConfirmation2.label");
 
             /*
