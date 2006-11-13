@@ -439,7 +439,6 @@ function View(aEditorController, aModel, aBarrier) {
     this.editor       = null;
     this.editviewElem = null;
     this.view         = null;
-    this.editorImpl   = null;
     this.isFilled     = false;
 
     // instantiate undo/redo and cut/copy observers
@@ -658,19 +657,18 @@ SourceModeView.prototype = {
             sourceEditor = this.editor;
             sourceEditor.makeEditable("text", false);
 
-            this.editorImpl = sourceEditor.getEditor(sourceEditor.contentWindow);
-            this.editorImpl.QueryInterface(Components.interfaces.nsIEditor);
+            this.view = sourceEditor.getEditor(sourceEditor.contentWindow);
+            this.view.QueryInterface(Components.interfaces.nsIEditor);
 
             // hook up DocumentStateListener
-            this.editorImpl.addDocumentStateListener(new View.DocumentStateListener(this.model));
+            this.view.addDocumentStateListener(new View.DocumentStateListener(this.model));
 
             // hook up EditActionListener
-            this.editorImpl.addEditActionListener(new View.EditActionListener(this, this.model));
+            this.view.addEditActionListener(new View.EditActionListener(this, this.model));
 
             // hook up TransactionListener
-            //this.editorImpl.transactionManager.AddListener(new View.TransactionListener(this.editorImpl));
+            //this.view.transactionManager.AddListener(new View.TransactionListener(this.view));
 
-            this.view = sourceEditor.getEditor(sourceEditor.contentWindow);
             this.view.QueryInterface(Components.interfaces.nsIPlaintextEditor);
 
             // set editor attributes
@@ -727,7 +725,7 @@ SourceModeView.prototype = {
             sourceEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new CutCopySelectionListener(this));
 
             // clear undo and redo stacks
-            this.editorImpl.transactionManager.clear();
+            this.view.transactionManager.clear();
 
             // hook up undo/redo observer
             sourceEditor.commandManager.addCommandObserver(this.undoRedoObserver, "cmd_undo");
@@ -794,7 +792,7 @@ SourceModeView.prototype = {
             this.view.resetModificationCount();
 
             // clear undo and redo stacks
-            this.editorImpl.transactionManager.clear();
+            this.view.transactionManager.clear();
 
             // indicate that this view has content now
             this.isFilled = true;
@@ -888,16 +886,15 @@ WYSIWYGModeView.prototype = {
             wysiwygEditor = this.editor;
             wysiwygEditor.makeEditable("html", false);
 
-            this.editorImpl = wysiwygEditor.getEditor(wysiwygEditor.contentWindow);
-            this.editorImpl.QueryInterface(Components.interfaces.nsIEditor);
+            this.view = wysiwygEditor.getEditor(wysiwygEditor.contentWindow);
+            this.view.QueryInterface(Components.interfaces.nsIEditor);
 
             // hook up DocumentStateListener
-            this.editorImpl.addDocumentStateListener(new View.DocumentStateListener(this.model));
+            this.view.addDocumentStateListener(new View.DocumentStateListener(this.model));
 
             // hook up EditActionListener
-            this.editorImpl.addEditActionListener(new View.EditActionListener(this, this.model));
+            this.view.addEditActionListener(new View.EditActionListener(this, this.model));
 
-            this.view = wysiwygEditor.getEditor(wysiwygEditor.contentWindow);
             this.view.QueryInterface(Components.interfaces.nsIHTMLEditor);
 
             // set editor attributes
@@ -939,7 +936,7 @@ WYSIWYGModeView.prototype = {
             wysiwygEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new CutCopySelectionListener(this));
 
             // clear undo and redo stacks
-            this.editorImpl.transactionManager.clear();
+            this.view.transactionManager.clear();
 
             // hook up undo/redo observer
             wysiwygEditor.commandManager.addCommandObserver(this.undoRedoObserver, "cmd_undo");
@@ -1003,7 +1000,7 @@ WYSIWYGModeView.prototype = {
             this.view.resetModificationCount();
 
             // clear undo and redo stacks
-            this.editorImpl.transactionManager.clear();
+            this.view.transactionManager.clear();
 
             // indicate that this view has content now
             this.isFilled = true;
@@ -1167,13 +1164,11 @@ WYSIWYGXSLTModeView.prototype = {
             wysiwygXSLTEditor = this.editor;
             wysiwygXSLTEditor.makeEditable("html", false);
 
-            this.editorImpl = wysiwygXSLTEditor.getEditor(wysiwygXSLTEditor.contentWindow);
-            this.editorImpl.QueryInterface(Components.interfaces.nsIEditor);
+            this.view = wysiwygXSLTEditor.getEditor(wysiwygXSLTEditor.contentWindow);
+            this.view.QueryInterface(Components.interfaces.nsIEditor);
 
             // hook up DocumentStateListener
-            this.editorImpl.addDocumentStateListener(new View.DocumentStateListener(this.model));
-
-            this.view = wysiwygXSLTEditor.getEditor(wysiwygXSLTEditor.contentWindow);
+            this.view.addDocumentStateListener(new View.DocumentStateListener(this.model));
 
             // disable object resizing
             this.view.QueryInterface(Components.interfaces.nsIHTMLObjectResizer);
@@ -1235,7 +1230,7 @@ WYSIWYGXSLTModeView.prototype = {
             var nsCheckbox = document.getElementById("uiYulupXPathToolBarNSAwareCheckbox");
             nsCheckbox.addEventListener('CheckboxStateChange', new NSCheckboxStateChangeListener(this), true);
 
-            this.editorImpl.transactionManager.clear();
+            this.view.transactionManager.clear();
 
             // hook up undo/redo observer
             wysiwygXSLTEditor.commandManager.addCommandObserver(this.undoRedoObserver, "cmd_undo");
@@ -1249,7 +1244,7 @@ WYSIWYGXSLTModeView.prototype = {
             commandController.init(null);
 
             // the context set via setCommandContext is passed as the third argument to each doCommand* call
-            commandController.setCommandContext(this.editorImpl);
+            commandController.setCommandContext(this.view);
             wysiwygXSLTEditor.contentWindow.controllers.insertControllerAt(0, commandController);
 
             commandTable = commandController.QueryInterface(Components.interfaces.nsIInterfaceRequestor).getInterface(Components.interfaces.nsIControllerCommandTable);
@@ -1416,7 +1411,7 @@ WYSIWYGXSLTModeView.prototype = {
             this.view.resetModificationCount();
 
             /* Clear undo and redo stacks. Note that undo/redo is currently not implemented. */
-            this.editorImpl.transactionManager.clear();
+            this.view.transactionManager.clear();
 
             /* Indicate that this view has content now */
             this.isFilled = true;
@@ -3163,7 +3158,7 @@ GuidedTagInserter.prototype = {
             if (aClosingTagString) {
                 /* Check if we have a selecton. If we have one, surround that
                  * selection by the new tag instead of overwriting it. */
-                if (this.view.editorImpl.selection.isCollapsed) {
+                if (this.view.view.selection.isCollapsed) {
                     // selection is collaped, simply insert
 
                     //params = Components.classes["@mozilla.org/embedcomp/command-params;1"].createInstance(Components.interfaces.nsICommandParams);
@@ -3172,15 +3167,15 @@ GuidedTagInserter.prototype = {
 
                     /* Insert text directly because doCommandParams is not exposed via
                      * XPConnect for this controller, and doCommand is not implemented. */
-                    this.view.editorImpl.insertText(aOpeningTagString + aClosingTagString);
+                    this.view.view.insertText(aOpeningTagString + aClosingTagString);
                 } else {
                     // selection is not collapsed, surround the selection
-                    this.view.editorImpl.insertText(aOpeningTagString + this.view.editorImpl.selection + aClosingTagString);
+                    this.view.view.insertText(aOpeningTagString + this.view.view.selection + aClosingTagString);
                 }
             } else {
                 /* Ignore a possible selection and simply overwrite it,
                  * because with an empty tag we can't surround anything. */
-                this.view.editorImpl.insertText(aOpeningTagString);
+                this.view.view.insertText(aOpeningTagString);
             }
         }
     },
