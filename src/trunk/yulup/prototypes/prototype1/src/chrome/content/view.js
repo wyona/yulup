@@ -3156,7 +3156,7 @@ GuidedTagInserter.prototype = {
         // check if we have something to insert
         if (aOpeningTagString) {
             if (aClosingTagString) {
-                /* Check if we have a selecton. If we have one, surround that
+                /* Check if we have a selection. If we have one, surround that
                  * selection by the new tag instead of overwriting it. */
                 if (this.view.view.selection.isCollapsed) {
                     // selection is collaped, simply insert
