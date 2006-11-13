@@ -268,6 +268,8 @@ var Editor = {
         /* DEBUG */ dump("Yulup:editor.js:Editor.createNew(\"" + aTemplateName + "\") invoked\n");
 
         if (Editor.checkClose()) {
+            // remove shutdown event listeners manually
+            Editor.onUnloadListener();
 
             template = gEditorController.archiveRegistry.getTemplateByName(aTemplateName);
 
