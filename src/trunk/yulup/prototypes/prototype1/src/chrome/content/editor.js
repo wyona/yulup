@@ -121,8 +121,9 @@ var Editor = {
                 new YulupEditController(null);
             }
 
-            // install onbeforeunload handler
+            // install shutdown handlers
             window.addEventListener("beforeunload", Editor.onBeforeUnloadListener, false);
+            window.addEventListener("unload", Editor.onUnloadListener, false);
         } else {
             /* DEBUG */ dump("Yulup:editor.js:Editor.onLoadListener() already ran. Not going to initialise multiple times.\n");
             return;
@@ -137,7 +138,7 @@ var Editor = {
      *
      * @return {Boolean} always returns true
      */
-    onBeforeUnloadListener: function () {
+    onBeforeUnloadListener: function (aEvent) {
         var returnObject    = null;
         var applicableItems = null;
 
@@ -150,6 +151,11 @@ var Editor = {
         if (gEditorController && gEditorController.initialised && gEditorController.model.isDirty() && !gControlledShutdown && gEditorController.editStateController.isCurrentState(gEditorController.editStateController.STATE_SUPERIOR_DOCUMENTOK)) {
             /* DEBUG */ dump("Yulup:editor.js:Editor.onBeforeUnloadListener: not a controlled shutdown\n");
 
+            aEvent.QueryInterface(Components.interfaces.nsIDOMBeforeUnloadEvent);
+            // TODO: i18n
+            aEvent.returnValue = Editor.getStringbundleString("editorCloseConfirmation2.label");
+
+            /*
             returnObject    = new Object();
             applicableItems = new Array();
 
@@ -164,12 +170,18 @@ var Editor = {
                     Editor.saveDispatcher(returnObject.returnValue);
                 }
             }
+            */
         }
 
-        // remove onbeforeunload listener
-        window.removeEventListener("beforeunload", Editor.onBeforeUnloadListener, false);
-
         return true;
+    },
+
+    onUnloadListener: function () {
+        /* DEBUG */ dump("Yulup:editor.js:Editor.onUnloadListener() invoked\n");
+
+        // remove listeners
+        window.removeEventListener("beforeunload", Editor.onBeforeUnloadListener, false);
+        window.removeEventListener("unload", Editor.onUnloadListener, false);
     },
 
     /**
