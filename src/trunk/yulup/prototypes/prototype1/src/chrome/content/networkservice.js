@@ -77,7 +77,7 @@ var NetworkService = {
             // if we're loading a local file, we don't have a nsIHttpChannel
         }
 
-        downloadObserver = new DownloadObserver(request, channel);
+        downloadObserver = new YulupDownloadObserver(request, channel);
 
         downloader = Components.classes["@mozilla.org/network/downloader;1"].createInstance();
         downloader.QueryInterface(Components.interfaces.nsIDownloader);
@@ -152,7 +152,7 @@ var NetworkService = {
 
             channel.requestMethod = "PUT";
 
-            streamListener = new StreamListener(request, channel);
+            streamListener = new YulupNetworkStreamListener(request, channel);
 
             channel.asyncOpen(streamListener, null);
         } catch (exception) {
@@ -222,7 +222,7 @@ var NetworkService = {
             // don't notify nsIProgressEventSink listeners (keeps the throbber from turning)
             channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BACKGROUND;
 
-            streamListener = new StreamListener(request, channel);
+            streamListener = new YulupNetworkStreamListener(request, channel);
 
             channel.asyncOpen(streamListener, null);
         } catch (exception) {
@@ -382,7 +382,7 @@ var NetworkService = {
 
             channel.requestMethod = aRequestMethod;
 
-            streamListener = new StreamListener(aRequest, channel);
+            streamListener = new YulupNetworkStreamListener(aRequest, channel);
 
             channel.asyncOpen(streamListener, null);
         } else {
@@ -441,7 +441,7 @@ var NetworkService = {
 
             channel.requestMethod = "DELETE";
 
-            streamListener = new StreamListener(request, channel);
+            streamListener = new YulupNetworkStreamListener(request, channel);
 
             channel.asyncOpen(streamListener, null);
         } catch (exception) {
@@ -557,18 +557,18 @@ var NetworkService = {
 
 
 /**
- * DownloadObserver constructor. Instantiates a new Object of the type DownloadObserver.
+ * YulupDownloadObserver constructor. Instantiates a new Object of the type YulupDownloadObserver.
  *
  * Implements the nsIDownloadObserver interface.
  *
  * @constructor
  * @param  {HTTPRequestFetchToFile} aRequest the request with which this download observer is associated
  * @param  {nsIChannel}             aChannel the channel which originates the request
- * @return {DownloadObserver}
+ * @return {YulupDownloadObserver}
  */
-function DownloadObserver(aRequest, aChannel) {
+function YulupDownloadObserver(aRequest, aChannel) {
 
-    /* DEBUG */ dump("Yulup:networkservice.js:DownloadObserver(\"" + aRequest + "\", \"" + aChannel + "\") invoked\n");
+    /* DEBUG */ dump("Yulup:networkservice.js:YulupDownloadObserver(\"" + aRequest + "\", \"" + aChannel + "\") invoked\n");
 
     /* DEBUG */ YulupDebug.ASSERT(aRequest != null);
     /* DEBUG */ YulupDebug.ASSERT(aRequest instanceof HTTPRequestFetchToFile);
@@ -578,7 +578,7 @@ function DownloadObserver(aRequest, aChannel) {
     this.channel = aChannel;
 }
 
-DownloadObserver.prototype = {
+YulupDownloadObserver.prototype = {
     request: null,
     channel: null,
 
@@ -600,7 +600,7 @@ DownloadObserver.prototype = {
         var xmlDoc                = null;
         var location              = null;
 
-        /* DEBUG */ dump("Yulup:networkservice.js:DownloadObserver.onDownloadComplete(\"" + aDownloader + "\", \"" + aRequest + "\", \"" + aContext + "\", \"" + aStatusCode + "\", \"" + aResult + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:networkservice.js:YulupDownloadObserver.onDownloadComplete(\"" + aDownloader + "\", \"" + aRequest + "\", \"" + aContext + "\", \"" + aStatusCode + "\", \"" + aResult + "\") invoked\n");
 
         try {
             this.channel.QueryInterface(Components.interfaces.nsIHttpChannel);
@@ -610,7 +610,7 @@ DownloadObserver.prototype = {
             responseStatusCode = 200;
         }
 
-        /* DEBUG */ dump("Yulup:networkservice.js:DownloadObserver.onDownloadComplete: status code = \"" + responseStatusCode + "\"\n");
+        /* DEBUG */ dump("Yulup:networkservice.js:YulupDownloadObserver.onDownloadComplete: status code = \"" + responseStatusCode + "\"\n");
 
         /* Retrieve HTTP response headers the response status is 301 and we therefore
          * have to retrieve the Location header, or the response status is 401 and we
@@ -659,7 +659,7 @@ DownloadObserver.prototype = {
                         }
                     } else {
                         // no location header or no headers available at all; bail out
-                        this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, new YulupException("Yulup:networkservice.js:DownloadObserver.onDownloadComplete: request failed, return code is \"" + aStatusCode + "\""));
+                        this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, new YulupException("Yulup:networkservice.js:YulupDownloadObserver.onDownloadComplete: request failed, return code is \"" + aStatusCode + "\""));
                         return;
                     }
                     break;
@@ -667,7 +667,7 @@ DownloadObserver.prototype = {
                 case 401:
                     // unauthorized
                     if (this.request.handleAuthentication) {
-                        /* DEBUG */ dump("Yulup:networkservice.js:DownloadObserver.onDownloadComplete: we have to authenticate\n");
+                        /* DEBUG */ dump("Yulup:networkservice.js:YulupDownloadObserver.onDownloadComplete: we have to authenticate\n");
 
                         // get an nsIURI object for the response file
                         fileURI = Components.classes["@mozilla.org/network/io-service;1"]. getService(Components.interfaces.nsIIOService).newFileURI(aResult);
@@ -678,7 +678,7 @@ DownloadObserver.prototype = {
                         try {
                             NetworkService.authenticate(this.request, responseHeaders, xmlDoc.documentData, true);
                         } catch (exception) {
-                            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:DownloadObserver.onDownloadComplete", exception);
+                            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:YulupDownloadObserver.onDownloadComplete", exception);
                             /* We should authenticate but the server did not tell us how, the
                              * headers were not accessible, or the specified authentication
                              * scheme is unknown. Bail out. */
@@ -701,29 +701,29 @@ DownloadObserver.prototype = {
             }
         } else {
             // request failed
-            /* DEBUG */ dump("Yulup:networkservice.js:DownloadObserver.onDownloadComplete: load failed\n");
+            /* DEBUG */ dump("Yulup:networkservice.js:YulupDownloadObserver.onDownloadComplete: load failed\n");
 
-            this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, new YulupException("Yulup:networkservice.js:DownloadObserver.onDownloadComplete: request failed, return code is \"" + aStatusCode + "\""));
+            this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, new YulupException("Yulup:networkservice.js:YulupDownloadObserver.onDownloadComplete: request failed, return code is \"" + aStatusCode + "\""));
             return;
         }
     }
 };
 
 /**
- * StreamListener constructor. Instantiates a new object of
- * type StreamListener.
+ * YulupNetworkStreamListener constructor. Instantiates a new object of
+ * type YulupNetworkStreamListener.
  *
  * Note that this type implements the nsISupports, nsISupportsWeakReference,
  * nsIStreamListener, nsIRequestObserver and the nsIChannelEventSink
  * interfaces.
  *
  * @constructor
- * @param  {HTTPRequest}    aRequest the request with which this stream listener is associated
- * @param  {nsIChannel}     aChannel the channel which originates the request
- * @return {StreamListener}
+ * @param  {HTTPRequest}                aRequest the request with which this stream listener is associated
+ * @param  {nsIChannel}                 aChannel the channel which originates the request
+ * @return {YulupNetworkStreamListener}
  */
-function StreamListener(aRequest, aChannel) {
-    /* DEBUG */ dump("Yulup:networkservice.js:StreamListener(\"" + aRequest + "\", \"" + aChannel + "\") invoked\n");
+function YulupNetworkStreamListener(aRequest, aChannel) {
+    /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener(\"" + aRequest + "\", \"" + aChannel + "\") invoked\n");
 
     /* DEBUG */ YulupDebug.ASSERT(aRequest != null);
     /* DEBUG */ YulupDebug.ASSERT(aRequest instanceof HTTPRequest);
@@ -733,7 +733,7 @@ function StreamListener(aRequest, aChannel) {
     this.channel = aChannel;
 }
 
-StreamListener.prototype = {
+YulupNetworkStreamListener.prototype = {
     request     : null,
     channel     : null,
     documentData: null,
@@ -742,7 +742,7 @@ StreamListener.prototype = {
      * The nsISupports QueryInterface method.
      */
     QueryInterface: function (aUUID) {
-        /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.QueryInterface(\"" + aUUID + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.QueryInterface(\"" + aUUID + "\") invoked\n");
 
         if (aUUID.equals(Components.interfaces.nsISupports) ||
             aUUID.equals(Components.interfaces.nsISupportsWeakReference) ||
@@ -759,7 +759,7 @@ StreamListener.prototype = {
      * The nsISupportsWeakReference GetWeakReference() method.
      */
     GetWeakReference: function () {
-        /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.GetWeakReference() invoked\n");
+        /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.GetWeakReference() invoked\n");
 
         throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
     },
@@ -774,7 +774,7 @@ StreamListener.prototype = {
      * @return {Undefined} does not have a return value
      */
     onStartRequest: function (aRequest, aContext) {
-        /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStartRequest(\"" + aRequest + "\", \"" + aContext + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.onStartRequest(\"" + aRequest + "\", \"" + aContext + "\") invoked\n");
 
         this.documentData = "";
     },
@@ -800,7 +800,7 @@ StreamListener.prototype = {
         var unicodeDoc            = null;
         var location              = null;
 
-        /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStopRequest(\"" + aRequest + "\", \"" + aContext + "\", \"" + aStatusCode + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest(\"" + aRequest + "\", \"" + aContext + "\", \"" + aStatusCode + "\") invoked\n");
 
         // retrieve HTTP response status code
         try {
@@ -811,7 +811,7 @@ StreamListener.prototype = {
             responseStatusCode = 200;
         }
 
-        /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStopRequest: status code = \"" + responseStatusCode + "\"\n");
+        /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest: status code = \"" + responseStatusCode + "\"\n");
 
         /* Retrieve HTTP response headers if the caller wants us to,
          * the response status is 301 and we therefore have to retrieve the
@@ -846,7 +846,7 @@ StreamListener.prototype = {
                 return;
             }
 
-            /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStopRequest: document data =\n" + unicodeDoc + "\n");
+            /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest: document data =\n" + unicodeDoc + "\n");
 
             switch (responseStatusCode) {
                 case 301:
@@ -877,7 +877,7 @@ StreamListener.prototype = {
                     } else {
                         // no location header or no headers available at all; bail out
                         this.__requestFinished();
-                        this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, new YulupException("Yulup:networkservice.js:StreamListener.onStopRequest: request failed, return code is \"" + aStatusCode + "\""));
+                        this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, new YulupException("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest: request failed, return code is \"" + aStatusCode + "\""));
                         return;
                     }
                     break;
@@ -885,12 +885,12 @@ StreamListener.prototype = {
                 case 401:
                     // unauthorized
                     if (this.request.handleAuthentication) {
-                        /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStopRequest: we have to authenticate\n");
+                        /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest: we have to authenticate\n");
 
                         try {
                             NetworkService.authenticate(this.request, responseHeaders, unicodeDoc, true);
                         } catch (exception) {
-                            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:StreamListener.onStopRequest", exception);
+                            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest", exception);
                             /* We should authenticate but the server did not tell us how, the
                              * headers were not accessible, or the specified authentication
                              * scheme is unknown. Bail out. */
@@ -915,10 +915,10 @@ StreamListener.prototype = {
             }
         } else {
             // request failed
-            /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onStopRequest: load failed\n");
+            /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest: load failed\n");
 
             this.__requestFinished();
-            this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, new YulupException("Yulup:networkservice.js:StreamListener.onStopRequest: request failed, return code is \"" + aStatusCode + "\""));
+            this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, new YulupException("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest: request failed, return code is \"" + aStatusCode + "\""));
             return;
         }
     },
@@ -939,7 +939,7 @@ StreamListener.prototype = {
     onDataAvailable: function (aRequest, aContext, aInputStream, aOffset, aCount) {
         var scriptableInputStream = null;
 
-        /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onDataAvailable(\"" + aRequest + "\", \"" + aContext + "\", \"" + aInputStream + "\", \"" + aOffset + "\", \"" + aCount + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.onDataAvailable(\"" + aRequest + "\", \"" + aContext + "\", \"" + aInputStream + "\", \"" + aOffset + "\", \"" + aCount + "\") invoked\n");
 
         scriptableInputStream = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance(Components.interfaces.nsIScriptableInputStream);
         scriptableInputStream.init(aInputStream);
@@ -959,7 +959,7 @@ StreamListener.prototype = {
      * @return {Undefined} does not have a return value
      */
     onChannelRedirect: function (aOldChannel, aNewChannel, aFlags) {
-        /* DEBUG */ dump("Yulup:networkservice.js:StreamListener.onChannelRedirect(\"" + aOldChannel + "\", \"" + aNewChannel + "\", \"" + aFlags + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.onChannelRedirect(\"" + aOldChannel + "\", \"" + aNewChannel + "\", \"" + aFlags + "\") invoked\n");
 
         // make sure that this is something which belongs to our request
         if (this.channel == aOldChannel) {
@@ -982,7 +982,7 @@ StreamListener.prototype = {
                 this.request.progressListener.requestFinished();
         } catch (exception) {
             // we don't want to fail here
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:StreamListener.__requestFinished", exception);
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:YulupNetworkStreamListener.__requestFinished", exception);
             /* DEBUG */ Components.utils.reportError(exception);
         }
     }
