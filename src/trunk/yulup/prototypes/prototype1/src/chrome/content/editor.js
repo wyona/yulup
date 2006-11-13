@@ -481,13 +481,6 @@ var Editor = {
         return true;
     },
 
-    // TODO: remove, since we use saveToCMS also for Neutron checkins
-    checkinToCMS: function () {
-        /* DEBUG */ dump("Yulup:editor.js:Editor.checkinToCMS() invoked\n");
-
-       throw new YulupEditorException("Yulup:editor.js:Editor.checkinToCMS: method not implemented.");
-    },
-
     /**
      * Save current document to a file on the local file
      * system, first querying for a path using a file
