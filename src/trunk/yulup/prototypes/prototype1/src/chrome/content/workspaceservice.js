@@ -39,7 +39,7 @@ var WorkspaceService = {
         var path     = null;
         var resource = null;
 
-        url = aURI.QueryInterface(Components.interface.nsIURL);
+        url = aURI.QueryInterface(Components.interfaces.nsIURL);
 
         // extract domain
         hostname = aURI.host;
