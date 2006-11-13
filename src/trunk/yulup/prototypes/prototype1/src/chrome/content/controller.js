@@ -627,14 +627,17 @@ YulupEditStateController.prototype = {
                         this.currentState = this.STATE_DOCUMENTREADY_PRISTINE;
                         // check for introspection (save and checkin)
                         if (gEditorController.document instanceof NeutronDocument) {
-                            if (gEditorController.document.getLoadStyle() == "open") {
+                            if (gEditorController.document.getLoadStyle() == "open" ||
+                                (gEditorController.editorParams instanceof NeutronEditorParameters && gEditorController.editorParams.saveURI)) {
                                 // disable save operation
+                                document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("hidden", false);
                                 document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", true);
                             }
                             if (gEditorController.document.getLoadStyle() == "checkout") {
                                 // disable checkin operation
                                 // TODO: at the moment, <save> == <checkin>
-                                document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", true);
+                                document.getElementById("uiFileOperationCheckinCMSAndExitMenuitem").setAttribute("hidden", false);
+                                document.getElementById("uiFileOperationCheckinCMSAndExitMenuitem").setAttribute("disabled", true);
                             }
                         }
 
@@ -679,7 +682,8 @@ YulupEditStateController.prototype = {
                     this.currentState = this.STATE_DOCUMENTREADY_MODIFIED;
                     // check for introspection (save and checkin)
                     if (gEditorController.document instanceof NeutronDocument) {
-                        if (gEditorController.document.getLoadStyle() == "open") {
+                        if (gEditorController.document.getLoadStyle() == "open" ||
+                            (gEditorController.editorParams instanceof NeutronEditorParameters && gEditorController.editorParams.saveURI)) {
                             // enable save operation
                             document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", false);
                             fileOperationSaveMenuActivate = true;
@@ -687,7 +691,7 @@ YulupEditStateController.prototype = {
                         if (gEditorController.document.getLoadStyle() == "checkout") {
                             // enable checkin operation
                             // TODO: at the moment, <save> == <checkin>
-                            document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", false);
+                            document.getElementById("uiFileOperationCheckinCMSAndExitMenuitem").setAttribute("disabled", false);
                             fileOperationSaveMenuActivate = true;
                         }
                     }
@@ -720,14 +724,15 @@ YulupEditStateController.prototype = {
 
                     // check for introspection (save and checkin)
                     if (gEditorController.document instanceof NeutronDocument) {
-                        if (gEditorController.document.getLoadStyle() == "open") {
+                        if (gEditorController.document.getLoadStyle() == "open" ||
+                            (gEditorController.editorParams instanceof NeutronEditorParameters && gEditorController.editorParams.saveURI)) {
                             // enable save operation
                             document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", true);
                         }
                         if (gEditorController.document.getLoadStyle() == "checkout") {
                             // enable checkin operation
                             // TODO: at the moment, <save> == <checkin>
-                            document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", true);
+                            document.getElementById("uiFileOperationCheckinCMSAndExitMenuitem").setAttribute("disabled", true);
                         }
                     }
 

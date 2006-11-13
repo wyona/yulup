@@ -33,6 +33,7 @@ const YULUP_FAVICON_CHROME_URI      = "chrome://yulup/skin/icons/yulup-logo.png"
 
 var gMainBrowserWindow  = null;
 var gYulupTab           = null;
+var gTriggerURI         = null;
 var gControlledShutdown = false;
 
 var Editor = {
@@ -97,6 +98,9 @@ var Editor = {
                 if (parameterObject = gMainBrowserWindow.yulup.instancesManager.retrieveInstance(instanceID)) {
                     // save our tab for replaceEditor
                     gYulupTab = parameterObject.tab;
+
+                    // save our trigger URI
+                    gTriggerURI = parameterObject.triggerURI;
 
                     // set favicon
                     gMainBrowserWindow.getBrowser().setIcon(gYulupTab, YULUP_FAVICON_CHROME_URI);
@@ -217,7 +221,7 @@ var Editor = {
 
         try {
             // prepare parameters for pick-up
-            instanceID = gMainBrowserWindow.yulup.instancesManager.addInstance(gYulupTab, aEditorParameters);
+            instanceID = gMainBrowserWindow.yulup.instancesManager.addInstance(gYulupTab, aEditorParameters, null);
 
             // construct target URI
             targetURI = YULUP_EDITOR_CHROME_URI + "?" + instanceID;
@@ -254,6 +258,13 @@ var Editor = {
         return true;
     },
 
+    shutdownEditor: function () {
+        /* DEBUG */ dump("Yulup:editor.js:Editor.shutdownEditor() invoked\n");
+
+        // remove shutdown event listeners manually
+        Editor.onUnloadListener();
+    },
+
     /**
      * Create a new editor instance starting with a built-in
      * document template.
@@ -268,8 +279,7 @@ var Editor = {
         /* DEBUG */ dump("Yulup:editor.js:Editor.createNew(\"" + aTemplateName + "\") invoked\n");
 
         if (Editor.checkClose()) {
-            // remove shutdown event listeners manually
-            Editor.onUnloadListener();
+            Editor.shutdownEditor();
 
             template = gEditorController.archiveRegistry.getTemplateByName(aTemplateName);
 
@@ -389,7 +399,7 @@ var Editor = {
                 saveSucceeded = Editor.saveToCMS();
                 break;
             case "checkincms":
-                saveSucceeded = Editor.checkinToCMS();
+                saveSucceeded = Editor.checkinToCMSAndExit();
                 break;
             case "saveaslocal":
                 saveSucceeded = Editor.saveAsToFile();
@@ -487,6 +497,35 @@ var Editor = {
         } catch (exception) {
             dump("Yulup:editor.js:Editor.saveToCMS: an error occurred saving to CMS: " + exception.toString() + "\n");
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.saveToCMS", exception);
+
+            return false;
+        }
+
+        return true;
+    },
+
+    checkinToCMSAndExit: function () {
+        promptService = null;
+
+        /* DEBUG */ dump("Yulup:editor.js:Editor.checkinToCMSAndExit() invoked\n");
+
+        promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+
+        if (promptService.confirmEx(null,
+                                    Editor.getStringbundleString("editorCheckinAndExitConfirmation.title"),
+                                    Editor.getStringbundleString("editorCheckinAndExitConfirmation.label"),
+                                    promptService.BUTTON_POS_0 * promptService.BUTTON_TITLE_SAVE + promptService.BUTTON_POS_1 * promptService.BUTTON_TITLE_CANCEL,
+                                    "", "", "",
+                                    null,
+                                    { value: false }) != 0) {
+            return true;
+        }
+
+        try {
+            gEditorController.document.uploadDocument(gEditorController.model.getDocument(), Editor.documentCheckinFinished);
+        } catch (exception) {
+            dump("Yulup:editor.js:Editor.checkinToCMSAndExit: an error occurred saving to CMS: " + exception.toString() + "\n");
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.checkinToCMSAndExit", exception);
 
             return false;
         }
@@ -734,12 +773,24 @@ var Editor = {
         Editor.goUpdateCommand('cmd_paste');
     },
 
+    documentCheckinFinished: function (aDocumentData, aException) {
+        /* DEBUG */ dump("Yulup:editor.js:Editor.documentCheckinFinished(\"" + aDocumentData + "\", \"" + aException + "\") invoked\n");
+
+        if (Editor.documentUploadFinished(aDocumentData, aException)) {
+            // close editor
+            Editor.shutdownEditor();
+
+            /* DEBUG */ dump("Yulup:editor.js:Editor.documentCheckinFinished: replacing tab\n");
+            gMainBrowserWindow.yulup.replaceTab(gYulupTab, gTriggerURI);
+        }
+    },
+
     /**
      * Callback function to handle finished document uploads.
      *
      * @param  {String}    aDocumentData the response document as sent by the remote host
      * @param  {Error}     aException    an exception as returned by the server (e.g. a Neutron exception)
-     * @return {Undefined} does not have a return value
+     * @return {Boolean} returns true if upload was successful, false otherwise
      */
     documentUploadFinished: function (aDocumentData, aException) {
         /* DEBUG */ dump("Yulup:editor.js:Editor.documentUploadFinished(\"" + aDocumentData + "\", \"" + aException + "\") invoked\n");
@@ -755,6 +806,8 @@ var Editor = {
              * reached this point here, we are sure that is has been
              * saved. */
             gEditorController.model.unsetDirty();
+
+            return true;
         } else {
             if (aException && (aException instanceof NeutronProtocolException || aException instanceof NeutronAuthException)) {
                 // report error message retrieved from response
@@ -774,6 +827,8 @@ var Editor = {
                 // report generic error
                 alert(Editor.getStringbundleString("editorDocumentUploadFailure.label"));
             }
+
+            return false;
         }
     }
 };

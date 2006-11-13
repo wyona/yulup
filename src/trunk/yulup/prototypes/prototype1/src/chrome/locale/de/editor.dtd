@@ -19,6 +19,7 @@
 <!ENTITY fileOperationSaveTempMenuitem.label "Temporäre Kopie speichern">
 <!ENTITY fileOperationSaveCMSMenuitem.label "Zurück ins CMS speichern">
 <!ENTITY fileOperationCheckinCMSMenuitem.label "Ins CMS einchecken">
+<!ENTITY fileOperationCheckinCMSAndExitMenuitem.label "Ins CMS einchecken und beenden">
 <!ENTITY fileOperationSaveAs.label "Speichern unter...">
 <!ENTITY fileOperationSaveAsLocalMenuitem.label "Auf Festplatte speichern als...">
 <!ENTITY fileOperationSaveAsCMSMenuitem.label "Im CMS speichern als...">
@@ -45,6 +46,7 @@
 <!ENTITY fileOperationSaveTempMenuitem.tooltip "Temporäre Kopie des Dokuments auf der Festplatte speichern">
 <!ENTITY fileOperationSaveCMSMenuitem.tooltip "Dokument im CMS speichern (Sperrung nicht aufheben)">
 <!ENTITY fileOperationCheckinCMSMenuitem.tooltip "Dokument im CMS speichern (Sperrung aufeben)">
+<!ENTITY fileOperationCheckinCMSAndExitMenuitem.tooltip "Dokument im CMS speichern (Sperrung aufeben) und den Editor verlassen">
 <!ENTITY fileOperationSaveAs.tooltip "Dokument Speichern unter...">
 <!ENTITY fileOperationSaveAsLocalMenuitem.tooltip "Dokument auf Festplatte speichern als...">
 <!ENTITY fileOperationSaveAsCMSMenuitem.tooltip "Dokument im CMS speichern als...">

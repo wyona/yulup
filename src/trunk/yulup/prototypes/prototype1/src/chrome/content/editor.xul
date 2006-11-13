@@ -179,7 +179,13 @@
             <menuitem id="uiFileOperationSaveCMSMenuitem"
                       oncommand="Editor.saveDispatcher('savecms')"
                       label="&fileOperationSaveCMSMenuitem.label;" tooltiptext="&fileOperationSaveCMSMenuitem.tooltip;"
-                      disabled="true"/>
+                      disabled="true"
+                      hidden="true"/>
+            <menuitem id="uiFileOperationCheckinCMSAndExitMenuitem"
+                      oncommand="Editor.saveDispatcher('checkincms')"
+                      label="&fileOperationCheckinCMSAndExitMenuitem.label;" tooltiptext="&fileOperationCheckinCMSAndExitMenuitem.tooltip;"
+                      disabled="true"
+                      hidden="true"/>
           </menupopup>
         </toolbarbutton>
         <toolbarbutton id="uiFileOperationSaveAs" label="&fileOperationSaveAs.label;" tooltiptext="&fileOperationSaveAs.tooltip;" observes="broadcaster_yulup_saveas" type="menu">

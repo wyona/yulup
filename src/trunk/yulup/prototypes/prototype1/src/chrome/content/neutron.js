@@ -262,20 +262,24 @@ function Asset(aContent, aAssetType) {
  * type Introspection.
  *
  * @constructor
+ * @param  {nsIURI}        aAssociatedWithURI the URI of the document this introspection object is associated with
  * @return {Introspection} a new Introspection object
  */
-function Introspection() {
-    /* DEBUG */ dump("neutron.js:Introspection() invoked\n");
+function Introspection(aAssociatedWithURI) {
+    /* DEBUG */ dump("Yulup:neutron.js:Introspection(\"" + aAssociatedWithURI + "\") invoked\n");
+
+    this.associatedWithURI = aAssociatedWithURI;
 
     this.fragments = new Array();
 }
 
 Introspection.prototype = {
+    associatedWithURI    : null,
     introspectionDocument: null,
-    introspectionURI:      null,
-    fragments:             null,
-    newAsset:              null,
-    navigation:            null,
+    introspectionURI     : null,
+    fragments            : null,
+    newAsset             : null,
+    navigation           : null,
 
     /**
      * Get the introspection document source.

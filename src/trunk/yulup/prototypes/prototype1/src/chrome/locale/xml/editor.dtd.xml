@@ -106,6 +106,11 @@
     <name xml:lang="de">Ins CMS einchecken</name>
   </entity>
 
+  <entity id="fileOperationCheckinCMSAndExitMenuitem.label">
+    <name xml:lang="en">Check back in to CMS and exit</name>
+    <name xml:lang="de">Ins CMS einchecken und beenden</name>
+  </entity>
+
   <entity id="fileOperationSaveAs.label">
     <name xml:lang="en">Save As...</name>
     <name xml:lang="de">Speichern unter...</name>
@@ -233,6 +238,11 @@
   <entity id="fileOperationCheckinCMSMenuitem.tooltip">
     <name xml:lang="en">Check document back in to the CMS (releases the lock)</name>
     <name xml:lang="de">Dokument im CMS speichern (Sperrung aufeben)</name>
+  </entity>
+
+  <entity id="fileOperationCheckinCMSAndExitMenuitem.tooltip">
+    <name xml:lang="en">Check document back in to the CMS (releases the lock) and exit the editor</name>
+    <name xml:lang="de">Dokument im CMS speichern (Sperrung aufeben) und den Editor verlassen</name>
   </entity>
 
   <entity id="fileOperationSaveAs.tooltip">

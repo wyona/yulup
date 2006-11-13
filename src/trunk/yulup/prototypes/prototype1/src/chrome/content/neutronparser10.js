@@ -143,7 +143,7 @@ NeutronParser10.prototype = {
 
         /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.parseIntrospection() invoked\n");
 
-        introspection = new Neutron10Introspection();
+        introspection = new Neutron10Introspection(this.baseURI);
 
         if (elemNodeIterator = this.documentDOM.evaluate("neutron10:introspection/neutron10:edit", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null)) {
             /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.parseIntrospection: found one or multiple edit elements\n");
@@ -453,16 +453,14 @@ NeutronParser10.prototype = {
  * object of type Neutron10Introspection.
  *
  * @constructor
+ * @param  {nsIURI}                 aAssociatedWithURI the URI of the document this introspection object is associated with
  * @return {Neutron10Introspection} a new Neutron10Introspection object
  */
-function Neutron10Introspection() {
-    /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Introspection() invoked\n");
+function Neutron10Introspection(aAssociatedWithURI) {
+    /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Introspection(\"" + aAssociatedWithURI + "\") invoked\n");
 
     // call super constructor
-    // TODO: why does this call fail??
-    this.__proto__.__proto__.constructor.call(this);
-    // workaraound
-    this.fragments = new Array();
+    Introspection.call(this, aAssociatedWithURI);
 }
 
 Neutron10Introspection.prototype = {

@@ -76,19 +76,19 @@ function yulupInitYulup() {
  * @param  {EditorParameters} aEditorParameters the editor parameters object
  * @return {Undefined} does not have a return value
  */
-function yulupCreateNewEditor(aEditorParameters) {
+function yulupCreateNewEditor(aEditorParameters, aTriggerURI) {
     var yulupTab = null;
     var instanceID = null;
     var targetURI  = null;
 
-    /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNewEditor(\"" + aEditorParameters + "\") invoked\n");
+    /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNewEditor(\"" + aEditorParameters + "\", \"" + aTriggerURI + "\") invoked\n");
 
     try {
         // create a new tab (getBrowser() (defined in browser.js) returns a reference to the Tabbrowser element)
         yulupTab = self.getBrowser().addTab("");
 
         // prepare parameters for pick-up
-        instanceID = gInstancesManager.addInstance(yulupTab, aEditorParameters);
+        instanceID = gInstancesManager.addInstance(yulupTab, aEditorParameters, aTriggerURI);
 
         // construct target URI
         targetURI = YULUP_EDITOR_CHROME_URI + "?" + instanceID;
@@ -152,9 +152,10 @@ YulupEditorInstancesManager.prototype = {
      *
      * @param  {nsIDOMNode}       aTab              a XUL <tab> node
      * @param  {EditorParameters} aEditorParameters the editor parameters object
+     * @param  {String}           aTriggerURI       the URI of the document from which this new instance was triggered
      * @return {String} returns an instance ID of the newly created management instance
      */
-    addInstance: function (aTab, aEditorParameters) {
+    addInstance: function (aTab, aEditorParameters, aTriggerURI) {
         var editorInstance = null;
         var instanceID     = null;
 
@@ -165,6 +166,7 @@ YulupEditorInstancesManager.prototype = {
         editorInstance.instanceID      = instanceID;
         editorInstance.tab             = aTab;
         editorInstance.parameters      = aEditorParameters;
+        editorInstance.triggerURI      = aTriggerURI;
         editorInstance.archiveRegistry = YulupNeutronArchiveRegistry;
 
         // add instance to the hash table
@@ -224,7 +226,7 @@ function yulupCreateNew(aTemplateName) {
     // set editor parameters according to NAR template
     editorParameters = new EditorParameters(template.uri, template.mimeType, null, null, null, null);
 
-    yulupCreateNewEditor(editorParameters);
+    yulupCreateNewEditor(editorParameters, null);
 
     return true;
 }
@@ -255,7 +257,7 @@ function yulupCreateNewAtomEntry() {
         template = YulupNeutronArchiveRegistry.getTemplatesByMimeType("application/atom+xml")[0];
 
         editorParameters = new AtomEditorParameters(template.uri, feedURI,  "application/atom+xml");
-        yulupCreateNewEditor(editorParameters);
+        yulupCreateNewEditor(editorParameters, null);
 
         return true;
     }
@@ -279,7 +281,7 @@ function yulupOpenFromFile() {
         editorParameters = new EditorParameters(documentURI, null, null, null, null, null, null);
 
         // replace the current editor
-        yulupCreateNewEditor(editorParameters);
+        yulupCreateNewEditor(editorParameters, null);
 
         return true;
     }
@@ -315,7 +317,7 @@ function yulupCheckoutNoLockFromCMS(aFragment) {
     if (gCurrentNeutronIntrospection) {
         editorParameters = new NeutronEditorParameters(gCurrentNeutronIntrospection.queryFragmentOpenURI(aFragment), gCurrentNeutronIntrospection, aFragment, "open");
 
-        yulupCreateNewEditor(editorParameters);
+        yulupCreateNewEditor(editorParameters,  (gCurrentNeutronIntrospection.associatedWithURI ? gCurrentNeutronIntrospection.associatedWithURI.spec : null));
     } else {
         /* We should never have no introspection object when
          * we reach this function. */
@@ -337,7 +339,7 @@ function yulupCheckoutFromCMS(aFragment) {
     if (gCurrentNeutronIntrospection) {
         editorParameters = new NeutronEditorParameters(gCurrentNeutronIntrospection.queryFragmentCheckoutURI(aFragment), gCurrentNeutronIntrospection, aFragment, "checkout");
 
-        yulupCreateNewEditor(editorParameters);
+        yulupCreateNewEditor(editorParameters, (gCurrentNeutronIntrospection.associatedWithURI ? gCurrentNeutronIntrospection.associatedWithURI.spec : null));
     } else {
         /* We should never have no introspection object when
          * we reach this function. */
@@ -856,7 +858,7 @@ Yulup.prototype = {
         editorParameters = new AtomEditorParameters(aURI, null, "application/atom+xml", null);
 
         // replace the current editor
-        yulupCreateNewEditor(editorParameters);
+        yulupCreateNewEditor(editorParameters, null);
 
         return true;
     },
@@ -870,6 +872,24 @@ Yulup.prototype = {
         prefBranch = pref.getBranch("extensions.yulup.");
 
         return prefBranch.aPref;
+    },
+
+    /**
+     * Replace the given tab with the given URI.
+     *
+     * @param  {Tab}       aOldTab the tab to replace
+     * @param  {String}    aURI    the URI to load
+     * @return {Undefined} does not have a return value
+     */
+    replaceTab: function (aOldTab, aURI) {
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.replaceTab() invoked\n");
+
+        // if aURI is given, replace the tab, else close it
+        if (aURI) {
+            self.getBrowser().getBrowserForTab(aOldTab).loadURIWithFlags(aURI, Components.interfaces.nsIWebNavigation.LOAD_FLAGS_REPLACE_HISTORY);
+        } else {
+            self.getBrowser().removeTab(aOldTab);
+        }
     }
 };
 

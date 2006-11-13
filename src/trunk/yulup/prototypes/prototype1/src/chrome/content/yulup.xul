@@ -147,7 +147,7 @@
         <menuseparator/>
 
         <menuitem id="uiYulupEditMenuitem"
-                  oncommand="yulupCreateNewEditor(new EditorParameters(document.getElementById('content').currentURI, null, null, null, null, null, null))"
+                  oncommand="yulupCreateNewEditor(new EditorParameters(document.getElementById('content').currentURI, null, null, null, null, null, null), null)"
                   label="&editMenuitem.label;" tooltiptext="&editMenuitem.tooltip;"
                   disabled="false"/>
 

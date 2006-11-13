@@ -19,6 +19,7 @@
 <!ENTITY fileOperationSaveTempMenuitem.label "Save temporary copy">
 <!ENTITY fileOperationSaveCMSMenuitem.label "Save back to CMS">
 <!ENTITY fileOperationCheckinCMSMenuitem.label "Check back in to CMS">
+<!ENTITY fileOperationCheckinCMSAndExitMenuitem.label "Check back in to CMS and exit">
 <!ENTITY fileOperationSaveAs.label "Save As...">
 <!ENTITY fileOperationSaveAsLocalMenuitem.label "Save to file system as...">
 <!ENTITY fileOperationSaveAsCMSMenuitem.label "Save to CMS as...">
@@ -45,6 +46,7 @@
 <!ENTITY fileOperationSaveTempMenuitem.tooltip "Save a temporary copy of the document to the file system">
 <!ENTITY fileOperationSaveCMSMenuitem.tooltip "Save document back to the CMS (do not release the lock)">
 <!ENTITY fileOperationCheckinCMSMenuitem.tooltip "Check document back in to the CMS (releases the lock)">
+<!ENTITY fileOperationCheckinCMSAndExitMenuitem.tooltip "Check document back in to the CMS (releases the lock) and exit the editor">
 <!ENTITY fileOperationSaveAs.tooltip "Save document as...">
 <!ENTITY fileOperationSaveAsLocalMenuitem.tooltip "Save dcoument to file system as...">
 <!ENTITY fileOperationSaveAsCMSMenuitem.tooltip "Save document to CMS as...">
