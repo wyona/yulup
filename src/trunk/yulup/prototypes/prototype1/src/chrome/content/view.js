@@ -2380,7 +2380,7 @@ WYSIWYGDOMSerialiser.prototype = {
             if (aNode.hasAttributes()) {
                 // emit the attributes
                 for (var i = 0; i < aNode.attributes.length; i++) {
-                    if (aNode.attributes.item(i).nodeName != "_moz_dirty" && aNode.attributes.item(i).nodeValue.search("_moz") == -1)
+                    if (aNode.attributes.item(i).nodeName.search("_moz") == -1 && aNode.attributes.item(i).nodeValue.search("_moz") == -1)
                         this.outputString += " " + aNode.attributes.item(i).nodeName + "=\"" + aNode.attributes.item(i).nodeValue + "\"";
                 }
             }
