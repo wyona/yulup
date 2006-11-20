@@ -715,7 +715,7 @@ SourceModeView.prototype = {
              * bug https://bugzilla.mozilla.org/show_bug.cgi?id=304188
              * (prevent keypress events from invoking FAYT). */
             sourceEditor.contentWindow.addEventListener("keypress", function (aKeyEvent) {
-                                                            aKeyEvent.preventBubble();
+                                                            aKeyEvent.stopPropagation();
                                                         }, true);
 
             // activate guided tag insertion
@@ -929,7 +929,7 @@ WYSIWYGModeView.prototype = {
              * bug https://bugzilla.mozilla.org/show_bug.cgi?id=304188
              * (prevent keypress events from invoking FAYT). */
             wysiwygEditor.contentWindow.addEventListener("keypress", function (aKeyEvent) {
-                                                             aKeyEvent.preventBubble();
+                                                             aKeyEvent.stopPropagation();
                                                          }, true);
 
             // hook up selection listener
@@ -1218,7 +1218,7 @@ WYSIWYGXSLTModeView.prototype = {
              * bug https://bugzilla.mozilla.org/show_bug.cgi?id=304188
              * (prevent keypress events from invoking FAYT). */
             wysiwygXSLTEditor.contentWindow.addEventListener("keypress", function (aKeyEvent) {
-                                                                 aKeyEvent.preventBubble();
+                                                                 aKeyEvent.stopPropagation();
                                                              }, true);
 
             selectionChangeHandler = new WYSIWYGXSLTSelectionChangeHandler(this);
