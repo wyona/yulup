@@ -973,7 +973,7 @@ WYSIWYGModeView.prototype = {
 
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGModeView.contentToString() invoked\n");
 
-        documentBody = (new WYSIWYGDOMSerialiser((new WYSIWYGDOMCleaner(this.editor.contentDocument)).cleanse())).serialise();
+        documentBody = (new WYSIWYGDOMSerialiser((new WYSIWYGDOMCleaner(this.editor.contentDocument)).cleanse(), true, true)).serialise();
 
         return this.documentPreamble + documentBody + "\n</html>";
     },
@@ -2267,7 +2267,7 @@ function dumpTree(aEditor) {
     dump("\nYulup:view.js:dumpTree: innerHTML:\n" + aEditor.contentDocument.childNodes[1].innerHTML + "\n");
 
     dump("\nYulup:view.js:dumpTree: serialised:\n");
-    dump((new WYSIWYGDOMSerialiser(aEditor.contentDocument)).serialise());
+    dump((new WYSIWYGDOMSerialiser(aEditor.contentDocument, false, true)).serialise());
     dump("\n\n");
 };
 
@@ -2277,20 +2277,98 @@ function dumpTree(aEditor) {
  * type WYSIWYGDOMSerialiser.
  *
  * @constructor
- * @param  {nsIDOMDocument}       aRootNode the DOM document to serialise
+ * @param  {nsIDOMDocument}       aRootNode         the DOM document to serialise
+ * @param  {Boolean}              aEscapeCharacters escape characters
+ * @param  {Boolean}              aConvertEntities  convert characters to entities
  * @return {WYSIWYGDOMSerialiser}
  */
-function WYSIWYGDOMSerialiser(aRootNode) {
-    /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMSerialiser(\"" + aRootNode + "\") invoked\n");
+function WYSIWYGDOMSerialiser(aRootNode, aEscapeCharacters, aConvertEntities) {
+    /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMSerialiser(\"" + aRootNode + "\", \"" + aEscapeCharacters + "\", \"" + aConvertEntities + "\") invoked\n");
 
-    /* DEBUG */ YulupDebug.ASSERT(aRootNode != null);
+    /* DEBUG */ YulupDebug.ASSERT(aRootNode         != null);
+    /* DEBUG */ YulupDebug.ASSERT(aEscapeCharacters != null);
+    /* DEBUG */ YulupDebug.ASSERT(aConvertEntities  != null);
 
-    this.rootNode = aRootNode;
+    this.__rootNode         = aRootNode;
+    this.__escapeCharacters = aEscapeCharacters;
+    this.__convertEntities  = aConvertEntities;
+
+    if (aConvertEntities) {
+        this.__entityConverter = Components.classes["@mozilla.org/intl/entityconverter;1"].createInstance(Components.interfaces.nsIEntityConverter);
+
+        /* See mozilla/intl/unicharutil/tables/html40Latin1.properties,
+         * mozilla/intl/unicharutil/tables/html40Symbols.properties etc.
+         * for what entities are converted how. For avaialable encoding
+         * flags, see nsIEntityConverter. */
+        this.__converterFlags  = Components.interfaces.nsIEntityConverter.entityW3C;
+    }
 }
 
 WYSIWYGDOMSerialiser.prototype = {
-    rootNode:     null,
-    outputString: null,
+    __rootNode        : null,
+    __escapeCharacters: null,
+    __convertEntities : null,
+    __entityConverter : null,
+    __converterFlags  : null,
+    __outputString    : null,
+
+    /**
+     * Escape all "&", "<" and """ characters in
+     * the passed string if character escaping
+     * is enabled.
+     *
+     * @param  {String} the string in which to escape the characters
+     * @return {String} the string with the characters escaped
+     */
+    __doEscapeCharacters: function (aString) {
+        var retString = null;
+
+        const escapeRegExp = new RegExp('[<&"]', "g");
+
+        const escapeTable = {
+            '<': "&lt;",
+            '&': "&amp;",
+            '"': "&quot;"
+        };
+
+        function lookupReplacementChar(aChar) {
+            return escapeTable[aChar];
+        };
+
+        if (this.__escapeCharacters) {
+            retString = aString.replace(escapeRegExp, lookupReplacementChar);
+        } else {
+            retString = aString;
+        }
+
+        return retString;
+    },
+
+    /**
+     * Replace all characters by entities in the passed string
+     * if entity conversion is enabled.
+     *
+     * @param  {String} the string in which to replace the characters by the entities
+     * @return {String} the string with the replaced entities
+     */
+    __doConvertEntities: function (aString) {
+        var retString = null;
+
+        if (this.__convertEntities) {
+            try {
+                retString = this.__entityConverter.ConvertToEntities(aString, this.__converterFlags);
+            } catch (exception) {
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:view.js:WYSIWYGDOMSerialiser.__doConvertEntities", exception);
+                Components.utils.reportError(exception);
+
+                retString = aString;
+            }
+        } else {
+            retString = aString;
+        }
+
+        return retString;
+    },
 
     /**
      * Serialise the body of the DOM document which was set
@@ -2303,17 +2381,17 @@ WYSIWYGDOMSerialiser.prototype = {
 
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMSerialiser.serialise() invoked\n");
 
-        this.outputString = "";
+        this.__outputString = "";
 
         // get the <body> element
-        bodyNode = this.rootNode.evaluate("//body", this.rootNode, this.rootNode.createNSResolver(this.rootNode), XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
+        bodyNode = this.__rootNode.evaluate("//body", this.__rootNode, this.__rootNode.createNSResolver(this.__rootNode), XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
 
         if (!bodyNode)
             throw new YulupEditorException("Yulup:view.js:WYSIWYGDOMSerialiser.serialise: no <body> element found.");
 
-        this.serialiseDOMTree(bodyNode);
+        this.__serialiseDOMTree(bodyNode);
 
-        return this.outputString;
+        return this.__outputString;
     },
 
     /**
@@ -2325,11 +2403,11 @@ WYSIWYGDOMSerialiser.prototype = {
     serialiseXML: function () {
         /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMSerialiser.serialiseXML() invoked\n");
 
-        this.outputString = "";
+        this.__outputString = "";
 
-        this.serialiseDOMTree(this.rootNode);
+        this.__serialiseDOMTree(this.__rootNode);
 
-        return this.outputString;
+        return this.__outputString;
     },
 
     /**
@@ -2338,19 +2416,18 @@ WYSIWYGDOMSerialiser.prototype = {
      * @param  {nsIDOMNode} aNode the node to serialise
      * @return {Undefined} does not have a return value
      */
-    serialiseDOMTree: function (aNode) {
+    __serialiseDOMTree: function (aNode) {
         var child = null;
 
         /* DEBUG */ YulupDebug.ASSERT(aNode != null);
 
-        // if emitNodeStart() returns false, don't inspect its children
-        if (this.emitNodeStart(aNode)) {
-            for (child = aNode.firstChild; child != null; child = child.nextSibling) {
-                this.serialiseDOMTree(child);
-            }
+        this.emitNodeStart(aNode);
 
-            this.emitNodeEnd(aNode);
+        for (child = aNode.firstChild; child != null; child = child.nextSibling) {
+            this.__serialiseDOMTree(child);
         }
+
+        this.emitNodeEnd(aNode);
     },
 
     /**
@@ -2363,13 +2440,13 @@ WYSIWYGDOMSerialiser.prototype = {
      * @return {Undefined}  does not have a return value
      */
     emitNodeStart: function (aNode) {
-        var retVal = true;
+        var tmpString = null;
 
         /* DEBUG */ YulupDebug.ASSERT(aNode != null);
 
         switch (aNode.nodeType) {
         case Components.interfaces.nsIDOMNode.ELEMENT_NODE:
-            this.outputString += "<" + aNode.nodeName.toLowerCase();
+            this.__outputString += "<" + aNode.nodeName.toLowerCase();
 
             if (aNode.__yulupOriginalURI) {
                 switch (aNode.nodeName.toLowerCase()) {
@@ -2388,41 +2465,46 @@ WYSIWYGDOMSerialiser.prototype = {
                 // emit the attributes
                 for (var i = 0; i < aNode.attributes.length; i++) {
                     if (aNode.attributes.item(i).nodeName.search("_moz") == -1 && aNode.attributes.item(i).nodeValue.search("_moz") == -1)
-                        this.outputString += " " + aNode.attributes.item(i).nodeName + "=\"" + aNode.attributes.item(i).nodeValue + "\"";
+                        this.__outputString += " " + aNode.attributes.item(i).nodeName + "=\"" + aNode.attributes.item(i).nodeValue + "\"";
                 }
             }
 
             if (aNode.hasChildNodes()) {
-                this.outputString += ">";
+                this.__outputString += ">";
             } else {
-                this.outputString += "/>";
+                this.__outputString += "/>";
             }
             break;
         case Components.interfaces.nsIDOMNode.TEXT_NODE:
-            this.outputString += aNode.nodeValue;
+            /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMSerialiser.emitNodeStart: aNode.nodeValue = \"" + aNode.nodeValue + "\"\n");
+            tmpString = this.__doEscapeCharacters(aNode.nodeValue);
+            tmpString = this.__doConvertEntities(tmpString);
+            /* TODO: this is a good place to solve the double-linebreaks on Windows
+             * problem. Maybe we can simply replace \n, \r and friends by a canonical
+             * character. Needs some experimentation first. */
+            /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMSerialiser.emitNodeStart: encoded aNode.nodeValue = \"" + tmpString + "\"\n");
+            this.__outputString += tmpString;
             break;
         case Components.interfaces.nsIDOMNode.CDATA_SECTION_NODE:
-            this.outputString += "<![CDATA[" + aNode.nodeValue + "]]>";
+            this.__outputString += "<![CDATA[" + aNode.nodeValue + "]]>";
             break;
         case Components.interfaces.nsIDOMNode.PROCESSING_INSTRUCTION_NODE:
-            this.outputString += "<?" + aNode.target + " " + aNode.data + "?>";
+            this.__outputString += "<?" + aNode.target + " " + aNode.data + "?>";
             break;
         case Components.interfaces.nsIDOMNode.COMMENT_NODE:
-            this.outputString += "<!--" + aNode.nodeValue + "-->";
+            this.__outputString += "<!--" + aNode.nodeValue + "-->";
             break;
         case Components.interfaces.nsIDOMNode.DOCUMENT_NODE:
             // the document itself; nothing to emit here
             break;
         case Components.interfaces.nsIDOMNode.DOCUMENT_TYPE_NODE:
             // TODO: emit notations (see http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-412266927)
-            this.outputString += "<!DOCTYPE " + aNode.name + (aNode.publicId ? " PUBLIC \"" + aNode.publicId + "\" " : " ")  + "\"" + aNode.systemId + "\">\n";
+            this.__outputString += "<!DOCTYPE " + aNode.name + (aNode.publicId ? " PUBLIC \"" + aNode.publicId + "\" " : " ")  + "\"" + aNode.systemId + "\">\n";
             break;
         default:
             /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMSerialiser.emitNodeStart: unknown node \"" + aNode.nodeName + "\" of node type \"" + aNode.nodeType + "\" encountered\n");
             throw new YulupEditorException("Yulup:view.js:WYSIWYGDOMSerialiser.emitNodeStart: unknown node \"" + aNode.nodeName + "\" of node type \"" + aNode.nodeType + "\" encountered.");
         }
-
-        return retVal;
     },
 
     /**
@@ -2440,7 +2522,7 @@ WYSIWYGDOMSerialiser.prototype = {
         switch (aNode.nodeType) {
             case Components.interfaces.nsIDOMNode.ELEMENT_NODE:
             if (aNode.hasChildNodes()) {
-                this.outputString += "</" + aNode.nodeName.toLowerCase() + ">";
+                this.__outputString += "</" + aNode.nodeName.toLowerCase() + ">";
             }
             break;
             default:
