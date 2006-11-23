@@ -381,6 +381,7 @@ function checkWellFormedness(aDocument) {
     var parseErrorString       = null;
     var sourceTextString       = null;
     var parseErrorStringRegExp = null;
+    var parseErrorArray        = null;
     var errorLine              = null;
     var errorColumn            = null;
 
