@@ -634,7 +634,11 @@ YulupDownloadObserver.prototype = {
         if (Components.isSuccessCode(aStatusCode)) {
             switch (responseStatusCode) {
                 case 301:
-                    // moved permanently
+                case 302:
+                case 303:
+                case 305:
+                case 307:
+                    // redirect
                     if (responseHeaders) {
                         // check for availability of the Location header field
                         for (var i = 0; i < responseHeaders.length; i++) {
