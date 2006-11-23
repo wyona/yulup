@@ -13,6 +13,8 @@
 <!ENTITY editorKeyBindingsReadline.label "Readline (Emacs)">
 <!ENTITY editorKeyBindingsUseSpacesForTabLabel.label "Leerzeichen anstatt Tab verwenden">
 <!ENTITY editorKeyBindingsNoOfSpacesLabel.label "Anzahl Leerzeichen">
+<!ENTITY editorLayoutGroupbox.label "Layout">
+<!ENTITY editorLayoutWrapToWindow.label "Text im Source Editor auf Fensterbreite umbrechen">
 <!ENTITY editorThemeGroupbox.label "Aussehen">
 <!ENTITY editorThemeMenulistLabel.label "Aussehen auswählen">
 <!ENTITY editorThemeDefaultTheme.label "Standard">

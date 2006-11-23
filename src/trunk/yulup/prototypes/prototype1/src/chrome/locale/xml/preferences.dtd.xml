@@ -77,6 +77,16 @@
     <name xml:lang="de">Anzahl Leerzeichen</name>
   </entity>
 
+  <entity id="editorLayoutGroupbox.label">
+    <name xml:lang="en">Layout</name>
+    <name xml:lang="de">Layout</name>
+  </entity>
+
+  <entity id="editorLayoutWrapToWindow.label">
+    <name xml:lang="en">Wrap source editor to window width</name>
+    <name xml:lang="de">Text im Source Editor auf Fensterbreite umbrechen</name>
+  </entity>
+
   <entity id="editorThemeGroupbox.label">
     <name xml:lang="en">Appearance</name>
     <name xml:lang="de">Aussehen</name>

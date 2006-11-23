@@ -645,6 +645,7 @@ SourceModeView.prototype = {
      */
     setUp: function () {
         var sourceEditor  = null;
+        var wrapText      = null;
         var keyBinding    = null;
         var useTabSpaces  = null;
         var noOfTabSpaces = null;
@@ -676,6 +677,12 @@ SourceModeView.prototype = {
             this.view.rootElement.style.fontFamily = "-moz-fixed";
             this.view.rootElement.style.whiteSpace = "pre";
             this.view.rootElement.style.margin     = 0;
+
+            // wrap to window width
+            if ((wrapText = YulupPreferences.getBoolPref("editor.", "wrap")) != null) {
+                if (wrapText)
+                    this.view.wrapWidth = 0;
+            }
 
             // make the caret visible even if the current selection is not collapsed
             this.view.selectionController.setCaretVisibilityDuringSelection(true);

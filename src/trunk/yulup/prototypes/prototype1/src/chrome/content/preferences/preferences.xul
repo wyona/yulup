@@ -78,6 +78,9 @@
       <preference id="pref_editor_tabspaces"
                   name="extensions.yulup.editor.tabspaces"
                   type="int"/>
+      <preference id="pref_editor_wrap"
+                  name="extensions.yulup.editor.wrap"
+                  type="bool"/>
       <preference id="pref_editor_theme"
                   name="extensions.yulup.editor.theme"
                   type="unichar"/>
@@ -101,6 +104,11 @@
         <textbox id="uiEditorTabspacesTextbox" preference="pref_editor_tabspaces"  maxlength="2" size="2"/>
         <label value="&editorKeyBindingsNoOfSpacesLabel.label;" control="uiEditorTabspacesTextbox"/>
       </hbox>
+    </groupbox>
+
+    <groupbox>
+      <caption label="&editorLayoutGroupbox.label;"/>
+      <checkbox label="&editorLayoutWrapToWindow.label;" preference="pref_editor_wrap"/>
     </groupbox>
 
     <groupbox>

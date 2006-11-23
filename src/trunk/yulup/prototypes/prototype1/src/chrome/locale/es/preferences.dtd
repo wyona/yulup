@@ -13,6 +13,8 @@
 <!ENTITY editorKeyBindingsReadline.label "Readline (Emacs)">
 <!ENTITY editorKeyBindingsUseSpacesForTabLabel.label "Use spaces instead of tab">
 <!ENTITY editorKeyBindingsNoOfSpacesLabel.label "Number of spaces">
+<!ENTITY editorLayoutGroupbox.label "Layout">
+<!ENTITY editorLayoutWrapToWindow.label "Wrap source editor to window width">
 <!ENTITY editorThemeGroupbox.label "Appearance">
 <!ENTITY editorThemeMenulistLabel.label "Choose the editor appearance">
 <!ENTITY editorThemeDefaultTheme.label "Default">
