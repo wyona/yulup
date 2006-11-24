@@ -2283,6 +2283,8 @@ function dumpTree(aEditor) {
  * @return {WYSIWYGDOMSerialiser}
  */
 function WYSIWYGDOMSerialiser(aRootNode, aEscapeCharacters, aConvertEntities) {
+    var entityConverter = null;
+
     /* DEBUG */ dump("Yulup:view.js:WYSIWYGDOMSerialiser(\"" + aRootNode + "\", \"" + aEscapeCharacters + "\", \"" + aConvertEntities + "\") invoked\n");
 
     /* DEBUG */ YulupDebug.ASSERT(aRootNode         != null);
@@ -2294,13 +2296,46 @@ function WYSIWYGDOMSerialiser(aRootNode, aEscapeCharacters, aConvertEntities) {
     this.__convertEntities  = aConvertEntities;
 
     if (aConvertEntities) {
-        this.__entityConverter = Components.classes["@mozilla.org/intl/entityconverter;1"].createInstance(Components.interfaces.nsIEntityConverter);
+        // retrieve converter settings
+        entityConverter = YulupPreferences.getIntPref("editor.", "entityconverter");
+        if (entityConverter == null) {
+            // don't convert
+            this.__convertEntities = false;
+        } else {
+            /* See mozilla/intl/unicharutil/tables/html40Latin1.properties,
+             * mozilla/intl/unicharutil/tables/html40Symbols.properties etc.
+             * for what entities are converted how. For avaialable encoding
+             * flags, see nsIEntityConverter. */
+            switch (entityConverter) {
+            case 1:
+                this.__converterFlags  = Components.interfaces.nsIEntityConverter.html40Latin1;
+                break;
+            case 2:
+                this.__converterFlags  = Components.interfaces.nsIEntityConverter.html40Symbols;
+                break;
+            case 3:
+                this.__converterFlags  = Components.interfaces.nsIEntityConverter.html40Special;
+                break;
+            case 4:
+                this.__converterFlags  = Components.interfaces.nsIEntityConverter.mathml20;
+                break;
+            case 5:
+                this.__converterFlags  = Components.interfaces.nsIEntityConverter.html40;
+                break;
+            case 6:
+                this.__converterFlags  = Components.interfaces.nsIEntityConverter.entityW3C;
+                break;
+            case 0:
+            default:
+                // don't convert
+                this.__convertEntities = false;
+            }
+        }
 
-        /* See mozilla/intl/unicharutil/tables/html40Latin1.properties,
-         * mozilla/intl/unicharutil/tables/html40Symbols.properties etc.
-         * for what entities are converted how. For avaialable encoding
-         * flags, see nsIEntityConverter. */
-        this.__converterFlags  = Components.interfaces.nsIEntityConverter.entityW3C;
+        // if conversion is still enabled, instantiate the converter
+        if (this.__convertEntities) {
+            this.__entityConverter = Components.classes["@mozilla.org/intl/entityconverter;1"].createInstance(Components.interfaces.nsIEntityConverter);
+        }
     }
 }
 
@@ -2323,10 +2358,11 @@ WYSIWYGDOMSerialiser.prototype = {
     __doEscapeCharacters: function (aString) {
         var retString = null;
 
-        const escapeRegExp = new RegExp('[<&"]', "g");
+        const escapeRegExp = new RegExp('[<>&"]', "g");
 
         const escapeTable = {
             '<': "&lt;",
+            '>': "&gt;",
             '&': "&amp;",
             '"': "&quot;"
         };
