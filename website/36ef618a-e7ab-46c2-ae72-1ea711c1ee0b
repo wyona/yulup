@@ -1,0 +1,22 @@
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <atom:title type="text">yulup-prototype-1-0.1.10-r20326</atom:title>
+  <atom:author>
+    <atom:name>Andreas Wuest</atom:name>
+  </atom:author>
+  <atom:id>urn:</atom:id>
+  <atom:content type="xhtml">
+    <xhtml:div>
+      <xhtml:a href="yulup-prototype-1-0.1.10-r20326.xpi">yulup-prototype-1-0.1.10-r20326.xpi</xhtml:a> (November 24, 2006)
+      <xhtml:br/><xhtml:br/>Changelog:
+      <xhtml:ul>
+        <xhtml:li>Several UI fixes.</xhtml:li>
+        <xhtml:li>Fixed conflict with the FireBug extension.</xhtml:li>
+        <xhtml:li>New exit warning dialog.</xhtml:li>
+        <xhtml:li>The editor now exits on checkin and loads the edited page in the tab.</xhtml:li>
+        <xhtml:li>Serialiser fixes (remove all internal attributes, escape characters correctly, etc.).</xhtml:li>
+        <xhtml:li>New setting to make the source editor wrap its content to window width.</xhtml:li>
+        <xhtml:li>Several bug fixes.</xhtml:li>
+      </xhtml:ul>
+    </xhtml:div>
+  </atom:content>
+<atom:updated>2006-11-24T19:04:39.386Z</atom:updated><atom:published>2006-11-24T19:04:39.386Z</atom:published></atom:entry>
