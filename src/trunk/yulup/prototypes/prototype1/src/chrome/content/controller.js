@@ -642,7 +642,7 @@ YulupEditStateController.prototype = {
                         }
 
                         if (gEditorController.document instanceof AtomDocument) {
-                            document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", true);
+                            document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("hidden", false);
                             document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", true);
                         }
 
