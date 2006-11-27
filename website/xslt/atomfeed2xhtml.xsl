@@ -33,9 +33,6 @@
 <h3>System Requirements</h3>
 <p>Yulup requires <a href="http://www.mozilla.com/firefox/">Mozilla Firefox</a> with a minimum version of 1.5 to function. The Yulup editor is a platform-independent application, and can therefore be run on every machine which also runs Firefox.</p>
 
-<p><b>Note</b> that the FireBug extension breaks Yulup, and should therefore not be installed concurrently, or at least be disabled.</p>
-
-<h3>Troubleshooting Installation</h3>
 <p>
 Please see the <a href="../faq.html#troubleinstalltoc">FAQ</a> for troubleshooting the installation.
 </p>
