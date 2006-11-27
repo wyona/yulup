@@ -1,0 +1,219 @@
+<?xml version="1.0"?>
+
+<window id="uiEditorWindow"
+        orient="vertical"
+        align="stretch"
+        onload="initEditor()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript">
+    <![CDATA[
+    var gEditorElem = null;
+    var gEditor     = null;
+
+    var DOMSerialiser = {
+        /**
+         * Serialises to stdout the tree rooted at the passed node.
+         *
+         * @param  {nsIDOMNode} aNode the root of the tree to serialise
+         * @return {Undefined}  does not have a return value
+         */
+        serialiseDOMTree: function (aNode) {
+            var child = null;
+
+            DOMSerialiser.emitNodeStart(aNode);
+
+            for (child = aNode.firstChild; child != null; child = child.nextSibling) {
+                DOMSerialiser.serialiseDOMTree(child);
+            }
+
+            DOMSerialiser.emitNodeEnd(aNode);
+        },
+
+        /**
+         * Emits a textual representation of the passed DOM node.
+         *
+         * This method should be called before the subtree of the
+         * node is visited.
+         *
+         * @param  {nsIDOMNode} aNode the node to serialise
+         * @return {Undefined}  does not have a return value
+         */
+        emitNodeStart: function (aNode) {
+            switch (aNode.nodeType) {
+            case 1:
+            dump("<" + aNode.nodeName);
+
+            if (aNode.hasAttributes()) {
+                // emit the attributes
+                for (var i = 0; i < aNode.attributes.length; i++) {
+                    dump(" " + aNode.attributes.item(i).nodeName + "=\"" + aNode.attributes.item(i).nodeValue + "\"");
+                }
+            }
+
+            if (aNode.hasChildNodes()) {
+                dump(">");
+            } else {
+                dump("/>");
+            }
+            break;
+            case 3:
+            dump(aNode.nodeValue);
+            break;
+            case 7:
+            dump("<?" + aNode.target + " " + aNode.data + "?>");
+            break;
+            case 8:
+            dump("<!--" + aNode.nodeValue + "-->");
+            break;
+            case 9:
+            // the document itself; nothing to emit here
+            break;
+            case 10:
+            // TODO: emit notations (see http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-412266927)
+            dump("<!DOCTYPE " + aNode.name + (aNode.publicId ? " PUBLIC \"" + aNode.publicId + "\" " : " ")  + "\"" + aNode.systemId + "\">\n");
+            break;
+            default:
+            dump("UNKNOWN node \"" + aNode.nodeName + "\" of node type \"" + aNode.nodeType + "\" encountered\n");
+            }
+        },
+
+        /**
+         * Emits a textual representation of the passed DOM node.
+         *
+         * This method should be called after the subtree of the
+         * node was visited.
+         *
+         * @param  {nsIDOMNode} aNode the node to serialise
+         * @return {Undefined}  does not have a return value
+         */
+        emitNodeEnd: function (aNode) {
+            switch (aNode.nodeType) {
+            case 1:
+            if (aNode.hasChildNodes()) {
+                dump("</" + aNode.nodeName + ">");
+            }
+            break;
+            default:
+            }
+        }
+    };
+
+    function initEditor() {
+        dump("\n\n\ninitEditor() invoked\n");
+        // test dynamic tab insertion
+        var editorWindow             = null;
+        var editorElem               = null;
+
+        editorElem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "editor");
+        editorElem.setAttribute("type", "content");
+        editorElem.setAttribute("flex", "1");
+        editorElem.setAttribute("style", "border: 2px solid black; margin: 2px 2px 2px 2px;");
+        editorElem.setAttribute("onload", "event.stopPropagation()");
+
+        editorWindow = document.getElementById("uiEditorWindow");
+        editorWindow.appendChild(editorElem);
+
+        gEditorElem = editorElem;
+
+        window.setTimeout(continueInit, 100);
+    }
+
+    function continueInit() {
+        dump("continueInit() invoked (chocked initialisation)\n");
+
+        var editorElem = gEditorElem;
+
+        // set up
+        editorElem.makeEditable("html", false);
+
+        gEditor = editorElem.getEditor(editorElem.contentWindow);
+        gEditor.QueryInterface(Components.interfaces.nsIHTMLEditor);
+
+        editorElem.contentWindow.addEventListener("keypress", function (event) { event.stopPropagation(); }, true);
+
+        dump("editorElem status = \"" + editorElem.editingSession.editorStatus  + "\"\n");
+        dump("is editable = \"" + gEditor.isDocumentEditable  + "\"\n");
+    }
+
+    function addText() {
+        gEditor.insertHTML("<span>foooooooooooooo<b>boldbold</b>foooo<i>italicitalic</i>foooooooooooo</span>");
+    }
+
+    function printDOMTree() {
+        dump("printDOMTree() invoked\n");
+        DOMSerialiser.serialiseDOMTree(gEditor.document);
+        dump("\n");
+    }
+
+    function doBold() {
+        dump("doBold() invoked\n");
+
+        //document.getElementById("uiYulupBold").checkState = 2;
+        doSurroundCmd(gEditor.selection, gEditor.document.createElement("b"));
+    }
+
+    function doItalic() {
+        dump("doItalic() invoked\n");
+
+        doSurroundCmd(gEditor.selection, gEditor.document.createElement("i"));
+    }
+
+    function doTT() {
+        var selection = null;
+
+        dump("doTT() invoked\n");
+
+        doSurroundCmd(gEditor.selection, gEditor.document.createElement("tt"));
+    }
+
+    function doSurroundCmd(aSelection, aElement) {
+        dump("doSurroundCmd() invoked\n");
+
+        // check if the selection is not collaped
+        if (!aSelection.isCollapsed && aSelection.rangeCount > 0) {
+            dump("selection = \"" + aSelection + "\"\n");
+
+            surroundRange(aSelection, aElement);
+        } else {
+            // hmmmmm
+            dump("selection is collapsed\n");
+        }
+    }
+
+    function surroundRange(aSelection, aElement) {
+        var range    = null;
+        var ancestor = null;
+
+        // get range
+        range = aSelection.getRangeAt(0);
+
+        //range.surroundContents(aElement);
+
+        ancestor = range.commonAncestorContainer;
+
+        dump("ancestor = \"" + ancestor + "\"\n");
+
+        if (ancestor.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+            ancestor = ancestor.parentNode;
+            dump("fixed ancestor = \"" + ancestor + "\"\n");
+        }
+
+        while (ancestor.firstChild) {
+            aElement.appendChild(ancestor.firstChild);
+        }
+
+        ancestor.appendChild(aElement);
+    }
+    ]]>
+  </script>
+
+  <hbox>
+    <button label="Add Text" oncommand="addText()"/>
+    <button label="Print Tree" oncommand="printDOMTree()"/>
+    <button id="uiYulupBold"   label="Bold"   type="checkbox" oncommand="doBold()"/>
+    <button id="uiYulupItalic" label="Italic" oncommand="doItalic()"/>
+    <button id="uiYulupTT"     label="Mono  " oncommand="doTT()"/>
+  </hbox>
+
+</window>
