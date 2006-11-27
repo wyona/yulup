@@ -1,6 +1,6 @@
 file := $(patsubst %.xml,%.xhtml,$(wildcard *.xml))
 
-all: convert-dia $(file)
+all: convert-dia $(file) deploy
 
 %.xhtml : %.xml
 	@printf "\nBuild XHTML output $@\n"
@@ -9,4 +9,7 @@ all: convert-dia $(file)
 convert-dia:
 	-$(MAKE) -C figures
 
-.PHONY: convert-dia
+deploy:
+	cp ./*.xhtml ../../../../../../website/documentation/user-manual/
+
+.PHONY: convert-dia deploy
