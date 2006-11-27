@@ -180,7 +180,36 @@
     <section>
       <title>Webbrowser View and Editor View</title>
       <para>
-        
+        The <emphasis>Webbrowser View</emphasis> is your normal web browser.
+        <figure>
+          <title>Webbrowser View</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="figures/webbrowser_view.png" format="PNG" scale="90"/>
+            </imageobject>
+            <textobject>
+              <phrase>Webbrowser view</phrase>
+            </textobject>
+          </mediaobject>
+        </figure>
+        The only difference you experience is the Yulup menu icon placed in the upper right corner of the window. This is the main entry point to Yulup, and allows you to open documents, edit, create, upload and delete documents, and access the preferences dialog.
+      </para>
+      <para>
+        Normally, most of these items are disabled though. But if you visit a web page which allows introspection e.g. via Neutron or the Atom Publishing Protocol, these items are enabled, and allow you to directly interact with the CMS/web server which contains the current document.
+      </para>
+      <para>
+        If you choose to edit an existing document or to create a new document, you are then transferred to the <emphasis>Editor View</emphasis>.
+        <figure>
+          <title>Editor View</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="figures/editor_view.png" format="PNG" scale="90"/>
+            </imageobject>
+            <textobject>
+              <phrase>Editor view</phrase>
+            </textobject>
+          </mediaobject>
+        </figure>
       </para>
     </section>
     <section>
@@ -287,9 +316,12 @@
       </section>
     </section>
     <section>
-      <title>Keybindings</title>
+      <title>Key Bindings</title>
       <para>
-        The following keybindings are activated by default (also known as <emphasis>Readline</emphasis> or <emphasis>Emacs</emphasis> keybindings). The <keycap>C</keycap> key means <keycap>Ctrl</keycap> and is valid for all platforms. Note that there are additional platform-dependent keybindings (for those, please refer to the user manual of your Operating System).
+        The following key bindings are activated by default (also known as <emphasis>Readline</emphasis> or <emphasis>Emacs</emphasis> key bindings). See <xref linkend="pref_keybindings"/> for how to select different key bindings.
+        </para>
+        <para>
+          The <keycap>C</keycap> key means <keycap>Ctrl</keycap> and is valid for all platforms. Note that there are additional platform-dependent key bindings (for those, please refer to the user manual of your Operating System).
         <bridgehead>Moving and Selecting</bridgehead>
         <itemizedlist>
           <listitem>
@@ -423,6 +455,119 @@
           </listitem>
         </itemizedlist>
       </para>
+    </section>
+  </section>
+
+  <section>
+    <title>Preferences</title>
+    <para>
+      You can open the preferences dialog by either choosing <guimenuitem>Preferences</guimenuitem> in the Yulup menu, or by opening the extension manager, selecting the Yulup entry, and then clicking on the <guibutton>Preferences</guibutton> button.
+    </para>
+    <para>
+      The preferences dialog is divided into two sections: <emphasis>General</emphasis>, and <emphasis>Editor</emphasis>.
+    </para>
+    <section>
+      <title>General</title>
+      <para>
+        In the <emphasis>General</emphasis> section, you can edit settings related to the overall usage of Yulup.
+      </para>
+      <figure>
+        <title>Preferences <emphasis>General</emphasis></title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/preferences_general.png" format="PNG"/>
+          </imageobject>
+          <textobject>
+            <phrase>General settings</phrase>
+          </textobject>
+        </mediaobject>
+      </figure>
+      <section>
+        <title>Workspace</title>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <formalpara>
+                <title>Workspace Location</title>
+                Select a directory on your local file system for the Yulup workspace. The workspace is used to store local temporary copies of the document you are editing to enable offline processing.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Always Save Local Copy</title>
+                Check this option if you would like Yulup to automatically store a version of the documents you are editing in your local workspace. If this option is not set, you have to tell Yulup explicitely to save a document in your workspace.
+              </formalpara>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+      <section>
+        <title>Default CMS</title>
+        <para>
+          Enter the URI of the CMS you use most. This URI is evaluated e.g. when you try to upload a new document to your CMS, but no CMS URI can be found via Neutron.
+        </para>
+      </section>
+    </section>
+    <section>
+      <title>Editor</title>
+      <para>
+        In the <emphasis>Editor</emphasis> section, you can edit settings related to the Yulup editor.
+      </para>
+      <figure>
+        <title>Preferences <emphasis>Editor</emphasis></title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/preferences_editor.png" format="PNG"/>
+          </imageobject>
+          <textobject>
+            <phrase>Editor settings</phrase>
+          </textobject>
+        </mediaobject>
+      </figure>
+      <section id="pref_keybindings">
+        <title>Key Bindings</title>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <formalpara>
+                <title>Select Key Binding</title>
+                Select the key binding you want to use in the editor.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Spaces instead of Tabs</title>
+                Select if you want the <keycap>TAB</keycap> to produce real tabs or spaces.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Number of Spaces</title>
+                Specify the amount of <keycap>space</keycap> characters a <keycap>TAB</keycap> should produce. If you have set the editor to use spaces instead of tabs, then the editor will insert the specified amount of space characters when the <keycap>TAB</keycap> key is used.
+              </formalpara>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+      <section>
+        <title>Layout</title>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <formalpara>
+                <title>Wrap Source</title>
+                Select if you want the source mode editor to wrap the text to the window width. Note that if a non-wrappable line (i.e. a line consisting of consecutive characters without interleaved whitespace) is present, you might still have to scroll horizontally.
+              </formalpara>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+      <section>
+        <title>Appearance</title>
+        <para>
+          Select the icon theme you want the editor to use.
+        </para>
+      </section>
     </section>
   </section>
 
