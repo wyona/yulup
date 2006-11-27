@@ -435,13 +435,13 @@
     <section>
       <title>Key Bindings</title>
       <para>
-        Note that the <xref linkend="standardkeybindings"/> are always active. See <xref linkend="pref_keybindings"/> for how to select different key bindings.
+        Note that the <xref linkend="standardkeybindings" endterm="standardkeybindings.title"/> are always active. See <xref linkend="pref_keybindings"/> for how to select different key bindings.
         </para>
         <para>
           The <keycap>C</keycap> key means <keycap>Ctrl</keycap> and is valid for all platforms. Note that there are additional platform-dependent key bindings (for those, please refer to the user manual of your Operating System).
         </para>
-        <section id="standardkeybindings" xreflabel="Standard Key Bindings">
-          <title>Standard Key Bindings</title>
+        <section id="standardkeybindings">
+          <title id="standardkeybindings.title">Standard Key Bindings</title>
           <para>
             <bridgehead>Inserting</bridgehead>
             <itemizedlist>
