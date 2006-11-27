@@ -132,6 +132,9 @@
 
         editorElem.contentWindow.addEventListener("keypress", function (event) { event.stopPropagation(); }, true);
 
+        editorElem.contentWindow.addEventListener("focus", function (event) { dump("editorElem.contentWindow received focus\n"); }, true);
+        editorElem.addEventListener("focus", function (event) { dump("editorElem received focus\n"); }, true);
+
         dump("editorElem status = \"" + editorElem.editingSession.editorStatus  + "\"\n");
         dump("is editable = \"" + gEditor.isDocumentEditable  + "\"\n");
     }
@@ -168,9 +171,14 @@
     }
 
     function doSurroundCmd(aSelection, aElement) {
+        var textNode   = null;
+        var splitNode  = null;
+        var parentNode = null;
+        var range      = null;
+
         dump("doSurroundCmd() invoked\n");
 
-        // check if the selection is not collaped
+        // check if the selection is collaped
         if (!aSelection.isCollapsed && aSelection.rangeCount > 0) {
             dump("selection = \"" + aSelection + "\"\n");
 
@@ -178,6 +186,32 @@
         } else {
             // hmmmmm
             dump("selection is collapsed\n");
+
+            // check if we are in a text node
+            if (aSelection.anchorNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+                dump("insert node \"" + aElement.nodeName + "\"\n");
+
+                // prepare node to insert
+                textNode = aElement.ownerDocument.createTextNode("");
+                aElement.appendChild(textNode);
+
+                // split text node
+                splitNode = aSelection.anchorNode.splitText(aSelection.anchorOffset);
+
+                // insert new element before split result
+                parentNode = splitNode.parentNode;
+                parentNode.insertBefore(aElement, splitNode);
+
+                // move selection into the text child of the newly inserter node
+                range = parentNode.ownerDocument.createRange();
+                range.selectNode(textNode);
+                aSelection.removeAllRanges();
+                aSelection.addRange(range);
+
+                // set focus
+                gEditorElem.contentWindow.focus();
+                gEditor.selectionController.characterMove(true, false);
+            }
         }
     }
 
