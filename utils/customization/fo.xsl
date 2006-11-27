@@ -4,7 +4,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:import href="../docbook/xhtml/docbook.xsl"/>
+<xsl:import href="../docbook/fo/docbook.xsl"/>
 <xsl:import href="parameters.xsl"/>
 
 </xsl:stylesheet>

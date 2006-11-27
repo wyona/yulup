@@ -249,12 +249,34 @@
                 <formalpara>
                   <title>Open and Edit</title>
                   If the server offers you the option of opening the document without locking, then a menu item labelled <guimenuitem>Open and Edit</guimenuitem> is enabled in the &project; Browser Menu.
+                  <figure>
+                    <title><emphasis>Open and Edit</emphasis> from the Yulup Menu</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="figures/open_yulupmenu.png" format="PNG"/>
+                      </imageobject>
+                      <textobject>
+                        <phrase>Open and Edit from the Yulup Menu</phrase>
+                      </textobject>
+                    </mediaobject>
+                  </figure>
                 </formalpara>
               </listitem>
               <listitem>
                 <formalpara>
                   <title>Checkout and Edit</title>
                   If the server offers you the option of opening the document with locking, then a menu item labelled <guimenuitem>Checkout and Edit</guimenuitem> is enabled in the &project; Browser Menu. By checking out a document from the CMS like this, you are acquiring a lock on this document. This means that only you can currently edit this document, and noone else can edit this document in the meantime.
+                  <figure>
+                    <title><emphasis>Checkout and Edit</emphasis> from the Yulup Menu</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="figures/checkout_yulupmenu.png" format="PNG"/>
+                      </imageobject>
+                      <textobject>
+                        <phrase>Checkout and Edit from the Yulup Menu</phrase>
+                      </textobject>
+                    </mediaobject>
+                  </figure>
                 </formalpara>
                 <para>
                   Note that the implementation of the locking mechanism is up to the web server. The web server may either hold the lock indefinitely, until you checkin the document again, or it may decide to drop the lock after a certain amount of time.
@@ -297,9 +319,28 @@
 
   <section>
     <title>Editing Documents</title>
+    <para>
+      There are two fundamentally different editing modes in Yulup: the <emphasis>Source</emphasis> and <emphasis>WYSIWYG</emphasis> mode. In the <emphasis>Source</emphasis> mode you can edit documents on the source level, i.e. you can directly modify the document markup. In the <emphasis>WYSIWYG</emphasis> mode view, you modify the graphical representation of a document. With other words: whatever you do, the document looks exactly like it is served by your web server and later rendered by the browser.
+    </para>
+    <para>
+      Despite these two different modes, they share a common toolbar.
+      <figure>
+        <title>Editor Toolbar</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/edit_toolbar.png" format="PNG"/>
+          </imageobject>
+          <textobject>
+            <phrase>Editor toolbar</phrase>
+          </textobject>
+        </mediaobject>
+      </figure>
+      This toolbar provides you the ability to save, upload, open or create new documents, undo/redo operations, cut, copy and paste from and to the system clipboard, as well as modify the document currently edited by e.g. inserting new elements.
+    </para>
+
     <section>
       <title>Source Mode</title>
-      <section>
+      <section id="guidedtaginserter">
         <title>Guided Tag Inserter</title>
         <para>
           The guided tag inserter helps to insert elements at the current cursor position. It can create two tag types, namely empty (tags only consisting of an opening tag, ending with a "/") and non-empty tags. The guided tag inserter is invoked by pressing <emphasis>C-i</emphasis>.
@@ -308,153 +349,240 @@
           If a block of text is currently selected, then the guided tag inserter will surround this block with the newly created tag, but only if a non-empty tag is generated. Otherwise, the current selection is overwritten.
         </para>
         <para>
-          The guided tag inserter first asks for the tag name. If you hit return without entering any text into the tag name field, the guided tag inserter aborts without inserting any text into the editor. Otherwise, if you have indeed entered a tag name, it goes into a loop and asks for attribute names and their values. If you hit return without entering any text into the attribute name field, the guided tag inserter proceeds to ask you if you want to create an empty or a non-empty tag. If you hit return without entering any text into the attribute value field, the guided tag inserter asks you for the next attribute name.
+          The guided tag inserter first asks for the tag name.
+          <figure>
+            <title>Guided Tag Inserter (Element Name)</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="figures/guidedtaginserter_elemname.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <phrase>Guided Tag Inserter asking for the element name</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+          If you hit return without entering any text into the tag name field, the guided tag inserter aborts without inserting any text into the editor. Otherwise, if you have indeed entered a tag name, it goes into a loop and asks for attribute names and their values.
+          <figure>
+            <title>Guided Tag Inserter (Attribute Name)</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="figures/guidedtaginserter_attrname.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <phrase>Guided Tag Inserter asking for the attribute name</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+          <figure>
+            <title>Guided Tag Inserter (Attribute Value)</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="figures/guidedtaginserter_attrvalue.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <phrase>Guided Tag Inserter asking for the attribute value</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+          If you hit return without entering any text into the attribute name field, the guided tag inserter proceeds to ask you if you want to create an empty (e.g. <markup>&lt;section/&gt;</markup>) or a non-empty tag (e.g. <markup>&lt;section&gt;&lt;/section&gt;</markup>).
+          <figure>
+            <title>Guided Tag Inserter (Tag Mode)</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="figures/guidedtaginserter_finish.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <phrase>Guided Tag Inserter asking if you want to insert and empty or a non-empty tag</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+          If you hit return without entering any text into the attribute value field, the guided tag inserter asks you for the next attribute name.
         </para>
         <para>
           You can leave the guided tag inserter at any time by clicking "Abort". No text is inserted into the editor in this case.
         </para>
       </section>
     </section>
+
+    <section>
+      <title>WYSIWYG Mode</title>
+      <section>
+        <title>XHTML Mode</title>
+      </section>
+      <section>
+        <title>XML Mode</title>
+        <section>
+          <title>XPath Toolbar</title>
+          <para>
+            The XPath toolbar shows you the path from the document root to the current selection. This means that whatever you insert at the current position is going to end up at the shown path in the XML source document.
+            <figure>
+              <title>XPath Toolbar</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="figures/xpath_toolbar.png" format="PNG"/>
+                </imageobject>
+                <textobject>
+                  <phrase>XPath toolbar showing the path from the document root to the current selection</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+            Furthermore, the XPath toolbar lets you choose between <emphasis>namespace-aware</emphasis> and <emphasis>namespace-unaware</emphasis> mode. If you select the namespace-aware mode, this means that whatever you insert at the current position is actually inserted at the namespaced path in the source document. If you choose the namespace-unaware mode, the back-propagation does not take namespaces into account. You might require this mode for certain documents which are otherwise not editable in namespace-aware mode.
+          </para>
+        </section>
+      </section>
+    </section>
+
     <section>
       <title>Key Bindings</title>
       <para>
-        The following key bindings are activated by default (also known as <emphasis>Readline</emphasis> or <emphasis>Emacs</emphasis> key bindings). See <xref linkend="pref_keybindings"/> for how to select different key bindings.
+        Note that the <xref linkend="standardkeybindings"/> are always active. See <xref linkend="pref_keybindings"/> for how to select different key bindings.
         </para>
         <para>
           The <keycap>C</keycap> key means <keycap>Ctrl</keycap> and is valid for all platforms. Note that there are additional platform-dependent key bindings (for those, please refer to the user manual of your Operating System).
-        <bridgehead>Moving and Selecting</bridgehead>
-        <itemizedlist>
-          <listitem>
-            <formalpara>
-              <title>C-a</title>
-              Move to beginning of line.
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-A</title>
-              Select to beginning of line.
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-b</title>
-              Move to previous character.
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-B</title>
-              Select previous character.
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-e</title>
-              Move to end of line.
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-E</title>
-              Select to end of line.
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-f</title>
-              Move to next character.
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-F</title>
-              Select next character.
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-n</title>
-              Move to next line.
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-N</title>
-              Select to next line.
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-p</title>
-              Move to previous line.
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-P</title>
-              Select to previous line.
-            </formalpara>
-          </listitem>
-        </itemizedlist>
-        <bridgehead>Inserting</bridgehead>
-        <itemizedlist>
-          <listitem>
-            <formalpara>
-              <title>C-i</title>
-              Open the guided tag/element inserter.
-            </formalpara>
-          </listitem>
-        </itemizedlist>
-        <bridgehead>Deleting</bridgehead>
-        <itemizedlist>
-          <listitem>
-            <formalpara>
-              <title>C-d</title>
-              Delete (delete next character).
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-h</title>
-              Backspace (delete previous character)
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-k</title>
-              Delete to end of line.
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-u</title>
-              Delete complete current line.
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-w</title>
-              Delete previous word.
-            </formalpara>
-          </listitem>
-          <listitem>
-            <formalpara>
-              <title>C-W</title>
-              Delete next word.
-            </formalpara>
-          </listitem>
-        </itemizedlist>
-        <bridgehead>Undo/Redo</bridgehead>
-        <itemizedlist>
-          <listitem>
-            <formalpara>
-              <title>C-_</title>
-              Undo last action.
-            </formalpara>
-          </listitem>
-        </itemizedlist>
-      </para>
+        </para>
+        <section id="standardkeybindings" xreflabel="Standard Key Bindings">
+          <title>Standard Key Bindings</title>
+          <para>
+            <bridgehead>Inserting</bridgehead>
+            <itemizedlist>
+              <listitem>
+                <formalpara>
+                  <title>C-i (Source mode only)</title>
+                  Open the guided tag/element inserter (see <xref linkend="guidedtaginserter"/>).
+                </formalpara>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section>
+          <title>Readline (Emacs) Key Bindings</title>
+          <para>
+            The following key bindings are activated by default.
+            <bridgehead>Moving and Selecting</bridgehead>
+            <itemizedlist>
+              <listitem>
+                <formalpara>
+                  <title>C-a</title>
+                  Move to beginning of line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-A</title>
+                  Select to beginning of line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-b</title>
+                  Move to previous character.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-B</title>
+                  Select previous character.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-e</title>
+                  Move to end of line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-E</title>
+                  Select to end of line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-f</title>
+                  Move to next character.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-F</title>
+                  Select next character.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-n</title>
+                  Move to next line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-N</title>
+                  Select to next line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-p</title>
+                  Move to previous line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-P</title>
+                  Select to previous line.
+                </formalpara>
+              </listitem>
+            </itemizedlist>
+            <bridgehead>Deleting</bridgehead>
+            <itemizedlist>
+              <listitem>
+                <formalpara>
+                  <title>C-d</title>
+                  Delete (delete next character).
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-h</title>
+                  Backspace (delete previous character)
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-k</title>
+                  Delete to end of line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-u</title>
+                  Delete complete current line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-w</title>
+                  Delete previous word.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-W</title>
+                  Delete next word.
+                </formalpara>
+              </listitem>
+            </itemizedlist>
+            <bridgehead>Undo/Redo</bridgehead>
+            <itemizedlist>
+              <listitem>
+                <formalpara>
+                  <title>C-_</title>
+                  Undo last action.
+                </formalpara>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
     </section>
   </section>
 
