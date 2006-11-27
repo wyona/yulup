@@ -34,9 +34,15 @@
       </author>
     </authorgroup>
     <!-- All dates specified in ISO "YYYY-MM-DD" format -->
-    <pubdate>2006-08-08</pubdate>
+    <pubdate>2006-11-27</pubdate>
     <!-- Most recent revision goes at the top; list in descending order -->
     <revhistory>
+      <revision>
+        <revnumber>0.1.1</revnumber>
+        <date>2006-11-27</date>
+        <authorinitials>AW</authorinitials>
+        <revremark>Updated and more content added.</revremark>
+      </revision>
       <revision>
         <revnumber>0.1.0</revnumber>
         <date>2006-08-08</date>
@@ -52,7 +58,7 @@
   <section>
     <title>Introduction</title>
     <para>
-      &project; is a <ulink url="http://www.wyona.org/osr-101/osr-101.xhtml">Neutron</ulink>-enabled editing client, based on the <ulink url="http://www.mozilla.org/">Mozilla</ulink> platform. It is available as an <emphasis>extension</emphasis> (also called <emphasis>add-on</emphasis>) for <ulink url="http://www.mozilla.com/firefox/">Mozilla Firefox</ulink>.
+      &project; is a <ulink url="http://neutron.wyona.org/">Neutron</ulink>-enabled editing client, based on the <ulink url="http://www.mozilla.org/">Mozilla</ulink> platform. It is available as an <emphasis>extension</emphasis> (also called <emphasis>add-on</emphasis>) for <ulink url="http://www.mozilla.com/firefox/">Mozilla Firefox</ulink>.
     </para>
     <para>
       With &project;, you can edit the following document types:
@@ -117,7 +123,7 @@
           </listitem>
           <listitem>
             <para>
-              Go to <ulink url="http://yulup.wyona.org/">http://yulup.wyona.org/</ulink>.
+              Go to <ulink url="http://www.yulup.org/">http://www.yulup.org/</ulink>.
             </para>
           </listitem>
           <listitem>
@@ -136,7 +142,7 @@
             </para>
           </listitem>
         </orderedlist>
-        You are done. You can verify that the installation was successful by opening Firefox's extension manager (<guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Extensions</guimenuitem>). There, an entry for &project; should appear.
+        You are done. You can verify that the installation was successful by opening Firefox's extension manager (<guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Extensions</guimenuitem> for Firefox 1.5; <guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Add-ons</guimenuitem> for Firefox 2.0). There, an entry for &project; should appear.
       </para>
     </section>
     <section id="update">
@@ -145,7 +151,7 @@
         <orderedlist>
           <listitem>
             <para>
-              Open Firefox's extension manager (<guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Extensions</guimenuitem>).
+              Open Firefox's extension manager (<guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Extensions</guimenuitem> for Firefox 1.5; <guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Add-ons</guimenuitem> for Firefox 2.0).
             </para>
           </listitem>
           <listitem>
@@ -219,19 +225,29 @@
               <listitem>
                 <formalpara>
                   <title>Checkout and Edit</title>
+                  If the server offers you the option of opening the document with locking, then a menu item labelled <guimenuitem>Checkout and Edit</guimenuitem> is enabled in the &project; Browser Menu. By checking out a document from the CMS like this, you are acquiring a lock on this document. This means that only you can currently edit this document, and noone else can edit this document in the meantime.
                 </formalpara>
+                <para>
+                  Note that the implementation of the locking mechanism is up to the web server. The web server may either hold the lock indefinitely, until you checkin the document again, or it may decide to drop the lock after a certain amount of time.
+                </para>
               </listitem>
             </itemizedlist>
           </para>
         </section>
         <section>
           <title>Open Document As-Is</title>
+          <para>
+            You can also open a document as-is, using the <guimenuitem>Edit Locally</guimenuitem> menu item. This simply reloads the document you are currently viewing into the editor. This enables you to edit arbitrary web pages. Of course, you cannot store such a document back to the web server, but you can still save it to your local filesystem.
+          </para>
         </section>
       </section>
       <section>
         <title>From inside the Editor</title>
         <section>
           <title>Open Document from CMS</title>
+        </section>
+        <section>
+          <title>Open Document from Local Filesystem</title>
         </section>
       </section>
     </section>
