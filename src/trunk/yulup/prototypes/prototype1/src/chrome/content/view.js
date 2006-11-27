@@ -3303,6 +3303,9 @@ GuidedTagInserter.prototype = {
                 this.view.view.insertText(aOpeningTagString);
             }
         }
+
+        // transfer focus back to editor
+        this.view.editor.contentWindow.focus();
     },
 
     clearPromptBox: function () {
