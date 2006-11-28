@@ -202,15 +202,19 @@
                 parentNode = splitNode.parentNode;
                 parentNode.insertBefore(aElement, splitNode);
 
-                // move selection into the text child of the newly inserter node
+                // move selection into the text child of the newly inserted node
+                // TODO: c.f. http://lxr.mozilla.org/mozilla1.8.0/source/editor/libeditor/base/InsertElementTxn.cpp#129
+                /*
                 range = parentNode.ownerDocument.createRange();
                 range.selectNode(textNode);
                 aSelection.removeAllRanges();
                 aSelection.addRange(range);
+                gEditor.selectionController.characterMove(true, false);
+                */
+                aSelection.collapse(textNode, 0);
 
                 // set focus
                 gEditorElem.contentWindow.focus();
-                gEditor.selectionController.characterMove(true, false);
             }
         }
     }
