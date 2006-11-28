@@ -3055,7 +3055,7 @@ ReadlineKeyBindingsListener.prototype = {
 
 
 function GuidedTagInserterKeyListener(aView) {
-    dump("Yulup:view.js:GuidedTagInserterKeyListener() invoked\n");
+    /* DEBUG */ dump("Yulup:view.js:GuidedTagInserterKeyListener() invoked\n");
 
     /* DEBUG */ YulupDebug.ASSERT(aView != null);
 
@@ -3068,10 +3068,10 @@ GuidedTagInserterKeyListener.prototype = {
     handleEvent: function (aKeyEvent) {
         var controller = null;
 
-        dump("Yulup:view.js:GuidedTagInserterKeyListener:handleEvent() invoked\n");
+        /* DEBUG */ dump("Yulup:view.js:GuidedTagInserterKeyListener:handleEvent() invoked\n");
 
         if (String.fromCharCode(aKeyEvent.charCode) == "i") {
-            dump("char code = i\n");
+            /* DEBUG */ dump("Yulup:view.js:GuidedTagInserterKeyListener:handleEvent: char code = i\n");
 
             if (aKeyEvent.ctrlKey) {
                 this.view.guidedTagInserter.startTagPrompting();
@@ -3114,7 +3114,7 @@ GuidedTagInserter.prototype = {
         var promptLabel   = null;
         var promptTextBox = null;
 
-        dump("Yulup:view.js:GuidedTagInserter:startTagPrompting() invoked\n");
+        /* DEBUG */ dump("Yulup:view.js:GuidedTagInserter:startTagPrompting() invoked\n");
 
         this.promptTextBox = null;
         this.tagName       = "";
@@ -3157,7 +3157,7 @@ GuidedTagInserter.prototype = {
         var promptLabel   = null;
         var promptTextBox = null;
 
-        dump("Yulup:view.js:GuidedTagInserter:promptAttributeName() invoked\n");
+        /* DEBUG */ dump("Yulup:view.js:GuidedTagInserter:promptAttributeName() invoked\n");
 
         this.clearPromptBox();
 
@@ -3189,7 +3189,7 @@ GuidedTagInserter.prototype = {
         var promptLabel   = null;
         var promptTextBox = null;
 
-        dump("Yulup:view.js:GuidedTagInserter:promptAttributeValue() invoked\n");
+        /* DEBUG */ dump("Yulup:view.js:GuidedTagInserter:promptAttributeValue() invoked\n");
 
         this.clearPromptBox();
 
@@ -3222,7 +3222,7 @@ GuidedTagInserter.prototype = {
         var promptEmptyTagFalseButton = null;
         var promptEmptyTagTrueButton  = null;
 
-        dump("Yulup:view.js:GuidedTagInserter:promptEmptyTag() invoked\n");
+        /* DEBUG */ dump("Yulup:view.js:GuidedTagInserter:promptEmptyTag() invoked\n");
 
         this.clearPromptBox();
 
@@ -3240,6 +3240,7 @@ GuidedTagInserter.prototype = {
         promptEmptyTagFalseButton.setAttribute("id", "uiPromptBoxNonEmptyButton");
         promptEmptyTagFalseButton.setAttribute("default", "true");
         promptEmptyTagFalseButton.addEventListener("command", this, true);
+        promptEmptyTagFalseButton.addEventListener("keypress", this, true);
 
         promptEmptyTagTrueButton = this.xulDocument.createElementNS(XUL_NAMESPACE_URI, "button");
         promptEmptyTagTrueButton.setAttribute("label", Editor.getStringbundleString("editorGuidedTagInserterEmptyButton.label"));
@@ -3276,7 +3277,7 @@ GuidedTagInserter.prototype = {
      * @return {Undefined} does not have a return value
      */
     finishPrompting: function (aOpeningTagString, aClosingTagString) {
-        dump("Yulup:view.js:GuidedTagInserter:finishPrompting(\"" + aOpeningTagString + "\", \"" + aClosingTagString + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:view.js:GuidedTagInserter:finishPrompting(\"" + aOpeningTagString + "\", \"" + aClosingTagString + "\") invoked\n");
 
         this.clearPromptBox();
 
@@ -3327,7 +3328,6 @@ GuidedTagInserter.prototype = {
         var abortButton = null;
 
         abortButton = this.xulDocument.createElementNS(XUL_NAMESPACE_URI, "toolbarbutton");
-        //abortButton.setAttribute("label", Editor.getStringbundleString("editorGuidedTagInserterAbortButton.label"));
         abortButton.setAttribute("class", "uiEditorFooterToolBarCloseButton");
         abortButton.setAttribute("tooltiptext", Editor.getStringbundleString("editorGuidedTagInserterAbortButton.tooltip"));
         abortButton.setAttribute("id", "uiPromptBoxAbortButton");
@@ -3339,52 +3339,64 @@ GuidedTagInserter.prototype = {
     handleEvent: function (aEvent) {
         var enteredText = null;
 
-        dump("Yulup:view.js:GuidedTagInserter:handleEvent(\"" + aEvent + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:view.js:GuidedTagInserter:handleEvent(\"" + aEvent + "\") invoked\n");
 
         if (aEvent.type == "keypress") {
-            if (aEvent.keyCode == Components.interfaces.nsIDOMKeyEvent.DOM_VK_RETURN ||
-                aEvent.keyCode == Components.interfaces.nsIDOMKeyEvent.DOM_VK_ENTER) {
-                // get entered text
-                enteredText = this.promptTextBox.value;
+            switch (aEvent.target.getAttribute("id")) {
+                case "uiPromptBoxTextbox":
+                    if (aEvent.keyCode == Components.interfaces.nsIDOMKeyEvent.DOM_VK_RETURN ||
+                        aEvent.keyCode == Components.interfaces.nsIDOMKeyEvent.DOM_VK_ENTER) {
+                        // get entered text
+                        enteredText = this.promptTextBox.value;
 
-                // dispatch to next stage
-                switch (this.promptStage) {
-                case this.PROMPT_STAGE_TAGNAME:
-                    // handle entered text
-                    if (enteredText == "") {
-                        // nothing entered means directly abort prompting
-                        this.finishPrompting(null, null);
-                    } else {
-                        // add it to the new tag string
-                        this.tagName  = enteredText;
-                        this.newTag  += "<" + enteredText;
+                        // dispatch to next stage
+                        switch (this.promptStage) {
+                            case this.PROMPT_STAGE_TAGNAME:
+                                // handle entered text
+                                if (enteredText == "") {
+                                    // nothing entered means directly abort prompting
+                                    this.finishPrompting(null, null);
+                                } else {
+                                    // add it to the new tag string
+                                    this.tagName  = enteredText;
+                                    this.newTag  += "<" + enteredText;
 
-                        // enter next stage
-                        this.promptAttributeName();
+                                    // enter next stage
+                                    this.promptAttributeName();
+                                }
+                                break;
+                            case this.PROMPT_STAGE_ATTRNAME:
+                                // handle entered text
+                                if (enteredText == "") {
+                                    // nothing entered means abort prompting for attributes
+                                    this.promptEmptyTag();
+                                } else {
+                                    // add it to the new tag string
+                                    this.newTag += " " + enteredText + "=";
+
+                                    // enter next stage
+                                    this.promptAttributeValue();
+                                }
+                                break;
+                            case this.PROMPT_STAGE_ATTRVALUE:
+                                // handle entered text
+                                this.newTag += "\"" + enteredText + "\"";
+
+                                // enter next stage
+                                this.promptAttributeName();
+                                break;
+                            default:
+                        }
                     }
                     break;
-                case this.PROMPT_STAGE_ATTRNAME:
-                    // handle entered text
-                    if (enteredText == "") {
-                        // nothing entered means abort prompting for attributes
-                        this.promptEmptyTag();
-                    } else {
-                        // add it to the new tag string
-                        this.newTag += " " + enteredText + "=";
-
-                        // enter next stage
-                        this.promptAttributeValue();
+                case "uiPromptBoxNonEmptyButton":
+                    if (aEvent.keyCode == Components.interfaces.nsIDOMKeyEvent.DOM_VK_RETURN ||
+                        aEvent.keyCode == Components.interfaces.nsIDOMKeyEvent.DOM_VK_ENTER) {
+                        // emulate keyboard activation for platform Mac
+                        aEvent.target.doCommand();
                     }
-                    break;
-                case this.PROMPT_STAGE_ATTRVALUE:
-                    // handle entered text
-                    this.newTag += "\"" + enteredText + "\"";
-
-                    // enter next stage
-                    this.promptAttributeName();
                     break;
                 default:
-                }
             }
         } else if (aEvent.type == "command") {
             switch (aEvent.target.getAttribute("id")) {
