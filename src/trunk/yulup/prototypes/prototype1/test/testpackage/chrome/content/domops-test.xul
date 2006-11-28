@@ -140,7 +140,15 @@
     }
 
     function addText() {
-        gEditor.insertHTML("<span>foooooooooooooo<b>boldbold</b>foooo<i>italicitalic</i>foooooooooooo</span>");
+        gEditor.insertHTML("<span>1234567891234<b>boldbold</b>foooo<i>italicitalic</i>1234567891234</span>");
+    }
+
+    function doUndo() {
+        dump("NOT IMPLEMENTED\n");
+    }
+
+    function doRedo() {
+        dump("NOT IMPLEMENTED\n");
     }
 
     function printDOMTree() {
@@ -176,7 +184,7 @@
         var parentNode = null;
         var range      = null;
 
-        dump("doSurroundCmd() invoked\n");
+        dump("doSurroundCmd(\"" + aSelection + "\", \"" + aElement.nodeName + "\") invoked\n");
 
         // check if the selection is collaped
         if (!aSelection.isCollapsed && aSelection.rangeCount > 0) {
@@ -191,6 +199,10 @@
             if (aSelection.anchorNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
                 dump("insert node \"" + aElement.nodeName + "\"\n");
 
+                // TODO: call beginTransaction()
+
+                // TODO: use nsIEditor methods to manipulate nodes
+
                 // prepare node to insert
                 textNode = aElement.ownerDocument.createTextNode("");
                 aElement.appendChild(textNode);
@@ -203,7 +215,7 @@
                 parentNode.insertBefore(aElement, splitNode);
 
                 // move selection into the text child of the newly inserted node
-                // TODO: c.f. http://lxr.mozilla.org/mozilla1.8.0/source/editor/libeditor/base/InsertElementTxn.cpp#129
+                // c.f. http://lxr.mozilla.org/mozilla1.8.0/source/editor/libeditor/base/InsertElementTxn.cpp#129
                 /*
                 range = parentNode.ownerDocument.createRange();
                 range.selectNode(textNode);
@@ -212,6 +224,8 @@
                 gEditor.selectionController.characterMove(true, false);
                 */
                 aSelection.collapse(textNode, 0);
+
+                // TODO: call endTransaction()
 
                 // set focus
                 gEditorElem.contentWindow.focus();
@@ -223,6 +237,8 @@
         var range    = null;
         var ancestor = null;
 
+        dump("surroundRange(\"" + aSelection + "\", \"" + aElement.nodeName + "\") invoked\n");
+
         // get range
         range = aSelection.getRangeAt(0);
 
@@ -230,18 +246,141 @@
 
         ancestor = range.commonAncestorContainer;
 
-        dump("ancestor = \"" + ancestor + "\"\n");
+        dump("common ancestor = \"" + ancestor + "\"\n");
 
         if (ancestor.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
-            ancestor = ancestor.parentNode;
-            dump("fixed ancestor = \"" + ancestor + "\"\n");
+            /* If the common ancestor is a text node, then the
+             * selection is entirely contained in the same node. */
+            surroundText(ancestor, range, aElement);
+        } else {
+            // TODO: not implemented
+            dump("NOT IMPLEMENTED\n");
+            /*
+            while (ancestor.firstChild) {
+                aElement.appendChild(ancestor.firstChild);
+            }
+            ancestor.appendChild(aElement);
+            */
+        }
+    }
+
+
+    function surroundText(aTextNode, aRange, aElement) {
+        var startOffset = null;
+        var endOffset   = null;
+        var parentNode  = null;
+        var targetNode  = null;
+
+        /* DEBUG */ dump("surroundText(\"" + aTextNode.nodeName + "\", \"" + aRange + "\", \"" + aElement.nodeName + "\") invoked\n");
+
+        // start offset is guaranteed to never be after the end position
+        startOffset = aRange.startOffset;
+        endOffset   = aRange.endOffset;
+
+        /* DEBUG */ dump("startOffset = " + startOffset + "\n");
+        /* DEBUG */ dump("endOffset = " + endOffset + "\n");
+
+        parentNode = aTextNode.parentNode;
+
+        /* DEBUG */ printChildNodeList(parentNode);
+
+        if (startOffset != 0) {
+            targetNode = aTextNode.splitText(startOffset);
+        } else {
+            targetNode = aTextNode;
         }
 
-        while (ancestor.firstChild) {
-            aElement.appendChild(ancestor.firstChild);
+        if (targetNode.length != endOffset - startOffset) {
+            targetNode.splitText(endOffset - startOffset);
         }
 
-        ancestor.appendChild(aElement);
+        /* DEBUG */ printChildNodeList(parentNode);
+
+        parentNode.replaceChild(aElement, targetNode);
+        aElement.appendChild(targetNode);
+
+        /* DEBUG */ printChildNodeList(parentNode);
+    }
+
+    /*
+    function surroundText2(aTextNode, aRange, aElement) {
+        var tmpObj      = { value: null };
+        var startOffset = null;
+        var endOffset   = null;
+        var parentNode  = null;
+        var midlleNode  = null;
+        var leftNode    = null;
+
+        dump("surroundText(\"" + aTextNode.nodeName + "\", \"" + aRange + "\", \"" + aElement.nodeName + "\") invoked\n");
+
+        // start offset is guaranteed to never be after the end position
+        startOffset = aRange.startOffset;
+        endOffset   = aRange.endOffset;
+
+        parentNode = aTextNode.parentNode;
+
+        printChildNodeList(parentNode);
+
+        // split text node
+        gEditor.splitNode(aTextNode, endOffset, tmpObj);
+        middleNode = tmpObj.value;
+
+        tmpObj.value = null;
+        gEditor.splitNode(middleNode, startOffset, tmpObj);
+        leftNode = tmpObj.value;
+
+        parentOffset = calculateParentOffset(middleNode);
+
+        dump("parent offset = " + parentOffset + "\n");
+
+        printChildNodeList(parentNode);
+
+        if (!parentOffset)
+            return;
+
+        gEditor.deleteNode(middleNode);
+
+        printChildNodeList(parentNode);
+
+        // this does not work because the rule sniffer will not alllow us to insert e.g. <B>!!
+        gEditor.insertNode(aElement, parentNode, parentOffset);
+
+        printChildNodeList(parentNode);
+
+        gEditor.insertNode(middleNode, aElement, 0);
+
+        printChildNodeList(parentNode);
+    }
+    */
+
+    function printChildNodeList(aNode) {
+        dump("child nodes of \"" + aNode.nodeName + "\" (" + aNode.childNodes.length + ")");
+        for (var i = 0; i < aNode.childNodes.length; i++) {
+            if (aNode.childNodes.item(i).nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+                dump(" \"" + aNode.childNodes.item(i).nodeName + " (" + aNode.childNodes.item(i).data + ")\"");
+            } else {
+                dump(" \"" + aNode.childNodes.item(i).nodeName + "\"");
+            }
+        }
+        dump("\n");
+    }
+
+    function calculateParentOffset(aChildNode) {
+        var offset = null;
+
+        dump("calculateParentOffset(\"" + aChildNode.nodeName + "\") invoked\n");
+
+        if (aChildNode.parentNode) {
+            for (var i = 0; i < aChildNode.parentNode.childNodes.length; i++) {
+                if (aChildNode.parentNode.childNodes.item(i) == aChildNode) {
+                    offset = i;
+                    break;
+                }
+            }
+        } else
+            dump("poor child has no parent\n");
+
+        return offset;
     }
     ]]>
   </script>
@@ -251,7 +390,9 @@
     <button label="Print Tree" oncommand="printDOMTree()"/>
     <button id="uiYulupBold"   label="Bold"   type="checkbox" oncommand="doBold()"/>
     <button id="uiYulupItalic" label="Italic" oncommand="doItalic()"/>
-    <button id="uiYulupTT"     label="Mono  " oncommand="doTT()"/>
+    <button id="uiYulupTT"     label="Mono"   oncommand="doTT()"/>
+    <button id="uiYulupUndo"   label="Undo"   oncommand="doUndo()"/>
+    <button id="uiYulupRedo"   label="Redo"   oncommand="doRedo()"/>
   </hbox>
 
 </window>
