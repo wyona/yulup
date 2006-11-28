@@ -3293,6 +3293,10 @@ GuidedTagInserter.prototype = {
                     /* Insert text directly because doCommandParams is not exposed via
                      * XPConnect for this controller, and doCommand is not implemented. */
                     this.view.view.insertText(aOpeningTagString + aClosingTagString);
+
+                    // move selection to the middle of the inserted element tuple
+                    for (var i = 0; i < aClosingTagString.length; i++)
+                        this.view.view.selectionController.characterMove(false, false);
                 } else {
                     // selection is not collapsed, surround the selection
                     this.view.view.insertText(aOpeningTagString + this.view.view.selection + aClosingTagString);
