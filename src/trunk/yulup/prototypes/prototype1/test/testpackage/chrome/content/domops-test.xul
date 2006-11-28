@@ -264,6 +264,30 @@
         }
     }
 
+    function surroundTree(aRange, aElement) {
+        // get deepest common ancestor from aRange
+        //commonAncestor = 
+
+        // get deepest common ancestor child on the way from the start node up
+
+        // get deepest common ancestor child on the way from the end node up
+
+        // get right sibling of the node above
+        //newRightSibling = 
+
+        // move all deepest common ancestor children between these two nodes (including them) under the to be inserted parent
+
+        // insert new parent before newRightSibling
+        if (newRightSibling) {
+            commonAncestor.insertBefore(aElement, newRightSibling);
+        } else {
+            commonAncestor.appendChild(aElement);
+        }
+
+        // remove all elements of type aElement from the subtrees formed by the children of aElement
+
+        // TODO: this algorithm does not deal with start and end node splitting!
+    }
 
     function surroundText(aTextNode, aRange, aElement) {
         var startOffset = null;
