@@ -3147,6 +3147,10 @@ GuidedTagInserter.prototype = {
         this.promptContainer.removeAttribute("hidden");
 
         this.promptTextBox.focus();
+        /* The promptTextBox may need some time be inserted, but we
+         * can't catch the DOMNodeInserted event for some reason, so
+         * we just have to wait for a reasonable amount of time. */
+        window.setTimeout(function () { promptTextBox.focus(); }, 100);
     },
 
     promptAttributeName: function () {
