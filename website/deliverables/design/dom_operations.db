@@ -1,0 +1,32 @@
+<div element="article" href="dom_operations.xhtml#id52599" number="">
+  <ttl>Range Operations on a DOM Tree Model</ttl>
+  <xreftext>Range Operations on a DOM Tree Model</xreftext>
+  <div element="section" href="dom_operations.xhtml#id342751" number="1">
+    <ttl>Overview</ttl>
+    <xreftext>Section 1, “Overview”</xreftext>
+    <div element="section" href="dom_operations.xhtml#id342760" number="1.1">
+      <ttl>Abstracted DOM Tree</ttl>
+      <xreftext>Section 1.1, “Abstracted DOM Tree”</xreftext>
+    </div>
+  </div>
+  <div element="section" href="dom_operations.xhtml#id342770" number="2">
+    <ttl>Tree Equality</ttl>
+    <xreftext>Section 2, “Tree Equality”</xreftext>
+  </div>
+  <div element="section" href="dom_operations.xhtml#id342855" number="3">
+    <ttl>Transformations under Tree Equality</ttl>
+    <xreftext>Section 3, “Transformations under Tree Equality”</xreftext>
+  </div>
+  <div element="section" href="dom_operations.xhtml#id342868" number="4">
+    <ttl>Editing Operations</ttl>
+    <xreftext>Section 4, “Editing Operations”</xreftext>
+  </div>
+  <div element="section" href="dom_operations.xhtml#id342877" number="5">
+    <ttl>Notes on Schema Conformitiy</ttl>
+    <xreftext>Section 5, “Notes on Schema Conformitiy”</xreftext>
+  </div>
+  <div element="appendix" href="dom_operations.xhtml#id342887" number="A">
+    <ttl>W3C DOM Specific Implementation</ttl>
+    <xreftext>Appendix A, <i xmlns="http://www.w3.org/1999/xhtml">W3C DOM Specific Implementation</i></xreftext>
+  </div>
+</div>

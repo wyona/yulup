@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../utils/customization/style.xsl"?>
+
+<!DOCTYPE article [
+  <!ENTITY % docbook PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+  %docbook;
+  <!ENTITY % local SYSTEM "../../../utils/customization/commons.dtd">
+  %local;
+]>
+
+<article>
+  <articleinfo>
+    <title>Range Operations on a DOM Tree Model</title>
+    <authorgroup>
+      <author>
+        <firstname>Andreas</firstname>
+        <surname>Wuest</surname>
+        <email>awuest@student.ethz.ch</email>
+        <affiliation>
+          <corpname>Wyona AG</corpname>
+        </affiliation>
+      </author>
+    </authorgroup>
+    <!-- All dates specified in ISO "YYYY-MM-DD" format -->
+    <pubdate>2006-11-29</pubdate>
+    <!-- Most recent revision goes at the top; list in descending order -->
+    <revhistory>
+      <revision>
+        <revnumber>1.0</revnumber>
+        <date>2006-11-29</date>
+        <authorinitials>AW</authorinitials>
+        <revremark>First initial draft.</revremark>
+      </revision>
+    </revhistory>
+    <abstract>
+      <para>Advanced editing of documents based on a DOM representation requires sophisticated range operations. This article describes tree transformations and atomic operations which help performing various tasks related to editing.</para>
+    </abstract>
+  </articleinfo>
+
+  <section>
+    <title>Overview</title>
+    <para>
+
+    </para>
+    <section>
+      <title>Abstracted DOM Tree</title>
+      <variablelist>
+        <title>Definition</title>
+        <varlistentry>
+          <term>Tree</term>
+          <listitem>
+            <para>
+              A tree <mathphrase>T</mathphrase> is a five-tuple <mathphrase>T = (A, C, E, r, &Theta;)</mathphrase> where <mathphrase>A</mathphrase> is a set of atoms <mathphrase>a</mathphrase>, <mathphrase>C</mathphrase> is a set of atom containers <mathphrase>c</mathphrase>, <mathphrase>E</mathphrase> is a set of elements <mathphrase>e</mathphrase>, <mathphrase>r &isin; E</mathphrase> is the tree root, and <mathphrase>&Theta;</mathphrase> is the set of element types <mathphrase>&thetav;</mathphrase>. All leave nodes of a tree <mathphrase>T</mathphrase> are atom containers <mathphrase>c</mathphrase>, possibly only consisting of a single <mathphrase>&epsiv;</mathphrase>.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Atom</term>
+          <listitem>
+            <para>
+              An atom <mathphrase>a</mathphrase> is a non-splittable entity always contained in an atom container <mathphrase>c</mathphrase>.
+            </para>
+            <para>
+              In a W3C XML DOM this would represent a single text <emphasis>character</emphasis>.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Atom container</term>
+          <listitem>
+            <para>
+              An atom container <mathphrase>c</mathphrase> is a node containing a sequence of atoms <mathphrase>a</mathphrase>, separated and surrounded by separators <mathphrase>&epsiv;<subscript>i</subscript></mathphrase> such that <mathphrase>c = &lt;&epsiv;<subscript>0</subscript>a<subscript>0</subscript>&epsiv;<subscript>1</subscript>a<subscript>1</subscript>&epsiv;<subscript>2</subscript>...&epsiv;<subscript>n</subscript>a<subscript>n</subscript>&epsiv;<subscript>n+1</subscript>&gt;</mathphrase>.
+            </para>
+            <para>
+              In a W3C XML DOM this would represent a <emphasis>text</emphasis> node.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Type</term>
+          <listitem>
+            <para>
+              A type <mathphrase>&thetav;</mathphrase> is the type associated with an element <mathphrase>e</mathphrase>. <mathphrase>&Theta;</mathphrase> is the set of all types used by the elements <mathphrase>E</mathphrase>, <mathphrase>&Theta; = { &thetav;(e) | &forall; e &isin; E}</mathphrase>.
+            </para>
+            <para>
+              In a W3C XML DOM this would represent the <emphasis>QName</emphasis> of an element.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Element</term>
+          <listitem>
+            <para>
+              An element <mathphrase>e</mathphrase> is a node of type <mathphrase>&thetav;(e) &isin; &Theta;</mathphrase>.
+            </para>
+            <para>
+              In a W3C XML DOM this would represent an <emphasis>element</emphasis> node.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Element equality</term>
+          <listitem>
+            <para>
+              Two elements <mathphrase>e<subscript>1</subscript></mathphrase> and <mathphrase>e<subscript>2</subscript></mathphrase> are equal (denoted <mathphrase>e<subscript>1</subscript> &equiv; e<subscript>2</subscript></mathphrase>) if <mathphrase>&thetav;(e<subscript>1</subscript>) = &thetav;(e<subscript>2</subscript>)</mathphrase>.
+            </para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
+  </section>
+
+  <section>
+    <title>Tree Equality</title>
+    <variablelist>
+      <title>Definitions</title>
+      <varlistentry>
+        <term>Path</term>
+        <listitem>
+          <para>
+            A path <mathphrase>p(a, r)</mathphrase> is a sequence of elements <mathphrase>e &isin; E</mathphrase> from an atom <mathphrase>a &isin; A</mathphrase> to the root <mathphrase>r &isin; E</mathphrase> such that <mathphrase>p(a, r) = &lt;e<subscript>1</subscript>e<subscript>2</subscript>...e<subscript>n</subscript>&gt;</mathphrase>.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Path equality</term>
+        <listitem>
+          <para>
+            Two paths <mathphrase>p(a<subscript>1</subscript>, r<subscript>1</subscript>)</mathphrase> and <mathphrase>p(a<subscript>2</subscript>, r<subscript>2</subscript>)</mathphrase> are equal (denoted <mathphrase>p(a<subscript>1</subscript>, r<subscript>1</subscript>) &equiv; p(a<subscript>2</subscript>, r<subscript>2</subscript>)</mathphrase>) if <mathphrase>a<subscript>1</subscript> &equiv; a<subscript>2</subscript></mathphrase>, <mathphrase>r<subscript>1</subscript> &equiv; r<subscript>2</subscript></mathphrase>, <mathphrase>|p(a<subscript>1</subscript>, r<subscript>1</subscript>)| = |p(a<subscript>2</subscript>, r<subscript>2</subscript>)|</mathphrase> and <mathphrase>e<subscript>i</subscript> &isin; p(a<subscript>1</subscript>, r<subscript>1</subscript>) &equiv; e<subscript>i</subscript> &isin; p(a<subscript>2</subscript>, r<subscript>2</subscript>)</mathphrase>.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Tree equality</term>
+        <listitem>
+          <para>
+            Two trees <mathphrase>T<subscript>1</subscript></mathphrase> and <mathphrase>T<subscript>2</subscript></mathphrase> are equal (denoted <mathphrase>T<subscript>1</subscript> &equiv; T<subscript>2</subscript></mathphrase>) if every path <mathphrase>p<subscript>i</subscript></mathphrase> from atom <mathphrase>a<subscript>i</subscript> &isin; A<subscript>1</subscript></mathphrase> to the root <mathphrase>r<subscript>1</subscript></mathphrase> is equal to path <mathphrase>p<subscript>i</subscript></mathphrase> from atom <mathphrase>a<subscript>i</subscript> &isin; A<subscript>2</subscript></mathphrase> to the root <mathphrase>r<subscript>2</subscript></mathphrase> and <mathphrase>A<subscript>1</subscript> &equiv; A<subscript>2</subscript></mathphrase>.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </section>
+
+  <section>
+    <title>Transformations under Tree Equality</title>
+    <para>
+      A tree <mathphrase>T</mathphrase> can be transformed such that after the transformation, the original tree <mathphrase>T</mathphrase> and the transformed tree <mathphrase>T<subscript>t</subscript></mathphrase> are equal under path equality.
+    </para>
+    <para>
+      Such transformations are perfomed using the <emphasis>fragmentation</emphasis> and the <emphasis>defragmentation</emphasis> operations. Fragmentation potentially increases the number of elements <mathphrase>e</mathphrase> and the number of atom containers <mathphrase>c</mathphrase>, whereas defragmentation reduces the number of elements and atom containers. The number of atoms <mathphrase>a</mathphrase> stays the same.
+    </para>
+    <variablelist>
+      <title>Definitions</title>
+      <varlistentry>
+        <term>Range</term>
+        <listitem>
+          <para>
+            A range <mathphrase>R</mathphrase> is a four-tuple <mathphrase>R = (c<subscript>1</subscript>, i<subscript>1</subscript>, c<subscript>2</subscript>, i<subscript>2</subscript>)</mathphrase> where <mathphrase>c<subscript>1</subscript> &isin; C</mathphrase> is the start container, <mathphrase>i<subscript>1</subscript></mathphrase> is an index into the start container pointing to an <mathphrase>&epsiv;</mathphrase> separator, <mathphrase>c<subscript>2</subscript> &isin; C</mathphrase> is the end container and <mathphrase>i<subscript>2</subscript></mathphrase> is an index into the end container pointing to an <mathphrase>&epsiv;</mathphrase> separator.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <section>
+      <title>Fragmentation</title>
+      <para>
+        
+      </para>
+    </section>
+    <section>
+      <title>Defragmentation</title>
+    </section>
+  </section>
+
+  <section>
+    <title>Editing Operations</title>
+    <para>
+
+    </para>
+  </section>
+
+  <section>
+    <title>Notes on Schema Conformitiy</title>
+    <para>
+
+    </para>
+  </section>
+
+  <appendix>
+    <title>W3C DOM Specific Implementation</title>
+    <para>
+
+    </para>
+  </appendix>
+
+</article>

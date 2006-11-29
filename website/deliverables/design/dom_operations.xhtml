@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Range Operations on a DOM Tree Model</title>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.69.1"/>
+    <meta name="description" content="Advanced editing of documents based on a DOM representation requires sophisticated range operations. This article describes tree transformations and atomic operations which help performing various tasks related to editing."/>
+  </head>
+  <body>
+    <div class="article" lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a id="id52599"/>Range Operations on a DOM Tree Model</h1>
+          </div>
+          <div>
+            <div class="authorgroup">
+              <div class="author">
+                <h3 class="author"><span class="firstname">Andreas</span> <span class="surname">Wuest</span></h3>
+                <div class="affiliation">
+                  <span class="corpname">Wyona AG<br/></span>
+                </div>
+                <code class="email">&lt;<a href="mailto:awuest@student.ethz.ch">awuest@student.ethz.ch</a>&gt;</code>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="pubdate">2006-11-29</p>
+          </div>
+          <div>
+            <div class="revhistory">
+              <table border="1" width="100%" summary="Revision history">
+                <tr>
+                  <th align="left" valign="top" colspan="3">
+                    <b>Revision History</b>
+                  </th>
+                </tr>
+                <tr>
+                  <td align="left">Revision 1.0</td>
+                  <td align="left">2006-11-29</td>
+                  <td align="left">AW</td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="3">First initial draft.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div class="abstract">
+              <p class="title">
+                <b>Abstract</b>
+              </p>
+              <p>Advanced editing of documents based on a DOM representation requires sophisticated range operations. This article describes tree transformations and atomic operations which help performing various tasks related to editing.</p>
+            </div>
+          </div>
+        </div>
+        <hr/>
+      </div>
+      <div class="toc">
+        <p>
+          <b>Table of Contents</b>
+        </p>
+        <dl>
+          <dt>
+            <span class="section">
+              <a href="#id342751">1. Overview</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id342760">1.1. Abstracted DOM Tree</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id343031">2. Tree Equality</a>
+            </span>
+          </dt>
+          <dt>
+            <span class="section">
+              <a href="#id343265">3. Transformations under Tree Equality</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id343381">3.1. Fragmentation</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#id343390">3.2. Defragmentation</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id343398">4. Editing Operations</a>
+            </span>
+          </dt>
+          <dt>
+            <span class="section">
+              <a href="#id343408">5. Notes on Schema Conformitiy</a>
+            </span>
+          </dt>
+          <dt>
+            <span class="appendix">
+              <a href="#id343417">A. W3C DOM Specific Implementation</a>
+            </span>
+          </dt>
+        </dl>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id342751"/>1. Overview</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+
+    </p>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id342760"/>1.1. Abstracted DOM Tree</h3>
+              </div>
+            </div>
+          </div>
+          <div class="variablelist">
+            <p class="title">
+              <b>Definition</b>
+            </p>
+            <dl>
+              <dt>
+                <span class="term">Tree</span>
+              </dt>
+              <dd>
+                <p>
+              A tree <span class="mathphrase">T</span> is a five-tuple <span class="mathphrase">T = (A, C, E, r, Θ)</span> where <span class="mathphrase">A</span> is a set of atoms <span class="mathphrase">a</span>, <span class="mathphrase">C</span> is a set of atom containers <span class="mathphrase">c</span>, <span class="mathphrase">E</span> is a set of elements <span class="mathphrase">e</span>, <span class="mathphrase">r ∈ E</span> is the tree root, and <span class="mathphrase">Θ</span> is the set of element types <span class="mathphrase">ϑ</span>. All leave nodes of a tree <span class="mathphrase">T</span> are atom containers <span class="mathphrase">c</span>, possibly only consisting of a single <span class="mathphrase">ε</span>.
+            </p>
+              </dd>
+              <dt>
+                <span class="term">Atom</span>
+              </dt>
+              <dd>
+                <p>
+              An atom <span class="mathphrase">a</span> is a non-splittable entity always contained in an atom container <span class="mathphrase">c</span>.
+            </p>
+                <p>
+              In a W3C XML DOM this would represent a single text <span class="emphasis"><em>character</em></span>.
+            </p>
+              </dd>
+              <dt>
+                <span class="term">Atom container</span>
+              </dt>
+              <dd>
+                <p>
+              An atom container <span class="mathphrase">c</span> is a node containing a sequence of atoms <span class="mathphrase">a</span>, separated and surrounded by separators <span class="mathphrase">ε<sub>i</sub></span> such that <span class="mathphrase">c = &lt;ε<sub>0</sub>a<sub>0</sub>ε<sub>1</sub>a<sub>1</sub>ε<sub>2</sub>...ε<sub>n</sub>a<sub>n</sub>ε<sub>n+1</sub>&gt;</span>.
+            </p>
+                <p>
+              In a W3C XML DOM this would represent a <span class="emphasis"><em>text</em></span> node.
+            </p>
+              </dd>
+              <dt>
+                <span class="term">Type</span>
+              </dt>
+              <dd>
+                <p>
+              A type <span class="mathphrase">ϑ</span> is the type associated with an element <span class="mathphrase">e</span>. <span class="mathphrase">Θ</span> is the set of all types used by the elements <span class="mathphrase">E</span>, <span class="mathphrase">Θ = { ϑ(e) | ∀ e ∈ E}</span>.
+            </p>
+                <p>
+              In a W3C XML DOM this would represent the <span class="emphasis"><em>QName</em></span> of an element.
+            </p>
+              </dd>
+              <dt>
+                <span class="term">Element</span>
+              </dt>
+              <dd>
+                <p>
+              An element <span class="mathphrase">e</span> is a node of type <span class="mathphrase">ϑ(e) ∈ Θ</span>.
+            </p>
+                <p>
+              In a W3C XML DOM this would represent an <span class="emphasis"><em>element</em></span> node.
+            </p>
+              </dd>
+              <dt>
+                <span class="term">Element equality</span>
+              </dt>
+              <dd>
+                <p>
+              Two elements <span class="mathphrase">e<sub>1</sub></span> and <span class="mathphrase">e<sub>2</sub></span> are equal (denoted <span class="mathphrase">e<sub>1</sub> ≡ e<sub>2</sub></span>) if <span class="mathphrase">ϑ(e<sub>1</sub>) = ϑ(e<sub>2</sub>)</span>.
+            </p>
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id343031"/>2. Tree Equality</h2>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <p class="title">
+            <b>Definitions</b>
+          </p>
+          <dl>
+            <dt>
+              <span class="term">Path</span>
+            </dt>
+            <dd>
+              <p>
+            A path <span class="mathphrase">p(a, r)</span> is a sequence of elements <span class="mathphrase">e ∈ E</span> from an atom <span class="mathphrase">a ∈ A</span> to the root <span class="mathphrase">r ∈ E</span> such that <span class="mathphrase">p(a, r) = &lt;e<sub>1</sub>e<sub>2</sub>...e<sub>n</sub>&gt;</span>.
+          </p>
+            </dd>
+            <dt>
+              <span class="term">Path equality</span>
+            </dt>
+            <dd>
+              <p>
+            Two paths <span class="mathphrase">p(a<sub>1</sub>, r<sub>1</sub>)</span> and <span class="mathphrase">p(a<sub>2</sub>, r<sub>2</sub>)</span> are equal (denoted <span class="mathphrase">p(a<sub>1</sub>, r<sub>1</sub>) ≡ p(a<sub>2</sub>, r<sub>2</sub>)</span>) if <span class="mathphrase">a<sub>1</sub> ≡ a<sub>2</sub></span>, <span class="mathphrase">r<sub>1</sub> ≡ r<sub>2</sub></span>, <span class="mathphrase">|p(a<sub>1</sub>, r<sub>1</sub>)| = |p(a<sub>2</sub>, r<sub>2</sub>)|</span> and <span class="mathphrase">e<sub>i</sub> ∈ p(a<sub>1</sub>, r<sub>1</sub>) ≡ e<sub>i</sub> ∈ p(a<sub>2</sub>, r<sub>2</sub>)</span>.
+          </p>
+            </dd>
+            <dt>
+              <span class="term">Tree equality</span>
+            </dt>
+            <dd>
+              <p>
+            Two trees <span class="mathphrase">T<sub>1</sub></span> and <span class="mathphrase">T<sub>2</sub></span> are equal (denoted <span class="mathphrase">T<sub>1</sub> ≡ T<sub>2</sub></span>) if every path <span class="mathphrase">p<sub>i</sub></span> from atom <span class="mathphrase">a<sub>i</sub> ∈ A<sub>1</sub></span> to the root <span class="mathphrase">r<sub>1</sub></span> is equal to path <span class="mathphrase">p<sub>i</sub></span> from atom <span class="mathphrase">a<sub>i</sub> ∈ A<sub>2</sub></span> to the root <span class="mathphrase">r<sub>2</sub></span> and <span class="mathphrase">A<sub>1</sub> ≡ A<sub>2</sub></span>.
+          </p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id343265"/>3. Transformations under Tree Equality</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      A tree <span class="mathphrase">T</span> can be transformed such that after the transformation, the original tree <span class="mathphrase">T</span> and the transformed tree <span class="mathphrase">T<sub>t</sub></span> are equal under path equality.
+    </p>
+        <p>
+      Such transformations are perfomed using the <span class="emphasis"><em>fragmentation</em></span> and the <span class="emphasis"><em>defragmentation</em></span> operations. Fragmentation potentially increases the number of elements <span class="mathphrase">e</span> and the number of atom containers <span class="mathphrase">c</span>, whereas defragmentation reduces the number of elements and atom containers. The number of atoms <span class="mathphrase">a</span> stays the same.
+    </p>
+        <div class="variablelist">
+          <p class="title">
+            <b>Definitions</b>
+          </p>
+          <dl>
+            <dt>
+              <span class="term">Range</span>
+            </dt>
+            <dd>
+              <p>
+            A range <span class="mathphrase">R</span> is a four-tuple <span class="mathphrase">R = (c<sub>1</sub>, i<sub>1</sub>, c<sub>2</sub>, i<sub>2</sub>)</span> where <span class="mathphrase">c<sub>1</sub> ∈ C</span> is the start container, <span class="mathphrase">i<sub>1</sub></span> is an index into the start container pointing to an <span class="mathphrase">ε</span> separator, <span class="mathphrase">c<sub>2</sub> ∈ C</span> is the end container and <span class="mathphrase">i<sub>2</sub></span> is an index into the end container pointing to an <span class="mathphrase">ε</span> separator.
+          </p>
+            </dd>
+          </dl>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id343381"/>3.1. Fragmentation</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        
+      </p>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id343390"/>3.2. Defragmentation</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id343398"/>4. Editing Operations</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+
+    </p>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id343408"/>5. Notes on Schema Conformitiy</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+
+    </p>
+      </div>
+      <div class="appendix" lang="en">
+        <h2 class="title"><a id="id343417"/>A. W3C DOM Specific Implementation</h2>
+        <p>
+
+    </p>
+      </div>
+    </div>
+  </body>
+</html>
