@@ -34,12 +34,12 @@
       </author>
     </authorgroup>
     <!-- All dates specified in ISO "YYYY-MM-DD" format -->
-    <pubdate>2006-11-27</pubdate>
+    <pubdate>2006-11-29</pubdate>
     <!-- Most recent revision goes at the top; list in descending order -->
     <revhistory>
       <revision>
         <revnumber>0.1.1</revnumber>
-        <date>2006-11-27</date>
+        <date>2006-11-29</date>
         <authorinitials>AW</authorinitials>
         <revremark>Updated and more content added.</revremark>
       </revision>
@@ -289,11 +289,22 @@
           <title>Open Document As-Is</title>
           <para>
             You can also open a document as-is, using the <guimenuitem>Edit Locally</guimenuitem> menu item. This simply reloads the document you are currently viewing into the editor. This enables you to edit arbitrary web pages. Of course, you cannot store such a document back to the web server, but you can still save it to your local filesystem.
+            <figure>
+              <title><emphasis>Edit Locally</emphasis></title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="figures/edit_locally.png" format="PNG"/>
+                </imageobject>
+                <textobject>
+                  <phrase>Edit a document locally</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
           </para>
         </section>
       </section>
       <section>
-        <title>From inside the Editor</title>
+        <title>Inside the Editor</title>
         <section>
           <title>Open Document from CMS</title>
         </section>
@@ -308,13 +319,125 @@
         <title>From the Webbrowser View</title>
       </section>
       <section>
-        <title>From inside the Editor</title>
+        <title>Inside the Editor</title>
       </section>
     </section>
   </section>
 
   <section>
     <title>Saving Documents</title>
+    <para>
+      Once a document was modified in the editor, there are several possibilities to store the document.
+    </para>
+    <section>
+      <title>Save Document</title>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <formalpara>
+              <title>Save to file</title>
+              Saves the modifications to the local file system.
+            </formalpara>
+            <para>
+              This menu item is only available if the document contains changes and the document was either loaded from the local file system, or was previously saved to the local file system.
+            </para>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>Save temporary copy [this feature will be activated in a future release]</title>
+              Saves a temporary copy to your local workspace.
+            </formalpara>
+            <para>
+              This menu item is only available if the document contains changes.
+            </para>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>Save back to CMS</title>
+              Saves the modifications back to the CMS but does not release the lock held on this document.
+            </formalpara>
+            <para>
+              This menu item is only visible if the document contains changes and the server supports storing without lock-release.
+            </para>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>Check back in to CMS and exit</title>
+              Saves the modifications back to the CMS, releases the lock held on this document and exits the editor. After exiting, the modified document is reloaded from the document source and rendered in the editor tab so you can immediately check how your document looks like.
+            </formalpara>
+            <para>
+              This menu item is only visible if the document contains changes and the server supports storing with lock-release.
+            </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+    <section>
+      <title>Save Document As...</title>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <formalpara>
+              <title>Save to file system as...</title>
+              Saves the document to the local file system. You are asked to supply a path to the place where you want the document to be stored.
+            </formalpara>
+          </listitem>
+        </itemizedlist>
+        <itemizedlist>
+          <listitem>
+            <formalpara>
+              <title>Save to CMS as...</title>
+              Saves the document to the CMS. You are asked to supply a path to the place where you want the document to be stored.
+              <figure>
+                <title><emphasis>Save to CMS as...</emphasis> inside the Editor</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="figures/upload_document.png" format="PNG"/>
+                  </imageobject>
+                  <textobject>
+                    <phrase>Save to CMS as.. inside the editor</phrase>
+                  </textobject>
+                </mediaobject>
+              </figure>
+            </formalpara>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+  </section>
+
+  <section>
+    <title>Uploading Documents/Assets</title>
+    <para>
+      <figure>
+        <title>Specify the CMS URI</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/upload_specifyuri.png" format="PNG"/>
+          </imageobject>
+          <textobject>
+            <phrase>Specify the CMS URI</phrase>
+          </textobject>
+        </mediaobject>
+      </figure>
+      <figure>
+        <title>Upload a Document or Asset</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/upload_asset.png" format="PNG"/>
+          </imageobject>
+          <textobject>
+            <phrase>Upload a document or asset</phrase>
+          </textobject>
+        </mediaobject>
+      </figure>
+    </para>
+    <section>
+      <title>From the Webbrowser View</title>
+    </section>
+    <section>
+      <title>Inside the Editor</title>
+    </section>
   </section>
 
   <section>
