@@ -287,6 +287,7 @@
         // remove all elements of type aElement from the subtrees formed by the children of aElement
 
         // TODO: this algorithm does not deal with start and end node splitting!
+        // reduce start and end node cases to surroundText!
     }
 
     function surroundText(aTextNode, aRange, aElement) {
