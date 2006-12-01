@@ -126,6 +126,13 @@
     <broadcaster id="broadcaster_yulup_neutronfromcheckout" disabled="true"/>
   </broadcasterset>
 
+  <!-- Note that you have to handle these keys as well in the CommandKeyBindingsListener,
+       otherwise they won't work if the focus is inside the editor element. -->
+  <keyset>
+    <key id="key_yulup_savetmp" modifiers="accel shift" key="T" oncommand="Editor.saveDispatcher('savetemp')"/>
+    <key id="key_yulup_save"    modifiers="accel shift" key="S" oncommand="Editor.saveDispatcher('savecms')"/>
+  </keyset>
+
   <popupset>
     <popup id="uiYulupEditorToolboxContextMenu"
            onpopupshowing="Editor.updateToolboxContextMenu()">
@@ -175,10 +182,12 @@
             <menuitem id="uiFileOperationSaveTempMenuitem"
                       oncommand="Editor.saveDispatcher('savetemp')"
                       label="&fileOperationSaveTempMenuitem.label;" tooltiptext="&fileOperationSaveTempMenuitem.tooltip;"
+                      key="key_yulup_savetmp"
                       disabled="true"/>
             <menuitem id="uiFileOperationSaveCMSMenuitem"
                       oncommand="Editor.saveDispatcher('savecms')"
                       label="&fileOperationSaveCMSMenuitem.label;" tooltiptext="&fileOperationSaveCMSMenuitem.tooltip;"
+                      key="key_yulup_save"
                       disabled="true"
                       hidden="true"/>
             <menuitem id="uiFileOperationCheckinCMSAndExitMenuitem"

@@ -702,6 +702,8 @@ SourceModeView.prototype = {
                 }
             }
 
+            sourceEditor.contentWindow.addEventListener("keypress", new CommandKeyListener(), true);
+
             sourceEditor.contentWindow.addEventListener("keypress", new TextEditorKeyListener(this.view, useTabSpaces, noOfTabSpaces), true);
             sourceEditor.contentWindow.addEventListener("keypress", new GuidedTagInserterKeyListener(this), true);
 
@@ -918,6 +920,8 @@ WYSIWYGModeView.prototype = {
              * is, so we need a C++ call here (see
              * http://lxr.mozilla.org/mozilla1.8.0/source/editor/libeditor/html/nsHTMLEditor.cpp#1209). */
             this.view.updateBaseURL();
+
+            wysiwygEditor.contentWindow.addEventListener("keypress", new CommandKeyListener(), true);
 
             if ((keyBinding = YulupPreferences.getCharPref("editor.", "keybinding")) != null) {
                 switch (keyBinding) {
@@ -1205,6 +1209,8 @@ WYSIWYGXSLTModeView.prototype = {
              * is, so we need a C++ call here (see
              * http://lxr.mozilla.org/mozilla1.8.0/source/editor/libeditor/html/nsHTMLEditor.cpp#1209). */
             this.view.updateBaseURL();
+
+            wysiwygXSLTEditor.contentWindow.addEventListener("keypress", new CommandKeyListener(), true);
 
             wysiwygXSLTEditor.contentWindow.addEventListener("keyup", new WYSIWYGXSLTKeyListener(this), true);
 
@@ -2828,6 +2834,61 @@ TextEditorKeyListener.prototype = {
         }
 
         return true;
+    }
+};
+
+
+function CommandKeyListener() {
+    /* DEBUG */ dump("Yulup:view.js:CommandKeyListener() invoked\n");
+
+    /* Detect platform to set accel key correctly. This is a
+     * workaround until https://bugzilla.mozilla.org/show_bug.cgi?id=180840
+     * gets fixed. */
+    if ((new RegExp("Mac")).test(navigator.platform)) {
+        this.__accelCmd = true;
+    } else {
+        this.__accelCmd = false;
+    }
+}
+
+CommandKeyListener.prototype = {
+    __accelCmd  : null,
+
+    handleEvent: function (aKeyEvent) {
+        var controller = null;
+
+        /* DEBUG */ dump("Yulup:view.js:CommandKeyListener.handleEvent() invoked\n");
+
+        if ((this.__accelCmd  && aKeyEvent.metaKey) ||
+            (!this.__accelCmd && aKeyEvent.ctrlKey)) {
+            /* DEBUG */ dump("Yulup:view.js:CommandKeyListener.handleEvent: char code = " + String.fromCharCode(aKeyEvent.charCode) + "\n");
+
+            switch (String.fromCharCode(aKeyEvent.charCode)) {
+                case "s":
+                case "S":
+                    if (aKeyEvent.shiftKey) {
+                        Editor.saveDispatcher("savecms");
+
+                        // we consumed this event
+                        aKeyEvent.preventDefault();
+                        return true;
+                    }
+
+                    break;
+                case "t":
+                case "T":
+                    if (aKeyEvent.shiftKey) {
+                        Editor.saveDispatcher("savetemp");
+
+                        // we consumed this event
+                        aKeyEvent.preventDefault();
+                        return true;
+                    }
+
+                    break;
+                default:
+            }
+        }
     }
 };
 
