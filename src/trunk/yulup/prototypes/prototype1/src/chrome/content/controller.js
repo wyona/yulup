@@ -753,3 +753,137 @@ YulupEditStateController.prototype = {
         }
     }
 };
+
+
+/**
+ * EditorCommandController constructor. Instantiates a new object of
+ * type EditorCommandController.
+ *
+ * Implements the nsIController interface.
+ *
+ * @constructor
+ * @param  {YulupEditController}      aEditorController    the editor controller
+ * @param  {YulupEditStateController} aEditStateController the state controller
+ * @return {EditorCommandController}
+ */
+function EditorCommandController(aEditorController, aEditStateController) {
+    /* DEBUG */ dump("Yulup:controller.js:EditorCommandController.supportsCommand() invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aEditorController    != null);
+    /* DEBUG */ YulupDebug.ASSERT(aEditStateController != null);
+
+    this.__editorController    = aEditorController;
+    this.__editStateController = aEditStateController;
+}
+
+EditorCommandController.prototype = {
+    __editorController   : null,
+    __editStateController: null,
+
+    /**
+     * The nsISupports QueryInterface method.
+     */
+    QueryInterface: function (aUUID) {
+        /* DEBUG */ dump("Yulup:controller.js:EditorCommandController.QueryInterface(\"" + aUUID + "\") invoked\n");
+
+        if (aUUID.equals(Components.interfaces.nsISupports) ||
+            aUUID.equals(Components.interfaces.nsIController)) {
+            return this;
+        } else {
+            throw Components.results.NS_NOINTERFACE;
+        }
+    },
+
+    /**
+     * The nsIController supportsCommand method.
+     */
+    supportsCommand: function (aCommand) {
+        var retval = false;
+
+        /* DEBUG */ dump("Yulup:controller.js:EditorCommandController.supportsCommand() invoked\n");
+
+        switch (aCommand) {
+            case "cmd_yulup_savelocal":
+            case "cmd_yulup_savetemp":
+            case "cmd_yulup_savecms":
+            case "cmd_yulup_checkincms":
+                retval = true;
+                break;
+            default:
+        }
+
+        return retval;
+    },
+
+    /**
+     * The nsIController isCommandEnabled method.
+     */
+    isCommandEnabled: function (aCommand) {
+        var retval = false;
+
+        /* DEBUG */ dump("Yulup:controller.js:EditorCommandController.isCommandEnabled() invoked\n");
+
+        switch (aCommand) {
+            case "cmd_yulup_savelocal":
+                if (this.__editStateController.isCurrentState(this.__editStateController.STATE_DOCUMENTREADY_MODIFIED)) {
+                    if (this.__editStateController.document.getLocalSavePath()) {
+                        retval = true;
+                    }
+                }
+
+                break;
+            case "cmd_yulup_savetemp":
+                // not implemented yet
+                break;
+            case "cmd_yulup_savecms":
+                if (this.__editStateController.isCurrentState(this.__editStateController.STATE_DOCUMENTREADY_MODIFIED)) {
+                    // check for Neutron introspection
+                    if (this.__editorController.document instanceof NeutronDocument) {
+                        if (this.__editorController.document.getLoadStyle() == "open" ||
+                            (this.__editorController.editorParams instanceof NeutronEditorParameters &&
+                             this.__editorController.editorParams.saveURI)) {
+                            retval = true;
+                        }
+                    }
+
+                    // check for Atom
+                    if (this.__editorController.document instanceof AtomDocument) {
+                        retval = false;
+                    }
+                }
+
+                break;
+            case "cmd_yulup_checkincms":
+                if (this.__editStateController.isCurrentState(this.__editStateController.STATE_DOCUMENTREADY_MODIFIED)) {
+                    if (this.__editorController.document instanceof NeutronDocument) {
+                        if (this.__editorController.document.getLoadStyle() == "checkout") {
+                            retval = false;
+                        }
+                    }
+                }
+
+                break;
+            default:
+        }
+
+        return retval;
+    },
+
+    /**
+     * The nsIController doCommand method.
+     */
+    doCommand: function (aCommand) {
+        /* DEBUG */ dump("Yulup:controller.js:EditorCommandController.doCommand() invoked\n");
+
+        switch (aCommand) {
+        default:
+        }
+    },
+
+    /**
+     * The nsIController onEvent method.
+     */
+    onEvent: function (aEvent) {
+        /* DEBUG */ dump("Yulup:controller.js:EditorCommandController.onEvent() invoked\n");
+    }
+};
