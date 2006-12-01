@@ -2907,12 +2907,12 @@ ReadlineKeyBindingsListener.prototype = {
     handleEvent: function (aKeyEvent) {
         var controller = null;
 
-        dump("Yulup:view.js:ReadlineKeyBindingsListener:handleEvent() invoked\n");
+        /* DEBUG */ dump("Yulup:view.js:ReadlineKeyBindingsListener.handleEvent() invoked\n");
 
         switch (String.fromCharCode(aKeyEvent.charCode)) {
         case "a":
         case "A":
-            dump("char code = a\n");
+            /* DEBUG */ dump("Yulup:view.js:ReadlineKeyBindingsListener.handleEvent: char code = a\n");
             if (!aKeyEvent.ctrlKey) {
                 break;
             } else {
@@ -2931,7 +2931,7 @@ ReadlineKeyBindingsListener.prototype = {
             }
         case "b":
         case "B":
-            dump("char code = b\n");
+            /* DEBUG */ dump("Yulup:view.js:ReadlineKeyBindingsListener.handleEvent: char code = b\n");
             if (!aKeyEvent.ctrlKey) {
                 break;
             } else {
@@ -2949,7 +2949,7 @@ ReadlineKeyBindingsListener.prototype = {
                 break;
             }
         case "d":
-            dump("char code = d\n");
+            /* DEBUG */ dump("Yulup:view.js:ReadlineKeyBindingsListener.handleEvent: char code = d\n");
             if (!aKeyEvent.ctrlKey) {
                 break;
             } else {
@@ -2963,7 +2963,7 @@ ReadlineKeyBindingsListener.prototype = {
             }
         case "e":
         case "E":
-            dump("char code = e\n");
+            /* DEBUG */ dump("Yulup:view.js:ReadlineKeyBindingsListener.handleEvent: char code = e\n");
             if (!aKeyEvent.ctrlKey) {
                 break;
             } else {
@@ -2982,7 +2982,7 @@ ReadlineKeyBindingsListener.prototype = {
             }
         case "f":
         case "F":
-            dump("char code = f\n");
+            /* DEBUG */ dump("Yulup:view.js:ReadlineKeyBindingsListener.handleEvent: char code = f\n");
             if (!aKeyEvent.ctrlKey) {
                 break;
             } else {
@@ -3000,7 +3000,7 @@ ReadlineKeyBindingsListener.prototype = {
                 break;
             }
         case "h":
-            dump("char code = h\n");
+            /* DEBUG */ dump("Yulup:view.js:ReadlineKeyBindingsListener.handleEvent: char code = h\n");
             if (!aKeyEvent.ctrlKey) {
                 break;
             } else {
@@ -3013,7 +3013,7 @@ ReadlineKeyBindingsListener.prototype = {
                 break;
             }
         case "k":
-            dump("char code = k\n");
+            /* DEBUG */ dump("Yulup:view.js:ReadlineKeyBindingsListener.handleEvent: char code = k\n");
             if (!aKeyEvent.ctrlKey) {
                 break;
             } else {
@@ -3027,7 +3027,7 @@ ReadlineKeyBindingsListener.prototype = {
             }
         case "n":
         case "N":
-            dump("char code = n\n");
+            /* DEBUG */ dump("Yulup:view.js:ReadlineKeyBindingsListener.handleEvent: char code = n\n");
             if (!aKeyEvent.ctrlKey) {
                 break;
             } else {
@@ -3046,7 +3046,7 @@ ReadlineKeyBindingsListener.prototype = {
             }
         case "p":
         case "P":
-            dump("char code = p\n");
+            /* DEBUG */ dump("Yulup:view.js:ReadlineKeyBindingsListener.handleEvent: char code = p\n");
             if (!aKeyEvent.ctrlKey) {
                 break;
             } else {
@@ -3064,7 +3064,7 @@ ReadlineKeyBindingsListener.prototype = {
                 break;
             }
         case "u":
-            dump("char code = u\n");
+            /* DEBUG */ dump("Yulup:view.js:ReadlineKeyBindingsListener.handleEvent: char code = u\n");
             if (!aKeyEvent.ctrlKey) {
                 break;
             } else {
@@ -3078,7 +3078,7 @@ ReadlineKeyBindingsListener.prototype = {
             }
         case "w":
         case "W":
-            dump("char code = w\n");
+            /* DEBUG */ dump("Yulup:view.js:ReadlineKeyBindingsListener.handleEvent: char code = w\n");
             if (!aKeyEvent.ctrlKey) {
                 break;
             } else {
@@ -3096,7 +3096,7 @@ ReadlineKeyBindingsListener.prototype = {
                 break;
             }
         case "_":
-            dump("char code = _\n");
+            /* DEBUG */ dump("Yulup:view.js:ReadlineKeyBindingsListener.handleEvent: char code = _\n");
             if (!aKeyEvent.ctrlKey) {
                 break;
             } else {
@@ -3129,10 +3129,10 @@ GuidedTagInserterKeyListener.prototype = {
     handleEvent: function (aKeyEvent) {
         var controller = null;
 
-        /* DEBUG */ dump("Yulup:view.js:GuidedTagInserterKeyListener:handleEvent() invoked\n");
+        /* DEBUG */ dump("Yulup:view.js:GuidedTagInserterKeyListener.handleEvent() invoked\n");
 
         if (String.fromCharCode(aKeyEvent.charCode) == "i") {
-            /* DEBUG */ dump("Yulup:view.js:GuidedTagInserterKeyListener:handleEvent: char code = i\n");
+            /* DEBUG */ dump("Yulup:view.js:GuidedTagInserterKeyListener.handleEvent: char code = i\n");
 
             if (aKeyEvent.ctrlKey) {
                 this.view.guidedTagInserter.startTagPrompting();
