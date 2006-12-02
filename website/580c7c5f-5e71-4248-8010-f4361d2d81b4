@@ -3,11 +3,11 @@
   <atom:author>
     <atom:name>Michael Wechner</atom:name>
   </atom:author>
-  <atom:id>urn:</atom:id>
+  <atom:id>urn:www-yulup-org:spec-website</atom:id>
   <atom:content type="xhtml">
     <xhtml:div>
-    The Website of the Neutron Specification has been moved to <a href="http://neutron.wyona.org">http://neutron.wyona.org</a>.
+    The Website of the Neutron Specification has been moved to <xhtml:a href="http://neutron.wyona.org">http://neutron.wyona.org</xhtml:a>.
     This new website is Neutron enabled and can be edited with Yulup. The structure and XSLT is borrowed from the APP (Atom Publishing Protocol) website.
     </xhtml:div>
   </atom:content>
-<atom:updated>2006-11-18T13:43:22.747Z</atom:updated><atom:published>2006-11-18T13:40:41.160Z</atom:published></atom:entry>
+<atom:updated>2006-12-02T22:19:27.796Z</atom:updated><atom:published>2006-11-18T13:40:41.160Z</atom:published></atom:entry>

@@ -3,10 +3,10 @@
   <atom:author>
     <atom:name>Andreas Wuest</atom:name>
   </atom:author>
-  <atom:id>urn:</atom:id>
+  <atom:id>urn:www-yulup-org:manual</atom:id>
   <atom:content type="xhtml">
     <xhtml:div>
     New and improved <xhtml:a href="http://www.yulup.org/documentation/user-manual/user_manual.xhtml">Yulup User Manual</xhtml:a> available, with lots of illustrations. There are still some missing things though, and help is greatly appreciated.
     </xhtml:div>
   </atom:content>
-<atom:updated>2006-11-28T00:06:36.541Z</atom:updated><atom:published>2006-11-28T00:06:36.541Z</atom:published></atom:entry>
+<atom:updated>2006-12-02T22:18:25.515Z</atom:updated><atom:published>2006-11-28T00:06:36.541Z</atom:published></atom:entry>

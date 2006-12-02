@@ -3,10 +3,10 @@
   <atom:author>
     <atom:name>Michael Wechner</atom:name>
   </atom:author>
-  <atom:id>urn:</atom:id>
+  <atom:id>urn:www-yulup-org:rc8</atom:id>
   <atom:content type="xhtml">
     <xhtml:div>
-    Download Yulup release candidate 7 from the <a href="download/index.html">Download page</a>.
+    Download Yulup release candidate 7 from the <xhtml:a href="download/index.html">Download page</xhtml:a>.
     </xhtml:div>
   </atom:content>
-<atom:updated>2006-11-10T00:34:00.619Z</atom:updated><atom:published>2006-11-10T00:34:00.619Z</atom:published></atom:entry>
+<atom:updated>2006-12-02T22:21:29.612Z</atom:updated><atom:published>2006-11-10T00:34:00.619Z</atom:published></atom:entry>
