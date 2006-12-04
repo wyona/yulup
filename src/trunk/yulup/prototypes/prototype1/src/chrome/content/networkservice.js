@@ -355,7 +355,8 @@ var NetworkService = {
 
             // convert to UTF-8
             unicodeConverter.charset = "UTF-8";
-            documentDataUTF8 = unicodeConverter.ConvertFromUnicode(aRequest.documentData);
+            documentDataUTF8  = unicodeConverter.ConvertFromUnicode(aRequest.documentData);
+            documentDataUTF8 += unicodeConverter.Finish();
 
             stringInputStream.setData(documentDataUTF8, -1);
 
@@ -842,6 +843,9 @@ YulupNetworkStreamListener.prototype = {
             try {
                 // get content's character set
                 charSet = aRequest.QueryInterface(Components.interfaces.nsIChannel).contentCharset;
+
+                if (!charSet || charSet == "")
+                    charSet = "UTF-8";
             } catch (exception) {
                 // failed to retrieve content character set; fall back to UTF-8
                 /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest: failed to retrieve document character set. Falling back to UTF-8.\n");

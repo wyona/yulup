@@ -195,7 +195,8 @@ var PersistenceService = {
             fileStream.QueryInterface(Components.interfaces.nsISafeOutputStream);
 
             unicodeConverter.charset = "UTF-8";
-            unicodeDoc = unicodeConverter.ConvertFromUnicode(aDocument);
+            unicodeDoc  = unicodeConverter.ConvertFromUnicode(aDocument);
+            unicodeDoc += unicodeConverter.Finish();
 
             fileStream.write(unicodeDoc, unicodeDoc.length);
             fileStream.flush();
