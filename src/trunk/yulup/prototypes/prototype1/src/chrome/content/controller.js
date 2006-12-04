@@ -436,6 +436,7 @@ function YulupEditController(aParameterObject) {
     this.wysiwygModeView     = null;
     this.activeView          = null;
     this.editStateController = null;
+    this.editorCommandController = null;
     this.templateBarrier     = null;
     this.loadBarrier         = null;
     this.widgetBarrier       = null;
@@ -491,7 +492,10 @@ function YulupEditController(aParameterObject) {
         }
     }
 
-    this.editStateController = new YulupEditStateController();
+    this.editStateController     = new YulupEditStateController();
+    this.editorCommandController = new EditorCommandController(this, this.editStateController);
+
+    window.controllers.appendController(this.editorCommandController);
 
     gEditorController = this;
 

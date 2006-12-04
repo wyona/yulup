@@ -689,6 +689,59 @@ var Editor = {
         }
     },
 
+    goUpdateEditorCommand: function (aCommand) {
+        var controller = null;
+        var enabled    = null;
+
+        /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateEditorCommand(\"" + aCommand + "\") invoked\n");
+
+        try {
+            controller = window.controllers.getControllerForCommand(aCommand);
+
+            enabled = false;
+
+            if (controller)
+                enabled = controller.isCommandEnabled(aCommand);
+
+            Editor.goSetEditorCommandEnabled(aCommand, enabled);
+        } catch (exception) {
+            /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateEditorCommand: an error occurred updating command \"" + aCommand + "\": " + exception + "\n");
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.goUpdateEditorCommand", exception);
+        }
+    },
+
+    goDoEditorCommand: function (aCommand) {
+        var controller = null;
+
+        /* DEBUG */ dump("Yulup:editor.js:Editor.goDoEditorCommand(\"" + aCommand + "\") invoked\n");
+
+        try {
+            controller = window.controllers.getControllerForCommand(aCommand);
+
+            if (controller && controller.isCommandEnabled(aCommand))
+                controller.doCommand(aCommand);
+        } catch (exception) {
+            /* DEBUG */ dump("Yulup:editor.js:Editor.goDoEditorCommand: an error occurred executing command \"" + aCommand + "\": " + exception + "\n");
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.goDoEditorCommand", exception);
+        }
+    },
+
+    goSetEditorCommandEnabled: function (aCmdId, aEnabled) {
+        var node = null;
+
+        /* DEBUG */ dump("Yulup:editor.js:Editor.goSetEditorCommandEnabled(\"" + aCmdId + "\", \"" + aEnabled + "\") invoked\n");
+
+        node = document.getElementById(aCmdId);
+
+        if (node) {
+            if (aEnabled) {
+                node.setAttribute("disabled", "false");
+            } else {
+                node.setAttribute("disabled", "true");
+            }
+        }
+    },
+
     goUpdateCommand: function (aCommand) {
         var controller = null;
         var enabled    = null;
@@ -706,7 +759,7 @@ var Editor = {
 
             Editor.goSetCommandEnabled(aCommand, enabled);
         } catch (exception) {
-            dump("Yulup:editor.js:Editor.goUpdateCommand: an error occurred updating command \"" + aCommand + "\": " + exception.toString() + "\n");
+            /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateCommand: an error occurred updating command \"" + aCommand + "\": " + exception.toString() + "\n");
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.goUpdateCommand", exception);
         }
     },
@@ -722,7 +775,7 @@ var Editor = {
             if (controller && controller.isCommandEnabled(aCommand))
                 controller.doCommand(aCommand);
         } catch (exception) {
-            dump("Yulup:editor.js:Editor.goUpdateCommand: an error occurred executing command \"" + aCommand + "\": " + exception.toString() + "\n");
+            /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateCommand: an error occurred executing command \"" + aCommand + "\": " + exception.toString() + "\n");
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.goDoCommand", exception);
         }
     },
