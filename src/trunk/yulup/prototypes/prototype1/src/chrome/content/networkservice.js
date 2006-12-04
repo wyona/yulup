@@ -32,6 +32,9 @@ const SUPPORTED_NEUTRON_VERSIONS       =  "1.0-dev";
 // see WWW-Authenticate at http://www.ietf.org/rfc/rfc2617.txt and Authorization at http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
 const SUPPORTED_AUTHENTICATION_SCHEMES =  "Neutron-Auth";
 
+// the default character set to fall back to if none is specified (note that the HTTP/1.1 specification requires this to be ISO-8859-1)
+const DEFAULT_CHAR_SET = "UTF-8";
+
 var NetworkService = {
     /**
      * Perform a file download over HTTP.
@@ -845,12 +848,12 @@ YulupNetworkStreamListener.prototype = {
                 charSet = aRequest.QueryInterface(Components.interfaces.nsIChannel).contentCharset;
 
                 if (!charSet || charSet == "")
-                    charSet = "UTF-8";
+                    charSet = DEFAULT_CHAR_SET;
             } catch (exception) {
-                // failed to retrieve content character set; fall back to UTF-8
-                /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest: failed to retrieve document character set. Falling back to UTF-8.\n");
+                // failed to retrieve content character set; fall back to DEFAULT_CHAR_SET
+                /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest: failed to retrieve document character set. Falling back to " + DEFAULT_CHAR_SET + ".\n");
                 /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest", exception);
-                charSet = "UTF-8";
+                charSet = DEFAULT_CHAR_SET;
             }
 
             try {
