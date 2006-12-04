@@ -800,6 +800,7 @@ YulupNetworkStreamListener.prototype = {
         var responseStatusCode    = null;
         var responseHeaderVisitor = null;
         var responseHeaders       = null;
+        var charSet               = null;
         var unicodeConverter      = null;
         var unicodeDoc            = null;
         var location              = null;
@@ -839,12 +840,25 @@ YulupNetworkStreamListener.prototype = {
         if (Components.isSuccessCode(aStatusCode)) {
             // request was successful
             try {
+                // get content's character set
+                charSet = aRequest.QueryInterface(Components.interfaces.nsIChannel).contentCharset;
+            } catch (exception) {
+                // failed to retrieve content character set; fall back to UTF-8
+                /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest: failed to retrieve document character set. Falling back to UTF-8.\n");
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest", exception);
+                charSet = "UTF-8";
+            }
+
+            try {
+                /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest: converting document data to Unicode from charset \"" + charSet + "\"\n");
                 unicodeConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
 
-                unicodeConverter.charset = "UTF-8";
+                unicodeConverter.charset = charSet;
                 unicodeDoc = unicodeConverter.ConvertToUnicode(this.documentData);
             } catch (exception) {
                 // conversion failed; bail out
+                /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest: failed to convert document to Unicode.\n");
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest", exception);
                 this.__requestFinished();
                 this.request.requestFinishedCallback(null, responseStatusCode, this.request.context, responseHeaders, exception);
                 return;
