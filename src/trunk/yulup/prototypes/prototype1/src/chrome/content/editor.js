@@ -765,7 +765,6 @@ var Editor = {
 
         try {
             controller = gEditorController.activeView.editor.contentWindow.controllers.getControllerForCommand(aCommand);
-            //controller = top.document.commandDispatcher.getControllerForCommand(aCommand);
 
             enabled = false;
 
@@ -785,7 +784,6 @@ var Editor = {
         /* DEBUG */ dump("Yulup:editor.js:Editor.goDoCommand(\"" + aCommand + "\") invoked\n");
 
         try {
-            //controller = top.document.commandDispatcher.getControllerForCommand(aCommand);
             controller = gEditorController.activeView.editor.contentWindow.controllers.getControllerForCommand(aCommand);
             if (controller && controller.isCommandEnabled(aCommand))
                 controller.doCommand(aCommand);
