@@ -114,7 +114,7 @@ WidgetManager.prototype = {
     /**
      * Installs the widget into the current editor.
      *
-     * Registers the widget commands and copys the icon into the
+     * Registers the widget commands and copies the icon into the
      * yulup uri-space
      *
      * @param  {Widget}    aWidget the widget that will be installed
@@ -149,10 +149,10 @@ WidgetManager.prototype = {
      },
 
     /**
-     * Loads the widgets.
+     * Registers an array of widgets.
      *
-     * @param {Array}    aWidgets              array containing the to be loaded widgets
-     * @param {Function} aLoadFinishedCallback this function gets called for each widget after it was loaded
+     * @param  {Array}     aWidgets array containing the widgets to be registered
+     * @return {Undefined} does not have a return value
      */
     addWidgets: function(aWidgets) {
         var widget    = null;
@@ -164,7 +164,7 @@ WidgetManager.prototype = {
 
         ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 
-        for (var i=0; i<aWidgets.length; i++) {
+        for (var i = 0; i < aWidgets.length; i++) {
             if (this.getWidgetByName(aWidgets[i].attributes["name"])) {
                 // skip duplicate widgets
                 continue;
@@ -225,12 +225,18 @@ WidgetManager.prototype = {
         }
     },
 
+    /**
+     * Loads all registered widgets.
+     *
+     * @param  {Function}  aLoadFinishedCallback this function gets called for each widget after it was loaded
+     * @return {Undefined} does not have a return value
+     */
     loadWidgets: function(aLoadFinishedCallback) {
         var contextObj = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget(\"" + aLoadFinishedCallback + "\") invoked\n");
 
-        for (var i=0; i < this.widgets.length; i++) {
+        for (var i = 0; i < this.widgets.length; i++) {
             switch (this.widgets[i].attributes["type"]) {
                 case "surround":
                 case "insert":
