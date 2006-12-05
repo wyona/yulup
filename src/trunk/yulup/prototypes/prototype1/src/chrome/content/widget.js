@@ -112,43 +112,6 @@ WidgetManager.prototype = {
     },
 
     /**
-     * Installs the widget into the current editor.
-     *
-     * Registers the widget commands and copies the icon into the
-     * yulup uri-space
-     *
-     * @param  {Widget}    aWidget the widget that will be installed
-     * @return {Undefined}         does not have a return value
-     */
-     installWidget: function(aWidget) {
-        var commandSet       = null;
-        var widgetCommand    = null;
-        var toolbarButtons   = null;
-        var widgetButton     = null;
-
-        /* DEBUG */ dump("Yulup:widget.js:WidgetManager.WidgetManager.installWidget() invoked\n");
-
-        // add command to editor.xul
-        commandSet = document.getElementById('uiYulupEditorWidgetCommandset');
-        widgetCommand = document.createElement('command');
-        widgetCommand.setAttribute('id', 'cmd_' + aWidget.attributes["name"]);
-        widgetCommand.setAttribute('disabled', 'false');
-        widgetCommand.setAttribute('oncommand', "WidgetHandler.doWidgetCommand(\"" + aWidget.attributes["name"] + "\")");
-        commandSet.appendChild(widgetCommand);
-
-        // add toolbarbutton to editor.xul
-        toolbarButtons = document.getElementById('uiYulupWidgetToolbarbuttons');
-        widgetButton = document.createElement('toolbarbutton');
-        widgetButton.setAttribute('id', 'uiWidget' + aWidget.attributes["name"]);
-        widgetButton.setAttribute('label', aWidget.attributes["name"]);
-        widgetButton.setAttribute('style', '-moz-box-orient: vertical;');
-        widgetButton.setAttribute('image', aWidget.tmpIconURI.spec);
-        widgetButton.setAttribute('tooltiptext', aWidget.attributes["description"]);
-        widgetButton.setAttribute('command', 'cmd_' + aWidget.attributes["name"]);
-        toolbarButtons.appendChild(widgetButton);
-     },
-
-    /**
      * Registers an array of widgets.
      *
      * @param  {Array}     aWidgets array containing the widgets to be registered
@@ -202,29 +165,6 @@ WidgetManager.prototype = {
         }
     },
 
-    requestFinishedHandler: function(aResultFile, aResponseStatusCode, aContext) {
-
-        ///* DEBUG */ dump("Yulup:widget.js:WidgetManager.requestFinishedHandler(\"" + aResultFile.path + "\", \"" + aResponseStatusCode + "\", \"" + aContext + "\") invoked\n");
-
-        if (aResponseStatusCode == 200) {
-            aContext.callback(aResultFile, null, aContext.widget);
-        } else {
-            // get an nsIURI object for the response file
-            fileURI = Components.classes["@mozilla.org/network/io-service;1"]. getService(Components.interfaces.nsIIOService).newFileURI(aResultFile);
-
-            xmlDoc = new XMLDocument(fileURI);
-            xmlDoc.loadDocument();
-            try {
-                // parse the neutron exception
-                Neutron.response(xmlDoc.documentData);
-            } catch (exception) {
-                aContext.callback(null, exception, aContext.widget);
-            }
-
-            aContext.callback(null, null, null);
-        }
-    },
-
     /**
      * Loads all registered widgets.
      *
@@ -248,6 +188,65 @@ WidgetManager.prototype = {
                     NetworkService.httpFetchToFile(this.widgets[i].iconURI.spec, this.widgets[i].tmpIconFile, this.requestFinishedHandler, contextObj, true);
                 break;
             }
+        }
+    },
+
+    /**
+     * Installs the widget into the current editor.
+     *
+     * Registers the widget commands and copies the icon into the
+     * yulup uri-space
+     *
+     * @param  {Widget}    aWidget the widget that will be installed
+     * @return {Undefined}         does not have a return value
+     */
+     installWidget: function(aWidget) {
+        var commandSet       = null;
+        var widgetCommand    = null;
+        var toolbarButtons   = null;
+        var widgetButton     = null;
+
+        /* DEBUG */ dump("Yulup:widget.js:WidgetManager.WidgetManager.installWidget() invoked\n");
+
+        // add command to editor.xul
+        commandSet = document.getElementById('uiYulupEditorWidgetCommandset');
+        widgetCommand = document.createElement('command');
+        widgetCommand.setAttribute('id', 'cmd_' + aWidget.attributes["name"]);
+        widgetCommand.setAttribute('disabled', 'false');
+        widgetCommand.setAttribute('oncommand', "WidgetHandler.doWidgetCommand(\"" + aWidget.attributes["name"] + "\")");
+        commandSet.appendChild(widgetCommand);
+
+        // add toolbarbutton to editor.xul
+        toolbarButtons = document.getElementById('uiYulupWidgetToolbarbuttons');
+        widgetButton = document.createElement('toolbarbutton');
+        widgetButton.setAttribute('id', 'uiWidget' + aWidget.attributes["name"]);
+        widgetButton.setAttribute('label', aWidget.attributes["name"]);
+        widgetButton.setAttribute('style', '-moz-box-orient: vertical;');
+        widgetButton.setAttribute('image', aWidget.tmpIconURI.spec);
+        widgetButton.setAttribute('tooltiptext', aWidget.attributes["description"]);
+        widgetButton.setAttribute('command', 'cmd_' + aWidget.attributes["name"]);
+        toolbarButtons.appendChild(widgetButton);
+    },
+
+    requestFinishedHandler: function(aResultFile, aResponseStatusCode, aContext) {
+        ///* DEBUG */ dump("Yulup:widget.js:WidgetManager.requestFinishedHandler(\"" + aResultFile.path + "\", \"" + aResponseStatusCode + "\", \"" + aContext + "\") invoked\n");
+
+        if (aResponseStatusCode == 200) {
+            aContext.callback(aResultFile, null, aContext.widget);
+        } else {
+            // get an nsIURI object for the response file
+            fileURI = Components.classes["@mozilla.org/network/io-service;1"]. getService(Components.interfaces.nsIIOService).newFileURI(aResultFile);
+
+            xmlDoc = new XMLDocument(fileURI);
+            xmlDoc.loadDocument();
+            try {
+                // parse the neutron exception
+                Neutron.response(xmlDoc.documentData);
+            } catch (exception) {
+                aContext.callback(null, exception, aContext.widget);
+            }
+
+            aContext.callback(null, null, null);
         }
     },
 
