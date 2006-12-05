@@ -162,10 +162,9 @@ WidgetManager.prototype = {
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidgets(\"" + aWidgets + "\") invoked\n");
 
-        ioService = Components.classes["@mozilla.org/network/io-service;1"]. getService(Components.interfaces.nsIIOService);
+        ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 
         for (var i=0; i<aWidgets.length; i++) {
-
             if (this.getWidgetByName(aWidgets[i].attributes["name"])) {
                 // skip duplicate widgets
                 continue;
