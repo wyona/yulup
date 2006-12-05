@@ -2864,10 +2864,10 @@ CommandKeyListener.prototype = {
             /* DEBUG */ dump("Yulup:view.js:CommandKeyListener.handleEvent: char code = " + String.fromCharCode(aKeyEvent.charCode) + "\n");
 
             switch (String.fromCharCode(aKeyEvent.charCode)) {
-                case "s":
-                case "S":
+                case "t":
+                case "T":
                     if (aKeyEvent.shiftKey) {
-                        Editor.saveDispatcher("savecms");
+                        Editor.goDoFileOperationsCommand("cmd_yulup_savetemp");
 
                         // we consumed this event
                         aKeyEvent.preventDefault();
@@ -2875,10 +2875,32 @@ CommandKeyListener.prototype = {
                     }
 
                     break;
-                case "t":
-                case "T":
+                case "s":
+                case "S":
                     if (aKeyEvent.shiftKey) {
-                        Editor.saveDispatcher("savetemp");
+                        Editor.goDoFileOperationsCommand("cmd_yulup_savecms");
+
+                        // we consumed this event
+                        aKeyEvent.preventDefault();
+                        return true;
+                    }
+
+                    break;
+                case "c":
+                case "C":
+                    if (aKeyEvent.shiftKey) {
+                        Editor.goDoFileOperationsCommand("cmd_yulup_checkincms");
+
+                        // we consumed this event
+                        aKeyEvent.preventDefault();
+                        return true;
+                    }
+
+                    break;
+                case "u":
+                case "U":
+                    if (aKeyEvent.shiftKey) {
+                        Editor.goDoFileOperationsCommand("cmd_yulup_upload");
 
                         // we consumed this event
                         aKeyEvent.preventDefault();
