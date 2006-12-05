@@ -689,11 +689,11 @@ var Editor = {
         }
     },
 
-    goUpdateEditorCommand: function (aCommand) {
+    goUpdateFileOperationsCommand: function (aCommand) {
         var controller = null;
         var enabled    = null;
 
-        /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateEditorCommand(\"" + aCommand + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateFileOperationsCommand(\"" + aCommand + "\") invoked\n");
 
         try {
             controller = window.controllers.getControllerForCommand(aCommand);
@@ -703,17 +703,17 @@ var Editor = {
             if (controller)
                 enabled = controller.isCommandEnabled(aCommand);
 
-            Editor.goSetEditorCommandEnabled(aCommand, enabled);
+            Editor.goSetFileOperationsCommandEnabled(aCommand, enabled);
         } catch (exception) {
-            /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateEditorCommand: an error occurred updating command \"" + aCommand + "\": " + exception + "\n");
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.goUpdateEditorCommand", exception);
+            /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateFileOperationsCommand: an error occurred updating command \"" + aCommand + "\": " + exception + "\n");
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.goUpdateFileOperationsCommand", exception);
         }
     },
 
-    goDoEditorCommand: function (aCommand) {
+    goDoFileOperationsCommand: function (aCommand) {
         var controller = null;
 
-        /* DEBUG */ dump("Yulup:editor.js:Editor.goDoEditorCommand(\"" + aCommand + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:editor.js:Editor.goDoFileOperationsCommand(\"" + aCommand + "\") invoked\n");
 
         try {
             controller = window.controllers.getControllerForCommand(aCommand);
@@ -721,15 +721,15 @@ var Editor = {
             if (controller && controller.isCommandEnabled(aCommand))
                 controller.doCommand(aCommand);
         } catch (exception) {
-            /* DEBUG */ dump("Yulup:editor.js:Editor.goDoEditorCommand: an error occurred executing command \"" + aCommand + "\": " + exception + "\n");
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.goDoEditorCommand", exception);
+            /* DEBUG */ dump("Yulup:editor.js:Editor.goDoFileOperationsCommand: an error occurred executing command \"" + aCommand + "\": " + exception + "\n");
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.goDoFileOperationsCommand", exception);
         }
     },
 
-    goSetEditorCommandEnabled: function (aCmdId, aEnabled) {
+    goSetFileOperationsCommandEnabled: function (aCmdId, aEnabled) {
         var node = null;
 
-        /* DEBUG */ dump("Yulup:editor.js:Editor.goSetEditorCommandEnabled(\"" + aCmdId + "\", \"" + aEnabled + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:editor.js:Editor.goSetFileOperationsCommandEnabled(\"" + aCmdId + "\", \"" + aEnabled + "\") invoked\n");
 
         node = document.getElementById(aCmdId);
 
@@ -740,6 +740,21 @@ var Editor = {
                 node.setAttribute("disabled", "true");
             }
         }
+    },
+
+    goUpdateSaveCommands: function () {
+        /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateSaveCommands() invoked\n");
+
+        Editor.goUpdateFileOperationsCommand('cmd_yulup_savelocal');
+        Editor.goUpdateFileOperationsCommand('cmd_yulup_savetemp');
+        Editor.goUpdateFileOperationsCommand('cmd_yulup_savecms');
+        Editor.goUpdateFileOperationsCommand('cmd_yulup_checkincms');
+    },
+
+    goUpdateUploadCommands: function () {
+        /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateUploadCommands() invoked\n");
+
+        Editor.goUpdateFileOperationsCommand('cmd_yulup_upload');
     },
 
     goUpdateCommand: function (aCommand) {
@@ -824,6 +839,34 @@ var Editor = {
         /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateClipboardEventCommands() invoked\n");
 
         Editor.goUpdateCommand('cmd_paste');
+    },
+
+    updateSaveMenu: function () {
+        var disable        = true;
+        var saveMenu       = null;
+        var saveCommandset = null;
+        var childNodes     = null;
+        var node           = null;
+
+        /* DEBUG */ dump("Yulup:editor.js:Editor.updateSaveMenu() invoked\n");
+
+        // enable the save menu if at least one of the save commands is active
+        saveMenu       = document.getElementById("uiFileOperationSave");
+        saveCommandset = document.getElementById("uiYulupEditorFileOperationsSaveCommandset");
+
+        if (saveCommandset) {
+            childNodes = saveCommandset.getElementsByTagNameNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "command");
+
+            for (var i = 0; i < childNodes.length; i++) {
+                if (childNodes.item(i).getAttribute("disabled") == "false") {
+                    disable = false;
+                    break;
+                }
+            }
+        }
+
+        if (saveMenu)
+            saveMenu.setAttribute("disabled", disable);
     },
 
     documentCheckinFinished: function (aDocumentData, aException) {

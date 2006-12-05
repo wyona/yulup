@@ -102,12 +102,23 @@
               events="clipboard"
               oncommandupdate="Editor.goUpdateClipboardEventCommands()"/>
 
-  <commandset id="uiYulupEditorBaseCommandset">
+  <commandset id="uiYulupEditorEditOperationsCommandset">
     <command id="cmd_undo"  oncommand="Editor.goDoCommand('cmd_undo')"  disabled="true"/>
     <command id="cmd_redo"  oncommand="Editor.goDoCommand('cmd_redo')"  disabled="true"/>
     <command id="cmd_cut"   oncommand="Editor.goDoCommand('cmd_cut')"   disabled="false"/>
     <command id="cmd_copy"  oncommand="Editor.goDoCommand('cmd_copy')"  disabled="false"/>
     <command id="cmd_paste" oncommand="Editor.goDoCommand('cmd_paste')" disabled="false"/>
+  </commandset>
+
+  <commandset id="uiYulupEditorFileOperationsSaveCommandset">
+    <command id="cmd_yulup_savelocal"  oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_savelocal')"  disabled="true"/>
+    <command id="cmd_yulup_savetemp"   oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_savetemp')"   disabled="true"/>
+    <command id="cmd_yulup_savecms"    oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_savecms')"    disabled="true"/>
+    <command id="cmd_yulup_checkincms" oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_checkincms')" disabled="true"/>
+  </commandset>
+
+  <commandset id="uiYulupEditorFileOperationsUploadCommandset">
+    <command id="cmd_yulup_upload" oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_upload')" disabled="true"/>
   </commandset>
 
   <commandset id="uiYulupEditorWidgetCommandset"/>
@@ -129,8 +140,10 @@
   <!-- Note that you have to handle these keys as well in the CommandKeyBindingsListener,
        otherwise they won't work if the focus is inside the editor element. -->
   <keyset>
-    <key id="key_yulup_savetmp" modifiers="accel shift" key="T" oncommand="Editor.saveDispatcher('savetemp')"/>
-    <key id="key_yulup_save"    modifiers="accel shift" key="S" oncommand="Editor.saveDispatcher('savecms')"/>
+    <key id="key_yulup_savetemp"   modifiers="accel shift" key="T" command="cmd_yulup_savetemp"/>
+    <key id="key_yulup_savecms"    modifiers="accel shift" key="S" command="cmd_yulup_savecms"/>
+    <key id="key_yulup_checkincms" modifiers="accel shift" key="C" command="cmd_yulup_checkincms"/>
+    <key id="key_yulup_upload"     modifiers="accel shift" key="U" command="cmd_yulup_upload"/>
   </keyset>
 
   <popupset>
@@ -175,26 +188,25 @@
         <toolbarbutton id="uiFileOperationSave" label="&fileOperationSave.label;" tooltiptext="&fileOperationSave.tooltip;" disabled="true" type="menu">
           <menupopup id="uiFileOperationSaveMenupopup">
             <menuitem id="uiFileOperationSaveLocalMenuitem"
-                      oncommand="Editor.saveDispatcher('save')"
+                      command="cmd_yulup_savelocal"
                       label="&fileOperationSaveLocalMenuitem.label;" tooltiptext="&fileOperationSaveLocalMenuitem.tooltip;"
                       disabled="true"/>
             <menuseparator/>
             <menuitem id="uiFileOperationSaveTempMenuitem"
-                      oncommand="Editor.saveDispatcher('savetemp')"
+                      command="cmd_yulup_savetemp"
                       label="&fileOperationSaveTempMenuitem.label;" tooltiptext="&fileOperationSaveTempMenuitem.tooltip;"
-                      key="key_yulup_savetmp"
+                      key="key_yulup_savetemp"
                       disabled="true"/>
             <menuitem id="uiFileOperationSaveCMSMenuitem"
-                      oncommand="Editor.saveDispatcher('savecms')"
+                      command="cmd_yulup_savecms"
                       label="&fileOperationSaveCMSMenuitem.label;" tooltiptext="&fileOperationSaveCMSMenuitem.tooltip;"
-                      key="key_yulup_save"
-                      disabled="true"
-                      hidden="true"/>
+                      key="key_yulup_savecms"
+                      disabled="true"/>
             <menuitem id="uiFileOperationCheckinCMSAndExitMenuitem"
-                      oncommand="Editor.saveDispatcher('checkincms')"
+                      command="cmd_yulup_checkincms"
                       label="&fileOperationCheckinCMSAndExitMenuitem.label;" tooltiptext="&fileOperationCheckinCMSAndExitMenuitem.tooltip;"
-                      disabled="true"
-                      hidden="true"/>
+                      key="key_yulup_checkincms"
+                      disabled="true"/>
           </menupopup>
         </toolbarbutton>
         <toolbarbutton id="uiFileOperationSaveAs" label="&fileOperationSaveAs.label;" tooltiptext="&fileOperationSaveAs.tooltip;" observes="broadcaster_yulup_saveas" type="menu">
@@ -210,8 +222,9 @@
           </menupopup>
         </toolbarbutton>
         <toolbarbutton id="uiFileOperationUpload"
-                       oncommand="Editor.resourceUpload()"
+                       command="cmd_yulup_upload"
                        label="&fileOperationUpload.label;" tooltiptext="&fileOperationUpload.tooltip;"
+                       key="key_yulup_upload"
                        disabled="true"/>
       </box>
       <toolbarseparator/>

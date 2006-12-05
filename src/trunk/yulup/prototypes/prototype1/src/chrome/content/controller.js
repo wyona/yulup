@@ -427,24 +427,24 @@ function YulupEditController(aParameterObject) {
     };
 
     // public instance attributes
-    this.initialised         = false;
-    this.editorMode          = null;
-    this.editorParams        = null;
-    this.model               = null;
-    this.document            = null;
-    this.sourceModeView      = null;
-    this.wysiwygModeView     = null;
-    this.activeView          = null;
-    this.editStateController = null;
+    this.initialised             = false;
+    this.editorMode              = null;
+    this.editorParams            = null;
+    this.model                   = null;
+    this.document                = null;
+    this.sourceModeView          = null;
+    this.wysiwygModeView         = null;
+    this.activeView              = null;
+    this.editStateController     = null;
     this.editorCommandController = null;
-    this.templateBarrier     = null;
-    this.loadBarrier         = null;
-    this.widgetBarrier       = null;
-    this.viewBarrier         = null;
-    this.widgetManager       = null;
-    this.archiveRegistry     = null;
-    this.archive             = null;
-    this.templateArchive     = null;
+    this.templateBarrier         = null;
+    this.loadBarrier             = null;
+    this.widgetBarrier           = null;
+    this.viewBarrier             = null;
+    this.widgetManager           = null;
+    this.archiveRegistry         = null;
+    this.archive                 = null;
+    this.templateArchive         = null;
 
 
     if (aParameterObject) {
@@ -620,46 +620,23 @@ YulupEditStateController.prototype = {
                 document.getElementById("broadcaster_yulup_openfailed").setAttribute("disabled", false);
 
                 // activate "upload" button if sitetree available
-                if (gEditorController.editorParams.navigation && gEditorController.editorParams.navigation.sitetree.uri) {
-                    document.getElementById("uiFileOperationUpload").setAttribute("disabled", false);
-                }
+                Editor.goUpdateUploadCommands();
 
                 break;
             case "editorinitialised":
                 switch (this.currentState) {
                     case this.STATE_DOCUMENTLOADED:
                         this.currentState = this.STATE_DOCUMENTREADY_PRISTINE;
-                        // check for introspection (save and checkin)
-                        if (gEditorController.document instanceof NeutronDocument) {
-                            if (gEditorController.document.getLoadStyle() == "open" ||
-                                (gEditorController.editorParams instanceof NeutronEditorParameters && gEditorController.editorParams.saveURI)) {
-                                // disable save operation
-                                document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("hidden", false);
-                                document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", true);
-                            }
-                            if (gEditorController.document.getLoadStyle() == "checkout") {
-                                // disable checkin operation
-                                // TODO: at the moment, <save> == <checkin>
-                                document.getElementById("uiFileOperationCheckinCMSAndExitMenuitem").setAttribute("hidden", false);
-                                document.getElementById("uiFileOperationCheckinCMSAndExitMenuitem").setAttribute("disabled", true);
-                            }
-                        }
-
-                        if (gEditorController.document instanceof AtomDocument) {
-                            document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("hidden", false);
-                            document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", true);
-                        }
+                        Editor.goUpdateSaveCommands();
 
                         // deactivate "save" menu
-                        document.getElementById("uiFileOperationSave").setAttribute("disabled", true);
+                        Editor.updateSaveMenu();
 
                         // activate "save as to cms" menuitem
                         document.getElementById("uiFileOperationSaveAsCMSMenuitem").setAttribute("disabled", false);
 
                         // activate "upload" button if sitetree available
-                        if (gEditorController.editorParams.navigation && gEditorController.editorParams.navigation.sitetree.uri) {
-                            document.getElementById("uiFileOperationUpload").setAttribute("disabled", false);
-                        }
+                        Editor.goUpdateUploadCommands();
 
                         // activate widgets, if present
                         if (document.getElementById('uiYulupWidgetToolbarbuttons').hasChildNodes()) {
@@ -684,36 +661,10 @@ YulupEditStateController.prototype = {
             case "modified":
                 if (this.currentState == this.STATE_DOCUMENTREADY_PRISTINE) {
                     this.currentState = this.STATE_DOCUMENTREADY_MODIFIED;
-                    // check for introspection (save and checkin)
-                    if (gEditorController.document instanceof NeutronDocument) {
-                        if (gEditorController.document.getLoadStyle() == "open" ||
-                            (gEditorController.editorParams instanceof NeutronEditorParameters && gEditorController.editorParams.saveURI)) {
-                            // enable save operation
-                            document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", false);
-                            fileOperationSaveMenuActivate = true;
-                        }
-                        if (gEditorController.document.getLoadStyle() == "checkout") {
-                            // enable checkin operation
-                            // TODO: at the moment, <save> == <checkin>
-                            document.getElementById("uiFileOperationCheckinCMSAndExitMenuitem").setAttribute("disabled", false);
-                            fileOperationSaveMenuActivate = true;
-                        }
-                    }
-
-                    if (gEditorController.document instanceof AtomDocument) {
-                        document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", false);
-                        fileOperationSaveMenuActivate = true;
-                    }
-
-                    if (gEditorController.document.getLocalSavePath()) {
-                        // activate "save file" menuitem
-                        document.getElementById("uiFileOperationSaveLocalMenuitem").setAttribute("disabled", false);
-                        fileOperationSaveMenuActivate = true;
-                    }
+                    Editor.goUpdateSaveCommands();
 
                     // activate "save" menu
-                    if (fileOperationSaveMenuActivate)
-                        document.getElementById("uiFileOperationSave").setAttribute("disabled", false);
+                    Editor.updateSaveMenu();
                 } else {
                     this.illegalTransition(aTransition, this.currentState);
                     return;
@@ -726,26 +677,7 @@ YulupEditStateController.prototype = {
                     // deactivate "save" menu
                     document.getElementById("uiFileOperationSave").setAttribute("disabled", true);
 
-                    // check for introspection (save and checkin)
-                    if (gEditorController.document instanceof NeutronDocument) {
-                        if (gEditorController.document.getLoadStyle() == "open" ||
-                            (gEditorController.editorParams instanceof NeutronEditorParameters && gEditorController.editorParams.saveURI)) {
-                            // enable save operation
-                            document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", true);
-                        }
-                        if (gEditorController.document.getLoadStyle() == "checkout") {
-                            // enable checkin operation
-                            // TODO: at the moment, <save> == <checkin>
-                            document.getElementById("uiFileOperationCheckinCMSAndExitMenuitem").setAttribute("disabled", true);
-                        }
-                    }
-
-                    if (gEditorController.document instanceof AtomDocument) {
-                        document.getElementById("uiFileOperationSaveCMSMenuitem").setAttribute("disabled", true);
-                    }
-
-                    // deactivate "save file" menuitem
-                    document.getElementById("uiFileOperationSaveLocalMenuitem").setAttribute("disabled", true);
+                    Editor.goUpdateSaveCommands();
                 } else {
                     this.illegalTransition(aTransition, this.currentState);
                     return;
@@ -771,7 +703,7 @@ YulupEditStateController.prototype = {
  * @return {EditorCommandController}
  */
 function EditorCommandController(aEditorController, aEditStateController) {
-    /* DEBUG */ dump("Yulup:controller.js:EditorCommandController.supportsCommand() invoked\n");
+    /* DEBUG */ dump("Yulup:controller.js:EditorCommandController() invoked\n");
 
     /* DEBUG */ YulupDebug.ASSERT(aEditorController    != null);
     /* DEBUG */ YulupDebug.ASSERT(aEditStateController != null);
@@ -804,13 +736,14 @@ EditorCommandController.prototype = {
     supportsCommand: function (aCommand) {
         var retval = false;
 
-        /* DEBUG */ dump("Yulup:controller.js:EditorCommandController.supportsCommand() invoked\n");
+        /* DEBUG */ dump("Yulup:controller.js:EditorCommandController.supportsCommand(\"" + aCommand + "\") invoked\n");
 
         switch (aCommand) {
             case "cmd_yulup_savelocal":
             case "cmd_yulup_savetemp":
             case "cmd_yulup_savecms":
             case "cmd_yulup_checkincms":
+            case "cmd_yulup_upload":
                 retval = true;
                 break;
             default:
@@ -825,12 +758,12 @@ EditorCommandController.prototype = {
     isCommandEnabled: function (aCommand) {
         var retval = false;
 
-        /* DEBUG */ dump("Yulup:controller.js:EditorCommandController.isCommandEnabled() invoked\n");
+        /* DEBUG */ dump("Yulup:controller.js:EditorCommandController.isCommandEnabled(\"" + aCommand + "\") invoked\n");
 
         switch (aCommand) {
             case "cmd_yulup_savelocal":
                 if (this.__editStateController.isCurrentState(this.__editStateController.STATE_DOCUMENTREADY_MODIFIED)) {
-                    if (this.__editStateController.document.getLocalSavePath()) {
+                    if (this.__editorController.document.getLocalSavePath()) {
                         retval = true;
                     }
                 }
@@ -852,7 +785,7 @@ EditorCommandController.prototype = {
 
                     // check for Atom
                     if (this.__editorController.document instanceof AtomDocument) {
-                        retval = false;
+                        retval = true;
                     }
                 }
 
@@ -861,12 +794,16 @@ EditorCommandController.prototype = {
                 if (this.__editStateController.isCurrentState(this.__editStateController.STATE_DOCUMENTREADY_MODIFIED)) {
                     if (this.__editorController.document instanceof NeutronDocument) {
                         if (this.__editorController.document.getLoadStyle() == "checkout") {
-                            retval = false;
+                            retval = true;
                         }
                     }
                 }
 
                 break;
+            case "cmd_yulup_upload":
+                if (this.__editorController.editorParams.navigation && this.__editorController.editorParams.navigation.sitetree.uri) {
+                    retval = true;
+                }
             default:
         }
 
@@ -877,9 +814,24 @@ EditorCommandController.prototype = {
      * The nsIController doCommand method.
      */
     doCommand: function (aCommand) {
-        /* DEBUG */ dump("Yulup:controller.js:EditorCommandController.doCommand() invoked\n");
+        /* DEBUG */ dump("Yulup:controller.js:EditorCommandController.doCommand(\"" + aCommand + "\") invoked\n");
 
         switch (aCommand) {
+            case "cmd_yulup_savelocal":
+                Editor.saveDispatcher('save');
+                break;
+            case "cmd_yulup_savetemp":
+                Editor.saveDispatcher('savetemp');
+                break;
+            case "cmd_yulup_savecms":
+                Editor.saveDispatcher('savecms');
+                break;
+            case "cmd_yulup_checkincms":
+                Editor.saveDispatcher('checkincms');
+                break;
+            case "cmd_yulup_upload":
+                Editor.resourceUpload();
+                break;
         default:
         }
     },
@@ -888,6 +840,6 @@ EditorCommandController.prototype = {
      * The nsIController onEvent method.
      */
     onEvent: function (aEvent) {
-        /* DEBUG */ dump("Yulup:controller.js:EditorCommandController.onEvent() invoked\n");
+        /* DEBUG */ dump("Yulup:controller.js:EditorCommandController.onEvent(\"" + aEvent + "\") invoked\n");
     }
 };
