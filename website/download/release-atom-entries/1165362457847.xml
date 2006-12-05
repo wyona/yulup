@@ -1,0 +1,21 @@
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <atom:title type="text">yulup-prototype-1-0.1.11-r20598</atom:title>
+  <atom:author>
+    <atom:name>Andreas Wuest</atom:name>
+  </atom:author>
+  <atom:id>urn:yulup-prototype-1-0.1.11-r20598</atom:id>
+  <atom:content type="xhtml">
+    <xhtml:div>
+      <xhtml:a href="yulup-prototype-1-0.1.11-r20598.xpi">yulup-prototype-1-0.1.11-r20598.xpi</xhtml:a> (December 05, 2006)
+      <xhtml:br/><xhtml:br/>Changelog:
+      <xhtml:ul>
+        <xhtml:li>Fixed auto-update problem.</xhtml:li>
+        <xhtml:li>Improved Guided Tag Inserter UI behaviour.</xhtml:li>
+        <xhtml:li>Various editor commands (e.g. "save", "checkin", etc.) can now be accessed via keyboard shortcuts.</xhtml:li>
+        <xhtml:li>Editor commands are now handled via a command controller.</xhtml:li>
+        <xhtml:li>Improved document character set handling based on HTTP Content-Type header.</xhtml:li>
+        <xhtml:li>Fixed problem where widget toolbarbuttons could get out of their specified order because of asynchronous image loading.</xhtml:li>
+      </xhtml:ul>
+    </xhtml:div>
+  </atom:content>
+<atom:updated>2006-12-05T23:48:42.937Z</atom:updated><atom:published>2006-12-05T23:48:42.937Z</atom:published></atom:entry>
