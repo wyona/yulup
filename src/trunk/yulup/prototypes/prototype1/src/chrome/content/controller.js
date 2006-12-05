@@ -674,10 +674,10 @@ YulupEditStateController.prototype = {
                 if (this.currentState == this.STATE_DOCUMENTREADY_MODIFIED ||
                     this.currentState == this.STATE_DOCUMENTREADY_PRISTINE) {
                     this.currentState = this.STATE_DOCUMENTREADY_PRISTINE;
-                    // deactivate "save" menu
-                    document.getElementById("uiFileOperationSave").setAttribute("disabled", true);
-
                     Editor.goUpdateSaveCommands();
+
+                    // deactivate "save" menu
+                    Editor.updateSaveMenu();
                 } else {
                     this.illegalTransition(aTransition, this.currentState);
                     return;
