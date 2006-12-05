@@ -114,18 +114,28 @@ WidgetManager.prototype = {
     /**
      * Registers an array of widgets.
      *
+     * Registers the widget commands and copies the icon into the
+     * yulup uri-space.
+     *
      * @param  {Array}     aWidgets array containing the widgets to be registered
      * @return {Undefined} does not have a return value
      */
     addWidgets: function(aWidgets) {
-        var widget    = null;
-        var widgetDir = null;
-        var iconFile  = null;
-        var ioService = null;
+        var widget         = null;
+        var widgetDir      = null;
+        var iconFile       = null;
+        var ioService      = null;
+        var commandSet     = null;
+        var widgetCommand  = null;
+        var toolbarButtons = null;
+        var widgetButton   = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidgets(\"" + aWidgets + "\") invoked\n");
 
         ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+
+        commandSet     = document.getElementById('uiYulupEditorWidgetCommandset');
+        toolbarButtons = document.getElementById('uiYulupWidgetToolbarbuttons');
 
         for (var i = 0; i < aWidgets.length; i++) {
             if (this.getWidgetByName(aWidgets[i].attributes["name"])) {
@@ -162,6 +172,22 @@ WidgetManager.prototype = {
             }
 
             this.widgets[this.widgets.length] = widget;
+
+            // add command to editor.xul
+            widgetCommand = document.createElement('command');
+            widgetCommand.setAttribute('id', 'cmd_' + widget.attributes["name"]);
+            widgetCommand.setAttribute('disabled', 'false');
+            widgetCommand.setAttribute('oncommand', "WidgetHandler.doWidgetCommand(\"" + widget.attributes["name"] + "\")");
+            commandSet.appendChild(widgetCommand);
+
+            // add toolbarbutton to editor.xul
+            widgetButton = document.createElement('toolbarbutton');
+            widgetButton.setAttribute('id', 'uiWidget' + widget.attributes["name"]);
+            widgetButton.setAttribute('label', widget.attributes["name"]);
+            widgetButton.setAttribute('style', '-moz-box-orient: vertical;');
+            widgetButton.setAttribute('tooltiptext', widget.attributes["description"]);
+            widgetButton.setAttribute('command', 'cmd_' + widget.attributes["name"]);
+            toolbarButtons.appendChild(widgetButton);
         }
     },
 
@@ -192,40 +218,21 @@ WidgetManager.prototype = {
     },
 
     /**
-     * Installs the widget into the current editor.
-     *
-     * Registers the widget commands and copies the icon into the
-     * yulup uri-space
+     * Sets the newly loaded widget image.
      *
      * @param  {Widget}    aWidget the widget that will be installed
-     * @return {Undefined}         does not have a return value
+     * @return {Undefined} does not have a return value
      */
      installWidget: function(aWidget) {
-        var commandSet       = null;
-        var widgetCommand    = null;
-        var toolbarButtons   = null;
-        var widgetButton     = null;
+        var widgetButton = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetManager.WidgetManager.installWidget() invoked\n");
 
-        // add command to editor.xul
-        commandSet = document.getElementById('uiYulupEditorWidgetCommandset');
-        widgetCommand = document.createElement('command');
-        widgetCommand.setAttribute('id', 'cmd_' + aWidget.attributes["name"]);
-        widgetCommand.setAttribute('disabled', 'false');
-        widgetCommand.setAttribute('oncommand', "WidgetHandler.doWidgetCommand(\"" + aWidget.attributes["name"] + "\")");
-        commandSet.appendChild(widgetCommand);
+        // set widget image
+        widgetButton = document.getElementById('uiWidget' + aWidget.attributes["name"]);
 
-        // add toolbarbutton to editor.xul
-        toolbarButtons = document.getElementById('uiYulupWidgetToolbarbuttons');
-        widgetButton = document.createElement('toolbarbutton');
-        widgetButton.setAttribute('id', 'uiWidget' + aWidget.attributes["name"]);
-        widgetButton.setAttribute('label', aWidget.attributes["name"]);
-        widgetButton.setAttribute('style', '-moz-box-orient: vertical;');
-        widgetButton.setAttribute('image', aWidget.tmpIconURI.spec);
-        widgetButton.setAttribute('tooltiptext', aWidget.attributes["description"]);
-        widgetButton.setAttribute('command', 'cmd_' + aWidget.attributes["name"]);
-        toolbarButtons.appendChild(widgetButton);
+        if (widgetButton)
+            widgetButton.setAttribute('image', aWidget.tmpIconURI.spec);
     },
 
     requestFinishedHandler: function(aResultFile, aResponseStatusCode, aContext) {
