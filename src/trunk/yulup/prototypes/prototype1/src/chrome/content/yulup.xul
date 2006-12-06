@@ -201,8 +201,8 @@
                   label="&editPreferencesMenuitem.label;" tooltiptext="&editPreferencesMenuitem.tooltip;"
                   oncommand="yulupOpenYulupPreferences()"/>
         <menuitem id="uiYulupEditHelpMenuitem"
-                  label="&editHelpMenuitem.label;" tooltiptext="&editHelpMenuitem.tooltip;"
-                  disabled="true"/>
+                  oncommand="yulupShowHelp()"
+                  label="&editHelpMenuitem.label;" tooltiptext="&editHelpMenuitem.tooltip;"/>
         <menuitem id="uiYulupEditDemoMenuitem"
                   oncommand="yulupShowDemoSite()"
                   label="&editDemoMenuitem.label;" tooltiptext="&editDemoMenuitem.tooltip;"/>
