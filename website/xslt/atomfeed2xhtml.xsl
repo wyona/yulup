@@ -38,7 +38,7 @@ Please see the <a href="../faq.html#troubleinstalltoc">FAQ</a> for troubleshooti
 </p>
 
 <h2>Prototype 1</h2>
-<p>Prototype 1 is a first release to explore the capabilities of the Mozilla built-in editor widget. Note that this is nowhere near the final product, and only serves as a means to test new ideas and try out existing facilities. Nevertheless, we try to keep the releases of prototype 1 as functional as possible.</p>
+<p>Prototype 1 is a first release to explore the capabilities of the Mozilla built-in editor widget and the various user-defined requirements.</p>
 
 <xsl:apply-templates select="/atom:feed/atom:entry"/>
 
