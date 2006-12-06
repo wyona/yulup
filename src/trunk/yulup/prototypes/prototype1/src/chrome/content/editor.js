@@ -696,7 +696,7 @@ var Editor = {
         /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateFileOperationsCommand(\"" + aCommand + "\") invoked\n");
 
         try {
-            controller = window.controllers.getControllerForCommand(aCommand);
+            controller = document.commandDispatcher.getControllerForCommand(aCommand);
 
             enabled = false;
 
@@ -716,7 +716,7 @@ var Editor = {
         /* DEBUG */ dump("Yulup:editor.js:Editor.goDoFileOperationsCommand(\"" + aCommand + "\") invoked\n");
 
         try {
-            controller = window.controllers.getControllerForCommand(aCommand);
+            controller = document.commandDispatcher.getControllerForCommand(aCommand);
 
             if (controller && controller.isCommandEnabled(aCommand))
                 controller.doCommand(aCommand);
