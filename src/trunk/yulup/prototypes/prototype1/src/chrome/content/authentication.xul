@@ -31,8 +31,6 @@
   %dialogDTD;
 ]>
 
-<!-- Add onUnload Handler to handle ungraceful exits (e.g. user changes URL) -->
-
 <dialog id="uiYulupEditorAuthenticationDialog"
         orient="vertical"
         align="stretch"
