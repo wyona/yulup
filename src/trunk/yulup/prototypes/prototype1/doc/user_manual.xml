@@ -34,12 +34,12 @@
       </author>
     </authorgroup>
     <!-- All dates specified in ISO "YYYY-MM-DD" format -->
-    <pubdate>2006-11-29</pubdate>
+    <pubdate>2006-12-06</pubdate>
     <!-- Most recent revision goes at the top; list in descending order -->
     <revhistory>
       <revision>
         <revnumber>0.1.1</revnumber>
-        <date>2006-11-29</date>
+        <date>2006-12-06</date>
         <authorinitials>AW</authorinitials>
         <revremark>Updated and more content added.</revremark>
       </revision>
@@ -97,6 +97,23 @@
     </para>
     <para>
       &project; tries to bring together the Web and the desktop, offering the full capabilities of a conventional desktop application, but avoiding the gap between the browsing and publishing workflow by being integrated seamlessly into the browser. This enables the user to stay in the same application, no matter if she is browsing, reading, editing or publishing.
+    </para>
+  </section>
+
+  <section>
+    <title>Notational Conventions</title>
+    <para>
+      <itemizedlist>
+        <listitem>
+          <formalpara>
+            <title>Keyboard Shortcuts</title>
+            Keyboard shortcut combinations may contain a component called <keycap>Accel</keycap>. This is a platform specific key used to start certain shortcut combinations.
+          </formalpara>
+          <para>
+            On Mac OS X, the <keycap>Accel</keycap> component denotes the <keycap>Cmd</keycap> key. On all other platforms, this denotes the <keycap>Ctrl</keycap> key.
+          </para>
+        </listitem>
+      </itemizedlist>
     </para>
   </section>
 
@@ -344,7 +361,7 @@
           </listitem>
           <listitem>
             <formalpara>
-              <title>Save temporary copy [this feature will be activated in a future release]</title>
+              <title>Save temporary copy (<keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>T</keycap></keycombo>) [this feature will be activated in a future release]</title>
               Saves a temporary copy to your local workspace.
             </formalpara>
             <para>
@@ -353,7 +370,7 @@
           </listitem>
           <listitem>
             <formalpara>
-              <title>Save back to CMS</title>
+              <title>Save back to CMS (<keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>S</keycap></keycombo>)</title>
               Saves the modifications back to the CMS but does not release the lock held on this document.
             </formalpara>
             <para>
@@ -362,7 +379,7 @@
           </listitem>
           <listitem>
             <formalpara>
-              <title>Check back in to CMS and exit</title>
+              <title>Check back in to CMS and exit (<keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>C</keycap></keycombo>)</title>
               Saves the modifications back to the CMS, releases the lock held on this document and exits the editor. After exiting, the modified document is reloaded from the document source and rendered in the editor tab so you can immediately check how your document looks like.
             </formalpara>
             <para>
