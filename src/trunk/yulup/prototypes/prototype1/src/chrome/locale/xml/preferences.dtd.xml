@@ -42,6 +42,16 @@
     <name xml:lang="de">URI des standard CMS eingeben</name>
   </entity>
 
+  <entity id="generalSidebarsGroupbox.label">
+    <name xml:lang="en">Sidebars</name>
+    <name xml:lang="de">Sidebars</name>
+  </entity>
+
+  <entity id="generalSidebarsAtomAutoOpen.label">
+    <name xml:lang="en">Open Atom Sidebar automatically</name>
+    <name xml:lang="de">Atom Sidebar automatisch öffnen</name>
+  </entity>
+
   <entity id="editorPrefPane.label">
     <name xml:lang="en">Editor</name>
     <name xml:lang="de">Editor</name>

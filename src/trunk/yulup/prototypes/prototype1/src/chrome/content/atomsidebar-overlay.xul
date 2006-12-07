@@ -47,6 +47,7 @@
                  group="sidebar"
                  sidebarurl="chrome://yulup/content/atomsidebar.xul"
                  sidebartitle="&atomSidebarPage.title;"
-                 oncommand="toggleSidebar('uiOpenYulupAtomSidebar');"/>
+                 oncommand="toggleSidebar('uiOpenYulupAtomSidebar');"
+                 disabled="true"/>
   </broadcasterset>
 </overlay>

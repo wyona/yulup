@@ -193,6 +193,10 @@
           </menupopup>
         </menu>
 
+        <menuseparator/>
+
+        <menuitem key="key_openYulupAtomSidebar" observes="uiOpenYulupAtomSidebar"/>
+
         <menuseparator id="uiYulupRealmSeparator" hidden="true"/>
 
         <menuseparator id="uiYulupExtrasSeparator"/>

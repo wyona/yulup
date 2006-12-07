@@ -6,6 +6,8 @@
 <!ENTITY generalWorkspaceAlwaysDownload.label "Always save local copy">
 <!ENTITY generalDefaultServerGroupbox.label "Default CMS">
 <!ENTITY generalDefaultServerTextboxLabel.label "Enter the URI of your default CMS">
+<!ENTITY generalSidebarsGroupbox.label "Sidebars">
+<!ENTITY generalSidebarsAtomAutoOpen.label "Open Atom Sidebar automatically">
 <!ENTITY editorPrefPane.label "Editor">
 <!ENTITY editorKeyBindingsGroupbox.label "Key Bindings">
 <!ENTITY editorKeyBindingsMenulistLabel.label "Select a key binding">

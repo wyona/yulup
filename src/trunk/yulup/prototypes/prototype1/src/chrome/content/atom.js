@@ -890,7 +890,7 @@ AtomFeed.prototype = {
     },
 
     getEntry: function (aEntry) {
-        /* DEBUG */ dump("Yulup:atom.js:AtomFeed.getEntry(\"" + aEntry + "\") invoked\n");
+        ///* DEBUG */ dump("Yulup:atom.js:AtomFeed.getEntry(\"" + aEntry + "\") invoked\n");
 
         // make sure we don't cache anything above 2^32 - 1 (the maximum array size)
         if (aEntry < 4294967295) {

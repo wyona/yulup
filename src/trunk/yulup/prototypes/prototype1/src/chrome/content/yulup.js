@@ -487,6 +487,7 @@ function Yulup() {
     this.yulupOperationNewFromTemplateLocalMenu      = document.getElementById("uiYulupOperationNewFromTemplateLocalMenu");
     this.yulupOperationNewFromTemplateLocalMenupopup = document.getElementById("uiYulupOperationNewFromTemplateLocalMenupopup");
     this.uiYulupEditMenupopup                        = document.getElementById("uiYulupEditMenupopup");
+    this.yulupOpenAtomSidebarObserver                = document.getElementById("uiOpenYulupAtomSidebar");
     this.yulupDocument                               = document;
 
     this.yulupEditMenu.setAttribute("disabled", "false");
@@ -537,6 +538,7 @@ Yulup.prototype = {
     yulupEditMenuResourceUploadMenuitem         : null,
     yulupOperationNewFromTemplateLocalMenu      : null,
     yulupOperationNewFromTemplateLocalMenupopup : null,
+    yulupOpenAtomSidebarObserver                : null,
     instancesManager                            : null,
     activeWebProgressListener                   : null,
     currentState                                : null,
@@ -758,7 +760,8 @@ Yulup.prototype = {
     },
 
     introspectionStateChanged: function (aStateChange) {
-        var fragments = null;
+        var fragments    = null;
+        var atomAutoOpen = null;
 
         /* DEBUG */ dump("Yulup:yulup.js:Yulup.introspectionStateChanged(\"" + aStateChange + "\") invoked\n");
 
@@ -791,6 +794,10 @@ Yulup.prototype = {
                     this.yulupEditMenu.removeAttribute("tooltip");
                     this.yulupEditMenu.setAttribute("tooltiptext", document.getElementById("uiYulupOverlayStringbundle").getString("editToolbarbutton.tooltip"));
 
+                    // no Atom content available, disable sidebar opening
+                    if (this.yulupOpenAtomSidebarObserver)
+                        this.yulupOpenAtomSidebarObserver.setAttribute("disabled", true);
+
                     this.currentState = "none";
                 }
                 break;
@@ -806,20 +813,33 @@ Yulup.prototype = {
 
                 if (this.currentAPPIntrospection) {
                     try {
-                        // check if the atom sidebar is already open
-                        if (document.getElementById("sidebar").docShell && document.getElementById("sidebar").contentDocument.getElementById("uiYulupAtomSidebarPage")) {
-                            // load new feed into the sidebar
-                            document.getElementById("sidebar").contentDocument.getElementById("uiYulupAtomSidebarPage").reload();
-                        } else {
-                            /* Force open the sidebar (i.e. keep it open if it already is). The
-                             * onload handler will pick uf the introspection document and load
-                             * the feed. */
-                            toggleSidebar("uiOpenYulupAtomSidebar", true);
+                        // Atom content available, enable user to open the sidebar
+                        if (this.yulupOpenAtomSidebarObserver)
+                            this.yulupOpenAtomSidebarObserver.setAttribute("disabled", false);
+
+                        // check if the Atom sidebar should be opened automatically
+                        if ((atomAutoOpen = YulupPreferences.getBoolPref("atom.", "autoopensidebar")) != null) {
+                            if (atomAutoOpen) {
+                                // check if the Atom sidebar is already open
+                                if (document.getElementById("sidebar").docShell && document.getElementById("sidebar").contentDocument.getElementById("uiYulupAtomSidebarPage")) {
+                                    // load new feed into the sidebar
+                                    document.getElementById("sidebar").contentDocument.getElementById("uiYulupAtomSidebarPage").reload();
+                                } else {
+                                    /* Force open the sidebar (i.e. keep it open if it already is). The
+                                     * onload handler will pick uf the introspection document and load
+                                     * the feed. */
+                                    toggleSidebar("uiOpenYulupAtomSidebar", true);
+                                }
+                            }
                         }
                     } catch (exception) {
                         /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.introspectionStateChanged", exception);
-                        Components.utils.reportError(exception);
+                        /* DEBUG */ Components.utils.reportError(exception);
                     }
+                } else {
+                    // no Atom content available, disable sidebar opening
+                    if (this.yulupOpenAtomSidebarObserver)
+                        this.yulupOpenAtomSidebarObserver.setAttribute("disabled", true);
                 }
 
                 this.yulupEditMenu.setAttribute("introspection", "ok");
@@ -850,6 +870,10 @@ Yulup.prototype = {
                 this.yulupEditMenu.setAttribute("introspection", "warn");
                 this.yulupEditMenu.removeAttribute("tooltiptext");
                 this.yulupEditMenu.setAttribute("tooltip", "uiYulupEditToolbarbuttonWarnTooltip");
+
+                // no Atom content available, disable sidebar opening
+                if (this.yulupOpenAtomSidebarObserver)
+                    this.yulupOpenAtomSidebarObserver.setAttribute("disabled", true);
 
                 this.currentState = "failed";
 

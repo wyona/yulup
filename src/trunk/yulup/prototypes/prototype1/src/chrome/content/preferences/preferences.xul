@@ -48,6 +48,9 @@
       <preference id="pref_general_defaultserver"
                   name="extensions.yulup.neutron.defaultserver"
                   type="unichar"/>
+      <preference id="pref_general_workspace_atomautoopensidebar"
+                  name="extensions.yulup.atom.autoopensidebar"
+                  type="bool"/>
     </preferences>
 
     <groupbox>
@@ -64,6 +67,11 @@
       <caption label="&generalDefaultServerGroupbox.label;"/>
       <label value="&generalDefaultServerTextboxLabel.label;:" control="uiGeneralDefaultServerTextbox"/>
       <textbox id="uiGeneralDefaultServerTextbox" preference="pref_general_defaultserver" style="min-width: 300px;"/>
+    </groupbox>
+
+    <groupbox>
+      <caption label="&generalSidebarsGroupbox.label;"/>
+      <checkbox label="&generalSidebarsAtomAutoOpen.label;" preference="pref_general_workspace_atomautoopensidebar"/>
     </groupbox>
   </prefpane>
 
