@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<project default="build-doc" basedir="." name="User manual builder">
+
+  <target name="build-doc" description="Build the user manual and deploy">
+    <apply executable="make" spawn="false" failonerror="true"/>
+  </target>
+
+</project>

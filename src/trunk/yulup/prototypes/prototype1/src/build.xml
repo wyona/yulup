@@ -9,6 +9,7 @@
   <property name="id" value="${RDF.Description.em:id}"/>
   <property name="filename" value="${basename}-${version}.xpi"/>
   <property name="download-dir" value="../../../../../../website/download"/>
+  <property name="user-manual-dir" value="../doc/"/>
 
   <target name="init">
     <splash imageurl="file://${basedir}/../../../../../../website/images/whale-logo.gif" showduration="1000"/>
@@ -28,6 +29,9 @@
 
     <!-- build NAR templates -->
     <!--<ant dir="templates/src" inheritAll="false"/>-->
+
+    <!-- build the User Manual -->
+    <ant dir="${user-manual-dir}" inheritAll="false"/>
 
     <mkdir dir="../pkg/tmp"/>
     <copy todir="../pkg/tmp/chrome">
