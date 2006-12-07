@@ -524,24 +524,24 @@ function Yulup() {
 }
 
 Yulup.prototype = {
-    __currentNeutronIntrospection               : null,
-    yulupEditMenu                               : null,
-    yulupEditMenuEditMenuitem                   : null,
-    yulupEditMenuCheckoutMenuitem               : null,
-    yulupEditMenuCheckoutMenu                   : null,
-    yulupEditMenuCheckoutMenupopup              : null,
-    yulupEditMenuCheckoutNoLockMenuitem         : null,
-    yulupEditMenuCheckoutNoLockMenu             : null,
-    yulupEditMenuCheckoutNoLockMenupopup        : null,
-    yulupEditMenuCheckoutMenuitemLabel          : null,
-    yulupEditMenuCheckoutNoLockMenuitemLabel    : null,
-    yulupEditMenuResourceUploadMenuitem         : null,
-    yulupOperationNewFromTemplateLocalMenu      : null,
-    yulupOperationNewFromTemplateLocalMenupopup : null,
-    yulupOpenAtomSidebarObserver                : null,
-    instancesManager                            : null,
-    activeWebProgressListener                   : null,
-    currentState                                : null,
+    __currentNeutronIntrospection              : null,
+    yulupEditMenu                              : null,
+    yulupEditMenuEditMenuitem                  : null,
+    yulupEditMenuCheckoutMenuitem              : null,
+    yulupEditMenuCheckoutMenu                  : null,
+    yulupEditMenuCheckoutMenupopup             : null,
+    yulupEditMenuCheckoutNoLockMenuitem        : null,
+    yulupEditMenuCheckoutNoLockMenu            : null,
+    yulupEditMenuCheckoutNoLockMenupopup       : null,
+    yulupEditMenuCheckoutMenuitemLabel         : null,
+    yulupEditMenuCheckoutNoLockMenuitemLabel   : null,
+    yulupEditMenuResourceUploadMenuitem        : null,
+    yulupOperationNewFromTemplateLocalMenu     : null,
+    yulupOperationNewFromTemplateLocalMenupopup: null,
+    yulupOpenAtomSidebarObserver               : null,
+    instancesManager                           : null,
+    activeWebProgressListener                  : null,
+    currentState                               : null,
 
     get currentNeutronIntrospection() {
         return this.__currentNeutronIntrospection;
@@ -630,15 +630,13 @@ Yulup.prototype = {
                                     // found a Neutron introspection link
                                     introspectionLinks.push(new YulupIntrospectionLink(domElem.href, INTROSPECTION_TYPE_NEUTRON));
                                 } else if (domElem.rel && domElem.rel == "introspection" && domElem.type && domElem.type == "application/atomserv+xml") {
-                                    // http://bitworking.org/projects/atom/draft-ietf-atompub-protocol-08.html#iana
-                                    // http://www-128.ibm.com/developerworks/xml/library/x-matters45.html
+                                    /* See http://bitworking.org/projects/atom/draft-ietf-atompub-protocol-08.html#iana
+                                     * and http://www-128.ibm.com/developerworks/xml/library/x-matters45.html. */
 
                                     /* DEBUG */ dump("Yulup:yulup.js:Yulup.introspectionDetector: APP introspection = \"" + domElem.href + "\"\n");
 
                                     // found an APP introspection link
                                     introspectionLinks.push(new YulupIntrospectionLink(domElem.href, INTROSPECTION_TYPE_APP));
-
-                                    //alert("DEBUG: atom introspection link found: " + domElem.href);
                                 }
                             }
                         }
