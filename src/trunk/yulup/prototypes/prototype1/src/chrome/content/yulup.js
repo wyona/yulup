@@ -30,7 +30,7 @@ const YULUP_EDITOR_CHROME_URI      = "chrome://yulup/content/editor.xul";
 const YULUP_ABOUT_CHROME_URI       = "chrome://yulup/content/about.xul";
 const YULUP_PREFERENCES_CHROME_URI = "chrome://yulup/content/preferences/preferences.xul";
 const YULUP_WS_WIZARD_CHROME_URI   = "chrome://yulup/content/wizards/workspacewizard.xul";
-const YULUP_HELP_URI               = "http://www.yulup.org/documentation/user-manual/user_manual.xhtml";
+const YULUP_HELP_URI               = "chrome://yulup/content/help/user-manual/user_manual.xhtml";
 const YULUP_DEMO_SITE_URI          = "http://demo.yulup.org/";
 const YULUP_WEB_SITE_URI           = "http://www.yulup.org/";
 
