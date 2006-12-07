@@ -10,13 +10,13 @@ convert-dia:
 	-$(MAKE) -C figures
 
 deploy:
-	cp ./*.xhtml ../../../../../../website/documentation/user-manual/
-	cp ./*.css ../../../../../../website/documentation/user-manual/
-	cp figures/* ../../../../../../website/documentation/user-manual/figures/
+	cp ./*.xhtml ../../../../../../../website/documentation/user-manual/
+	cp ./*.css ../../../../../../../website/documentation/user-manual/
+	cp figures/* ../../../../../../../website/documentation/user-manual/figures/
 
 deploy-pkg:
-	cp ./*.xhtml ../src/chrome/content/help/user-manual/
-	cp ./*.css ../src/chrome/content/help/user-manual/
-	cp figures/* ../src/chrome/content/help/user-manual/figures/
+	cp ./*.xhtml ../../src/chrome/content/help/user-manual/
+	cp ./*.css ../../src/chrome/content/help/user-manual/
+	cp figures/* ../../src/chrome/content/help/user-manual/figures/
 
 .PHONY: convert-dia deploy deploy-pkg
