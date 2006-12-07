@@ -1,0 +1,33 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* -------------------- Toolbar Buttons  -------------------- */
+
+#uiYulupHelpBrowserBackButton {
+  -moz-box-orient: vertical;
+  min-width: 0px;
+  list-style-image: url("chrome://browser/skin/Toolbar-small.png");
+  -moz-image-region: rect(0px 24px 24px 0px);
+}
+
+#uiYulupHelpBrowserBackButton[disabled="true"] {
+  -moz-image-region: rect(48px 24px 72px 0px) !important;
+}
+
+#uiYulupHelpBrowserBackButton > dropmarker {
+  display: none !important;
+}
+
+#uiYulupHelpBrowserForwardButton {
+  -moz-box-orient: vertical;
+  min-width: 0px;
+  list-style-image: url("chrome://browser/skin/Toolbar-small.png");
+  -moz-image-region: rect(0px 48px 24px 24px);
+}
+
+#uiYulupHelpBrowserForwardButton[disabled="true"] {
+  -moz-image-region: rect(48px 48px 72px 24px) !important;
+}
+
+#uiYulupHelpBrowserForwardButton > dropmarker {
+  display: none !important;
+}
