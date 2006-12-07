@@ -3,7 +3,13 @@
 <project default="build-doc" basedir="." name="User manual builder">
 
   <target name="build-doc" description="Build the user manual and deploy">
-    <apply executable="make" spawn="false" failonerror="true"/>
+    <echo message="Building User Manual in ${basedir}."/>
+    <apply executable="make" dir="${basedir}/user-manual/" spawn="false" failonerror="true">
+      <!--<arg value="-C ${basedir}/"/>-->
+      <arg value="-f"/>
+      <srcfile/>
+      <fileset file="Makefile"/>
+    </apply>
   </target>
 
 </project>
