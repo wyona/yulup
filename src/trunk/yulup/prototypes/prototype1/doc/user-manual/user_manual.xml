@@ -740,6 +740,9 @@
         The Atom sidebar can be accessed either via the <guimenu>View</guimenu> &gt;&gt; <guisubmenu>Sidebar</guisubmenu> &gt;&gt; <guimenuitem>Atom Sidebar</guimenuitem> menu item, via the <guimenuitem>Atom Sidebar</guimenuitem> menu item in the Yulup menu, or via the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>A</keycap></keycombo> keyboard shortcut.
       </para>
       <para>
+        Once the Atom sidebar is open, you can close it by unchecking it in one of the above mentioned menus, by hitting the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>A</keycap></keycombo> keyboard shortcut again, or by clicking the <guibutton>close</guibutton> button in the upper right corner of the sidebar.
+      </para>
+      <para>
         Note that the Atom sidebar cannot be opened if the currently shown document does not contain a link to an APP Service Document.
         <figure>
           <title>Atom Sidebar</title>
