@@ -409,7 +409,7 @@ function yulupOpenYulupPreferences() {
  */
 function yulupShowHelp() {
     //window.open(YULUP_HELP_URI, "yulupHelpWindow", "left=0,top=0,resizable=yes,scrollbars=yes");
-    window.openDialog("chrome://yulup/content/help/helpbrowser.xul", "yulupHelpBrowserWindow", "chrome,dialog=no,menubar=no,width=1024,height=768");
+    window.openDialog("chrome://yulup/content/help/helpbrowser.xul", "yulupHelpBrowserWindow", "chrome,dialog=no,menubar=no,width=640,height=480,centerscreen");
 }
 
 /**
