@@ -408,8 +408,14 @@ function yulupOpenYulupPreferences() {
  * @return {Undefined} does not have a return value
  */
 function yulupShowHelp() {
-    //window.open(YULUP_HELP_URI, "yulupHelpWindow", "left=0,top=0,resizable=yes,scrollbars=yes");
-    window.openDialog("chrome://yulup/content/help/helpbrowser.xul", "yulupHelpBrowserWindow", "chrome,dialog=no,menubar=no,width=640,height=480,centerscreen");
+    var helpWindow = null;
+
+    helpWindow = window.open("chrome://yulup/content/help/helpbrowser.xul", "yulupHelpBrowserWindow", "chrome,menubar=no,resizable=yes,centerscreen");
+
+    /* If the window was already open, the content gets reloaded. In order
+     * to bring such a window to the front we have to focus it. */
+    if (helpWindow)
+        helpWindow.focus();
 }
 
 /**

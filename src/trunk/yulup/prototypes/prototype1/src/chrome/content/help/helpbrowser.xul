@@ -33,6 +33,9 @@
         align="stretch"
         onload="YulupHelpBrowser.onLoadListener()"
         title="Yulup Help Browser"
+        width="640"
+        height="480"
+        persist="width height screenX screenY"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript"
