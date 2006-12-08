@@ -26,13 +26,13 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://yulup/skin/helpbrowser.css" type="text/css"?>
 
-<!--<!DOCTYPE window SYSTEM "chrome://yulup/locale/helpbrowser.dtd">-->
+<!DOCTYPE window SYSTEM "chrome://yulup/locale/helpbrowser.dtd">
 
 <window id="uiYulupHelpBrowserWindow"
         orient="vertical"
         align="stretch"
         onload="YulupHelpBrowser.onLoadListener()"
-        title="Yulup Help Browser"
+        title="&helpBrowserWindow.title;"
         width="640"
         height="480"
         persist="width height screenX screenY"
@@ -52,19 +52,19 @@
   <toolbox id="uiYulupHelpBroserNavigationToolbox">
     <toolbar id="uiYulupHelpBroserNavigationToolbar"
              tbalign="stretch"
-             toolbarname="Yulup Help Browser Navigation Toolbar">
+             toolbarname="&helpBrowserNavToolbar.name;">
       <toolbarbutton id="uiYulupHelpBrowserBackButton"
                      command="cmd_yulup_goback"
-                     label="Back"
-                     tooltiptext="Go back"/>
+                     label="&helpBrowserNavBackButton.label;"
+                     tooltiptext="&helpBrowserNavBackButton.tooltip;"/>
       <toolbarbutton id="uiYulupHelpBrowserForwardButton"
                      command="cmd_yulup_goforward"
-                     label="Forward"
-                     tooltiptext="Go forward"/>
+                     label="&helpBrowserNavForwardButton.label;"
+                     tooltiptext="&helpBrowserNavForwardButton.tooltip;"/>
       <toolbarbutton id="uiYulupHelpBrowserHomeButton"
                      command="cmd_yulup_gohome"
-                     label="Home"
-                     tooltiptext="Go home"/>
+                     label="&helpBrowserNavHomeButton.label;"
+                     tooltiptext="&helpBrowserNavHomeButton.tooltip;"/>
     </toolbar>
   </toolbox>
 

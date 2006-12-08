@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<dtd xmlns="http://yulup.wyona.org/1.0">
+
+  <entity id="helpBrowserWindow.title">
+    <name xml:lang="en">Yulup Help Browser</name>
+    <name xml:lang="de">Yulup Hilfe Browser</name>
+  </entity>
+
+  <entity id="helpBrowserNavToolbar.name">
+    <name xml:lang="en">Yulup Help Browser Navigation Toolbar</name>
+    <name xml:lang="de">Yulup Hilfe Browser Navigationstoolbar</name>
+  </entity>
+
+  <entity id="helpBrowserNavBackButton.label">
+    <name xml:lang="en">Back</name>
+    <name xml:lang="de">Zurück</name>
+  </entity>
+
+  <entity id="helpBrowserNavBackButton.tooltip">
+    <name xml:lang="en">Go back</name>
+    <name xml:lang="de">Zurückgehen</name>
+  </entity>
+
+  <entity id="helpBrowserNavForwardButton.label">
+    <name xml:lang="en">Forward</name>
+    <name xml:lang="de">Vorwärts</name>
+  </entity>
+
+  <entity id="helpBrowserNavForwardButton.tooltip">
+    <name xml:lang="en">Go forward</name>
+    <name xml:lang="de">Vorwärtsgehen</name>
+  </entity>
+
+  <entity id="helpBrowserNavHomeButton.label">
+    <name xml:lang="en">Home</name>
+    <name xml:lang="de">Start</name>
+  </entity>
+
+  <entity id="helpBrowserNavHomeButton.tooltip">
+    <name xml:lang="en">Go home</name>
+    <name xml:lang="de">Zur Einstiegsseite gehen</name>
+  </entity>
+
+</dtd>
