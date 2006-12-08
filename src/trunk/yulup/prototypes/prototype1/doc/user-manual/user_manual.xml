@@ -34,12 +34,12 @@
       </author>
     </authorgroup>
     <!-- All dates specified in ISO "YYYY-MM-DD" format -->
-    <pubdate>2006-12-07</pubdate>
+    <pubdate>2006-12-08</pubdate>
     <!-- Most recent revision goes at the top; list in descending order -->
     <revhistory>
       <revision>
         <revnumber>0.1.1</revnumber>
-        <date>2006-12-07</date>
+        <date>2006-12-08</date>
         <authorinitials>AW</authorinitials>
         <revremark>Updated and more content added.</revremark>
       </revision>
@@ -727,6 +727,96 @@
   </section>
 
   <section>
+    <title>Sidebars</title>
+    <para>
+      Sidebars are UI elements which are usually opened on the left hand side of the web browser. There are several standard sidebars delivered with Firefox, and Yulup adds two new ones, an Atom sidebar and a Neutron sidebar.
+    </para>
+    <para>
+      Sidebars can generally be accessed either via the <guimenu>View</guimenu> &gt;&gt; <guisubmenu>Sidebar</guisubmenu> menu, or via a keyboard shortcut specific to each sidebar.
+    </para>
+    <section>
+      <title>Atom Sidebar</title>
+      <para>
+        The Atom sidebar can be accessed either via the <guimenu>View</guimenu> &gt;&gt; <guisubmenu>Sidebar</guisubmenu> &gt;&gt; <guimenuitem>Atom Sidebar</guimenuitem> menu item, via the <guimenuitem>Atom Sidebar</guimenuitem> menu item in the Yulup menu, or via the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>A</keycap></keycombo> keyboard shortcut.
+      </para>
+      <para>
+        Note that the Atom sidebar cannot be opened if the currently shown document does not contain a link to an APP Service Document.
+        <figure>
+          <title>Atom Sidebar</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="figures/atom_sidebar.png" format="PNG"/>
+            </imageobject>
+            <textobject>
+              <phrase>Atom sidebar showing a news feed and the context menu for one of the feed items</phrase>
+            </textobject>
+          </mediaobject>
+        </figure>
+      </para>
+      <section>
+        <title>Selecting Workspaces and Collections</title>
+        <para>
+          You can select a specific <emphasis>workspace</emphasis> by opening the top-most menu-popup.
+        </para>
+        <para>
+          You can select a specific <emphasis>collection</emphasis> inside the selected workspace by opening the second top-most menu-popup.
+        </para>
+      </section>
+      <section>
+        <title>Feed Information</title>
+        <para>
+          The <emphasis>Feed Information</emphasis> view shows information about the selected feed, e.g. author(s), copyright, etc.
+        </para>
+      </section>
+      <section>
+        <title>Feed Entries</title>
+        <para>
+          The <emphasis>Feed Entries</emphasis> view shows the titles of the individual feed entries of the selected feed.
+        </para>
+        <para>
+          A feed entry can be selected by clicking on the feed entry with the left mouse button.
+        </para>
+        <para>
+          Multiple consecutive feed entries can be selected by selecting the first feed entry, then pressing <keycap>Shift</keycap>, and finally selecting the last entry. You can also create a selection of non-consecutive entries by pressing <keycap>Meta</keycap> and selecting each entry you want to add to the selection one by one.
+        </para>
+        <para>
+          The feed entry context menu can be opened by pressing the right mouse button on a feed entry.
+        </para>
+        <section>
+          <title>Editing Feed Entries</title>
+          <para>
+            By opening the context menu of a specific feed item, you can then select the <guimenuitem>Edit</guimenuitem> menu item to open the editor.
+          </para>
+          <para>
+            If you select multiple feed entries before opening the feed entry context menu and selecting <guimenuitem>Edit</guimenuitem>, then multiple editor tabs are opened, one for each entry.
+          </para>
+        </section>
+        <section>
+          <title>Deleting Feed Entries</title>
+          <para>
+            By opening the context menu of a specific feed item, you can then select the <guimenuitem>Delete</guimenuitem> menu item to delete the selected item.
+          </para>
+          <para>
+            If you select multiple feed entries before opening the feed entry context menu and selecting <guimenuitem>Delete</guimenuitem>, then all selected feed entries are deleted.
+          </para>
+        </section>
+      </section>
+      <section>
+        <title>Searching a Feed</title>
+        <para>
+          By entering text in the search box at the bottom of the Atom sidebar, you can search through all feed entry titles of the currently shown feed. If one or multiple feed entry titles match, these feed entries are selected.
+        </para>
+      </section>
+    </section>
+    <section>
+      <title>Neutron Sidebar</title>
+      <para>
+        
+      </para>
+    </section>
+  </section>
+
+  <section>
     <title>Preferences</title>
     <para>
       You can open the preferences dialog by either choosing <guimenuitem>Preferences</guimenuitem> in the Yulup menu, or by opening the extension manager, selecting the Yulup entry, and then clicking on the <guibutton>Preferences</guibutton> button.
@@ -773,6 +863,19 @@
         <title>Default CMS</title>
         <para>
           Enter the URI of the CMS you use most. This URI is evaluated e.g. when you try to upload a new document to your CMS, but no CMS URI can be found via Neutron.
+        </para>
+      </section>
+      <section>
+        <title>Sidebars</title>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <formalpara>
+                <title>Open Atom Sidebar Automatically</title>
+                Check this option if you would like Yulup to automatically open the Atom sidebar everytime a page containing a link to an APP Service Document is accessed.
+              </formalpara>
+            </listitem>
+          </itemizedlist>
         </para>
       </section>
     </section>
