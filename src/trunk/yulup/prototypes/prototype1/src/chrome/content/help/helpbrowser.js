@@ -51,9 +51,9 @@ const YulupHelpBrowser = {
 
         browserInstance.setWebShellWindow(window);
 
-        browser.webNavigation.loadURI(YULUP_HELP_URI, Components.interfaces.nsIWebNavigation.LOAD_FLAGS_NONE, null, null, null);
-
         YulupHelpBrowser.__browser = browser;
+
+        YulupHelpBrowser.__loadMainHelpPage();
     },
 
     updateNavigation: function () {
@@ -74,6 +74,13 @@ const YulupHelpBrowser = {
         }
     },
 
+    __loadMainHelpPage: function () {
+        /* DEBUG */ dump("Yulup:helpbrowser.js:YulupHelpBrowser.__loadMainHelpPage() invoked\n");
+
+        if (YulupHelpBrowser.__browser && YulupHelpBrowser.__browser.webNavigation)
+            YulupHelpBrowser.__browser.webNavigation.loadURI(YULUP_HELP_URI, Components.interfaces.nsIWebNavigation.LOAD_FLAGS_NONE, null, null, null);
+    },
+
     goBack: function () {
         /* DEBUG */ dump("Yulup:helpbrowser.js:YulupHelpBrowser.goBack() invoked\n");
 
@@ -86,6 +93,12 @@ const YulupHelpBrowser = {
 
         if (YulupHelpBrowser.__browser && YulupHelpBrowser.__browser.webNavigation.canGoForward)
             YulupHelpBrowser.__browser.webNavigation.goForward();
+    },
+
+    goHome: function () {
+        /* DEBUG */ dump("Yulup:helpbrowser.js:YulupHelpBrowser.goHome() invoked\n");
+
+        YulupHelpBrowser.__loadMainHelpPage();
     }
 };
 

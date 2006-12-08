@@ -46,6 +46,7 @@
   <commandset id="yulupHelpBrowserNavigationCommandset">
     <command id="cmd_yulup_goback"    oncommand="YulupHelpBrowser.goBack()"    disabled="true"/>
     <command id="cmd_yulup_goforward" oncommand="YulupHelpBrowser.goForward()" disabled="true"/>
+    <command id="cmd_yulup_gohome"    oncommand="YulupHelpBrowser.goHome()"    disabled="false"/>
   </commandset>
 
   <toolbox id="uiYulupHelpBroserNavigationToolbox">
@@ -60,6 +61,10 @@
                      command="cmd_yulup_goforward"
                      label="Forward"
                      tooltiptext="Go forward"/>
+      <toolbarbutton id="uiYulupHelpBrowserHomeButton"
+                     command="cmd_yulup_gohome"
+                     label="Home"
+                     tooltiptext="Go home"/>
     </toolbar>
   </toolbox>
 
