@@ -181,6 +181,43 @@ var YulupPreferences = {
             /* DEBUG */ Components.utils.reportError(exception);
             return null;
         }
+    },
+
+    /**
+     * Retrieve arbitrary prefs from the pref tree.
+     *
+     * @param  {String} aBranch the branch on which the pref lives
+     * @param  {String} aItem   the pref item to retrieve
+     * @param  {String} aType   the type of the pref (allowed values: "int")
+     * @return {Object} the pref or null if the retrieval failed
+     */
+    getAnyPref: function (aBranch, aItem, aType) {
+        var branch = null;
+        var pref   = null;
+
+        /* DEBUG */ dump("Yulup:common.js:YulupPreferences.getAnyPref(\"" + aBranch + "\", \"" + aItem + "\", \"" + aType + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aBranch != null);
+        /* DEBUG */ YulupDebug.ASSERT(aItem   != null);
+        /* DEBUG */ YulupDebug.ASSERT(aType   != null);
+
+        try {
+            branch = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch(aBranch);
+
+            if (branch) {
+                switch (aType) {
+                    case "int":
+                        pref = branch.getIntPref(aItem);
+                        break;
+                    default:
+                }
+            }
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupPreferences.getAnyPref", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+        }
+
+        return pref;
     }
 };
 

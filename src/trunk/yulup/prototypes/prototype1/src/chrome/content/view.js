@@ -2839,28 +2839,61 @@ TextEditorKeyListener.prototype = {
 
 
 function CommandKeyListener() {
+    var prefAccelKey = null;
+
     /* DEBUG */ dump("Yulup:view.js:CommandKeyListener() invoked\n");
 
     /* Detect platform to set accel key correctly. This is a
      * workaround until https://bugzilla.mozilla.org/show_bug.cgi?id=180840
      * gets fixed. */
-    if ((new RegExp("Mac")).test(navigator.platform)) {
-        this.__accelCmd = true;
-    } else {
-        this.__accelCmd = false;
+
+    // try to retrieve pref (cf. http://lxr.mozilla.org/mozilla1.8.0/source/content/xbl/src/nsXBLPrototypeHandler.cpp#188)
+    if ((prefAccelKey = YulupPreferences.getAnyPref("ui.key.", "accelKey", "int")) != null) {
+        /* DEBUG */ dump("Yulup:view.js:CommandKeyListener: prefAccelKey = \"" + prefAccelKey + "\"\n");
+
+        switch (prefAccelKey) {
+            case Components.interfaces.nsIDOMKeyEvent.DOM_VK_ALT:
+            case Components.interfaces.nsIDOMKeyEvent.DOM_VK_CONTROL:
+            case Components.interfaces.nsIDOMKeyEvent.DOM_VK_META:
+                this.__accelKey = prefAccelKey;
+                break;
+            default:
+        }
     }
+
+    if (!this.__accelKey) {
+        if ((new RegExp("Mac")).test(navigator.platform)) {
+            this.__accelKey = Components.interfaces.nsIDOMKeyEvent.DOM_VK_META;
+        } else {
+            this.__accelKey = Components.interfaces.nsIDOMKeyEvent.DOM_VK_CONTROL;
+        }
+    }
+
+    /* DEBUG */ dump("Yulup:view.js:CommandKeyListener: this.__accelKey = \"" + this.__accelKey + "\"\n");
 }
 
 CommandKeyListener.prototype = {
-    __accelCmd  : null,
+    __accelKey: null,
+
+    __isAccelKey: function (aKeyEvent) {
+        switch (this.__accelKey) {
+            case Components.interfaces.nsIDOMKeyEvent.DOM_VK_ALT:
+                return aKeyEvent.altKey;
+            case Components.interfaces.nsIDOMKeyEvent.DOM_VK_CONTROL:
+                return aKeyEvent.ctrlKey;
+            case Components.interfaces.nsIDOMKeyEvent.DOM_VK_META:
+                return aKeyEvent.metaKey;
+            default:
+                return false;
+        }
+    },
 
     handleEvent: function (aKeyEvent) {
         var controller = null;
 
         /* DEBUG */ dump("Yulup:view.js:CommandKeyListener.handleEvent() invoked\n");
 
-        if ((this.__accelCmd  && aKeyEvent.metaKey) ||
-            (!this.__accelCmd && aKeyEvent.ctrlKey)) {
+        if (this.__isAccelKey(aKeyEvent)) {
             /* DEBUG */ dump("Yulup:view.js:CommandKeyListener.handleEvent: char code = " + String.fromCharCode(aKeyEvent.charCode) + "\n");
 
             switch (String.fromCharCode(aKeyEvent.charCode)) {
