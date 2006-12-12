@@ -45,7 +45,7 @@
   <script type="application/x-javascript"
           src="chrome://yulup/content/editor/editor.js"/>
   <script type="application/x-javascript"
-          src="chrome://yulup/content/editorparams.js"/>
+          src="chrome://yulup/content/editor/editorparams.js"/>
   <script type="application/x-javascript"
           src="chrome://yulup/content/persistenceservice.js"/>
   <script type="application/x-javascript"
@@ -65,7 +65,7 @@
   <script type="application/x-javascript"
           src="chrome://yulup/content/editor/view.js"/>
   <script type="application/x-javascript"
-          src="chrome://yulup/content/xpathparser.js"/>
+          src="chrome://yulup/content/editor/xpathparser.js"/>
   <script type="application/x-javascript"
           src="chrome://yulup/content/editor/controller.js"/>
   <script type="application/x-javascript"

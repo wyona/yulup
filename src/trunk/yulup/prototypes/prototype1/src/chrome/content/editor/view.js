@@ -47,7 +47,7 @@ const NSIDOCENC_OutputEncodeLatin1Entities = (1 << 15);
 const NSIDOCENC_OutputEncodeHTMLEntities   = (1 << 16);
 
 // URIs for the source-tagger and ID-copier XSLT stylesheets
-const SOURCETAGGER_CHROME_URI = "chrome://yulup/content/sourcetagger.xsl";
+const SOURCETAGGER_CHROME_URI = "chrome://yulup/content/editor/sourcetagger.xsl";
 
 const XUL_NAMESPACE_URI   = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 const XSL_NAMESPACE_URI   = "http://www.w3.org/1999/XSL/Transform";

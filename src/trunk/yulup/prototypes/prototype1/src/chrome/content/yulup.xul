@@ -71,7 +71,7 @@
   <script type="application/x-javascript"
           src="chrome://yulup/content/authentication.js"/>
   <script type="application/x-javascript"
-          src="chrome://yulup/content/editorparams.js"/>
+          src="chrome://yulup/content/editor/editorparams.js"/>
   <script type="application/x-javascript"
           src="chrome://yulup/content/newmenu.js"/>
   <script type="application/x-javascript"
