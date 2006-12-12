@@ -3,23 +3,23 @@
 /* ------------------------ Bindings ------------------------ */
 
 #uiYulupEditorTabbox {
-  -moz-binding: url('chrome://yulup/content/editor.xml#editortabbox');
+  -moz-binding: url('chrome://yulup/content/editor/editor.xml#editortabbox');
 }
 
 editor {
-  -moz-binding: url('chrome://yulup/content/editor.xml#editor');
+  -moz-binding: url('chrome://yulup/content/editor/editor.xml#editor');
 }
 
 editview[type="source"] {
-  -moz-binding: url('chrome://yulup/content/editor.xml#editviewsource');
+  -moz-binding: url('chrome://yulup/content/editor/editor.xml#editviewsource');
 }
 
 editview[type="wysiwyg"] {
-  -moz-binding: url('chrome://yulup/content/editor.xml#editviewwysiwyg');
+  -moz-binding: url('chrome://yulup/content/editor/editor.xml#editviewwysiwyg');
 }
 
 editcontroller {
-  -moz-binding: url('chrome://yulup/content/editor.xml#editcontroller');
+  -moz-binding: url('chrome://yulup/content/editor/editor.xml#editcontroller');
 }
 
 /* ---------------------- Content Deck ---------------------- */

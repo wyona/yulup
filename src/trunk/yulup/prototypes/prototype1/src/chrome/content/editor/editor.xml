@@ -93,7 +93,7 @@
   </binding>
 
   <binding id="editviewsource"
-           extends="chrome://yulup/content/editor.xml#editviewbasebinding">
+           extends="chrome://yulup/content/editor/editor.xml#editviewbasebinding">
     <content>
         <xul:hbox align="stretch" flex="1" style="overflow: auto;">
           <xul:vbox style="width: 2em; border: 1px solid grey; display: none;" align="stretch"/>
@@ -115,7 +115,7 @@
   </binding>
 
   <binding id="editviewwysiwyg"
-           extends="chrome://yulup/content/editor.xml#editviewbasebinding">
+           extends="chrome://yulup/content/editor/editor.xml#editviewbasebinding">
     <content>
       <xul:hbox align="stretch" flex="1" style="background-color: white;">
         <xul:editor type="content" flex="1" style="border: 1px solid grey;" onload="this.onLoadHandler(event)"/>

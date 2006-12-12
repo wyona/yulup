@@ -26,7 +26,7 @@
  *
  */
 
-const YULUP_EDITOR_CHROME_URI      = "chrome://yulup/content/editor.xul";
+const YULUP_EDITOR_CHROME_URI      = "chrome://yulup/content/editor/editor.xul";
 const YULUP_ABOUT_CHROME_URI       = "chrome://yulup/content/about.xul";
 const YULUP_PREFERENCES_CHROME_URI = "chrome://yulup/content/preferences/preferences.xul";
 const YULUP_WS_WIZARD_CHROME_URI   = "chrome://yulup/content/wizards/workspacewizard.xul";
