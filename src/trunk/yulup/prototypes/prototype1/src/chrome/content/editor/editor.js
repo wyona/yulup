@@ -265,6 +265,12 @@ var Editor = {
         Editor.onUnloadListener();
     },
 
+    exitEditor: function () {
+        /* DEBUG */ dump("Yulup:editor.js:Editor.exitEditor() invoked\n");
+
+        /* DEBUG */ dump("Yulup:editor.js:Editor.exitEditor() not implemented yet.\n");
+    },
+
     /**
      * Create a new editor instance starting with a built-in
      * document template.

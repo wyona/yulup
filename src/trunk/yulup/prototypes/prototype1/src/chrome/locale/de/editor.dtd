@@ -8,6 +8,7 @@
 <!ENTITY editOperationPaste.label "Einfügen">
 <!ENTITY editOperationRedo.label "Wiederherstellen">
 <!ENTITY editOperationUndo.label "Rückgängig">
+<!ENTITY fileOperationExit.label "Beenden">
 <!ENTITY fileOperationNew.label "Neu">
 <!ENTITY fileOperationNewFromTemplateLocalMenuitem.label "Neue von lokaler Vorlage">
 <!ENTITY fileOperationNewFromTemplateCMSMenuitem.label "Neue von entfernter Vorlage">
@@ -35,6 +36,7 @@
 <!ENTITY editOperationPaste.tooltip "Aus der Zwischenablage einfügen">
 <!ENTITY editOperationRedo.tooltip "Letzte Operation wiederholen">
 <!ENTITY editOperationUndo.tooltip "Letzte Operation rückgängig machen">
+<!ENTITY fileOperationExit.tooltip "Den Editor beenden">
 <!ENTITY fileOperationNew.tooltip "Neues Dokument erstellen">
 <!ENTITY fileOperationNewFromTemplateLocalMenuitem.tooltip "Neues Dokument nach lokaler Vorlage erstellen">
 <!ENTITY fileOperationNewFromTemplateCMSMenuitem.tooltip "Neues Dokuman nach CMS Vorlage erstellen">

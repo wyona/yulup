@@ -3,6 +3,20 @@
 /* -------------------- Toolbar Buttons  -------------------- */
 /* note: rect(top_edge right_edge bottom_edge left_edge) */
 
+#uiFileOperationExit {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-exit.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiFileOperationExit[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiFileOperationExit[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}
+
+
 #uiFileOperationNew {
   list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-new.png") !important;
   -moz-image-region: rect(0px 25px 23px 0px) !important;

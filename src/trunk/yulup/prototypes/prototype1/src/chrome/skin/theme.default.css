@@ -10,6 +10,21 @@ toolbox toolbarbutton .toolbarbutton-icon {
 }
 
 
+#uiFileOperationExit {
+  list-style-image: url("chrome://yulup/skin/icons/default/yulup-exit.png");
+  -moz-image-region: rect(0px 24px 23px 0px);
+  -moz-box-orient: vertical;
+}
+
+#uiFileOperationExit[disabled="false"]:active {
+  -moz-image-region: rect(24px 24px 47px 0px);
+}
+
+#uiFileOperationExit[disabled="true"] {
+  -moz-image-region: rect(48px 24px 71px 0px);
+}
+
+
 #uiFileOperationNew {
   list-style-image: url("chrome://yulup/skin/icons/default/yulup-new.png");
   -moz-image-region: rect(0px 24px 23px 0px);
