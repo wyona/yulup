@@ -45,7 +45,7 @@
                  autoCheck="false"
                  type="checkbox"
                  group="sidebar"
-                 sidebarurl="chrome://yulup/content/neutronsidebar.xul"
+                 sidebarurl="chrome://yulup/content/neutronsidebar/neutronsidebar.xul"
                  sidebartitle="&neutronSidebarPage.title;"
                  oncommand="toggleSidebar('uiOpenYulupNeutronSidebar');"/>
   </broadcasterset>
