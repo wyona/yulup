@@ -47,7 +47,7 @@
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript"
-          src="chrome://yulup/content/confirmclose.js"/>
+          src="chrome://yulup/content/editor/confirmclose.js"/>
 
   <vbox align="stretch">
     <description value="&editorConfirmCloseDescription.label;"/>

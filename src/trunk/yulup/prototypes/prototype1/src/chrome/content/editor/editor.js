@@ -28,7 +28,7 @@
 
 const EDITOR_WINDOW_TITLE           = "Yulup Editor";
 const YULUP_EDITOR_CHROME_URI       = "chrome://yulup/content/editor/editor.xul";
-const YULUP_CONFIRMCLOSE_CHROME_URI = "chrome://yulup/content/confirmclose.xul";
+const YULUP_CONFIRMCLOSE_CHROME_URI = "chrome://yulup/content/editor/confirmclose.xul";
 const YULUP_FAVICON_CHROME_URI      = "chrome://yulup/skin/icons/yulup-logo.png";
 
 var gMainBrowserWindow  = null;
