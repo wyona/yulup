@@ -7,5 +7,5 @@ locale  yulup ku          chrome/locale/ku/
 locale  yulup tr          chrome/locale/tr/
 skin    yulup classic/1.0 chrome/skin/
 overlay chrome://browser/content/browser.xul chrome://yulup/content/yulup.xul
-overlay chrome://browser/content/browser.xul chrome://yulup/content/atomsidebar-overlay.xul
+overlay chrome://browser/content/browser.xul chrome://yulup/content/atomsidebar/atomsidebar-overlay.xul
 overlay chrome://browser/content/browser.xul chrome://yulup/content/neutronsidebar/neutronsidebar-overlay.xul

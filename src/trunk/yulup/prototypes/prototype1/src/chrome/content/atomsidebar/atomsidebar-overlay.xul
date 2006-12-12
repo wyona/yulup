@@ -45,7 +45,7 @@
                  autoCheck="false"
                  type="checkbox"
                  group="sidebar"
-                 sidebarurl="chrome://yulup/content/atomsidebar.xul"
+                 sidebarurl="chrome://yulup/content/atomsidebar/atomsidebar.xul"
                  sidebartitle="&atomSidebarPage.title;"
                  oncommand="toggleSidebar('uiOpenYulupAtomSidebar');"
                  disabled="true"/>

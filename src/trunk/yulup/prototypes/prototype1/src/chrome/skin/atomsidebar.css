@@ -3,11 +3,11 @@
 /* ------------------------ Bindings ------------------------ */
 
 #uiYulupAtomSidebarPage {
-  -moz-binding: url('chrome://yulup/content/atomsidebar.xml#atomsidebar');
+  -moz-binding: url('chrome://yulup/content/atomsidebar/atomsidebar.xml#atomsidebar');
 }
 
 #uiYulupAtomSidebarFeedEntriesTree {
-  -moz-binding: url('chrome://yulup/content/atomsidebar.xml#atomentriestreeview');
+  -moz-binding: url('chrome://yulup/content/atomsidebar/atomsidebar.xml#atomentriestreeview');
 }
 
 
