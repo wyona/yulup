@@ -20,4 +20,5 @@
 <!ENTITY editorThemeGroupbox.label "Aussehen">
 <!ENTITY editorThemeMenulistLabel.label "Aussehen auswählen">
 <!ENTITY editorThemeDefaultTheme.label "Standard">
+<!ENTITY editorAppearanceOpenInNewTab.label "Editor in neuem Tab öffnen">
 <!ENTITY editorPrefChangeNote.label "Die Editoreinstellungen treten erst nach einem Neustart des Editors in Effekt.">

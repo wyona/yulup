@@ -20,4 +20,5 @@
 <!ENTITY editorThemeGroupbox.label "Appearance">
 <!ENTITY editorThemeMenulistLabel.label "Choose the editor appearance">
 <!ENTITY editorThemeDefaultTheme.label "Default">
+<!ENTITY editorAppearanceOpenInNewTab.label "Open editor in new tab">
 <!ENTITY editorPrefChangeNote.label "Note that editor preference changes only take effect after the editor is restarted.">

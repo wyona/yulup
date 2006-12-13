@@ -92,6 +92,9 @@
       <preference id="pref_editor_theme"
                   name="extensions.yulup.editor.theme"
                   type="unichar"/>
+      <preference id="pref_editor_openinnewtab"
+                  name="extensions.yulup.editor.openinnewtab"
+                  type="bool"/>
     </preferences>
 
     <groupbox>
@@ -127,6 +130,8 @@
           <menuitem value="default" label="&editorThemeDefaultTheme.label;"/>
         </menupopup>
       </menulist>
+      <separator class="thin"/>
+      <checkbox label="&editorAppearanceOpenInNewTab.label;" preference="pref_editor_openinnewtab"/>
     </groupbox>
 
     <separator class="thin"/>
