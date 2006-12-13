@@ -78,15 +78,34 @@ function yulupInitYulup() {
  * @return {Undefined} does not have a return value
  */
 function yulupCreateNewEditor(aEditorParameters, aTriggerURI) {
-    var yulupTab = null;
-    var instanceID = null;
-    var targetURI  = null;
+    var openInNewTab = null;
+    var currentTab   = null;
+    var yulupTab     = null;
+    var instanceID   = null;
+    var targetURI    = null;
 
     /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNewEditor(\"" + aEditorParameters + "\", \"" + aTriggerURI + "\") invoked\n");
 
     try {
-        // create a new tab (getBrowser() (defined in browser.js) returns a reference to the Tabbrowser element)
-        yulupTab = self.getBrowser().addTab("");
+        // get the currently selected tab (getBrowser() (defined in browser.js) returns a reference to the Tabbrowser element)
+        currentTab = self.getBrowser().selectedTab;
+
+        // check if we should open in a new tab or in the current tab
+        if ((openInNewTab = YulupPreferences.getBoolPref("editor.", "openinnewtab")) != null) {
+            if (!openInNewTab && !currentTab) {
+                openInNewTab = true;
+            }
+        } else {
+            // fall back to opening in new tab
+            openInNewTab = true;
+        }
+
+        if (openInNewTab) {
+            // create a new tab
+            yulupTab = self.getBrowser().addTab("");
+        } else {
+            yulupTab = currentTab;
+        }
 
         // prepare parameters for pick-up
         instanceID = gInstancesManager.addInstance(yulupTab, aEditorParameters, aTriggerURI);
