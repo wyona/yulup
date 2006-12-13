@@ -939,7 +939,20 @@
       <section>
         <title>Appearance</title>
         <para>
-          Select the icon theme you want the editor to use.
+          <itemizedlist>
+            <listitem>
+              <formalpara>
+                <title>Editor Appearance</title>
+                Select the icon theme you want the editor to use.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Open Editor in new Tab</title>
+                Select if you want the editor to open in a new tab, or replace the tab from which the editor was opened.
+              </formalpara>
+            </listitem>
+          </itemizedlist>
         </para>
       </section>
     </section>
