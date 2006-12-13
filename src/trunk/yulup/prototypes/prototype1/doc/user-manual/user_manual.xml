@@ -34,12 +34,12 @@
       </author>
     </authorgroup>
     <!-- All dates specified in ISO "YYYY-MM-DD" format -->
-    <pubdate>2006-12-08</pubdate>
+    <pubdate>2006-12-13</pubdate>
     <!-- Most recent revision goes at the top; list in descending order -->
     <revhistory>
       <revision>
         <revnumber>0.1.1</revnumber>
-        <date>2006-12-08</date>
+        <date>2006-12-13</date>
         <authorinitials>AW</authorinitials>
         <revremark>Updated and more content added.</revremark>
       </revision>
@@ -232,7 +232,7 @@
     <section>
       <title>Webpages, Documents and Document Fragments</title>
       <para>
-        It is important to realise that a webpage, as you may see when browsing a CMS, is not actually what is stored on the server as the source, and not necessarily every portion in a webpage can be edited. For example, a typical <emphasis>webpage</emphasis> may consists of a navigational part, a main content part, and a news section. The navigational part may not be editable, because it is generated dynamically by the webserver, and not stored in any <emphasis>document</emphasis> source file. Furhtermore, the main content and the news section themelves may not live inside the same document. In fact, your webserver may dynamically aggregate these two parts (called <emphasis>document fragments</emphasis>) from two different source files, and then add the navigational part.
+        It is important to realise that a webpage, as you may see when browsing a CMS, is not actually what is stored on the server as the source, and not necessarily every portion in a webpage can be edited. For example, a typical <emphasis>webpage</emphasis> may consists of a navigational part, a main content part, and a news section. The navigational part may not be editable, because it is generated dynamically by the webserver, and not stored in any <emphasis>document</emphasis> source file. Furthermore, the main content and the news section themselves may not live inside the same document. In fact, your webserver may dynamically aggregate these two parts (called <emphasis>document fragments</emphasis>) from two different source files, and then add the navigational part.
       </para>
       <para>
         But there is more to that. After having constructed such a document, it may not be displayable by a webbrowser, because its format lacks the representational aspects of a webpage, i.e. the formatting. These formatting instructions may come from another different document, and the webserver first has to process the content, applying this representational information.
@@ -282,7 +282,7 @@
               <listitem>
                 <formalpara>
                   <title>Checkout and Edit</title>
-                  If the server offers you the option of opening the document with locking, then a menu item labelled <guimenuitem>Checkout and Edit</guimenuitem> is enabled in the &project; Browser Menu. By checking out a document from the CMS like this, you are acquiring a lock on this document. This means that only you can currently edit this document, and noone else can edit this document in the meantime.
+                  If the server offers you the option of opening the document with locking, then a menu item labelled <guimenuitem>Checkout and Edit</guimenuitem> is enabled in the &project; Browser Menu. By checking out a document from the CMS like this, you are acquiring a lock on this document. This means that only you can currently edit this document, and no one else can edit this document in the meantime.
                   <figure>
                     <title><emphasis>Checkout and Edit</emphasis> from the Yulup Menu</title>
                     <mediaobject>
