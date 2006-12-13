@@ -925,7 +925,7 @@ Yulup.prototype = {
 
         // if aURI is given, replace the tab, else close it
         if (aURI) {
-            self.getBrowser().getBrowserForTab(aOldTab).loadURIWithFlags(aURI, Components.interfaces.nsIWebNavigation.LOAD_FLAGS_REPLACE_HISTORY);
+            self.getBrowser().getBrowserForTab(aOldTab).loadURIWithFlags(aURI, Components.interfaces.nsIWebNavigation.LOAD_FLAGS_REPLACE_HISTORY | Components.interfaces.nsIWebNavigation.LOAD_FLAGS_BYPASS_CACHE);
         } else {
             self.getBrowser().removeTab(aOldTab);
         }
