@@ -100,11 +100,12 @@ function yulupCreateNewEditor(aEditorParameters, aTriggerURI) {
             openInNewTab = true;
         }
 
-        if (openInNewTab) {
-            // create a new tab
-            yulupTab = self.getBrowser().addTab("");
-        } else {
-            yulupTab = currentTab;
+        // create a new tab
+        yulupTab = self.getBrowser().addTab("");
+
+        if (!openInNewTab) {
+            // remove current tab
+            self.getBrowser().removeTab(currentTab);
         }
 
         // prepare parameters for pick-up
@@ -114,7 +115,7 @@ function yulupCreateNewEditor(aEditorParameters, aTriggerURI) {
         targetURI = YULUP_EDITOR_CHROME_URI + "?" + instanceID;
 
         // load editor
-        self.getBrowser().getBrowserForTab(yulupTab).loadURI(targetURI, null, null);
+        self.getBrowser().getBrowserForTab(yulupTab).loadURIWithFlags(targetURI, Components.interfaces.nsIWebNavigation.LOAD_FLAGS_BYPASS_HISTORY, null, null);
 
         // switch ui to newly created tab
         self.getBrowser().selectedTab = yulupTab;
@@ -944,7 +945,7 @@ Yulup.prototype = {
 
         // if aURI is given, replace the tab, else close it
         if (aURI) {
-            self.getBrowser().getBrowserForTab(aOldTab).loadURIWithFlags(aURI, Components.interfaces.nsIWebNavigation.LOAD_FLAGS_REPLACE_HISTORY | Components.interfaces.nsIWebNavigation.LOAD_FLAGS_BYPASS_CACHE);
+            self.getBrowser().getBrowserForTab(aOldTab).loadURIWithFlags(aURI, Components.interfaces.nsIWebNavigation.LOAD_FLAGS_REPLACE_HISTORY, null, null);
         } else {
             self.getBrowser().removeTab(aOldTab);
         }
