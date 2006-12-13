@@ -197,3 +197,6 @@ this.themesPref = YulupPreferences.addObserver("editor.", this.themesPrefObserve
 // remove theme change observer
 gEditorController.themesPref.removeObserver("editor.", gEditorController.themesPrefObserver);
 
+
+// creating data URIs
+"data:text/plain," + encodeURIComponent(text)
