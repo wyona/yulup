@@ -262,12 +262,12 @@ var Editor = {
         /* DEBUG */ dump("Yulup:editor.js:Editor.shutdownEditor() invoked\n");
 
         try {
-        // remove shutdown event listeners manually
-        Editor.onUnloadListener();
+            // remove shutdown event listeners manually
+            Editor.onUnloadListener();
 
-        // remove command controller
-        if (gEditorController && gEditorController.editorCommandController)
-            window.controllers.removeController(gEditorController.editorCommandController);
+            // remove command controller
+            if (gEditorController && gEditorController.editorCommandController)
+                window.controllers.removeController(gEditorController.editorCommandController);
         } catch (exception) {
             /* DEBUG */ dump("Yulup:editor.js:Editor.shutdownEditor: " + exception + "\n");
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.shutdownEditor", exception);
