@@ -51,6 +51,16 @@
     <name xml:lang="de">Rückgängig</name>
   </entity>
 
+  <entity id="editOperationFind.label">
+    <name xml:lang="en">Find</name>
+    <name xml:lang="de">Suchen</name>
+  </entity>
+
+  <entity id="editOperationFindReplace.label">
+    <name xml:lang="en">Replace</name>
+    <name xml:lang="de">Ersetzen</name>
+  </entity>
+
   <entity id="fileOperationExit.label">
     <name xml:lang="en">Exit</name>
     <name xml:lang="de">Beenden</name>
@@ -188,6 +198,16 @@
   <entity id="editOperationUndo.tooltip">
     <name xml:lang="en">Undo last operation</name>
     <name xml:lang="de">Letzte Operation rückgängig machen</name>
+  </entity>
+
+  <entity id="editOperationFind.tooltip">
+    <name xml:lang="en">Find a string</name>
+    <name xml:lang="de">Einen String Suchen</name>
+  </entity>
+
+  <entity id="editOperationFindReplace.tooltip">
+    <name xml:lang="en">Replace a string</name>
+    <name xml:lang="de">Einen String ersetzen</name>
   </entity>
 
   <entity id="fileOperationExit.tooltip">

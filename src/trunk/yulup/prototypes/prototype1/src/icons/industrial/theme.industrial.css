@@ -155,3 +155,31 @@
 #uiEditOperationPaste[disabled="true"] {
   -moz-image-region: rect(48px 25px 71px 0px) !important;
 }
+
+
+#uiEditOperationFind {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-find.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiEditOperationFind[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiEditOperationFind[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}
+
+
+#uiEditOperationFindReplace {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-findreplace.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiEditOperationFindReplace[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiEditOperationFindReplace[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}

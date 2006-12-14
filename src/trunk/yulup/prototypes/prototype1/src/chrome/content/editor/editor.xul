@@ -236,11 +236,25 @@
       </box>
       <toolbarseparator/>
       <box id="uiYulupEditOperationsToolbarbuttons">
-        <toolbarbutton id="uiEditOperationUndo"  command="cmd_undo"  label="&editOperationUndo.label;"  tooltiptext="&editOperationUndo.tooltip;"/>
-        <toolbarbutton id="uiEditOperationRedo"  command="cmd_redo"  label="&editOperationRedo.label;"  tooltiptext="&editOperationRedo.tooltip;"/>
-        <toolbarbutton id="uiEditOperationCut"   command="cmd_cut"   label="&editOperationCut.label;"   tooltiptext="&editOperationCut.tooltip;"/>
-        <toolbarbutton id="uiEditOperationCopy"  command="cmd_copy"  label="&editOperationCopy.label;"  tooltiptext="&editOperationCopy.tooltip;"/>
-        <toolbarbutton id="uiEditOperationPaste" command="cmd_paste" label="&editOperationPaste.label;" tooltiptext="&editOperationPaste.tooltip;"/>
+        <toolbarbutton id="uiEditOperationUndo"
+                       command="cmd_undo"
+                       label="&editOperationUndo.label;"  tooltiptext="&editOperationUndo.tooltip;"/>
+        <toolbarbutton id="uiEditOperationRedo"
+                       command="cmd_redo"
+                       label="&editOperationRedo.label;"  tooltiptext="&editOperationRedo.tooltip;"/>
+        <toolbarbutton id="uiEditOperationCut"
+                       command="cmd_cut"
+                       label="&editOperationCut.label;"   tooltiptext="&editOperationCut.tooltip;"/>
+        <toolbarbutton id="uiEditOperationCopy"
+                       command="cmd_copy"
+                       label="&editOperationCopy.label;"  tooltiptext="&editOperationCopy.tooltip;"/>
+        <toolbarbutton id="uiEditOperationPaste"
+                       command="cmd_paste"
+                       label="&editOperationPaste.label;" tooltiptext="&editOperationPaste.tooltip;"/>
+        <toolbarbutton id="uiEditOperationFind"
+                       label="&editOperationFind.label;"  tooltiptext="&editOperationFind.tooltip;"/>
+        <toolbarbutton id="uiEditOperationFindReplace"
+                       label="&editOperationFindReplace.label;"  tooltiptext="&editOperationFindReplace.tooltip;"/>
       </box>
       <toolbarseparator id="uiYulupWidgetToolbarSeparator" hidden="true"/>
       <box id="uiYulupWidgetToolbarbuttons" hidden="true"/>

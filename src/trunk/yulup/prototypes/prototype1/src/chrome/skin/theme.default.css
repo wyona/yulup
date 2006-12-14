@@ -189,3 +189,33 @@ toolbox toolbarbutton .toolbarbutton-icon {
 #uiEditOperationPaste[disabled="true"] {
   -moz-image-region: rect(48px 24px 71px 0px);
 }
+
+
+#uiEditOperationFind {
+  list-style-image: url("chrome://yulup/skin/icons/default/yulup-find.png");
+  -moz-image-region: rect(0px 24px 23px 0px);
+  -moz-box-orient: vertical;
+}
+
+#uiEditOperationFind[disabled="false"]:active {
+  -moz-image-region: rect(24px 24px 47px 0px);
+}
+
+#uiEditOperationFind[disabled="true"] {
+  -moz-image-region: rect(48px 24px 71px 0px);
+}
+
+
+#uiEditOperationFindReplace {
+  list-style-image: url("chrome://yulup/skin/icons/default/yulup-findreplace.png");
+  -moz-image-region: rect(0px 24px 23px 0px);
+  -moz-box-orient: vertical;
+}
+
+#uiEditOperationFindReplace[disabled="false"]:active {
+  -moz-image-region: rect(24px 24px 47px 0px);
+}
+
+#uiEditOperationFindReplace[disabled="true"] {
+  -moz-image-region: rect(48px 24px 71px 0px);
+}

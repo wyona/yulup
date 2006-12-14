@@ -156,3 +156,31 @@
 #uiEditOperationPaste[disabled="true"] {
   -moz-image-region: rect(44px 22px 66px 0px) !important;
 }
+
+
+#uiEditOperationFind {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Crystal/yulup-find.png") !important;
+  -moz-image-region: rect(0px 22px 22px 0px) !important;
+}
+
+#uiEditOperationFind[disabled="false"]:active {
+  -moz-image-region: rect(22px 22px 44px 0px) !important;
+}
+
+#uiEditOperationFind[disabled="true"] {
+  -moz-image-region: rect(44px 22px 66px 0px) !important;
+}
+
+
+#uiEditOperationFindReplace {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Crystal/yulup-findreplace.png") !important;
+  -moz-image-region: rect(0px 22px 22px 0px) !important;
+}
+
+#uiEditOperationFindReplace[disabled="false"]:active {
+  -moz-image-region: rect(22px 22px 44px 0px) !important;
+}
+
+#uiEditOperationFindReplace[disabled="true"] {
+  -moz-image-region: rect(44px 22px 66px 0px) !important;
+}
