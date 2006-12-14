@@ -261,14 +261,28 @@ var Editor = {
     shutdownEditor: function () {
         /* DEBUG */ dump("Yulup:editor.js:Editor.shutdownEditor() invoked\n");
 
+        try {
         // remove shutdown event listeners manually
         Editor.onUnloadListener();
+
+        // remove command controller
+        if (gEditorController && gEditorController.editorCommandController)
+            window.controllers.removeController(gEditorController.editorCommandController);
+        } catch (exception) {
+            /* DEBUG */ dump("Yulup:editor.js:Editor.shutdownEditor: " + exception + "\n");
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.shutdownEditor", exception);
+        }
     },
 
     exitEditor: function () {
         /* DEBUG */ dump("Yulup:editor.js:Editor.exitEditor() invoked\n");
 
-        /* DEBUG */ dump("Yulup:editor.js:Editor.exitEditor() not implemented yet.\n");
+        if (Editor.checkClose()) {
+            Editor.shutdownEditor();
+
+            /* DEBUG */ dump("Yulup:editor.js:Editor.exitEditor: replacing tab with URI = \"" + gTriggerURI + "\"\n");
+            gMainBrowserWindow.yulup.replaceTab(gYulupTab, gTriggerURI);
+        }
     },
 
     /**

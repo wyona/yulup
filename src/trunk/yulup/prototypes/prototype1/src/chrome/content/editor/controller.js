@@ -427,23 +427,24 @@ function YulupEditController(aParameterObject) {
     };
 
     // public instance attributes
-    this.initialised         = false;
-    this.editorMode          = null;
-    this.editorParams        = null;
-    this.model               = null;
-    this.document            = null;
-    this.sourceModeView      = null;
-    this.wysiwygModeView     = null;
-    this.activeView          = null;
-    this.editStateController = null;
-    this.templateBarrier     = null;
-    this.loadBarrier         = null;
-    this.widgetBarrier       = null;
-    this.viewBarrier         = null;
-    this.widgetManager       = null;
-    this.archiveRegistry     = null;
-    this.archive             = null;
-    this.templateArchive     = null;
+    this.initialised             = false;
+    this.editorMode              = null;
+    this.editorParams            = null;
+    this.model                   = null;
+    this.document                = null;
+    this.sourceModeView          = null;
+    this.wysiwygModeView         = null;
+    this.activeView              = null;
+    this.editStateController     = null;
+    this.editorCommandController = null;
+    this.templateBarrier         = null;
+    this.loadBarrier             = null;
+    this.widgetBarrier           = null;
+    this.viewBarrier             = null;
+    this.widgetManager           = null;
+    this.archiveRegistry         = null;
+    this.archive                 = null;
+    this.templateArchive         = null;
 
 
     if (aParameterObject) {
@@ -493,7 +494,8 @@ function YulupEditController(aParameterObject) {
 
     this.editStateController = new YulupEditStateController();
 
-    window.controllers.appendController(new EditorCommandController(this, this.editStateController));
+    this.editorCommandController = new EditorCommandController(this, this.editStateController);
+    window.controllers.appendController(this.editorCommandController);
 
     gEditorController = this;
 
