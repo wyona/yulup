@@ -2897,6 +2897,17 @@ CommandKeyListener.prototype = {
             /* DEBUG */ dump("Yulup:view.js:CommandKeyListener.handleEvent: char code = " + String.fromCharCode(aKeyEvent.charCode) + "\n");
 
             switch (String.fromCharCode(aKeyEvent.charCode)) {
+                case "e":
+                case "E":
+                    if (aKeyEvent.shiftKey) {
+                        Editor.exitEditor();
+
+                        // we consumed this event
+                        aKeyEvent.preventDefault();
+                        return true;
+                    }
+
+                    break;
                 case "t":
                 case "T":
                     if (aKeyEvent.shiftKey) {
