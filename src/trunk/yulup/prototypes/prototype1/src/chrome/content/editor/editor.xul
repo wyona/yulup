@@ -108,6 +108,8 @@
     <command id="cmd_cut"   oncommand="Editor.goDoCommand('cmd_cut')"   disabled="false"/>
     <command id="cmd_copy"  oncommand="Editor.goDoCommand('cmd_copy')"  disabled="false"/>
     <command id="cmd_paste" oncommand="Editor.goDoCommand('cmd_paste')" disabled="false"/>
+    <command id="cmd_yulup_find"    disabled="true"/>
+    <command id="cmd_yulup_replace" disabled="true"/>
   </commandset>
 
   <commandset id="uiYulupEditorFileOperationsSaveCommandset">
@@ -252,8 +254,10 @@
                        command="cmd_paste"
                        label="&editOperationPaste.label;" tooltiptext="&editOperationPaste.tooltip;"/>
         <toolbarbutton id="uiEditOperationFind"
+                       command="cmd_yulup_find"
                        label="&editOperationFind.label;"  tooltiptext="&editOperationFind.tooltip;"/>
         <toolbarbutton id="uiEditOperationFindReplace"
+                       command="cmd_yulup_replace"
                        label="&editOperationFindReplace.label;"  tooltiptext="&editOperationFindReplace.tooltip;"/>
       </box>
       <toolbarseparator id="uiYulupWidgetToolbarSeparator" hidden="true"/>
