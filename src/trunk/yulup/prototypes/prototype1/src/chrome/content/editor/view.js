@@ -224,11 +224,11 @@ View.prototype = {
 function DocumentStateListener(aModel) {
     /* DEBUG */ YulupDebug.ASSERT(aModel != null);
 
-    this.model = aModel;
+    this.__model = aModel;
 }
 
 DocumentStateListener.prototype = {
-    model: null,
+    __model: null,
 
     NotifyDocumentCreated:         function () {},
     NotifyDocumentWillBeDestroyed: function () {},
@@ -245,7 +245,7 @@ DocumentStateListener.prototype = {
 
         if (aDocumentChanged) {
             //this.editorController.editStateController.modelStateChanged("modified");
-            this.model.setDirty();
+            this.__model.setDirty();
         } else {
             //this.editorController.editStateController.modelStateChanged("saved");
         }
@@ -292,13 +292,13 @@ EditorObserver.prototype = {
 function EditActionListener(aView, aModel) {
     /* DEBUG */ dump("Yulup:view.js:EditActionListener(\"" + aView + "\", \"" + aModel + "\") invoked.\n");
 
-    this.view  = aView;
-    this.model = aModel;
+    this.__view  = aView;
+    this.__model = aModel;
 }
 
 EditActionListener.prototype = {
-    view : null,
-    model: null,
+    __view : null,
+    __model: null,
 
     WillCreateNode: function (aTag, aParent, aPosition) {
         /* DEBUG */ dump("Yulup:view.js:EditActionListener.WillCreateNode: tag = \"" + aTag + "\", parent = \"" + aParent.nodeName + "\", position = \"" + aPosition + "\"\n");
@@ -307,8 +307,8 @@ EditActionListener.prototype = {
     DidCreateNode: function (aTag, aNode, aParent, aPosition, aResult) {
         /* DEBUG */ dump("Yulup:view.js:EditActionListener.DidCreateNode:  tag = \"" + aTag + "\", parent = \"" + aParent.nodeName + "\", position = \"" + aPosition + "\", result = \"" + aResult + "\"\n");
 
-        this.view.undoRedoObserver.updateCommands();
-        this.model.setDirty();
+        this.__view.undoRedoObserver.updateCommands();
+        this.__model.setDirty();
     },
 
     WillInsertNode: function (aNode, aParent, aPosition) {
@@ -318,8 +318,8 @@ EditActionListener.prototype = {
     DidInsertNode: function (aNode, aParent, aPosition, aResult) {
         /* DEBUG */ dump("Yulup:view.js:EditActionListener.DidInsertNode:  node = \"" + aNode.nodeName + "\", parent = \"" + aParent.nodeName + "\", position = \"" + aPosition + "\", result = \"" + aResult + "\"\n");
 
-        this.view.undoRedoObserver.updateCommands();
-        this.model.setDirty();
+        this.__view.undoRedoObserver.updateCommands();
+        this.__model.setDirty();
     },
 
     WillDeleteNode: function (aChild) {
@@ -329,8 +329,8 @@ EditActionListener.prototype = {
     DidDeleteNode: function (aChild, aResult) {
         /* DEBUG */ dump("Yulup:view.js:EditActionListener.DidDeleteNode:  child = \"" + aChild.nodeName + "\", result = \"" + aResult + "\"\n");
 
-        this.view.undoRedoObserver.updateCommands();
-        this.model.setDirty();
+        this.__view.undoRedoObserver.updateCommands();
+        this.__model.setDirty();
     },
 
     WillSplitNode: function (aExistingRightNode, aOffset) {
@@ -340,8 +340,8 @@ EditActionListener.prototype = {
     DidSplitNode: function (aExistingRightNode, aOffset, aNewLeftNode, aResult) {
         /* DEBUG */ dump("Yulup:view.js:EditActionListener.DidSplitNode:   right node = \"" + aExistingRightNode.nodeName + "\", offset = \"" + aOffset + "\", new left node = \"" + aNewLeftNode.nodeName + "\", result = \"" + aResult + "\"\n");
 
-        this.view.undoRedoObserver.updateCommands();
-        this.model.setDirty();
+        this.__view.undoRedoObserver.updateCommands();
+        this.__model.setDirty();
     },
 
     WillJoinNodes: function (aLeftNode, aRightNode, aParent) {
@@ -351,8 +351,8 @@ EditActionListener.prototype = {
     DidJoinNodes: function (aLeftNode, aRightNode, aParent, aResult) {
         /* DEBUG */ dump("Yulup:view.js:EditActionListener.DidJoinNodes:   left node = \"" + aLeftNode.nodeName + "\", right node = \"" + aRightNode.nodeName + "\", parent node = \"" + aParent.nodeName + "\", result = \"" + aResult + "\"\n");
 
-        this.view.undoRedoObserver.updateCommands();
-        this.model.setDirty();
+        this.__view.undoRedoObserver.updateCommands();
+        this.__model.setDirty();
     },
 
     WillInsertText: function (aTextNode, aOffset, aString) {
@@ -362,8 +362,8 @@ EditActionListener.prototype = {
     DidInsertText: function (aTextNode, aOffset, aString, aResult) {
         /* DEBUG */ dump("Yulup:view.js:EditActionListener.DidInsertText: text node = \"" + aTextNode.nodeName + "\", offset = \"" + aOffset + "\", string = \"" + aString + "\", result = \"" + aResult + "\"\n");
 
-        this.view.undoRedoObserver.updateCommands();
-        this.model.setDirty();
+        this.__view.undoRedoObserver.updateCommands();
+        this.__model.setDirty();
     },
 
     WillDeleteText: function (aTextNode, aOffset, aLength) {
@@ -373,8 +373,8 @@ EditActionListener.prototype = {
     DidDeleteText: function (aTextNode, aOffset, aLength, aResult) {
         /* DEBUG */ dump("Yulup:view.js:EditActionListener.DidDeleteText: text node = \"" + aTextNode.nodeName + "\", offset = \"" + aOffset + "\", length = \"" + aLength + "\", result = \"" + aResult + "\"\n");
 
-        this.view.undoRedoObserver.updateCommands();
-        this.model.setDirty();
+        this.__view.undoRedoObserver.updateCommands();
+        this.__model.setDirty();
     },
 
     WillDeleteSelection: function (aSelection) {
@@ -384,8 +384,8 @@ EditActionListener.prototype = {
     DidDeleteSelection: function (aSelection) {
         /* DEBUG */ dump("Yulup:view.js:EditActionListener.DidDeleteSelection:  selection = \"" + aSelection + "\"\n");
 
-        this.view.undoRedoObserver.updateCommands();
-        this.model.setDirty();
+        this.__view.undoRedoObserver.updateCommands();
+        this.__model.setDirty();
     }
 };
 
