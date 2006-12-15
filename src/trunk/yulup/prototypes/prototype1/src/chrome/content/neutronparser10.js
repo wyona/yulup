@@ -498,7 +498,7 @@ Neutron10Sitetree.prototype = {
 function NeutronProtocolCheckinException(aMessage) {
     /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronProtocolCheckinException(\"" + aMessage + "\") invoked\n");
 
-    this.__proto__.__proto__.constructor.call(this, aMessage);
+    NeutronProtocolException.call(this, aMessage);
 
     this.name = "NeutronProtocolCheckinException";
 }
@@ -529,7 +529,7 @@ NeutronProtocolCheckinException.prototype = {
 function NeutronProtocolDataNotWellFormedException(aMessage) {
     /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronProtocolDataNotWellFormedException(\"" + aMessage + "\") invoked\n");
 
-    this.__proto__.__proto__.constructor.call(this, aMessage);
+    NeutronProtocolException.call(this, aMessage);
 
     this.name = "NeutronProtocolDataNotWellFormedException";
 }

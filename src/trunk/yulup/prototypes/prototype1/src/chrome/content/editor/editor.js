@@ -970,7 +970,7 @@ EditCommandUpdater.prototype = {
 function UndoRedoObserver () {
     /* DEBUG */ dump("Yulup:editor.js:UndoRedoObserver() invoked\n");
 
-    this.__proto__.__proto__.constructor.call(this);
+    EditCommandUpdater.call(this);
 }
 
 UndoRedoObserver.prototype = {
@@ -1002,7 +1002,7 @@ UndoRedoObserver.prototype = {
 function CutCopyObserver () {
     /* DEBUG */ dump("Yulup:editor.js:CutCopyObserver() invoked\n");
 
-    this.__proto__.__proto__.constructor.call(this);
+    EditCommandUpdater.call(this);
 }
 
 CutCopyObserver.prototype = {
