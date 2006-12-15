@@ -65,6 +65,12 @@
   <script type="application/x-javascript"
           src="chrome://yulup/content/editor/view.js"/>
   <script type="application/x-javascript"
+          src="chrome://yulup/content/editor/texteditorkeylistener.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/editor/commandkeylistener.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/editor/readlinekeybindingslistener.js"/>
+  <script type="application/x-javascript"
           src="chrome://yulup/content/editor/guidedtaginserter.js"/>
   <script type="application/x-javascript"
           src="chrome://yulup/content/editor/xpathparser.js"/>
