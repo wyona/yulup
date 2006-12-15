@@ -571,6 +571,92 @@ TransactionListener.prototype = {
 };
 
 
+function EditCommandUpdater() {
+    /* DEBUG */ dump("Yulup:view.js:EditCommandUpdater() invoked\n");
+
+    this.__active = false;
+}
+
+EditCommandUpdater.prototype = {
+    __active: null,
+
+    activate: function () {
+        /* DEBUG */ dump("Yulup:view.js:EditCommandUpdater.activate() invoked\n");
+
+        this.__active = true;
+    },
+
+    deactivate: function () {
+        /* DEBUG */ dump("Yulup:view.js:EditCommandUpdater.deactivate() invoked\n");
+
+        this.__active = false;
+    }
+};
+
+
+function UndoRedoObserver() {
+    /* DEBUG */ dump("Yulup:view.js:UndoRedoObserver() invoked\n");
+
+    EditCommandUpdater.call(this);
+}
+
+UndoRedoObserver.prototype = {
+    __proto__: EditCommandUpdater.prototype,
+
+    disableCommands: function () {
+        /* DEBUG */ dump("Yulup:view.js:UndoRedoObserver.disableCommands() invoked\n");
+
+        Editor.goSetCommandEnabled("cmd_undo", false);
+        Editor.goSetCommandEnabled("cmd_redo", false);
+    },
+
+    updateCommands: function () {
+        /* DEBUG */ dump("Yulup:view.js:UndoRedoObserver.updateCommands() invoked\n");
+
+        if (this.__active) {
+            Editor.goUpdateCommand("cmd_undo");
+            Editor.goUpdateCommand("cmd_redo");
+        }
+    },
+
+    observe: function (aSubject, aTopic, aData) {
+        /* DEBUG */ dump("Yulup:view.js:UndoRedoObserver.observe(\"" + aSubject + "\", \"" + aTopic + "\", \"" + aData + "\") invoked\n");
+
+        if (this.__active) {
+            Editor.goUpdateCommand(aTopic);
+            //window.updateCommands("undo");
+        }
+    }
+};
+
+
+function CutCopyObserver() {
+    /* DEBUG */ dump("Yulup:view.js:CutCopyObserver() invoked\n");
+
+    EditCommandUpdater.call(this);
+}
+
+CutCopyObserver.prototype = {
+    __proto__: EditCommandUpdater.prototype,
+
+    disableCommands: function () {
+        /* DEBUG */ dump("Yulup:view.js:CutCopyObserver.disableCommands() invoked\n");
+
+        Editor.goSetCommandEnabled("cmd_cut", false);
+        Editor.goSetCommandEnabled("cmd_copy", false);
+    },
+
+    updateCommands: function () {
+        /* DEBUG */ dump("Yulup:view.js:CutCopyObserver.updateCommands() invoked\n");
+
+        if (this.__active) {
+            Editor.goUpdateCommand("cmd_cut");
+            Editor.goUpdateCommand("cmd_copy");
+        }
+    }
+};
+
+
 function CutCopySelectionListener(aView) {
     /* DEBUG */ YulupDebug.ASSERT(aView != null);
 
