@@ -244,10 +244,7 @@ DocumentStateListener.prototype = {
         /* DEBUG */ dump("Yulup:view.js:DocumentStateListener.NotifyDocumentStateChanged(" + aDocumentChanged + ") invoked.\n");
 
         if (aDocumentChanged) {
-            //this.editorController.editStateController.modelStateChanged("modified");
             this.__model.setDirty();
-        } else {
-            //this.editorController.editStateController.modelStateChanged("saved");
         }
     }
 };
