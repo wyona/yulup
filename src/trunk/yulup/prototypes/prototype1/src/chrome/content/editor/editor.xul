@@ -93,8 +93,6 @@
     <command id="cmd_cut"   oncommand="Editor.goDoCommand('cmd_cut')"   disabled="false"/>
     <command id="cmd_copy"  oncommand="Editor.goDoCommand('cmd_copy')"  disabled="false"/>
     <command id="cmd_paste" oncommand="Editor.goDoCommand('cmd_paste')" disabled="false"/>
-    <command id="cmd_yulup_find"    disabled="true"/>
-    <command id="cmd_yulup_replace" disabled="true"/>
   </commandset>
 
   <commandset id="uiYulupEditorFileOperationsSaveCommandset">
@@ -102,6 +100,11 @@
     <command id="cmd_yulup_savetemp"   oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_savetemp')"   disabled="true"/>
     <command id="cmd_yulup_savecms"    oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_savecms')"    disabled="true"/>
     <command id="cmd_yulup_checkincms" oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_checkincms')" disabled="true"/>
+  </commandset>
+
+  <commandset id="uiYulupEditorFindReplaceCommandset">
+    <command id="cmd_yulup_find"    oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_find')"    disabled="true"/>
+    <command id="cmd_yulup_replace" oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_replace')" disabled="true"/>
   </commandset>
 
   <commandset id="uiYulupEditorFileOperationsUploadCommandset">

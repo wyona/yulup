@@ -655,6 +655,7 @@ YulupEditStateController.prototype = {
                         return;
                 }
 
+                Editor.goUpdateFindReplaceCommands();
                 document.getElementById("broadcaster_yulup_editorinitialised").setAttribute("disabled", false);
 
                 break;
@@ -744,6 +745,8 @@ EditorCommandController.prototype = {
             case "cmd_yulup_savecms":
             case "cmd_yulup_checkincms":
             case "cmd_yulup_upload":
+            case "cmd_yulup_find":
+            case "cmd_yulup_replace":
                 retval = true;
                 break;
             default:
@@ -804,6 +807,24 @@ EditorCommandController.prototype = {
                 if (this.__editorController.editorParams.navigation && this.__editorController.editorParams.navigation.sitetree.uri) {
                     retval = true;
                 }
+
+                break;
+            case "cmd_yulup_find":
+                if (this.__editStateController.isCurrentState(this.__editStateController.STATE_SUPERIOR_DOCUMENTOK) &&
+                    this.__editorController.activeView) {
+                    retval = true;
+                }
+
+                // don't activate for now (merge with "cmd_yulup_replace" later)
+                retval = false;
+                break;
+            case "cmd_yulup_replace":
+                if (this.__editStateController.isCurrentState(this.__editStateController.STATE_SUPERIOR_DOCUMENTOK) &&
+                    this.__editorController.activeView) {
+                    retval = true;
+                }
+
+                break;
             default:
         }
 
@@ -832,7 +853,13 @@ EditorCommandController.prototype = {
             case "cmd_yulup_upload":
                 Editor.resourceUpload();
                 break;
-        default:
+            case "cmd_yulup_find":
+                Editor.findString();
+                break;
+            case "cmd_yulup_replace":
+                Editor.replaceString();
+                break;
+            default:
         }
     },
 

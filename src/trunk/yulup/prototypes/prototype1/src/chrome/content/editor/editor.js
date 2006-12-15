@@ -29,6 +29,7 @@
 const EDITOR_WINDOW_TITLE           = "Yulup Editor";
 const YULUP_EDITOR_CHROME_URI       = "chrome://yulup/content/editor/editor.xul";
 const YULUP_CONFIRMCLOSE_CHROME_URI = "chrome://yulup/content/editor/confirmclose.xul";
+const YULUP_REPLACE_CHROME_URI      = "chrome://yulup/content/editor/findreplace/findreplace.xul";
 const YULUP_FAVICON_CHROME_URI      = "chrome://yulup/skin/icons/yulup-logo.png";
 
 var gMainBrowserWindow  = null;
@@ -691,6 +692,18 @@ var Editor = {
         ResourceUploadDialog.showResourceUploadDialog(gEditorController.editorParams.navigation.sitetree.uri);
     },
 
+    findString: function () {
+        /* DEBUG */ dump("Yulup:editor.js:Editor.findString() invoked\n");
+
+        /* DEBUG */ dump("Yulup:editor.js:Editor.findString: not implemented yet\n");
+    },
+
+    replaceString: function () {
+        /* DEBUG */ dump("Yulup:editor.js:Editor.replaceString() invoked\n");
+
+        window.openDialog(YULUP_REPLACE_CHROME_URI, "yulupReplaceDialog");
+    },
+
     updateToolboxContextMenu: function () {
         document.getElementById("uiYulupEditorToolboxToggleTextItem").setAttribute("checked", document.getElementById("uiYulupEditorToolbox").getAttribute("showiconsonly") == "true");
     },
@@ -775,6 +788,13 @@ var Editor = {
         /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateUploadCommands() invoked\n");
 
         Editor.goUpdateFileOperationsCommand('cmd_yulup_upload');
+    },
+
+    goUpdateFindReplaceCommands: function () {
+        /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateFindReplaceCommands() invoked\n");
+
+        Editor.goUpdateFileOperationsCommand('cmd_yulup_find');
+        Editor.goUpdateFileOperationsCommand('cmd_yulup_replace');
     },
 
     goUpdateCommand: function (aCommand) {

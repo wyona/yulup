@@ -31,7 +31,11 @@
 <dialog id="uiYulupEditorFindReplaceDialog"
         orient="vertical"
         align="stretch"
+        title="Find &amp; Replace"
+        buttons="cancel"
+        ondialogcancel="return true"
         onload="FindReplace.onLoadListener()"
+        style="font: -moz-dialog;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <!--<stringbundle id="uiYulupEditorStringbundle" src="chrome://yulup/locale/findreplace.properties"/>-->
@@ -57,5 +61,10 @@
       </row>
     </rows>
   </grid>
+
+  <checkbox label="Match case"/>
+  <checkbox label="Match entire word only"/>
+  <checkbox label="Search backwards"/>
+  <checkbox label="Wrap around"/>
 
 </dialog>
