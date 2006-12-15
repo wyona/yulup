@@ -135,7 +135,7 @@ WYSIWYGXSLTModeView.prototype = {
             this.view.QueryInterface(Components.interfaces.nsIEditor);
 
             // hook up DocumentStateListener
-            this.view.addDocumentStateListener(new View.DocumentStateListener(this.model));
+            this.view.addDocumentStateListener(new DocumentStateListener(this.model));
 
             // disable object resizing
             this.view.QueryInterface(Components.interfaces.nsIHTMLObjectResizer);

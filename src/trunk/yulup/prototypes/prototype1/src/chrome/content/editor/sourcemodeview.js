@@ -69,7 +69,7 @@ function SourceModeView(aEditorController, aModel, aShowViewCommand, aBarrier) {
     /* DEBUG */ YulupDebug.ASSERT(aBarrier          != null);
 
     // call super constructor
-    this.__proto__.__proto__.constructor.call(this, aEditorController, aModel, aBarrier);
+    View.call(this, aEditorController, aModel, aBarrier);
 
     // register ourselves as an onload listener to get notified when the editor element is initialised
     document.addEventListener("editorinit", this, false);
@@ -111,13 +111,13 @@ SourceModeView.prototype = {
             this.view.QueryInterface(Components.interfaces.nsIEditor);
 
             // hook up DocumentStateListener
-            this.view.addDocumentStateListener(new View.DocumentStateListener(this.model));
+            this.view.addDocumentStateListener(new DocumentStateListener(this.model));
 
             // hook up EditActionListener
-            this.view.addEditActionListener(new View.EditActionListener(this, this.model));
+            this.view.addEditActionListener(new EditActionListener(this, this.model));
 
             // hook up TransactionListener
-            //this.view.transactionManager.AddListener(new View.TransactionListener(this.view));
+            //this.view.transactionManager.AddListener(new TransactionListener(this.view));
 
             this.view.QueryInterface(Components.interfaces.nsIPlaintextEditor);
 
