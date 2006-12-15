@@ -65,6 +65,8 @@
   <script type="application/x-javascript"
           src="chrome://yulup/content/editor/view.js"/>
   <script type="application/x-javascript"
+          src="chrome://yulup/content/editor/guidedtaginserter.js"/>
+  <script type="application/x-javascript"
           src="chrome://yulup/content/editor/xpathparser.js"/>
   <script type="application/x-javascript"
           src="chrome://yulup/content/editor/controller.js"/>
