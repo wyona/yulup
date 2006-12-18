@@ -1,0 +1,10 @@
+<!ENTITY findReplaceDialog.title "Suchen & Ersetzen">
+<!ENTITY findReplaceSearchFor.label "Suchen nach">
+<!ENTITY findReplaceReplacementString.label "Ersetzen mit">
+<!ENTITY findReplaceMatchCase.label "Gross-/Kleinschreibung beachten">
+<!ENTITY findReplaceMatchEntireWord.label "Nur nach ganzen Wörtern suchen">
+<!ENTITY findReplaceSearchBackwards.label "Rückwärts suchen">
+<!ENTITY findReplaceWrapAround.label "Suche am Dokumentende fortsetzen">
+<!ENTITY findReplaceReplaceAllButton.label "Alles ersetzen">
+<!ENTITY findReplaceReplaceButton.label "Ersetzen">
+<!ENTITY findReplaceFindNextButton.label "Nächstes finden">
