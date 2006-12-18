@@ -27,7 +27,24 @@
  */
 
 const FindReplace = {
+    __editorController: null,
+
     onLoadListener: function () {
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.onLoadListener() invoked\n");
+
+        FindReplace.__editorController = window.arguments[0];
+
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.onLoadListener: FindReplace.__editorController = \"" + FindReplace.__editorController + "\"\n");
+
+        if (!FindReplace.__editorController || (FindReplace.__editorController && !FindReplace.__editorController.activeView)) {
+            window.close();
+            return;
+        }
+
+        FindReplace.__fillInitialValues();
+    },
+
+    __fillInitialValues: function () {
+        
     }
 };

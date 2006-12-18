@@ -701,7 +701,7 @@ var Editor = {
     replaceString: function () {
         /* DEBUG */ dump("Yulup:editor.js:Editor.replaceString() invoked\n");
 
-        window.openDialog(YULUP_REPLACE_CHROME_URI, "yulupReplaceDialog");
+        window.openDialog(YULUP_REPLACE_CHROME_URI, "yulupReplaceDialog", "chrome,resizable=yes", gEditorController);
     },
 
     updateToolboxContextMenu: function () {

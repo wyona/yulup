@@ -45,26 +45,39 @@
   <script type="application/x-javascript"
           src="chrome://yulup/content/editor/findreplace/findreplace.js"/>
 
-  <grid flex="1">
-    <columns>
-      <column/>
-      <column flex="1"/>
-    </columns>
-    <rows>
-      <row>
-        <label value="Search for:"/>
-        <textbox id="uiSearchStringTextbox"/>
-      </row>
-      <row>
-        <label value="Replace with:"/>
-        <textbos id="uiReplacementStringTextbox"/>
-      </row>
-    </rows>
-  </grid>
+  <vbox>
+    <grid flex="1">
+      <columns>
+        <column/>
+        <column flex="1"/>
+      </columns>
+      <rows>
+        <row align="center">
+          <label control="uiSearchStringTextbox" value="Search for:"/>
+          <textbox id="uiSearchStringTextbox"/>
+        </row>
+        <row align="center">
+          <label control="uiReplacementStringTextbox" value="Replace with:"/>
+          <textbox id="uiReplacementStringTextbox"/>
+        </row>
+      </rows>
+    </grid>
 
-  <checkbox label="Match case"/>
-  <checkbox label="Match entire word only"/>
-  <checkbox label="Search backwards"/>
-  <checkbox label="Wrap around"/>
+    <separator class="thin"/>
+
+    <checkbox label="Match case"/>
+    <checkbox label="Match entire word only"/>
+    <checkbox label="Search backwards"/>
+    <checkbox label="Wrap around"/>
+  </vbox>
+
+  <spacer flex="1"/>
+
+  <hbox equalsize="always" pack="end">
+    <button label="Replace All"/>
+    <button label="Replace"/>
+    <button label="Find Next"/>
+    <button dlgtype="cancel"/>
+  </hbox>
 
 </dialog>
