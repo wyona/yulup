@@ -401,10 +401,10 @@ function YulupEditController(aParameterObject) {
          * would make us unable to have something to edit. */
         document.getElementById("uiYulupEditorContentDeck").selectedIndex = 1;
 
+        YulupEditController.updateView();
+
         // editor initialisation completed
         gEditorController.editStateController.modelStateChanged("editorinitialised");
-
-        YulupEditController.updateView();
 
         // give information about the views
         /* DEBUG */ YulupEditController.viewInfo();
