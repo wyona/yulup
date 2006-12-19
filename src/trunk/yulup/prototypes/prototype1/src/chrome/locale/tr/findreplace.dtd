@@ -1,4 +1,4 @@
-<!ENTITY findReplaceDialog.title "Find & Replace">
+<!ENTITY findReplaceDialog.title "Find &amp; Replace">
 <!ENTITY findReplaceSearchFor.label "Search for">
 <!ENTITY findReplaceReplacementString.label "Replace with">
 <!ENTITY findReplaceMatchCase.label "Match case">

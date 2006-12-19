@@ -3,8 +3,8 @@
 <dtd xmlns="http://yulup.wyona.org/1.0">
 
   <entity id="findReplaceDialog.title">
-    <name xml:lang="en">Find &amp; Replace</name>
-    <name xml:lang="de">Suchen &amp; Ersetzen</name>
+    <name xml:lang="en">Find &amp;amp; Replace</name>
+    <name xml:lang="de">Suchen &amp;amp; Ersetzen</name>
   </entity>
 
   <entity id="findReplaceSearchFor.label">
