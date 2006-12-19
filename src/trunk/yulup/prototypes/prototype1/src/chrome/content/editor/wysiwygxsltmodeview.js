@@ -167,8 +167,9 @@ WYSIWYGXSLTModeView.prototype = {
             this.view.updateBaseURL();
 
             wysiwygXSLTEditor.contentWindow.addEventListener("keypress", new CommandKeyListener(), true);
+            wysiwygXSLTEditor.contentWindow.addEventListener("keypress", new WYSIWYGXSLTKeyPressListener(this), true);
 
-            wysiwygXSLTEditor.contentWindow.addEventListener("keyup", new WYSIWYGXSLTKeyListener(this), true);
+            wysiwygXSLTEditor.contentWindow.addEventListener("keyup", new WYSIWYGXSLTKeyUpListener(this), true);
 
             if ((keyBinding = YulupPreferences.getCharPref("editor.", "keybinding")) != null) {
                 switch (keyBinding) {
@@ -884,22 +885,51 @@ WYSIWYGXSLTModeView.prototype = {
 };
 
 
-function WYSIWYGXSLTKeyListener(aView) {
+function WYSIWYGXSLTKeyPressListener(aView) {
     /* DEBUG */ YulupDebug.ASSERT(aView != null);
 
-    this.view = aView;
+    this.__view = aView;
 }
 
-WYSIWYGXSLTKeyListener.prototype = {
-    view: null,
+WYSIWYGXSLTKeyPressListener.prototype = {
+    __view: null,
 
     handleEvent: function (aKeyEvent) {
-        /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTKeyListener.handleEvent() invoked\n");
+        /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTKeyPressListener.handleEvent() invoked\n");
 
-        // hook up paragraph inserter
-        this.view.updateSource();
+        switch (aKeyEvent.keyCode) {
+            case Components.interfaces.nsIDOMKeyEvent.DOM_VK_RETURN:
+            case Components.interfaces.nsIDOMKeyEvent.DOM_VK_ENTER:
+                /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTKeyPressListener.handleEvent: DOM_VK_RETURN or DOM_VK_ENTER pressed, suppress this event.\n");
+
+                // TODO: check keybindings for these keys and call paragraph inserter if needed
+
+                // we consumed this event
+                aKeyEvent.preventDefault();
+                return;
+                break;
+            default:
+        }
     }
 };
+
+
+function WYSIWYGXSLTKeyUpListener(aView) {
+    /* DEBUG */ YulupDebug.ASSERT(aView != null);
+
+    this.__view = aView;
+}
+
+WYSIWYGXSLTKeyUpListener.prototype = {
+    __view: null,
+
+    handleEvent: function (aKeyEvent) {
+        /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTKeyUpListener.handleEvent() invoked\n");
+
+        this.__view.updateSource();
+    }
+};
+
 
 function LocationPathSelectionListener(aSelectionChangeHandler) {
     /* DEBUG */ YulupDebug.ASSERT(aSelectionChangeHandler != null);
@@ -916,6 +946,7 @@ LocationPathSelectionListener.prototype = {
         this.__selectionChangeHandler.selectionChanged(aSelection);
     }
 };
+
 
 function WYSIWYGXSLTSelectionChangeHandler(aView) {
     /* DEBUG */ YulupDebug.ASSERT(aView != null);
