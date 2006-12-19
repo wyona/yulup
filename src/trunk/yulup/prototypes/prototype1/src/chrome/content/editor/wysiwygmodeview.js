@@ -485,6 +485,7 @@ WYSIWYGDOMSerialiser.prototype = {
                     break;
                 case "a":
                 case "link":
+                case "area":
                     aNode.setAttribute("href", aNode.__yulupOriginalURI);
                     break;
                 default:
