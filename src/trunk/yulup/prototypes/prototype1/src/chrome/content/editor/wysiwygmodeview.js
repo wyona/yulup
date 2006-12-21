@@ -604,7 +604,7 @@ WYSIWYGDOMCleaner.prototype = {
      *
      * Note that the current node is removed if either
      * indicated by the shouldRemove() method, or if it
-     * empty because all child nodes were removed.
+     * is empty because all child nodes were removed.
      *
      * @param  {nsIDOMNode} aNode the node to serialise
      * @return {Boolean} returns true if the current node should be removed, false otherwise
@@ -629,9 +629,11 @@ WYSIWYGDOMCleaner.prototype = {
                 child    = child.nextSibling;
 
                 if (this.cleanseDOMTree(tmpChild)) {
-                    // the child node has to be removed
-                    /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGDOMCleaner.cleanseDOMTree: remove node \"" + tmpChild + "\"\n");
-                    aNode.removeChild(tmpChild);
+                    // the child node has to be removed, except empty table cell elements
+                    if (!(tmpChild instanceof HTMLTableCellElement)) {
+                        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGDOMCleaner.cleanseDOMTree: remove child node \"" + tmpChild + "\"\n");
+                        aNode.removeChild(tmpChild);
+                    }
                 } else {
                     // don't remove the current node since we have found a child node which should stay
                     remove = false;
