@@ -76,6 +76,7 @@ var Authentication = {
                 elem.setAttribute("type", "autocomplete");
                 elem.setAttribute("autocompletesearch", "form-history");
                 //elem.setAttribute("tabscrolling", "true");
+                elem.setAttribute("forcecomplete", "true");
                 elem.setAttribute("onchange", "Authentication.addToFormHistory('"+field+"')");
             }
             elem.setAttribute("id", field);
