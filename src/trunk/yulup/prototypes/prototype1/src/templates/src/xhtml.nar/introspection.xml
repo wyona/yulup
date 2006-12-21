@@ -32,7 +32,7 @@
         <attribute name="Border" xpath="table/attribute::border"/>
         <attribute name="Padding" xpath="table/attribute::cellpadding"/>
         <attribute name="Spacing" xpath="table/attribute::cellspacing"/>
-        <attribute name="Bgcolor" xpath="table/attribute::bgcolor"/>
+        <attribute name="Bgcolor" xpath="table/attribute::bgcolor" type="color"/>
         <fragment>
           <table border="0" cellpadding="0" cellspacing="0" bgcolor="#d1e2f7" xmlns="">
             <tr>
