@@ -3,38 +3,38 @@
 <introspection xmlns="http://www.wyona.org/neutron/1.0">
   <edit mime-type="application/xhtml+xml" name="XHTML template">
     <widgets>
-      <widget type="surround" name="Bold" description="Bold Widget" icon="icons/bold.png">
+      <widget type="surround" name="Bold" description="Style text bold" icon="icons/bold.png">
         <fragment>
           <b xmlns=""/>
         </fragment>
       </widget>
-      <widget type="surround" name="Italic" description="Italic Widget" icon="icons/italic.png">
+      <widget type="surround" name="Italic" description="Style text italic" icon="icons/italic.png">
         <fragment>
           <i xmlns=""/>
         </fragment>
       </widget>
-      <widget type="surround" name="Underline" description="Underline Widget" icon="icons/underline.png">
+      <widget type="surround" name="Underline" description="Style text underline" icon="icons/underline.png">
         <fragment>
           <u xmlns=""/>
         </fragment>
       </widget>
-      <widget type="surround" name="Strike" description="Strike Widget" icon="icons/strikethrough.png">
+      <widget type="surround" name="Strike" description="Style text strikethrough" icon="icons/strikethrough.png">
         <fragment>
           <strike xmlns=""/>
         </fragment>
       </widget>
-      <widget type="surround" name="Monospace" description="Monospace Widget" icon="icons/bold.png">
+      <widget type="surround" name="Monospace" description="Style text monospace" icon="icons/bold.png">
         <fragment>
           <tt xmlns=""/>
         </fragment>
       </widget>
-      <widget type="insert" name="Table" description="Table Widget" icon="icons/table.png">
+      <widget type="insert" name="Table" description="Insert a table" icon="icons/table.png">
         <attribute name="Border" xpath="table/attribute::border"/>
         <attribute name="Padding" xpath="table/attribute::cellpadding"/>
         <attribute name="Spacing" xpath="table/attribute::cellspacing"/>
         <attribute name="Bgcolor" xpath="table/attribute::bgcolor" type="color"/>
         <fragment>
-          <table border="0" cellpadding="0" cellspacing="0" bgcolor="#d1e2f7" xmlns="">
+          <table border="0" cellpadding="0" cellspacing="0" bgcolor="#DDDDDD" xmlns="">
             <tr>
               <td>Column 1, Row 1</td>
               <td>Column 2, Row 1</td>
@@ -46,7 +46,7 @@
           </table>
         </fragment>
       </widget>
-      <widget type="insert" name="List" description="Unordered List Widget" icon="icons/ulist.png">
+      <widget type="insert" name="Unordered List" description="Insert unordered list" icon="icons/ulist.png">
         <fragment>
           <ul xmlns="">
             <li>List Item 1</li>
@@ -54,13 +54,21 @@
           </ul>
         </fragment>
       </widget>
-      <widget type="surround" name="Link" description="Hypertext Link Widget" icon="icons/hlink.png">
+      <widget type="insert" name="Ordered List" description="Insert ordered list" icon="icons/ulist.png">
+        <fragment>
+          <ol xmlns="">
+            <li>List Item 1</li>
+            <li>List Item 2</li>
+          </ol>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Link" description="Insert hypertext link" icon="icons/hlink.png">
         <attribute name="href" xpath="a/attribute::href" type="resource"/>
         <fragment>
           <a xmlns="" href="http://www.yulup.org"/>
         </fragment>
       </widget>
-      <widget type="insert" name="Image" description="Image Widget" icon="icons/image.png">
+      <widget type="insert" name="Image" description="Insert image" icon="icons/image.png">
         <attribute name="src" xpath="img/attribute::src" type="resource"/>
         <attribute name="alt" xpath="img/attribute::alt"/>
         <fragment>
