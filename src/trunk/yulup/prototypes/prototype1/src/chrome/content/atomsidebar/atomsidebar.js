@@ -225,6 +225,7 @@ var AtomSidebar = {
     __feedInfoDeckSetUp: function () {
         /* DEBUG */ dump("Yulup:atomsidebar.js:AtomSidebar.__feedInfoDeckSetUp() invoked\n");
 
+        // TODO: we might have to load the content after these flags are set; verify with a testcase
         document.getElementById("uiYulupAtomSidebarFeedInfoBox").docShell.allowJavascript    = false;
         document.getElementById("uiYulupAtomSidebarFeedInfoBox").docShell.allowPlugins       = false;
         document.getElementById("uiYulupAtomSidebarFeedInfoBox").docShell.allowMetaRedirects = false;
