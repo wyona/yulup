@@ -59,7 +59,7 @@
 <!ENTITY sourceViewTab.tooltip "Den Quelltext des Dokuments betrachten">
 <!ENTITY wysiwygViewTab.tooltip "Die WYSIWYG Darstellung des Dokuments betrachen">
 <!ENTITY editorWidgetInsertDialog.title "Setze Attribute">
-<!ENTITY editorWidgetInsert.label "Setze Attribute für das Element ">
+<!ENTITY editorWidgetInsert.label "Setze Attribute für das Element">
 <!ENTITY editorResourceUploadDialog.title "Resource Hochladen">
 <!ENTITY editorResourceSelectDialog.title "Resource Auswählen">
 <!ENTITY editorResourceTree.label "Seitenstruktur">

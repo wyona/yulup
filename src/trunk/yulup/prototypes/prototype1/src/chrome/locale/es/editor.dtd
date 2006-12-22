@@ -58,8 +58,8 @@
 <!ENTITY fileOperationSaveAsCMSMenuitem.tooltip "Save document to CMS as...">
 <!ENTITY sourceViewTab.tooltip "View the source code of the document">
 <!ENTITY wysiwygViewTab.tooltip "View the WYSIWYG representation of the document">
-<!ENTITY editorWidgetInsertDialog.title "Set attributes">
-<!ENTITY editorWidgetInsert.label "Set attributes for widget ">
+<!ENTITY editorWidgetInsertDialog.title "Set Attributes">
+<!ENTITY editorWidgetInsert.label "Set attributes for element">
 <!ENTITY editorResourceUploadDialog.title "Resource Upload">
 <!ENTITY editorResourceSelectDialog.title "Select Resource">
 <!ENTITY editorResourceTree.label "Sitetree">

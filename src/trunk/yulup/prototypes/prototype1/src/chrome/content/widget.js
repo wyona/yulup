@@ -32,6 +32,8 @@ const YULUP_WIDGET_INSERT_CHROME_URI   = "chrome://yulup/content/widget.xul";
 const YULUP_RESOURCE_SELECT_CHROME_URI = "chrome://yulup/content/resourceselect.xul";
 const TIDYWIDGETFRAGMENT_CHROME_URI    = "chrome://yulup/content/tidywidgetfragment.xsl";
 
+const DEFAULT_COLORPICKER_VALUE = "#FFFFFF";
+
 /**
   * Instantiates a new Object of the type Widget
   *
@@ -287,6 +289,9 @@ var WidgetDialogHandler = {
         var widgetRows  = null;
         var label       = null;
         var elem        = null;
+        var row         = null;
+        var container   = null;
+        var textbox     = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetDialogHandler.uiYulupEditorWidgetInsertOnDialogLoadHandler() invoked\n");
 
@@ -300,33 +305,35 @@ var WidgetDialogHandler = {
         label      = document.getElementById("uiYulupWidgetInsertAuthenticationLabel");
 
         // set the dialog top-label
-        label.setAttribute("value", label.getAttribute("value") + "\"" +widget.attributes["name"] + "\"");
+        label.setAttribute("value", label.getAttribute("value") + " \"" +widget.attributes["name"] + "\"");
 
         for (var i=0; i < widget.fragmentAttributes.length; i++) {
-            elem = document.createElement("row");
-            elem.setAttribute("id", "row" + i);
-            elem.setAttribute("align", "center");
-            widgetRows.appendChild(elem);
+            row = document.createElement("row");
+            row.setAttribute("id", "row" + i);
+            row.setAttribute("align", "center");
+            widgetRows.appendChild(row);
 
             elem = document.createElement("label");
             elem.setAttribute("control", widget.fragmentAttributes[i].name);
             elem.setAttribute("value", widget.fragmentAttributes[i].name);
-            elem.setAttribute("flex", "1");
-            document.getElementById("row" + i).appendChild(elem);
+            row.appendChild(elem);
 
-            elem = document.createElement("textbox");
-            elem.setAttribute("id", widget.fragmentAttributes[i].name);
-            elem.setAttribute("size", "30");
-            elem.setAttribute("flex", "2");
+            container = document.createElement("hbox");
+            container.setAttribute("align", "center");
+            row.appendChild(container);
+
+            textbox = document.createElement("textbox");
+            textbox.setAttribute("id", widget.fragmentAttributes[i].name);
+            textbox.setAttribute("size", "30");
+            textbox.setAttribute("flex", "1");
 
             // set the attribute default value
-            elem.setAttribute("value", widget.fragment.evaluate(widget.fragmentAttributes[i].xpath, widget.fragment, nsResolver, XPathResult.STRING_TYPE, null).stringValue);
-            document.getElementById("row" + i).appendChild(elem);
+            textbox.setAttribute("value", widget.fragment.evaluate(widget.fragmentAttributes[i].xpath, widget.fragment, nsResolver, XPathResult.STRING_TYPE, null).stringValue);
+            container.appendChild(textbox);
 
             // add a type specific action button
             switch (widget.fragmentAttributes[i].type) {
                 case "resource":
-
                     elem = document.createElement("button");
                     elem.setAttribute("id", "button" + widget.fragmentAttributes[i].name);
                     elem.setAttribute("label", document.getElementById("uiYulupEditorStringbundle").getString("editorWidgetInsertSelect.label"));
@@ -338,9 +345,31 @@ var WidgetDialogHandler = {
                         elem.setAttribute("oncommand", "ResourceSelectDialogHandler.doSelectCommand(\"" + sitetreeURI.spec + "\", \"" + widget.fragmentAttributes[i].name + "\")");
                     }
 
-                    document.getElementById("row" + i).appendChild(elem);
+                    container.appendChild(elem);
 
-                break;
+                    break;
+                case "color":
+                    elem = document.createElement("colorpicker");
+                    elem.setAttribute("id", "colorpicker" + widget.fragmentAttributes[i].name);
+                    elem.setAttribute("type", "button");
+                    elem.setAttribute("onchange", "WidgetDialogHandler.updateColorTextbox(\"" + widget.fragmentAttributes[i].name + "\", this.color)");
+
+                    container.appendChild(elem);
+
+                    textbox.setAttribute("maxlength", "7");
+                    textbox.setAttribute("onchange", "WidgetDialogHandler.updateColorPicker(\"colorpicker" + widget.fragmentAttributes[i].name + "\", \"" + widget.fragmentAttributes[i].name + "\", this.value)");
+
+                    // fixup color if we have to
+                    if (WidgetDialogHandler.__isValidColorValue(textbox.getAttribute("value"))) {
+                        textbox.value = textbox.value.toUpperCase();
+                    } else {
+                        textbox.value = DEFAULT_COLORPICKER_VALUE;
+                    }
+
+                    window.setTimeout("document.getElementById(\"colorpicker" + widget.fragmentAttributes[i].name + "\").color = \"" + textbox.value + "\"", 0);
+
+                    break;
+                default:
             }
         }
     },
@@ -373,6 +402,67 @@ var WidgetDialogHandler = {
         }
 
         return true;
+    },
+
+    updateColorTextbox: function (aTextBoxID, aValue) {
+        var textbox = null;
+
+        /* DEBUG */ dump("Yulup:widget.js:WidgetDialogHandler.updateColorTextbox(\"" + aTextBoxID + "\", \"" + aValue + "\") invoked\n");
+
+        if ((textbox = document.getElementById(aTextBoxID)) != null) {
+            textbox.value = aValue;
+        }
+    },
+
+    updateColorPicker: function (aColorPickerID, aTextBoxID, aValue) {
+        var colorpicker = null;
+        var textbox     = null;
+
+        /* DEBUG */ dump("Yulup:widget.js:WidgetDialogHandler.updateColorPicker(\"" + aColorPickerID + "\", \"" + aValue + "\") invoked\n");
+
+        if ((colorpicker = document.getElementById(aColorPickerID)) != null &&
+            (textbox     = document.getElementById(aTextBoxID))     != null) {
+            // check color value validity
+            if (WidgetDialogHandler.__isValidColorValue(aValue)) {
+                colorpicker.color = aValue.toUpperCase();
+            } else {
+                colorpicker.color = DEFAULT_COLORPICKER_VALUE;
+            }
+
+            // propagate modified color back to textbox
+            textbox.value = colorpicker.color;
+        }
+    },
+
+    __isValidColorValue: function (aColor) {
+        var retval = false;
+        var color  = null;
+
+        /* DEBUG */ dump("Yulup:widget.js:WidgetDialogHandler.__isValidColorValue(\"" + aColor + "\") invoked\n");
+
+        try {
+            color = aColor.toUpperCase();
+
+            if (color.length = 7 && color[0] === "#") {
+                retval = true;
+
+                for (var i = 1; i < 7; i++) {
+                    switch (color[i]) {
+                        case "0": case "1": case "2": case "3": case "4": case "5": case "6": case "7": case "8": case "9":
+                        case "A": case "B": case "C": case "D": case "E": case "F":
+                            break;
+                        default:
+                            retval = false;
+                            break;
+                    }
+                }
+            }
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:widget.js:WidgetDialogHandler.__isValidColorValue", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+        }
+
+        return retval;
     }
 };
 
