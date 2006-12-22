@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<window id="uiColorpickerWindow"
+        orient="vertical"
+        align="stretch"
+        onload="initEditor()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript">
+    
+  </script>
+
+  <colorpicker/>
+  <colorpicker type="button"/>
+
+</window>
