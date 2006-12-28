@@ -28,6 +28,7 @@
 
 const FindReplace = {
     __editorController: null,
+    __view            : null,
 
     onLoadListener: function () {
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.onLoadListener() invoked\n");
@@ -41,7 +42,25 @@ const FindReplace = {
             return;
         }
 
+        // register a view change listener
+        FindReplace.__editorController.addViewChangedListener(FindReplace.viewChanged);
+
         FindReplace.__fillInitialValues();
+    },
+
+    onDialogCancelListener: function () {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.onDialogCancelListener() invoked\n");
+
+        // remove view change listener
+        FindReplace.__editorController.removeViewChangedListener(FindReplace.viewChanged);
+
+        return true;
+    },
+
+    viewChanged: function (aView) {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.viewChanged() invoked\n");
+
+        FindReplace.__view = aView;
     },
 
     __fillInitialValues: function () {
