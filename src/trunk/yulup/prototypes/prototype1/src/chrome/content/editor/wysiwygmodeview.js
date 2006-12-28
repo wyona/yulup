@@ -374,6 +374,16 @@ WYSIWYGDOMSerialiser.prototype = {
         return retString;
     },
 
+    __doRemoveDoubleLinebreaks: function (aString) {
+        var retString = null;
+
+        const removeDblLBRegExp = new RegExp("\n\n", "g");
+
+        retString = aString.replace(removeDblLBRegExp, "\n")
+
+        return retString;
+    },
+
     /**
      * Replace all characters by entities in the passed string
      * if entity conversion is enabled.
@@ -513,6 +523,8 @@ WYSIWYGDOMSerialiser.prototype = {
             /* TODO: this is a good place to solve the double-linebreaks on Windows
              * problem. Maybe we can simply replace \n, \r and friends by a canonical
              * character. Needs some experimentation first. */
+            tmpString = this.__doRemoveDoubleLinebreaks(tmpString);
+
             /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGDOMSerialiser.emitNodeStart: encoded aNode.nodeValue = \"" + tmpString + "\"\n");
             this.__outputString += tmpString;
             break;
