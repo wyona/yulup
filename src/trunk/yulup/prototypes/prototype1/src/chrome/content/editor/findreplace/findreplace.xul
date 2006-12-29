@@ -46,6 +46,12 @@
   <script type="application/x-javascript"
           src="chrome://yulup/content/editor/findreplace/findreplace.js"/>
 
+  <commandset id="uiYulupEditorFindReplaceCommandset">
+    <command id="cmd_yulup_find"       oncommand="FindReplace.goDoFindReplaceCommand('cmd_yulup_find)"       disabled="true"/>
+    <command id="cmd_yulup_replace"    oncommand="FindReplace.goDoFindReplaceCommand('cmd_yulup_replace)"    disabled="true"/>
+    <command id="cmd_yulup_replaceall" oncommand="FindReplace.goDoFindReplaceCommand('cmd_yulup_replaceall)" disabled="true"/>
+  </commandset>
+
   <vbox>
     <grid flex="1">
       <columns>
@@ -75,9 +81,12 @@
   <spacer flex="1"/>
 
   <hbox equalsize="always" pack="end">
-    <button label="&findReplaceReplaceAllButton.label;"/>
-    <button label="&findReplaceReplaceButton.label;"/>
-    <button label="&findReplaceFindNextButton.label;"/>
+    <button label="&findReplaceReplaceAllButton.label;"
+            command="cmd_yulup_replaceall"/>
+    <button label="&findReplaceReplaceButton.label;"
+            command="cmd_yulup_replace"/>
+    <button label="&findReplaceFindNextButton.label;"
+            command="cmd_yulup_find"/>
     <button dlgtype="cancel"/>
   </hbox>
 
