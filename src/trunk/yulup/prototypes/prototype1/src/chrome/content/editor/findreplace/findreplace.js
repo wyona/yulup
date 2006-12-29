@@ -27,12 +27,13 @@
  */
 
 const FindReplace = {
-    __dialogFields     : null,
     __editorController : null,
     __view             : null,
     __findService      : null,
     __webBrowserFind   : null,
     __commandController: null,
+
+    dialogFields: null,
 
     onLoadListener: function () {
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.onLoadListener() invoked\n");
@@ -51,7 +52,7 @@ const FindReplace = {
         // register a view change listener
         FindReplace.__editorController.addViewChangedListener(FindReplace.viewChanged);
 
-        FindReplace.__dialogFields = {
+        FindReplace.dialogFields = {
             searchStringTextbox     : document.getElementById("uiSearchStringTextbox"),
             replacementStringTextbox: document.getElementById("uiReplacementStringTextbox"),
             matchCaseCheckbox       : document.getElementById("uiMatchCaseCheckbox"),
@@ -72,10 +73,12 @@ const FindReplace = {
         FindReplace.__webBrowserFind = FindReplace.__getWebBrowserFind(FindReplace.__view);
 
         // register our command controller
-        FindReplace.__commandController = new FindReplaceCommandController();
+        FindReplace.__commandController = new FindReplaceCommandController(FindReplace);
         window.controllers.appendController(FindReplace.__commandController);
 
         FindReplace.__fillInitialValues();
+
+        FindReplace.goUpdateFindReplaceCommands();
     },
 
     onDialogCancelListener: function () {
@@ -86,6 +89,8 @@ const FindReplace = {
 
         // unregister our command controller
         window.controllers.removeController(FindReplace.__commandController);
+
+        FindReplace.dialogFields = null;
 
         return true;
     },
@@ -106,14 +111,16 @@ const FindReplace = {
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.goUpdateFindReplaceCommand(\"" + aCommand + "\") invoked\n");
 
         try {
-            controller = document.commandDispatcher.getControllerForCommand(aCommand);
+            controller = window.controllers.getControllerForCommand(aCommand);
+
+            /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.goUpdateFindReplaceCommand: controller = \"" + controller + "\"\n");
 
             enabled = false;
 
             if (controller)
                 enabled = controller.isCommandEnabled(aCommand);
 
-            Editor.goSetFileOperationsCommandEnabled(aCommand, enabled);
+            FindReplace.goSetFindReplaceCommandEnabled(aCommand, enabled);
         } catch (exception) {
             /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.goUpdateFindReplaceCommand: an error occurred updating command \"" + aCommand + "\": " + exception + "\n");
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:findreplace.js:FindReplace.goUpdateFindReplaceCommand", exception);
@@ -126,7 +133,7 @@ const FindReplace = {
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.goDoFindReplaceCommand(\"" + aCommand + "\") invoked\n");
 
         try {
-            controller = document.commandDispatcher.getControllerForCommand(aCommand);
+            controller = window.controllers.getControllerForCommand(aCommand);
 
             if (controller && controller.isCommandEnabled(aCommand))
                 controller.doCommand(aCommand);
@@ -150,6 +157,14 @@ const FindReplace = {
                 node.setAttribute("disabled", "true");
             }
         }
+    },
+
+    goUpdateFindReplaceCommands: function () {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.goUpdateFindReplaceCommands() invoked\n");
+
+        FindReplace.goUpdateFindReplaceCommand("cmd_yulup_find");
+        FindReplace.goUpdateFindReplaceCommand("cmd_yulup_replace");
+        FindReplace.goUpdateFindReplaceCommand("cmd_yulup_replaceall");
     },
 
     findNext: function () {
@@ -178,22 +193,22 @@ const FindReplace = {
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.__fillInitialValues: FindReplace.__findService = \"" + FindReplace.__findService + "\", FindReplace.__webBrowserFind = \"" + FindReplace.__webBrowserFind + "\"\n");
 
         if (FindReplace.__findService || FindReplace.__webBrowserFind) {
-            FindReplace.__dialogFields.searchStringTextbox.value       = (FindReplace.__findService.searchString
-                                                                          ? FindReplace.__findService.searchString
-                                                                          : FindReplace.__webBrowserFind.searchString);
-            FindReplace.__dialogFields.replacementStringTextbox.value  = FindReplace.__findService.replaceString;
-            FindReplace.__dialogFields.matchCaseCheckbox.checked       = (FindReplace.__findService.matchCase
-                                                                          ? FindReplace.__findService.matchCase
-                                                                          : FindReplace.__webBrowserFind.matchCase);
-            FindReplace.__dialogFields.matchEntireWordCheckbox.checked = (FindReplace.__findService.entireWord
-                                                                          ? FindReplace.__findService.entireWord
-                                                                          : FindReplace.__webBrowserFind.entireWord);
-            FindReplace.__dialogFields.searchBackwardsCheckbox.checked = (FindReplace.__findService.findBackwards
-                                                                          ? FindReplace.__findService.findBackwards
-                                                                          : FindReplace.__webBrowserFind.findBackwards);
-            FindReplace.__dialogFields.wrapAroundCheckbox.checked      = (FindReplace.__findService.wrapFind
-                                                                          ? FindReplace.__findService.wrapFind
-                                                                          : FindReplace.__webBrowserFind.wrapFind);
+            FindReplace.dialogFields.searchStringTextbox.value       = (FindReplace.__findService.searchString
+                                                                        ? FindReplace.__findService.searchString
+                                                                        : FindReplace.__webBrowserFind.searchString);
+            FindReplace.dialogFields.replacementStringTextbox.value  = FindReplace.__findService.replaceString;
+            FindReplace.dialogFields.matchCaseCheckbox.checked       = (FindReplace.__findService.matchCase
+                                                                        ? FindReplace.__findService.matchCase
+                                                                        : FindReplace.__webBrowserFind.matchCase);
+            FindReplace.dialogFields.matchEntireWordCheckbox.checked = (FindReplace.__findService.entireWord
+                                                                        ? FindReplace.__findService.entireWord
+                                                                        : FindReplace.__webBrowserFind.entireWord);
+            FindReplace.dialogFields.searchBackwardsCheckbox.checked = (FindReplace.__findService.findBackwards
+                                                                        ? FindReplace.__findService.findBackwards
+                                                                        : FindReplace.__webBrowserFind.findBackwards);
+            FindReplace.dialogFields.wrapAroundCheckbox.checked      = (FindReplace.__findService.wrapFind
+                                                                        ? FindReplace.__findService.wrapFind
+                                                                        : FindReplace.__webBrowserFind.wrapFind);
         }
     }
 };
@@ -208,11 +223,17 @@ const FindReplace = {
  * @constructor
  * @return {FindReplaceCommandController}
  */
-function FindReplaceCommandController() {
+function FindReplaceCommandController(aFindReplace) {
     /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceCommandController() invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aFindReplace != null);
+
+    this.__findReplace = aFindReplace;
 }
 
 FindReplaceCommandController.prototype = {
+    __findReplace: null,
+
     /**
      * The nsISupports QueryInterface method.
      */
@@ -257,9 +278,21 @@ FindReplaceCommandController.prototype = {
 
         switch (aCommand) {
             case "cmd_yulup_find":
+                if (this.__findReplace.dialogFields.searchStringTextbox.value &&
+                    this.__findReplace.dialogFields.searchStringTextbox.value != "") {
+                    retval = true;
+                }
+
+                break;
             case "cmd_yulup_replace":
+                retval = false;
+                break;
             case "cmd_yulup_replaceall":
-                retval = true;
+                if (this.__findReplace.dialogFields.searchStringTextbox.value &&
+                    this.__findReplace.dialogFields.searchStringTextbox.value != "") {
+                    retval = true;
+                }
+
                 break;
             default:
         }

@@ -729,6 +729,8 @@ var Editor = {
         /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateFileOperationsCommand(\"" + aCommand + "\") invoked\n");
 
         try {
+            /* Use the document's commandDispatcher instead of window.controllers,
+             * because otherwise FF2 crashes (works with FF1.5). */
             controller = document.commandDispatcher.getControllerForCommand(aCommand);
 
             enabled = false;
@@ -749,6 +751,8 @@ var Editor = {
         /* DEBUG */ dump("Yulup:editor.js:Editor.goDoFileOperationsCommand(\"" + aCommand + "\") invoked\n");
 
         try {
+            /* Use the document's commandDispatcher instead of window.controllers,
+             * because otherwise FF2 crashes (works with FF1.5). */
             controller = document.commandDispatcher.getControllerForCommand(aCommand);
 
             if (controller && controller.isCommandEnabled(aCommand))

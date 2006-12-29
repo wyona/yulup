@@ -47,9 +47,9 @@
           src="chrome://yulup/content/editor/findreplace/findreplace.js"/>
 
   <commandset id="uiYulupEditorFindReplaceCommandset">
-    <command id="cmd_yulup_find"       oncommand="FindReplace.goDoFindReplaceCommand('cmd_yulup_find)"       disabled="true"/>
-    <command id="cmd_yulup_replace"    oncommand="FindReplace.goDoFindReplaceCommand('cmd_yulup_replace)"    disabled="true"/>
-    <command id="cmd_yulup_replaceall" oncommand="FindReplace.goDoFindReplaceCommand('cmd_yulup_replaceall)" disabled="true"/>
+    <command id="cmd_yulup_find"       oncommand="FindReplace.goDoFindReplaceCommand('cmd_yulup_find')"       disabled="true"/>
+    <command id="cmd_yulup_replace"    oncommand="FindReplace.goDoFindReplaceCommand('cmd_yulup_replace')"    disabled="true"/>
+    <command id="cmd_yulup_replaceall" oncommand="FindReplace.goDoFindReplaceCommand('cmd_yulup_replaceall')" disabled="true"/>
   </commandset>
 
   <vbox>
