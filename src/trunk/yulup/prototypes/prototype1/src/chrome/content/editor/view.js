@@ -45,13 +45,10 @@ function View(aEditorController, aModel, aBarrier) {
     /* DEBUG */ YulupDebug.ASSERT(aModel            != null);
     /* DEBUG */ YulupDebug.ASSERT(aBarrier          != null);
 
-    this.controller   = aEditorController;
-    this.model        = aModel;
-    this.barrier      = aBarrier;
-    this.editor       = null;
-    this.editviewElem = null;
-    this.view         = null;
-    this.isFilled     = false;
+    this.controller = aEditorController;
+    this.model      = aModel;
+    this.barrier    = aBarrier;
+    this.isFilled   = false;
 
     // instantiate undo/redo and cut/copy observers
     this.undoRedoObserver = new UndoRedoObserver();
@@ -63,6 +60,11 @@ function View(aEditorController, aModel, aBarrier) {
 View.prototype = {
     controller      : null,
     model           : null,
+    barrier         : null,
+    editor          : null,
+    editviewElem    : null,
+    view            : null,
+    isFilled        : null,
     commandUpdaters : null,
     undoRedoObserver: null,
     cutCopyObserver : null,
