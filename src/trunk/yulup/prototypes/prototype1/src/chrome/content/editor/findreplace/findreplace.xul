@@ -72,10 +72,10 @@
 
     <separator class="thin"/>
 
-    <checkbox label="&findReplaceMatchCase.label;"/>
-    <checkbox label="&findReplaceMatchEntireWord.label;"/>
-    <checkbox label="&findReplaceSearchBackwards.label;"/>
-    <checkbox label="&findReplaceWrapAround.label;"/>
+    <checkbox id="uiMatchCaseCheckbox"       label="&findReplaceMatchCase.label;"/>
+    <checkbox id="uiMatchEntireWordCheckbox" label="&findReplaceMatchEntireWord.label;"/>
+    <checkbox id="uiSearchBackwardsCheckbox" label="&findReplaceSearchBackwards.label;"/>
+    <checkbox id="uiWrapAroundCheckbox"      label="&findReplaceWrapAround.label;"/>
   </vbox>
 
   <spacer flex="1"/>
