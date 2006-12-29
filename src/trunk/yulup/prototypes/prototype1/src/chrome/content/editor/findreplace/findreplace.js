@@ -76,7 +76,7 @@ const FindReplace = {
         FindReplace.__commandController = new FindReplaceCommandController(FindReplace);
         window.controllers.appendController(FindReplace.__commandController);
 
-        FindReplace.__fillInitialValues();
+        FindReplace.__fillInitialValues(FindReplace.dialogFields, FindReplace.__findService, FindReplace.__webBrowserFind);
 
         FindReplace.goUpdateFindReplaceCommands();
     },
@@ -168,7 +168,27 @@ const FindReplace = {
     },
 
     findNext: function () {
+        var found = false;
+
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.findNext() invoked\n");
+
+        if (FindReplace.__findService)
+            FindReplace.__setUpFindService(FindReplace.dialogFields, FindReplace.__findService);
+
+        FindReplace.__setUpWebBrowserFind(FindReplace.dialogFields, FindReplace.__webBrowserFind);
+
+        // find
+        try {
+            found = FindReplace.__webBrowserFind.findNext();
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:findreplace.js:FindReplace.findNext", exception);
+            Components.utils.reportError(exception);
+        }
+
+        if (!found) {
+            // better alert (maybe at bottom of dialog) and i18n
+            alert("Phrase " + FindReplace.dialogFields.searchStringTextbox.value + " not found.");
+        }
     },
 
     replace: function () {
@@ -187,28 +207,59 @@ const FindReplace = {
         }
     },
 
-    __fillInitialValues: function () {
+    __setUpFindService: function (aDialogFields, aFindService) {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.__setUpFindService() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aDialogFields != null);
+        /* DEBUG */ YulupDebug.ASSERT(aFindService  != null);
+
+        aFindService.searchString  = aDialogFields.searchStringTextbox.value;
+        aFindService.replaceString = aDialogFields.replacementStringTextbox.value;
+        aFindService.matchCase     = aDialogFields.matchCaseCheckbox.checked;
+        aFindService.entireWord    = aDialogFields.matchEntireWordCheckbox.checked;
+        aFindService.findBackwards = aDialogFields.searchBackwardsCheckbox.checked;
+        aFindService.wrapFind      = aDialogFields.wrapAroundCheckbox.checked;
+    },
+
+    __setUpWebBrowserFind: function (aDialogFields, aWebBrowserFind) {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.__setUpWebBrowserFind() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aDialogFields   != null);
+        /* DEBUG */ YulupDebug.ASSERT(aWebBrowserFind != null);
+
+        aWebBrowserFind.searchString  = aDialogFields.searchStringTextbox.value;
+        aWebBrowserFind.matchCase     = aDialogFields.matchCaseCheckbox.checked;
+        aWebBrowserFind.entireWord    = aDialogFields.matchEntireWordCheckbox.checked;
+        aWebBrowserFind.findBackwards = aDialogFields.searchBackwardsCheckbox.checked;
+        aWebBrowserFind.wrapFind      = aDialogFields.wrapAroundCheckbox.checked;
+    },
+
+    __fillInitialValues: function (aDialogFields, aFindService, aWebBrowserFind) {
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.__fillInitialValues() invoked\n");
 
-        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.__fillInitialValues: FindReplace.__findService = \"" + FindReplace.__findService + "\", FindReplace.__webBrowserFind = \"" + FindReplace.__webBrowserFind + "\"\n");
+        /* DEBUG */ YulupDebug.ASSERT(aDialogFields != null);
 
-        if (FindReplace.__findService || FindReplace.__webBrowserFind) {
-            FindReplace.dialogFields.searchStringTextbox.value       = (FindReplace.__findService.searchString
-                                                                        ? FindReplace.__findService.searchString
-                                                                        : FindReplace.__webBrowserFind.searchString);
-            FindReplace.dialogFields.replacementStringTextbox.value  = FindReplace.__findService.replaceString;
-            FindReplace.dialogFields.matchCaseCheckbox.checked       = (FindReplace.__findService.matchCase
-                                                                        ? FindReplace.__findService.matchCase
-                                                                        : FindReplace.__webBrowserFind.matchCase);
-            FindReplace.dialogFields.matchEntireWordCheckbox.checked = (FindReplace.__findService.entireWord
-                                                                        ? FindReplace.__findService.entireWord
-                                                                        : FindReplace.__webBrowserFind.entireWord);
-            FindReplace.dialogFields.searchBackwardsCheckbox.checked = (FindReplace.__findService.findBackwards
-                                                                        ? FindReplace.__findService.findBackwards
-                                                                        : FindReplace.__webBrowserFind.findBackwards);
-            FindReplace.dialogFields.wrapAroundCheckbox.checked      = (FindReplace.__findService.wrapFind
-                                                                        ? FindReplace.__findService.wrapFind
-                                                                        : FindReplace.__webBrowserFind.wrapFind);
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.__fillInitialValues: aFindService = \"" + aFindService + "\", aWebBrowserFind = \"" + aWebBrowserFind + "\"\n");
+
+        if (aFindService || aWebBrowserFind) {
+            aDialogFields.searchStringTextbox.value       = (aFindService.searchString
+                                                             ? aFindService.searchString
+                                                             : aWebBrowserFind.searchString);
+            aDialogFields.replacementStringTextbox.value  = (aFindService.replaceString
+                                                             ? aFindService.replaceString
+                                                             : "");
+            aDialogFields.matchCaseCheckbox.checked       = (aFindService.matchCase
+                                                             ? aFindService.matchCase
+                                                             : aWebBrowserFind.matchCase);
+            aDialogFields.matchEntireWordCheckbox.checked = (aFindService.entireWord
+                                                             ? aFindService.entireWord
+                                                             : aWebBrowserFind.entireWord);
+            aDialogFields.searchBackwardsCheckbox.checked = (aFindService.findBackwards
+                                                             ? aFindService.findBackwards
+                                                             : aWebBrowserFind.findBackwards);
+            aDialogFields.wrapAroundCheckbox.checked      = (aFindService.wrapFind
+                                                             ? aFindService.wrapFind
+                                                             : aWebBrowserFind.wrapFind);
         }
     }
 };
@@ -278,7 +329,8 @@ FindReplaceCommandController.prototype = {
 
         switch (aCommand) {
             case "cmd_yulup_find":
-                if (this.__findReplace.dialogFields.searchStringTextbox.value &&
+                if (this.__findReplace.__webBrowserFind                       &&
+                    this.__findReplace.dialogFields.searchStringTextbox.value &&
                     this.__findReplace.dialogFields.searchStringTextbox.value != "") {
                     retval = true;
                 }
@@ -288,7 +340,9 @@ FindReplaceCommandController.prototype = {
                 retval = false;
                 break;
             case "cmd_yulup_replaceall":
-                if (this.__findReplace.dialogFields.searchStringTextbox.value &&
+                if (this.__findReplace.__webBrowserFind                       &&
+                    this.__findReplace.__findService                          &&
+                    this.__findReplace.dialogFields.searchStringTextbox.value &&
                     this.__findReplace.dialogFields.searchStringTextbox.value != "") {
                     retval = true;
                 }
