@@ -186,7 +186,7 @@ const FindReplace = {
         }
 
         if (!found) {
-            // better alert (maybe at bottom of dialog) and i18n
+            // TODO: better alert (maybe at bottom of dialog) and i18n
             alert("Phrase " + FindReplace.dialogFields.searchStringTextbox.value + " not found.");
         }
     },
