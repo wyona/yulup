@@ -224,7 +224,7 @@ YulupEditController.widgetLoadFinished = function (aResultFile, aException, aWid
     // arrive at widget barrier
     /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.widgetLoadFinished: arrive at widget barrier (current thread count is \"" + gEditorController.widgetBarrier.noOfThreads + "\")\n");
     gEditorController.widgetBarrier.arrive();
-}
+};
 
 /**
  * Sets the model associated with this controller to the passed document data. If you
@@ -234,39 +234,39 @@ YulupEditController.widgetLoadFinished = function (aResultFile, aException, aWid
  * @param  {Error}     aException    an exception
  * @return {Undefined} does not have a return value
  */
-    YulupEditController.documentLoadFinished = function (aDocumentData, aException) {
-        /* DEBUG */ dump("Yulup:controller.js:YulupEditController.documentLoadFinished() invoked\n");
+YulupEditController.documentLoadFinished = function (aDocumentData, aException) {
+    /* DEBUG */ dump("Yulup:controller.js:YulupEditController.documentLoadFinished() invoked\n");
 
-        /* DEBUG */ YulupDebug.ASSERT(aDocumentData ? typeof(aDocumentData) == "string" : true);
-        /* DEBUG */ YulupDebug.ASSERT(aException    ? typeof(aException)    == "error"  : true);
-        /* DEBUG */ YulupDebug.ASSERT(gEditorController && gEditorController.editStateController);
+    /* DEBUG */ YulupDebug.ASSERT(aDocumentData ? typeof(aDocumentData) == "string" : true);
+    /* DEBUG */ YulupDebug.ASSERT(aException    ? typeof(aException)    == "error"  : true);
+    /* DEBUG */ YulupDebug.ASSERT(gEditorController && gEditorController.editStateController);
 
-        try {
-            if (aDocumentData) {
-                gEditorController.model.initDocument(aDocumentData);
-                gEditorController.editStateController.modelStateChanged("opensucceeded");
+    try {
+        if (aDocumentData) {
+            gEditorController.model.initDocument(aDocumentData);
+            gEditorController.editStateController.modelStateChanged("opensucceeded");
 
-                // arrive at load barrier
-                /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.documentLoadFinished: arrive at load barrier (current thread count is \"" + gEditorController.loadBarrier.noOfThreads + "\")\n");
-                gEditorController.loadBarrier.arrive();
-            } else {
-                /* DEBUG */ dump("Yulup:controller.js:YulupEditController.documentLoadFinished: failed to load \"" + gEditorController.document.loadURI.spec + "\"). \"" + aException + "\"\n");
+            // arrive at load barrier
+            /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.documentLoadFinished: arrive at load barrier (current thread count is \"" + gEditorController.loadBarrier.noOfThreads + "\")\n");
+            gEditorController.loadBarrier.arrive();
+        } else {
+            /* DEBUG */ dump("Yulup:controller.js:YulupEditController.documentLoadFinished: failed to load \"" + gEditorController.document.loadURI.spec + "\"). \"" + aException + "\"\n");
 
-                if (aException && (aException instanceof NeutronProtocolException || aException instanceof NeutronAuthException)) {
-                    // report error message retrieved from response
-                    throw new YulupException(Editor.getStringbundleString("editorDocumentLoadError0.label") + " \"" + gEditorController.document.loadURI.spec + "\".\n" + Editor.getStringbundleString("editorDocumentLoadServerError.label") + ": " + aException.message + ".");
-                } else
-                    throw new YulupException(Editor.getStringbundleString("editorDocumentLoadError0.label") + " \"" + gEditorController.document.loadURI.spec + "\".");
-            }
-        } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:controller.js:YulupEditController.documentLoadFinished", exception);
-
-            alert(Editor.getStringbundleString("editorDocumentLoadFailure.label") + "\n\n" + exception.message);
-
-            gEditorController.editStateController.modelStateChanged("openfailed");
-            return;
+            if (aException && (aException instanceof NeutronProtocolException || aException instanceof NeutronAuthException)) {
+                // report error message retrieved from response
+                throw new YulupException(Editor.getStringbundleString("editorDocumentLoadError0.label") + " \"" + gEditorController.document.loadURI.spec + "\".\n" + Editor.getStringbundleString("editorDocumentLoadServerError.label") + ": " + aException.message + ".");
+            } else
+                throw new YulupException(Editor.getStringbundleString("editorDocumentLoadError0.label") + " \"" + gEditorController.document.loadURI.spec + "\".");
         }
-    };
+    } catch (exception) {
+        /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:controller.js:YulupEditController.documentLoadFinished", exception);
+
+        alert(Editor.getStringbundleString("editorDocumentLoadFailure.label") + "\n\n" + exception.message);
+
+        gEditorController.editStateController.modelStateChanged("openfailed");
+        return;
+    }
+};
 
 YulupEditController.widgetLoadingComplete = function () {
     /* DEBUG */ dump("Yulup:controller.js:YulupEditController.widgetLoadingComplete() invoked\n");
