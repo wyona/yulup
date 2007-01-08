@@ -657,6 +657,7 @@ var WidgetHandler = {
         }
 
         switch (aWidget.attributes["type"]) {
+            // TODO: move this code with a unified API into the individual views, since each view should know how to insert and surround
             case "insert":
                 fragmentData = xmlSerializer.serializeToString(tidyedFragment);
 
