@@ -43,13 +43,13 @@
   </entity>
 
   <entity id="findReplaceReplaceButton.label">
-    <name xml:lang="en">Replace</name>
-    <name xml:lang="de">Ersetzen</name>
+    <name xml:lang="en">Replace and Find</name>
+    <name xml:lang="de">Ersetzen und Finden</name>
   </entity>
 
   <entity id="findReplaceFindNextButton.label">
-    <name xml:lang="en">Find Next</name>
-    <name xml:lang="de">Nächstes finden</name>
+    <name xml:lang="en">Find</name>
+    <name xml:lang="de">Nächstes</name>
   </entity>
 
 </dtd>

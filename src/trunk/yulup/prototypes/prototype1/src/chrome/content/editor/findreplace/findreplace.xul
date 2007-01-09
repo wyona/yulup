@@ -80,7 +80,7 @@
 
   <spacer flex="1"/>
 
-  <hbox equalsize="always" pack="end">
+  <hbox pack="end">
     <button label="&findReplaceReplaceAllButton.label;"
             command="cmd_yulup_replaceall"/>
     <button label="&findReplaceReplaceButton.label;"

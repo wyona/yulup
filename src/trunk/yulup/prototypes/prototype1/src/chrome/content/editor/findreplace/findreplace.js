@@ -167,6 +167,11 @@ const FindReplace = {
         FindReplace.goUpdateFindReplaceCommand("cmd_yulup_replaceall");
     },
 
+    /**
+     * Find the next match.
+     *
+     * @return {Undefined} does not have a return value
+     */
     findNext: function () {
         var found = false;
 
@@ -191,10 +196,74 @@ const FindReplace = {
         }
     },
 
+    /**
+     * Replace the search string inside the current selection with the
+     * replacement string if the search string is found inside the
+     * current selection.
+     *
+     * @return {Boolean} returns true if a match has been replaced, false otherwise
+     */
     replace: function () {
+        var found           = false;
+        var selection       = null;
+        var selectionString = null;
+        var searchString    = null;
+        var replaceString   = null;
+        var selectionRange  = null;
+
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.replace() invoked\n");
+
+        selection = FindReplace.__view.view.selection;
+
+        selectionString = selection.toString();
+        searchString    = FindReplace.dialogFields.searchStringTextbox.value;
+
+        if (!FindReplace.dialogFields.matchCaseCheckbox.checked) {
+            selectionString = selectionString.toLowerCase();
+            searchString    = searchString.toLowerCase();
+        }
+
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.replace: selectionString = \"" + selectionString + "\"\n");
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.replace: searchString    = \"" + searchString + "\"\n");
+
+        if (selectionString == searchString) {
+            // found
+            found = true;
+
+            /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.replace: search string found\n");
+
+            if (FindReplace.dialogFields.searchBackwardsCheckbox.checked && selection.rangeCount > 0) {
+                selectionRange = selection.getRangeAt(0).cloneRange();
+                selectionRange.collapse(true);
+            }
+
+            replacementString = FindReplace.dialogFields.replacementStringTextbox.value;
+
+            if (!replacementString || replacementString == "") {
+                FindReplace.__view.view.QueryInterface(Components.interfaces.nsIEditor)
+                    .deleteSelection(Components.interfaces.nsIEditor.eNone);
+            } else {
+                FindReplace.__view.view.QueryInterface(Components.interfaces.nsIPlaintextEditor)
+                    .insertText(replacementString);
+            }
+
+            if (selectionRange) {
+                FindReplace.__view.view.selection.removeAllRanges();
+                FindReplace.__view.view.selection.addRange(selectionRange);
+            }
+        } else {
+            // TODO: better alert (maybe at bottom of dialog) and i18n
+            alert("Phrase " + FindReplace.dialogFields.searchStringTextbox.value + " not contained in the current selection.");
+        }
+
+        return found;
     },
 
+    /**
+     * Replace all matches with the replacement string.
+     *
+     * @return {Undefined} does not have a return value
+     */
     replaceAll: function () {
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.replaceAll() invoked\n");
     },
@@ -337,7 +406,12 @@ FindReplaceCommandController.prototype = {
 
                 break;
             case "cmd_yulup_replace":
-                retval = false;
+                if (this.__findReplace.__webBrowserFind                       &&
+                    this.__findReplace.dialogFields.searchStringTextbox.value &&
+                    this.__findReplace.dialogFields.searchStringTextbox.value != "") {
+                    retval = true;
+                }
+
                 break;
             case "cmd_yulup_replaceall":
                 if (this.__findReplace.__webBrowserFind                       &&
@@ -346,6 +420,9 @@ FindReplaceCommandController.prototype = {
                     this.__findReplace.dialogFields.searchStringTextbox.value != "") {
                     retval = true;
                 }
+
+                // not yet implemented
+                retval = false;
 
                 break;
             default:
@@ -365,7 +442,8 @@ FindReplaceCommandController.prototype = {
                 FindReplace.findNext();
                 break;
             case "cmd_yulup_replace":
-                FindReplace.replace();
+                if (FindReplace.replace())
+                    FindReplace.findNext();
                 break;
             case "cmd_yulup_replaceall":
                 FindReplace.replaceAll();

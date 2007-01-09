@@ -6,5 +6,5 @@
 <!ENTITY findReplaceSearchBackwards.label "Rückwärts suchen">
 <!ENTITY findReplaceWrapAround.label "Suche am Dokumentende fortsetzen">
 <!ENTITY findReplaceReplaceAllButton.label "Alles ersetzen">
-<!ENTITY findReplaceReplaceButton.label "Ersetzen">
-<!ENTITY findReplaceFindNextButton.label "Nächstes finden">
+<!ENTITY findReplaceReplaceButton.label "Ersetzen und Finden">
+<!ENTITY findReplaceFindNextButton.label "Nächstes">

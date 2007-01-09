@@ -6,5 +6,5 @@
 <!ENTITY findReplaceSearchBackwards.label "Search backwards">
 <!ENTITY findReplaceWrapAround.label "Wrap around">
 <!ENTITY findReplaceReplaceAllButton.label "Replace All">
-<!ENTITY findReplaceReplaceButton.label "Replace">
-<!ENTITY findReplaceFindNextButton.label "Find Next">
+<!ENTITY findReplaceReplaceButton.label "Replace and Find">
+<!ENTITY findReplaceFindNextButton.label "Find">
