@@ -406,6 +406,10 @@ FindReplaceCommandController.prototype = {
 
                 break;
             case "cmd_yulup_replace":
+                /* TODO: only enable replace if the current selection actually matches the search
+                 * string. Note that for this to work, we need to i) update on every selection change
+                 * (requires a selection changed event from the currently active view) and ii) update
+                 * on every search string change. */
                 if (this.__findReplace.__webBrowserFind                       &&
                     this.__findReplace.dialogFields.searchStringTextbox.value &&
                     this.__findReplace.dialogFields.searchStringTextbox.value != "") {
