@@ -509,10 +509,25 @@ YulupEditController.prototype = {
     archive                : null,
     templateArchive        : null,
 
+    /**
+     * Get the currently active view.
+     *
+     * @return {View} the currently active view
+     */
     get activeView() {
         return this.__activeView;
     },
 
+    /**
+     * Set the currently active view.
+     *
+     * Note that this setter fires all registered view changed
+     * listeners if the passed view is different from the previous
+     * view.
+     *
+     * @param  {View} aValue the currently active view
+     * @return {Undefined} does not have a return value
+     */
     set activeView(aValue) {
         if (this.__activeView != aValue) {
             this.__activeView = aValue;
@@ -524,12 +539,33 @@ YulupEditController.prototype = {
         }
     },
 
+    /**
+     * Add a view changed listener. This listener
+     * will get called everytime the current view
+     * changes.
+     *
+     * Note that if this method is called with the
+     * same function multiple types, then multiple
+     * listeners are installed.
+     *
+     * @param  {Function} aListener a function of type function({View} aView)
+     * @return {Undefined} does not have a return value
+     */
     addViewChangedListener: function (aListener) {
         /* DEBUG */ dump("Yulup:controller.js:YulupEditController.addViewChangedListener() invoked\n");
 
         this.__viewListeners.push(aListener);
     },
 
+    /**
+     * Remove a view changed listener.
+     *
+     * Note that this method returns silently if a non-
+     * registered listener is passed to this method.
+     *
+     * @param  {Function} aListener a function of type function({View} aView)
+     * @return {Undefined} does not have a return value
+     */
     removeViewChangedListener: function (aListener) {
         var target = -1;
 
