@@ -135,7 +135,7 @@ WYSIWYGModeView.prototype = {
                                                          }, true);
 
             // hook up selection listener
-            wysiwygEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new CutCopySelectionListener(this));
+            this.addSelectionListener(new CutCopySelectionListener(this));
 
             // clear undo and redo stacks
             this.view.transactionManager.clear();
@@ -261,6 +261,38 @@ WYSIWYGModeView.prototype = {
             // our editor is initialised
             aEvent.stopPropagation();
             this.setUp();
+        }
+    },
+
+    addSelectionListener: function (aSelectionListener) {
+        var retval = false;
+
+        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.addSelectionListener() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aSelectionListener != null);
+
+        try {
+            this.editor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(aSelectionListener);
+
+            retval = true;
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:wysiwygmodeview.js:WYSIWYGModeView.addSelectionListener", exception);
+            Components.utils.reportError(exception);
+        }
+
+        return retval;
+    },
+
+    removeSelectionListener: function (aSelectionListener) {
+        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.removeSelectionListener() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aSelectionListener != null);
+
+        try {
+            this.editor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).removeSelectionListener(aSelectionListener);
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:wysiwygmodeview.js:WYSIWYGModeView.removeSelectionListener", exception);
+            Components.utils.reportError(exception);
         }
     }
 };

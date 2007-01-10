@@ -194,8 +194,8 @@ WYSIWYGXSLTModeView.prototype = {
             selectionChangeHandler = new WYSIWYGXSLTSelectionChangeHandler(this);
 
             // hook up selection listeners
-            wysiwygXSLTEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new CutCopySelectionListener(this));
-            wysiwygXSLTEditor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new LocationPathSelectionListener(selectionChangeHandler));
+            this.addSelectionListener(new CutCopySelectionListener(this));
+            this.addSelectionListener(new LocationPathSelectionListener(selectionChangeHandler));
 
             var nsCheckbox = document.getElementById("uiYulupXPathToolBarNSAwareCheckbox");
             nsCheckbox.addEventListener('CheckboxStateChange', new NSCheckboxStateChangeListener(this), true);
@@ -881,6 +881,38 @@ WYSIWYGXSLTModeView.prototype = {
 
         // clear the expression display
         document.getElementById("uiYulupXPathToolBarXPathExpression").value = "";
+    },
+
+    addSelectionListener: function (aSelectionListener) {
+        var retval = false;
+
+        /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.addSelectionListener() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aSelectionListener != null);
+
+        try {
+            this.editor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(aSelectionListener);
+
+            retval = true;
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.addSelectionListener", exception);
+            Components.utils.reportError(exception);
+        }
+
+        return retval;
+    },
+
+    removeSelectionListener: function (aSelectionListener) {
+        /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.removeSelectionListener() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aSelectionListener != null);
+
+        try {
+            this.editor.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).removeSelectionListener(aSelectionListener);
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.removeSelectionListener", exception);
+            Components.utils.reportError(exception);
+        }
     }
 };
 

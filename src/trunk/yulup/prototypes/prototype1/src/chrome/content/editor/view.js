@@ -208,6 +208,33 @@ View.prototype = {
      */
     leaveView: function() {
         /* DEBUG */ dump("Yulup:view.js:View.leaveView() invoked\n");
+    },
+
+    /**
+     * Add a selection listener of type nsISelectionListener.
+     *
+     * @param  {nsISelectionListener} aSelectionListener the selection listener to add
+     * @return {Boolean} returns true if the listener was attached successfully, false otherwise
+     */
+    addSelectionListener: function (aSelectionListener) {
+        /* DEBUG */ dump("Yulup:view.js:View.addSelectionListener() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aSelectionListener != null);
+
+        // since this is the base class, we can't add any listeners
+        return false;
+    },
+
+    /**
+     * Add a selection listener of type nsISelectionListener.
+     *
+     * @param  {nsISelectionListener} aSelectionListener the selection listener to remove
+     * @return {Undefined} does not have a return value
+     */
+    removeSelectionListener: function (aSelectionListener) {
+        /* DEBUG */ dump("Yulup:view.js:View.removeSelectionListener() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aSelectionListener != null);
     }
 };
 
