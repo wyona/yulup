@@ -27,11 +27,12 @@
  */
 
 const FindReplace = {
-    __editorController : null,
-    __view             : null,
-    __findService      : null,
-    __webBrowserFind   : null,
-    __commandController: null,
+    __editorController      : null,
+    __view                  : null,
+    __findService           : null,
+    __webBrowserFind        : null,
+    __commandController     : null,
+    __viewSelectionListeners: [],
 
     dialogFields: null,
 
@@ -79,26 +80,45 @@ const FindReplace = {
         FindReplace.__fillInitialValues(FindReplace.dialogFields, FindReplace.__findService, FindReplace.__webBrowserFind);
 
         FindReplace.goUpdateFindReplaceCommands();
+
+        // register a selection change listener for the active view
+        FindReplace.__installSelectionListener(FindReplace.__view);
+
+        // install replace command updaters
+        document.getElementById("uiSearchStringTextbox").addEventListener("input", FindReplace.replaceCommandUpdater, false);
+        document.getElementById("uiMatchCaseCheckbox").addEventListener("command", FindReplace.replaceCommandUpdater, false);
     },
 
     onDialogCancelListener: function () {
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.onDialogCancelListener() invoked\n");
 
-        // remove view change listener
-        FindReplace.__editorController.removeViewChangedListener(FindReplace.viewChanged);
-
-        // unregister our command controller
-        window.controllers.removeController(FindReplace.__commandController);
-
-        FindReplace.dialogFields = null;
+        // shutdown
+        FindReplace.__shutdown();
 
         return true;
     },
 
+    onCloseListener: function () {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.onCloseListener() invoked\n");
+
+        FindReplace.__shutdown();
+    },
+
+    replaceCommandUpdater: function () {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.replaceCommandUpdater() invoked\n");
+
+        FindReplace.goUpdateFindReplaceCommand("cmd_yulup_replace");
+    },
+
     viewChanged: function (aView) {
-        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.viewChanged() invoked\n");
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.viewChanged(\"" + aView + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aView != null);
 
         FindReplace.__view = aView;
+
+        // make sure we have a listener for this view
+        FindReplace.__installSelectionListener(aView);
 
         // get the new nsIWebBrowserFind
         FindReplace.__webBrowserFind = FindReplace.__getWebBrowserFind(FindReplace.__view);
@@ -109,6 +129,8 @@ const FindReplace = {
         var enabled    = null;
 
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.goUpdateFindReplaceCommand(\"" + aCommand + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aCommand != null);
 
         try {
             controller = window.controllers.getControllerForCommand(aCommand);
@@ -132,6 +154,8 @@ const FindReplace = {
 
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.goDoFindReplaceCommand(\"" + aCommand + "\") invoked\n");
 
+        /* DEBUG */ YulupDebug.ASSERT(aCommand != null);
+
         try {
             controller = window.controllers.getControllerForCommand(aCommand);
 
@@ -143,12 +167,15 @@ const FindReplace = {
         }
     },
 
-    goSetFindReplaceCommandEnabled: function (aCmdId, aEnabled) {
+    goSetFindReplaceCommandEnabled: function (aCommand, aEnabled) {
         var node = null;
 
-        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.goSetFindReplaceCommandEnabled(\"" + aCmdId + "\", \"" + aEnabled + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.goSetFindReplaceCommandEnabled(\"" + aCommand + "\", \"" + aEnabled + "\") invoked\n");
 
-        node = document.getElementById(aCmdId);
+        /* DEBUG */ YulupDebug.ASSERT(aCommand != null);
+        /* DEBUG */ YulupDebug.ASSERT(aEnabled != null);
+
+        node = document.getElementById(aCommand);
 
         if (node) {
             if (aEnabled) {
@@ -268,7 +295,31 @@ const FindReplace = {
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.replaceAll() invoked\n");
     },
 
+    __isReplaceMatch: function () {
+        var selection       = null;
+        var selectionString = null;
+        var searchString    = null;
+
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.__isReplaceMatch() invoked\n");
+
+        selection = FindReplace.__view.view.selection;
+
+        selectionString = selection.toString();
+        searchString    = FindReplace.dialogFields.searchStringTextbox.value;
+
+        if (!FindReplace.dialogFields.matchCaseCheckbox.checked) {
+            selectionString = selectionString.toLowerCase();
+            searchString    = searchString.toLowerCase();
+        }
+
+        return (selectionString == searchString);
+    },
+
     __getWebBrowserFind: function (aView) {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.__getWebBrowserFind() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aView != null);
+
         if (aView.editor && aView.editor.webBrowserFind) {
             return aView.editor.webBrowserFind;
         } else {
@@ -330,6 +381,50 @@ const FindReplace = {
                                                              ? aFindService.wrapFind
                                                              : aWebBrowserFind.wrapFind);
         }
+    },
+
+    __installSelectionListener: function (aView) {
+        var found             = false;
+        var selectionListener = null;
+
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.__installSelectionListener(\"" + aView + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aView != null);
+
+        /* Check if there already is a selection listener installed for this view.
+         * This is not really fast, but there may only be around 2-3 views, so it's ok. */
+        for (var i = 0; i < FindReplace.__viewSelectionListeners.length; i++) {
+            if (FindReplace.__viewSelectionListeners[i][0] == aView) {
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.__installSelectionListener: installing a new selection listener\n");
+
+            selectionListener = new FindReplaceSelectionListener(FindReplace, aView);
+
+            if (aView.addSelectionListener(selectionListener))
+                FindReplace.__viewSelectionListeners.push([aView, selectionListener]);
+        }
+    },
+
+    __shutdown: function () {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.__shutdown() invoked\n");
+
+        // remove view change listener
+        FindReplace.__editorController.removeViewChangedListener(FindReplace.viewChanged);
+
+        // remove selection change listeners
+        for (var i = 0; i < FindReplace.__viewSelectionListeners.length; i++) {
+            FindReplace.__viewSelectionListeners[i][0].removeSelectionListener(FindReplace.__viewSelectionListeners[i][1]);
+        }
+
+        // unregister our command controller
+        window.controllers.removeController(FindReplace.__commandController);
+
+        FindReplace.dialogFields = null;
     }
 };
 
@@ -376,6 +471,8 @@ FindReplaceCommandController.prototype = {
 
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceCommandController.supportsCommand(\"" + aCommand + "\") invoked\n");
 
+        /* DEBUG */ YulupDebug.ASSERT(aCommand != null);
+
         switch (aCommand) {
             case "cmd_yulup_find":
             case "cmd_yulup_replace":
@@ -396,6 +493,8 @@ FindReplaceCommandController.prototype = {
 
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceCommandController.isCommandEnabled(\"" + aCommand + "\") invoked\n");
 
+        /* DEBUG */ YulupDebug.ASSERT(aCommand != null);
+
         switch (aCommand) {
             case "cmd_yulup_find":
                 if (this.__findReplace.__webBrowserFind                       &&
@@ -406,13 +505,14 @@ FindReplaceCommandController.prototype = {
 
                 break;
             case "cmd_yulup_replace":
-                /* TODO: only enable replace if the current selection actually matches the search
+                /* Only enable replace if the current selection actually matches the search
                  * string. Note that for this to work, we need to i) update on every selection change
                  * (requires a selection changed event from the currently active view) and ii) update
                  * on every search string change. */
-                if (this.__findReplace.__webBrowserFind                       &&
-                    this.__findReplace.dialogFields.searchStringTextbox.value &&
-                    this.__findReplace.dialogFields.searchStringTextbox.value != "") {
+                if (this.__findReplace.__webBrowserFind                             &&
+                    this.__findReplace.dialogFields.searchStringTextbox.value       &&
+                    this.__findReplace.dialogFields.searchStringTextbox.value != "" &&
+                    this.__findReplace.__isReplaceMatch()) {
                     retval = true;
                 }
 
@@ -441,6 +541,8 @@ FindReplaceCommandController.prototype = {
     doCommand: function (aCommand) {
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceCommandController.doCommand(\"" + aCommand + "\") invoked\n");
 
+        /* DEBUG */ YulupDebug.ASSERT(aCommand != null);
+
         switch (aCommand) {
             case "cmd_yulup_find":
                 FindReplace.findNext();
@@ -461,5 +563,26 @@ FindReplaceCommandController.prototype = {
      */
     onEvent: function (aEvent) {
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceCommandController.onEvent(\"" + aEvent + "\") invoked\n");
+    }
+};
+
+function FindReplaceSelectionListener(aFindReplace, aView) {
+    /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceSelectionListener() invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aFindReplace != null);
+    /* DEBUG */ YulupDebug.ASSERT(aView        != null);
+
+    this.__findReplace = aFindReplace;
+    this.__view        = aView;
+}
+
+FindReplaceSelectionListener.prototype = {
+    __findReplace: null,
+
+    notifySelectionChanged: function (aDocument, aSelection, aReason) {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceSelectionListener.notifySelectionChanged() invoked\n");
+
+        if (this.__view == this.__findReplace.__view)
+            FindReplace.goUpdateFindReplaceCommand("cmd_yulup_replace");
     }
 };
