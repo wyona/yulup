@@ -40,6 +40,9 @@ var gControlledShutdown = false;
 var Editor = {
     __findWindow   : null,
     __replaceWindow: null,
+    __windowList   : [],
+
+
     /**
      * Main entry point for editor creation. Creates a new
      * editor and installs various listeners.
@@ -184,6 +187,14 @@ var Editor = {
 
     onUnloadListener: function () {
         /* DEBUG */ dump("Yulup:editor.js:Editor.onUnloadListener() invoked\n");
+
+        try {
+            // close all open windows
+            Editor.__closeAllWindows();
+        } catch (exception) {
+            /* DEBUG */ dump("Yulup:editor.js:Editor.onUnloadListener: " + exception + "\n");
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.onUnloadListener", exception);
+        }
 
         // remove listeners
         window.removeEventListener("beforeunload", Editor.onBeforeUnloadListener, false);
@@ -699,6 +710,8 @@ var Editor = {
 
         if (!Editor.__findWindow || (Editor.__findWindow && Editor.__findWindow.closed)) {
             Editor.__findWindow = window.openDialog(YULUP_REPLACE_CHROME_URI, "yulupReplaceDialog", "chrome,resizable=yes,centerscreen", false, gEditorController);
+
+            Editor.__registerWindow(Editor.__findWindow);
         } else {
             Editor.__findWindow.focus();
         }
@@ -709,6 +722,8 @@ var Editor = {
 
         if (!Editor.__replaceWindow || (Editor.__replaceWindow && Editor.__replaceWindow.closed)) {
             Editor.__replaceWindow = window.openDialog(YULUP_REPLACE_CHROME_URI, "yulupReplaceDialog", "chrome,resizable=yes,centerscreen", true, gEditorController);
+
+            Editor.__registerWindow(Editor.__replaceWindow);
         } else {
             Editor.__replaceWindow.focus();
         }
@@ -977,6 +992,91 @@ var Editor = {
             }
 
             return false;
+        }
+    },
+
+    /**
+     * Register a window with the editor global
+     * window list.
+     *
+     * If the window is already registered, it
+     * is not added again.
+     *
+     * @param  {nsIXULWindow} aWindow the window to register
+     * @return {Undefined} does not have a return value
+     */
+    __registerWindow: function (aWindow) {
+        /* DEBUG */ dump("Yulup:editor.js:Editor.__registerWindow() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aWindow != null);
+
+        if (Editor.__getWindowRegisterIndex(aWindow) == -1) {
+            Editor.__windowList.push(aWindow);
+        }
+    },
+
+    /**
+     * Unregister a window with the editor global
+     * window list.
+     *
+     * If the window is not registered, the method
+     * silently returns.
+     *
+     * @param  {nsIXULWindow} aWindow the window to unregister
+     * @return {Undefined} does not have a return value
+     */
+    __unregisterWindow: function (aWindow) {
+        /* DEBUG */ dump("Yulup:editor.js:Editor.__unregisterWindow() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aWindow != null);
+
+        var index = null;
+
+        if ((index = Editor.__getWindowRegisterIndex(aWindow)) >= 0) {
+            Editor.__windowList.splice(index, 1);
+        }
+    },
+
+    /**
+     * Return the position of a window in the editor
+     * global window list.
+     *
+     * If the passed window is not registered, -1 is
+     * returned.
+     *
+     * @param  {nsIXULWindow} aWindow the window for which the index should be returned
+     * @return {Number} the index of the passed window in the editor global window list, or -1 if not found
+     */
+    __getWindowRegisterIndex: function (aWindow) {
+        /* DEBUG */ dump("Yulup:editor.js:Editor.__getWindowRegisterIndex() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aWindow != null);
+
+        var index = null;
+
+        for (var i = 0; i < Editor.__windowList.length; i++) {
+            if (Editor.__windowList[i] == aWindow) {
+                index = i;
+                break;
+            }
+        }
+
+        return (index ? index : -1);
+    },
+
+    /**
+     * Close all open windows which are registered with
+     * the editor global window list.
+     *
+     * @return {Undefined} does not have a return value
+     */
+    __closeAllWindows: function () {
+        /* DEBUG */ dump("Yulup:editor.js:Editor.__closeAllWindows() invoked\n");
+
+        for (var i = 0; i < Editor.__windowList.length; i++) {
+            if (!Editor.__windowList[i].closed) {
+                Editor.__windowList[i].close()
+            }
         }
     }
 };
