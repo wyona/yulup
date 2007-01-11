@@ -38,6 +38,8 @@ var gTriggerURI         = null;
 var gControlledShutdown = false;
 
 var Editor = {
+    __findWindow   : null,
+    __replaceWindow: null,
     /**
      * Main entry point for editor creation. Creates a new
      * editor and installs various listeners.
@@ -695,13 +697,21 @@ var Editor = {
     findString: function () {
         /* DEBUG */ dump("Yulup:editor.js:Editor.findString() invoked\n");
 
-        /* DEBUG */ dump("Yulup:editor.js:Editor.findString: not implemented yet\n");
+        if (!Editor.__findWindow || (Editor.__findWindow && Editor.__findWindow.closed)) {
+            Editor.__findWindow = window.openDialog(YULUP_REPLACE_CHROME_URI, "yulupReplaceDialog", "chrome,resizable=yes,centerscreen", false, gEditorController);
+        } else {
+            Editor.__findWindow.focus();
+        }
     },
 
     replaceString: function () {
         /* DEBUG */ dump("Yulup:editor.js:Editor.replaceString() invoked\n");
 
-        window.openDialog(YULUP_REPLACE_CHROME_URI, "yulupReplaceDialog", "chrome,resizable=yes,centerscreen", gEditorController);
+        if (!Editor.__replaceWindow || (Editor.__replaceWindow && Editor.__replaceWindow.closed)) {
+            Editor.__replaceWindow = window.openDialog(YULUP_REPLACE_CHROME_URI, "yulupReplaceDialog", "chrome,resizable=yes,centerscreen", true, gEditorController);
+        } else {
+            Editor.__replaceWindow.focus();
+        }
     },
 
     updateToolboxContextMenu: function () {

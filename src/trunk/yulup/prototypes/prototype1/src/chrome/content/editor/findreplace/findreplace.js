@@ -27,6 +27,7 @@
  */
 
 const FindReplace = {
+    __findAndReplace        : null,
     __editorController      : null,
     __view                  : null,
     __findService           : null,
@@ -39,7 +40,8 @@ const FindReplace = {
     onLoadListener: function () {
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.onLoadListener() invoked\n");
 
-        FindReplace.__editorController = window.arguments[0];
+        FindReplace.__findAndReplace   = window.arguments[0];
+        FindReplace.__editorController = window.arguments[1];
 
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.onLoadListener: FindReplace.__editorController = \"" + FindReplace.__editorController + "\"\n");
 

@@ -893,14 +893,6 @@ EditorCommandController.prototype = {
 
                 break;
             case "cmd_yulup_find":
-                if (this.__editStateController.isCurrentState(this.__editStateController.STATE_SUPERIOR_DOCUMENTOK) &&
-                    this.__editorController.activeView) {
-                    retval = true;
-                }
-
-                // don't activate for now (merge with "cmd_yulup_replace" later)
-                retval = false;
-                break;
             case "cmd_yulup_replace":
                 if (this.__editStateController.isCurrentState(this.__editStateController.STATE_SUPERIOR_DOCUMENTOK) &&
                     this.__editorController.activeView) {
