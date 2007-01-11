@@ -324,7 +324,65 @@ const FindReplace = {
      * @return {Undefined} does not have a return value
      */
     replaceAll: function () {
+        var searchString      = null;
+        var replacementString = null;
+        var rangeFind         = null;
+        var editor            = null;
+        var selection         = null;
+        var selectionRange    = null;
+        var initialRange      = null;
+        var documentRange     = null;
+        var endRange          = null;
+
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.replaceAll() invoked\n");
+
+        searchString      = FindReplace.dialogFields.searchStringTextbox.value;
+        replacementString = FindReplace.dialogFields.replacementStringTextbox.value;
+
+        if (FindReplace.__findService)
+            FindReplace.__setUpFindService(FindReplace.dialogFields, FindReplace.__findService);
+
+        rangeFind = Components.classes["@mozilla.org/embedcomp/rangefind;1"].createInstance().QueryInterface(Components.interfaces.nsIFind);
+
+        rangeFind.caseSensitive = FindReplace.dialogFields.matchCaseCheckbox.checked;
+        rangeFind.findBackwards = FindReplace.dialogFields.searchBackwardsCheckbox.checked;
+
+        editor = FindReplace.__view.view;
+
+        // start transaction
+        editor.beginTransaction();
+
+        try {
+            selection = editor.selection;
+
+            if (selection.rangeCount > 0) {
+                selectionRange = selection.getRangeAt(0);
+            }
+
+            initialRange = selectionRange.cloneRange();
+
+            documentRange = editor.document.createRange();
+            documentRange.selectNodeContents(editor.rootElement.QueryInterface(Components.interfaces.nsIDOMNode));
+
+            // determine where the end of our search should be
+            endRange = editor.document.createRange();
+
+            if (rangeFind.findBackwards) {
+                endRange.setStart(documentRange.startContainer, documentRange.startOffset);
+                endRange.setEnd(documentRange.startContainer, documentRange.startOffset);
+            } else {
+                endRange.setStart(documentRange.endContainer, documentRange.endOffset);
+                endRange.setEnd(documentRange.endContainer, documentRange.endOffset);
+            }
+
+            
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:findreplace.js:FindReplace.replaceAll", exception);
+            Components.utils.reportError(exception);
+        }
+
+        // end transaction
+        FindReplace.__view.view.endTransaction();
     },
 
     __isReplaceMatch: function () {
