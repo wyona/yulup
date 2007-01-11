@@ -27,7 +27,7 @@
      xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
   <Description about="urn:mozilla:install-manifest">
-    <em:id>yulup-prototype-1-test@wyona.com</em:id>
+    <em:id>yulup-prototyping@wyona.com</em:id>
     <em:version>0.1.0</em:version>
     <em:type>2</em:type>
 
@@ -41,8 +41,8 @@
     </em:targetApplication>
 
     <!-- Extension information -->
-    <em:name>Wyona Yulup Editor (Prototype 1 Test)</em:name>
-    <em:description>Yulup test harness.</em:description>
+    <em:name>Wyona Yulup (Prototyping Harness)</em:name>
+    <em:description>Yulup prototyping harness.</em:description>
     <em:creator>Andreas Wuest</em:creator>
   </Description>
 </RDF>
