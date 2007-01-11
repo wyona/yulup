@@ -28,7 +28,7 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>yulup@wyona.com</em:id>
-    <em:version>0.1.12-rXXXXX-dev</em:version>
+    <em:version>0.2.0-rXXXXX-dev</em:version>
     <em:type>2</em:type>
 
     <!-- Target application is Mozilla Firefox 1.5.0 - 2.0.0.* -->
