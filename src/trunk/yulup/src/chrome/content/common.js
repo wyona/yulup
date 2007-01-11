@@ -26,7 +26,7 @@
  *
  */
 
-const YULUP_EXTENSION_ID = "yulup-prototype-1@wyona.com";
+const YULUP_EXTENSION_ID = "yulup@wyona.com";
 const YULUP_PREF_BRANCH  = "extensions.yulup.";
 const NAMESPACE_XUL      = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
