@@ -4,15 +4,15 @@
 
   <xmlproperty file="install.rdf" collapseAttributes="true"/>
 
-  <property name="basename" value="yulup-prototype-1"/>
+  <property name="basename" value="yulup"/>
   <property name="version" value="${RDF.Description.em:version}"/>
   <property name="id" value="${RDF.Description.em:id}"/>
   <property name="filename" value="${basename}-${version}.xpi"/>
-  <property name="download-dir" value="../../../../../../website/download"/>
+  <property name="download-dir" value="../../../../website/download"/>
   <property name="user-manual-dir" value="../doc/"/>
 
   <target name="init">
-    <splash imageurl="file://${basedir}/../../../../../../website/images/whale-logo.gif" showduration="1000"/>
+    <splash imageurl="file://${basedir}/../../../../website/images/whale-logo.gif" showduration="1000"/>
   </target>
 
   <target name="pkg-deploy" description="Deploy the XPI file" depends="init, pkg-clean, pkg">
