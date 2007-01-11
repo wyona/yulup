@@ -91,6 +91,9 @@ const FindReplace = {
 
 
         if (FindReplace.__findAndReplace) {
+            // set window title
+            document.title = document.getElementById("uiYulupFindReplaceStringbundle").getString("findReplaceDialog.title");
+
             // register controller commands
             commandTable.registerCommand("cmd_yulup_find",       new FindReplaceFindCommand("cmd_yulup_find", FindReplace));
             commandTable.registerCommand("cmd_yulup_replace",    new FindReplaceReplaceCommand("cmd_yulup_replace", FindReplace));
@@ -99,9 +102,17 @@ const FindReplace = {
             // install replace command updaters
             document.getElementById("uiSearchStringTextbox").addEventListener("input", FindReplace.replaceCommandUpdater, false);
             document.getElementById("uiMatchCaseCheckbox").addEventListener("command", FindReplace.replaceCommandUpdater, false);
+
+            // show hidden UI
+            document.getElementById("uiReplacementStringRow").removeAttribute("hidden");
+            document.getElementById("uiReplaceAllButton").removeAttribute("hidden");
+            document.getElementById("uiReplaceButton").removeAttribute("hidden");
         } else {
+            // set window title
+            document.title = document.getElementById("uiYulupFindReplaceStringbundle").getString("findDialog.title");
+
             // register controller command
-            commandTable.registerCommand("cmd_yulup_find", new FindReplaceFindCommand("cmd_yulup_find"));
+            commandTable.registerCommand("cmd_yulup_find", new FindReplaceFindCommand("cmd_yulup_find", FindReplace));
         }
 
         FindReplace.goUpdateFindReplaceCommands();
@@ -483,7 +494,7 @@ FindReplaceSelectionListener.prototype = {
  * @return {FindReplaceFindCommand}
  */
 function FindReplaceFindCommand(aCommandName, aFindReplace) {
-    dump("Yulup:findreplace.js:FindReplaceFindCommand() invoked\n");
+    /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceFindCommand() invoked\n");
 
     /* DEBUG */ YulupDebug.ASSERT(aCommandName != null);
     /* DEBUG */ YulupDebug.ASSERT(aFindReplace != null);
@@ -510,7 +521,7 @@ FindReplaceFindCommand.prototype = {
     },
 
     doCommand: function (aCommandName, aCommandContext) {
-        dump("Yulup:findreplace.js:FindReplaceFindCommand.doCommand() invoked\n");
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceFindCommand.doCommand() invoked\n");
 
         if (this.__commandName == aCommandName) {
             this.__findReplace.findNext();
@@ -522,13 +533,13 @@ FindReplaceFindCommand.prototype = {
     },
 
     doCommandParams: function (aCommandName, aParams, aCommandContext) {
-        dump("Yulup:findreplace.js:FindReplaceFindCommand.doCommandParams() invoked\n");
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceFindCommand.doCommandParams() invoked\n");
 
         return this.doCommand(aCommandName, aCommandContext);
     },
 
     getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
-        dump("Yulup:findreplace.js:FindReplaceFindCommand.getCommandStateParams() invoked\n");
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceFindCommand.getCommandStateParams() invoked\n");
 
         // no state params
     },
@@ -536,7 +547,7 @@ FindReplaceFindCommand.prototype = {
     isCommandEnabled: function (aCommandName, aCommandContext) {
         var retval = false;
 
-        dump("Yulup:findreplace.js:FindReplaceFindCommand.isCommandEnabled() invoked\n");
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceFindCommand.isCommandEnabled() invoked\n");
 
         if (this.__commandName == aCommandName) {
             if (this.__findReplace.__webBrowserFind                       &&
@@ -562,7 +573,7 @@ FindReplaceFindCommand.prototype = {
  * @return {FindReplaceReplaceCommand}
  */
 function FindReplaceReplaceCommand(aCommandName, aFindReplace) {
-    dump("Yulup:findreplace.js:FindReplaceReplaceCommand() invoked\n");
+    /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceCommand() invoked\n");
 
     /* DEBUG */ YulupDebug.ASSERT(aCommandName != null);
     /* DEBUG */ YulupDebug.ASSERT(aFindReplace != null);
@@ -589,7 +600,7 @@ FindReplaceReplaceCommand.prototype = {
     },
 
     doCommand: function (aCommandName, aCommandContext) {
-        dump("Yulup:findreplace.js:FindReplaceReplaceCommand.doCommand() invoked\n");
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceCommand.doCommand() invoked\n");
 
         if (this.__commandName == aCommandName) {
             if (this.__findReplace.replace())
@@ -602,13 +613,13 @@ FindReplaceReplaceCommand.prototype = {
     },
 
     doCommandParams: function (aCommandName, aParams, aCommandContext) {
-        dump("Yulup:findreplace.js:FindReplaceReplaceCommand.doCommandParams() invoked\n");
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceCommand.doCommandParams() invoked\n");
 
         return this.doCommand(aCommandName, aCommandContext);
     },
 
     getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
-        dump("Yulup:findreplace.js:FindReplaceReplaceCommand.getCommandStateParams() invoked\n");
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceCommand.getCommandStateParams() invoked\n");
 
         // no state params
     },
@@ -616,7 +627,7 @@ FindReplaceReplaceCommand.prototype = {
     isCommandEnabled: function (aCommandName, aCommandContext) {
         var retval = false;
 
-        dump("Yulup:findreplace.js:FindReplaceReplaceCommand.isCommandEnabled() invoked\n");
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceCommand.isCommandEnabled() invoked\n");
 
         if (this.__commandName == aCommandName) {
             /* Only enable replace if the current selection actually matches the search
@@ -647,7 +658,7 @@ FindReplaceReplaceCommand.prototype = {
  * @return {FindReplaceReplaceAllCommand}
  */
 function FindReplaceReplaceAllCommand(aCommandName, aFindReplace) {
-    dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand() invoked\n");
+    /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand() invoked\n");
 
     /* DEBUG */ YulupDebug.ASSERT(aCommandName != null);
     /* DEBUG */ YulupDebug.ASSERT(aFindReplace != null);
@@ -674,7 +685,7 @@ FindReplaceReplaceAllCommand.prototype = {
     },
 
     doCommand: function (aCommandName, aCommandContext) {
-        dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand.doCommand() invoked\n");
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand.doCommand() invoked\n");
 
         if (this.__commandName == aCommandName) {
             this.__findReplace.replaceAll();
@@ -686,13 +697,13 @@ FindReplaceReplaceAllCommand.prototype = {
     },
 
     doCommandParams: function (aCommandName, aParams, aCommandContext) {
-        dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand.doCommandParams() invoked\n");
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand.doCommandParams() invoked\n");
 
         return this.doCommand(aCommandName, aCommandContext);
     },
 
     getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
-        dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand.getCommandStateParams() invoked\n");
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand.getCommandStateParams() invoked\n");
 
         // no state params
     },
@@ -700,7 +711,7 @@ FindReplaceReplaceAllCommand.prototype = {
     isCommandEnabled: function (aCommandName, aCommandContext) {
         var retval = false;
 
-        dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand.isCommandEnabled() invoked\n");
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand.isCommandEnabled() invoked\n");
 
         if (this.__commandName == aCommandName) {
             if (this.__findReplace.__webBrowserFind                       &&
