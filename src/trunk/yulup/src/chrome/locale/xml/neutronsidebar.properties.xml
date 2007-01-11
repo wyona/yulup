@@ -4,6 +4,7 @@
 
   <entity id="placeholder.label">
     <name xml:lang="en">Text goes here</name>
+    <name xml:lang="es">El texto va aquí</name>
   </entity>
 
 </dtd>

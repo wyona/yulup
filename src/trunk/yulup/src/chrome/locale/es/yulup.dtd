@@ -1,40 +1,40 @@
 <!ENTITY editToolbarbutton.label "Yulup">
-<!ENTITY editMenuitem.label "Edit Locally">
-<!ENTITY editCheckoutNoLockMenuitem.label "Open and Edit">
-<!ENTITY editCheckoutNoLockMenu.label "Open and Edit">
-<!ENTITY editCheckoutMenuitem.label "Checkout and Edit">
-<!ENTITY editCheckoutMenu.label "Checkout and Edit">
-<!ENTITY editDeleteMenuitem.label "Delete">
-<!ENTITY editDeleteMenu.label "Delete">
-<!ENTITY editOperationNewMenu.label "New">
-<!ENTITY fileOperationNewAtomEntryMenuitem.label "New Atom Entry">
-<!ENTITY editOperationOpenMenu.label "Open">
-<!ENTITY editAboutYulupMenuitem.label "About">
-<!ENTITY editPreferencesMenuitem.label "Preferences">
-<!ENTITY editHelpMenuitem.label "Help">
+<!ENTITY editMenuitem.label "Editar Localmente">
+<!ENTITY editCheckoutNoLockMenuitem.label "Abrir y Editar">
+<!ENTITY editCheckoutNoLockMenu.label "Abrir y Editar">
+<!ENTITY editCheckoutMenuitem.label "Extraer y Editar">
+<!ENTITY editCheckoutMenu.label "Extraer y Editar">
+<!ENTITY editDeleteMenuitem.label "Eliminar">
+<!ENTITY editDeleteMenu.label "Eliminar">
+<!ENTITY editOperationNewMenu.label "Nuevo">
+<!ENTITY fileOperationNewAtomEntryMenuitem.label "Nueva Entrada Atom">
+<!ENTITY editOperationOpenMenu.label "Abrir">
+<!ENTITY editAboutYulupMenuitem.label "Acerca">
+<!ENTITY editPreferencesMenuitem.label "Preferencias">
+<!ENTITY editHelpMenuitem.label "Ayuda">
 <!ENTITY editDemoMenuitem.label "Demosite">
 <!ENTITY editVersionStringMenuitem.label "Yulup-Dev">
-<!ENTITY yulupProgressDialog.title "Progress">
-<!ENTITY yulupProgressDialogCloseButton.label "Close">
-<!ENTITY uiYulupResourceSourceCaption.label "Local source">
-<!ENTITY uiYulupResourceTargetCaption.label "Remote target">
-<!ENTITY editToolbarbuttonWarnTooltip1.tooltip "Warning:">
-<!ENTITY editToolbarbuttonWarnTooltip2.tooltip "An error occurred regarding the introspection file associated with this document.">
-<!ENTITY editToolbarbuttonWarnTooltip3.tooltip "The file may either not exist, or is not in a suitable form.">
-<!ENTITY editMenuitem.tooltip "Edit the current web page as-is">
-<!ENTITY editCheckoutNoLockMenuitem.tooltip "Open the current document from CMS and edit">
-<!ENTITY editCheckoutNoLockMenu.tooltip "Open one of the current fragments from CMS and edit">
-<!ENTITY editCheckoutMenuitem.tooltip "Check out (lock) the current document from CMS and edit">
-<!ENTITY editCheckoutMenu.tooltip "Check out (lock) one of the current fragments from CMS and edit">
-<!ENTITY editDeleteMenuitem.tooltip "Delete the current document from CMS">
-<!ENTITY editDeleteMenu.tooltip "Delete one of the current fragments from CMS">
-<!ENTITY editOperationNewMenu.tooltip "Create a new document">
-<!ENTITY fileOperationNewAtomEntryMenuitem.tooltip "Create a new Atom entry for the currently selected feed">
-<!ENTITY fileOperationUploadMenuitem.label "Upload">
-<!ENTITY fileOperationUploadMenuitem.tooltip "Upload a resouce to the server">
-<!ENTITY editOperationOpenMenu.tooltip "Open an existing document">
-<!ENTITY editAboutYulupMenuitem.tooltip "About Yulup">
-<!ENTITY editPreferencesMenuitem.tooltip "Change the Yulup settings">
-<!ENTITY editHelpMenuitem.tooltip "Shows the help browser for Yulup">
-<!ENTITY editDemoMenuitem.tooltip "Takes you to the demo site">
-<!ENTITY editVersionStringMenuitem.tooltip "The version of Yulup you are currently using">
+<!ENTITY yulupProgressDialog.title "Progreso">
+<!ENTITY yulupProgressDialogCloseButton.label "Cerrar">
+<!ENTITY uiYulupResourceSourceCaption.label "Fuente Local">
+<!ENTITY uiYulupResourceTargetCaption.label "Objetivo remoto">
+<!ENTITY editToolbarbuttonWarnTooltip1.tooltip "Advertencia:">
+<!ENTITY editToolbarbuttonWarnTooltip2.tooltip "Ocurrió un error relacionado con el fichero de introspección al que está asociado este documento.">
+<!ENTITY editToolbarbuttonWarnTooltip3.tooltip "El fichero no existe o no está en la forma apropiada.">
+<!ENTITY editMenuitem.tooltip "Editar la página web actual tal cual">
+<!ENTITY editCheckoutNoLockMenuitem.tooltip "Abrir el documento actual en el CMS y editar">
+<!ENTITY editCheckoutNoLockMenu.tooltip "Abrir uno de los fragmentos actuales en el CMS y editar">
+<!ENTITY editCheckoutMenuitem.tooltip "Extraer el documento actual del CMS (bloquear) y editar">
+<!ENTITY editCheckoutMenu.tooltip "Extraer uno de los fragmentos actuales del CMS (bloquear) y editar">
+<!ENTITY editDeleteMenuitem.tooltip "Eliminar el documento actual del CMS">
+<!ENTITY editDeleteMenu.tooltip "Eliminar uno de los fragmentos actuales en el CMS">
+<!ENTITY editOperationNewMenu.tooltip "Crear un documento nuevo">
+<!ENTITY fileOperationNewAtomEntryMenuitem.tooltip "Crear una nueva entrada Atom para el feed actualmente seleccionado">
+<!ENTITY fileOperationUploadMenuitem.label "Subir">
+<!ENTITY fileOperationUploadMenuitem.tooltip "Subir un recurso al servidor">
+<!ENTITY editOperationOpenMenu.tooltip "Abrir un documento existente">
+<!ENTITY editAboutYulupMenuitem.tooltip "Acerca de Yulup">
+<!ENTITY editPreferencesMenuitem.tooltip "Modificar la configuración de Yulup">
+<!ENTITY editHelpMenuitem.tooltip "Mostrar el navegador de ayuda para Yulup">
+<!ENTITY editDemoMenuitem.tooltip "Ir al portal de demostración">
+<!ENTITY editVersionStringMenuitem.tooltip "La versión de Yulup que está utilizando actualmente">

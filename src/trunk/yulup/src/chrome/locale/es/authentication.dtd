@@ -1,4 +1,4 @@
-<!ENTITY editorAuthenticationDialog.title "Authentication Required">
-<!ENTITY editorAuthenticationDescription.label "This document requires authentication.">
-<!ENTITY editorAuthenticationCancelButton.label "Cancel">
+<!ENTITY editorAuthenticationDialog.title "Se necesita autenticación">
+<!ENTITY editorAuthenticationDescription.label "Este documento requiere autenticación">
+<!ENTITY editorAuthenticationCancelButton.label "Cancelar">
 <!ENTITY editorAuthenticationOkButton.label "OK">

@@ -1,7 +1,7 @@
-<!ENTITY editorConfirmCloseDialog.title "Close Yulup">
-<!ENTITY editorConfirmCloseDescription.label "The document has been changed. Really exit the editor?">
-<!ENTITY editorConfirmCloseCancelButton.label "Exit">
-<!ENTITY editorConfirmCloseAcceptButton.label "Save and Exit">
-<!ENTITY editorConfirmCloseCancelButton.tooltip "Exit without saving">
-<!ENTITY editorConfirmCloseAcceptButton.tooltip "Execute the selected save action">
+<!ENTITY editorConfirmCloseDialog.title "Cerrar Yulup">
+<!ENTITY editorConfirmCloseDescription.label "El documento ha sido modificado. ¿Desea realmente salir del editor?">
+<!ENTITY editorConfirmCloseCancelButton.label "Salir">
+<!ENTITY editorConfirmCloseAcceptButton.label "Guardar y salir">
+<!ENTITY editorConfirmCloseCancelButton.tooltip "Salir sin guardar">
+<!ENTITY editorConfirmCloseAcceptButton.tooltip "Ejecutar la acción de guardar seleccionada">
 <!ENTITY confirmCloseMenulist.accesskey "S">

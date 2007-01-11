@@ -54,7 +54,7 @@
 <!ENTITY fileOperationCheckinCMSMenuitem.tooltip "Check document back in to the CMS (releases the lock)">
 <!ENTITY fileOperationCheckinCMSAndExitMenuitem.tooltip "Check document back in to the CMS (releases the lock) and exit the editor">
 <!ENTITY fileOperationSaveAs.tooltip "Save document as...">
-<!ENTITY fileOperationSaveAsLocalMenuitem.tooltip "Save dcoument to file system as...">
+<!ENTITY fileOperationSaveAsLocalMenuitem.tooltip "Save document to file system as...">
 <!ENTITY fileOperationSaveAsCMSMenuitem.tooltip "Save document to CMS as...">
 <!ENTITY sourceViewTab.tooltip "View the source code of the document">
 <!ENTITY wysiwygViewTab.tooltip "View the WYSIWYG representation of the document">

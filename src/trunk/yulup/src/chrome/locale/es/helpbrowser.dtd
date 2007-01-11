@@ -1,8 +1,8 @@
-<!ENTITY helpBrowserWindow.title "Yulup Help Browser">
+<!ENTITY helpBrowserWindow.title "">
 <!ENTITY helpBrowserNavToolbar.name "Yulup Help Browser Navigation Toolbar">
-<!ENTITY helpBrowserNavBackButton.label "Back">
-<!ENTITY helpBrowserNavBackButton.tooltip "Go back">
-<!ENTITY helpBrowserNavForwardButton.label "Forward">
-<!ENTITY helpBrowserNavForwardButton.tooltip "Go forward">
-<!ENTITY helpBrowserNavHomeButton.label "Home">
-<!ENTITY helpBrowserNavHomeButton.tooltip "Go home">
+<!ENTITY helpBrowserNavBackButton.label "Atrás">
+<!ENTITY helpBrowserNavBackButton.tooltip "Retroceder">
+<!ENTITY helpBrowserNavForwardButton.label "Adelante">
+<!ENTITY helpBrowserNavForwardButton.tooltip "Avanzar">
+<!ENTITY helpBrowserNavHomeButton.label "Inicio">
+<!ENTITY helpBrowserNavHomeButton.tooltip "Ir a Inicio">

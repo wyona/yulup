@@ -1,13 +1,13 @@
 <!ENTITY workspaceWizard.title "Workspace Wizard">
-<!ENTITY workspaceLocationPageDescription.label "Configure the Workspace Location">
-<!ENTITY workspaceLocationDescription_0.label "The workspace is used for storing documents locally. This enables you to download documents to your local filesystem and then work on the document whilst being offline.">
-<!ENTITY workspaceLocationDescription_1.label "After becoming online again, Yulup will compare the modified documents to the versions on the CMS, and inform you about potential conflicts with documents which were changed on the server in the meantime.">
-<!ENTITY workspaceLocationDescription_2.label "Furthermore, you can edit the documents stored in the workspace from outside of Yulup. Also, you can add resources to your workspace, and the next time you tell Yulup to sync with the server, these resources are automatically uploaded to the CMS.">
-<!ENTITY workspaceLocationTextboxLabel.label "Select workspace location">
-<!ENTITY workspaceLocationSelectorButton.label "Select">
-<!ENTITY workspaceAlwaysDownloadPageDescription.label "Configure Document Auto Save">
-<!ENTITY workspaceAlwaysDownloadDescription_0.label "Documents opened in the editor can automatically be save to the workspace. This enables you to bla bla bla.">
-<!ENTITY workspaceAlwaysDownloadDescriptionCheckbox.label "Always save local copy">
-<!ENTITY workspaceConclusionDescription_0.label "You have chosen the following configuration:">
-<!ENTITY workspaceConclusionPathConfig.label "Workspace Path">
-<!ENTITY workspaceConclusionDownloadConfig.label "Always store">
+<!ENTITY workspaceLocationPageDescription.label "Configurar la ubicación del workspace">
+<!ENTITY workspaceLocationDescription_0.label "El workspace se utiliza para almacenar documentos localmente. Esto le permite descargar documentos a su sistema de archivos local y posteriormente trabajar en los documentos cuando no esté conectado.">
+<!ENTITY workspaceLocationDescription_1.label "Tras volverse a conectar, Yulup comparará los documentos modificados con las versiones en el CMS y le informará de los conflictos potenciales con los documentos que hayan sido modificados en el servidor durante el tiempo que ha estado desconectado.">
+<!ENTITY workspaceLocationDescription_2.label "Además, puede editar los documentos almacenados en el workspace fuera de Yulup. También puede añadir recursos a su workspace y la próxima vez que solicite a Yulup que se sincronice con el servidor, estos recursos se subirán automáticamente al servidor.">
+<!ENTITY workspaceLocationTextboxLabel.label "Seleccionar la localización del workspace">
+<!ENTITY workspaceLocationSelectorButton.label "Seleccionar">
+<!ENTITY workspaceAlwaysDownloadPageDescription.label "Configurar el guardado automático">
+<!ENTITY workspaceAlwaysDownloadDescription_0.label "Los documentos abiertos en el editor pueden guardarse de forma automática en el workspace.">
+<!ENTITY workspaceAlwaysDownloadDescriptionCheckbox.label "Siempre guardar una copia local">
+<!ENTITY workspaceConclusionDescription_0.label "Ha elegido la siguiente configuración:">
+<!ENTITY workspaceConclusionPathConfig.label "Ruta del workspace">
+<!ENTITY workspaceConclusionDownloadConfig.label "Siempre guardar">

@@ -5,121 +5,145 @@
   <entity id="prefWindow.title">
     <name xml:lang="en">Yulup Preferences</name>
     <name xml:lang="de">Yulup Einstellungen</name>
+    <name xml:lang="es">Preferencias de Yulup</name>
   </entity>
 
   <entity id="generalPrefPane.label">
     <name xml:lang="en">General</name>
     <name xml:lang="de">Allgemein</name>
+    <name xml:lang="es">General</name>
   </entity>
 
   <entity id="generalWorkspaceGroupbox.label">
     <name xml:lang="en">Workspace</name>
     <name xml:lang="de">Workspace</name>
+    <name xml:lang="es">Workspace</name>
   </entity>
 
   <entity id="generalWorkspaceTextboxLabel.label">
     <name xml:lang="en">Select the location of your workspace</name>
     <name xml:lang="de">Ort des Workspaces auswählen</name>
+    <name xml:lang="es">Seleccionar la ubicación de su workspace</name>
   </entity>
 
   <entity id="generalWorkspaceSelectorButton.label">
     <name xml:lang="en">Select</name>
     <name xml:lang="de">Auswählen</name>
+    <name xml:lang="es">Seleccionar</name>
   </entity>
 
   <entity id="generalWorkspaceAlwaysDownload.label">
     <name xml:lang="en">Always save local copy</name>
     <name xml:lang="de">Automatisch eine lokale Kopie speichern</name>
+    <name xml:lang="es">Siempre guardar una copia local</name>
   </entity>
 
   <entity id="generalDefaultServerGroupbox.label">
     <name xml:lang="en">Default CMS</name>
     <name xml:lang="de">Standard CMS</name>
+    <name xml:lang="es">CMS por defecto</name>
   </entity>
 
   <entity id="generalDefaultServerTextboxLabel.label">
     <name xml:lang="en">Enter the URI of your default CMS</name>
     <name xml:lang="de">URI des standard CMS eingeben</name>
+    <name xml:lang="es">Introduzca la URI de su CMS por defecto</name>
   </entity>
 
   <entity id="generalSidebarsGroupbox.label">
     <name xml:lang="en">Sidebars</name>
     <name xml:lang="de">Sidebars</name>
+    <name xml:lang="es">Barras laterales</name>
   </entity>
 
   <entity id="generalSidebarsAtomAutoOpen.label">
     <name xml:lang="en">Open Atom Sidebar automatically</name>
     <name xml:lang="de">Atom Sidebar automatisch öffnen</name>
+    <name xml:lang="es">Abrir la Barra Lateral Atom automáticamente</name>
   </entity>
 
   <entity id="editorPrefPane.label">
     <name xml:lang="en">Editor</name>
     <name xml:lang="de">Editor</name>
+    <name xml:lang="es">Editor</name>
   </entity>
 
   <entity id="editorKeyBindingsGroupbox.label">
     <name xml:lang="en">Key Bindings</name>
     <name xml:lang="de">Tastaturkürzel</name>
+    <name xml:lang="es">Combinaciones de teclas</name>
   </entity>
 
   <entity id="editorKeyBindingsMenulistLabel.label">
     <name xml:lang="en">Select a key binding</name>
     <name xml:lang="de">Tastaturkürzelschema auswählen</name>
+    <name xml:lang="es">Seleccionar un esquema de combinación de teclas</name>
   </entity>
 
   <entity id="editorKeyBindingsNone.label">
     <name xml:lang="en">None</name>
     <name xml:lang="de">Keines</name>
+    <name xml:lang="es">Ninguno</name>
   </entity>
 
   <entity id="editorKeyBindingsReadline.label">
     <name xml:lang="en">Readline (Emacs)</name>
     <name xml:lang="de">Readline (Emacs)</name>
+    <name xml:lang="es">Readline (Emacs)</name>
   </entity>
 
   <entity id="editorKeyBindingsUseSpacesForTabLabel.label">
     <name xml:lang="en">Use spaces instead of tab</name>
     <name xml:lang="de">Leerzeichen anstatt Tab verwenden</name>
+    <name xml:lang="es">Utilizar espacios en lugar de tabulador</name>
   </entity>
 
   <entity id="editorKeyBindingsNoOfSpacesLabel.label">
     <name xml:lang="en">Number of spaces</name>
     <name xml:lang="de">Anzahl Leerzeichen</name>
+    <name xml:lang="es">Número de espacios</name>
   </entity>
 
   <entity id="editorLayoutGroupbox.label">
     <name xml:lang="en">Layout</name>
     <name xml:lang="de">Layout</name>
+    <name xml:lang="es">Aspecto</name>
   </entity>
 
   <entity id="editorLayoutWrapToWindow.label">
     <name xml:lang="en">Wrap source editor to window width</name>
     <name xml:lang="de">Text im Source Editor auf Fensterbreite umbrechen</name>
+    <name xml:lang="es">Ajustar el editor de fuentes al ancho de la ventana</name>
   </entity>
 
   <entity id="editorThemeGroupbox.label">
     <name xml:lang="en">Appearance</name>
     <name xml:lang="de">Aussehen</name>
+    <name xml:lang="es">Apariencia</name>
   </entity>
 
   <entity id="editorThemeMenulistLabel.label">
     <name xml:lang="en">Choose the editor appearance</name>
     <name xml:lang="de">Aussehen auswählen</name>
+    <name xml:lang="es">Elegir la apariencia del editor</name>
   </entity>
 
   <entity id="editorThemeDefaultTheme.label">
     <name xml:lang="en">Default</name>
     <name xml:lang="de">Standard</name>
+    <name xml:lang="es">Por defecto</name>
   </entity>
 
   <entity id="editorAppearanceOpenInNewTab.label">
     <name xml:lang="en">Open editor in new tab</name>
     <name xml:lang="de">Editor in neuem Tab öffnen</name>
+    <name xml:lang="es">Abrir el editor en una nueva pestaña</name>
   </entity>
 
   <entity id="editorPrefChangeNote.label">
     <name xml:lang="en">Note that editor preference changes only take effect after the editor is restarted.</name>
     <name xml:lang="de">Die Editoreinstellungen treten erst nach einem Neustart des Editors in Effekt.</name>
+    <name xml:lang="es">Los cambios en las preferencias del editor sólo tienen efecto después de reiniciar el editor.</name>
   </entity>
 
 </dtd>

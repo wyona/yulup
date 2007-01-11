@@ -1,18 +1,18 @@
-<!ENTITY atomSidebarDescriptionNoContent.label "No Atom content available">
-<!ENTITY atomSidebarDescriptionNoFeed.label "This feed is currently not available">
-<!ENTITY atomSidebarDescriptionLoading.label "Loading feed...">
-<!ENTITY atomSidebarFeedEntriesDescription.label "This feed has no entries">
-<!ENTITY atomSidebarFeedInfoGroupbox.label "Feed Information:">
-<!ENTITY atomSidebarFeedEntriesGroupbox.label "Feed Entries:">
-<!ENTITY atomSidebarSearch.label "Search:">
+<!ENTITY atomSidebarDescriptionNoContent.label "No hay contenido Atom disponible">
+<!ENTITY atomSidebarDescriptionNoFeed.label "Este feed no está disponible actualmente">
+<!ENTITY atomSidebarDescriptionLoading.label "Cargando feed..">
+<!ENTITY atomSidebarFeedEntriesDescription.label "Este feed no tiene entradas">
+<!ENTITY atomSidebarFeedInfoGroupbox.label "Información del feed:">
+<!ENTITY atomSidebarFeedEntriesGroupbox.label "Entradas del feed:">
+<!ENTITY atomSidebarSearch.label "Buscar:">
 <!ENTITY atomSidebarSearch.accesskey "S">
-<!ENTITY atomSidebarFeedEntriesTreeColumnTitle.label "Title">
-<!ENTITY atomSidebarFirstButton.label "First entry">
-<!ENTITY atomSidebarPreviousButton.label "Previous entries">
-<!ENTITY atomSidebarNextButton.label "Next entries">
-<!ENTITY atomSidebarLastButton.label "Last entry">
-<!ENTITY atomSidebarFeedEntriesContextMenuEdit.label "Edit">
-<!ENTITY atomSidebarFeedEntriesContextMenuDelete.label "Delete">
+<!ENTITY atomSidebarFeedEntriesTreeColumnTitle.label "Título">
+<!ENTITY atomSidebarFirstButton.label "Primera entrada">
+<!ENTITY atomSidebarPreviousButton.label "Entradas previas">
+<!ENTITY atomSidebarNextButton.label "Entradas siguientes">
+<!ENTITY atomSidebarLastButton.label "Última entrada">
+<!ENTITY atomSidebarFeedEntriesContextMenuEdit.label "Editar">
+<!ENTITY atomSidebarFeedEntriesContextMenuDelete.label "Eliminar">
 <!ENTITY atomSidebarPage.title "Atom Sidebar">
 <!ENTITY atomSidebarPage.title "Atom Sidebar">
 <!ENTITY openYulupAtomSidebar.key "A">
