@@ -38,6 +38,8 @@ const FindReplace = {
     dialogFields: null,
 
     onLoadListener: function () {
+        var commandTable = null;
+
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.onLoadListener() invoked\n");
 
         FindReplace.__findAndReplace   = window.arguments[0];
@@ -75,20 +77,37 @@ const FindReplace = {
         // get the nsIWebBrowserFind
         FindReplace.__webBrowserFind = FindReplace.__getWebBrowserFind(FindReplace.__view);
 
-        // register our command controller
-        FindReplace.__commandController = new FindReplaceCommandController(FindReplace);
-        window.controllers.appendController(FindReplace.__commandController);
-
         FindReplace.__fillInitialValues(FindReplace.dialogFields, FindReplace.__findService, FindReplace.__webBrowserFind);
+
+        // add our own command controller
+        FindReplace.__commandController = Components.classes["@mozilla.org/embedcomp/base-command-controller;1"].createInstance(Components.interfaces.nsIControllerContext);
+        FindReplace.__commandController.init(null);
+
+        // don't set a context here unless bug https://bugzilla.mozilla.org/show_bug.cgi?id=366724 gets fixed, otherwise we crash
+        FindReplace.__commandController.setCommandContext(null);
+        window.controllers.insertControllerAt(0, FindReplace.__commandController);
+
+        commandTable = FindReplace.__commandController.QueryInterface(Components.interfaces.nsIInterfaceRequestor).getInterface(Components.interfaces.nsIControllerCommandTable);
+
+
+        if (FindReplace.__findAndReplace) {
+            // register controller commands
+            commandTable.registerCommand("cmd_yulup_find",       new FindReplaceFindCommand("cmd_yulup_find", FindReplace));
+            commandTable.registerCommand("cmd_yulup_replace",    new FindReplaceReplaceCommand("cmd_yulup_replace", FindReplace));
+            commandTable.registerCommand("cmd_yulup_replaceall", new FindReplaceReplaceAllCommand("cmd_yulup_replaceall", FindReplace));
+
+            // install replace command updaters
+            document.getElementById("uiSearchStringTextbox").addEventListener("input", FindReplace.replaceCommandUpdater, false);
+            document.getElementById("uiMatchCaseCheckbox").addEventListener("command", FindReplace.replaceCommandUpdater, false);
+        } else {
+            // register controller command
+            commandTable.registerCommand("cmd_yulup_find", new FindReplaceFindCommand("cmd_yulup_find"));
+        }
 
         FindReplace.goUpdateFindReplaceCommands();
 
         // register a selection change listener for the active view
         FindReplace.__installSelectionListener(FindReplace.__view);
-
-        // install replace command updaters
-        document.getElementById("uiSearchStringTextbox").addEventListener("input", FindReplace.replaceCommandUpdater, false);
-        document.getElementById("uiMatchCaseCheckbox").addEventListener("command", FindReplace.replaceCommandUpdater, false);
     },
 
     onDialogCancelListener: function () {
@@ -431,143 +450,6 @@ const FindReplace = {
 };
 
 
-/**
- * FindReplaceCommandController constructor. Instantiates a new object of
- * type FindReplaceCommandController.
- *
- * Implements the nsIController interface.
- *
- * @constructor
- * @return {FindReplaceCommandController}
- */
-function FindReplaceCommandController(aFindReplace) {
-    /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceCommandController() invoked\n");
-
-    /* DEBUG */ YulupDebug.ASSERT(aFindReplace != null);
-
-    this.__findReplace = aFindReplace;
-}
-
-FindReplaceCommandController.prototype = {
-    __findReplace: null,
-
-    /**
-     * The nsISupports QueryInterface method.
-     */
-    QueryInterface: function (aUUID) {
-        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceCommandController.QueryInterface(\"" + aUUID + "\") invoked\n");
-
-        if (aUUID.equals(Components.interfaces.nsISupports) ||
-            aUUID.equals(Components.interfaces.nsIController)) {
-            return this;
-        } else {
-            throw Components.results.NS_NOINTERFACE;
-        }
-    },
-
-    /**
-     * The nsIController supportsCommand method.
-     */
-    supportsCommand: function (aCommand) {
-        var retval = false;
-
-        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceCommandController.supportsCommand(\"" + aCommand + "\") invoked\n");
-
-        /* DEBUG */ YulupDebug.ASSERT(aCommand != null);
-
-        switch (aCommand) {
-            case "cmd_yulup_find":
-            case "cmd_yulup_replace":
-            case "cmd_yulup_replaceall":
-                retval = true;
-                break;
-            default:
-        }
-
-        return retval;
-    },
-
-    /**
-     * The nsIController isCommandEnabled method.
-     */
-    isCommandEnabled: function (aCommand) {
-        var retval = false;
-
-        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceCommandController.isCommandEnabled(\"" + aCommand + "\") invoked\n");
-
-        /* DEBUG */ YulupDebug.ASSERT(aCommand != null);
-
-        switch (aCommand) {
-            case "cmd_yulup_find":
-                if (this.__findReplace.__webBrowserFind                       &&
-                    this.__findReplace.dialogFields.searchStringTextbox.value &&
-                    this.__findReplace.dialogFields.searchStringTextbox.value != "") {
-                    retval = true;
-                }
-
-                break;
-            case "cmd_yulup_replace":
-                /* Only enable replace if the current selection actually matches the search
-                 * string. Note that for this to work, we need to i) update on every selection change
-                 * (requires a selection changed event from the currently active view) and ii) update
-                 * on every search string change. */
-                if (this.__findReplace.__webBrowserFind                             &&
-                    this.__findReplace.dialogFields.searchStringTextbox.value       &&
-                    this.__findReplace.dialogFields.searchStringTextbox.value != "" &&
-                    this.__findReplace.__isReplaceMatch()) {
-                    retval = true;
-                }
-
-                break;
-            case "cmd_yulup_replaceall":
-                if (this.__findReplace.__webBrowserFind                       &&
-                    this.__findReplace.__findService                          &&
-                    this.__findReplace.dialogFields.searchStringTextbox.value &&
-                    this.__findReplace.dialogFields.searchStringTextbox.value != "") {
-                    retval = true;
-                }
-
-                // not yet implemented
-                retval = false;
-
-                break;
-            default:
-        }
-
-        return retval;
-    },
-
-    /**
-     * The nsIController doCommand method.
-     */
-    doCommand: function (aCommand) {
-        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceCommandController.doCommand(\"" + aCommand + "\") invoked\n");
-
-        /* DEBUG */ YulupDebug.ASSERT(aCommand != null);
-
-        switch (aCommand) {
-            case "cmd_yulup_find":
-                FindReplace.findNext();
-                break;
-            case "cmd_yulup_replace":
-                if (FindReplace.replace())
-                    FindReplace.findNext();
-                break;
-            case "cmd_yulup_replaceall":
-                FindReplace.replaceAll();
-                break;
-            default:
-        }
-    },
-
-    /**
-     * The nsIController onEvent method.
-     */
-    onEvent: function (aEvent) {
-        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceCommandController.onEvent(\"" + aEvent + "\") invoked\n");
-    }
-};
-
 function FindReplaceSelectionListener(aFindReplace, aView) {
     /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceSelectionListener() invoked\n");
 
@@ -586,5 +468,252 @@ FindReplaceSelectionListener.prototype = {
 
         if (this.__view == this.__findReplace.__view)
             FindReplace.goUpdateFindReplaceCommand("cmd_yulup_replace");
+    }
+};
+
+
+/**
+ * FindReplaceFindCommand constructor. Instantiates a new object of
+ * type FindReplaceFindCommand.
+ *
+ * Implements nsIControllerCommand.
+ *
+ * @constructor
+ * @param  {String} aCommandName the name of this command
+ * @return {FindReplaceFindCommand}
+ */
+function FindReplaceFindCommand(aCommandName, aFindReplace) {
+    dump("Yulup:findreplace.js:FindReplaceFindCommand() invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aCommandName != null);
+    /* DEBUG */ YulupDebug.ASSERT(aFindReplace != null);
+
+    this.__commandName = aCommandName;
+    this.__findReplace = aFindReplace;
+}
+
+FindReplaceFindCommand.prototype = {
+    __commandName: null,
+
+    /**
+     * The nsISupports QueryInterface method.
+     */
+    QueryInterface: function (aUUID) {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceFindCommand.QueryInterface(\"" + aUUID + "\") invoked\n");
+
+        if (aUUID.equals(Components.interfaces.nsISupports) ||
+            aUUID.equals(Components.interfaces.nsIControllerCommand)) {
+            return this;
+        } else {
+            throw Components.results.NS_NOINTERFACE;
+        }
+    },
+
+    doCommand: function (aCommandName, aCommandContext) {
+        dump("Yulup:findreplace.js:FindReplaceFindCommand.doCommand() invoked\n");
+
+        if (this.__commandName == aCommandName) {
+            this.__findReplace.findNext();
+
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    doCommandParams: function (aCommandName, aParams, aCommandContext) {
+        dump("Yulup:findreplace.js:FindReplaceFindCommand.doCommandParams() invoked\n");
+
+        return this.doCommand(aCommandName, aCommandContext);
+    },
+
+    getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
+        dump("Yulup:findreplace.js:FindReplaceFindCommand.getCommandStateParams() invoked\n");
+
+        // no state params
+    },
+
+    isCommandEnabled: function (aCommandName, aCommandContext) {
+        var retval = false;
+
+        dump("Yulup:findreplace.js:FindReplaceFindCommand.isCommandEnabled() invoked\n");
+
+        if (this.__commandName == aCommandName) {
+            if (this.__findReplace.__webBrowserFind                       &&
+                this.__findReplace.dialogFields.searchStringTextbox.value &&
+                this.__findReplace.dialogFields.searchStringTextbox.value != "") {
+                retval = true;
+            }
+        }
+
+        return retval;
+    }
+};
+
+
+/**
+ * FindReplaceReplaceCommand constructor. Instantiates a new object of
+ * type FindReplaceReplaceCommand.
+ *
+ * Implements nsIControllerCommand.
+ *
+ * @constructor
+ * @param  {String} aCommandName the name of this command
+ * @return {FindReplaceReplaceCommand}
+ */
+function FindReplaceReplaceCommand(aCommandName, aFindReplace) {
+    dump("Yulup:findreplace.js:FindReplaceReplaceCommand() invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aCommandName != null);
+    /* DEBUG */ YulupDebug.ASSERT(aFindReplace != null);
+
+    this.__commandName = aCommandName;
+    this.__findReplace = aFindReplace;
+}
+
+FindReplaceReplaceCommand.prototype = {
+    __commandName: null,
+
+    /**
+     * The nsISupports QueryInterface method.
+     */
+    QueryInterface: function (aUUID) {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceCommand.QueryInterface(\"" + aUUID + "\") invoked\n");
+
+        if (aUUID.equals(Components.interfaces.nsISupports) ||
+            aUUID.equals(Components.interfaces.nsIControllerCommand)) {
+            return this;
+        } else {
+            throw Components.results.NS_NOINTERFACE;
+        }
+    },
+
+    doCommand: function (aCommandName, aCommandContext) {
+        dump("Yulup:findreplace.js:FindReplaceReplaceCommand.doCommand() invoked\n");
+
+        if (this.__commandName == aCommandName) {
+            if (this.__findReplace.replace())
+                this.__findReplace.findNext();
+
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    doCommandParams: function (aCommandName, aParams, aCommandContext) {
+        dump("Yulup:findreplace.js:FindReplaceReplaceCommand.doCommandParams() invoked\n");
+
+        return this.doCommand(aCommandName, aCommandContext);
+    },
+
+    getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
+        dump("Yulup:findreplace.js:FindReplaceReplaceCommand.getCommandStateParams() invoked\n");
+
+        // no state params
+    },
+
+    isCommandEnabled: function (aCommandName, aCommandContext) {
+        var retval = false;
+
+        dump("Yulup:findreplace.js:FindReplaceReplaceCommand.isCommandEnabled() invoked\n");
+
+        if (this.__commandName == aCommandName) {
+            /* Only enable replace if the current selection actually matches the search
+             * string. Note that for this to work, we need to i) update on every selection change
+             * (requires a selection changed event from the currently active view) and ii) update
+             * on every search string change. */
+            if (this.__findReplace.__webBrowserFind                             &&
+                this.__findReplace.dialogFields.searchStringTextbox.value       &&
+                this.__findReplace.dialogFields.searchStringTextbox.value != "" &&
+                this.__findReplace.__isReplaceMatch()) {
+                retval = true;
+            }
+        }
+
+        return retval;
+    }
+};
+
+
+/**
+ * FindReplaceReplaceAllCommand constructor. Instantiates a new object of
+ * type FindReplaceReplaceAllCommand.
+ *
+ * Implements nsIControllerCommand.
+ *
+ * @constructor
+ * @param  {String} aCommandName the name of this command
+ * @return {FindReplaceReplaceAllCommand}
+ */
+function FindReplaceReplaceAllCommand(aCommandName, aFindReplace) {
+    dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand() invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aCommandName != null);
+    /* DEBUG */ YulupDebug.ASSERT(aFindReplace != null);
+
+    this.__commandName = aCommandName;
+    this.__findReplace = aFindReplace;
+}
+
+FindReplaceReplaceAllCommand.prototype = {
+    __commandName: null,
+
+    /**
+     * The nsISupports QueryInterface method.
+     */
+    QueryInterface: function (aUUID) {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand.QueryInterface(\"" + aUUID + "\") invoked\n");
+
+        if (aUUID.equals(Components.interfaces.nsISupports) ||
+            aUUID.equals(Components.interfaces.nsIControllerCommand)) {
+            return this;
+        } else {
+            throw Components.results.NS_NOINTERFACE;
+        }
+    },
+
+    doCommand: function (aCommandName, aCommandContext) {
+        dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand.doCommand() invoked\n");
+
+        if (this.__commandName == aCommandName) {
+            this.__findReplace.replaceAll();
+
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    doCommandParams: function (aCommandName, aParams, aCommandContext) {
+        dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand.doCommandParams() invoked\n");
+
+        return this.doCommand(aCommandName, aCommandContext);
+    },
+
+    getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
+        dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand.getCommandStateParams() invoked\n");
+
+        // no state params
+    },
+
+    isCommandEnabled: function (aCommandName, aCommandContext) {
+        var retval = false;
+
+        dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand.isCommandEnabled() invoked\n");
+
+        if (this.__commandName == aCommandName) {
+            if (this.__findReplace.__webBrowserFind                       &&
+                this.__findReplace.__findService                          &&
+                this.__findReplace.dialogFields.searchStringTextbox.value &&
+                this.__findReplace.dialogFields.searchStringTextbox.value != "") {
+                retval = true;
+            }
+
+            // not yet implemented
+            retval = false;
+        }
+
+        return retval;
     }
 };
