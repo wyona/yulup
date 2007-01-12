@@ -18,6 +18,8 @@
  * along with Yulup; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
+ * Parts of this document are based on Mozilla code (MPL 1.1/GPL 2.0/LGPL 2.1).
+ *
  * ***** END LICENSE BLOCK *****
  */
 
@@ -327,12 +329,15 @@ const FindReplace = {
         var searchString      = null;
         var replacementString = null;
         var rangeFind         = null;
+        var wrapped           = null;
         var editor            = null;
         var selection         = null;
         var selectionRange    = null;
         var initialRange      = null;
         var documentRange     = null;
         var endRange          = null;
+        var searchRange       = null;
+        var foundRange        = null;
 
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.replaceAll() invoked\n");
 
@@ -344,8 +349,11 @@ const FindReplace = {
 
         rangeFind = Components.classes["@mozilla.org/embedcomp/rangefind;1"].createInstance().QueryInterface(Components.interfaces.nsIFind);
 
+        // init the range finder
         rangeFind.caseSensitive = FindReplace.dialogFields.matchCaseCheckbox.checked;
         rangeFind.findBackwards = FindReplace.dialogFields.searchBackwardsCheckbox.checked;
+
+        wrapped = FindReplace.dialogFields.wrapAroundCheckbox.checked;
 
         editor = FindReplace.__view.view;
 
@@ -356,26 +364,107 @@ const FindReplace = {
             selection = editor.selection;
 
             if (selection.rangeCount > 0) {
+                // the start of our search
                 selectionRange = selection.getRangeAt(0);
             }
 
+            // remember the current selection to have a terminal when wrapping
             initialRange = selectionRange.cloneRange();
 
+            // get the range for the complete document
             documentRange = editor.document.createRange();
             documentRange.selectNodeContents(editor.rootElement.QueryInterface(Components.interfaces.nsIDOMNode));
 
-            // determine where the end of our search should be
+            // determine where the end of our search should be, depending on the search direction
             endRange = editor.document.createRange();
 
             if (rangeFind.findBackwards) {
+                // we're searching backward, therefore the end of our search is the start of the document
                 endRange.setStart(documentRange.startContainer, documentRange.startOffset);
                 endRange.setEnd(documentRange.startContainer, documentRange.startOffset);
             } else {
+                // we're searching forward, therefore the end of our search is the end of the document
                 endRange.setStart(documentRange.endContainer, documentRange.endOffset);
                 endRange.setEnd(documentRange.endContainer, documentRange.endOffset);
             }
 
-            
+            // the domain of our search
+            searchRange = documentRange.cloneRange();
+
+            while ((foundRange = rangeFind.Find(searchString, searchRange, selectionRange, endRange)) != null) {
+                editor.selection.removeAllRanges();
+                editor.selection.addRange(foundRange);
+
+                if (rangeFind.findBackwards) {
+                    selectionRange = foundRange.cloneRange();
+                    selectionRange.setEnd(selectionRange.startContainer, selectionRange.startOffset);
+                }
+
+                if (!replacementString || replacementString == "") {
+                    editor.QueryInterface(Components.interfaces.nsIEditor)
+                        .deleteSelection(Components.interfaces.nsIEditor.eNone);
+                } else {
+                    editor.QueryInterface(Components.interfaces.nsIPlaintextEditor)
+                        .insertText(replacementString);
+                }
+
+                if (!rangeFind.findBackwards) {
+                    selection = editor.selection;
+
+                    if (selection.rangeCound <= 0) {
+                        editor.endTransaction();
+                        return;
+                    }
+
+                    selectionRange = selection.getRangeAt(0).cloneRange();
+                }
+            }
+
+            if (!wrapped) {
+                editor.endTransaction();
+                return;
+            }
+
+            if (rangeFind.findBackwards) {
+                initialRange.setStart(initialRange.endContainer, initialRange.endOffset);
+
+                selectionRange.setEnd(documentRange.endContainer, documentRange.endOffset);
+                selectionRange.setStart(documentRange.endContainer, documentRange.endOffset);
+            } else {
+                initialRange.setEnd(initialRange.startContainer, initialRange.startOffset);
+
+                selectionRange.setStart(documentRange.startContainer, documentRange.startOffset);
+                selectionRange.setEnd(documentRange.startContainer, documentRange.startOffset);
+            }
+
+            while ((foundRange = rangeFind.Find(searchString, documentRange, selectionRange, initialRange)) != null) {
+                editor.selection.removeAllRanges();
+                editor.selection.addRange(foundRange);
+
+                if (rangeFind.findBackwards) {
+                    selectionRange = foundRange.cloneRange();
+                    selectionRange.setEnd(selectionRange.startContainer, selectionRange.startOffset);
+                }
+
+                if (!replacementString || replacementString == "") {
+                    editor.QueryInterface(Components.interfaces.nsIEditor)
+                        .deleteSelection(Components.interfaces.nsIEditor.eNone);
+                } else {
+                    editor.QueryInterface(Components.interfaces.nsIPlaintextEditor)
+                        .insertText(replacementString);
+                }
+
+                if (!rangeFind.findBackwards) {
+                    selection = editor.selection;
+
+                    if (selection.rangeCount <= 0) {
+                        editor.endTransaction();
+                        return;
+                    }
+
+                    selectionRange = selection.getRangeAt(0);
+                }
+            }
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:findreplace.js:FindReplace.replaceAll", exception);
             Components.utils.reportError(exception);
