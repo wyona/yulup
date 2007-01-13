@@ -65,7 +65,8 @@ const FindReplace = {
             matchCaseCheckbox       : document.getElementById("uiMatchCaseCheckbox"),
             matchEntireWordCheckbox : document.getElementById("uiMatchEntireWordCheckbox"),
             searchBackwardsCheckbox : document.getElementById("uiSearchBackwardsCheckbox"),
-            wrapAroundCheckbox      : document.getElementById("uiWrapAroundCheckbox")
+            wrapAroundCheckbox      : document.getElementById("uiWrapAroundCheckbox"),
+            infoLabel               : document.getElementById("uiInfoLabel")
         };
 
         // get the nsIFindService
@@ -231,7 +232,7 @@ const FindReplace = {
     /**
      * Find the next match.
      *
-     * @return {Undefined} does not have a return value
+     * @return {Boolean} returns true of a match has been found, false otherwise
      */
     findNext: function () {
         var found = false;
@@ -251,10 +252,7 @@ const FindReplace = {
             Components.utils.reportError(exception);
         }
 
-        if (!found) {
-            // TODO: better alert (maybe at bottom of dialog) and i18n
-            alert("Phrase " + FindReplace.dialogFields.searchStringTextbox.value + " not found.");
-        }
+        return found;
     },
 
     /**
@@ -323,7 +321,7 @@ const FindReplace = {
     /**
      * Replace all matches with the replacement string.
      *
-     * @return {Undefined} does not have a return value
+     * @return {Number} returns the number of replaced occurences
      */
     replaceAll: function () {
         var searchString      = null;
@@ -338,6 +336,7 @@ const FindReplace = {
         var endRange          = null;
         var searchRange       = null;
         var foundRange        = null;
+        var count             = 0;
 
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.replaceAll() invoked\n");
 
@@ -408,12 +407,14 @@ const FindReplace = {
                         .insertText(replacementString);
                 }
 
+                count++;
+
                 if (!rangeFind.findBackwards) {
                     selection = editor.selection;
 
                     if (selection.rangeCound <= 0) {
                         editor.endTransaction();
-                        return;
+                        return count;
                     }
 
                     selectionRange = selection.getRangeAt(0).cloneRange();
@@ -422,7 +423,7 @@ const FindReplace = {
 
             if (!wrapped) {
                 editor.endTransaction();
-                return;
+                return count;
             }
 
             if (rangeFind.findBackwards) {
@@ -454,12 +455,14 @@ const FindReplace = {
                         .insertText(replacementString);
                 }
 
+                count++;
+
                 if (!rangeFind.findBackwards) {
                     selection = editor.selection;
 
                     if (selection.rangeCount <= 0) {
                         editor.endTransaction();
-                        return;
+                        return count;
                     }
 
                     selectionRange = selection.getRangeAt(0);
@@ -472,6 +475,14 @@ const FindReplace = {
 
         // end transaction
         FindReplace.__view.view.endTransaction();
+
+        return count;
+    },
+
+    setInfoLabel: function (aString) {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.setInfoLabel() invoked\n");
+
+        FindReplace.dialogFields.infoLabel.value = (aString ? aString : "");
     },
 
     __isReplaceMatch: function () {
@@ -652,6 +663,7 @@ function FindReplaceFindCommand(aCommandName, aFindReplace) {
 
 FindReplaceFindCommand.prototype = {
     __commandName: null,
+    __findReplace: null,
 
     /**
      * The nsISupports QueryInterface method.
@@ -668,10 +680,21 @@ FindReplaceFindCommand.prototype = {
     },
 
     doCommand: function (aCommandName, aCommandContext) {
+        var found = false;
+
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceFindCommand.doCommand() invoked\n");
 
         if (this.__commandName == aCommandName) {
-            this.__findReplace.findNext();
+            this.__findReplace.setInfoLabel("");
+
+            found = this.__findReplace.findNext();
+
+            if (!found) {
+                /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceFindCommand.doCommand: phrase not found\n");
+
+                // TODO: i18n
+                this.__findReplace.setInfoLabel("Phrase not found.");
+            }
 
             return true;
         } else {
@@ -731,6 +754,7 @@ function FindReplaceReplaceCommand(aCommandName, aFindReplace) {
 
 FindReplaceReplaceCommand.prototype = {
     __commandName: null,
+    __findReplace: null,
 
     /**
      * The nsISupports QueryInterface method.
@@ -747,11 +771,22 @@ FindReplaceReplaceCommand.prototype = {
     },
 
     doCommand: function (aCommandName, aCommandContext) {
+        var found = false;
+
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceCommand.doCommand() invoked\n");
 
         if (this.__commandName == aCommandName) {
+            this.__findReplace.setInfoLabel("");
+
             if (this.__findReplace.replace())
-                this.__findReplace.findNext();
+                found = this.__findReplace.findNext();
+
+            if (!found) {
+                /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceCommand.doCommand: phrase not found\n");
+
+                // TODO: i18n
+                this.__findReplace.setInfoLabel("Phrase not found.");
+            }
 
             return true;
         } else {
@@ -816,6 +851,7 @@ function FindReplaceReplaceAllCommand(aCommandName, aFindReplace) {
 
 FindReplaceReplaceAllCommand.prototype = {
     __commandName: null,
+    __findReplace: null,
 
     /**
      * The nsISupports QueryInterface method.
@@ -832,10 +868,17 @@ FindReplaceReplaceAllCommand.prototype = {
     },
 
     doCommand: function (aCommandName, aCommandContext) {
+        var count = 0;
+
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceAllCommand.doCommand() invoked\n");
 
         if (this.__commandName == aCommandName) {
-            this.__findReplace.replaceAll();
+            this.__findReplace.setInfoLabel("");
+
+            count = this.__findReplace.replaceAll();
+
+            // TODO: i18n
+            this.__findReplace.setInfoLabel("Replaced " + count + " occurences.");
 
             return true;
         } else {

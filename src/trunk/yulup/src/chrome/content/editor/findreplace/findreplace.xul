@@ -78,6 +78,10 @@
     <checkbox id="uiWrapAroundCheckbox"      label="&findReplaceWrapAround.label;"/>
   </vbox>
 
+  <separator class="thin"/>
+
+  <label id="uiInfoLabel" value=""/>
+
   <spacer flex="1"/>
 
   <hbox pack="end">
