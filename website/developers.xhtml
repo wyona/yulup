@@ -36,46 +36,39 @@ Username: <i>anonymous</i>, Password: <i>anonymous</i>
 
 
 <h3 id="installation">Installation</h3>
-
 <p>
+If the source has been checked out from SVN, Yulup can be installed as follows:
+</p>
+<ul>
 
-If the source has been checked out from SVN, then one can install Yulup as follows:
-
-</p><ul>
-
-  <li><p>Create a file <tt>yulup-prototype-1@wyona.com</tt> within the extension directory</p>
+  <li><p>Create a file <tt>yulup@wyona.com</tt> within the extension directory</p>
 
     <ul>
 
-      <li><p><b>Linux:</b> <tt>/home/USER/.mozilla/firefox/PROFILE/extensions/yulup-prototype-1@wyona.com</tt></p></li>
+      <li><p><b>Linux:</b> <tt>/home/USER/.mozilla/firefox/PROFILE/extensions/yulup@wyona.com</tt></p></li>
 
-      <li><p><b>MacOS X:</b> <tt>/Users/USER/Library/Application Support/Firefox/Profiles/PROFILE/extensions/yulup-prototype-1@wyona.com</tt></p></li>
+      <li><p><b>MacOS X:</b> <tt>/Users/USER/Library/Application Support/Firefox/Profiles/PROFILE/extensions/yulup@wyona.com</tt></p></li>
 
-      <li><p><b>Windows 2000, XP:</b> <tt>Documents and Settings\USER\Application Data\Mozilla\Firefox\Profiles\PROFILE\extensions\yulup-prototype-1@wyona.com</tt> or <tt>Programs\Mozilla Firefox\extensions\yulup-prototype-1@wyona.com</tt></p></li>
-      <li><p><b>Windows NT:</b> <tt>WINNT\Profiles\USER\Application Data\Mozilla\Firefox\PROFILE\extensions\yulup-prototype-1@wyona.com</tt></p></li>
-      <li><p><b>Windows 98, ME:</b> <tt>Windows\Application Data\Mozilla\Firefox\PROFILE\extensions\yulup-prototype-1@wyona.com</tt></p></li>
+      <li><p><b>Windows 2000, XP:</b> <tt>Documents and Settings\USER\Application Data\Mozilla\Firefox\Profiles\PROFILE\extensions\yulup@wyona.com</tt> or <tt>Programs\Mozilla Firefox\extensions\yulup@wyona.com</tt></p></li>
+      <li><p><b>Windows NT:</b> <tt>WINNT\Profiles\USER\Application Data\Mozilla\Firefox\PROFILE\extensions\yulup@wyona.com</tt></p></li>
+      <li><p><b>Windows 98, ME:</b> <tt>Windows\Application Data\Mozilla\Firefox\PROFILE\extensions\yulup@wyona.com</tt></p></li>
 
     </ul>
 
   </li>
 
-  <li><p>Open this file and add the path to the Yulup source, e.g. <tt>/home/USER/src/yulup/src/trunk/yulup/prototypes/prototype1/src</tt> (Unix) or <tt>C:\src\yulup\src\trunk\yulup\prototypes\prototype1\src</tt> (Windows)</p></li>
+  <li><p>Open this file and add the path to the Yulup source, e.g. <tt>/home/USER/src/yulup/src/trunk/yulup/src</tt> (Unix) or <tt>C:\src\yulup\src\trunk\yulup\src</tt> (Windows)</p></li>
 
-  <li>Delete <tt>compreg.dat</tt> and <tt>xpti.dat</tt> from your profile directory.</li>
+  <li>Delete <tt>compreg.dat</tt> and <tt>xpti.dat</tt> from your profile directory if you change or add typelibs</li>
 
   <li><p>Restart Firefox</p></li>
 
 </ul>
 
 <h3 id="xpi">Building Releases: Generating XPI from source (Unix only)</h3>
-<p>Assume a path snippet <tt>$CURRENT</tt> which currently points to <tt>public/yulup/src/trunk/yulup/prototypes/prototype1/src</tt>.</p>
+<p>Assume a path snippet <tt>$CURRENT</tt> which currently points to <tt>public/yulup/src/trunk/yulup/src</tt>.</p>
 <ul>
   <li><p>Edit <tt>$CURRENT/install.rdf</tt> and bump version number contained in the &lt;em:version&gt; element (XPath: RDF/Description/em:version).</p></li>
-<!-- TODO: These items have become obsolete. Review and confirm before deleting. -->
-<!--
-  <li><p>Edit <tt>$CURRENT/chrome/locale/xml/yulup.dtd.xml</tt> and bump version number.</p></li>
-  <li><p>In directory <tt>$CURRENT/chrome/locale</tt>, issue "ant".</p></li>
--->
   <li><p>In directory <tt>$CURRENT</tt>, issue &quot;ant&quot; (make sure that <a href="http://ant.apache.org">Apache Ant</a> is installed).</p></li>
 </ul>
 <p>
