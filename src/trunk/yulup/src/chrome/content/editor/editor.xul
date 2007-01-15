@@ -127,7 +127,7 @@
     <broadcaster id="broadcaster_yulup_neutronfromcheckout" disabled="true"/>
   </broadcasterset>
 
-  <!-- Note that you have to handle these keys as well in the CommandKeyBindingsListener,
+  <!-- Note that you have to handle these keys as well in the CommandKeyListener,
        otherwise they won't work if the focus is inside the editor element. -->
   <keyset>
     <key id="key_yulup_exit"       modifiers="accel shift" key="E" oncommand="Editor.exitEditor()"/>
@@ -135,6 +135,8 @@
     <key id="key_yulup_savecms"    modifiers="accel shift" key="S" command="cmd_yulup_savecms"/>
     <key id="key_yulup_checkincms" modifiers="accel shift" key="C" command="cmd_yulup_checkincms"/>
     <key id="key_yulup_upload"     modifiers="accel shift" key="U" command="cmd_yulup_upload"/>
+    <key id="key_yulup_find"       modifiers="accel shift" key="F" command="cmd_yulup_find"/>
+    <key id="key_yulup_replace"    modifiers="accel shift" key="R" command="cmd_yulup_replace"/>
   </keyset>
 
   <popupset>
@@ -243,10 +245,12 @@
                        label="&editOperationPaste.label;" tooltiptext="&editOperationPaste.tooltip;"/>
         <toolbarbutton id="uiEditOperationFind"
                        command="cmd_yulup_find"
-                       label="&editOperationFind.label;"  tooltiptext="&editOperationFind.tooltip;"/>
+                       label="&editOperationFind.label;"  tooltiptext="&editOperationFind.tooltip;"
+                       key="key_yulup_find"/>
         <toolbarbutton id="uiEditOperationFindReplace"
                        command="cmd_yulup_replace"
-                       label="&editOperationFindReplace.label;"  tooltiptext="&editOperationFindReplace.tooltip;"/>
+                       label="&editOperationFindReplace.label;"  tooltiptext="&editOperationFindReplace.tooltip;"
+                       key="key_yulup_replace"/>
       </box>
       <toolbarseparator id="uiYulupWidgetToolbarSeparator" hidden="true"/>
       <box id="uiYulupWidgetToolbarbuttons" hidden="true"/>

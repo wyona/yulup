@@ -140,6 +140,28 @@ CommandKeyListener.prototype = {
                     }
 
                     break;
+                case "f":
+                case "F":
+                    if (aKeyEvent.shiftKey) {
+                        Editor.goDoFileOperationsCommand("cmd_yulup_find");
+
+                        // we consumed this event
+                        aKeyEvent.preventDefault();
+                        return true;
+                    }
+
+                    break;
+                case "r":
+                case "R":
+                    if (aKeyEvent.shiftKey) {
+                        Editor.goDoFileOperationsCommand("cmd_yulup_replace");
+
+                        // we consumed this event
+                        aKeyEvent.preventDefault();
+                        return true;
+                    }
+
+                    break;
                 default:
             }
         }
