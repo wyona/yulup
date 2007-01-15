@@ -14,4 +14,24 @@
     <name xml:lang="es">Buscar</name>
   </entity>
 
+  <entity id="findReplacePhraseNotFound.label">
+    <name xml:lang="en">Phrase not found.</name>
+    <name xml:lang="de">Suchstring nicht gefunden.</name>
+  </entity>
+
+  <entity id="findReplaceOccurencesReplaced1.label">
+    <name xml:lang="en">Replaced</name>
+    <name xml:lang="de">Ersetzte</name>
+  </entity>
+
+  <entity id="findReplaceOccurencesReplaced2.label">
+    <name xml:lang="en">occurrences.</name>
+    <name xml:lang="de">Vorkommen.</name>
+  </entity>
+
+  <entity id="findReplaceOccurencesReplaced3.label">
+    <name xml:lang="en">occurrence.</name>
+    <name xml:lang="de">Vorkommen.</name>
+  </entity>
+
 </dtd>

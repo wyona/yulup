@@ -28,6 +28,7 @@
  *
  */
 
+// TODO: refactor member names to correctly reflect access control
 const FindReplace = {
     __findAndReplace        : null,
     __editorController      : null,
@@ -55,6 +56,9 @@ const FindReplace = {
         }
 
         FindReplace.__view = FindReplace.__editorController.activeView;
+
+        // register keypress handler
+        document.addEventListener("keypress", FindReplace.onKeypressListener, "false");
 
         // register a view change listener
         FindReplace.__editorController.addViewChangedListener(FindReplace.viewChanged);
@@ -124,19 +128,26 @@ const FindReplace = {
         FindReplace.__installSelectionListener(FindReplace.__view);
     },
 
-    onDialogCancelListener: function () {
-        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.onDialogCancelListener() invoked\n");
+    onUnloadListener: function () {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.onUnloadListener() invoked\n");
 
         // shutdown
         FindReplace.__shutdown();
-
-        return true;
     },
 
-    onCloseListener: function () {
-        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.onCloseListener() invoked\n");
+    onKeypressListener: function (aKeyEvent) {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.onKeypressListener() invoked\n");
 
-        FindReplace.__shutdown();
+         switch (aKeyEvent.keyCode) {
+             case Components.interfaces.nsIDOMKeyEvent.DOM_VK_ENTER:
+             case Components.interfaces.nsIDOMKeyEvent.DOM_VK_RETURN:
+                 dump("Yulup:findreplace.js:FindReplace.onKeypressListener: key event = " + aKeyEvent.keyCode + " \n");
+
+                 // consume VK_ENTER and VK_RETURN events
+                 aKeyEvent.preventDefault();
+                 return true;
+             default:
+         }
     },
 
     replaceCommandUpdater: function () {
@@ -310,9 +321,6 @@ const FindReplace = {
                 FindReplace.__view.view.selection.removeAllRanges();
                 FindReplace.__view.view.selection.addRange(selectionRange);
             }
-        } else {
-            // TODO: better alert (maybe at bottom of dialog) and i18n
-            alert("Phrase " + FindReplace.dialogFields.searchStringTextbox.value + " not contained in the current selection.");
         }
 
         return found;
@@ -642,7 +650,7 @@ FindReplaceSelectionListener.prototype = {
         /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceSelectionListener.notifySelectionChanged() invoked\n");
 
         if (this.__view == this.__findReplace.__view)
-            FindReplace.goUpdateFindReplaceCommand("cmd_yulup_replace");
+            this.__findReplace.goUpdateFindReplaceCommand("cmd_yulup_replace");
     }
 };
 
@@ -698,8 +706,7 @@ FindReplaceFindCommand.prototype = {
             if (!found) {
                 /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceFindCommand.doCommand: phrase not found\n");
 
-                // TODO: i18n
-                this.__findReplace.setInfoLabel("Phrase not found.");
+                this.__findReplace.setInfoLabel(document.getElementById("uiYulupFindReplaceStringbundle").getString("findReplacePhraseNotFound.label"));
             }
 
             return true;
@@ -790,8 +797,7 @@ FindReplaceReplaceCommand.prototype = {
             if (!found) {
                 /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceCommand.doCommand: phrase not found\n");
 
-                // TODO: i18n
-                this.__findReplace.setInfoLabel("Phrase not found.");
+                this.__findReplace.setInfoLabel(document.getElementById("uiYulupFindReplaceStringbundle").getString("findReplacePhraseNotFound.label"));
             }
 
             return true;
@@ -883,8 +889,10 @@ FindReplaceReplaceAllCommand.prototype = {
 
             count = this.__findReplace.replaceAll();
 
-            // TODO: i18n
-            this.__findReplace.setInfoLabel("Replaced " + count + " occurences.");
+            // use two stringbundle properties instead of getFormattedString, since this does not work
+            this.__findReplace.setInfoLabel(document.getElementById("uiYulupFindReplaceStringbundle").getString("findReplaceOccurencesReplaced1.label")
+                                            + " " + count + " "
+                                            + (count != 1 ? document.getElementById("uiYulupFindReplaceStringbundle").getString("findReplaceOccurencesReplaced2.label") : document.getElementById("uiYulupFindReplaceStringbundle").getString("findReplaceOccurencesReplaced3.label")));
 
             return true;
         } else {
