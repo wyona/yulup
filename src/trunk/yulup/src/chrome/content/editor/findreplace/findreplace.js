@@ -33,6 +33,7 @@ const FindReplace = {
     __findAndReplace        : null,
     __editorController      : null,
     __view                  : null,
+    __sound                 : null,
     __findService           : null,
     __webBrowserFind        : null,
     __commandController     : null,
@@ -72,6 +73,15 @@ const FindReplace = {
             wrapAroundCheckbox      : document.getElementById("uiWrapAroundCheckbox"),
             infoLabel               : document.getElementById("uiInfoLabel")
         };
+
+        // instantiate sound component
+        try {
+            FindReplace.__sound = Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound);
+            FindReplace.__sound.init();
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:findreplace.js:FindReplace.onLoadListener", exception);
+            Components.utils.reportError(exception);
+        }
 
         // get the nsIFindService
         try {
@@ -168,6 +178,19 @@ const FindReplace = {
 
         // get the new nsIWebBrowserFind
         FindReplace.__webBrowserFind = FindReplace.__getWebBrowserFind(FindReplace.__view);
+    },
+
+    playSystemBeep: function () {
+        /* DEBUG */ dump("Yulup:findreplace.js:FindReplace.playSystemBeep() invoked\n");
+
+        if (FindReplace.__sound) {
+            try {
+                FindReplace.__sound.beep();
+            } catch (exception) {
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:findreplace.js:FindReplace.onLoadListener", exception);
+                Components.utils.reportError(exception);
+            }
+        }
     },
 
     goUpdateFindReplaceCommand: function (aCommand) {
@@ -706,6 +729,7 @@ FindReplaceFindCommand.prototype = {
             if (!found) {
                 /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceFindCommand.doCommand: phrase not found\n");
 
+                this.__findReplace.playSystemBeep();
                 this.__findReplace.setInfoLabel(document.getElementById("uiYulupFindReplaceStringbundle").getString("findReplacePhraseNotFound.label"));
             }
 
@@ -797,6 +821,7 @@ FindReplaceReplaceCommand.prototype = {
             if (!found) {
                 /* DEBUG */ dump("Yulup:findreplace.js:FindReplaceReplaceCommand.doCommand: phrase not found\n");
 
+                this.__findReplace.playSystemBeep();
                 this.__findReplace.setInfoLabel(document.getElementById("uiYulupFindReplaceStringbundle").getString("findReplacePhraseNotFound.label"));
             }
 
