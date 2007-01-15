@@ -941,12 +941,26 @@ Yulup.prototype = {
      * @return {Undefined} does not have a return value
      */
     replaceTab: function (aOldTab, aURI) {
+        var newTab = null;
+
         /* DEBUG */ dump("Yulup:yulup.js:Yulup.replaceTab() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aOldTab != null);
 
         // if aURI is given, replace the tab, else close it
         if (aURI) {
-            self.getBrowser().getBrowserForTab(aOldTab).loadURIWithFlags(aURI, Components.interfaces.nsIWebNavigation.LOAD_FLAGS_REPLACE_HISTORY, null, null);
+            if (!(newTab = self.getBrowser().addTab(aURI))) {
+                // new tab creation failed, reload in old tab
+                self.getBrowser().getBrowserForTab(aOldTab).loadURIWithFlags(aURI, Components.interfaces.nsIWebNavigation.LOAD_FLAGS_REPLACE_HISTORY, null, null);
+            } else {
+                // close old tab, we have a new one
+                self.getBrowser().removeTab(aOldTab);
+
+                // switch to newly created tab
+                self.getBrowser().selectedTab = newTab;
+            }
         } else {
+            // close old tab
             self.getBrowser().removeTab(aOldTab);
         }
     }
