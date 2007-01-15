@@ -34,7 +34,7 @@
         buttons="cancel"
         onload="FindReplace.onLoadListener()"
         onunload="FindReplace.onUnloadListener()"
-        persist="screenX screenY width height"
+        persist="screenX screenY width"
         style="font: -moz-dialog;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 

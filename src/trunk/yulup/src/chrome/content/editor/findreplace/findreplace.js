@@ -136,6 +136,9 @@ const FindReplace = {
 
         // register a selection change listener for the active view
         FindReplace.__installSelectionListener(FindReplace.__view);
+
+        // size window to content
+        window.sizeToContent();
     },
 
     onUnloadListener: function () {
