@@ -1,43 +1,43 @@
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
-  <Description about="urn:mozilla:extension:yulup-prototype-1@wyona.com">
+  <Description about="urn:mozilla:extension:yulup@wyona.com">
     <em:updates>
       <Seq>
-        <li resource="urn:mozilla:extension:yulup-prototype-1@wyona.com:0.1.11-r20612"/>
+        <li resource="urn:mozilla:extension:yulup@wyona.com:0.2.0-r21765"/>
       </Seq>
     </em:updates>
   </Description>
 
-  <Description about="urn:mozilla:extension:yulup-prototype-1@wyona.com:0.1.11-r20612">
-    <em:version>0.1.11-r20612</em:version>
-    <!-- Target application is Mozilla Firefox 1.5.0.* -->
+  <Description about="urn:mozilla:extension:yulup@wyona.com:0.2.0-r21765">
+    <em:version>0.2.0-r21765</em:version>
+    <!-- Target application is Mozilla Firefox 1.5.0 - 2.0.0.* -->
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>1.5.0</em:minVersion>
         <em:maxVersion>2.0.0.*</em:maxVersion>
-        <em:updateLink>http://yulup.wyona.org/download/yulup-prototype-1-0.1.11-r20612.xpi</em:updateLink>
+        <em:updateLink>http://yulup.wyona.org/download/yulup-0.2.0-r21765.xpi</em:updateLink>
       </Description>
     </em:targetApplication>
     <!-- Target application is Mozilla Suite 1.7.* -->
-    <em:targetApplication>
+    <!--<em:targetApplication>
       <Description>
         <em:id>{86c18b42-e466-45a9-ae7a-9b95ba6f5640}</em:id>
         <em:minVersion>1.7</em:minVersion>
         <em:maxVersion>1.7.*</em:maxVersion>
-        <em:updateLink>http://yulup.wyona.org/download/yulup-prototype-1-0.1.11-r20612.xpi</em:updateLink>
+        <em:updateLink>http://yulup.wyona.org/download/yulup-0.2.0-r21765.xpi</em:updateLink>
       </Description>
-    </em:targetApplication>
+    </em:targetApplication>-->
     <!-- Target application is Mozilla SeaMonkey 1.0.* -->
-    <em:targetApplication>
+    <!--<em:targetApplication>
       <Description>
         <em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
         <em:minVersion>1.0</em:minVersion>
         <em:maxVersion>1.0.*</em:maxVersion>
-        <em:updateLink>http://yulup.wyona.org/download/yulup-prototype-1-0.1.11-r20612.xpi</em:updateLink>
+        <em:updateLink>http://yulup.wyona.org/download/yulup-0.2.0-r21765.xpi</em:updateLink>
       </Description>
-    </em:targetApplication>
+    </em:targetApplication>-->
   </Description>
 
 </RDF>
