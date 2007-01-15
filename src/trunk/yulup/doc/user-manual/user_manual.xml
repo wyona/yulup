@@ -34,9 +34,16 @@
       </author>
     </authorgroup>
     <!-- All dates specified in ISO "YYYY-MM-DD" format -->
-    <pubdate>2006-12-13</pubdate>
+    <pubdate>2007-01-15</pubdate>
     <!-- Most recent revision goes at the top; list in descending order -->
+    <!--
     <revhistory>
+      <revision>
+        <revnumber>0.1.2</revnumber>
+        <date>2007-01-15</date>
+        <authorinitials>AW</authorinitials>
+        <revremark>Updated to reflect Yulup 0.2.0.</revremark>
+      </revision>
       <revision>
         <revnumber>0.1.1</revnumber>
         <date>2006-12-13</date>
@@ -50,6 +57,7 @@
         <revremark>First initial draft.</revremark>
       </revision>
     </revhistory>
+    -->
     <abstract>
       <para>The user manual for <emphasis>&project;</emphasis>.</para>
     </abstract>
@@ -209,7 +217,7 @@
             </textobject>
           </mediaobject>
         </figure>
-        The only difference you experience is the Yulup menu icon placed in the upper right corner of the window. This is the main entry point to Yulup, and allows you to open documents, edit, create, upload and delete documents, and access the preferences dialog.
+        The only difference you experience is the &project; menu icon placed in the upper right corner of the window. This is the main entry point to &project;, and allows you to open documents, edit, create, upload and delete documents, and access the preferences dialog.
       </para>
       <para>
         Normally, most of these items are disabled though. But if you visit a web page which allows introspection e.g. via Neutron or the Atom Publishing Protocol, these items are enabled, and allow you to directly interact with the CMS/web server which contains the current document.
@@ -267,13 +275,13 @@
                   <title>Open and Edit</title>
                   If the server offers you the option of opening the document without locking, then a menu item labelled <guimenuitem>Open and Edit</guimenuitem> is enabled in the &project; Browser Menu.
                   <figure>
-                    <title><emphasis>Open and Edit</emphasis> from the Yulup Menu</title>
+                    <title><emphasis>Open and Edit</emphasis> from the &project; Menu</title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="figures/open_yulupmenu.png" format="PNG"/>
                       </imageobject>
                       <textobject>
-                        <phrase>Open and Edit from the Yulup Menu</phrase>
+                        <phrase>Open and Edit from the &project; Menu</phrase>
                       </textobject>
                     </mediaobject>
                   </figure>
@@ -284,13 +292,13 @@
                   <title>Checkout and Edit</title>
                   If the server offers you the option of opening the document with locking, then a menu item labelled <guimenuitem>Checkout and Edit</guimenuitem> is enabled in the &project; Browser Menu. By checking out a document from the CMS like this, you are acquiring a lock on this document. This means that only you can currently edit this document, and no one else can edit this document in the meantime.
                   <figure>
-                    <title><emphasis>Checkout and Edit</emphasis> from the Yulup Menu</title>
+                    <title><emphasis>Checkout and Edit</emphasis> from the &project; Menu</title>
                     <mediaobject>
                       <imageobject>
                         <imagedata fileref="figures/checkout_yulupmenu.png" format="PNG"/>
                       </imageobject>
                       <textobject>
-                        <phrase>Checkout and Edit from the Yulup Menu</phrase>
+                        <phrase>Checkout and Edit from the &project; Menu</phrase>
                       </textobject>
                     </mediaobject>
                   </figure>
@@ -460,7 +468,7 @@
   <section>
     <title>Editing Documents</title>
     <para>
-      There are two fundamentally different editing modes in Yulup: the <emphasis>Source</emphasis> and <emphasis>WYSIWYG</emphasis> mode. In the <emphasis>Source</emphasis> mode you can edit documents on the source level, i.e. you can directly modify the document markup. In the <emphasis>WYSIWYG</emphasis> mode view, you modify the graphical representation of a document. With other words: whatever you do, the document looks exactly like it is served by your web server and later rendered by the browser.
+      There are two fundamentally different editing modes in &project;: the <emphasis>Source</emphasis> and <emphasis>WYSIWYG</emphasis> mode. In the <emphasis>Source</emphasis> mode you can edit documents on the source level, i.e. you can directly modify the document markup. In the <emphasis>WYSIWYG</emphasis> mode view, you modify the graphical representation of a document. With other words: whatever you do, the document looks exactly like it is served by your web server and later rendered by the browser.
     </para>
     <para>
       Despite these two different modes, they share a common toolbar.
@@ -724,12 +732,183 @@
           </para>
         </section>
     </section>
+
+    <section>
+      <title>Find &amp; Replace</title>
+      <section>
+        <title>Find</title>
+        <para>
+          The <emphasis>Find</emphasis> dialog can be opened using either the corresponding button on the editor toolbar, or by pressing <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>F</keycap></keycombo>.
+          <figure>
+            <title>Find Dialog</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="figures/find_dialog.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <phrase>Find dialog</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+          <itemizedlist>
+            <listitem>
+              <formalpara>
+                <title>Search for</title>
+                Enter the phrase you want to search for.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Match case</title>
+                Select if you want the search to be case-sensitive.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Match entire word only</title>
+                Select if the search term should only be matched if the occurrence is an individual word.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Search backwards</title>
+                Select if the search should be performed backwards with regard to the current cursor position.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Wrap around</title>
+                Select if the search should wrap around the end (or the beginning, if <emphasis>Search backwards</emphasis> is selected) of the document.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Find</title>
+                Perform the search. If the search term was not found, <emphasis>Phrase not found</emphasis> is displayed at the bottom of the dialog.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Cancel</title>
+                Close the dialog.
+              </formalpara>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+      <section>
+        <title>Find &amp; Replace</title>
+        <para>
+          The <emphasis>Find &amp; Replace</emphasis> dialog can be opened using either the corresponding button on the editor toolbar, or by pressing <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>R</keycap></keycombo>.
+          <figure>
+            <title>Find &amp; Replace Dialog</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="figures/findreplace_dialog.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <phrase>Find &amp; replace dialog</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+          <itemizedlist>
+            <listitem>
+              <formalpara>
+                <title>Search for</title>
+                Enter the phrase you want to search for.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Replace with</title>
+                Enter the phrase with which you want to replace the search term. If left empty, occurrences of the search term are removed.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Match case</title>
+                Select if you want the search to be case-sensitive.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Match entire word only</title>
+                Select if the search term should only be matched if the occurrence is an individual word.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Search backwards</title>
+                Select if the search should be performed backwards with regard to the current cursor position.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Wrap around</title>
+                Select if the search should wrap around the end (or the beginning, if <emphasis>Search backwards</emphasis> is selected) of the document.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Replace All</title>
+                Replace all occurrences of the search term in the document. At the end of the process, the number of replaced occurrences is displayed at the bottom of the dialog.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Replace and Find</title>
+                Replace the currently selected text in the document (if the selection matches the search term), and find the next occurrence. If the currently selected text in the document does not match the currently entered search term, then this function is disabled.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Find</title>
+                Perform the search. If the search term was not found, <emphasis>Phrase not found</emphasis> is displayed at the bottom of the dialog.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Cancel</title>
+                Close the dialog.
+              </formalpara>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+    </section>
+
+    <section>
+      <title>Exiting the Editor</title>
+      <para>
+        There are multiple ways to close the editor.
+        <itemizedlist>
+          <listitem>
+            <formalpara>
+              <title>Exit Button (<keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>E</keycap></keycombo>)</title>
+              When leaving the editor via the <emphasis>Exit</emphasis> button on the editor toolbar, you are first asked if you really want to quit the editor, should the document contain unsaved changes. After you asserted to indeed leave the editor, or if the document did not contain any unsaved modifications, the editor tab is replaced by a new tab which contains the reloaded original document.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>Check back in to CMS and exit (<keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>C</keycap></keycombo>)</title>
+              After the document is checked back in to the CMS, the editor tab is replaced by a new tab which contains the reloaded original document.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>Tab close (<keycombo action="simul"><keycap>Accel</keycap><keycap>W</keycap></keycombo>)</title>
+              When closing the editor tab (via the tab close button, the menu, the context menu, or the key combination), you are first asked if you really want to quit the editor, should the document contain unsaved changes. After you asserted to indeed leave the editor, or if the document did not contain any unsaved modifications, the editor tab is closed.
+            </formalpara>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
   </section>
 
   <section>
     <title>Sidebars</title>
     <para>
-      Sidebars are UI elements which are usually opened on the left hand side of the web browser. There are several standard sidebars delivered with Firefox, and Yulup adds two new ones, an Atom sidebar and a Neutron sidebar.
+      Sidebars are UI elements which are usually opened on the left hand side of the web browser. There are several standard sidebars delivered with Firefox, and &project; adds two new ones, an Atom sidebar and a Neutron sidebar.
     </para>
     <para>
       Sidebars can generally be accessed either via the <guimenu>View</guimenu> &gt;&gt; <guisubmenu>Sidebar</guisubmenu> menu, or via a keyboard shortcut specific to each sidebar.
@@ -737,7 +916,7 @@
     <section>
       <title>Atom Sidebar</title>
       <para>
-        The Atom sidebar can be accessed either via the <guimenu>View</guimenu> &gt;&gt; <guisubmenu>Sidebar</guisubmenu> &gt;&gt; <guimenuitem>Atom Sidebar</guimenuitem> menu item, via the <guimenuitem>Atom Sidebar</guimenuitem> menu item in the Yulup menu, or via the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>A</keycap></keycombo> keyboard shortcut.
+        The Atom sidebar can be accessed either via the <guimenu>View</guimenu> &gt;&gt; <guisubmenu>Sidebar</guisubmenu> &gt;&gt; <guimenuitem>Atom Sidebar</guimenuitem> menu item, via the <guimenuitem>Atom Sidebar</guimenuitem> menu item in the &project; menu, or via the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>A</keycap></keycombo> keyboard shortcut.
       </para>
       <para>
         Once the Atom sidebar is open, you can close it by unchecking it in one of the above mentioned menus, by hitting the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>A</keycap></keycombo> keyboard shortcut again, or by clicking the <guibutton>close</guibutton> button in the upper right corner of the sidebar.
@@ -822,7 +1001,7 @@
   <section>
     <title>Preferences</title>
     <para>
-      You can open the preferences dialog by either choosing <guimenuitem>Preferences</guimenuitem> in the Yulup menu, or by opening the extension manager, selecting the Yulup entry, and then clicking on the <guibutton>Preferences</guibutton> button.
+      You can open the preferences dialog by either choosing <guimenuitem>Preferences</guimenuitem> in the &project; menu, or by opening the extension manager, selecting the &project; entry, and then clicking on the <guibutton>Preferences</guibutton> button.
     </para>
     <para>
       The preferences dialog is divided into two sections: <emphasis>General</emphasis>, and <emphasis>Editor</emphasis>.
@@ -830,7 +1009,7 @@
     <section>
       <title>General</title>
       <para>
-        In the <emphasis>General</emphasis> section, you can edit settings related to the overall usage of Yulup.
+        In the <emphasis>General</emphasis> section, you can edit settings related to the overall usage of &project;.
       </para>
       <figure>
         <title>Preferences <emphasis>General</emphasis></title>
@@ -850,13 +1029,13 @@
             <listitem>
               <formalpara>
                 <title>Workspace Location</title>
-                Select a directory on your local file system for the Yulup workspace. The workspace is used to store local temporary copies of the document you are editing to enable offline processing.
+                Select a directory on your local file system for the &project; workspace. The workspace is used to store local temporary copies of the document you are editing to enable offline processing.
               </formalpara>
             </listitem>
             <listitem>
               <formalpara>
                 <title>Always Save Local Copy</title>
-                Check this option if you would like Yulup to automatically store a version of the documents you are editing in your local workspace. If this option is not set, you have to tell Yulup explicitely to save a document in your workspace.
+                Check this option if you would like &project; to automatically store a version of the documents you are editing in your local workspace. If this option is not set, you have to tell &project; explicitely to save a document in your workspace.
               </formalpara>
             </listitem>
           </itemizedlist>
@@ -875,7 +1054,7 @@
             <listitem>
               <formalpara>
                 <title>Open Atom Sidebar Automatically</title>
-                Check this option if you would like Yulup to automatically open the Atom sidebar everytime a page containing a link to an APP Service Document is accessed.
+                Check this option if you would like &project; to automatically open the Atom sidebar everytime a page containing a link to an APP Service Document is accessed.
               </formalpara>
             </listitem>
           </itemizedlist>
@@ -885,7 +1064,7 @@
     <section>
       <title>Editor</title>
       <para>
-        In the <emphasis>Editor</emphasis> section, you can edit settings related to the Yulup editor.
+        In the <emphasis>Editor</emphasis> section, you can edit settings related to the &project; editor.
       </para>
       <figure>
         <title>Preferences <emphasis>Editor</emphasis></title>
