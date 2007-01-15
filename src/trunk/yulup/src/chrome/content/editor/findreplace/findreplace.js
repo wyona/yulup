@@ -365,6 +365,9 @@ const FindReplace = {
             if (selection.rangeCount > 0) {
                 // the start of our search
                 selectionRange = selection.getRangeAt(0);
+            } else {
+                // there is no current selection, use the start of the document
+                selectionRange = editor.document.createRange();
             }
 
             // remember the current selection to have a terminal when wrapping
@@ -390,6 +393,8 @@ const FindReplace = {
             // the domain of our search
             searchRange = documentRange.cloneRange();
 
+            // TODO: move this into a seperate function
+            // TODO: pass only adjusted search domain to nsIFind::Find instead of a start and a end range
             while ((foundRange = rangeFind.Find(searchString, searchRange, selectionRange, endRange)) != null) {
                 editor.selection.removeAllRanges();
                 editor.selection.addRange(foundRange);
@@ -438,6 +443,7 @@ const FindReplace = {
                 selectionRange.setEnd(documentRange.startContainer, documentRange.startOffset);
             }
 
+            // TODO: remove function from above
             while ((foundRange = rangeFind.Find(searchString, documentRange, selectionRange, initialRange)) != null) {
                 editor.selection.removeAllRanges();
                 editor.selection.addRange(foundRange);
@@ -910,9 +916,6 @@ FindReplaceReplaceAllCommand.prototype = {
                 this.__findReplace.dialogFields.searchStringTextbox.value != "") {
                 retval = true;
             }
-
-            // not yet implemented
-            retval = false;
         }
 
         return retval;
