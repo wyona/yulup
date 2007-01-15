@@ -79,7 +79,7 @@
 
   <separator class="thin"/>
 
-  <label id="uiInfoLabel" value=""/>
+  <label id="uiInfoLabel" value="" style="color: #555555;"/>
 
   <spacer flex="1"/>
 
