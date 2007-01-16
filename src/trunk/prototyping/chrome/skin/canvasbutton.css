@@ -1,0 +1,8 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* ------------------------ Bindings ------------------------ */
+
+canvasbutton {
+  -moz-binding: url('chrome://test/content/canvasbutton.xml#canvasbutton');
+  -moz-box-orient: vertical;
+}
