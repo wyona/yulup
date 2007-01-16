@@ -116,8 +116,7 @@ const FindReplace = {
             commandTable.registerCommand("cmd_yulup_replace",    new FindReplaceReplaceCommand("cmd_yulup_replace", FindReplace));
             commandTable.registerCommand("cmd_yulup_replaceall", new FindReplaceReplaceAllCommand("cmd_yulup_replaceall", FindReplace));
 
-            // install replace command updaters
-            document.getElementById("uiSearchStringTextbox").addEventListener("input", FindReplace.replaceCommandUpdater, false);
+            // install replace command updater
             document.getElementById("uiMatchCaseCheckbox").addEventListener("command", FindReplace.replaceCommandUpdater, false);
 
             // show hidden UI
@@ -131,6 +130,8 @@ const FindReplace = {
             // register controller command
             commandTable.registerCommand("cmd_yulup_find", new FindReplaceFindCommand("cmd_yulup_find", FindReplace));
         }
+
+        document.getElementById("uiSearchStringTextbox").addEventListener("input", FindReplace.goUpdateFindReplaceCommands, false);
 
         FindReplace.goUpdateFindReplaceCommands();
 
