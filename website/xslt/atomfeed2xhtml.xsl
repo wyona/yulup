@@ -37,8 +37,10 @@
 Please see the <a href="../faq.html#troubleinstalltoc">FAQ</a> for troubleshooting the installation.
 </p>
 
+<!--
 <h2>Prototype 1</h2>
 <p>Prototype 1 is a first release to explore the capabilities of the Mozilla built-in editor widget and the various user-defined requirements.</p>
+-->
 
 <xsl:apply-templates select="/atom:feed/atom:entry"/>
 
