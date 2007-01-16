@@ -3,7 +3,7 @@
   <atom:author>
     <atom:name>Michael Wechner</atom:name>
   </atom:author>
-  <atom:id>urn:</atom:id>
+  <atom:id>urn:www-yulup-org:0-1-10-rc8-released</atom:id>
   <atom:content type="xhtml">
     <xhtml:div>
       <xhtml:a href="yulup-prototype-1-0.1.10-rc8-r19905.xpi">yulup-prototype-1-0.1.10-rc8-r19905.xpi</xhtml:a> (November 9, 2006)
@@ -18,4 +18,4 @@
       </xhtml:ul>
     </xhtml:div>
   </atom:content>
-<atom:updated>2006-11-10T16:16:56.421Z</atom:updated><atom:published>2006-11-10T00:52:59.428Z</atom:published></atom:entry>
+<atom:updated>2007-01-17T00:29:03.260Z</atom:updated><atom:published>2006-11-10T00:52:59.428Z</atom:published></atom:entry>

@@ -3,7 +3,7 @@
   <atom:author>
     <atom:name>Andreas Wuest</atom:name>
   </atom:author>
-  <atom:id>urn:</atom:id>
+  <atom:id>urn:www-yulup-org:0-1-10-release</atom:id>
   <atom:content type="xhtml">
     <xhtml:div>
       <xhtml:a href="yulup-prototype-1-0.1.10-r20326.xpi">yulup-prototype-1-0.1.10-r20326.xpi</xhtml:a> (November 24, 2006)
@@ -19,4 +19,4 @@
       </xhtml:ul>
     </xhtml:div>
   </atom:content>
-<atom:updated>2006-11-24T19:04:39.386Z</atom:updated><atom:published>2006-11-24T19:04:39.386Z</atom:published></atom:entry>
+<atom:updated>2007-01-17T00:25:24.074Z</atom:updated><atom:published>2006-11-24T19:04:39.386Z</atom:published></atom:entry>
