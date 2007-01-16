@@ -831,12 +831,15 @@ WYSIWYGXSLTModeView.prototype = {
             /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.updateSource: nodeValue of currently selected node = \"" + this.currentXHTMLNode.nodeValue + "\"\n");
 
             if (this.currentXHTMLNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
-                // note that by the virtue of the location_path insertion, the parent node can only contain text nodes
+                /* Note that by the virtue of the location_path insertion, the parent node can only contain
+                 * text nodes. Unfortunately, the <editor> inserts additional elements by itself (e.g. <br/>)
+                 * which break this assumption. Therefore, we have to ignore those elements during aggregation. */
                 textNodes = this.currentXHTMLNode.parentNode.childNodes;
 
                 aggrText = "";
                 for (var i = 0; i < textNodes.length; i++) {
-                    aggrText += textNodes.item(i).data;
+                    if (textNodes.item(i).nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE)
+                        aggrText += textNodes.item(i).data;
                 }
 
                 /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.updateSource: propagating aggregated nodeValue = \"" + aggrText + "\"\n");
