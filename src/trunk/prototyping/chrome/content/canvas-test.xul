@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+
+<window id="uiEditorWindow"
+        orient="horizontal"
+        align="stretch"
+        onload="onLoadListener()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <script type="application/x-javascript">
+      var gImg = null;
+
+function onLoadListener() {
+      dump("onLoadListener() invoked\n");
+
+      gImg = new Image();
+      gImg.onload = startDrawing;
+      gImg.src = "chrome://test/skin/bold.png";
+}
+
+function startDrawing() {
+    drawNormal();
+    drawInactive();
+    drawActive();
+}
+
+function drawNormal() {
+    dump("drawNormal() invoked\n");
+    var ctx = document.getElementById("buttonCanvas0").getContext("2d");
+
+    ctx.drawImage(gImg, 0, 0);
+}
+
+function drawInactive() {
+    dump("drawNormal() invoked\n");
+    var ctx = document.getElementById("buttonCanvas1").getContext("2d");
+
+    ctx.globalAlpha = 0.5;
+    ctx.drawImage(gImg, 0, 0);
+}
+
+function drawActive() {
+    dump("drawActive() invoked\n");
+    var ctx = document.getElementById("buttonCanvas2").getContext("2d");
+
+    ctx.drawImage(gImg, 0, 0);
+
+    globalCompositeOperation = "darker";
+    ctx.globalAlpha = 0.3;
+    ctx.fillRect(0, 0, 22, 22);
+}
+  </script>
+
+  <spacer flex="1"/>
+
+  <vbox style="border: 1px solid red;">
+    <label value="Canvas:"/>
+    <xhtml:canvas id="buttonCanvas0" width="60" height="60" style="border: 1px solid green;"></xhtml:canvas>
+    <xhtml:canvas id="buttonCanvas1" width="60" height="60" style="border: 1px solid green;"></xhtml:canvas>
+    <xhtml:canvas id="buttonCanvas2" width="60" height="60" style="border: 1px solid green;"></xhtml:canvas>
+    <spacer flex="1" style="border: 1px solid blue;"/>
+  </vbox>
+
+  <spacer flex="1"/>
+
+</window>
