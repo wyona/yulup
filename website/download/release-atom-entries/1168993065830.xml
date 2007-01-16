@@ -1,0 +1,31 @@
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <atom:title type="text">yulup-0.2.0-r21793.xpi</atom:title>
+  <atom:author>
+    <atom:name>Andreas Wuest</atom:name>
+  </atom:author>
+  <atom:id>urn:</atom:id>
+  <atom:content type="xhtml">
+    <xhtml:div>
+      <xhtml:a href="yulup-0.2.0-r21793.xpi">yulup-0.2.0-r21793.xpi</xhtml:a> (January 16, 2007)
+      <xhtml:br/>
+      <xhtml:br/>
+      Changelog:
+      <xhtml:ul>
+        <xhtml:li>Changed application ID to yulup@wyona.com (requires to uninstall a previous version of Yulup and to reinstall afresh).</xhtml:li>
+        <xhtml:li>Made auto-opening of Atom sidebar configurable.</xhtml:li>
+        <xhtml:li>Implemented offline Help reader (Yulup now comes with local Help pages).</xhtml:li>
+        <xhtml:li>Improved accel key detection on non-standard platforms.</xhtml:li>
+        <xhtml:li>Added an Exit button.</xhtml:li>
+        <xhtml:li>Editor can be opened in the same or in a new tab, depending on preferences.</xhtml:li>
+        <xhtml:li>Implemented Find and Find &amp; Replace.</xhtml:li>
+        <xhtml:li>Serialise &lt;area&gt; element correctly.</xhtml:li>
+        <xhtml:li>Disable VK_RETURN and VK_ENTER in WYSIWYG XSLT mode view.</xhtml:li>
+        <xhtml:li>Improved authentication textbox autcomplete behaviour.</xhtml:li>
+        <xhtml:li>Don't remove empty table cell elements.</xhtml:li>
+        <xhtml:li>Implemented a colorpicker for widget attributes of type "color".</xhtml:li>
+        <xhtml:li>Remove double linebreaks during serialisation.</xhtml:li>
+        <xhtml:li>Spanish translation added.</xhtml:li>
+      </xhtml:ul>
+    </xhtml:div>
+  </atom:content>
+<atom:updated>2007-01-16T17:09:19.775Z</atom:updated><atom:published>2007-01-16T17:09:19.775Z</atom:published></atom:entry>
