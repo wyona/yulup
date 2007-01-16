@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<repository>
+  <name>Yulup Website Access Policies</name>
+
+  <paths class="org.wyona.yarep.impl.VFileSystemMapImpl" src="../local-ac-policies-content"/>
+
+  <storage class="org.wyona.yarep.core.impl.vfs.VFileSystemStorage">
+    <content src="../local-ac-policies-content"/>
+  </storage>
+</repository>
