@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://test/skin/canvasbutton.css" type="text/css"?>
+
 <window id="uiEditorWindow"
         orient="vertical"
         align="stretch"
@@ -41,40 +44,44 @@
          */
         emitNodeStart: function (aNode) {
             switch (aNode.nodeType) {
-            case 1:
-            dump("<" + aNode.nodeName);
+                case Components.interfaces.nsIDOMNode.ELEMENT_NODE:
+                    dump("<" + aNode.nodeName);
 
-            if (aNode.hasAttributes()) {
-                // emit the attributes
-                for (var i = 0; i < aNode.attributes.length; i++) {
-                    dump(" " + aNode.attributes.item(i).nodeName + "=\"" + aNode.attributes.item(i).nodeValue + "\"");
-                }
-            }
+                    if (aNode.hasAttributes()) {
+                        // emit the attributes
+                        for (var i = 0; i < aNode.attributes.length; i++) {
+                            dump(" " + aNode.attributes.item(i).nodeName + "=\"" + aNode.attributes.item(i).nodeValue + "\"");
+                        }
+                    }
 
-            if (aNode.hasChildNodes()) {
-                dump(">");
-            } else {
-                dump("/>");
-            }
-            break;
-            case 3:
-            dump(aNode.nodeValue);
-            break;
-            case 7:
-            dump("<?" + aNode.target + " " + aNode.data + "?>");
-            break;
-            case 8:
-            dump("<!--" + aNode.nodeValue + "-->");
-            break;
-            case 9:
-            // the document itself; nothing to emit here
-            break;
-            case 10:
-            // TODO: emit notations (see http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-412266927)
-            dump("<!DOCTYPE " + aNode.name + (aNode.publicId ? " PUBLIC \"" + aNode.publicId + "\" " : " ")  + "\"" + aNode.systemId + "\">\n");
-            break;
-            default:
-            dump("UNKNOWN node \"" + aNode.nodeName + "\" of node type \"" + aNode.nodeType + "\" encountered\n");
+                    if (aNode.hasChildNodes()) {
+                        dump(">");
+                    } else {
+                        dump("/>");
+                    }
+                    break;
+                case Components.interfaces.nsIDOMNode.TEXT_NODE:
+                    dump(aNode.nodeValue);
+                    break;
+                case Components.interfaces.nsIDOMNode.PROCESSING_INSTRUCTION_NODE:
+                    dump("<?" + aNode.target + " " + aNode.data + "?>");
+                    break;
+                case Components.interfaces.nsIDOMNode.COMMENT_NODE:
+                    dump("<!--" + aNode.nodeValue + "-->");
+                    break;
+                case Components.interfaces.nsIDOMNode.DOCUMENT_NODE:
+                    // the document itself; nothing to emit here
+                    break;
+                case Components.interfaces.nsIDOMNode.DOCUMENT_TYPE_NODE:
+                    // TODO: emit notations (see http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-412266927)
+                    dump("<!DOCTYPE " + aNode.name + (aNode.publicId ? " PUBLIC \"" + aNode.publicId + "\" " : " ")  + "\"" + aNode.systemId + "\">\n");
+                    break;
+                case Components.interfaces.nsIDOMNode.DOCUMENT_FRAGMENT_NODE:
+                    // for all child nodes of the fragment, emit their trees
+                    dump("fragment: ");
+                    break;
+                default:
+                    dump("UNKNOWN node \"" + aNode.nodeName + "\" of node type \"" + aNode.nodeType + "\" encountered\n");
             }
         },
 
@@ -89,12 +96,12 @@
          */
         emitNodeEnd: function (aNode) {
             switch (aNode.nodeType) {
-            case 1:
-            if (aNode.hasChildNodes()) {
-                dump("</" + aNode.nodeName + ">");
-            }
-            break;
-            default:
+                case 1:
+                    if (aNode.hasChildNodes()) {
+                        dump("</" + aNode.nodeName + ">");
+                    }
+                    break;
+                default:
             }
         }
     };
@@ -135,8 +142,42 @@
         editorElem.contentWindow.addEventListener("focus", function (event) { dump("editorElem.contentWindow received focus\n"); }, true);
         editorElem.addEventListener("focus", function (event) { dump("editorElem received focus\n"); }, true);
 
+        // add selection listener
+        editorElem.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new WidgetUpdateSelectionListener());
+
         dump("editorElem status = \"" + editorElem.editingSession.editorStatus  + "\"\n");
         dump("is editable = \"" + gEditor.isDocumentEditable  + "\"\n");
+    }
+
+    var gCommandList = [["cmd_yulup_widget_bold",   "b"],
+                          ["cmd_yulup_widget_italic", "i"],
+                          ["cmd_yulup_widget_tt",     "tt"]];
+
+    function WidgetUpdateSelectionListener() {}
+
+    WidgetUpdateSelectionListener.prototype = {
+        notifySelectionChanged: function (aDocument, aSelection, aReason) {
+            ///* DEBUG */ dump("Yulup:domops-test.js:WidgetUpdateSelectionListener.notifySelectionChanged() invoked\n");
+
+            updateCommandActiveStates(aSelection);
+        }
+    };
+
+    function updateCommandActiveStates(aSelection) {
+        // check all commands
+        if (aSelection.isCollapsed) {
+            for (var i = 0; i < gCommandList.length; i++) {
+                if (pathToRootContains(gCommandList[i][1], aSelection.focusNode)) {
+                    dump("Yulup:domops-test.js:WidgetUpdateSelectionListener.notifySelectionChanged: \"" + gCommandList[i][0] + "\" command active\n");
+
+                    // hack to refire command update
+                    document.getElementById(gCommandList[i][0]).removeAttribute("active");
+                    document.getElementById(gCommandList[i][0]).setAttribute("active", "true");
+                } else {
+                    document.getElementById(gCommandList[i][0]).removeAttribute("active");
+                }
+            }
+        }
     }
 
     function addText() {
@@ -183,54 +224,113 @@
         var splitNode  = null;
         var parentNode = null;
         var range      = null;
+        var commonAncestor = null;
 
         dump("doSurroundCmd(\"" + aSelection + "\", \"" + aElement.nodeName + "\") invoked\n");
 
         // check if the selection is collaped
         if (!aSelection.isCollapsed && aSelection.rangeCount > 0) {
+            // selection not collapsed
             dump("selection = \"" + aSelection + "\"\n");
 
             surroundRange(aSelection, aElement);
         } else {
-            // hmmmmm
+            // hmmmmm, selection is collapsed
             dump("selection is collapsed\n");
 
-            // check if we are in a text node
-            if (aSelection.anchorNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
-                dump("insert node \"" + aElement.nodeName + "\"\n");
+            // check if we are in a context which is surrounded by the given element already
+            if ((commonAncestor = pathToRootContains(aElement.nodeName, aSelection.focusNode)) != null) {
+                /* Selection is collapsed, and we are contained in the given element, therefore we
+                 * need to split the tree above us. */
+                dump("element \"" + aElement.nodeName + "\" already contained on the path to root at \"" + commonAncestor + "\"\n");
 
-                // TODO: call beginTransaction()
+                dump("offset = \"" + aSelection.focusOffset + "\", focuse node name = \"" + aSelection.focusNode.nodeName + "\", focus node = ");
+                DOMSerialiser.serialiseDOMTree(aSelection.focusNode);
+                dump("\n");
 
-                // TODO: use nsIEditor methods to manipulate nodes
+                var leftMostChild  = getLeftMostElementChild(commonAncestor);
+                var rightMostChild = getRightMostElementChild(commonAncestor);
 
-                // prepare node to insert
-                textNode = aElement.ownerDocument.createTextNode("");
-                aElement.appendChild(textNode);
+                // create left splitting range
+                var leftSplittingRange = gEditor.document.createRange();
+                leftSplittingRange.setStartBefore(leftMostChild);
+                leftSplittingRange.setEnd(aSelection.focusNode, aSelection.focusOffset);
 
-                // split text node
-                splitNode = aSelection.anchorNode.splitText(aSelection.anchorOffset);
+                // create right splitting range
+                var rightSplittingRange = gEditor.document.createRange();
+                rightSplittingRange.setStart(aSelection.focusNode, aSelection.focusOffset);
+                rightSplittingRange.setEndAfter(rightMostChild);
 
-                // insert new element before split result
-                parentNode = splitNode.parentNode;
-                parentNode.insertBefore(aElement, splitNode);
+                var leftSplittingFragment  = leftSplittingRange.cloneContents();
+                var rightSplittingFragment = rightSplittingRange.cloneContents();
 
-                // move selection into the text child of the newly inserted node
-                // c.f. http://lxr.mozilla.org/mozilla1.8.0/source/editor/libeditor/base/InsertElementTxn.cpp#129
-                /*
-                range = parentNode.ownerDocument.createRange();
-                range.selectNode(textNode);
-                aSelection.removeAllRanges();
-                aSelection.addRange(range);
-                gEditor.selectionController.characterMove(true, false);
-                */
+                // dump it
+                dump("left splitting fragment =\n");
+                DOMSerialiser.serialiseDOMTree(leftSplittingFragment);
+                dump("\n");
+
+                dump("right splitting fragment =\n");
+                DOMSerialiser.serialiseDOMTree(rightSplittingFragment);
+                dump("\n");
+
+                // create a new text node where the selection will be placed after the operation
+                textNode = gEditor.document.createTextNode("");
+
+                // create new document fragment to assemble our split subtree
+                var replacementFragment = gEditor.document.createDocumentFragment();
+                replacementFragment.appendChild(leftSplittingFragment);
+                replacementFragment.appendChild(textNode);
+                replacementFragment.appendChild(rightSplittingFragment);
+
+                dump("replacement fragment =\n");
+                DOMSerialiser.serialiseDOMTree(replacementFragment);
+                dump("\n");
+
+                commonAncestor.parentNode.replaceChild(replacementFragment, commonAncestor);
+
+                // move selection into the freshly created text node
                 aSelection.collapse(textNode, 0);
+            } else {
 
-                // TODO: call endTransaction()
+                // check if we are in a text node
+                if (aSelection.anchorNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+                    dump("insert node \"" + aElement.nodeName + "\"\n");
 
-                // set focus
-                gEditorElem.contentWindow.focus();
+                    // TODO: call beginTransaction()
+
+                    // TODO: use nsIEditor methods to manipulate nodes
+
+                    // prepare node to insert
+                    textNode = aElement.ownerDocument.createTextNode("");
+                    aElement.appendChild(textNode);
+
+                    // split text node
+                    splitNode = aSelection.anchorNode.splitText(aSelection.anchorOffset);
+
+                    // insert new element before split result
+                    parentNode = splitNode.parentNode;
+                    parentNode.insertBefore(aElement, splitNode);
+
+                    // move selection into the text child of the newly inserted node
+                    // c.f. http://lxr.mozilla.org/mozilla1.8.0/source/editor/libeditor/base/InsertElementTxn.cpp#129
+                    /*
+                      range = parentNode.ownerDocument.createRange();
+                      range.selectNode(textNode);
+                      aSelection.removeAllRanges();
+                      aSelection.addRange(range);
+                      gEditor.selectionController.characterMove(true, false);
+                    */
+                    aSelection.collapse(textNode, 0);
+
+                    // TODO: call endTransaction()
+
+                    // set focus
+                    gEditorElem.contentWindow.focus();
+                }
             }
         }
+
+        updateCommandActiveStates(gEditor.selection);
     }
 
     function surroundRange(aSelection, aElement) {
@@ -378,6 +478,50 @@
     }
     */
 
+    function pathToRootContains(aElementName, aStartNode) {
+        var elemName = null;
+        var node     = null;
+
+        ///* DEBUG */ dump("Yulup:domops-test.js:pathToRootContains(\"" + aElementName + "\", \"" + aStartNode + "\") invoked\n");
+
+        elemName = aElementName.toLowerCase();
+        node     = aStartNode;
+
+        while (node) {
+            if (node.nodeType == Components.interfaces.nsIDOMNode.ELEMENT_NODE &&
+                node.localName.toLowerCase() == elemName)
+                return node;
+
+            node = node.parentNode;
+        }
+
+        return null;
+    }
+
+    function getLeftMostElementChild(aCommonAncestor) {
+        var node = null;
+
+        node = aCommonAncestor;
+
+        while (node.firstChild && (node.firstChild.nodeType != Components.interfaces.nsIDOMNode.TEXT_NODE)) {
+            node = node.firstChild;
+        }
+
+        return node;
+    }
+
+    function getRightMostElementChild(aCommonAncestor) {
+        var node = null;
+
+        node = aCommonAncestor;
+
+        while (node.lastChild && (node.lastChild.nodeType != Components.interfaces.nsIDOMNode.TEXT_NODE)) {
+            node = node.lastChild;
+        }
+
+        return node;
+    }
+
     function printChildNodeList(aNode) {
         dump("child nodes of \"" + aNode.nodeName + "\" (" + aNode.childNodes.length + ")");
         for (var i = 0; i < aNode.childNodes.length; i++) {
@@ -410,14 +554,20 @@
     ]]>
   </script>
 
-  <hbox>
+  <commandset id="uiWidgetCommandSet">
+    <command id="cmd_yulup_widget_bold"   oncommand="doBold()"/>
+    <command id="cmd_yulup_widget_italic" oncommand="doItalic()"/>
+    <command id="cmd_yulup_widget_tt"     oncommand="doTT()"/>
+  </commandset>
+
+  <toolbar id="uiToolbar">
     <button label="Add Text" oncommand="addText()"/>
     <button label="Print Tree" oncommand="printDOMTree()"/>
-    <button id="uiYulupBold"   label="Bold"   type="checkbox" oncommand="doBold()"/>
-    <button id="uiYulupItalic" label="Italic" oncommand="doItalic()"/>
-    <button id="uiYulupTT"     label="Mono"   oncommand="doTT()"/>
+    <canvasbutton id="uiYulupBold"   label="Bold"   command="cmd_yulup_widget_bold"   image="chrome://test/skin/bold.png"/>
+    <canvasbutton id="uiYulupItalic" label="Italic" command="cmd_yulup_widget_italic" image="chrome://test/skin/bold.png"/>
+    <canvasbutton id="uiYulupTT"     label="Mono"   command="cmd_yulup_widget_tt"     image="chrome://test/skin/bold.png"/>
     <button id="uiYulupUndo"   label="Undo"   oncommand="doUndo()"/>
     <button id="uiYulupRedo"   label="Redo"   oncommand="doRedo()"/>
-  </hbox>
+  </toolbar>
 
 </window>
