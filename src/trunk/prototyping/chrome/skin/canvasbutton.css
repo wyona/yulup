@@ -5,4 +5,9 @@
 canvasbutton {
   -moz-binding: url('chrome://test/content/canvasbutton.xml#canvasbutton');
   -moz-box-orient: vertical;
+  margin: 3px 1px 3px 1px;
+}
+
+canvasbutton[disabled="true"] {
+  color: graytext !important;
 }

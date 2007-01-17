@@ -24,7 +24,7 @@
 -->
 
 <!--
- @author Andreas Wuest
+# @author Andreas Wuest
 -->
 
 <bindings id="canvasbuttonBindings"
@@ -40,11 +40,13 @@
 
     <content>
       <children includes="observes|template|menupopup|tooltip"/>
-      <xul:deck selectedIndex="0">
-        <xhtml:canvas width="24" height="24"></xhtml:canvas>
-        <xhtml:canvas width="24" height="24"></xhtml:canvas>
-        <xhtml:canvas width="24" height="24"></xhtml:canvas>
-      </xul:deck>
+      <xul:vbox flex="1" align="center" class="toolbarbutton-icon">
+        <xul:deck selectedIndex="0">
+          <xhtml:canvas width="24" height="24"></xhtml:canvas>
+          <xhtml:canvas width="24" height="24"></xhtml:canvas>
+          <xhtml:canvas width="24" height="24"></xhtml:canvas>
+        </xul:deck>
+      </xul:vbox>
       <xul:label class="toolbarbutton-text" crop="right" flex="1"
                  xbl:inherits="value=label,accesskey,crop,toolbarmode,buttonstyle"/>
     </content>
@@ -60,6 +62,26 @@
 
       <field name="__state">
         0
+      </field>
+
+      <field name="__deck">
+        0
+      </field>
+
+      <field name="__canvasNormal">
+        0
+      </field>
+
+      <field name="__canvasActive">
+        0
+      </field>
+
+      <field name="__canvasInactive">
+        0
+      </field>
+
+      <field name="mouseUpListenerWrapper">
+        null
       </field>
 
       <property name="image">
@@ -79,13 +101,18 @@
 
             image = new Image();
             image.onload = function() { self.__setNewImage(); };
-            image.src = val;
+            image.src    = val;
 
             this.__image = image;
           ]]>
         </setter>
       </property>
 
+      <!-- There are three possible settings for the state:
+             0 = normal
+             1 = active (pressed)
+             2 = inactive
+      -->
       <property name="state">
         <getter>
           <![CDATA[
@@ -99,7 +126,7 @@
             /* DEBUG */ dump("Yulup:canvasbutton.xml:canvasbutton.setState(\"" + val + "\") invoked\n");
 
             if (0 <= val <= 2) {
-                document.getAnonymousNodes(this)[0].selectedIndex = val;
+                this.__deck.selectedIndex = val;
 
                 this.__state = val;
             }
@@ -109,10 +136,21 @@
 
       <constructor>
         <![CDATA[
+          var self = this;
+
           /* DEBUG */ dump("Yulup:canvasbutton.xml:canvasbutton.ctor() invoked\n");
 
           /* DEBUG */ dump("Yulup:canvasbutton.xml:canvasbutton.ctor: disabled attribute = \"" + this.getAttribute("disabled") + "\"\n");
           /* DEBUG */ dump("Yulup:canvasbutton.xml:canvasbutton.ctor: image attribute = \"" + this.getAttribute("image") + "\"\n");
+
+          // initialise element fields
+          this.__deck           = document.getAnonymousNodes(this)[0].childNodes[0];
+          this.__canvasNormal   = document.getAnonymousNodes(this)[0].childNodes[0].childNodes[0];
+          this.__canvasActive   = document.getAnonymousNodes(this)[0].childNodes[0].childNodes[1];
+          this.__canvasInactive = document.getAnonymousNodes(this)[0].childNodes[0].childNodes[2];
+
+          // create a mouseup listener wrapper
+          this.mouseUpListenerWrapper = function(aEvent) { self.__mouseUpListener(aEvent); };
 
           this.__setDisabled(this.getAttribute("disabled"));
 
@@ -151,15 +189,11 @@
         <parameter name="aImage"/>
         <body>
           <![CDATA[
-            var canvas = null;
-
             /* DEBUG */ dump("Yulup:canvasbutton.xml:canvasbutton.__generateNormalCanvas(" + aImage + ") invoked\n");
 
             if (aImage) {
-                canvas = document.getAnonymousNodes(this)[0].childNodes[0];
-
                 // draw image
-                canvas.getContext("2d").drawImage(aImage, 0, 0);
+                this.__canvasNormal.getContext("2d").drawImage(aImage, 0, 0);
             }
           ]]>
         </body>
@@ -169,19 +203,18 @@
         <parameter name="aImage"/>
         <body>
           <![CDATA[
-            var canvas  = null;
             var context = null;
 
             /* DEBUG */ dump("Yulup:canvasbutton.xml:canvasbutton.__generateActiveCanvas(" + aImage + ") invoked\n");
 
             if (aImage) {
-                canvas  = document.getAnonymousNodes(this)[0].childNodes[1];
-                context = canvas.getContext("2d");
+                context = this.__canvasActive.getContext("2d");
 
                 // draw image
                 context.drawImage(aImage, 0, 0);
 
                 // composite with rect
+                context.globalCompositeOperation = "source-atop";
                 context.globalAlpha = 0.3;
                 context.fillRect(0, 0, 24, 24);
             }
@@ -193,19 +226,33 @@
         <parameter name="aImage"/>
         <body>
           <![CDATA[
-            var canvas  = null;
             var context = null;
 
             /* DEBUG */ dump("Yulup:canvasbutton.xml:canvasbutton.__generateInactiveCanvas(" + aImage + ") invoked\n");
 
             if (aImage) {
-                canvas  = document.getAnonymousNodes(this)[0].childNodes[2];
-                context = canvas.getContext("2d");
+                context = this.__canvasInactive.getContext("2d");
 
                 // draw image
                 context.globalAlpha = 0.5;
                 context.drawImage(aImage, 0, 0);
             }
+          ]]>
+        </body>
+      </method>
+
+      <method name="__mouseUpListener">
+        <parameter name="aEvent"/>
+        <body>
+          <![CDATA[
+            /* DEBUG */ dump("Yulup:canvasbutton.xml:canvasbutton.__mouseUpListener(\"" + aEvent + "\") invoked\n");
+
+            // don't switch states if we are in the inactive state
+            if (this.state != 2)
+                this.state = 0;
+
+            // remove ourself
+            document.removeEventListener("mouseup", this.mouseUpListenerWrapper, false);
           ]]>
         </body>
       </method>
@@ -229,23 +276,19 @@
         ]]>
       </handler>
 
-      <handler event="mousedown">
+      <handler event="mousedown" button="0">
         <![CDATA[
           /* DEBUG */ dump("Yulup:canvasbutton.xml:canvasbutton: mousedown handler invoked\n");
 
           // don't switch states if we are in the inactive state
-          if (this.state != 2)
+          if (this.state != 2) {
+              /* Install a document wide listener for the mouseup event, because
+               * the user may drag the mouse out of the button area while after
+               * mousedown, therefore we wouldn't receive the mouseup event. */
+              document.addEventListener("mouseup", this.mouseUpListenerWrapper, false);
+
               this.state = 1;
-        ]]>
-      </handler>
-
-      <handler event="mouseup">
-        <![CDATA[
-          /* DEBUG */ dump("Yulup:canvasbutton.xml:canvasbutton: mouseup handler invoked\n");
-
-          // don't switch states if we are in the inactive state
-          if (this.state != 2)
-              this.state = 0;
+          }
         ]]>
       </handler>
     </handlers>

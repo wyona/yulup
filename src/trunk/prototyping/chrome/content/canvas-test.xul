@@ -4,7 +4,7 @@
 <?xml-stylesheet href="chrome://test/skin/canvasbutton.css" type="text/css"?>
 
 <window id="uiEditorWindow"
-        orient="horizontal"
+        orient="vertical"
         align="stretch"
         onload="onLoadListener()"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -48,32 +48,67 @@ function drawActive() {
 
     ctx.drawImage(gImg, 0, 0);
 
-    //ctx.globalCompositeOperation = "darker";
+    ctx.globalCompositeOperation = "source-atop";
     ctx.globalAlpha = 0.3;
-    ctx.fillRect(0, 0, 22, 22);
+    ctx.fillRect(0, 0, 26, 26);
 }
   </script>
 
-  <spacer flex="1"/>
+  <hbox>
+    <spacer flex="1"/>
 
-  <button label="Set disabled" oncommand="document.getElementById('uiTestCanvasButton').setAttribute('disabled', 'true')"/>
-  <button label="Unset disabled" oncommand="document.getElementById('uiTestCanvasButton').setAttribute('disabled', 'false')"/>
-  <button label="Remove disabled" oncommand="document.getElementById('uiTestCanvasButton').removeAttribute('disabled')"/>
+    <button label="Set disabled" oncommand="document.getElementById('uiTestCanvasButton').setAttribute('disabled', 'true')"/>
+    <button label="Unset disabled" oncommand="document.getElementById('uiTestCanvasButton').setAttribute('disabled', 'false')"/>
+    <button label="Remove disabled" oncommand="document.getElementById('uiTestCanvasButton').removeAttribute('disabled')"/>
 
-  <vbox style="border: 1px solid red;">
-    <label value="Canvas:"/>
-    <xhtml:canvas id="buttonCanvas0" width="60" height="60" style="border: 1px solid green;"></xhtml:canvas>
-    <xhtml:canvas id="buttonCanvas1" width="60" height="60" style="border: 1px solid green;"></xhtml:canvas>
-    <xhtml:canvas id="buttonCanvas2" width="60" height="60" style="border: 1px solid green;"></xhtml:canvas>
-    <canvasbutton id="uiTestCanvasButton"
+    <vbox style="border: 1px solid red;">
+      <label value="Canvas:"/>
+      <xhtml:canvas id="buttonCanvas0" width="60" height="60" style="border: 1px solid green;"></xhtml:canvas>
+      <xhtml:canvas id="buttonCanvas1" width="60" height="60" style="border: 1px solid green;"></xhtml:canvas>
+      <xhtml:canvas id="buttonCanvas2" width="60" height="60" style="border: 1px solid green;"></xhtml:canvas>
+      <canvasbutton id="uiTestCanvasButton"
+                    oncommand="alert('hello');"
+                    label="test"
+                    tooltiptext="dude"
+                    image="chrome://test/skin/bold.png"
+                    disabled="true"/>
+      <spacer flex="1" style="border: 1px solid blue;"/>
+    </vbox>
+    <spacer flex="1"/>
+  </hbox>
+
+  <toolbar id="uiYulupEditorToolbar"
+           toolbarname="Yulup Editor Toolbar">
+    <canvasbutton id="uiTestCanvasButton1"
                   oncommand="alert('hello');"
-                  label="test"
+                  label="teseeeeeeet 1"
                   tooltiptext="dude"
                   image="chrome://test/skin/bold.png"
                   disabled="true"/>
-    <spacer flex="1" style="border: 1px solid blue;"/>
-  </vbox>
-
-  <spacer flex="1"/>
+    <canvasbutton id="uiTestCanvasButton2"
+                  oncommand="alert('hello');"
+                  label="teeeest 2"
+                  tooltiptext="dude"
+                  image="chrome://test/skin/bold.png"
+                  disabled="true"/>
+    <canvasbutton id="uiTestCanvasButton3"
+                  oncommand="alert('hello');"
+                  label="teeeest 2"
+                  tooltiptext="dude"
+                  image="chrome://test/skin/bold.png"/>
+    <toolbarbutton id="uiTestCanvasButton4"
+                  oncommand="alert('hello');"
+                  label="teeeest 3"
+                  tooltiptext="dude"
+                  image="chrome://test/skin/bold.png"
+                  disabled="true"
+                   style="-moz-box-orient: vertical;"/>
+    <toolbarbutton id="uiTestCanvasButton5"
+                  oncommand="alert('hello');"
+                  label="teeeest 3"
+                  tooltiptext="dude"
+                  image="chrome://test/skin/bold.png"
+                   style="-moz-box-orient: vertical;"/>
+  </toolbar>
 
 </window>
