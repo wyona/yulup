@@ -183,7 +183,7 @@ WidgetManager.prototype = {
             commandSet.appendChild(widgetCommand);
 
             // add toolbarbutton to editor.xul
-            widgetButton = document.createElement('toolbarbutton');
+            widgetButton = document.createElement('canvasbutton');
             widgetButton.setAttribute('id', 'uiWidget' + widget.attributes["name"]);
             widgetButton.setAttribute('label', widget.attributes["name"]);
             widgetButton.setAttribute('style', '-moz-box-orient: vertical;');
