@@ -248,48 +248,73 @@
                 DOMSerialiser.serialiseDOMTree(aSelection.focusNode);
                 dump("\n");
 
-                var leftMostChild  = getLeftMostElementChild(commonAncestor);
-                var rightMostChild = getRightMostElementChild(commonAncestor);
+                /* Check if our parent is the element we are looking for, and the only
+                   children are empty text nodes. If this is the case, we can simply remove the parent. */
+                if (aSelection.focusNode.parentNode == commonAncestor) {
+                    var removeAncestor = true;
 
-                // create left splitting range
-                var leftSplittingRange = gEditor.document.createRange();
-                leftSplittingRange.setStartBefore(leftMostChild);
-                leftSplittingRange.setEnd(aSelection.focusNode, aSelection.focusOffset);
+                    for (var i = 0; i < commonAncestor.childNodes.length; i++) {
+                        if (commonAncestor.childNodes.item(i).nodeType != Components.interfaces.nsIDOMNode.TEXT_NODE) {
+                            removeAncestor = false;
+                            break;
+                        } else {
+                            if (commonAncestor.childNodes.item(i).QueryInterface(Components.interfaces.nsIDOMCharacterData).length != 0) {
+                                removeAncestor = false;
+                                break;
+                            }
+                        }
+                    }
+                }
 
-                // create right splitting range
-                var rightSplittingRange = gEditor.document.createRange();
-                rightSplittingRange.setStart(aSelection.focusNode, aSelection.focusOffset);
-                rightSplittingRange.setEndAfter(rightMostChild);
+                if (!removeAncestor) {
+                    var leftMostChild  = getLeftMostElementChild(commonAncestor);
+                    var rightMostChild = getRightMostElementChild(commonAncestor);
 
-                var leftSplittingFragment  = leftSplittingRange.cloneContents();
-                var rightSplittingFragment = rightSplittingRange.cloneContents();
+                    // create left splitting range
+                    var leftSplittingRange = gEditor.document.createRange();
+                    leftSplittingRange.setStartBefore(leftMostChild);
+                    leftSplittingRange.setEnd(aSelection.focusNode, aSelection.focusOffset);
 
-                // dump it
-                dump("left splitting fragment =\n");
-                DOMSerialiser.serialiseDOMTree(leftSplittingFragment);
-                dump("\n");
+                    // create right splitting range
+                    var rightSplittingRange = gEditor.document.createRange();
+                    rightSplittingRange.setStart(aSelection.focusNode, aSelection.focusOffset);
+                    rightSplittingRange.setEndAfter(rightMostChild);
 
-                dump("right splitting fragment =\n");
-                DOMSerialiser.serialiseDOMTree(rightSplittingFragment);
-                dump("\n");
+                    var leftSplittingFragment  = leftSplittingRange.cloneContents();
+                    var rightSplittingFragment = rightSplittingRange.cloneContents();
 
-                // create a new text node where the selection will be placed after the operation
-                textNode = gEditor.document.createTextNode("");
+                    // dump it
+                    dump("left splitting fragment =\n");
+                    DOMSerialiser.serialiseDOMTree(leftSplittingFragment);
+                    dump("\n");
 
-                // create new document fragment to assemble our split subtree
-                var replacementFragment = gEditor.document.createDocumentFragment();
-                replacementFragment.appendChild(leftSplittingFragment);
-                replacementFragment.appendChild(textNode);
-                replacementFragment.appendChild(rightSplittingFragment);
+                    dump("right splitting fragment =\n");
+                    DOMSerialiser.serialiseDOMTree(rightSplittingFragment);
+                    dump("\n");
 
-                dump("replacement fragment =\n");
-                DOMSerialiser.serialiseDOMTree(replacementFragment);
-                dump("\n");
+                    // create a new text node where the selection will be placed after the operation
+                    textNode = gEditor.document.createTextNode("");
 
-                commonAncestor.parentNode.replaceChild(replacementFragment, commonAncestor);
+                    // create new document fragment to assemble our split subtree
+                    var replacementFragment = gEditor.document.createDocumentFragment();
+                    replacementFragment.appendChild(leftSplittingFragment);
+                    replacementFragment.appendChild(textNode);
+                    replacementFragment.appendChild(rightSplittingFragment);
 
-                // move selection into the freshly created text node
-                aSelection.collapse(textNode, 0);
+                    dump("replacement fragment =\n");
+                    DOMSerialiser.serialiseDOMTree(replacementFragment);
+                    dump("\n");
+
+                    commonAncestor.parentNode.replaceChild(replacementFragment, commonAncestor);
+
+                    // move selection into the freshly created text node
+                    aSelection.collapse(textNode, 0);
+                } else {
+                    // simply remove the ancestor
+                    dump("removing common ancestor\n");
+
+                    commonAncestor.parentNode.removeChild(commonAncestor);
+                }
             } else {
 
                 // check if we are in a text node
