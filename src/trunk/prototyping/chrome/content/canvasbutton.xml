@@ -130,6 +130,10 @@
 
                 this.__state = val;
             }
+
+            // if new state is 0, and the active attribute is set, remove it
+            if (val == 0 && this.getAttribute("active"))
+                this.removeAttribute("active");
           ]]>
         </setter>
       </property>
@@ -168,6 +172,23 @@
                 this.state = 2;
             } else {
                 this.state = 0;
+            }
+          ]]>
+        </body>
+      </method>
+
+      <method name="__setActive">
+        <parameter name="aValue"/>
+        <body>
+          <![CDATA[
+            /* DEBUG */ dump("Yulup:canvasbutton.xml:canvasbutton.__setActive(\"" + aValue + "\") invoked\n");
+
+            if (this.state != 2) {
+                if (aValue == "true") {
+                    this.state = 1;
+                } else {
+                    this.state = 0;
+                }
             }
           ]]>
         </body>
@@ -270,6 +291,9 @@
                   break;
               case "image":
                   this.image = event.newValue;
+                  break;
+              case "active":
+                  this.__setActive(event.newValue);
                   break;
               default:
           }
