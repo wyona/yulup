@@ -248,6 +248,10 @@
                 DOMSerialiser.serialiseDOMTree(aSelection.focusNode);
                 dump("\n");
 
+                dump("common ancestor subtree =\n");
+                DOMSerialiser.serialiseDOMTree(commonAncestor);
+                dump("\n");
+
                 /* Check if our parent is the element we are looking for, and the only
                    children are empty text nodes. If this is the case, we can simply remove the parent. */
                 if (aSelection.focusNode.parentNode == commonAncestor) {
@@ -268,7 +272,11 @@
 
                 if (!removeAncestor) {
                     var leftMostChild  = getLeftMostElementChild(commonAncestor);
-                    var rightMostChild = getRightMostElementChild(commonAncestor);
+                    //var rightMostChild = getRightMostElementChild(commonAncestor);
+                    var rightMostChild = getRightMostRelevantDescendant(commonAncestor);
+
+                    dump("left most child name = \"" + leftMostChild.nodeName + "\", node = \"" + leftMostChild + "\"\n");
+                    dump("right most child name = \"" + rightMostChild.nodeName + "\", node = \"" + rightMostChild + "\"\n");
 
                     // create left splitting range
                     var leftSplittingRange = gEditor.document.createRange();
@@ -541,8 +549,10 @@
         return node;
     }
 
-    function getRightMostElementChild(aCommonAncestor) {
+    function getRightMostElementChild_DEPRECATED(aCommonAncestor) {
         var node = null;
+
+        /* DEBUG */ dump("Yulup:domops-test.js:getRightMostElementChild(\"" + aCommonAncestor.nodeName + "\") invoked\n");
 
         node = aCommonAncestor;
 
@@ -551,6 +561,78 @@
         }
 
         return node;
+    }
+
+    function getRightMostElementChild(aNode) {
+        var node = null;
+
+        /* DEBUG */ dump("Yulup:domops-test.js:getRightMostElementChild(\"" + aNode.nodeName + "\") invoked\n");
+
+        node = aNode.lastChild;
+
+        /* Get the right-most element child node. Break if the right most node
+         * is a non-empty text node. If the right-most child is an empty
+         * text node, find the right-most element node if there is a row
+         * of empty text nodes on the right. */
+        while (node && node.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE && node.length == 0) {
+            // text node is not relevant to us, get previous sibling
+            node = node.previousSibling;
+        }
+
+        if (node) {
+            // reached either non-text node child or non-empty text node child
+            if (node.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+                // non-empty text node child, abort
+                return aNode;
+            }
+        } else {
+            // all children are empty text nodes or there are no children
+            return aNode;
+        }
+
+        return getRightMostElementChild(node);
+    }
+
+    function getRightMostRelevantDescendant(aNode) {
+        var node = null;
+
+        /* DEBUG */ dump("Yulup:domops-test.js:getRightMostRelevantDescendant(\"" + aNode.nodeName + "\") invoked\n");
+
+        node = aNode.lastChild;
+
+        /* Get the right-most relevant node of the current node, relevant
+         * meaning either an element node, or a non-empty text node. If an
+         * element node is found, we descend; if there are no children or
+         * no relevant children, we return the current node. If we find a
+         * non-empty text node, we return that node. */
+        while (node && node.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE && node.length == 0) {
+            // empty text node is not relevant to us, get previous sibling
+            node = node.previousSibling;
+        }
+
+        if (node) {
+            // reached either non-text node child or non-empty text node child
+            if (node.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+                // non-empty text node child, return it
+                return node;
+            }
+        } else {
+            // all children are empty text nodes or there are no children
+            return aNode;
+        }
+
+        return getRightMostRelevantDescendant(node);
+    }
+
+    function isValidDescendant(aNode) {
+        var retval = false;
+
+        if (aNode) {
+            if ((aNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) && (aNode.length == 0)) {
+            }
+        }
+
+        return retval;
     }
 
     function cloneChainToAncestor(aLeafNode, aLeafNodeOffset, aTerminationNode, aNewLeaf) {
