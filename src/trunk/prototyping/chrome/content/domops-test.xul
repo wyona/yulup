@@ -295,10 +295,16 @@
                     // create a new text node where the selection will be placed after the operation
                     textNode = gEditor.document.createTextNode("");
 
+                    // recreate the chain to the ancestor
+                    var clonedChain = cloneChainToAncestor(aSelection.focusNode, aSelection.focusOffset, commonAncestor, textNode);
+                    dump("cloned chain =\n");
+                    DOMSerialiser.serialiseDOMTree(clonedChain);
+                    dump("\n");
+
                     // create new document fragment to assemble our split subtree
                     var replacementFragment = gEditor.document.createDocumentFragment();
                     replacementFragment.appendChild(leftSplittingFragment);
-                    replacementFragment.appendChild(textNode);
+                    replacementFragment.appendChild(clonedChain);
                     replacementFragment.appendChild(rightSplittingFragment);
 
                     dump("replacement fragment =\n");
@@ -545,6 +551,51 @@
         }
 
         return node;
+    }
+
+    function cloneChainToAncestor(aLeafNode, aLeafNodeOffset, aTerminationNode, aNewLeaf) {
+        var currentNode = null;
+        var chainRoot   = null;
+        var clonedNode  = null;
+
+        /* DEBUG */ dump("Yulup:domops-test.js:cloneChainToAncestor(\"" + aLeafNode + "\", \"" + aLeafNodeOffset + "\", \"" + aTerminationNode.nodeName + "\", \"" + aNewLeaf + "\") invoked\n");
+
+        if (aLeafNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+            // our leaf node is a text node, therefore the offset points into the text
+
+            /* DEBUG */ dump("Yulup:domops-test.js:cloneChainToAncestor: leaf node is of type TEXT_NODE\n");
+            currentNode = aLeafNode.parentNode;
+        } else {
+            // our leaf node is not a text node, therefore the offset points to a child node (not sure about that though!)
+            if (aLeafNode.childNodes.length > aLeafNodeOffset) {
+                /* DEBUG */ dump("Yulup:domops-test.js:cloneChainToAncestor: leaf node is not a text node; offset is ok\n");
+                currentNode = aLeafNode.childNodes.item(aLeafNodeOffset);
+            } else {
+                /* DEBUG */ dump("Yulup:domops-test.js:cloneChainToAncestor: leaf node is not a text node; offset is greater than child nodee length\n");
+                currentNode = aLeafNode.lastChild;
+            }
+        }
+
+        chainRoot = aNewLeaf;
+
+        /* DEBUG */ dump("Yulup:domops-test.js:cloneChainToAncestor: start node for walking upwards is \"" + currentNode.nodeName + "\"\n");
+
+        while (currentNode != aTerminationNode) {
+            /* DEBUG */ dump("Yulup:domops-test.js:cloneChainToAncestor: visiting node \"" + currentNode.nodeName + "\"\n");
+
+            clonedNode = currentNode.cloneNode(false);
+
+            /* DEBUG */ dump("Yulup:domops-test.js:cloneChainToAncestor: cloned node is \"" + clonedNode.nodeName + "\"\n");
+
+            clonedNode.appendChild(chainRoot);
+            chainRoot = clonedNode;
+
+            currentNode = currentNode.parentNode;
+        }
+
+        /* DEBUG */ dump("Yulup:domops-test.js:cloneChainToAncestor: chain root node is \"" + chainRoot.nodeName + "\"\n");
+
+        return chainRoot;
     }
 
     function printChildNodeList(aNode) {
