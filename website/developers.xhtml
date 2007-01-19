@@ -18,7 +18,7 @@
   <li><a href="#xpi">Building Releases: Generating XPI from source (Unix only)</a></li>
   <li><a href="#xpi-debug">Building Debug Releases: Generating XPI from source (Unix only)</a></li>
   <li><a href="#setup">Set Up your Environment for Code Development</a></li>
-  <li><a href="#tcpmon">Debugging the client-server data-exchange</a></li>
+  <li><a href="#tcpmon">Debugging the Client-Server Data-Exchange</a></li>
   <li><a href="#requirements">System Requirements for Code Development</a></li>
 </ul>
 
@@ -91,6 +91,8 @@ The new package can then be found in <tt>public/yulup/src/trunk/yulup/pkg/</tt>.
 
 <h3 id="setup">Set Up your Environment for Code Development</h3>
 
+<h4>Preferences Settings</h4>
+
 <p>To make your life easier (and the code better), you first might want to change some of your browser preferences (via &quot;about:config&quot;, see this <a href="http://kb.mozillazine.org/About:config">mozillaZine kb entry</a> for details if you are not acquainted to setting preferences manually):</p>
 
 <dl>
@@ -112,8 +114,18 @@ The new package can then be found in <tt>public/yulup/src/trunk/yulup/pkg/</tt>.
 
 <p>See also the <a href="http://kb.mozillazine.org/Setting_up_extension_development_environment">Setting up extension development environment</a> mozillaZine kb entry. Note though that not all information in that article is up-to-date anymore. In the case of doubt, the information stated here overrides information in that article.</p>
 
+<h4>Displaying Debug Messages</h4>
+<p>In order to see the debug messages on stdout, you have to start Firefox from the console:</p>
+<dl>
+  <dt><b>Unix</b></dt>
+  <dd><code>$ firefox</code></dd>
+  <dt><b>MacOS X</b></dt>
+  <dd><code>$ /Applications/Firefox.app/Contents/MacOS/firefox</code></dd>
+  <dt><b>Windows</b></dt>
+  <dd><code>$ firefox.exe -console</code></dd>
+</dl>
 
-<h3 id="tcpmon">Debugging the client-server data exchange</h3>
+<h3 id="tcpmon">Debugging the Client-Server Data Exchange</h3>
 
 <p>Download <a href="http://ws.apache.org/axis/java/releases.html">Axis</a> and use <a href="http://ws.apache.org/axis/java/user-guide.html#AppendixUsingTheAxisTCPMonitorTcpmon">TCP Monitor</a>:</p>
 
