@@ -1,4 +1,4 @@
 !Yulup Wiki
-This Wiki has just been started and is also Yulup enabled :-)
+This Wiki is also Yulup enabled.
 
 In order to use the Wiki send an email to [michael.wechner@wyona.com|mailto:michael.wechner@wyona.com].

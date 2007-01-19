@@ -12,7 +12,7 @@
 
 <body>
 <h2>Development</h2>
-<ul>
+<ol>
   <li><a href="#subversion">Get the Source Code from Subversion</a></li>
   <li><a href="#installation">Installation</a></li>
   <li><a href="#xpi">Building Releases: Generating XPI from source (Unix only)</a></li>
@@ -20,10 +20,10 @@
   <li><a href="#setup">Set Up your Environment for Code Development</a></li>
   <li><a href="#tcpmon">Debugging the Client-Server Data-Exchange</a></li>
   <li><a href="#requirements">System Requirements for Code Development</a></li>
-</ul>
+</ol>
 
 
-<h3 id="subversion">Get the Source Code from Subversion</h3>
+<h3 id="subversion">1. Get the Source Code from Subversion</h3>
 
 <h4>Anonymous</h4>
 <pre>svn co <a href="http://svn.wyona.com/repos/public/yulup">http://svn.wyona.com/repos/public/yulup</a></pre>
@@ -36,7 +36,7 @@ Username: <i>anonymous</i>, Password: <i>anonymous</i>
 <pre>svn co --username USERNAME https://svn.wyona.com/repos/public/yulup</pre>
 
 
-<h3 id="installation">Installation</h3>
+<h3 id="installation">2. Installation</h3>
 <p>
 If the source has been checked out from SVN, Yulup can be installed as follows:
 </p>
@@ -66,7 +66,7 @@ If the source has been checked out from SVN, Yulup can be installed as follows:
 
 </ul>
 
-<h3 id="xpi">Building Releases: Generating XPI from source (Unix only)</h3>
+<h3 id="xpi">3. Building Releases: Generating XPI from source (Unix only)</h3>
 <p>Assume a path snippet <tt>$CURRENT</tt> which currently points to <tt>public/yulup/src/trunk/yulup/src</tt>.</p>
 <ul>
   <li><p>Edit <tt>$CURRENT/install.rdf</tt> and bump version number contained in the &lt;em:version&gt; element (XPath: RDF/Description/em:version), set the revision to the current head, and remove <tt>-dev</tt>.</p></li>
@@ -79,7 +79,7 @@ The new package can then be found in <tt>public/website/yulup/download</tt> (the
 Make sure to update the Mozilla <a href="https://addons.mozilla.org/firefox/3702/">Firefox Add-ons page</a> of Yulup for users who have download the XPI from there.
 </p>
 
-<h3 id="xpi-debug">Building Debug Releases: Generating XPI from source (Unix only)</h3>
+<h3 id="xpi-debug">4. Building Debug Releases: Generating XPI from source (Unix only)</h3>
 <p>Assume a path snippet <tt>$CURRENT</tt> which currently points to <tt>public/yulup/src/trunk/yulup/src</tt>.</p>
 <ul>
   <li><p>Edit <tt>$CURRENT/install.rdf</tt> and set the revision to the current head contained in the &lt;em:version&gt; element (XPath: RDF/Description/em:version), and replace <tt>-dev</tt> by <tt>-debug</tt>.</p></li>
@@ -89,7 +89,7 @@ Make sure to update the Mozilla <a href="https://addons.mozilla.org/firefox/3702
 The new package can then be found in <tt>public/yulup/src/trunk/yulup/pkg/</tt>.
 </p>
 
-<h3 id="setup">Set Up your Environment for Code Development</h3>
+<h3 id="setup">5. Set Up your Environment for Code Development</h3>
 
 <h4>Preferences Settings</h4>
 
@@ -122,6 +122,8 @@ The new package can then be found in <tt>public/yulup/src/trunk/yulup/pkg/</tt>.
   </dd>
 </dl>
 
+<p>Note that some of these settings might not already exist in the preferences list. If you cannot find a setting, you need to create it by context-clicking (right mouse button) anywhere in the preferences list, and then choose "New" in the context menu. "New" itself opens a new sub-menu. Since all settings listed above are of type <tt>bool</tt>, you can then choose "Boolean". In the dialog which pops up, enter the preference string as shown above.</p>
+
 <p>See also the <a href="http://kb.mozillazine.org/Setting_up_extension_development_environment">Setting up extension development environment</a> mozillaZine kb entry. Note though that not all information in that article is up-to-date anymore. In the case of doubt, the information stated here overrides information in that article.</p>
 
 <h4>Displaying Debug Messages</h4>
@@ -141,7 +143,7 @@ The new package can then be found in <tt>public/yulup/src/trunk/yulup/pkg/</tt>.
   </dd>
 </dl>
 
-<h3 id="tcpmon">Debugging the Client-Server Data Exchange</h3>
+<h3 id="tcpmon">6. Debugging the Client-Server Data Exchange</h3>
 
 <p>Download <a href="http://ws.apache.org/axis/java/releases.html">Axis</a> and use <a href="http://ws.apache.org/axis/java/user-guide.html#AppendixUsingTheAxisTCPMonitorTcpmon">TCP Monitor</a>:</p>
 
@@ -162,7 +164,7 @@ or <a href="http://ngrep.sourceforge.net/">ngrep</a>, e.g. to check what DTDs ar
 <pre># ngrep &quot;Atom&quot; &quot;port 80&quot;</pre>
 
 
-<h3 id="requirements">System Requirements for Development</h3>
+<h3 id="requirements">7. System Requirements for Development</h3>
 <ul>
 <li><tt>svn</tt> client (for checking out the source code)</li>
 <li>GNU <tt>make</tt> (for building documentation)</li>

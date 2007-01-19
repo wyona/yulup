@@ -4,12 +4,12 @@
   <name>Yulup Website</name>
   <rti>yanel-rti-repository.xml</rti>
   <data>data-repository.xml</data>
-  <!-- Productive Configuration
   <ac-policies>local-ac-policies-repository.xml</ac-policies>
-  -->
+  <!--
   <ac-policies>ac-policies-repository.xml</ac-policies>
-  <!-- Productive Configuration
-  <ac-identities>/home/ulysses/src/realms/wyona-com-website/yanel/conf/ac-identities-repository.xml</ac-identities>
   -->
+  <ac-identities>/home/ulysses/src/realms/wyona-com-website/yanel/conf/ac-identities-repository.xml</ac-identities>
+  <!--
   <ac-identities>ac-identities-repository.xml</ac-identities>
+  -->
 </realm-config>
