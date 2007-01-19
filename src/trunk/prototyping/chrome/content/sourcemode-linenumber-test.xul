@@ -78,6 +78,34 @@
         }
     };
 
+    function getLineNumber() {
+        // traverse the editor's body element and count the <br/> elements until the current focusNode text node is reached
+    }
+
+    function getColumnNumber() {
+        // get the current selection offset of the focusNode
+
+        // move to the left-most sibling which is still a text node, adding all data lengths
+
+        // return the offset added to the aggregated data lengths
+    }
+
+    function getEditorBody() {
+        // return the body node of the editor
+
+        /* The editor's document looks like this:
+         *   #document
+         *     |- html
+         *     |- HTML
+         *          |- HEAD
+         *          |- BODY
+         *               |- #text
+         *               |- br
+         *               |- #text
+         *               ...
+         */
+    }
+
     function addText() {
         dump("######## YulupTEST:editor-test.js:addText() invoked\n");
 
