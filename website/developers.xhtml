@@ -97,19 +97,29 @@ The new package can then be found in <tt>public/yulup/src/trunk/yulup/pkg/</tt>.
 
 <dl>
   <dt>Set <b>browser.dom.window.dump.enabled</b> to <b>true</b></dt>
-  <dd>Enables the use of the dump() statement to print to the standard console. For this output to be seen, you must of course run Firefox/Mozilla/SeaMonkey from a terminal. You can do this by simply running e.g. <tt>firefox-bin</tt> (in the case of Firefox).</dd>
+  <dd>
+    <p>Enables the use of the dump() statement to print to the standard console. For this output to be seen, you must of course run Firefox/Mozilla/SeaMonkey from a terminal. You can do this by simply running e.g. <tt>firefox-bin</tt> (in the case of Firefox).</p>
+  </dd>
 
   <dt>Set <b>extensions.logging.enabled</b> to <b>true</b></dt>
-  <dd>Enables more logging.</dd>
+  <dd>
+    <p>Enables more logging.</p>
+  </dd>
 
   <dt>Set <b>javascript.options.showInConsole</b> to <b>true</b></dt>
-  <dd>Logs errors in chrome files to the JavaScript Console to make debugging easier.</dd>
+  <dd>
+    <p>Logs errors in chrome files to the JavaScript Console to make debugging easier.</p>
+  </dd>
 
   <dt>Set <b>javascript.options.strict</b> to <b>true</b></dt>
-  <dd>Enables strict Javascript warnings in the JavaScript Console. Note that since many people have this setting turned off when developing, you will see lots of warnings for problems with their code in addition to warnings for your own extension.</dd>
+  <dd>
+    <p>Enables strict Javascript warnings in the JavaScript Console. Note that since many people have this setting turned off when developing, you will see lots of warnings for problems with their code in addition to warnings for your own extension.</p>
+  </dd>
 
   <dt>Set <b>nglayout.debug.disable_xul_cache</b> to <b>true</b></dt>
-  <dd>Disables the XUL cache so that changes do not require a restart, i.e. everytime a XUL document gets reloaded (like <tt>editor.xul</tt> when reloading the editor tab, but NOT <tt>yulup.xul</tt>, since this only gets loaded once, namely when the browser is started or a new window is opened), the new version is used and not the old cached one.</dd>
+  <dd>
+    <p>Disables the XUL cache so that changes do not require a restart, i.e. everytime a XUL document gets reloaded (like <tt>editor.xul</tt> when reloading the editor tab, but NOT <tt>yulup.xul</tt>, since this only gets loaded once, namely when the browser is started or a new window is opened), the new version is used and not the old cached one.</p>
+  </dd>
 </dl>
 
 <p>See also the <a href="http://kb.mozillazine.org/Setting_up_extension_development_environment">Setting up extension development environment</a> mozillaZine kb entry. Note though that not all information in that article is up-to-date anymore. In the case of doubt, the information stated here overrides information in that article.</p>
@@ -118,11 +128,17 @@ The new package can then be found in <tt>public/yulup/src/trunk/yulup/pkg/</tt>.
 <p>In order to see the debug messages on stdout, you have to start Firefox from the console:</p>
 <dl>
   <dt><b>Unix</b></dt>
-  <dd><code>$ firefox</code></dd>
+  <dd><code>$ firefox</code>
+    <p>The log output will go to the terminal from where you started Firefox.</p>
+  </dd>
   <dt><b>MacOS X</b></dt>
-  <dd><code>$ /Applications/Firefox.app/Contents/MacOS/firefox</code></dd>
+  <dd><code>$ /Applications/Firefox.app/Contents/MacOS/firefox</code>
+    <p>The log output will go to the terminal from where you started Firefox.</p>
+  </dd>
   <dt><b>Windows</b></dt>
-  <dd><code>$ firefox.exe -console</code></dd>
+  <dd><code>&gt; cd Program Files\Mozilla Firefox</code> (or wherever your Firefox installation lives; if in doubt, simply search for <tt>firefox.exe</tt>)<br/><code>&gt; firefox.exe -console</code>
+    <p>Firefox will open a new window called "firefox.exe -console" into which the log output goes. You might want to extend the number of lines it holds by clicking on the system icon (the Firefox logo in the upper left corner of that console window), and choose "Properties". In the opened dialog choose the "Layout" tab, and in the "Screen Buffer Size" group set "width" to 400 and "height" to 9999.</p>
+  </dd>
 </dl>
 
 <h3 id="tcpmon">Debugging the Client-Server Data Exchange</h3>
