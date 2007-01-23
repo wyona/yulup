@@ -73,7 +73,7 @@ var PersistenceService = {
         var nsIFilePicker = null;
         var filePicker    = null;
 
-        /* DEBUG */ dump("Yulup:persistenceservice.js:PersistenceService.openFromFile() invoked\n");
+        /* DEBUG */ dump("Yulup:persistenceservice.js:PersistenceService.queryOpenFileURI() invoked\n");
 
         // open file picker dialog for local file system
         nsIFilePicker = Components.interfaces.nsIFilePicker;
