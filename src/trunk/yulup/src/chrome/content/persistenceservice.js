@@ -66,7 +66,7 @@ var PersistenceService = {
     /**
      * Open a file picker dialog to open a file from the file system.
      *
-     * @return {nsIURI} returns the selected URI or null if selection was aborted
+     * @return {nsIFileURL} returns the selected URI or null if selection was aborted
      */
     queryOpenFileURI: function () {
         var documentURI   = null;
