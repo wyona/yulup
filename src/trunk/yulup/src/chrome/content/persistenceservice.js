@@ -89,7 +89,7 @@ var PersistenceService = {
             documentURI = filePicker.fileURL;
             documentURI.QueryInterface(Components.interfaces.nsIURI);
 
-            /* DEBUG */ dump("Yulup:persistenceservice.js:PersistenceService.openFromFile: selected documentURI: \"" + documentURI.spec + "\"\n");
+            /* DEBUG */ dump("Yulup:persistenceservice.js:PersistenceService.queryOpenFileURI: selected documentURI: \"" + documentURI.spec + "\"\n");
 
             return documentURI;
         }
