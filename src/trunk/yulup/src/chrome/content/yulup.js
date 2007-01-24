@@ -960,6 +960,11 @@ Yulup.prototype = {
                 self.getBrowser().selectedTab = newTab;
             }
         } else {
+            // if only one browser is left, open a new empty browser tab first and close this one
+            if (self.getBrowser().browsers.length == 1) {
+                self.getBrowser().addTab("about:blank");
+            }
+
             // close old tab
             self.getBrowser().removeTab(aOldTab);
         }
