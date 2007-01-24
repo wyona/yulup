@@ -64,8 +64,10 @@ function Document(aLoadURI, aContentType, aScreenName, aFileExtension, aSchemaAr
         this.documentBaseName  = loadURL.fileBaseName;
         this.documentExtension = loadURL.fileExtension;
 
-        if (this.loadURI.schemeIs("file"))
+        if (this.loadURI.schemeIs("file")) {
+            /* DEBUG */ dump("Yulup:document.js:Document: loadURI (nsIURI) = \"" + this.loadURI + "\", loadURI.path (nsIURI) = \"" + this.loadURI.path + "\", loadURI.file.path (nsIFileURL) = \"" + this.loadURI.file.path + "\"\n");
             this.localSavePath = this.loadURI;
+        }
     }
 
     if (aScreenName && (aScreenName != ""))
