@@ -40,9 +40,10 @@ const PERMS_FILE = 0644;
 
 var PersistenceService = {
     /**
-     * Return a file descriptor for a given file.
+     * Return a file descriptor for a given platform-specific
+     * path.
      *
-     * @param  {String}       aFilePath the path to the file to return
+     * @param  {String}       aFilePath the platform-specific path to the file to return
      * @return {nsILocalFile}           returns a file descriptor or null on error
      */
     getFileDescriptor: function (aFilePath) {

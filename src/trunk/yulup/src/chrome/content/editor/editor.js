@@ -475,7 +475,7 @@ var Editor = {
 
         if (filePath = gEditorController.document.getLocalSavePath()) {
             // a local save path exists, therefore persist the document
-            if (gEditorController.document.saveDocument(PersistenceService.getFileDescriptor(filePath.path), gEditorController.model.getDocument())) {
+            if (gEditorController.document.saveDocument(PersistenceService.getFileDescriptor(filePath), gEditorController.model.getDocument())) {
                 // update the current view
                 YulupEditController.updateView();
 

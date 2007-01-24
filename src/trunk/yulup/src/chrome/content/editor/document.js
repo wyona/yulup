@@ -47,6 +47,7 @@
  */
 function Document(aLoadURI, aContentType, aScreenName, aFileExtension, aSchemaArray, aStyleArray, aStyleTemplate) {
     var loadURL = null;
+    var fileURL = null;
 
     /* DEBUG */ dump("Yulup:document.js:Document(\"" + aLoadURI + "\", \"" + aContentType + "\", \"" + aScreenName + "\", \"" + aFileExtension + "\", \"" + aSchemaArray + "\", \"" + aStyleArray + "\", \"" + aStyleTemplate + "\") invoked\n");
 
@@ -64,9 +65,12 @@ function Document(aLoadURI, aContentType, aScreenName, aFileExtension, aSchemaAr
         this.documentBaseName  = loadURL.fileBaseName;
         this.documentExtension = loadURL.fileExtension;
 
-        if (this.loadURI.schemeIs("file")) {
-            /* DEBUG */ dump("Yulup:document.js:Document: loadURI (nsIURI) = \"" + this.loadURI + "\", loadURI.path (nsIURI) = \"" + this.loadURI.path + "\", loadURI.file.path (nsIFileURL) = \"" + this.loadURI.file.path + "\"\n");
-            this.localSavePath = this.loadURI;
+        try {
+            fileURL = this.loadURI.QueryInterface(Components.interfaces.nsIFileURL);
+
+            this.localSavePath = fileURL.file.path;
+        } catch (exception) {
+            // not a local file, therefore ignore
         }
     }
 
@@ -169,7 +173,10 @@ Document.prototype = {
      * which results from a "Save As..." operation to the local
      * filesystem.
      *
-     * @param  {nsIURI}    aLocalPath a local save path
+     * Note that the local save path must be in a platform-specific
+     * format.
+     *
+     * @param  {String}    aLocalPath a local save path
      * @return {Undefined} does not have a return value
      */
     setLocalSavePath: function (aLocalPath) {
@@ -180,7 +187,9 @@ Document.prototype = {
     /**
      * Get the local save path.
      *
-     * @return {nsIURI} the local save path of this document, or null if unavailable
+     * Note that the local save path is platform-specific.
+     *
+     * @return {String} the local platform-specific save path of this document, or null if unavailable
      */
     getLocalSavePath: function () {
         /* DEBUG */ dump("Yulup:document.js:Document.getLocalSavePath() invoked\n");
@@ -348,8 +357,8 @@ Document.prototype = {
                 // create a nsIURI so we can easily retrieve the document name and the suffix
                 fileURI  = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newFileURI(aLocalFile);
 
-                // set the local save path
-                this.localSavePath = fileURI;
+                // set the local platform-specific save path
+                this.localSavePath = aLocalFile.path;
 
                 // downcast to nsIURL
                 fileURI.QueryInterface(Components.interfaces.nsIURL);
