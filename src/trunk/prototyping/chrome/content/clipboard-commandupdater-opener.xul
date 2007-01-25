@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<window id="clipboardCommandUpdaterOpener"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        onload="onLoadListener();">
+
+  <script  type="application/x-javascript">
+    function onLoadListener() {
+      window.openDialog("chrome://test/content/clipboard-commandupdater.xul", "clipboard-commandupdater", "modal=no,resizable=yes");
+    }
+  </script>
+
+</window>
