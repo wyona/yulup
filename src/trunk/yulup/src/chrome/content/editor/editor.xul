@@ -71,6 +71,7 @@
   <script type="application/x-javascript" src="chrome://yulup/content/progressdialog.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/serveruriprompt.js"/>
 
+  <!-- commandupdaters won't work until bug https://bugzilla.mozilla.org/show_bug.cgi?id=368102 is solved -->
   <commandset id="uiYulupEditorFocusEventCommandset"
               commandupdater="true"
               events="focus"
