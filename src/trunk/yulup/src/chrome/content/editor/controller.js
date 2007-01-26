@@ -177,7 +177,7 @@ YulupEditController.archiveLoadFinished = function (aResultFile, aException) {
             gEditorController.archive.extractNeutronArchive();
             gEditorController.editorParams.substituteIntrospectionParams(gEditorController.archive.introspection);
 
-            gEditorController.constructor.enterStageTemplateLoad(null, null);
+            YulupEditController.enterStageTemplateLoad(null, null);
         } else {
             /* DEBUG */ dump("Yulup:controller.js:YulupEditController.archiveLoadFinished: failed to load Neutron archive \"" + gEditorController.archive.loadURI.spec + "\": \"" + aException + "\"\n");
 
