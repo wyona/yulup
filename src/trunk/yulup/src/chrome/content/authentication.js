@@ -75,27 +75,14 @@ var Authentication = {
                 elem.setAttribute("type", "autocomplete");
                 elem.setAttribute("autocompletesearchparam", AUTHENTICATION_FORM_HISTORY_ID);
                 elem.setAttribute("autocompletesearch", "form-history");
-                //elem.setAttribute("tabscrolling", "true");
+                elem.setAttribute("completedefaultindex", "true");
                 elem.setAttribute("forcecomplete", "true");
                 elem.setAttribute("onchange", "Authentication.addToFormHistory('"+field+"')");
-
-                // add listener to advance the focus
-                elem.addEventListener("keypress", Authentication.autocompleteKeypressListener, true);
             }
             elem.setAttribute("id", field);
             elem.setAttribute("size", "30");
             elem.setAttribute("flex", "2")
             document.getElementById("row" + field).appendChild(elem);
-        }
-    },
-
-    autocompleteKeypressListener: function (aEvent) {
-        /* DEBUG */ dump("Yulup:Authentication.js:Authentication.autocompleteKeypressListener(\"" + aEvent + "\"): invoked\n");
-
-        if (aEvent.keyCode == Components.interfaces.nsIDOMKeyEvent.DOM_VK_RETURN) {
-            document.commandDispatcher.advanceFocus();
-
-            aEvent.preventDefault();
         }
     },
 
