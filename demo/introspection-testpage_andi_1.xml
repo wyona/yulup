@@ -8,7 +8,16 @@
 </edit>
 
 <navigation>
+<!--
+  <sitetree href="/" method="PROPFIND"/>
+-->
+<!--
   <sitetree href="sitetree.xml" method="GET"/>
+-->
+  <sitetree href="sitetree.xml?collection=/" method="GET"/>
+<!--
+  <sitetree href="sitetree.xml?collection=/atom/" method="GET"/>
+-->
 </navigation>
 
 </introspection>
