@@ -479,8 +479,10 @@ var Editor = {
                 // update the current view
                 YulupEditController.updateView();
 
-                // report success
                 gEditorController.model.unsetDirty();
+
+                // report success
+                alert(Editor.getStringbundleString("editorDocumentUploadSuccess.label"));
 
                 return true;
             } else {
@@ -589,8 +591,10 @@ var Editor = {
                 // update the current view
                 YulupEditController.updateView();
 
-                // report success
                 gEditorController.model.unsetDirty();
+
+                // report success
+                alert(Editor.getStringbundleString("editorDocumentUploadSuccess.label"));
 
                 return true;
             }
