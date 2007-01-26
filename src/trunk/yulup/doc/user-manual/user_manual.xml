@@ -34,7 +34,7 @@
       </author>
     </authorgroup>
     <!-- All dates specified in ISO "YYYY-MM-DD" format -->
-    <pubdate>2007-01-15</pubdate>
+    <pubdate>2007-01-26</pubdate>
     <!-- Most recent revision goes at the top; list in descending order -->
     <!--
     <revhistory>
@@ -906,6 +906,65 @@
   </section>
 
   <section>
+    <title>Authentication</title>
+    <para>
+      The CMS serving the documents to edit may decide to protect individual documents. In order to access such documents, you might have to authenticate yourself to the system by entering a set of credentials.
+    </para>
+    <section>
+      <title>Login</title>
+      <para>
+        If the server handles authentication through Yulup, you are presented with a dialog consisting of several fields, as defined by the CMS. There are two kind of fields: normal text fields, and password fields.
+        <figure>
+          <title>Authentication Dialog Example</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="figures/auth_dialog.png" format="PNG"/>
+            </imageobject>
+            <textobject>
+              <phrase>Example authentication dialog showing two fields to enter a user name and a password</phrase>
+            </textobject>
+          </mediaobject>
+        </figure>
+      </para>
+      <para>
+        Authentication in Yulup is realms based, i.e. you can be logged in to several different realms simultaneously.
+      </para>
+      <section>
+        <title>Text Fields (Autocompleted)</title>
+        <para>
+          Text fields use autocompletion, i.e. any term you have once entered into such a field is presented later on in a pop-up menu. The autocomplete pop-up menu opens once you start typing in the text field, and the currently entered string is a prefix matching one of the entries in the autocompletion history. In order to select such an offered string, you can navigate this pop-up menu using the cursor keys.
+        </para>
+        <para>
+          If you want to delete one of the offered strings from the autocompletion history, select the entry in the pop-up menu using the cursor keys, and, once selected, press <keycombo action="simul"><keycap>Shift</keycap><keycap>Delete</keycap></keycombo>.
+        </para>
+      </section>
+      <section>
+        <title>Password Fields</title>
+        <para>
+          Password fields are fields which do not directly show the text you enter. Instead, they use stars or bullets to represent characters, so that individuals standing by your screen cannot retrieve the entered password by looking at the text.
+        </para>
+      </section>
+    </section>
+    <section>
+      <title>Logout</title>
+      <para>
+        If the login was handled by Yulup, then you can also use Yulup to logout from a certain realm. In order to log out from a realm, open the Yulup menu and choose <guimenuitem>Logout from "..."</guimenuitem>, "..." being the name of the realm from which you want to logout from.
+        <figure>
+          <title>Logout from a Realm</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="figures/logout_realm.png" format="PNG"/>
+            </imageobject>
+            <textobject>
+              <phrase>Logout from realm "Yulup Website"</phrase>
+            </textobject>
+          </mediaobject>
+        </figure>
+      </para>
+    </section>
+  </section>
+
+  <section>
     <title>Sidebars</title>
     <para>
       Sidebars are UI elements which are usually opened on the left hand side of the web browser. There are several standard sidebars delivered with Firefox, and &project; adds two new ones, an Atom sidebar and a Neutron sidebar.
@@ -1035,7 +1094,7 @@
             <listitem>
               <formalpara>
                 <title>Always Save Local Copy</title>
-                Check this option if you would like &project; to automatically store a version of the documents you are editing in your local workspace. If this option is not set, you have to tell &project; explicitely to save a document in your workspace.
+                Check this option if you would like &project; to automatically store a version of the documents you are editing in your local workspace. If this option is not set, you have to tell &project; explicitly to save a document in your workspace.
               </formalpara>
             </listitem>
           </itemizedlist>
@@ -1054,7 +1113,7 @@
             <listitem>
               <formalpara>
                 <title>Open Atom Sidebar Automatically</title>
-                Check this option if you would like &project; to automatically open the Atom sidebar everytime a page containing a link to an APP Service Document is accessed.
+                Check this option if you would like &project; to automatically open the Atom sidebar every time a page containing a link to an APP Service Document is accessed.
               </formalpara>
             </listitem>
           </itemizedlist>
