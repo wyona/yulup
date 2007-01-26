@@ -1,0 +1,23 @@
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <atom:title type="text">yulup-0.2.1-r22222.xpi</atom:title>
+  <atom:author>
+    <atom:name>Andreas Wuest</atom:name>
+  </atom:author>
+  <atom:id>urn:www-yulup-org:0-2-1-release</atom:id>
+  <atom:content type="xhtml">
+    <xhtml:div>
+      <xhtml:a href="yulup-0.2.1-r22222.xpi">yulup-0.2.1-r22222.xpi</xhtml:a> (January 26, 2007)
+      <xhtml:br/>
+      <xhtml:br/>
+      Changelog:
+      <xhtml:ul>
+        <xhtml:li>Fixed WYSIWYG XSLT mode view to not trying to back-propagate spurious elements.</xhtml:li>
+        <xhtml:li>Implemented canvasbuttons and replaced widget toobarbuttons by them.</xhtml:li>
+        <xhtml:li>Fixed saving to local filesystem. Platform Windows can now save to the local file system as well.</xhtml:li>
+        <xhtml:li>Fixed bug which prevented the Exit button from working under certain conditions.</xhtml:li>
+        <xhtml:li>Fixed loading of documents contained in NAR archives.</xhtml:li>
+        <xhtml:li>Several under-the-hood changes.</xhtml:li>
+      </xhtml:ul>
+    </xhtml:div>
+  </atom:content>
+<atom:updated>2007-01-26T21:38:28.803Z</atom:updated><atom:published>2007-01-26T21:38:28.803Z</atom:published></atom:entry>
