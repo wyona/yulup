@@ -2,9 +2,9 @@
 
 <introspection xmlns="http://www.wyona.org/neutron/1.0">
 
-<edit mime-type="application/xhtml+xml" name="Testpage Andi 1">
-  <open url="testpage_andi_1.xhtml" method="GET"/>
-  <save url="testpage_andi_1.xhtml?yanel.resource.usecase=save" method="PUT"/>
+<edit mime-type="application/xhtml+xml" name="Upload Example">
+  <open url="upload-example.xhtml" method="GET"/>
+  <save url="upload-example.xhtml?yanel.resource.usecase=save" method="PUT"/>
 </edit>
 
 <navigation>
