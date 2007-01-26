@@ -36,8 +36,6 @@
         align="stretch"
         title="&editorAuthenticationDialog.title;"
         buttons="accept,cancel"
-        buttonlabelaccept="&editorAuthenticationOkButton.label;"
-        buttonlabelcancel="&editorAuthenticationCancelButton.label;"
         ondialogcancel="return true"
         ondialogaccept="return Authentication.save('save')"
         onload="Authentication.uiYulupEditorAuthenticationOnDialogLoadHandler()"
