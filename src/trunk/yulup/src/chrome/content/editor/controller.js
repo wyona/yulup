@@ -473,10 +473,10 @@ YulupEditController.startEditor = function () {
 
 YulupEditController.viewInfo = function () {
     if (gEditorController.sourceModeView) {
-        dump("Yulup:controller.js:YulupEditController.startEditor: sourceModeView.view.contentsMIMEType = \"" + gEditorController.sourceModeView.view.contentsMIMEType + "\".\n");
-        dump("Yulup:controller.js:YulupEditController.startEditor: sourceModeView.view.documentCharacterSet = \"" + gEditorController.sourceModeView.view.documentCharacterSet + "\".\n");
-        dump("Yulup:controller.js:YulupEditController.startEditor: sourceModeView.view.document = \"" + gEditorController.sourceModeView.view.document + "\".\n");
-        dump("Yulup:controller.js:YulupEditController.startEditor: sourceModeView.view.document.baseURI = \"" + gEditorController.sourceModeView.view.document.baseURI + "\".\n");
+        dump("Yulup:controller.js:YulupEditController.viewInfo: sourceModeView.view.contentsMIMEType = \"" + gEditorController.sourceModeView.view.contentsMIMEType + "\".\n");
+        dump("Yulup:controller.js:YulupEditController.viewInfo: sourceModeView.view.documentCharacterSet = \"" + gEditorController.sourceModeView.view.documentCharacterSet + "\".\n");
+        dump("Yulup:controller.js:YulupEditController.viewInfo: sourceModeView.view.document = \"" + gEditorController.sourceModeView.view.document + "\".\n");
+        dump("Yulup:controller.js:YulupEditController.viewInfo: sourceModeView.view.document.baseURI = \"" + gEditorController.sourceModeView.view.document.baseURI + "\".\n");
     }
 
     if (gEditorController.wysiwygModeView) {
