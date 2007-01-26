@@ -3,9 +3,7 @@
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
-<!--
-This RDF is based on http://developer.mozilla.org/en/docs/install.rdf
--->
+<!-- this RDF is based on http://developer.mozilla.org/en/docs/install.rdf -->
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>yulup@wyona.com</em:id>
@@ -25,7 +23,7 @@ This RDF is based on http://developer.mozilla.org/en/docs/install.rdf
     <em:contributor>Gregor Imboden (Wyona Inc.)</em:contributor>
     <em:contributor>Thomas Comiotto (University of Zurich)</em:contributor>
     <em:homepageURL>http://www.yulup.org/</em:homepageURL>
-    <!-- NOTE: Please comment the following for uploading the XPI to Mozilla Add-ons -->
+    <!-- NOTE: please comment out the following line for uploading the XPI to Mozilla Add-ons -->
     <em:updateURL>http://www.yulup.org/download/update.rdf</em:updateURL>
     <em:optionsURL>chrome://yulup/content/preferences/preferences.xul</em:optionsURL>
     <em:iconURL>chrome://yulup/skin/icons/yulup-logo.png</em:iconURL>
