@@ -26,6 +26,7 @@
       <li><p><b>Running Yulup</b></p>
         <ol>
           <li><a href="#firebug">Yulup does not detect Neutron enabled pages or network connection fails.</a></li>
+          <li><a href="#keyboardfocus">Although the cursor is placed inside the source editor, no text can be entered.</a></li>
         </ol>
       </li>
     </ul>
@@ -64,10 +65,14 @@
     <h4>Running Yulup</h4>
 
     <a name="firebug"/>
-
     <p><span style="font-weight: bolder;">Q.</span> Yulup does not detect Neutron enabled pages or network connection fails.</p>
 
     <p><span style="font-weight: bolder;">A.</span> If you have the FireBug extension installed next to Yulup, please disable FireBug or uninstall it. FireBug is known to break Yulup in its current release. We are currently implementing a specific Yulup prefix as a workaround. Please stay tuned.</p>
+
+    <a name="keyboardfocus"/>
+    <p><span style="font-weight: bolder;">Q.</span> Although the cursor is placed inside the source editor, no text can be entered.</p>
+
+    <p><span style="font-weight: bolder;">A.</span> This is <a href="">bug 5153</a>. In order to edit, simply position the cursor inside the source view and hit TAB once.</p>
 
     <br/><br/><br/><br/><br/>
   </body>
