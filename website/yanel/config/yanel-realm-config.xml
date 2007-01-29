@@ -1,15 +1,21 @@
 <?xml version="1.0"?>
 
+<!-- IMPORTANT: Copy this file to local.yanel-realm-config.xml, uncomment/comment the productive settings below and register the local version within local.realms.xml -->
+
 <realm-config>
   <name>Yulup Website</name>
   <rti>yanel-rti-repository.xml</rti>
   <data>data-repository.xml</data>
+
+
+<!-- IMPORT: Use for production environment
   <ac-policies>local-ac-policies-repository.xml</ac-policies>
-  <!--
+-->
   <ac-policies>ac-policies-repository.xml</ac-policies>
-  -->
+
+
+<!-- IMPORT: Use for production environment
   <ac-identities>/home/ulysses/src/realms/wyona-com-website/yanel/conf/ac-identities-repository.xml</ac-identities>
-  <!--
+-->
   <ac-identities>ac-identities-repository.xml</ac-identities>
-  -->
 </realm-config>
