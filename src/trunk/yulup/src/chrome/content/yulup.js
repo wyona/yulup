@@ -83,6 +83,7 @@ function yulupCreateNewEditor(aEditorParameters, aTriggerURI) {
     var yulupTab     = null;
     var instanceID   = null;
     var targetURI    = null;
+    var tabBrowser   = null;
 
     /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNewEditor(\"" + aEditorParameters + "\", \"" + aTriggerURI + "\") invoked\n");
 
@@ -103,11 +104,6 @@ function yulupCreateNewEditor(aEditorParameters, aTriggerURI) {
         // create a new tab
         yulupTab = self.getBrowser().addTab("");
 
-        if (!openInNewTab) {
-            // remove current tab
-            self.getBrowser().removeTab(currentTab);
-        }
-
         // prepare parameters for pick-up
         instanceID = gInstancesManager.addInstance(yulupTab, aEditorParameters, aTriggerURI);
 
@@ -119,6 +115,12 @@ function yulupCreateNewEditor(aEditorParameters, aTriggerURI) {
 
         // switch ui to newly created tab
         self.getBrowser().selectedTab = yulupTab;
+
+        if (!openInNewTab) {
+            // remove current tab
+            tabBrowser = self.getBrowser();
+            window.setTimeout(function() { tabBrowser.removeTab(currentTab); }, 0);
+        }
     } catch (exception) {
         dump("Yulup:yulup.js:yulupCreateNewEditor: failed to open new editor tab: " + exception.toString() + "\n");
 
@@ -941,7 +943,8 @@ Yulup.prototype = {
      * @return {Undefined} does not have a return value
      */
     replaceTab: function (aOldTab, aURI) {
-        var newTab = null;
+        var newTab     = null;
+        var tabBrowser = null;
 
         /* DEBUG */ dump("Yulup:yulup.js:Yulup.replaceTab() invoked\n");
 
@@ -953,11 +956,12 @@ Yulup.prototype = {
                 // new tab creation failed, reload in old tab
                 self.getBrowser().getBrowserForTab(aOldTab).loadURIWithFlags(aURI, Components.interfaces.nsIWebNavigation.LOAD_FLAGS_REPLACE_HISTORY, null, null);
             } else {
-                // close old tab, we have a new one
-                self.getBrowser().removeTab(aOldTab);
-
                 // switch to newly created tab
                 self.getBrowser().selectedTab = newTab;
+
+                // close old tab, we have a new one
+                tabBrowser = self.getBrowser();
+                window.setTimeout(function () { tabBrowser.removeTab(aOldTab); }, 0);
             }
         } else {
             // if only one browser is left, open a new empty browser tab first and close this one
@@ -966,7 +970,8 @@ Yulup.prototype = {
             }
 
             // close old tab
-            self.getBrowser().removeTab(aOldTab);
+            tabBrowser = self.getBrowser();
+            window.setTimeout(function () { tabBrowser.removeTab(aOldTab); }, 0);
         }
     }
 };
