@@ -91,13 +91,18 @@ function yulupCreateNewEditor(aEditorParameters, aTriggerURI) {
         // get the currently selected tab (getBrowser() (defined in browser.js) returns a reference to the Tabbrowser element)
         currentTab = self.getBrowser().selectedTab;
 
-        // check if we should open in a new tab or in the current tab
-        if ((openInNewTab = YulupPreferences.getBoolPref("editor.", "openinnewtab")) != null) {
-            if (!openInNewTab && !currentTab) {
+        // never open in a new tab if no trigger URI is available
+        if (aTriggerURI) {
+            // check if we should open in a new tab or in the current tab
+            if ((openInNewTab = YulupPreferences.getBoolPref("editor.", "openinnewtab")) != null) {
+                if (!openInNewTab && !currentTab) {
+                    openInNewTab = true;
+                }
+            } else {
+                // fall back to opening in new tab
                 openInNewTab = true;
             }
         } else {
-            // fall back to opening in new tab
             openInNewTab = true;
         }
 
