@@ -134,15 +134,18 @@ URIRewriter.prototype = {
 
         /* DEBUG */ dump("Yulup:urirewriter.js:URIRewriter.__rewriteAURI: rewriting anchor URI \"" + originalURI + "\"\n");
 
-        try {
-            newURI = this.__ioService.newURI(originalURI, null, aBaseURI);
+        // check if this anchor is used as a link or a target
+        if (originalURI) {
+            try {
+                newURI = this.__ioService.newURI(originalURI, null, aBaseURI);
 
-            aNode.setAttribute("href", newURI.spec);
-            aNode.__yulupOriginalURI = originalURI;
+                aNode.setAttribute("href", newURI.spec);
+                aNode.__yulupOriginalURI = originalURI;
 
-            /* DEBUG */ dump("Yulup:urirewriter.js:URIRewriter.__rewriteAURI: new anchor URI is \"" + aNode.getAttribute("href") + "\"\n");
-        } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:urirewriter.js:URIRewriter.__rewriteAURI", exception);
+                /* DEBUG */ dump("Yulup:urirewriter.js:URIRewriter.__rewriteAURI: new anchor URI is \"" + aNode.getAttribute("href") + "\"\n");
+            } catch (exception) {
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:urirewriter.js:URIRewriter.__rewriteAURI", exception);
+            }
         }
     },
 
