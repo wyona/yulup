@@ -28,21 +28,30 @@
 
 var WebDAVService = {
     /**
-     * Perform an WebDAV PROPFIND.
+     * Retrieve WebDAV properties via a WebDAV PROPFIND.
      *
      * @param  {String}    aURI                     the target URI of the PROPFIND request
+     * @param  {String}    aDepth                   the depth of the PROPFIND request (allowed values are "0", "1", "infinity", or null)
      * @param  {Function}  aCallbackFunction        the function to call when the load has finished of type function(String aDocumentData, Number aResponseStatusCode, Object aContext, Array aResponseHeaders, Error aException)
      * @param  {Object}    aContext                 a context, or null if unused by the caller
      * @param  {Object}    aProgressListener        an object which can receive progress notifications
      * @return {Undefined} does not have a return value
      * @throws {YulupException}
      */
-    propfind: function (aURI, aCallbackFunction, aContext, aProgressListener) {
+    propfind: function (aURI, aDepth, aCallbackFunction, aContext, aProgressListener) {
+        var headerArray = null;
+
         /* DEBUG */ dump("Yulup:webdavservice.js:WebDAVService.propfind(\"" + aURI + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\", \"" + aProgressListener + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aURI                     != null);
         /* DEBUG */ YulupDebug.ASSERT(aCallbackFunction        != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aCallbackFunction)        == "function");
 
+        if (aDepth) {
+            // add Depth header
+            headerArray = [["Depth", aDepth]];
+        }
+
+        NetworkService.httpRequestPROPFIND(aURI, headerArray, aCallbackFunction, aContext, false, true, aProgressListener);
     }
 }

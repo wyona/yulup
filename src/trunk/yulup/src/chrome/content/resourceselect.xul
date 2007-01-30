@@ -59,6 +59,8 @@
             src="chrome://yulup/content/neutronauth.js"/>
     <script type="application/x-javascript"
             src="chrome://yulup/content/sitetree.js"/>
+    <script type="application/x-javascript"
+            src="chrome://yulup/content/webdavservice.js"/>
 
     <stringbundle id="uiYulupEditorStringbundle" src="chrome://yulup/locale/editor.properties"/>
 

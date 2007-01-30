@@ -237,7 +237,7 @@ SitetreeView.prototype = {
         };
 
         // fetch the sitetree XML file
-        NetworkService.httpRequestPROPFIND(aURI.spec, null, this.__requestFinishedHandler, context, false, true);
+        WebDAVService.propfind(aURI.spec, "1", this.__requestFinishedHandler, context, null);
     },
 
     /**
