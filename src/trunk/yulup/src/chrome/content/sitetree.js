@@ -237,7 +237,7 @@ SitetreeView.prototype = {
         };
 
         // fetch the sitetree XML file
-        NetworkService.httpRequestGET(aURI.spec, null, this.__requestFinishedHandler, context, false, true);
+        NetworkService.httpRequestPROPFIND(aURI.spec, null, this.__requestFinishedHandler, context, false, true);
     },
 
     /**

@@ -457,6 +457,74 @@ var NetworkService = {
     },
 
     /**
+     * Perform a WebDAV PROPFIND request.
+     *
+     * @param  {String}    aURI                     the target URI of the PROPFIND request
+     * @param  {Array}     aHeaderArray             a two-dimensional array, the first dimension containing the header the arrays, the second dimension containing the header name as a string in field 0, and the header value as a string in field 1
+     * @param  {Function}  aCallbackFunction        the function to call when the request has finished of type function(String aDocumentData, Number aResponseStatusCode, Object aContext, Array aResponseHeaders, Error aException)
+     * @param  {Object}    aContext                 a context, or null if unused by the caller
+     * @param  {Boolean}   aRetrieveResponseHeaders set to true if the response headers should be passed to the callback, false otherwise
+     * @param  {Boolean}   aHandleAuthentication    set to true if authenciation should be handled automatically upon a 401 response, or if the response should simply be passed back to the caller as other responses
+     * @param  {Object}    aProgressListener        an object which can receive progress notifications
+     * @return {Undefined} does not have a return value
+     * @throws {YulupException}
+     */
+    httpRequestPROPFIND: function (aURI, aHeaderArray, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener) {
+        var request        = null;
+        var ioService      = null;
+        var channel        = null;
+        var streamListener = null;
+
+        /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.httpRequestPROPFIND(\"" + aURI + "\", \"" + aHeaderArray + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\", \"" + aRetrieveResponseHeaders + "\", \"" + aHandleAuthentication + "\", \"" + aProgressListener + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aURI                     != null);
+        /* DEBUG */ YulupDebug.ASSERT(aCallbackFunction        != null);
+        /* DEBUG */ YulupDebug.ASSERT(typeof(aCallbackFunction)        == "function");
+        /* DEBUG */ YulupDebug.ASSERT(aRetrieveResponseHeaders != null);
+        /* DEBUG */ YulupDebug.ASSERT(typeof(aRetrieveResponseHeaders) == "boolean");
+        /* DEBUG */ YulupDebug.ASSERT(aHandleAuthentication    != null);
+        /* DEBUG */ YulupDebug.ASSERT(typeof(aHandleAuthentication)    == "boolean");
+
+        request = new HTTPRequestPROPFIND(aURI, aHeaderArray, aCallbackFunction, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener);
+
+        try {
+            ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+
+            channel = ioService.newChannelFromURI(ioService.newURI(aURI, null, null));
+
+            // install the notification callback handler
+            channel.notificationCallbacks = new ChannelNotificationCallback(aProgressListener);
+
+            channel.QueryInterface(Components.interfaces.nsIHttpChannel);
+            channel.setRequestHeader("Neutron", SUPPORTED_NEUTRON_VERSIONS, false);
+            channel.setRequestHeader("WWW-Authenticate", SUPPORTED_AUTHENTICATION_SCHEMES, false);
+
+            if (aHeaderArray) {
+                for (var i = 0; i < aHeaderArray.length; i++) {
+                    channel.setRequestHeader(aHeaderArray[i][0], aHeaderArray[i][1], false);
+                }
+            }
+
+            channel.requestMethod = "PROPFIND";
+
+            channel.QueryInterface(Components.interfaces.nsIRequest);
+            // don't use a cached version of the document (DO NOT REMOVE THIS, e.g. introspection document load relies on this property)
+            channel.loadFlags  = Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
+            // don't notify nsIProgressEventSink listeners (keeps the throbber from turning)
+            channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BACKGROUND;
+
+            streamListener = new YulupNetworkStreamListener(request, channel);
+
+            channel.asyncOpen(streamListener, null);
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:networkservice.js:NetworkService.httpRequestPROPFIND", exception);
+            Components.utils.reportError(exception);
+
+            throw new YulupException("Yulup:networkservice.js:NetworkService.httpRequestPROPFIND: unable to load \"" + aURI + "\". \"" + exception + "\".");
+        }
+    },
+
+    /**
      * Perform an HTTP request specified by the given
      * request object.
      *
@@ -488,6 +556,11 @@ var NetworkService = {
 
         if (aRequest instanceof HTTPRequestDELETE) {
             NetworkService.httpRequestDELETE(aRequest.uri, aRequest.headerArray, aRequest.requestFinishedCallback, aRequest.context, aRequest.retrieveResponseHeaders, aRequest.handleAuthentication, aRequest.progressListener);
+            return;
+        }
+
+        if (aRequest instanceof HTTPRequestPROPFIND) {
+            NetworkService.httpRequestPROPFIND(aRequest.uri, aRequest.headerArray, aRequest.requestFinishedCallback, aRequest.context, aRequest.retrieveResponseHeaders, aRequest.handleAuthentication, aRequest.progressListener);
             return;
         }
 
@@ -1267,6 +1340,24 @@ function HTTPRequestDELETE(aURI, aHeaderArray, aRequestFinishedCallback, aContex
 }
 
 HTTPRequestDELETE.prototype = {
+    __proto__:  HTTPRequest.prototype,
+
+    headerArray            : null,
+    retrieveResponseHeaders: false
+};
+
+
+function HTTPRequestPROPFIND(aURI, aHeaderArray, aRequestFinishedCallback, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener) {
+    /* DEBUG */ YulupDebug.ASSERT(aRetrieveResponseHeaders         != null);
+    /* DEBUG */ YulupDebug.ASSERT(typeof(aRetrieveResponseHeaders) == "boolean");
+
+    HTTPRequest.call(this, aURI, aRequestFinishedCallback, aContext, aHandleAuthentication, aProgressListener);
+
+    this.headerArray             = aHeaderArray;
+    this.retrieveResponseHeaders = aRetrieveResponseHeaders;
+}
+
+HTTPRequestPROPFIND.prototype = {
     __proto__:  HTTPRequest.prototype,
 
     headerArray            : null,
