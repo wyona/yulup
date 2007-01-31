@@ -690,10 +690,11 @@ Introspection.prototype = {
             }
         }
 
+        objString += "Navigation: \n";
         if (this.navigation) {
-            objString += "Navigation: \n"
             if (this.navigation.sitetree) {
-                objString += "Sitetree: URI " + this.navigation.sitetree.uri.spec + " Method " + this.navigation.sitetree.method + "\n";
+                objString += "Sitetree URI:         " + (this.navigation.sitetree.uri ? this.navigation.sitetree.uri.spec : this.navigation.sitetree.uri) + "\n";
+                objString += "Sitetree method:      " + this.navigation.sitetree.method + "\n";
             }
         }
 
