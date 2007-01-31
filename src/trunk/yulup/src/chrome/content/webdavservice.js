@@ -40,6 +40,7 @@ var WebDAVService = {
      */
     propfind: function (aURI, aDepth, aCallbackFunction, aContext, aProgressListener) {
         var headerArray = null;
+        var context     = null;
 
         /* DEBUG */ dump("Yulup:webdavservice.js:WebDAVService.propfind(\"" + aURI + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\", \"" + aProgressListener + "\") invoked\n");
 
@@ -52,6 +53,17 @@ var WebDAVService = {
             headerArray = [["Depth", aDepth]];
         }
 
-        NetworkService.httpRequestPROPFIND(aURI, headerArray, aCallbackFunction, aContext, false, true, aProgressListener);
+        context = {
+            originalContext : aContext,
+            callbackFunction: aCallbackFunction
+        };
+
+        NetworkService.httpRequestPROPFIND(aURI, headerArray, this.__requestFinishedHandler, context, false, true, aProgressListener);
+    },
+
+    __requestFinishedHandler: function (aDocumentData, aResponseStatusCode, aContext, aResponseHeaders, aException) {
+        /* DEBUG */ dump("Yulup:webdavservice.js:WebDAVService.__requestFinishedHandler(\"" + aDocumentData + "\", \"" + aResponseStatusCode + "\", \"" + aContext + "\", \"" + aResponseHeaders + "\", \"" + aException + "\") invoked\n");
+
+        aContext.callbackFunction(aDocumentData, aResponseStatusCode, aContext.originalContext, aResponseHeaders, aException);
     }
 }
