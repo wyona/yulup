@@ -62,7 +62,7 @@ var WebDAVService = {
     },
 
     __requestFinishedHandler: function (aDocumentData, aResponseStatusCode, aContext, aResponseHeaders, aException) {
-        /* DEBUG */ dump("Yulup:webdavservice.js:WebDAVService.__requestFinishedHandler(\"" + aDocumentData + "\", \"" + aResponseStatusCode + "\", \"" + aContext + "\", \"" + aResponseHeaders + "\", \"" + aException + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:webdavservice.js:WebDAVService.__requestFinishedHandler(\"" + /*aDocumentData +*/ "\", \"" + aResponseStatusCode + "\", \"" + aContext + "\", \"" + aResponseHeaders + "\", \"" + aException + "\") invoked\n");
 
         aContext.callbackFunction(aDocumentData, aResponseStatusCode, aContext.originalContext, aResponseHeaders, aException);
     }
