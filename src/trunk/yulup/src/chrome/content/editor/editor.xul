@@ -260,19 +260,39 @@
     </toolbar>
   </toolbox>
 
-  <deck id="uiYulupEditorContentDeck" selectedIndex="0" orient="vertical" align="stretch" flex="1">
-    <vbox>
-      <spacer align="stretch" flex="2"/>
-      <description id="uiYulupEditorWaitDescription" value="&waitDescription.label;" flex="1"/>
-      <spacer align="stretch" flex="2"/>
+  <hbox align="stretch" flex="1">
+    <vbox id="uiYulupEditorInfobar" flex="1" align="stretch" collapsed="true">
+      <hbox id="uiYulupEditorInfobarHeader" align="center">
+        <!-- use a menulist if the number of available sidebars > 1
+        <menulist id="uiYulupEditorSidebarContentMenulist">
+          <menupopup>
+            <menuitem label="" crop="end"/>
+          </menupopup>
+        </menulist>
+        -->
+        <label id="uiYulupEditorInfobarTitle" value="" flex="1" crop="end"/>
+      </hbox>
+      <deck id="uiYulupEditorInfobarContentDeck" orient="vertical" align="stretch" flex="1"/>
     </vbox>
-    <tabbox id="uiYulupEditorTabbox" flex="1">
-      <tabs>
-      </tabs>
-      <tabpanels flex="1">
-      </tabpanels>
-    </tabbox>
-  </deck>
+
+    <splitter id="uiYulupEditorInfobarSplitter" collapse="before">
+      <grippy/>
+    </splitter>
+
+    <deck id="uiYulupEditorContentDeck" selectedIndex="0" orient="vertical" align="stretch" flex="1">
+      <vbox>
+        <spacer align="stretch" flex="2"/>
+        <description id="uiYulupEditorWaitDescription" value="&waitDescription.label;" flex="1"/>
+        <spacer align="stretch" flex="2"/>
+      </vbox>
+      <tabbox id="uiYulupEditorTabbox" flex="1">
+        <tabs>
+        </tabs>
+        <tabpanels flex="1">
+        </tabpanels>
+      </tabbox>
+    </deck>
+  </hbox>
 
   <toolbar id="uiYulupEditorPromptBox"
            class="uiEditorFooterToolBar"

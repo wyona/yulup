@@ -22,6 +22,28 @@ editcontroller {
   -moz-binding: url('chrome://yulup/content/editor/editor.xml#editcontroller');
 }
 
+/* ------------------------ Sidebar ------------------------- */
+
+#uiYulupEditorInfobar {
+  -moz-appearance: dialog;
+}
+
+#uiYulupEditorInfobarHeader {
+  border-bottom: 1px solid #A3A3A3;
+  background: url("chrome://global/skin/inset_gradient_1px.png") repeat !important;
+}
+
+#uiYulupEditorInfobarHeader > label {
+  font: icon;
+  color: #0000;
+}
+
+#uiYulupEditorInfobarSplitter {
+  border-right: 1px solid #8e8e8e;
+  border-left: 1px solid #bebebe;
+  background-color: #ececec;
+}
+
 /* ---------------------- Content Deck ---------------------- */
 
 #uiYulupEditorWaitDescription {
