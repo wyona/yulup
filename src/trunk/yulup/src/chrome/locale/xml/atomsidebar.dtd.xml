@@ -80,10 +80,6 @@
     <name xml:lang="en">Atom Sidebar</name>
   </entity>
 
-  <entity id="atomSidebarPage.title">
-    <name xml:lang="en">Atom Sidebar</name>
-  </entity>
-
   <entity id="openYulupAtomSidebar.key">
     <name xml:lang="en">A</name>
   </entity>
