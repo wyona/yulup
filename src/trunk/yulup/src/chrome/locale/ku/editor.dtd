@@ -11,6 +11,7 @@
 <!ENTITY editOperationFind.label "Find">
 <!ENTITY editOperationFindReplace.label "Replace">
 <!ENTITY fileOperationExit.label "Exit">
+<!ENTITY fileOperationInfobarToggle.label "Infobar">
 <!ENTITY fileOperationNew.label "New">
 <!ENTITY fileOperationNewFromTemplateLocalMenuitem.label "New from local template">
 <!ENTITY fileOperationNewFromTemplateCMSMenuitem.label "New from remote template">
@@ -41,6 +42,7 @@
 <!ENTITY editOperationFind.tooltip "Find a string">
 <!ENTITY editOperationFindReplace.tooltip "Replace a string">
 <!ENTITY fileOperationExit.tooltip "Exit the editor">
+<!ENTITY fileOperationInfobarToggle.tooltip "Open/Close Infobar">
 <!ENTITY fileOperationNew.tooltip "Create a new document">
 <!ENTITY fileOperationNewFromTemplateLocalMenuitem.tooltip "Create a new document based on a local template">
 <!ENTITY fileOperationNewFromTemplateCMSMenuitem.tooltip "Create a new document based on a template from CMS">

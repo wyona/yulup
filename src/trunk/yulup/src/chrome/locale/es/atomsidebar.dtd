@@ -14,6 +14,5 @@
 <!ENTITY atomSidebarFeedEntriesContextMenuEdit.label "Editar">
 <!ENTITY atomSidebarFeedEntriesContextMenuDelete.label "Eliminar">
 <!ENTITY atomSidebarPage.title "Atom Sidebar">
-<!ENTITY atomSidebarPage.title "Atom Sidebar">
 <!ENTITY openYulupAtomSidebar.key "A">
 <!ENTITY openYulupAtomSidebar.modifiers "shift accel">

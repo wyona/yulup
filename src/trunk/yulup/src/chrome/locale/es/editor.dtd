@@ -11,6 +11,7 @@
 <!ENTITY editOperationFind.label "Buscar">
 <!ENTITY editOperationFindReplace.label "Reemplazar">
 <!ENTITY fileOperationExit.label "Salir">
+<!ENTITY fileOperationInfobarToggle.label "Infobar">
 <!ENTITY fileOperationNew.label "Nuevo">
 <!ENTITY fileOperationNewFromTemplateLocalMenuitem.label "Nuevo a partir de plantilla local">
 <!ENTITY fileOperationNewFromTemplateCMSMenuitem.label "Nuevo a partir de plantilla remota">
@@ -41,6 +42,7 @@
 <!ENTITY editOperationFind.tooltip "Buscar una cadena">
 <!ENTITY editOperationFindReplace.tooltip "Reemplazar una cadena">
 <!ENTITY fileOperationExit.tooltip "Salir del editor">
+<!ENTITY fileOperationInfobarToggle.tooltip "Open/Close Infobar">
 <!ENTITY fileOperationNew.tooltip "Crear un documento nuevo">
 <!ENTITY fileOperationNewFromTemplateLocalMenuitem.tooltip "Crear un documento nuevo a partir de una plantilla local">
 <!ENTITY fileOperationNewFromTemplateCMSMenuitem.tooltip "Crear un documento nuevo a partir de una plantilla del CMS">
