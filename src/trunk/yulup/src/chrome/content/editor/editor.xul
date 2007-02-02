@@ -68,6 +68,7 @@
   <script type="application/x-javascript" src="chrome://yulup/content/newmenu.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/sitetree.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/webdavservice.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/webdavparser10.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/resourceupload.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/progressdialog.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/serveruriprompt.js"/>

@@ -303,7 +303,7 @@ SitetreeView.prototype = {
                 domDocument  = domParser.parseFromString(aDocumentData, "text/xml");
 
                 // instantiate the parser for this version and parse the file
-                sitetree = new NeutronParser10(domDocument, aBaseURI).parseSitetree();
+                sitetree = new WebDAVParser10(domDocument, aBaseURI).parse();
 
                 // update the model
                 aContext.view.updateSitetreeDOM(aContext.parentRow, sitetree);
