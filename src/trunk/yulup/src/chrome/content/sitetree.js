@@ -735,7 +735,7 @@ SitetreeView.prototype = {
 
         // notify the box
         this.treeBox.beginUpdateBatch();
-        this.treeBox.invalidate(aRow);
+        this.treeBox.invalidateRow(aRow);
         this.treeBox.endUpdateBatch();
     },
 
@@ -764,6 +764,8 @@ SitetreeView.prototype = {
                 // collapse the tree at aIndex
                 this.notifyRowChanged(aIndex);
             } else {
+                node.isOpen = true;
+
                 if (node.firstChild == null) {
                     // load the sitetree XML
                     this.loadSitetreeXML(node.uri, aIndex);
@@ -771,8 +773,6 @@ SitetreeView.prototype = {
                     // expand the tree at aIndex
                     this.notifyRowChanged(aIndex);
                 }
-
-                node.isOpen = true;
             }
         }
     }
