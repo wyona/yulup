@@ -413,7 +413,7 @@ SitetreeView.prototype = {
     getCurrentResourceURI: function() {
         var node = null;
 
-        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeVIew.getCurrentResourceURI() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.getCurrentResourceURI() invoked\n");
 
         node = this.getSitetreeNodeAtRow(this.selection.currentIndex);
 
@@ -454,7 +454,7 @@ SitetreeView.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aCurrentRow != null);
         /* DEBUG */ YulupDebug.ASSERT(aChildNodes != null);
 
-        ///* DEBUG */ dump("Yulup:sitetree.js:__buildRowNodeMap(\"" + aCurrentRow.row + "\")invoked\n");
+        ///* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.__buildRowNodeMap(\"" + aCurrentRow.row + "\")invoked\n");
 
         for (var i=0; i<aChildNodes.length; i++) {
 
@@ -502,25 +502,25 @@ SitetreeView.prototype = {
     },
 
     canDrop: function(aIndex, aOrientation) {
-        /* DEBUG */ dump("Yulup:sitetree.js:canDrop() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.canDrop() invoked\n");
     },
 
     cycleCell: function(aRow, aCol) {
-        /* DEBUG */ dump("Yulup:sitetree.js:cycleCell() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.cycleCell() invoked\n");
     },
 
     cycleHeader: function(aCol) {
-        /* DEBUG */ dump("Yulup:sitetree.js:cycleHeader() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.cycleHeader() invoked\n");
     },
 
     drop: function(aRow, aOriantation) {
-        /* DEBUG */ dump("Yulup:sitetree.js:drop() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.drop() invoked\n");
     },
 
     getCellProperties: function(aRow, aCol, aProperties) {
         var node = null;
 
-        ///* DEBUG */ dump("Yulup:sitetree.js:getCellProperties() invoked\n");
+        ///* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.getCellProperties() invoked\n");
 
         node = this.getSitetreeNodeAtRow(aRow);
 
@@ -534,7 +534,7 @@ SitetreeView.prototype = {
     },
 
     getCellValue: function(aRow, aCol) {
-        ///* DEBUG */ dump("Yulup:sitetree.js:getCellValue() invoked\n");
+        ///* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.getCellValue() invoked\n");
     },
 
     getCellText: function(aRow, aCol) {
@@ -543,7 +543,7 @@ SitetreeView.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aRow != null);
         /* DEBUG */ YulupDebug.ASSERT(aCol != null);
 
-        ///* DEBUG */ dump("Yulup:sitetree.js:getCellText() invoked\n");
+        ///* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.getCellText() invoked\n");
 
         node = this.getSitetreeNodeAtRow(aRow);
 
@@ -555,11 +555,11 @@ SitetreeView.prototype = {
     },
 
     getColumnProperties: function(aCol, aProperties) {
-        ///* DEBUG */ dump("Yulup:sitetree.js:getColumnProperties() invoked\n");
+        ///* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.getColumnProperties() invoked\n");
     },
 
     getImageSrc: function(aRow, aCol) {
-        ///* DEBUG */ dump("Yulup:sitetree.js:getImageSrc() invoked\n");
+        ///* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.getImageSrc() invoked\n");
 
         return null;
     },
@@ -569,7 +569,7 @@ SitetreeView.prototype = {
 
         /* DEBUG */ YulupDebug.ASSERT(aIndex != null);
 
-        ///* DEBUG */ dump("Yulup:sitetree.js:getLevel() invoked\n");
+        ///* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.getLevel() invoked\n");
 
         node = this.getSitetreeNodeAtRow(aIndex);
 
@@ -603,11 +603,11 @@ SitetreeView.prototype = {
     },
 
     getProgressMode: function(aRow, aCol) {
-        /* DEBUG */ dump("Yulup:sitetree.js:getProgressMode() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.getProgressMode() invoked\n");
     },
 
     getRowProperties: function(aIndex, aProperties) {
-        ///* DEBUG */ dump("Yulup:sitetree.js:getRowProperties() invoked\n");
+        ///* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.getRowProperties() invoked\n");
     },
 
     hasNextSibling: function(aRowIndex, aAfterIndex) {
@@ -616,7 +616,7 @@ SitetreeView.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aRowIndex   != null);
         /* DEBUG */ YulupDebug.ASSERT(aAfterIndex != null);
 
-        /* DEBUG */ dump("Yulup:sitetree.js:hasNextSibling() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.hasNextSibling() invoked\n");
 
         node = this.getSitetreeNodeAtRow(aRowIndex);
 
@@ -634,7 +634,7 @@ SitetreeView.prototype = {
 
         /* DEBUG */ YulupDebug.ASSERT(aIndex != null);
 
-        ///* DEBUG */ dump("Yulup:sitetree.js:isContainer() invoked\n");
+        ///* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.isContainer() invoked\n");
 
         node = this.getSitetreeNodeAtRow(aIndex);
 
@@ -646,7 +646,7 @@ SitetreeView.prototype = {
     },
 
     isContainerEmpty: function(aIndex) {
-        ///* DEBUG */ dump("Yulup:sitetree.js:isContainerEmpty() invoked\n");
+        ///* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.isContainerEmpty() invoked\n");
 
         return false;
     },
@@ -656,7 +656,7 @@ SitetreeView.prototype = {
 
         /* DEBUG */ YulupDebug.ASSERT(aIndex != null);
 
-        ///* DEBUG */ dump("Yulup:sitetree.js:isContainerOpen() invoked\n");
+        ///* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.isContainerOpen() invoked\n");
 
         node = this.getSitetreeNodeAtRow(aIndex);
 
@@ -668,39 +668,39 @@ SitetreeView.prototype = {
     },
 
     isEditable: function(aRow, aCol) {
-        /* DEBUG */ dump("Yulup:sitetree.js:isEditable() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.isEditable() invoked\n");
 
         return false;
     },
 
     isSeparator: function(aIndex, aCol) {
-        ///* DEBUG */ dump("Yulup:sitetree.js:isSeparator() invoked\n");
+        ///* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.isSeparator() invoked\n");
 
         return false;
     },
 
     isSorted: function(aIndex, aCol) {
-        ///* DEBUG */ dump("Yulup:sitetree.js:isSorted() invoked\n");
+        ///* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.isSorted() invoked\n");
 
         return false;
     },
 
     performAction: function(aAction) {
-        /* DEBUG */ dump("Yulup:sitetree.js:isSeparator() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.isSeparator() invoked\n");
     },
 
     performActionOnCell: function(aAction, aRow, aCol) {
-        /* DEBUG */ dump("Yulup:sitetree.js:performActionOnCell() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.performActionOnCell() invoked\n");
     },
 
     performActionOnRow: function(aAction, aRow) {
-        /* DEBUG */ dump("Yulup:sitetree.js:performActionOnRow() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.performActionOnRow() invoked\n");
     },
 
     selectionChanged: function() {
         var node = null;
 
-        /* DEBUG */ dump("Yulup:sitetree.js:selectionChanged() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.selectionChanged() invoked\n");
 
         if (this.selectionChangeObserver) {
             node = this.getSitetreeNodeAtRow(this.selection.currentIndex);
@@ -712,15 +712,15 @@ SitetreeView.prototype = {
     },
 
     setCellText: function(aRow, aCol, aValue) {
-        /* DEBUG */ dump("Yulup:sitetree.js:setCellText() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.setCellText() invoked\n");
     },
 
     setCellValue: function(aRow, aCol, aValue) {
-        /* DEBUG */ dump("Yulup:sitetree.js:setCellValue() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.setCellValue() invoked\n");
     },
 
     setTree: function(aTree) {
-        /* DEBUG */ dump("Yulup:sitetree.js:setTree() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.setTree() invoked\n");
 
         this.treeBox = aTree;
     },
@@ -750,7 +750,7 @@ SitetreeView.prototype = {
 
         /* DEBUG */ YulupDebug.ASSERT(aIndex != null);
 
-        /* DEBUG */ dump("Yulup:sitetree.js:toggleOpenState() invoked\n");
+        /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView.toggleOpenState() invoked\n");
 
         // update the tree selection
         this.selection.select(aIndex);
