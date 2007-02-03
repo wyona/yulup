@@ -138,7 +138,7 @@ var Authentication = {
 
         /* DEBUG */ YulupDebug.ASSERT(aException != null);
 
-        if (window.openDialog(YULUP_AUTHENTICATION_CHROME_URI, "yulupEditorAuthenticationDialog", "modal,resizable=no", returnObject, aException)) {
+        if (window.openDialog(YULUP_AUTHENTICATION_CHROME_URI, "yulupEditorAuthenticationDialog", "modal,resizable=no,centerscreen", returnObject, aException)) {
             if (returnObject.returnValue) {
                 return returnObject.returnValue;
             }

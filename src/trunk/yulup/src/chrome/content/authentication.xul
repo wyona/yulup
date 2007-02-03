@@ -40,6 +40,7 @@
         ondialogaccept="return Authentication.save('save')"
         onload="Authentication.uiYulupEditorAuthenticationOnDialogLoadHandler()"
         style="font: -moz-dialog;"
+        persist="screenX screenY"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript"
