@@ -26,7 +26,7 @@
  *
  */
 
-const YULUP_SERVER_URI_DIALOG_CHROME_URI = "chrome://yulup/content/serveruriprompt.xul";
+const YULUP_SERVER_URI_DIALOG_CHROME_URI = "chrome://yulup/content/serveruripromptdialog.xul";
 
 const SERVERURIPROMPT_FORM_HISTORY_ID = "yulup-serveruriprompt";
 
@@ -58,7 +58,7 @@ var ServerURIPrompt = {
             serverURI: null
         };
 
-        window.openDialog(YULUP_SERVER_URI_DIALOG_CHROME_URI, "yulupServerURIDialog", "modal,resizable=no", returnObject);
+        window.openDialog(YULUP_SERVER_URI_DIALOG_CHROME_URI, "yulupServerURIDialog", "modal,resizable=no,centerscreen", returnObject);
 
         return returnObject.serverURI;
     },

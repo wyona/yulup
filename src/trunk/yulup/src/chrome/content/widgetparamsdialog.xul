@@ -43,6 +43,7 @@
         ondialogaccept="return WidgetDialogHandler.save('save')"
         onload="WidgetDialogHandler.uiYulupEditorWidgetInsertOnDialogLoadHandler()"
         style="font: -moz-dialog;"
+        persist="screenX screenY"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <stringbundle id="uiYulupEditorStringbundle" src="chrome://yulup/locale/editor.properties"/>

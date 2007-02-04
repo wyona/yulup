@@ -26,7 +26,7 @@
  *
  */
 
-const YULUP_RESOURCE_UPLOAD_CHROME_URI = "chrome://yulup/content/resourceupload.xul";
+const YULUP_RESOURCE_UPLOAD_CHROME_URI = "chrome://yulup/content/resourceuploaddialog.xul";
 
 var ResourceUploadDialog = {
     showFilePicker: function () {
@@ -103,7 +103,7 @@ var ResourceUploadDialog = {
             resourceName : null
         };
 
-        window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupResourceUploadDialog", "modal,resizable=yes", true, aURI, returnObject);
+        window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupResourceUploadDialog", "modal,resizable=yes,centerscreen", true, aURI, returnObject);
 
         if (returnObject.error) {
             alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupSitetreeLoadFailure.label"));
@@ -158,7 +158,7 @@ var ResourceUploadDialog = {
             resourceName : null
         };
 
-        window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupDocumentUploadDialog", "modal,resizable=yes", false, aURI, returnObject, aDocumentName);
+        window.openDialog(YULUP_RESOURCE_UPLOAD_CHROME_URI, "yulupDocumentUploadDialog", "modal,resizable=yes,centerscreen", false, aURI, returnObject, aDocumentName);
 
         if (returnObject.error) {
             alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupSitetreeLoadFailure.label"));

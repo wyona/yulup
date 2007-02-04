@@ -28,7 +28,7 @@
 
 const WIDGET_TMP_DIR = "yulup-widgets";
 
-const YULUP_WIDGET_INSERT_CHROME_URI   = "chrome://yulup/content/widget.xul";
+const YULUP_WIDGET_INSERT_CHROME_URI   = "chrome://yulup/content/widgetparamsdialog.xul";
 const YULUP_RESOURCE_SELECT_CHROME_URI = "chrome://yulup/content/resourceselectdialog.xul";
 const TIDYWIDGETFRAGMENT_CHROME_URI    = "chrome://yulup/content/tidywidgetfragment.xsl";
 
@@ -377,7 +377,7 @@ var WidgetDialogHandler = {
     showWidgetInsertDialog: function(aWidget, aNSResolver, aSitetreeURI) {
         returnObject    = new Object();
 
-        if (window.openDialog(YULUP_WIDGET_INSERT_CHROME_URI, "yulupWidgetInsertDialog", "modal,resizable=no", returnObject, aWidget, aNSResolver, aSitetreeURI)) {
+        if (window.openDialog(YULUP_WIDGET_INSERT_CHROME_URI, "yulupWidgetInsertDialog", "modal,resizable=no,centerscreen", returnObject, aWidget, aNSResolver, aSitetreeURI)) {
             if (returnObject.returnValue) {
                 return returnObject.returnValue;
             }
