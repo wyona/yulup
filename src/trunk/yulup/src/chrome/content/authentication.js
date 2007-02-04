@@ -26,7 +26,7 @@
  *
  */
 
-const YULUP_AUTHENTICATION_CHROME_URI = "chrome://yulup/content/authentication.xul";
+const YULUP_AUTHENTICATION_CHROME_URI = "chrome://yulup/content/authenticationdialog.xul";
 
 const AUTHENTICATION_PASSWORD_FIELD_IDENTIFIER = "password";
 const AUTHENTICATION_FORM_HISTORY_ID           = "yulup";
@@ -54,7 +54,7 @@ var Authentication = {
 
         uiAuthenticationRows = document.getElementById('uiYulupEditorAuthenticationRows');
 
-        // extend authentication.xul with the fields from the exception
+        // extend authenticationdialog.xul with the fields from the exception
         for (field in gAuthException.params) {
             elem = document.createElement("row");
             elem.setAttribute("id", "row" + field);
@@ -89,7 +89,7 @@ var Authentication = {
    /**
     * Add the textbox value to the form-history
     *
-    * @param  {String}    aField the id of the textbox element in authentication.xul
+    * @param  {String}    aField the id of the textbox element in authenticationdialog.xul
     * @return {Undefined} does not have a return value
     */
     addToFormHistory: function (aField) {
