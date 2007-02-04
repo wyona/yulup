@@ -29,7 +29,7 @@
 const WIDGET_TMP_DIR = "yulup-widgets";
 
 const YULUP_WIDGET_INSERT_CHROME_URI   = "chrome://yulup/content/widget.xul";
-const YULUP_RESOURCE_SELECT_CHROME_URI = "chrome://yulup/content/resourceselect.xul";
+const YULUP_RESOURCE_SELECT_CHROME_URI = "chrome://yulup/content/resourceselectdialog.xul";
 const TIDYWIDGETFRAGMENT_CHROME_URI    = "chrome://yulup/content/tidywidgetfragment.xsl";
 
 const DEFAULT_COLORPICKER_VALUE = "#FFFFFF";
