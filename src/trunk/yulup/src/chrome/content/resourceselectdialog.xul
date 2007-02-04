@@ -43,6 +43,7 @@
         ondialogaccept="return ResourceSelectDialogHandler.save()"
         onload="ResourceSelectDialogHandler.uiYulupEditorResourceSelectOnDialogLoadHandler()"
         style="font: -moz-dialog; width: 400px;"
+        persist="screenX screenY"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <script type="application/x-javascript"

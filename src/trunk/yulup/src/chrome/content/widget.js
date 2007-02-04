@@ -535,7 +535,7 @@ var ResourceSelectDialogHandler = {
             returnValue: null
         };
 
-        if (window.openDialog(YULUP_RESOURCE_SELECT_CHROME_URI, "yulupWidgetResourceSelectDialog", "modal,resizable=no", aURI, returnObject)) {
+        if (window.openDialog(YULUP_RESOURCE_SELECT_CHROME_URI, "yulupWidgetResourceSelectDialog", "modal,resizable=no,centerscreen", aURI, returnObject)) {
             if (returnObject.returnValue) {
                 /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialogHandler.doSelectCommand: inserting URI \"" + returnObject.returnValue.spec + "\"\n");
                 document.getElementById(aTextBoxId).setAttribute("value", returnObject.returnValue.spec);
