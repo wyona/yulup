@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -78,12 +78,13 @@ function yulupInitYulup() {
  * @return {Undefined} does not have a return value
  */
 function yulupCreateNewEditor(aEditorParameters, aTriggerURI) {
-    var openInNewTab = null;
-    var currentTab   = null;
-    var yulupTab     = null;
-    var instanceID   = null;
-    var targetURI    = null;
-    var tabBrowser   = null;
+    var openInNewTab   = null;
+    var currentTab     = null;
+    var yulupTab       = null;
+    var sessionHistory = null;
+    var instanceID     = null;
+    var targetURI      = null;
+    var tabBrowser     = null;
 
     /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNewEditor(\"" + aEditorParameters + "\", \"" + aTriggerURI + "\") invoked\n");
 
@@ -109,8 +110,20 @@ function yulupCreateNewEditor(aEditorParameters, aTriggerURI) {
         // create a new tab
         yulupTab = self.getBrowser().addTab("");
 
+        try {
+            /* TODO: maybe we should rather copy the session history, than acquiring a pointer.
+             * I don't want to know what happens if suddenly two browser tabs share the same
+             * history object. */
+            sessionHistory = self.getBrowser().getBrowserForTab(currentTab).webNavigation.sessionHistory;
+
+            /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNewEditor: sessionHistory = \"" + sessionHistory + "\"\n");
+        } catch (exception) {
+            /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNewEditor: " + exception + "\n");
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:yulupCreateNewEditor", exception);
+        }
+
         // prepare parameters for pick-up
-        instanceID = gInstancesManager.addInstance(yulupTab, aEditorParameters, aTriggerURI);
+        instanceID = gInstancesManager.addInstance(yulupTab, aEditorParameters, aTriggerURI, sessionHistory);
 
         // construct target URI
         targetURI = YULUP_EDITOR_CHROME_URI + "?" + instanceID;
@@ -181,9 +194,10 @@ YulupEditorInstancesManager.prototype = {
      * @param  {nsIDOMNode}       aTab              a XUL <tab> node
      * @param  {EditorParameters} aEditorParameters the editor parameters object
      * @param  {String}           aTriggerURI       the URI of the document from which this new instance was triggered
+     * @param  {nsISHistory}      aSessionHistory   the session history of the browser contained in aTab
      * @return {String} returns an instance ID of the newly created management instance
      */
-    addInstance: function (aTab, aEditorParameters, aTriggerURI) {
+    addInstance: function (aTab, aEditorParameters, aTriggerURI, aSessionHistory) {
         var editorInstance = null;
         var instanceID     = null;
 
@@ -195,6 +209,7 @@ YulupEditorInstancesManager.prototype = {
         editorInstance.tab             = aTab;
         editorInstance.parameters      = aEditorParameters;
         editorInstance.triggerURI      = aTriggerURI;
+        editorInstance.sessionHistory  = aSessionHistory;
         editorInstance.archiveRegistry = YulupNeutronArchiveRegistry;
 
         // add instance to the hash table
@@ -943,11 +958,12 @@ Yulup.prototype = {
     /**
      * Replace the given tab with the given URI.
      *
-     * @param  {Tab}       aOldTab the tab to replace
-     * @param  {String}    aURI    the URI to load
+     * @param  {Tab}         aOldTab         the tab to replace
+     * @param  {String}      aURI            the URI to load
+     * @param  {nsISHistory} aSessionHistory the session history of the original calling tab
      * @return {Undefined} does not have a return value
      */
-    replaceTab: function (aOldTab, aURI) {
+    replaceTab: function (aOldTab, aURI, aSessionHistory) {
         var newTab     = null;
         var tabBrowser = null;
 
@@ -961,6 +977,16 @@ Yulup.prototype = {
                 // new tab creation failed, reload in old tab
                 self.getBrowser().getBrowserForTab(aOldTab).loadURIWithFlags(aURI, Components.interfaces.nsIWebNavigation.LOAD_FLAGS_REPLACE_HISTORY, null, null);
             } else {
+                // attach caller's session history to the newly created tab
+                if (aSessionHistory) {
+                    try {
+                        self.getBrowser().getBrowserForTab(newTab).webNavigation.sessionHistory = aSessionHistory;
+                    } catch (exception) {
+                        /* DEBUG */ dump("Yulup:yulup.js:Yulup.replaceTab: " + exception + "\n");
+                        /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.replaceTab", exception);
+                    }
+                }
+
                 // switch to newly created tab
                 self.getBrowser().selectedTab = newTab;
 
@@ -971,7 +997,17 @@ Yulup.prototype = {
         } else {
             // if only one browser is left, open a new empty browser tab first and close this one
             if (self.getBrowser().browsers.length == 1) {
-                self.getBrowser().addTab("about:blank");
+                newTab = self.getBrowser().addTab("about:blank");
+
+                // attach caller's session history to the newly created tab
+                if (aSessionHistory) {
+                    try {
+                        self.getBrowser().getBrowserForTab(newTab).webNavigation.sessionHistory = aSessionHistory;
+                    } catch (exception) {
+                        /* DEBUG */ dump("Yulup:yulup.js:Yulup.replaceTab: " + exception + "\n");
+                        /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.replaceTab", exception);
+                    }
+                }
             }
 
             // close old tab

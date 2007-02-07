@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -38,9 +38,10 @@ var gTriggerURI         = null;
 var gControlledShutdown = false;
 
 var Editor = {
-    __findWindow   : null,
-    __replaceWindow: null,
-    __windowList   : [],
+    __findWindow          : null,
+    __replaceWindow       : null,
+    __windowList          : [],
+    __callerSessionHistory: null,
 
 
     /**
@@ -107,6 +108,7 @@ var Editor = {
 
                     // save our trigger URI
                     gTriggerURI = parameterObject.triggerURI;
+                    Editor.__callerSessionHistory = parameterObject.sessionHistory;
 
                     // set favicon
                     gMainBrowserWindow.getBrowser().setIcon(gYulupTab, YULUP_FAVICON_CHROME_URI);
@@ -295,7 +297,7 @@ var Editor = {
             Editor.shutdownEditor();
 
             /* DEBUG */ dump("Yulup:editor.js:Editor.exitEditor: replacing tab with URI = \"" + gTriggerURI + "\"\n");
-            gMainBrowserWindow.yulup.replaceTab(gYulupTab, gTriggerURI);
+            gMainBrowserWindow.yulup.replaceTab(gYulupTab, gTriggerURI, Editor.__callerSessionHistory);
         }
     },
 
@@ -948,7 +950,7 @@ var Editor = {
             Editor.shutdownEditor();
 
             /* DEBUG */ dump("Yulup:editor.js:Editor.documentCheckinFinished: replacing tab\n");
-            gMainBrowserWindow.yulup.replaceTab(gYulupTab, gTriggerURI);
+            gMainBrowserWindow.yulup.replaceTab(gYulupTab, gTriggerURI, Editor.__callerSessionHistory);
         }
     },
 
