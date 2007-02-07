@@ -35,9 +35,9 @@
     <h4>Troubleshooting Installation</h4>
 
     <a name="xpinstall"/>
-    <p><span style="font-weight: bolder;">Q.</span>When I click on one of the download links below, Firefox tells me something along the lines of &quot;Software installation is currently disabled. Click Edit Options... to enable it and try again.&quot; When clicking on &quot;Edit Options...&quot;, the preferences dialog is opened but there is no relevant option to reenable software installation.</p>
+    <p><span style="font-weight: bolder;">Q.</span> When I click on one of the download links below, Firefox tells me something along the lines of &quot;Software installation is currently disabled. Click Edit Options... to enable it and try again.&quot; When clicking on &quot;Edit Options...&quot;, the preferences dialog is opened but there is no relevant option to reenable software installation.</p>
 
-    <p><span style="font-weight: bolder;">A.</span>The option to enable software installation was removed from the user interface, without implementing a replacement. This is a known <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=310737">bug</a> and is fixed in Firefox 2 alpha 2. For users of Firefox 1.5.0.x, a workaround is to open the URI &quot;about:config&quot;, scroll down to the option &quot;xpinstall.enabled&quot;, right click on that name, and select &quot;Toggle&quot; from the context menu, such that the &quot;Value&quot; column reads &quot;true&quot;.</p>
+    <p><span style="font-weight: bolder;">A.</span> The option to enable software installation was removed from the user interface, without implementing a replacement. This is a known <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=310737">bug</a> and is fixed in Firefox 2 alpha 2. For users of Firefox 1.5.0.x, a workaround is to open the URI &quot;about:config&quot;, scroll down to the option &quot;xpinstall.enabled&quot;, right click on that name, and select &quot;Toggle&quot; from the context menu, such that the &quot;Value&quot; column reads &quot;true&quot;.</p>
 
     <p>Note that this bug must not necessarily show up with your installation, since the &quot;xpinstall.enabled&quot; is set to &quot;true&quot; by default, and could only have been changed by you yourself (or your administrator) in an earlier release or manually by using &quot;about:config&quot;.</p>
 
@@ -60,7 +60,7 @@
     <a name="notvalidpackage"/>
     <p><span style="font-weight: bolder;">Q.</span> Firefox could not install the file at http:// because: Not a valid install package.</p>
 
-    <p><span style="font-weight: bolder;">A.</span> This seems to be a Firefox <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=277556">bug</a>. After 4 or 5 times re-trying to install it normally suddenly works.</p>
+    <p><span style="font-weight: bolder;">A.</span> This seems to be a Firefox <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=277556">bug</a>. After 4 or 5 times re-trying to install it usually suddenly works.</p>
 
     <h4>Running Yulup</h4>
 
@@ -72,7 +72,8 @@
     <a name="keyboardfocus"/>
     <p><span style="font-weight: bolder;">Q.</span> Although the cursor is placed inside the source editor, no text can be entered.</p>
 
-    <p><span style="font-weight: bolder;">A.</span> This is <a href="">bug 5153</a>. In order to edit, simply position the cursor inside the source view and hit TAB once.</p>
+    <p><span style="font-weight: bolder;">A.</span> This is <a href="http://bugzilla.wyona.com/cgi-bin/bugzilla/show_bug.cgi?id=5153">bug 5153</a> and is fixed in Yulup version 0.2.2. You might want to consider updating.</p>
+    <p>In case you can't update right now, simply position the cursor inside the source view and hit TAB once.</p>
 
     <br/><br/><br/><br/><br/>
   </body>
