@@ -1,5 +1,5 @@
 pref("extensions.yulup.atom.autoopensidebar", true);
-pref("extensions.yulup.editor.toolbox.showiconsonly", false);
+pref("extensions.yulup.editor.toolbox.showiconsonly", true);
 pref("extensions.yulup.editor.keybinding", "readline");
 pref("extensions.yulup.editor.usetabspaces", true);
 pref("extensions.yulup.editor.tabspaces", 2);
