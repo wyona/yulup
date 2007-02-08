@@ -78,13 +78,15 @@ function yulupInitYulup() {
  * @return {Undefined} does not have a return value
  */
 function yulupCreateNewEditor(aEditorParameters, aTriggerURI) {
-    var openInNewTab   = null;
-    var currentTab     = null;
-    var yulupTab       = null;
-    var sessionHistory = null;
-    var instanceID     = null;
-    var targetURI      = null;
-    var tabBrowser     = null;
+    var openInNewTab       = null;
+    var currentTab         = null;
+    var yulupTab           = null;
+    var sessionHistory     = null;
+    var sessionHistoryList = null;
+    var historyEntries     = null;
+    var instanceID         = null;
+    var targetURI          = null;
+    var tabBrowser         = null;
 
     /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNewEditor(\"" + aEditorParameters + "\", \"" + aTriggerURI + "\") invoked\n");
 
@@ -110,20 +112,27 @@ function yulupCreateNewEditor(aEditorParameters, aTriggerURI) {
         // create a new tab
         yulupTab = self.getBrowser().addTab("");
 
+        // copy session history
         try {
-            /* TODO: maybe we should rather copy the session history, than acquiring a pointer.
-             * I don't want to know what happens if suddenly two browser tabs share the same
-             * history object. */
             sessionHistory = self.getBrowser().getBrowserForTab(currentTab).webNavigation.sessionHistory;
 
-            /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNewEditor: sessionHistory = \"" + sessionHistory + "\"\n");
+            // iterate over all history entries in aSessionHistory and add them to the new tab's session history
+            historyEntries = sessionHistory.SHistoryEnumerator;
+
+            sessionHistoryList = new Array();
+
+            while (historyEntries.hasMoreElements()) {
+                sessionHistoryList.push(historyEntries.getNext());
+            }
         } catch (exception) {
             /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNewEditor: " + exception + "\n");
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:yulupCreateNewEditor", exception);
+
+            sessionHistoryList = null;
         }
 
         // prepare parameters for pick-up
-        instanceID = gInstancesManager.addInstance(yulupTab, aEditorParameters, aTriggerURI, sessionHistory);
+        instanceID = gInstancesManager.addInstance(yulupTab, aEditorParameters, aTriggerURI, sessionHistoryList);
 
         // construct target URI
         targetURI = YULUP_EDITOR_CHROME_URI + "?" + instanceID;
@@ -194,7 +203,7 @@ YulupEditorInstancesManager.prototype = {
      * @param  {nsIDOMNode}       aTab              a XUL <tab> node
      * @param  {EditorParameters} aEditorParameters the editor parameters object
      * @param  {String}           aTriggerURI       the URI of the document from which this new instance was triggered
-     * @param  {nsISHistory}      aSessionHistory   the session history of the browser contained in aTab
+     * @param  {Array}            aSessionHistory   the session history of the browser contained in aTab
      * @return {String} returns an instance ID of the newly created management instance
      */
     addInstance: function (aTab, aEditorParameters, aTriggerURI, aSessionHistory) {
@@ -960,7 +969,7 @@ Yulup.prototype = {
      *
      * @param  {Tab}         aOldTab         the tab to replace
      * @param  {String}      aURI            the URI to load
-     * @param  {nsISHistory} aSessionHistory the session history of the original calling tab
+     * @param  {Array}       aSessionHistory the session history of the original calling tab
      * @return {Undefined} does not have a return value
      */
     replaceTab: function (aOldTab, aURI, aSessionHistory) {
@@ -973,46 +982,62 @@ Yulup.prototype = {
 
         // if aURI is given, replace the tab, else close it
         if (aURI) {
-            if (!(newTab = self.getBrowser().addTab(aURI))) {
-                // new tab creation failed, reload in old tab
-                self.getBrowser().getBrowserForTab(aOldTab).loadURIWithFlags(aURI, Components.interfaces.nsIWebNavigation.LOAD_FLAGS_REPLACE_HISTORY, null, null);
-            } else {
-                // attach caller's session history to the newly created tab
-                if (aSessionHistory) {
-                    try {
-                        self.getBrowser().getBrowserForTab(newTab).webNavigation.sessionHistory = aSessionHistory;
-                    } catch (exception) {
-                        /* DEBUG */ dump("Yulup:yulup.js:Yulup.replaceTab: " + exception + "\n");
-                        /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.replaceTab", exception);
-                    }
-                }
+            newTab = self.getBrowser().addTab(aURI);
 
-                // switch to newly created tab
-                self.getBrowser().selectedTab = newTab;
+            // attach caller's session history to the newly created tab
+            if (newTab && aSessionHistory)
+                this.__attachSessionHistory(newTab, aSessionHistory, aURI);
 
-                // close old tab, we have a new one
-                tabBrowser = self.getBrowser();
-                window.setTimeout(function () { tabBrowser.removeTab(aOldTab); }, 0);
-            }
+            // switch to newly created tab
+            self.getBrowser().selectedTab = newTab;
         } else {
             // if only one browser is left, open a new empty browser tab first and close this one
             if (self.getBrowser().browsers.length == 1) {
                 newTab = self.getBrowser().addTab("about:blank");
 
                 // attach caller's session history to the newly created tab
-                if (aSessionHistory) {
-                    try {
-                        self.getBrowser().getBrowserForTab(newTab).webNavigation.sessionHistory = aSessionHistory;
-                    } catch (exception) {
-                        /* DEBUG */ dump("Yulup:yulup.js:Yulup.replaceTab: " + exception + "\n");
-                        /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.replaceTab", exception);
-                    }
-                }
+                if (newTab && aSessionHistory)
+                    this.__attachSessionHistory(newTab, aSessionHistory, null);
             }
+        }
 
-            // close old tab
-            tabBrowser = self.getBrowser();
-            window.setTimeout(function () { tabBrowser.removeTab(aOldTab); }, 0);
+        // close old tab, we have a new one
+        tabBrowser = self.getBrowser();
+        window.setTimeout(function () { tabBrowser.removeTab(aOldTab); }, 0);
+    },
+
+    /**
+     * Add session history entries to a tab. Does not add the last history
+     * entry from the given list if its URI matches the passed in URI.
+     *
+     * @param  {Tab}    aTab            the tab to add the history entries to
+     * @param  {Array}  aSessionHistory the list of session history entries
+     * @param  {String} aURI            a URI to compare the last history entry to, may be null
+     * @return {Undefined} does not have a return value
+     */
+    __attachSessionHistory: function (aTab, aSessionHistory, aURI) {
+        var sessionHistory = null;
+
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.__attachSessionHistory() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aTab            != null);
+        /* DEBUG */ YulupDebug.ASSERT(aSessionHistory != null);
+
+        try {
+            sessionHistory = self.getBrowser().getBrowserForTab(aTab).webNavigation.sessionHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
+
+            // loop over all history entries in aSessionHistory and add them to the new tab's session history
+            for (var i = 0; i < aSessionHistory.length; i++) {
+                // skip last entry if it is the same as the given URI
+                if (!(i == (aSessionHistory.length - 1) &&
+                      aURI &&
+                      aSessionHistory[i].QueryInterface(Components.interfaces.nsIHistoryEntry).URI &&
+                      aSessionHistory[i].QueryInterface(Components.interfaces.nsIHistoryEntry).URI.spec == aURI))
+                    sessionHistory.addEntry(aSessionHistory[i], true);
+            }
+        } catch (exception) {
+            /* DEBUG */ dump("Yulup:yulup.js:Yulup.__attachSessionHistory: " + exception + "\n");
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.__attachSessionHistory", exception);
         }
     }
 };
