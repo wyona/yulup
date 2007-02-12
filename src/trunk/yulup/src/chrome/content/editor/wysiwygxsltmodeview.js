@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -60,10 +60,6 @@ function WYSIWYGXSLTModeView(aEditorController, aModel, aShowViewCommand, aBarri
     // call super constructor
     WYSIWYGModeView.call(this, aEditorController, aModel, aShowViewCommand, aBarrier);
 
-    // Get xml serializer
-    this.xmlSerializer = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer);
-
-
     if (aStyleTemplate != null) {
 
         this.styleTemplate = Components.classes["@mozilla.org/xml/xml-document;1"].createInstance(Components.interfaces.nsIDOMXMLDocument);
@@ -101,7 +97,6 @@ WYSIWYGXSLTModeView.prototype = {
     styleTemplate             : null,
     domDocument               : null,
     xhtmlDocument             : null,
-    xmlSerializer             : null,
     xPathToolBarVisible       : true,
     isNamespaceAware          : true,
     currentSourceSelectionPath: null,

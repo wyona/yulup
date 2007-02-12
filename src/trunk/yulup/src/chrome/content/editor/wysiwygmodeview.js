@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -60,11 +60,15 @@ function WYSIWYGModeView(aEditorController, aModel, aShowViewCommand, aBarrier) 
 
     this.uriRewriter = new URIRewriter(this);
 
+    this.__atomService = Components.classes["@mozilla.org/atom-service;1"].getService(Components.interfaces.nsIAtomService);
+
     /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView: this.editor = \"" + this.editor + "\"\n");
 }
 
 WYSIWYGModeView.prototype = {
     __proto__: View.prototype,
+
+    __atomService: null,
 
     documentPreamble: null,
 
@@ -100,6 +104,7 @@ WYSIWYGModeView.prototype = {
             // set editor attributes
             this.view.enableUndo(true);
             this.view.returnInParagraphCreatesNewParagraph = true;
+            this.view.isCSSEnabled = false;
 
             // make the caret visible even if the current selection is not collapsed
             this.view.selectionController.setCaretVisibilityDuringSelection(true);
@@ -134,8 +139,9 @@ WYSIWYGModeView.prototype = {
                                                              aKeyEvent.stopPropagation();
                                                          }, true);
 
-            // hook up selection listener
+            // hook up selection listeners
             this.addSelectionListener(new CutCopySelectionListener(this));
+            this.addSelectionListener(new WidgetUpdateSelectionListener(this.controller.widgetManager.surroundCommandList));
 
             // clear undo and redo stacks
             this.view.transactionManager.clear();
@@ -294,6 +300,73 @@ WYSIWYGModeView.prototype = {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:wysiwygmodeview.js:WYSIWYGModeView.removeSelectionListener", exception);
             Components.utils.reportError(exception);
         }
+    },
+
+    doInsertCommand: function (aCommand, aFragment) {
+        var fragmentData = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aCommand  != null);
+        /* DEBUG */ YulupDebug.ASSERT(aFragment != null);
+
+        /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.doInsertCommand() invoked\n");
+
+        fragmentData = this.xmlSerializer.serializeToString(aFragment);
+
+        this.view.insertHTML(fragmentData);
+    },
+
+    doSurroundCommand: function (aCommand, aFragment) {
+        var elemName = null;
+        var elemAtom = null;
+        var textNode = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aCommand  != null);
+        /* DEBUG */ YulupDebug.ASSERT(aFragment != null);
+
+        /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.doSurroundCommand() invoked\n");
+
+        if (aFragment.documentElement) {
+            elemName = aFragment.documentElement.localName.toLowerCase();
+
+            elemAtom = this.__atomService.getAtom(elemName);
+
+            if (this.__pathToRootContains(elemName, this.view.selection.anchorNode)) {
+                /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.doSurroundCommand: unsurround\n");
+                this.view.removeInlineProperty(elemAtom, null);
+
+                WidgetHandler.deactivateCommand(aCommand);
+            } else {
+                /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.doSurroundCommand: surround\n");
+                this.view.setInlineProperty(elemAtom, null, null);
+
+                WidgetHandler.activateCommand(aCommand);
+            }
+        }
+    },
+
+    __pathToRootContains: function (aElementName, aStartNode) {
+        var elemName = null;
+        var node     = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aElementName != null);
+        /* DEBUG */ YulupDebug.ASSERT(aStartNode   != null);
+
+        /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.__pathToRootContains(\"" + aElementName + "\", \"" + aStartNode + "\") invoked\n");
+
+        elemName = aElementName.toLowerCase();
+        node     = aStartNode;
+
+        while (node) {
+            ///* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.__pathToRootContains: visiting node \"" + node.localName + "\"\n");
+
+            if (node.nodeType == Components.interfaces.nsIDOMNode.ELEMENT_NODE &&
+                node.localName.toLowerCase() == elemName)
+                return node;
+
+            node = node.parentNode;
+        }
+
+        return null;
     }
 };
 

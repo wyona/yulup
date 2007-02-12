@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -74,12 +74,15 @@ function WidgetManager(aInstanceID) {
     this.tmpDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
 
     /* DEBUG */ dump("Yulup:widget.js:WidgetManager: temp dir = \"" + this.tmpDir.path +"\"\n");
+
+    this.surroundCommandList = {};
 }
 
 WidgetManager.prototype = {
-    instanceID:   null,
-    widgets:      null,
-    tmpDir:       null,
+    instanceID         : null,
+    widgets            : null,
+    tmpDir             : null,
+    surroundCommandList: null,
 
     /**
      * Removes all temporary directories.
@@ -123,14 +126,15 @@ WidgetManager.prototype = {
      * @return {Undefined} does not have a return value
      */
     addWidgets: function(aWidgets) {
-        var widget         = null;
-        var widgetDir      = null;
-        var iconFile       = null;
-        var ioService      = null;
-        var commandSet     = null;
-        var widgetCommand  = null;
-        var toolbarButtons = null;
-        var widgetButton   = null;
+        var widget                 = null;
+        var widgetDir              = null;
+        var iconFile               = null;
+        var ioService              = null;
+        var commandSet             = null;
+        var widgetCommand          = null;
+        var toolbarButtons         = null;
+        var widgetButton           = null;
+        var surroundingElementName = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidgets(\"" + aWidgets + "\") invoked\n");
 
@@ -179,8 +183,21 @@ WidgetManager.prototype = {
             widgetCommand = document.createElement('command');
             widgetCommand.setAttribute('id', 'cmd_' + widget.attributes["name"]);
             widgetCommand.setAttribute('disabled', 'false');
-            widgetCommand.setAttribute('oncommand', "WidgetHandler.doWidgetCommand(\"" + widget.attributes["name"] + "\")");
+            widgetCommand.setAttribute('oncommand', "WidgetHandler.doWidgetCommand(this, \"" + widget.attributes["name"] + "\")");
             commandSet.appendChild(widgetCommand);
+
+            // get top-level element name
+            if (widget.attributes["type"] === "surround") {
+                surroundingElementName = widget.fragment.documentElement;
+
+                if (surroundingElementName && surroundingElementName.localName) {
+                    /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidgets: registering surrounding action for element name \"" + widget.fragment.documentElement.localName.toLowerCase() + "\"\n");
+
+                    this.surroundCommandList[widget.fragment.documentElement.localName.toLowerCase()] = widgetCommand;
+                }
+
+                surroundingElementName = null;
+            }
 
             // add toolbarbutton to editor.xul
             widgetButton = document.createElement('canvasbutton');
@@ -547,7 +564,6 @@ var ResourceSelectDialogHandler = {
 
 
 var WidgetHandler = {
-
     /**
      * Update the widgets xml-fragment with the user defined attribute
      * values.
@@ -604,8 +620,8 @@ var WidgetHandler = {
      * Removes superflous null-namespace declarations from the
      * widget fragment.
      *
-     * @param  {nsIXMLDocument}  aDocument the xml document that will be cleaned
-     * @return {nsIXMLDocument}            the cleaned xml document
+     * @param  {nsIDOMXMLDocument}  aDocument the xml document that will be cleaned
+     * @return {nsIDOMXMLDocument}            the cleaned xml document
      */
     tidyWidgetFragment: function(aDocument) {
         var tidyWidgetFragmentXSL = null;
@@ -627,7 +643,7 @@ var WidgetHandler = {
         return xsltProcessor.transformToDocument(aDocument);
     },
 
-    doContentWidgetCommand: function(aWidget, aView, aViewMode) {
+    doContentWidgetCommand: function(aCommand, aWidget, aView, aViewMode) {
         var widget          = null;
         var xmlSerializer   = null;
         var fragmentData    = null;
@@ -662,9 +678,9 @@ var WidgetHandler = {
                 fragmentData = xmlSerializer.serializeToString(tidyedFragment);
 
                 if (aViewMode == 1) {
-                    aView.view.insertText(fragmentData);
+                    aView.doInsertCommand(aCommand, tidyedFragment);
                 } else if (aViewMode == 3) {
-                    aView.view.insertHTML(fragmentData);
+                    aView.doInsertCommand(aCommand, tidyedFragment);
                 } else if (aViewMode == 2) {
                     xPath = aView.getSourceXPathForXHTMLNode(aView.currentXHTMLNode, aView.isNamespaceAware);
 
@@ -700,19 +716,9 @@ var WidgetHandler = {
                 if (true) {
                     // we insert
                     if (aViewMode == 1) {
-                        // source mode view
-                        tidyedFragment.firstChild.appendChild(tidyedFragment.createTextNode(aView.view.selection));
-
-                        /* Don't use @mozilla.org/xmlextras/xmlserializer;1 here because we
-                         * don't want the tags contained on the text node to be escaped. */
-                        fragmentData = (new WYSIWYGDOMSerialiser(tidyedFragment, false, true)).serialiseXML();
-                        aView.view.insertText(fragmentData);
+                        aView.doSurroundCommand(aCommand, tidyedFragment);
                     } else if (aViewMode == 3) {
-                        // xhtml view
-                        if (!aView.view.selection.isCollapsed) {
-                            // if selection is not collapsed insert the fragment
-                            WidgetHandler.__surroundSelection(aView.view, aView.view.selection, tidyedFragment.firstChild);
-                        }
+                        aView.doSurroundCommand(aCommand, tidyedFragment);
                     } else if (aViewMode == 2) {
                         // xslt mode view
                         xPath = aView.getSourceXPathForXHTMLNode(aView.currentXHTMLNode, aView.isNamespaceAware);
@@ -755,7 +761,7 @@ var WidgetHandler = {
         }
     },
 
-    doWidgetCommand: function(aWidgetName) {
+    doWidgetCommand: function(aCommand, aWidgetName) {
         var widget          = null;
         var view            = null;
         var viewMode        = null;
@@ -778,7 +784,7 @@ var WidgetHandler = {
         switch (widget.attributes["type"]) {
             case "insert":
             case "surround":
-                WidgetHandler.doContentWidgetCommand(widget, view, viewMode);
+                WidgetHandler.doContentWidgetCommand(aCommand, widget, view, viewMode);
                 break;
         }
     },
@@ -811,6 +817,54 @@ var WidgetHandler = {
 
         // insert cloned selection at current selection
         aEditor.insertHTML(xmlSerializer.serializeToString(newParent));
+    },
+
+    activateCommand: function (aCommand) {
+        /* DEBUG */ YulupDebug.ASSERT(aCommand != null);
+
+        // hack to refire command update
+        aCommand.removeAttribute("active");
+        aCommand.setAttribute("active", "true");
+    },
+
+    deactivateCommand: function (aCommand) {
+        /* DEBUG */ YulupDebug.ASSERT(aCommand != null);
+
+        aCommand.removeAttribute("active");
+    },
+
+    updateCommandActiveStates: function (aWidgetCommandList, aSelection) {
+        var elemNameMap = null;
+        var node        = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aWidgetCommandList != null);
+        /* DEBUG */ YulupDebug.ASSERT(aSelection         != null);
+
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.updateCommandActiveStates() invoked\n");
+
+        if (aSelection.isCollapsed) {
+            elemNameMap = {};
+
+            /* Add all element names on the path from the current selection anchor
+             * to the element names map. */
+            node = aSelection.anchorNode;
+
+            while (node) {
+                if (node.localName)
+                    elemNameMap[node.localName.toLowerCase()] = true;
+
+                node = node.parentNode;
+            }
+
+            // check all commands
+            for (var elemName in aWidgetCommandList) {
+                if (elemNameMap[elemName]) {
+                    WidgetHandler.activateCommand(aWidgetCommandList[elemName]);
+                } else {
+                    WidgetHandler.deactivateCommand(aWidgetCommandList[elemName]);
+                }
+            }
+        }
     }
 };
 
@@ -854,3 +908,21 @@ function initialCleanUp(aDir) {
         }
     }
 }
+
+function WidgetUpdateSelectionListener(aWidgetCommandList) {
+    /* DEBUG */ YulupDebug.ASSERT(aWidgetCommandList != null);
+
+    /* DEBUG */ dump("Yulup:widget.js:WidgetUpdateSelectionListener() invoked\n");
+
+    this.__widgetCommandList = aWidgetCommandList;
+}
+
+WidgetUpdateSelectionListener.prototype = {
+    __widgetCommandList: null,
+
+    notifySelectionChanged: function (aDocument, aSelection, aReason) {
+        /* DEBUG */ dump("Yulup:widget.js:WidgetUpdateSelectionListener.notifySelectionChanged() invoked\n");
+
+        WidgetHandler.updateCommandActiveStates(this.__widgetCommandList, aSelection);
+    }
+};

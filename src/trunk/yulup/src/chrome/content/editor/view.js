@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -55,6 +55,8 @@ function View(aEditorController, aModel, aBarrier) {
     this.cutCopyObserver  = new CutCopyObserver();
 
     this.commandUpdaters = [ this.undoRedoObserver, this.cutCopyObserver ];
+
+    this.xmlSerializer = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer);
 }
 
 View.prototype = {
@@ -69,6 +71,7 @@ View.prototype = {
     undoRedoObserver: null,
     cutCopyObserver : null,
     uriRewriter     : null,
+    xmlSerializer   : null,
 
     /**
      * Show this view.

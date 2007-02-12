@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -312,5 +312,34 @@ SourceModeView.prototype = {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:sourcemodeview.js:SourceModeView.removeSelectionListener", exception);
             Components.utils.reportError(exception);
         }
+    },
+
+    doInsertCommand: function (aCommand, aFragment) {
+        var fragmentData = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aCommand  != null);
+        /* DEBUG */ YulupDebug.ASSERT(aFragment != null);
+
+        /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.doInsertCommand() invoked\n");
+
+        fragmentData = this.xmlSerializer.serializeToString(aFragment);
+
+        this.view.insertText(fragmentData);
+    },
+
+    doSurroundCommand: function (aCommand, aFragment) {
+        var fragmentData = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aCommand  != null);
+        /* DEBUG */ YulupDebug.ASSERT(aFragment != null);
+
+        /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.doSurroundCommand() invoked\n");
+
+        aFragment.firstChild.appendChild(aFragment.createTextNode(this.view.selection));
+
+        /* Don't use @mozilla.org/xmlextras/xmlserializer;1 here because we
+         * don't want the tags contained on the text node to be escaped. */
+        fragmentData = (new WYSIWYGDOMSerialiser(aFragment, false, true)).serialiseXML();
+        this.view.insertText(fragmentData);
     }
 };
