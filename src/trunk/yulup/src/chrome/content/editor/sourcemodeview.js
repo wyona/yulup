@@ -328,12 +328,18 @@ SourceModeView.prototype = {
     },
 
     doSurroundCommand: function (aCommand, aFragment) {
+        var collapsed    = null;
         var fragmentData = null;
+        var nodeName     = null;
+        var prefixName   = null;
+        var tagLength    = null;
 
         /* DEBUG */ YulupDebug.ASSERT(aCommand  != null);
         /* DEBUG */ YulupDebug.ASSERT(aFragment != null);
 
         /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.doSurroundCommand() invoked\n");
+
+        collapsed = this.view.selection.isCollapsed;
 
         aFragment.firstChild.appendChild(aFragment.createTextNode(this.view.selection));
 
@@ -342,6 +348,21 @@ SourceModeView.prototype = {
         fragmentData = (new WYSIWYGDOMSerialiser(aFragment, false, true)).serialiseXML();
         this.view.insertText(fragmentData);
 
-        // TODO: move cursor into the text node of the inserted element
+        // move selection to the middle of the inserted element tuple
+        if (collapsed && aFragment.documentElement) {
+            nodeName   = aFragment.documentElement.nodeName;
+            prefixName = aFragment.documentElement.prefix;
+
+            tagLength = 3;
+
+            if (prefixName && prefixName != "") {
+                tagLength += prefixName.length + 1;
+            }
+
+            tagLength += nodeName.length;
+
+            for (var i = 0; i < tagLength; i++)
+                this.view.selectionController.characterMove(false, false);
+        }
     }
 };
