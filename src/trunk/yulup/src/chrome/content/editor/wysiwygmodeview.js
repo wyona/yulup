@@ -308,7 +308,7 @@ WYSIWYGModeView.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aCommand  != null);
         /* DEBUG */ YulupDebug.ASSERT(aFragment != null);
 
-        /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.doInsertCommand() invoked\n");
+        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.doInsertCommand() invoked\n");
 
         fragmentData = this.xmlSerializer.serializeToString(aFragment);
 
@@ -323,7 +323,7 @@ WYSIWYGModeView.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aCommand  != null);
         /* DEBUG */ YulupDebug.ASSERT(aFragment != null);
 
-        /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.doSurroundCommand() invoked\n");
+        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.doSurroundCommand() invoked\n");
 
         if (aFragment.documentElement) {
             elemName = aFragment.documentElement.localName.toLowerCase();
@@ -342,6 +342,8 @@ WYSIWYGModeView.prototype = {
                 WidgetHandler.activateCommand(aCommand);
             }
         }
+
+        // TODO: collapse selection
     },
 
     __pathToRootContains: function (aElementName, aStartNode) {
@@ -351,7 +353,7 @@ WYSIWYGModeView.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aElementName != null);
         /* DEBUG */ YulupDebug.ASSERT(aStartNode   != null);
 
-        /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.__pathToRootContains(\"" + aElementName + "\", \"" + aStartNode + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.__pathToRootContains(\"" + aElementName + "\", \"" + aStartNode + "\") invoked\n");
 
         elemName = aElementName.toLowerCase();
         node     = aStartNode;

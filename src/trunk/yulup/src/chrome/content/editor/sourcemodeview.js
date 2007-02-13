@@ -341,5 +341,7 @@ SourceModeView.prototype = {
          * don't want the tags contained on the text node to be escaped. */
         fragmentData = (new WYSIWYGDOMSerialiser(aFragment, false, true)).serialiseXML();
         this.view.insertText(fragmentData);
+
+        // TODO: move cursor into the text node of the inserted element
     }
 };

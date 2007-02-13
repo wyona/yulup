@@ -643,180 +643,38 @@ var WidgetHandler = {
         return xsltProcessor.transformToDocument(aDocument);
     },
 
-    doContentWidgetCommand: function(aCommand, aWidget, aView, aViewMode) {
-        var widget          = null;
-        var xmlSerializer   = null;
-        var fragmentData    = null;
-        var tidyedFragment  = null;
-        var xPath           = null;
-        var modelDOM        = null;
-        var modelNode       = null;
-        var scrollX         = null;
-        var scrollY         = null;
-
-        /* DEBUG */ YulupDebug.ASSERT(aWidget   != null);
-        /* DEBUG */ YulupDebug.ASSERT(aView     != null);
-        /* DEBUG */ YulupDebug.ASSERT(aViewMode != null);
-
-        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doContentWidgetCommand() invoked\n");
-
-        xmlSerializer = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer);
-
-        if (aWidget.fragmentAttributes && aWidget.fragment) {
-            if (!WidgetHandler.getParametrizedWidgetFragment(aWidget)) {
-                return;
-            }
-        }
-
-        if (aWidget.fragment) {
-            tidyedFragment = this.tidyWidgetFragment(aWidget.fragment);
-        }
-
-        switch (aWidget.attributes["type"]) {
-            // TODO: move this code with a unified API into the individual views, since each view should know how to insert and surround
-            case "insert":
-                fragmentData = xmlSerializer.serializeToString(tidyedFragment);
-
-                if (aViewMode == 1) {
-                    aView.doInsertCommand(aCommand, tidyedFragment);
-                } else if (aViewMode == 3) {
-                    aView.doInsertCommand(aCommand, tidyedFragment);
-                } else if (aViewMode == 2) {
-                    xPath = aView.getSourceXPathForXHTMLNode(aView.currentXHTMLNode, aView.isNamespaceAware);
-
-                    /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doContentWidgetCommand: insert XPath " + xPath + "\n");
-
-                    modelDOM = gEditorController.activeView.model.getDocumentDOM();
-
-                    modelNode = modelDOM.evaluate(xPath, modelDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
-
-                    modelNode = modelNode.iterateNext();
-
-                    // insert the widget fragment into the model
-                    modelNode.appendChild(tidyedFragment.firstChild);
-
-                    //DOMSerialiser.serialiseDOMTree(dom);
-
-                    // preserve scroll position
-                    scrollX = aView.editor.contentWindow.scrollX;
-                    scrollY = aView.editor.contentWindow.scrollY;
-
-                    // TODO find a better way to sync the view with the model
-                    aView.fillView();
-
-                    // restore scroll position
-                    aView.editor.contentWindow.scrollTo(scrollX, scrollY);
-
-                    aView.view.incrementModificationCount(1);
-                    aView.model.setDirty();
-                }
-            break;
-            case "surround":
-                // TODO: find out if we should insert or remove
-                if (true) {
-                    // we insert
-                    if (aViewMode == 1) {
-                        aView.doSurroundCommand(aCommand, tidyedFragment);
-                    } else if (aViewMode == 3) {
-                        aView.doSurroundCommand(aCommand, tidyedFragment);
-                    } else if (aViewMode == 2) {
-                        // xslt mode view
-                        xPath = aView.getSourceXPathForXHTMLNode(aView.currentXHTMLNode, aView.isNamespaceAware);
-
-                        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doContentWidgetCommand: surround XPath " + xPath + "\n");
-
-                        modelDOM = aView.model.getDocumentDOM();
-
-                        modelNode = modelDOM.evaluate(xPath, modelDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
-
-                        modelNode = modelNode.iterateNext();
-
-                        if (modelNode.nodeType != 1 && modelNode.nodeType != 3) {
-                            // only element and text nodes shall be surrounded
-                            return;
-                        }
-
-                        tidyedFragment.firstChild.appendChild(modelNode.cloneNode(true));
-
-                        // insert the widget fragment into the model
-                        modelNode.parentNode.replaceChild(tidyedFragment.firstChild, modelNode);
-
-                        //DOMSerialiser.serialiseDOMTree(dom);
-
-                        // preserve scroll position
-                        scrollX = aView.editor.contentWindow.scrollX;
-                        scrollY = aView.editor.contentWindow.scrollY;
-
-                        // TODO find a better way to sync the view with the model
-                        aView.fillView();
-
-                        // restore scroll position
-                        aView.editor.contentWindow.scrollTo(scrollX, scrollY);
-
-                        aView.view.incrementModificationCount(1);
-                        aView.model.setDirty();
-                    }
-                }
-            break;
-        }
-    },
-
     doWidgetCommand: function(aCommand, aWidgetName) {
-        var widget          = null;
-        var view            = null;
-        var viewMode        = null;
+        var widget = null;
+        var view   = null;
+        var tidyedFragment = null;
 
+        /* DEBUG */ YulupDebug.ASSERT(aCommand    != null);
         /* DEBUG */ YulupDebug.ASSERT(aWidgetName != null);
+
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand() invoked\n");
 
         widget = gEditorController.widgetManager.getWidgetByName(aWidgetName);
         view   = gEditorController.activeView;
 
-        if (gEditorController.activeView instanceof SourceModeView) {
-            viewMode = 1;
-        } else if (gEditorController.activeView instanceof WYSIWYGXSLTModeView) {
-            viewMode = 2;
-        } else if (gEditorController.activeView instanceof WYSIWYGModeView) {
-            viewMode = 3;
+        if (widget.fragmentAttributes && widget.fragment) {
+            if (!WidgetHandler.getParametrizedWidgetFragment(widget)) {
+                return;
+            }
         }
 
-        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand: view mode " + viewMode + "\n");
+        if (widget.fragment) {
+            tidyedFragment = this.tidyWidgetFragment(widget.fragment);
+        }
 
         switch (widget.attributes["type"]) {
             case "insert":
-            case "surround":
-                WidgetHandler.doContentWidgetCommand(aCommand, widget, view, viewMode);
+                view.doInsertCommand(aCommand, tidyedFragment);
                 break;
+            case "surround":
+                view.doSurroundCommand(aCommand, tidyedFragment);
+                break;
+            default:
         }
-    },
-
-    __surroundSelection: function (aEditor, aSelection, aNewParent) {
-        var xmlSerializer = null;
-        var node          = null;
-        var newParent     = null;
-
-        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.__surroundSelection(\"" + aEditor + "\", \"" + aSelection + "\", \"" + aNewParent + "\") invoked\n");
-
-        /* DEBUG */ YulupDebug.ASSERT(aEditor    != null);
-        /* DEBUG */ YulupDebug.ASSERT(aSelection != null);
-        /* DEBUG */ YulupDebug.ASSERT(aNewParent != null);
-
-        var xmlSerializer = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer);
-
-        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.__surroundSelection: new parent = \"" + aNewParent + "\" (\"" + xmlSerializer.serializeToString(aNewParent) + "\")\n");
-
-        // clone contents of selected range
-        node = aSelection.getRangeAt(0).cloneContents();
-
-        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.__surroundSelection: selected range = \"" + node + "\" (\"" + xmlSerializer.serializeToString(node) + "\")\n");
-
-        // surround cloned selection
-        newParent = node.ownerDocument.importNode(aNewParent, true);
-        newParent.appendChild(node);
-
-        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.__surroundSelection: surrounded stub = \"" + newParent + "\" (\"" + xmlSerializer.serializeToString(newParent) + "\")\n");
-
-        // insert cloned selection at current selection
-        aEditor.insertHTML(xmlSerializer.serializeToString(newParent));
     },
 
     activateCommand: function (aCommand) {

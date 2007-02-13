@@ -804,10 +804,10 @@ WYSIWYGXSLTModeView.prototype = {
         try {
             xpathParseResult = (new XPathParser(aLocationPath)).parse();
 
-            /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: object XPath representation:\n" + xpathParseResult.toObjectString() + "\n");
-            /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode: parsed XPath: " + xpathParseResult.toString() + "\n");
+            /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.parseLocationPath: object XPath representation:\n" + xpathParseResult.toObjectString() + "\n");
+            /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.parseLocationPath: parsed XPath: " + xpathParseResult.toString() + "\n");
         } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.getSourceXPathForXHTMLNode", exception);
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.parseLocationPath", exception);
             /* DEBUG */ Components.utils.reportError(exception);
         }
 
@@ -911,6 +911,89 @@ WYSIWYGXSLTModeView.prototype = {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.removeSelectionListener", exception);
             Components.utils.reportError(exception);
         }
+    },
+
+    doInsertCommand: function (aCommand, aFragment) {
+        var xPath     = null;
+        var modelDOM  = null;
+        var modelNode = null;
+        var scrollX   = 0;
+        var scrollY   = 0;
+
+        /* DEBUG */ YulupDebug.ASSERT(aCommand  != null);
+        /* DEBUG */ YulupDebug.ASSERT(aFragment != null);
+
+        /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.doInsertCommand() invoked\n");
+
+        xPath = this.getSourceXPathForXHTMLNode(this.currentXHTMLNode, this.isNamespaceAware);
+
+        /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.doInsertCommand: insert XPath " + xPath + "\n");
+
+        modelDOM = this.controller.activeView.model.getDocumentDOM();
+
+        modelNode = modelDOM.evaluate(xPath, modelDOM, modelDOM.createNSResolver(modelDOM.documentElement), XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+        modelNode = modelNode.iterateNext();
+
+        // insert the widget fragment into the model
+        modelNode.appendChild(aFragment.firstChild);
+
+        // preserve scroll position
+        scrollX = this.editor.contentWindow.scrollX;
+        scrollY = this.editor.contentWindow.scrollY;
+
+        // TODO find a better way to sync the view with the model
+        this.fillView();
+
+        // restore scroll position
+        this.editor.contentWindow.scrollTo(scrollX, scrollY);
+
+        this.view.incrementModificationCount(1);
+        this.model.setDirty();
+    },
+
+    doSurroundCommand: function (aCommand, aFragment) {
+        var xPath     = null;
+        var modelDOM  = null;
+        var modelNode = null;
+        var scrollX   = 0;
+        var scrollY   = 0;
+
+        /* DEBUG */ YulupDebug.ASSERT(aCommand  != null);
+        /* DEBUG */ YulupDebug.ASSERT(aFragment != null);
+
+        /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.doSurroundCommand() invoked\n");
+
+        xPath = aView.getSourceXPathForXHTMLNode(this.currentXHTMLNode, this.isNamespaceAware);
+
+        /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.doSurroundCommand: surround XPath " + xPath + "\n");
+
+        modelDOM = this.model.getDocumentDOM();
+
+        modelNode = modelDOM.evaluate(xPath, modelDOM, modelDOM.createNSResolver(modelDOM.documentElement), XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+        modelNode = modelNode.iterateNext();
+
+        if (modelNode.nodeType != 1 && modelNode.nodeType != 3) {
+            // only element and text nodes shall be surrounded
+            return;
+        }
+
+        aFragment.firstChild.appendChild(modelNode.cloneNode(true));
+
+        // insert the widget fragment into the model
+        modelNode.parentNode.replaceChild(aFragment.firstChild, modelNode);
+
+        // preserve scroll position
+        scrollX = this.editor.contentWindow.scrollX;
+        scrollY = this.editor.contentWindow.scrollY;
+
+        // TODO find a better way to sync the view with the model
+        this.fillView();
+
+        // restore scroll position
+        this.editor.contentWindow.scrollTo(scrollX, scrollY);
+
+        this.view.incrementModificationCount(1);
+        this.model.setDirty();
     }
 };
 
