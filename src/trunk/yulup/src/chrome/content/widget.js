@@ -57,10 +57,11 @@ Widget.prototype = {
 /**
   * Manages all widgets for an editor instance
   *
-  * @param  {Integer}   aInstanceId the instance id of the editor
-  * @return {Undefined}             does not have a return value
+  * @param  {YulupEditController} aController the editor controller
+  * @param  {Integer}             aInstanceId the instance id of the editor
+  * @return {Undefined} does not have a return value
   */
-function WidgetManager(aInstanceID) {
+function WidgetManager(aController, aInstanceID) {
 
     /* DEBUG */ dump("Yulup:widget.js:WidgetManager(\"" + aInstanceID  + "\") invoked\n");
 
@@ -74,6 +75,9 @@ function WidgetManager(aInstanceID) {
     this.tmpDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
 
     /* DEBUG */ dump("Yulup:widget.js:WidgetManager: temp dir = \"" + this.tmpDir.path +"\"\n");
+
+    // register a view change listener
+    aController.addViewChangedListener(WidgetHandler.viewChangedHandler);
 
     this.surroundCommandList = {};
 }
@@ -723,6 +727,24 @@ var WidgetHandler = {
                 }
             }
         }
+    },
+
+    viewChangedHandler: function (aView) {
+        var commandList = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aView != null);
+
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.viewChangedHandler() invoked\n");
+
+        commandList = aView.controller.widgetManager.surroundCommandList;
+
+        // deselect all widgets
+        for (var elemName in commandList) {
+            WidgetHandler.deactivateCommand(commandList[elemName]);
+        }
+
+        // update all widgets
+        WidgetHandler.updateCommandActiveStates(commandList, aView.view.selection);
     }
 };
 

@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -71,7 +71,7 @@ function YulupEditController(aParameterObject) {
         }
 
         // initialise the WidgetManager
-        this.widgetManager = new WidgetManager(aParameterObject.instanceID);
+        this.widgetManager = new WidgetManager(this, aParameterObject.instanceID);
     } else {
         this.editorParams = new EditorParameters(null, null, null, null, null, null, "blank");
     }
