@@ -112,6 +112,9 @@ function yulupCreateNewEditor(aEditorParameters, aTriggerURI) {
         // create a new tab
         yulupTab = self.getBrowser().addTab("");
 
+        // remove the default context menu
+        self.getBrowser().getBrowserForTab(yulupTab).removeAttribute("contextmenu");
+
         // copy session history
         try {
             sessionHistory = self.getBrowser().getBrowserForTab(currentTab).webNavigation.sessionHistory;
