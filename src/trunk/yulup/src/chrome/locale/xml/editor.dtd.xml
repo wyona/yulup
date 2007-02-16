@@ -83,6 +83,16 @@
     <name xml:lang="es">Reemplazar</name>
   </entity>
 
+  <entity id="editOperationSurroundMenu.label">
+    <name xml:lang="en">Mark as</name>
+    <name xml:lang="de">Auszeichnen als</name>
+  </entity>
+
+  <entity id="editOperationInsertMenu.label">
+    <name xml:lang="en">Insert</name>
+    <name xml:lang="de">Einfügen</name>
+  </entity>
+
   <entity id="fileOperationExit.label">
     <name xml:lang="en">Exit</name>
     <name xml:lang="de">Beenden</name>
@@ -275,6 +285,16 @@
     <name xml:lang="en">Replace a string</name>
     <name xml:lang="de">Einen String ersetzen</name>
     <name xml:lang="es">Reemplazar una cadena</name>
+  </entity>
+
+  <entity id="editOperationSurroundMenu.tooltip">
+    <name xml:lang="en">Mark current selection as</name>
+    <name xml:lang="de">Auswahl auszeichnen als</name>
+  </entity>
+
+  <entity id="editOperationInsertMenu.tooltip">
+    <name xml:lang="en">Insert at current position</name>
+    <name xml:lang="de">Einfügen an der aktuellen Position</name>
   </entity>
 
   <entity id="fileOperationExit.tooltip">

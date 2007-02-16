@@ -12,6 +12,8 @@
 <!ENTITY editOperationDelete.label "Löschen">
 <!ENTITY editOperationFind.label "Suchen">
 <!ENTITY editOperationFindReplace.label "Ersetzen">
+<!ENTITY editOperationSurroundMenu.label "Auszeichnen als">
+<!ENTITY editOperationInsertMenu.label "Einfügen">
 <!ENTITY fileOperationExit.label "Beenden">
 <!ENTITY fileOperationInfobarToggle.label "Infobar">
 <!ENTITY fileOperationNew.label "Neu">
@@ -45,6 +47,8 @@
 <!ENTITY editOperationDelete.tooltip "Auswahl löschen">
 <!ENTITY editOperationFind.tooltip "Einen String Suchen">
 <!ENTITY editOperationFindReplace.tooltip "Einen String ersetzen">
+<!ENTITY editOperationSurroundMenu.tooltip "Auswahl auszeichnen als">
+<!ENTITY editOperationInsertMenu.tooltip "Einfügen an der aktuellen Position">
 <!ENTITY fileOperationExit.tooltip "Den Editor beenden">
 <!ENTITY fileOperationInfobarToggle.tooltip "Infobar öffnen/schliessen">
 <!ENTITY fileOperationNew.tooltip "Neues Dokument erstellen">

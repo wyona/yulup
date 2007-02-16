@@ -191,6 +191,15 @@
                 command="cmd_yulup_find"/>
       <menuitem id="uiYulupEditorEditorContextReplace"
                 command="cmd_yulup_replace"/>
+      <menuseparator/>
+      <menu id="uiYulupEditorEditorContextMenuSurroundMenu"
+            label="&editOperationSurroundMenu.label;" tooltip="&editOperationSurroundMenu.tooltip;">
+        <menupopup id="uiYulupEditorEditorContextMenuSurroundMenupopup"/>
+      </menu>
+      <menu id="uiYulupEditorEditorContextMenuInsertMenu"
+            label="&editOperationInsertMenu.label;" tooltip="&editOperationInsertMenu.tooltip;">
+        <menupopup id="uiYulupEditorEditorContextMenuInsertMenupopup"/>
+      </menu>
     </popup>
   </popupset>
 

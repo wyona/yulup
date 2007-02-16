@@ -130,6 +130,8 @@ WidgetManager.prototype = {
      * @return {Undefined} does not have a return value
      */
     addWidgets: function(aWidgets) {
+        var surroundMenu           = null;
+        var insertMenu             = null;
         var widget                 = null;
         var widgetDir              = null;
         var iconFile               = null;
@@ -139,13 +141,16 @@ WidgetManager.prototype = {
         var toolbarButtons         = null;
         var widgetButton           = null;
         var surroundingElementName = null;
+        var menuItem               = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidgets(\"" + aWidgets + "\") invoked\n");
 
         ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 
-        commandSet     = document.getElementById('uiYulupEditorWidgetCommandset');
-        toolbarButtons = document.getElementById('uiYulupWidgetToolbarbuttons');
+        commandSet     = document.getElementById("uiYulupEditorWidgetCommandset");
+        toolbarButtons = document.getElementById("uiYulupWidgetToolbarbuttons");
+        surroundMenu   = document.getElementById("uiYulupEditorEditorContextMenuSurroundMenupopup");
+        insertMenu     = document.getElementById("uiYulupEditorEditorContextMenuInsertMenupopup");
 
         for (var i = 0; i < aWidgets.length; i++) {
             if (this.getWidgetByName(aWidgets[i].attributes["name"])) {
@@ -184,12 +189,12 @@ WidgetManager.prototype = {
             this.widgets[this.widgets.length] = widget;
 
             // add command to editor.xul
-            widgetCommand = document.createElement('command');
-            widgetCommand.setAttribute('id', 'cmd_' + widget.attributes["name"]);
-            widgetCommand.setAttribute('disabled', 'false');
-            widgetCommand.setAttribute('label', widget.attributes["name"]);
-            widgetCommand.setAttribute('tooltiptext', widget.attributes["description"]);
-            widgetCommand.setAttribute('oncommand', "WidgetHandler.doWidgetCommand(this, \"" + widget.attributes["name"] + "\")");
+            widgetCommand = document.createElement("command");
+            widgetCommand.setAttribute("id", "cmd_" + widget.attributes["name"]);
+            widgetCommand.setAttribute("disabled", "false");
+            widgetCommand.setAttribute("label", widget.attributes["name"]);
+            widgetCommand.setAttribute("tooltiptext", widget.attributes["description"]);
+            widgetCommand.setAttribute("oncommand", "WidgetHandler.doWidgetCommand(this, \"" + widget.attributes["name"] + "\")");
             commandSet.appendChild(widgetCommand);
 
             // get top-level element name
@@ -206,11 +211,24 @@ WidgetManager.prototype = {
             }
 
             // add toolbarbutton to editor.xul
-            widgetButton = document.createElement('canvasbutton');
-            widgetButton.setAttribute('id', 'uiWidget' + widget.attributes["name"]);
-            widgetButton.setAttribute('style', '-moz-box-orient: vertical;');
-            widgetButton.setAttribute('command', 'cmd_' + widget.attributes["name"]);
+            widgetButton = document.createElement("canvasbutton");
+            widgetButton.setAttribute("id", "uiWidget" + widget.attributes["name"]);
+            widgetButton.setAttribute("style", "-moz-box-orient: vertical;");
+            widgetButton.setAttribute("command", "cmd_" + widget.attributes["name"]);
             toolbarButtons.appendChild(widgetButton);
+
+            // add command to context menu
+            menuItem = document.createElement("menuitem");
+            menuItem.setAttribute("command", "cmd_" + widget.attributes["name"]);
+
+            switch (widget.attributes["type"]) {
+                case "surround":
+                    surroundMenu.appendChild(menuItem);
+                    break;
+                case "insert":
+                    insertMenu.appendChild(menuItem);
+                    break;
+            }
         }
     },
 
