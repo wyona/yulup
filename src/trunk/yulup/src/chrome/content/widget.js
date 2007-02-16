@@ -187,6 +187,8 @@ WidgetManager.prototype = {
             widgetCommand = document.createElement('command');
             widgetCommand.setAttribute('id', 'cmd_' + widget.attributes["name"]);
             widgetCommand.setAttribute('disabled', 'false');
+            widgetCommand.setAttribute('label', widget.attributes["name"]);
+            widgetCommand.setAttribute('tooltiptext', widget.attributes["description"]);
             widgetCommand.setAttribute('oncommand', "WidgetHandler.doWidgetCommand(this, \"" + widget.attributes["name"] + "\")");
             commandSet.appendChild(widgetCommand);
 
@@ -206,9 +208,7 @@ WidgetManager.prototype = {
             // add toolbarbutton to editor.xul
             widgetButton = document.createElement('canvasbutton');
             widgetButton.setAttribute('id', 'uiWidget' + widget.attributes["name"]);
-            widgetButton.setAttribute('label', widget.attributes["name"]);
             widgetButton.setAttribute('style', '-moz-box-orient: vertical;');
-            widgetButton.setAttribute('tooltiptext', widget.attributes["description"]);
             widgetButton.setAttribute('command', 'cmd_' + widget.attributes["name"]);
             toolbarButtons.appendChild(widgetButton);
         }
