@@ -224,9 +224,17 @@ WidgetManager.prototype = {
             switch (widget.attributes["type"]) {
                 case "surround":
                     surroundMenu.appendChild(menuItem);
+
+                    if (surroundMenu.parentNode.hasAttribute("disabled"))
+                        surroundMenu.parentNode.removeAttribute("disabled");
+
                     break;
                 case "insert":
                     insertMenu.appendChild(menuItem);
+
+                    if (insertMenu.parentNode.hasAttribute("disabled"))
+                        insertMenu.parentNode.removeAttribute("disabled");
+
                     break;
             }
         }

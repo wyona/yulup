@@ -193,11 +193,13 @@
                 command="cmd_yulup_replace"/>
       <menuseparator/>
       <menu id="uiYulupEditorEditorContextMenuSurroundMenu"
-            label="&editOperationSurroundMenu.label;" tooltip="&editOperationSurroundMenu.tooltip;">
+            label="&editOperationSurroundMenu.label;" tooltip="&editOperationSurroundMenu.tooltip;"
+            disabled="true">
         <menupopup id="uiYulupEditorEditorContextMenuSurroundMenupopup"/>
       </menu>
       <menu id="uiYulupEditorEditorContextMenuInsertMenu"
-            label="&editOperationInsertMenu.label;" tooltip="&editOperationInsertMenu.tooltip;">
+            label="&editOperationInsertMenu.label;" tooltip="&editOperationInsertMenu.tooltip;"
+            disabled="true">
         <menupopup id="uiYulupEditorEditorContextMenuInsertMenupopup"/>
       </menu>
     </popup>
