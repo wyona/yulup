@@ -8,6 +8,8 @@
 <!ENTITY editOperationPaste.label "Einfügen">
 <!ENTITY editOperationRedo.label "Wiederherstellen">
 <!ENTITY editOperationUndo.label "Rückgängig">
+<!ENTITY editOperationSelectAll.label "Alles auswählen">
+<!ENTITY editOperationDelete.label "Löschen">
 <!ENTITY editOperationFind.label "Suchen">
 <!ENTITY editOperationFindReplace.label "Ersetzen">
 <!ENTITY fileOperationExit.label "Beenden">
@@ -39,6 +41,8 @@
 <!ENTITY editOperationPaste.tooltip "Aus der Zwischenablage einfügen">
 <!ENTITY editOperationRedo.tooltip "Letzte Operation wiederholen">
 <!ENTITY editOperationUndo.tooltip "Letzte Operation rückgängig machen">
+<!ENTITY editOperationSelectAll.tooltip "Ganzer Text auswählen">
+<!ENTITY editOperationDelete.tooltip "Auswahl löschen">
 <!ENTITY editOperationFind.tooltip "Einen String Suchen">
 <!ENTITY editOperationFindReplace.tooltip "Einen String ersetzen">
 <!ENTITY fileOperationExit.tooltip "Den Editor beenden">

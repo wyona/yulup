@@ -37,18 +37,20 @@
  * @param  {Model}                    aModel            the model associated with this view
  * @param  {Function}                 aShowViewCommand  a function to call to show the current view
  * @param  {Barrier}                  aBarrier          the barrier on which to synchronise after setUp()
+ * @param  {nsIDOMXULElement}         aContextMenuPopup the context menu of this view
  * @return {WYSIWYGModeView}
  */
-function WYSIWYGModeView(aEditorController, aModel, aShowViewCommand, aBarrier) {
+function WYSIWYGModeView(aEditorController, aModel, aShowViewCommand, aBarrier, aContextMenuPopup) {
     /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView(\"" + aEditorController + "\", \"" + aModel + "\", \"" + aShowViewCommand + "\", \"" + aBarrier + "\") invoked.\n");
 
     /* DEBUG */ YulupDebug.ASSERT(aEditorController != null);
     /* DEBUG */ YulupDebug.ASSERT(aModel            != null);
     /* DEBUG */ YulupDebug.ASSERT(aShowViewCommand  != null);
     /* DEBUG */ YulupDebug.ASSERT(aBarrier          != null);
+    /* DEBUG */ YulupDebug.ASSERT(aContextMenuPopup != null);
 
     // call super constructor
-    View.call(this, aEditorController, aModel, aBarrier);
+    View.call(this, aEditorController, aModel, aBarrier, aContextMenuPopup);
 
     // register ourselves as an onload listener to get notified when the editor element is initialised
     document.addEventListener("editorinit", this, false);
@@ -89,6 +91,8 @@ WYSIWYGModeView.prototype = {
             /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.setUp: this.editor = \"" + this.editor + "\"\n");
             wysiwygEditor = this.editor;
             wysiwygEditor.makeEditable("html", false);
+
+            this.registerContextMenu(wysiwygEditor);
 
             this.view = wysiwygEditor.getEditor(wysiwygEditor.contentWindow);
             this.view.QueryInterface(Components.interfaces.nsIEditor);

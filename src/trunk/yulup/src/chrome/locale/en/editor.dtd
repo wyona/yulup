@@ -8,6 +8,8 @@
 <!ENTITY editOperationPaste.label "Paste">
 <!ENTITY editOperationRedo.label "Redo">
 <!ENTITY editOperationUndo.label "Undo">
+<!ENTITY editOperationSelectAll.label "Select All">
+<!ENTITY editOperationDelete.label "Delete">
 <!ENTITY editOperationFind.label "Find">
 <!ENTITY editOperationFindReplace.label "Replace">
 <!ENTITY fileOperationExit.label "Exit">
@@ -39,6 +41,8 @@
 <!ENTITY editOperationPaste.tooltip "Paste from clipboard">
 <!ENTITY editOperationRedo.tooltip "Redo last operation">
 <!ENTITY editOperationUndo.tooltip "Undo last operation">
+<!ENTITY editOperationSelectAll.tooltip "Select all text">
+<!ENTITY editOperationDelete.tooltip "Delete selection">
 <!ENTITY editOperationFind.tooltip "Find a string">
 <!ENTITY editOperationFindReplace.tooltip "Replace a string">
 <!ENTITY fileOperationExit.tooltip "Exit the editor">

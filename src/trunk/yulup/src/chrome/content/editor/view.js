@@ -36,19 +36,21 @@ const XUL_NAMESPACE_URI   = "http://www.mozilla.org/keymaster/gatekeeper/there.i
  * @param  {YulupEditStateController} aEditorController the editor's state machine
  * @param  {Model}                    aModel            the model associated with this view
  * @param  {Barrier}                  aBarrier          the barrier on which to synchronise after setUp()
+ * @param  {nsIDOMXULElement}         aContextMenuPopup the context menu of this view
  * @return {View}
  */
-function View(aEditorController, aModel, aBarrier) {
+function View(aEditorController, aModel, aBarrier, aContextMenuPopup) {
     /* DEBUG */ dump("Yulup:view.js:View(\"" + aEditorController + "\, \"" + aModel + "\", \"" + aBarrier + "\") invoked.\n");
 
     /* DEBUG */ YulupDebug.ASSERT(aEditorController != null);
     /* DEBUG */ YulupDebug.ASSERT(aModel            != null);
     /* DEBUG */ YulupDebug.ASSERT(aBarrier          != null);
 
-    this.controller = aEditorController;
-    this.model      = aModel;
-    this.barrier    = aBarrier;
-    this.isFilled   = false;
+    this.controller         = aEditorController;
+    this.model              = aModel;
+    this.barrier            = aBarrier;
+    this.__contextMenuPopup = aContextMenuPopup;
+    this.isFilled           = false;
 
     // instantiate undo/redo and cut/copy observers
     this.undoRedoObserver = new UndoRedoObserver();
@@ -60,6 +62,8 @@ function View(aEditorController, aModel, aBarrier) {
 }
 
 View.prototype = {
+    __contextMenuPopup: null,
+
     controller      : null,
     model           : null,
     barrier         : null,
@@ -229,7 +233,7 @@ View.prototype = {
     },
 
     /**
-     * Add a selection listener of type nsISelectionListener.
+     * Remove a selection listener of type nsISelectionListener.
      *
      * @param  {nsISelectionListener} aSelectionListener the selection listener to remove
      * @return {Undefined} does not have a return value
@@ -238,6 +242,26 @@ View.prototype = {
         /* DEBUG */ dump("Yulup:view.js:View.removeSelectionListener() invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aSelectionListener != null);
+    },
+
+    /**
+     * Show a context menu for this view.
+     *
+     * @param  {nsIDOMMouseEvent} aEvent the event triggered
+     * @return {Undefined} does not have a return value
+     */
+    showContextMenu: function (aEvent) {
+        this.__contextMenuPopup.showPopup(this.editor, aEvent.clientX, aEvent.clientY, "context");
+    },
+
+    registerContextMenu: function (aEditor) {
+        var self = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aEditor != null);
+
+        self = this;
+
+        aEditor.contentWindow.addEventListener("contextmenu", function (aEvent) { self.showContextMenu(aEvent); }, false);
     }
 };
 
@@ -673,6 +697,7 @@ CutCopyObserver.prototype = {
 
         Editor.goSetCommandEnabled("cmd_cut", false);
         Editor.goSetCommandEnabled("cmd_copy", false);
+        Editor.goSetCommandEnabled("cmd_delete", false);
     },
 
     updateCommands: function () {
@@ -681,6 +706,7 @@ CutCopyObserver.prototype = {
         if (this.__active) {
             Editor.goUpdateCommand("cmd_cut");
             Editor.goUpdateCommand("cmd_copy");
+            Editor.goUpdateCommand("cmd_delete");
         }
     }
 };

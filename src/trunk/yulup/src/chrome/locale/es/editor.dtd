@@ -8,6 +8,8 @@
 <!ENTITY editOperationPaste.label "Pegar">
 <!ENTITY editOperationRedo.label "Rehacer">
 <!ENTITY editOperationUndo.label "Deshacer">
+<!ENTITY editOperationSelectAll.label "Select All">
+<!ENTITY editOperationDelete.label "Delete">
 <!ENTITY editOperationFind.label "Buscar">
 <!ENTITY editOperationFindReplace.label "Reemplazar">
 <!ENTITY fileOperationExit.label "Salir">
@@ -39,6 +41,8 @@
 <!ENTITY editOperationPaste.tooltip "Pegar del portapapeles">
 <!ENTITY editOperationRedo.tooltip "Rehacer la última operación">
 <!ENTITY editOperationUndo.tooltip "Deshacer la última operación">
+<!ENTITY editOperationSelectAll.tooltip "Select all text">
+<!ENTITY editOperationDelete.tooltip "Delete selection">
 <!ENTITY editOperationFind.tooltip "Buscar una cadena">
 <!ENTITY editOperationFindReplace.tooltip "Reemplazar una cadena">
 <!ENTITY fileOperationExit.tooltip "Salir del editor">

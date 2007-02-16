@@ -2,7 +2,7 @@
 
 <!--
 # ***** BEGIN LICENSE BLOCK *****
-# Copyright 2006 Wyona AG Zurich
+# Copyright 2006-2007 Wyona AG Zurich
 #
 # This file is part of Yulup.
 #
@@ -73,7 +73,8 @@
   <script type="application/x-javascript" src="chrome://yulup/content/progressdialog.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/serveruriprompt.js"/>
 
-  <!-- commandupdaters won't work until bug https://bugzilla.mozilla.org/show_bug.cgi?id=368102 is solved -->
+  <!-- commandupdaters won't work until bug https://bugzilla.mozilla.org/show_bug.cgi?id=368102 is fixed -->
+  <!--
   <commandset id="uiYulupEditorFocusEventCommandset"
               commandupdater="true"
               events="focus"
@@ -90,29 +91,46 @@
               commandupdater="true"
               events="clipboard"
               oncommandupdate="Editor.goUpdateClipboardEventCommands()"/>
+  -->
 
   <commandset id="uiYulupEditorEditOperationsCommandset">
-    <command id="cmd_undo"  oncommand="Editor.goDoCommand('cmd_undo')"  disabled="true"/>
-    <command id="cmd_redo"  oncommand="Editor.goDoCommand('cmd_redo')"  disabled="true"/>
-    <command id="cmd_cut"   oncommand="Editor.goDoCommand('cmd_cut')"   disabled="false"/>
-    <command id="cmd_copy"  oncommand="Editor.goDoCommand('cmd_copy')"  disabled="false"/>
-    <command id="cmd_paste" oncommand="Editor.goDoCommand('cmd_paste')" disabled="false"/>
+    <command id="cmd_undo"      oncommand="Editor.goDoCommand('cmd_undo')"      disabled="true"
+             label="&editOperationUndo.label;"      tooltiptext="&editOperationUndo.tooltip;"/>
+    <command id="cmd_redo"      oncommand="Editor.goDoCommand('cmd_redo')"      disabled="true"
+             label="&editOperationRedo.label;"      tooltiptext="&editOperationRedo.tooltip;"/>
+    <command id="cmd_cut"       oncommand="Editor.goDoCommand('cmd_cut')"       disabled="false"
+             label="&editOperationCut.label;"       tooltiptext="&editOperationCut.tooltip;"/>
+    <command id="cmd_copy"      oncommand="Editor.goDoCommand('cmd_copy')"      disabled="false"
+             label="&editOperationCopy.label;"      tooltiptext="&editOperationCopy.tooltip;"/>
+    <command id="cmd_paste"     oncommand="Editor.goDoCommand('cmd_paste')"     disabled="false"
+             label="&editOperationPaste.label;"     tooltiptext="&editOperationPaste.tooltip;"/>
+    <command id="cmd_delete"    oncommand="Editor.goDoCommand('cmd_delete')"    disabled="false"
+             label="&editOperationDelete.label;"    tooltiptext="&editOperationDelete.tooltip;"/>
+    <command id="cmd_selectAll" oncommand="Editor.goDoCommand('cmd_selectAll')" disabled="false"
+             label="&editOperationSelectAll.label;" tooltiptext="&editOperationSelectAll.tooltip;"/>
   </commandset>
 
   <commandset id="uiYulupEditorFileOperationsSaveCommandset">
-    <command id="cmd_yulup_savelocal"  oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_savelocal')"  disabled="true"/>
-    <command id="cmd_yulup_savetemp"   oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_savetemp')"   disabled="true"/>
-    <command id="cmd_yulup_savecms"    oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_savecms')"    disabled="true"/>
-    <command id="cmd_yulup_checkincms" oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_checkincms')" disabled="true"/>
+    <command id="cmd_yulup_savelocal"  oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_savelocal')"  disabled="true"
+             label="&fileOperationSaveLocalMenuitem.label;"         tooltiptext="&fileOperationSaveLocalMenuitem.tooltip;"/>
+    <command id="cmd_yulup_savetemp"   oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_savetemp')"   disabled="true"
+             label="&fileOperationSaveTempMenuitem.label;"          tooltiptext="&fileOperationSaveTempMenuitem.tooltip;"/>
+    <command id="cmd_yulup_savecms"    oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_savecms')"    disabled="true"
+             label="&fileOperationSaveCMSMenuitem.label;"           tooltiptext="&fileOperationSaveCMSMenuitem.tooltip;"/>
+    <command id="cmd_yulup_checkincms" oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_checkincms')" disabled="true"
+             label="&fileOperationCheckinCMSAndExitMenuitem.label;" tooltiptext="&fileOperationCheckinCMSAndExitMenuitem.tooltip;"/>
   </commandset>
 
   <commandset id="uiYulupEditorFindReplaceCommandset">
-    <command id="cmd_yulup_find"    oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_find')"    disabled="true"/>
-    <command id="cmd_yulup_replace" oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_replace')" disabled="true"/>
+    <command id="cmd_yulup_find"    oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_find')"    disabled="true"
+             label="&editOperationFind.label;"        tooltiptext="&editOperationFind.tooltip;"/>
+    <command id="cmd_yulup_replace" oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_replace')" disabled="true"
+             label="&editOperationFindReplace.label;" tooltiptext="&editOperationFindReplace.tooltip;"/>
   </commandset>
 
   <commandset id="uiYulupEditorFileOperationsUploadCommandset">
-    <command id="cmd_yulup_upload" oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_upload')" disabled="true"/>
+    <command id="cmd_yulup_upload" oncommand="Editor.goDoFileOperationsCommand('cmd_yulup_upload')" disabled="true"
+             label="&fileOperationUpload.label;" tooltiptext="&fileOperationUpload.tooltip;"/>
   </commandset>
 
   <commandset id="uiYulupEditorWidgetCommandset"/>
@@ -150,6 +168,29 @@
                 label="&editorToolboxToggleTextItem.label;"
                 type="checkbox"
                 oncommand="Editor.toggleToolbarButtonText()"/>
+    </popup>
+    <popup id="uiYulupEditorEditorContextMenu">
+      <menuitem id="uiYulupEditorEditorContextCut"
+                command="cmd_undo"/>
+      <menuitem id="uiYulupEditorEditorContextCut"
+                command="cmd_redo"/>
+      <menuseparator/>
+      <menuitem id="uiYulupEditorEditorContextCut"
+                command="cmd_cut"/>
+      <menuitem id="uiYulupEditorEditorContextCopy"
+                command="cmd_copy"/>
+      <menuitem id="uiYulupEditorEditorContextPaste"
+                command="cmd_paste"/>
+      <menuitem id="uiYulupEditorEditorContextDelete"
+                command="cmd_delete"/>
+      <menuseparator/>
+      <menuitem id="uiYulupEditorEditorContextSelectAll"
+                command="cmd_selectAll"/>
+      <menuseparator/>
+      <menuitem id="uiYulupEditorEditorContextFind"
+                command="cmd_yulup_find"/>
+      <menuitem id="uiYulupEditorEditorContextReplace"
+                command="cmd_yulup_replace"/>
     </popup>
   </popupset>
 
@@ -192,22 +233,18 @@
           <menupopup id="uiFileOperationSaveMenupopup">
             <menuitem id="uiFileOperationSaveLocalMenuitem"
                       command="cmd_yulup_savelocal"
-                      label="&fileOperationSaveLocalMenuitem.label;" tooltiptext="&fileOperationSaveLocalMenuitem.tooltip;"
                       disabled="true"/>
             <menuseparator/>
             <menuitem id="uiFileOperationSaveTempMenuitem"
                       command="cmd_yulup_savetemp"
-                      label="&fileOperationSaveTempMenuitem.label;" tooltiptext="&fileOperationSaveTempMenuitem.tooltip;"
                       key="key_yulup_savetemp"
                       disabled="true"/>
             <menuitem id="uiFileOperationSaveCMSMenuitem"
                       command="cmd_yulup_savecms"
-                      label="&fileOperationSaveCMSMenuitem.label;" tooltiptext="&fileOperationSaveCMSMenuitem.tooltip;"
                       key="key_yulup_savecms"
                       disabled="true"/>
             <menuitem id="uiFileOperationCheckinCMSAndExitMenuitem"
                       command="cmd_yulup_checkincms"
-                      label="&fileOperationCheckinCMSAndExitMenuitem.label;" tooltiptext="&fileOperationCheckinCMSAndExitMenuitem.tooltip;"
                       key="key_yulup_checkincms"
                       disabled="true"/>
           </menupopup>
@@ -226,34 +263,26 @@
         </toolbarbutton>
         <toolbarbutton id="uiFileOperationUpload"
                        command="cmd_yulup_upload"
-                       label="&fileOperationUpload.label;" tooltiptext="&fileOperationUpload.tooltip;"
                        key="key_yulup_upload"
                        disabled="true"/>
       </box>
       <toolbarseparator/>
       <box id="uiYulupEditOperationsToolbarbuttons">
         <toolbarbutton id="uiEditOperationUndo"
-                       command="cmd_undo"
-                       label="&editOperationUndo.label;"  tooltiptext="&editOperationUndo.tooltip;"/>
+                       command="cmd_undo"/>
         <toolbarbutton id="uiEditOperationRedo"
-                       command="cmd_redo"
-                       label="&editOperationRedo.label;"  tooltiptext="&editOperationRedo.tooltip;"/>
+                       command="cmd_redo"/>
         <toolbarbutton id="uiEditOperationCut"
-                       command="cmd_cut"
-                       label="&editOperationCut.label;"   tooltiptext="&editOperationCut.tooltip;"/>
+                       command="cmd_cut"/>
         <toolbarbutton id="uiEditOperationCopy"
-                       command="cmd_copy"
-                       label="&editOperationCopy.label;"  tooltiptext="&editOperationCopy.tooltip;"/>
+                       command="cmd_copy"/>
         <toolbarbutton id="uiEditOperationPaste"
-                       command="cmd_paste"
-                       label="&editOperationPaste.label;" tooltiptext="&editOperationPaste.tooltip;"/>
+                       command="cmd_paste"/>
         <toolbarbutton id="uiEditOperationFind"
                        command="cmd_yulup_find"
-                       label="&editOperationFind.label;"  tooltiptext="&editOperationFind.tooltip;"
                        key="key_yulup_find"/>
         <toolbarbutton id="uiEditOperationFindReplace"
                        command="cmd_yulup_replace"
-                       label="&editOperationFindReplace.label;"  tooltiptext="&editOperationFindReplace.tooltip;"
                        key="key_yulup_replace"/>
       </box>
       <toolbarseparator id="uiYulupWidgetToolbarSeparator" hidden="true"/>

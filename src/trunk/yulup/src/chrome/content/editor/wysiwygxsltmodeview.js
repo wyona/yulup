@@ -46,9 +46,10 @@ const YULUP_NAMESPACE_URI = "http://www.yulup.org/Editor/LocationPath";
  * @param  {XMLDocument}                aXMLStyleDocument  the style this view represents
  * @param  {XMLDocument}                aStyleTemplate     the style template
  * @param  {String}                     aStyleTemplateMode how the styleTemplate should be applied (pre/post transformation)
+ * @param  {nsIDOMXULElement}           aContextMenuPopup  the context menu of this view
  * @return {WYSIWYGXSLTModeView}
  */
-function WYSIWYGXSLTModeView(aEditorController, aModel, aShowViewCommand, aBarrier, aXMLStyleDocument, aStyleTemplate, aStyleTemplateMode) {
+function WYSIWYGXSLTModeView(aEditorController, aModel, aShowViewCommand, aBarrier, aXMLStyleDocument, aStyleTemplate, aStyleTemplateMode, aContextMenuPopup) {
     /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView(\"" + aEditorController + "\", \"" + aModel + "\", \"" + aShowViewCommand + "\", \"" + aBarrier + "\", \"" + aXMLStyleDocument + "\" , \"" + aStyleTemplate + "\") invoked.\n");
 
     /* DEBUG */ YulupDebug.ASSERT(aEditorController != null);
@@ -56,9 +57,10 @@ function WYSIWYGXSLTModeView(aEditorController, aModel, aShowViewCommand, aBarri
     /* DEBUG */ YulupDebug.ASSERT(aShowViewCommand  != null);
     /* DEBUG */ YulupDebug.ASSERT(aXMLStyleDocument != null);
     /* DEBUG */ YulupDebug.ASSERT(aStyleTemplate ? aStyleTemplateMode != null : true);
+    /* DEBUG */ YulupDebug.ASSERT(aContextMenuPopup != null);
 
     // call super constructor
-    WYSIWYGModeView.call(this, aEditorController, aModel, aShowViewCommand, aBarrier);
+    WYSIWYGModeView.call(this, aEditorController, aModel, aShowViewCommand, aBarrier, aContextMenuPopup);
 
     if (aStyleTemplate != null) {
 
@@ -125,6 +127,8 @@ WYSIWYGXSLTModeView.prototype = {
             /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.setUp: this.editor = \"" + this.editor + "\"\n");
             wysiwygXSLTEditor = this.editor;
             wysiwygXSLTEditor.makeEditable("html", false);
+
+            this.registerContextMenu(wysiwygXSLTEditor);
 
             this.view = wysiwygXSLTEditor.getEditor(wysiwygXSLTEditor.contentWindow);
             this.view.QueryInterface(Components.interfaces.nsIEditor);

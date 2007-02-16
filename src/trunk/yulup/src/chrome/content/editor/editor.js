@@ -217,7 +217,7 @@ var Editor = {
     getStringbundleString: function (aString) {
         /* DEBUG */ dump("Yulup:editor.js:Editor.getStringBundleString(\"" + aString + "\") invoked\n");
 
-        return document.getElementById('uiYulupEditorStringbundle').getString(aString);
+        return document.getElementById("uiYulupEditorStringbundle").getString(aString);
     },
 
     /**
@@ -813,23 +813,23 @@ var Editor = {
     goUpdateSaveCommands: function () {
         /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateSaveCommands() invoked\n");
 
-        Editor.goUpdateFileOperationsCommand('cmd_yulup_savelocal');
-        Editor.goUpdateFileOperationsCommand('cmd_yulup_savetemp');
-        Editor.goUpdateFileOperationsCommand('cmd_yulup_savecms');
-        Editor.goUpdateFileOperationsCommand('cmd_yulup_checkincms');
+        Editor.goUpdateFileOperationsCommand("cmd_yulup_savelocal");
+        Editor.goUpdateFileOperationsCommand("cmd_yulup_savetemp");
+        Editor.goUpdateFileOperationsCommand("cmd_yulup_savecms");
+        Editor.goUpdateFileOperationsCommand("cmd_yulup_checkincms");
     },
 
     goUpdateUploadCommands: function () {
         /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateUploadCommands() invoked\n");
 
-        Editor.goUpdateFileOperationsCommand('cmd_yulup_upload');
+        Editor.goUpdateFileOperationsCommand("cmd_yulup_upload");
     },
 
     goUpdateFindReplaceCommands: function () {
         /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateFindReplaceCommands() invoked\n");
 
-        Editor.goUpdateFileOperationsCommand('cmd_yulup_find');
-        Editor.goUpdateFileOperationsCommand('cmd_yulup_replace');
+        Editor.goUpdateFileOperationsCommand("cmd_yulup_find");
+        Editor.goUpdateFileOperationsCommand("cmd_yulup_replace");
     },
 
     goUpdateCommand: function (aCommand) {
@@ -887,31 +887,33 @@ var Editor = {
     goUpdateFocusEventCommands: function () {
         /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateFocusEventCommands() invoked\n");
 
-        Editor.goUpdateCommand('cmd_undo');
-        Editor.goUpdateCommand('cmd_redo');
-        Editor.goUpdateCommand('cmd_cut');
-        Editor.goUpdateCommand('cmd_copy');
-        Editor.goUpdateCommand('cmd_paste');
+        Editor.goUpdateCommand("cmd_undo");
+        Editor.goUpdateCommand("cmd_redo");
+        Editor.goUpdateCommand("cmd_cut");
+        Editor.goUpdateCommand("cmd_copy");
+        Editor.goUpdateCommand("cmd_paste");
+        Editor.goUpdateCommand("cmd_delete");
     },
 
     goUpdateSelectEventCommands: function () {
         /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateSelectEventCommands() invoked\n");
 
-        Editor.goUpdateCommand('cmd_cut');
-        Editor.goUpdateCommand('cmd_copy');
+        Editor.goUpdateCommand("cmd_cut");
+        Editor.goUpdateCommand("cmd_copy");
+        Editor.goUpdateCommand("cmd_delete");
     },
 
     goUpdateUndoEventCommands: function () {
         /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateUndoEventCommands() invoked\n");
 
-        Editor.goUpdateCommand('cmd_undo');
-        Editor.goUpdateCommand('cmd_redo');
+        Editor.goUpdateCommand("cmd_undo");
+        Editor.goUpdateCommand("cmd_redo");
     },
 
     goUpdateClipboardEventCommands: function () {
         /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateClipboardEventCommands() invoked\n");
 
-        Editor.goUpdateCommand('cmd_paste');
+        Editor.goUpdateCommand("cmd_paste");
     },
 
     updateSaveMenu: function () {

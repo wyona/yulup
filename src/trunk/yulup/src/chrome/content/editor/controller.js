@@ -425,13 +425,28 @@ YulupEditController.enterStageViewInitialisation = function () {
 
     // initialise the views
     if (gEditorController.document.isContentHTML()) {
-        gEditorController.wysiwygModeView = new WYSIWYGModeView(gEditorController, gEditorController.model, YulupEditController.onCommandShowView, gEditorController.viewBarrier);
+        gEditorController.wysiwygModeView = new WYSIWYGModeView(gEditorController,
+                                                                gEditorController.model,
+                                                                YulupEditController.onCommandShowView,
+                                                                gEditorController.viewBarrier,
+                                                                document.getElementById("uiYulupEditorEditorContextMenu"));
     } else if (gEditorController.document.hasStyles()) {
         // TODO: instantiate a view for every available style. At the moment, we only show the first associated style.
-        gEditorController.wysiwygModeView = new WYSIWYGXSLTModeView(gEditorController, gEditorController.model, YulupEditController.onCommandShowView, gEditorController.viewBarrier, gEditorController.document.getAssociates().getStyle(0), gEditorController.document.getAssociates().getStyleTemplate(), gEditorController.document.getStyleTemplateMode());
+        gEditorController.wysiwygModeView = new WYSIWYGXSLTModeView(gEditorController,
+                                                                    gEditorController.model,
+                                                                    YulupEditController.onCommandShowView,
+                                                                    gEditorController.viewBarrier,
+                                                                    gEditorController.document.getAssociates().getStyle(0),
+                                                                    gEditorController.document.getAssociates().getStyleTemplate(),
+                                                                    gEditorController.document.getStyleTemplateMode(),
+                                                                    document.getElementById("uiYulupEditorEditorContextMenu"));
     }
 
-    gEditorController.sourceModeView  = new SourceModeView(gEditorController, gEditorController.model, YulupEditController.onCommandShowView, gEditorController.viewBarrier);
+    gEditorController.sourceModeView  = new SourceModeView(gEditorController,
+                                                           gEditorController.model,
+                                                           YulupEditController.onCommandShowView,
+                                                           gEditorController.viewBarrier,
+                                                           document.getElementById("uiYulupEditorEditorContextMenu"));
 
     /* DEBUG */ dump("%%%%%%%%%%%%%%% Yulup:controller.js:YulupEditController.enterStageViewInitialisation: arrive at view barrier (current thread count is \"" + gEditorController.viewBarrier.noOfThreads + "\")\n");
     gEditorController.viewBarrier.arrive();
