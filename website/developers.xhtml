@@ -21,51 +21,32 @@
   <li><a href="#tcpmon">Debugging the Client-Server Data-Exchange</a></li>
   <li><a href="#requirements">System Requirements for Code Development</a></li>
 </ol>
-
-
 <h3 id="subversion">1. Get the Source Code from Subversion</h3>
-
 <h4>Anonymous</h4>
 <pre>svn co <a href="http://svn.wyona.com/repos/public/yulup">http://svn.wyona.com/repos/public/yulup</a></pre>
-
 <p>
 Username: <i>anonymous</i>, Password: <i>anonymous</i>
 </p>
-
 <h4>Developers</h4>
 <pre>svn co --username USERNAME https://svn.wyona.com/repos/public/yulup</pre>
-
-
 <h3 id="installation">2. Installation</h3>
 <p>
 If the source has been checked out from SVN, Yulup can be installed as follows:
 </p>
 <ul>
-
   <li><p>Create a file <tt>yulup@wyona.com</tt> within the extension directory</p>
-
     <ul>
-
       <li><p><b>Linux:</b> <tt>/home/USER/.mozilla/firefox/PROFILE/extensions/yulup@wyona.com</tt></p></li>
-
       <li><p><b>MacOS X:</b> <tt>/Users/USER/Library/Application Support/Firefox/Profiles/PROFILE/extensions/yulup@wyona.com</tt></p></li>
-
       <li><p><b>Windows 2000, XP:</b> <tt>Documents and Settings\USER\Application Data\Mozilla\Firefox\Profiles\PROFILE\extensions\yulup@wyona.com</tt> or <tt>Programs\Mozilla Firefox\extensions\yulup@wyona.com</tt></p></li>
       <li><p><b>Windows NT:</b> <tt>WINNT\Profiles\USER\Application Data\Mozilla\Firefox\PROFILE\extensions\yulup@wyona.com</tt></p></li>
       <li><p><b>Windows 98, ME:</b> <tt>Windows\Application Data\Mozilla\Firefox\PROFILE\extensions\yulup@wyona.com</tt></p></li>
-
     </ul>
-
   </li>
-
   <li><p>Open this file and add the path to the Yulup source, e.g. <tt>/home/USER/src/yulup/src/trunk/yulup/src</tt> (Unix) or <tt>C:\src\yulup\src\trunk\yulup\src</tt> (Windows)</p></li>
-
   <li>Delete <tt>compreg.dat</tt> and <tt>xpti.dat</tt> from your profile directory if you change or add typelibs</li>
-
   <li><p>Restart Firefox</p></li>
-
 </ul>
-
 <h3 id="xpi">3. Building Releases: Generating XPI from source (Unix only)</h3>
 <p>Assume a path snippet <tt>$CURRENT</tt> which currently points to <tt>public/yulup/src/trunk/yulup/src</tt>.</p>
 <ul>
@@ -76,9 +57,13 @@ If the source has been checked out from SVN, Yulup can be installed as follows:
 The new package can then be found in <tt>public/website/yulup/download</tt> (the <tt>update.rdf</tt> file in the <tt>download</tt> directory is modified automatically to include the new release).
 </p>
 <p>
-Make sure to update the Mozilla <a href="https://addons.mozilla.org/firefox/3702/">Firefox Add-ons page</a> of Yulup for users who have download the XPI from there.
+Make sure to update the Mozilla <a href="https://addons.mozilla.org/firefox/3702/">Firefox Add-ons page</a> of Yulup for users who have downloaded the XPI from there:</p>
+<ul>
+<li>cp yulup/website/download/yulup-0.2.3-r22739.xpi tmp/.</li><li>cd tmp</li><li>unzip yulup-0.2.3-r22739.xpi</li>
+<li>Remove or comment &quot;updateURL&quot; within install.rdf</li><li>rm yulup-0.2.3-r22739.xpi</li>
+<li>zip -r yulup-0.2.3-r22739.xpi .<br/></li>
+<li>Click on &quot;<a href="https://addons.mozilla.org/developers">Developer Login</a>&quot;<br/></li><li>Click on &quot;<a href="https://addons.mozilla.org/developers/itemoverview.php?id=3702">Edit Item</a>&quot;</li><li>Upload new XPI</li></ul><p>
 </p>
-
 <h3 id="xpi-debug">4. Building Debug Releases: Generating XPI from source (Unix only)</h3>
 <p>Assume a path snippet <tt>$CURRENT</tt> which currently points to <tt>public/yulup/src/trunk/yulup/src</tt>.</p>
 <ul>
@@ -88,44 +73,33 @@ Make sure to update the Mozilla <a href="https://addons.mozilla.org/firefox/3702
 <p>
 The new package can then be found in <tt>public/yulup/src/trunk/yulup/pkg/</tt>.
 </p>
-
 <h3 id="setup">5. Set Up your Environment for Code Development</h3>
-
 <h4>Preferences Settings</h4>
-
 <p>To make your life easier (and the code better), you first might want to change some of your browser preferences (via &quot;about:config&quot;, see this <a href="http://kb.mozillazine.org/About:config">mozillaZine kb entry</a> for details if you are not acquainted to setting preferences manually):</p>
-
 <dl>
   <dt>Set <b>browser.dom.window.dump.enabled</b> to <b>true</b></dt>
   <dd>
     <p>Enables the use of the dump() statement to print to the standard console. For this output to be seen, you must of course run Firefox/Mozilla/SeaMonkey from a terminal. You can do this by simply running e.g. <tt>firefox-bin</tt> (in the case of Firefox).</p>
   </dd>
-
   <dt>Set <b>extensions.logging.enabled</b> to <b>true</b></dt>
   <dd>
     <p>Enables more logging.</p>
   </dd>
-
   <dt>Set <b>javascript.options.showInConsole</b> to <b>true</b></dt>
   <dd>
     <p>Logs errors in chrome files to the JavaScript Console to make debugging easier.</p>
   </dd>
-
   <dt>Set <b>javascript.options.strict</b> to <b>true</b></dt>
   <dd>
     <p>Enables strict Javascript warnings in the JavaScript Console. Note that since many people have this setting turned off when developing, you will see lots of warnings for problems with their code in addition to warnings for your own extension.</p>
   </dd>
-
   <dt>Set <b>nglayout.debug.disable_xul_cache</b> to <b>true</b></dt>
   <dd>
     <p>Disables the XUL cache so that changes do not require a restart, i.e. everytime a XUL document gets reloaded (like <tt>editor.xul</tt> when reloading the editor tab, but NOT <tt>yulup.xul</tt>, since this only gets loaded once, namely when the browser is started or a new window is opened), the new version is used and not the old cached one.</p>
   </dd>
 </dl>
-
-<p>Note that some of these settings might not already exist in the preferences list. If you cannot find a setting, you need to create it by context-clicking (right mouse button) anywhere in the preferences list, and then choose "New" in the context menu. "New" itself opens a new sub-menu. Since all settings listed above are of type <tt>bool</tt>, you can then choose "Boolean". In the dialog which pops up, enter the preference string as shown above.</p>
-
+<p>Note that some of these settings might not already exist in the preferences list. If you cannot find a setting, you need to create it by context-clicking (right mouse button) anywhere in the preferences list, and then choose &quot;New&quot; in the context menu. &quot;New&quot; itself opens a new sub-menu. Since all settings listed above are of type <tt>bool</tt>, you can then choose &quot;Boolean&quot;. In the dialog which pops up, enter the preference string as shown above.</p>
 <p>See also the <a href="http://kb.mozillazine.org/Setting_up_extension_development_environment">Setting up extension development environment</a> mozillaZine kb entry. Note though that not all information in that article is up-to-date anymore. In the case of doubt, the information stated here overrides information in that article.</p>
-
 <h4>Displaying Debug Messages</h4>
 <p>In order to see the debug messages on stdout, you have to start Firefox from the console:</p>
 <dl>
@@ -139,31 +113,20 @@ The new package can then be found in <tt>public/yulup/src/trunk/yulup/pkg/</tt>.
   </dd>
   <dt><b>Windows</b></dt>
   <dd><code>&gt; cd Program Files\Mozilla Firefox</code> (or wherever your Firefox installation lives; if in doubt, simply search for <tt>firefox.exe</tt>)<br/><code>&gt; firefox.exe -console</code>
-    <p>Firefox will open a new window called "firefox.exe -console" into which the log output goes. You might want to extend the number of lines it holds by clicking on the system icon (the Firefox logo in the upper left corner of that console window), and choose "Properties". In the opened dialog choose the "Layout" tab, and in the "Screen Buffer Size" group set "width" to 400 and "height" to 9999.</p>
+    <p>Firefox will open a new window called &quot;firefox.exe -console&quot; into which the log output goes. You might want to extend the number of lines it holds by clicking on the system icon (the Firefox logo in the upper left corner of that console window), and choose &quot;Properties&quot;. In the opened dialog choose the &quot;Layout&quot; tab, and in the &quot;Screen Buffer Size&quot; group set &quot;width&quot; to 400 and &quot;height&quot; to 9999.</p>
   </dd>
 </dl>
-
 <h3 id="tcpmon">6. Debugging the Client-Server Data Exchange</h3>
-
 <p>Download <a href="http://ws.apache.org/axis/java/releases.html">Axis</a> and use <a href="http://ws.apache.org/axis/java/user-guide.html#AppendixUsingTheAxisTCPMonitorTcpmon">TCP Monitor</a>:</p>
-
 <pre>$ java -classpath lib/axis.jar org.apache.axis.utils.tcpmon<br/></pre>
-
 <p>
 or <a href="http://ngrep.sourceforge.net/">ngrep</a>, e.g. to check what DTDs are being retrieved:
 </p>
-
 <pre>$ sudo bash<br/># ngrep -w dtd</pre>
-
 <p>or to grep stuff on localhost (127.0.0.1):</p>
-
 <pre># ngrep -d lo</pre>
-
 <p>or check for regular expressions on a specific port:</p>
-
 <pre># ngrep &quot;Atom&quot; &quot;port 80&quot;</pre>
-
-
 <h3 id="requirements">7. System Requirements for Development</h3>
 <ul>
 <li><tt>svn</tt> client (for checking out the source code)</li>
@@ -175,6 +138,5 @@ or <a href="http://ngrep.sourceforge.net/">ngrep</a>, e.g. to check what DTDs ar
 <li><tt>dia2code</tt> (for building code documentation)</li>
 <li>ImageMagick (for building themes)</li>
 </ul>
-
 </body>
 </html>
