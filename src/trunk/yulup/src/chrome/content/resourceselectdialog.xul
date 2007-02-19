@@ -2,7 +2,7 @@
 
 <!--
 # ***** BEGIN LICENSE BLOCK *****
-# Copyright 2006 Wyona AG Zurich
+# Copyright 2006-2007 Wyona AG Zurich
 #
 # This file is part of Yulup.
 #
@@ -40,8 +40,8 @@
         buttons="cancel, accept"
         buttonlabelaccept="&editorAcceptButton.label;"
         buttonlabelcancel="&editorCancelButton.label;"
-        ondialogaccept="return ResourceSelectDialogHandler.save()"
-        onload="ResourceSelectDialogHandler.uiYulupEditorResourceSelectOnDialogLoadHandler()"
+        ondialogaccept="return ResourceSelectDialog.save()"
+        onload="ResourceSelectDialog.uiYulupEditorResourceSelectOnDialogLoadHandler()"
         style="font: -moz-dialog; width: 400px;"
         persist="screenX screenY"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -50,6 +50,8 @@
             src="chrome://yulup/content/common.js"/>
     <script type="application/x-javascript"
             src="chrome://yulup/content/widget.js"/>
+    <script type="application/x-javascript"
+            src="chrome://yulup/content/resourceselect.js"/>
     <script type="application/x-javascript"
             src="chrome://yulup/content/networkservice.js"/>
     <script type="application/x-javascript"

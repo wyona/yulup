@@ -336,27 +336,57 @@ WYSIWYGModeView.prototype = {
 
             elemAtom = this.__atomService.getAtom(elemName);
 
+            attributes = aFragment.documentElement.attributes;
+
+            if (attributes.length > 0) {
+                attrName  = attributes.item(0).nodeName;
+                attrValue = attributes.item(0).nodeValue;
+            }
+
+            this.view.setInlineProperty(elemAtom, attrName, attrValue);
+
+            WidgetHandler.activateCommand(aCommand);
+        }
+    },
+
+    doUnsurroundCommand: function (aCommand, aFragment) {
+        var elemName   = null;
+        var elemAtom   = null;
+        var attributes = null;
+        var attrName   = null;
+        var attrValue  = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aCommand  != null);
+        /* DEBUG */ YulupDebug.ASSERT(aFragment != null);
+
+        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.doUnsurroundCommand(\"" + aCommand + "\", \"" + aFragment + "\") invoked\n");
+
+        if (aFragment.documentElement) {
+            elemName = aFragment.documentElement.localName.toLowerCase();
+
+            elemAtom = this.__atomService.getAtom(elemName);
+
+            this.view.removeInlineProperty(elemAtom, null);
+
+            WidgetHandler.deactivateCommand(aCommand);
+        }
+    },
+
+    isUnsurround: function (aFragment) {
+        var isUnsurround = null;
+        var elemName     = null;
+
+        isUnsurround = false;
+
+        if (aFragment.documentElement) {
+            elemName = aFragment.documentElement.localName.toLowerCase();
+
             if (this.__pathToRootContains(elemName, this.view.selection.anchorNode)) {
-                /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.doSurroundCommand: unsurround\n");
-                this.view.removeInlineProperty(elemAtom, null);
-
-                WidgetHandler.deactivateCommand(aCommand);
-            } else {
-                /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.doSurroundCommand: surround\n");
-                attributes = aFragment.documentElement.attributes;
-
-                if (attributes.length > 0) {
-                    attrName  = attributes.item(0).nodeName;
-                    attrValue = attributes.item(0).nodeValue;
-                }
-
-                this.view.setInlineProperty(elemAtom, attrName, attrValue);
-
-                WidgetHandler.activateCommand(aCommand);
+                isUnsurround = true;
             }
         }
 
-        // TODO: collapse selection
+        return isUnsurround;
     },
 
     __pathToRootContains: function (aElementName, aStartNode) {

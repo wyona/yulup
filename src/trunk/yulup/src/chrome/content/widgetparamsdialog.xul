@@ -2,7 +2,7 @@
 
 <!--
 # ***** BEGIN LICENSE BLOCK *****
-# Copyright 2006 Wyona AG Zurich
+# Copyright 2006-2007 Wyona AG Zurich
 #
 # This file is part of Yulup.
 #
@@ -30,8 +30,6 @@
   %dialogDTD;
 ]>
 
-<!-- Add onUnload Handler to handle ungraceful exits (e.g. user changes URL) -->
-
 <dialog id="uiYulupEditorWidgetInsertDialog"
         orient="vertical"
         align="stretch"
@@ -40,8 +38,8 @@
         buttonlabelaccept="&editorAcceptButton.label;"
         buttonlabelcancel="&editorCancelButton.label;"
         ondialogcancel="return true"
-        ondialogaccept="return WidgetDialogHandler.save('save')"
-        onload="WidgetDialogHandler.uiYulupEditorWidgetInsertOnDialogLoadHandler()"
+        ondialogaccept="return WidgetDialog.save()"
+        onload="WidgetDialog.uiYulupEditorWidgetInsertOnDialogLoadHandler()"
         style="font: -moz-dialog;"
         persist="screenX screenY"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -52,6 +50,10 @@
           src="chrome://yulup/content/common.js"/>
   <script type="application/x-javascript"
           src="chrome://yulup/content/widget.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/widgetparams.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/resourceselect.js"/>
 
   <vbox id="uiYulupWidgetInsertVbox">
     <description id="uiYulupWidgetInsertAuthenticationLabel" value="&editorWidgetInsert.label;"/>

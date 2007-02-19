@@ -368,5 +368,9 @@ SourceModeView.prototype = {
             for (var i = 0; i < tagLength; i++)
                 this.view.selectionController.characterMove(false, false);
         }
+    },
+
+    isUnsurround: function (aFragment) {
+        return false;
     }
 };

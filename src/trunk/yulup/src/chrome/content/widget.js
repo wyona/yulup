@@ -23,16 +23,13 @@
 
 /**
  * @author Gregor Imboden
+ * @author Andreas Wuest
  *
  */
 
 const WIDGET_TMP_DIR = "yulup-widgets";
 
-const YULUP_WIDGET_INSERT_CHROME_URI   = "chrome://yulup/content/widgetparamsdialog.xul";
-const YULUP_RESOURCE_SELECT_CHROME_URI = "chrome://yulup/content/resourceselectdialog.xul";
 const TIDYWIDGETFRAGMENT_CHROME_URI    = "chrome://yulup/content/tidywidgetfragment.xsl";
-
-const DEFAULT_COLORPICKER_VALUE = "#FFFFFF";
 
 /**
   * Instantiates a new Object of the type Widget
@@ -62,7 +59,6 @@ Widget.prototype = {
   * @return {Undefined} does not have a return value
   */
 function WidgetManager(aController, aInstanceID) {
-
     /* DEBUG */ dump("Yulup:widget.js:WidgetManager(\"" + aInstanceID  + "\") invoked\n");
 
     this.instanceID   = aInstanceID;
@@ -326,287 +322,21 @@ WidgetManager.prototype = {
     }
 };
 
-var gWidgetFragmentAttributes = null;
-
-var WidgetDialogHandler = {
-    uiYulupEditorWidgetInsertOnDialogLoadHandler: function() {
-        var widget      = null;
-        var nsResolver  = null;
-        var sitetreeURI = null;
-        var widgetRows  = null;
-        var label       = null;
-        var elem        = null;
-        var row         = null;
-        var container   = null;
-        var textbox     = null;
-
-        /* DEBUG */ dump("Yulup:widget.js:WidgetDialogHandler.uiYulupEditorWidgetInsertOnDialogLoadHandler() invoked\n");
-
-        widget      = window.arguments[1];
-        nsResolver  = window.arguments[2];
-        sitetreeURI = window.arguments[3];
-
-        gWidgetFragmentAttributes = widget.fragmentAttributes;
-
-        widgetRows = document.getElementById("uiYulupEditorWidgetInsertRows");
-        label      = document.getElementById("uiYulupWidgetInsertAuthenticationLabel");
-
-        // set the dialog top-label
-        label.setAttribute("value", label.getAttribute("value") + " \"" +widget.attributes["name"] + "\"");
-
-        for (var i=0; i < widget.fragmentAttributes.length; i++) {
-            row = document.createElement("row");
-            row.setAttribute("id", "row" + i);
-            row.setAttribute("align", "center");
-            widgetRows.appendChild(row);
-
-            elem = document.createElement("label");
-            elem.setAttribute("control", widget.fragmentAttributes[i].name);
-            elem.setAttribute("value", widget.fragmentAttributes[i].name);
-            row.appendChild(elem);
-
-            container = document.createElement("hbox");
-            container.setAttribute("align", "center");
-            row.appendChild(container);
-
-            textbox = document.createElement("textbox");
-            textbox.setAttribute("id", widget.fragmentAttributes[i].name);
-            textbox.setAttribute("size", "30");
-            textbox.setAttribute("flex", "1");
-
-            // set the attribute default value
-            textbox.setAttribute("value", widget.fragment.evaluate(widget.fragmentAttributes[i].xpath, widget.fragment, nsResolver, XPathResult.STRING_TYPE, null).stringValue);
-            container.appendChild(textbox);
-
-            // add a type specific action button
-            switch (widget.fragmentAttributes[i].type) {
-                case "resource":
-                    elem = document.createElement("button");
-                    elem.setAttribute("id", "button" + widget.fragmentAttributes[i].name);
-                    elem.setAttribute("label", document.getElementById("uiYulupEditorStringbundle").getString("editorWidgetInsertSelect.label"));
-
-                    // the resource attribute type needs a sitetree URI
-                    if (sitetreeURI == null) {
-                        elem.setAttribute("disabled", "true");
-                    } else {
-                        elem.setAttribute("oncommand", "ResourceSelectDialogHandler.doSelectCommand(\"" + sitetreeURI.spec + "\", \"" + widget.fragmentAttributes[i].name + "\")");
-                    }
-
-                    container.appendChild(elem);
-
-                    break;
-                case "color":
-                    elem = document.createElement("colorpicker");
-                    elem.setAttribute("id", "colorpicker" + widget.fragmentAttributes[i].name);
-                    elem.setAttribute("type", "button");
-                    elem.setAttribute("onchange", "WidgetDialogHandler.updateColorTextbox(\"" + widget.fragmentAttributes[i].name + "\", this.color)");
-
-                    container.appendChild(elem);
-
-                    textbox.setAttribute("maxlength", "7");
-                    textbox.setAttribute("onchange", "WidgetDialogHandler.updateColorPicker(\"colorpicker" + widget.fragmentAttributes[i].name + "\", \"" + widget.fragmentAttributes[i].name + "\", this.value)");
-
-                    // fixup color if we have to
-                    if (WidgetDialogHandler.__isValidColorValue(textbox.getAttribute("value"))) {
-                        textbox.value = textbox.value.toUpperCase();
-                    } else {
-                        textbox.value = DEFAULT_COLORPICKER_VALUE;
-                    }
-
-                    window.setTimeout("document.getElementById(\"colorpicker" + widget.fragmentAttributes[i].name + "\").color = \"" + textbox.value + "\"", 0);
-
-                    break;
-                default:
-            }
-        }
-    },
-
-    showWidgetInsertDialog: function(aWidget, aNSResolver, aSitetreeURI) {
-        returnObject    = new Object();
-
-        if (window.openDialog(YULUP_WIDGET_INSERT_CHROME_URI, "yulupWidgetInsertDialog", "modal,resizable=no,centerscreen", returnObject, aWidget, aNSResolver, aSitetreeURI)) {
-            if (returnObject.returnValue) {
-                return returnObject.returnValue;
-            }
-        }
-
-        return null;
-    },
-
-    save: function () {
-        var field = null;
-
-        /* DEBUG */ dump("Yulup:widget.js:WidgetDialogHandler.save() invoked\n");
-
-        returnObject = window.arguments[0];
-
-        returnObject.returnValue = new Array();
-
-        for (var i=0; i < gWidgetFragmentAttributes.length; i++) {
-            returnObject.returnValue[gWidgetFragmentAttributes[i].name] = document.getElementById(gWidgetFragmentAttributes[i].name).value;
-
-            /* DEBUG */ dump("Yulup:widget.js:WidgetDialogHandler.save: " + gWidgetFragmentAttributes[i].name + " " + returnObject.returnValue[gWidgetFragmentAttributes[i].name] + "\n");
-        }
-
-        return true;
-    },
-
-    updateColorTextbox: function (aTextBoxID, aValue) {
-        var textbox = null;
-
-        /* DEBUG */ dump("Yulup:widget.js:WidgetDialogHandler.updateColorTextbox(\"" + aTextBoxID + "\", \"" + aValue + "\") invoked\n");
-
-        if ((textbox = document.getElementById(aTextBoxID)) != null) {
-            textbox.value = aValue;
-        }
-    },
-
-    updateColorPicker: function (aColorPickerID, aTextBoxID, aValue) {
-        var colorpicker = null;
-        var textbox     = null;
-
-        /* DEBUG */ dump("Yulup:widget.js:WidgetDialogHandler.updateColorPicker(\"" + aColorPickerID + "\", \"" + aValue + "\") invoked\n");
-
-        if ((colorpicker = document.getElementById(aColorPickerID)) != null &&
-            (textbox     = document.getElementById(aTextBoxID))     != null) {
-            // check color value validity
-            if (WidgetDialogHandler.__isValidColorValue(aValue)) {
-                colorpicker.color = aValue.toUpperCase();
-            } else {
-                colorpicker.color = DEFAULT_COLORPICKER_VALUE;
-            }
-
-            // propagate modified color back to textbox
-            textbox.value = colorpicker.color;
-        }
-    },
-
-    __isValidColorValue: function (aColor) {
-        var retval = false;
-        var color  = null;
-
-        /* DEBUG */ dump("Yulup:widget.js:WidgetDialogHandler.__isValidColorValue(\"" + aColor + "\") invoked\n");
-
-        try {
-            color = aColor.toUpperCase();
-
-            if (color.length = 7 && color[0] === "#") {
-                retval = true;
-
-                for (var i = 1; i < 7; i++) {
-                    switch (color[i]) {
-                        case "0": case "1": case "2": case "3": case "4": case "5": case "6": case "7": case "8": case "9":
-                        case "A": case "B": case "C": case "D": case "E": case "F":
-                            break;
-                        default:
-                            retval = false;
-                            break;
-                    }
-                }
-            }
-        } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:widget.js:WidgetDialogHandler.__isValidColorValue", exception);
-            /* DEBUG */ Components.utils.reportError(exception);
-        }
-
-        return retval;
-    }
-};
-
-var ResourceSelectDialogHandler = {
-    uiYulupEditorResourceSelectOnDialogLoadHandler: function() {
-        var tree          = null;
-        var sitetreeURI   = null;
-
-        /* DEBUG */ dump("Yulup:widget.js:ResourceSelectDialogHandler.uiYulupEditorResourceSelectOnDialogLoadHandler() invoked\n");
-
-        tree = document.getElementById("uiYulupResourceSelectTree");
-
-        sitetreeURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(window.arguments[0], null, null);
-
-        tree.view = new SitetreeView(sitetreeURI, ResourceSelectDialogHandler.sitetreeErrorListener);
-    },
-
-    sitetreeErrorListener: function () {
-        returnObject = null;
-
-        if (window.arguments[1]) {
-            returnObject = window.arguments[1];
-
-            returnObject.error = true;
-        }
-
-        // close the dialog
-        document.getElementById("uiYulupEditorResourceSelectDialog").cancelDialog();
-    },
-
-    save: function () {
-        var tree        = null;
-        var resourceURI = null;
-
-        /* DEBUG */ dump("Yulup:widget.js:ResourceSelectDialogHandler.save() invoked\n");
-
-        returnObject = window.arguments[1];
-
-        tree = document.getElementById("uiYulupResourceSelectTree");
-
-        // fetch tree selection
-        resourceURI = tree.view.wrappedJSObject.getCurrentResourceURI();
-
-        if (!resourceURI) {
-            alert(document.getElementById("uiYulupEditorStringbundle").getString("yulupResourceSelectionNoResourceProvided.label"));
-
-            document.getElementById("uiYulupResourceSelectTree").focus();
-
-            return false;
-        }
-
-        // write tree selection to the returnObject
-        returnObject.returnValue = resourceURI;
-
-        /* DEBUG */ dump("Yulup:widget.js:ResourceSelectDialogHandler.save: URI to return is \"" + returnObject.returnValue + "\"\n");
-
-        return true;
-    },
-
-    doSelectCommand: function(aURI, aTextBoxId) {
-        var returnObject = null;
-
-        /* DEBUG */ YulupDebug.ASSERT(aURI       != null);
-        /* DEBUG */ YulupDebug.ASSERT(aTextBoxId != null);
-
-        /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialogHandler.doSelectCommand() invoked\n");
-
-        returnObject = {
-            error: null,
-            returnValue: null
-        };
-
-        if (window.openDialog(YULUP_RESOURCE_SELECT_CHROME_URI, "yulupWidgetResourceSelectDialog", "modal,resizable=no,centerscreen", aURI, returnObject)) {
-            if (returnObject.returnValue) {
-                /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialogHandler.doSelectCommand: inserting URI \"" + returnObject.returnValue.spec + "\"\n");
-                document.getElementById(aTextBoxId).setAttribute("value", returnObject.returnValue.spec);
-            }
-        }
-    }
-
-};
-
 
 var WidgetHandler = {
     /**
      * Update the widgets xml-fragment with the user defined attribute
      * values.
      *
-     * @param  {Widget}    aWidget the widget whose fragment will be parametrized
-     * @return {Undefined}         does not have a return value
+     * @param  {Widget} aWidget the widget whose fragment will be parametrized
+     * @return {nsIDOMDocumentFragment} returns the parameterised fragment, or null if potential user interaction was canceled
      */
     getParametrizedWidgetFragment: function(aWidget) {
         var customAttrValue  = null;
         var attrXpath        = null;
         var attrIterator     = null;
         var attrElement      = null;
-        var newFragment      = null;
+        var paramFragment    = null;
         var namespaces       = null;
         var nsResolver       = null;
         var resolverFunction = null;
@@ -620,17 +350,18 @@ var WidgetHandler = {
             sitetreeURI = gEditorController.editorParams.navigation.sitetree.uri;
         }
 
-        if ((attributes = WidgetDialogHandler.showWidgetInsertDialog(aWidget, nsResolver, sitetreeURI)) != null) {
-            for (var i=0; i < aWidget.fragmentAttributes.length; i++) {
+        if ((attributes = WidgetDialog.showWidgetInsertDialog(aWidget, nsResolver, sitetreeURI)) != null) {
+            paramFragment = aWidget.fragment.cloneNode(true);
 
+            for (var i = 0; i < aWidget.fragmentAttributes.length; i++) {
                 // get the user defined attribute value
                 customAttrValue = attributes[aWidget.fragmentAttributes[i].name];
                 attrXpath       = aWidget.fragmentAttributes[i].xpath;
 
-                /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.getParametrizedWidgetFragment: " + customAttrValue + " " + attrXpath + " " + aWidget.fragmentAttributes[i].name + "\n");
+                /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.getParametrizedWidgetFragment: value = \"" + customAttrValue + "\", xpath = \"" + attrXpath + "\", name = \"" + aWidget.fragmentAttributes[i].name + "\"\n");
 
                 // get the attribute in the fragment
-                attrIterator = aWidget.fragment.evaluate(attrXpath, aWidget.fragment, nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+                attrIterator = paramFragment.evaluate(attrXpath, paramFragment, nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 
                 attrElement = attrIterator.iterateNext();
 
@@ -639,19 +370,17 @@ var WidgetHandler = {
                     attrElement.nodeValue = customAttrValue;
                 }
             }
-
-            return true;
         }
 
-        return false;
+        return paramFragment;
     },
 
     /**
      * Removes superflous null-namespace declarations from the
      * widget fragment.
      *
-     * @param  {nsIDOMXMLDocument}  aDocument the xml document that will be cleaned
-     * @return {nsIDOMXMLDocument}            the cleaned xml document
+     * @param  {nsIDOMXMLDocument} aDocument the xml document that will be cleaned
+     * @return {nsIDOMXMLDocument} the cleaned xml document
      */
     tidyWidgetFragment: function(aDocument) {
         var tidyWidgetFragmentXSL = null;
@@ -674,9 +403,9 @@ var WidgetHandler = {
     },
 
     doWidgetCommand: function(aCommand, aWidgetName) {
-        var widget = null;
-        var view   = null;
-        var tidyedFragment = null;
+        var widget   = null;
+        var view     = null;
+        var fragment = null;
 
         /* DEBUG */ YulupDebug.ASSERT(aCommand    != null);
         /* DEBUG */ YulupDebug.ASSERT(aWidgetName != null);
@@ -686,24 +415,60 @@ var WidgetHandler = {
         widget = gEditorController.widgetManager.getWidgetByName(aWidgetName);
         view   = gEditorController.activeView;
 
-        if (widget.fragmentAttributes && widget.fragment) {
-            if (!WidgetHandler.getParametrizedWidgetFragment(widget)) {
-                return;
+        switch (widget.attributes["type"]) {
+            case "insert":
+                /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand: insert\n");
+
+                fragment = this.__getWidgetFragment(widget);
+
+                if (fragment)
+                    view.doInsertCommand(aCommand, fragment);
+
+                break;
+            case "surround":
+                /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand: surround\n");
+
+                if (view.isUnsurround(widget.fragment)) {
+                    view.doUnsurroundCommand(aCommand, widget.fragment);
+                } else {
+                    fragment = this.__getWidgetFragment(widget);
+
+                    if (fragment)
+                        view.doSurroundCommand(aCommand, fragment);
+                }
+
+                break;
+            default:
+        }
+    },
+
+    /**
+     * Get the fragment for the given widget. If neccessary,
+     * the user is first asked to configure the fragment.
+     *
+     * Note that this method returns null if the user cancels
+     * the fragment configuration.
+     *
+     * @param  {Widget} aWidget the widget for which the fragment should be retrieved
+     * @return {nsIDOMDocumentFragment} returns the parameterised fragment or null if potential user interaction was canceled
+     */
+    __getWidgetFragment: function (aWidget) {
+        var fragment = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aWidget != null);
+
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.__getWidgetFragment() invoked\n");
+
+        if (aWidget.fragmentAttributes && aWidget.fragment) {
+            if ((fragment = WidgetHandler.getParametrizedWidgetFragment(aWidget)) == null) {
+                return null;
             }
         }
 
-        if (widget.fragment) {
-            tidyedFragment = this.tidyWidgetFragment(widget.fragment);
-        }
-
-        switch (widget.attributes["type"]) {
-            case "insert":
-                view.doInsertCommand(aCommand, tidyedFragment);
-                break;
-            case "surround":
-                view.doSurroundCommand(aCommand, tidyedFragment);
-                break;
-            default:
+        if (fragment) {
+            return this.tidyWidgetFragment(fragment);
+        } else {
+            return this.tidyWidgetFragment(aWidget.fragment);
         }
     },
 
@@ -794,6 +559,8 @@ function initialCleanUp(aDir) {
 
     /* DEBUG */ dump("Yulup:widget.js:initialCleanUp() invoked\n");
 
+    /* DEBUG */ YulupDebug.ASSERT(aDir != null);
+
     // get the temp directory
     tmpDir = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("TmpD", Components.interfaces.nsIFile);
 
@@ -814,6 +581,7 @@ function initialCleanUp(aDir) {
         }
     }
 }
+
 
 function WidgetUpdateSelectionListener(aWidgetCommandList) {
     /* DEBUG */ YulupDebug.ASSERT(aWidgetCommandList != null);

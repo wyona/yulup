@@ -998,6 +998,10 @@ WYSIWYGXSLTModeView.prototype = {
 
         this.view.incrementModificationCount(1);
         this.model.setDirty();
+    },
+
+    isUnsurround: function (aFragment) {
+        return false;
     }
 };
 
