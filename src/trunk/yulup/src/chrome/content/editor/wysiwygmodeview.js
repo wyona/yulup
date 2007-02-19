@@ -320,9 +320,11 @@ WYSIWYGModeView.prototype = {
     },
 
     doSurroundCommand: function (aCommand, aFragment) {
-        var elemName = null;
-        var elemAtom = null;
-        var textNode = null;
+        var elemName   = null;
+        var elemAtom   = null;
+        var attributes = null;
+        var attrName   = null;
+        var attrValue  = null;
 
         /* DEBUG */ YulupDebug.ASSERT(aCommand  != null);
         /* DEBUG */ YulupDebug.ASSERT(aFragment != null);
@@ -341,7 +343,14 @@ WYSIWYGModeView.prototype = {
                 WidgetHandler.deactivateCommand(aCommand);
             } else {
                 /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.doSurroundCommand: surround\n");
-                this.view.setInlineProperty(elemAtom, null, null);
+                attributes = aFragment.documentElement.attributes;
+
+                if (attributes.length > 0) {
+                    attrName  = attributes.item(0).nodeName;
+                    attrValue = attributes.item(0).nodeValue;
+                }
+
+                this.view.setInlineProperty(elemAtom, attrName, attrValue);
 
                 WidgetHandler.activateCommand(aCommand);
             }
