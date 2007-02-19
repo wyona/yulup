@@ -1,4 +1,4 @@
-pref("extensions.yulup.atom.autoopensidebar", true);
+pref("extensions.yulup.atom.autoopensidebar", false);
 pref("extensions.yulup.editor.toolbox.showiconsonly", true);
 pref("extensions.yulup.editor.keybinding", "readline");
 pref("extensions.yulup.editor.usetabspaces", true);
