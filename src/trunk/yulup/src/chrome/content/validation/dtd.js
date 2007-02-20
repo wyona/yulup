@@ -37,9 +37,7 @@ function DTDDeclaration() {
     /* DEBUG */ dump("Yulup:dtd.js:DTDDeclaration() invoked\n");
 }
 
-DTDDeclaration.prototype = {
-
-};
+DTDDeclaration.prototype = {};
 
 
 function DTDElementTypeDeclaration(aName, aParentList, aContentModel, aAttributeList) {
@@ -75,6 +73,10 @@ DTDElementTypeDeclaration.prototype = {
         return this.__name;
     },
 
+    get namespaceURI() {
+        return null;
+    },
+
     get contentModel() {
         return this.__contentModel.contentSpec;
     },
@@ -84,11 +86,11 @@ DTDElementTypeDeclaration.prototype = {
     },
 
     getParents: function () {
-        return this.__parents;
+        return (this.__parents ? this.__parents : new Array());
     },
 
     getAttributes: function () {
-        return this.__attributes;
+        return (this.__attributes ? this.__attributes.getAttributes() : new Array());
     }
 };
 
@@ -133,6 +135,10 @@ DTDAttributeDeclaration.prototype = {
         return this.__name;
     },
 
+    get namespaceURI() {
+        return null;
+    },
+
     get type() {
         return this.__type;
     },
@@ -163,4 +169,20 @@ function DTDNotationDeclaration() {
 
 DTDNotationDeclaration.prototype = {
     __proto__:  DTDDeclaration.prototype
+};
+
+
+function DTDAttrList() {
+    this.__attrList = new Array();
+
+    for (var i = 0; i < arguments.length; i++)
+        this.__attrList.push(arguments[i]);
+}
+
+DTDAttrList.prototype = {
+    __attrList: null,
+
+    getAttributes: function () {
+        return this.__attrlist;
+    }
 };
