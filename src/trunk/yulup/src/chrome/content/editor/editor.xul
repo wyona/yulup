@@ -63,6 +63,9 @@
   <script type="application/x-javascript" src="chrome://yulup/content/editor/guidedtaginserter.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/editor/xpathparser.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/editor/controller.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/validation/validator.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/validation/dtd.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/validation/html401strictvalidator.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/neutronauth.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/neutronauthparser10.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/authentication.js"/>
