@@ -48,6 +48,10 @@ HTML401StrictValidator.prototype = {
     },
 
     NodeEditVAL: function (aNode) {
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
+
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:NodeEditVAL(\"" + aNode + "\") invoked\n");
+
         if (aNode instanceof Components.interfaces.nsIDOMNode) {
             return new HTML401StrictNodeEditVAL(this, aNode);
         } else {
@@ -56,6 +60,10 @@ HTML401StrictValidator.prototype = {
     },
 
     ElementEditVAL: function (aNode) {
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
+
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:ElementEditVAL(\"" + aNode + "\") invoked\n");
+
         if (aNode instanceof Components.interfaces.nsIDOMElement) {
             return new HTML401StrictElementEditVAL(this, aNode);
         } else {
@@ -64,6 +72,10 @@ HTML401StrictValidator.prototype = {
     },
 
     CharacterDataEditVAL: function (aNode) {
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
+
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:CharacterDataEditVAL(\"" + aNode + "\") invoked\n");
+
         if (aNode instanceof Components.interfaces.nsIDOMCharacterData) {
             return new HTML401StrictCharacterDataEditVAL(this, aNode);
         } else {
@@ -72,6 +84,10 @@ HTML401StrictValidator.prototype = {
     },
 
     DocumentEditVAL: function (aNode) {
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
+
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:DocumentEditVAL(\"" + aNode + "\") invoked\n");
+
         if (aNode instanceof Components.interfaces.nsIDOMDocument) {
             return new HTML401StrictDocumentEditVAL(this, aNode);
         } else {
@@ -87,7 +103,7 @@ function HTML401StrictNodeEditVAL(aValidator, aNode) {
 
     /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictNodeEditVAL() invoked\n");
 
-    NodeEditVal.call(this, aValidator, aNode);
+    NodeEditVAL.call(this, aValidator, aNode);
 }
 
 HTML401StrictNodeEditVAL.prototype = {
@@ -195,7 +211,7 @@ function HTML401StrictElementEditVAL(aValidator, aNode) {
 
     /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictElementEditVAL() invoked\n");
 
-    HTML401StrictNodeEditVal.call(this, aValidator, aNode);
+    HTML401StrictNodeEditVAL.call(this, aValidator, aNode);
 }
 
 HTML401StrictElementEditVAL.prototype = {
@@ -208,6 +224,8 @@ HTML401StrictElementEditVAL.prototype = {
     VAL_SIMPLE_CONTENTTYPE  : 5,  // the content model contains character information items; if the schema is a W3C XML schema, then the element has a content type of VAL_SIMPLE_CONTENTTYPE if the type of the element is a simple type definition, or the type of the element is a complexType whose {content type} is a simple type definition
 
     __lookupElem: function (aElemName) {
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictElementEditVAL.__lookupElem(\"" + aElemName + "\") invoked\n");
+
         return this.__validator.dtd.elementMap[aElemName];
     },
 
@@ -222,6 +240,8 @@ HTML401StrictElementEditVAL.prototype = {
         var elem     = null;
         var children = null;
         var map      = null;
+
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictElementEditVAL.allowedChildren() invoked\n");
 
         map = new ValidatorNameList();
 
@@ -247,6 +267,9 @@ HTML401StrictElementEditVAL.prototype = {
      * @return {NameList}
      */
     get allowedFirstChildren() {
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictElementEditVAL.allowedFirstChildren() invoked\n");
+
+        return null;
     },
 
     /**
@@ -259,6 +282,8 @@ HTML401StrictElementEditVAL.prototype = {
         var elem    = null;
         var parents = null;
         var map     = null;
+
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictElementEditVAL.allowedParents() invoked\n");
 
         map = new ValidatorNameList();
 
@@ -284,6 +309,9 @@ HTML401StrictElementEditVAL.prototype = {
      * @return {NameList}
      */
     get allowedNextSiblings() {
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictElementEditVAL.allowedNextSiblings() invoked\n");
+
+        return null;
     },
 
     /**
@@ -294,6 +322,9 @@ HTML401StrictElementEditVAL.prototype = {
      * @return {NameList}
      */
     get allowedPreviousSiblings() {
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictElementEditVAL.allowedPreviousSiblings() invoked\n");
+
+        return null;
     },
 
     /**
@@ -307,6 +338,8 @@ HTML401StrictElementEditVAL.prototype = {
         var elem  = null;
         var attrs = null;
         var map   = null;
+
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictElementEditVAL.allowedAttributes() invoked\n");
 
         map = new ValidatorNameList();
 
@@ -335,6 +368,8 @@ HTML401StrictElementEditVAL.prototype = {
         var attrs = null;
         var map   = null;
 
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictElementEditVAL.requiredAttributes() invoked\n");
+
         map = new ValidatorNameList();
 
         elem = this.__lookupElem(this.__node.localName);
@@ -360,6 +395,8 @@ HTML401StrictElementEditVAL.prototype = {
     get contentType() {
         var elem        = null;
         var contentType = null;
+
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictElementEditVAL.contentType() invoked\n");
 
         elem = this.__lookupElem(this.__node.localName);
 
@@ -575,7 +612,7 @@ function HTML401StrictDocumentEditVAL(aValidator, aNode) {
 
     /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDocumentEditVAL() invoked\n");
 
-    HTML401StrictNodeEditVal.call(this, aValidator, aNode);
+    HTML401StrictNodeEditVAL.call(this, aValidator, aNode);
 }
 
 HTML401StrictDocumentEditVAL.prototype = {
@@ -688,12 +725,18 @@ HTML401StrictDTD.prototype = {
     },
     */
 
-    elementMap: {
-        A: this.elemA
+    get elementMap() {
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.elementMap() invoked\n");
+
+        return {
+            A: this.elemA
+        }
     },
 
     __elemA: null,
     get elemA() {
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.elemA() invoked\n");
+
         if (!this.__elemA) {
             this.__elemA = new DTDElementTypeDeclaration("A",
                                                          null,
@@ -710,6 +753,8 @@ HTML401StrictDTD.prototype = {
 
     __attrCharset: null,
     get attrCharset() {
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.attrCharset() invoked\n");
+
         if (!this.__attrCharset) {
             this.__attrCharset = new DTDAttributeDeclaration("charset", "CDATA", "#IMPLIED", null);
         }
@@ -719,6 +764,8 @@ HTML401StrictDTD.prototype = {
 
     __attrType: null,
     get attrType() {
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.attrType() invoked\n");
+
         if (!this.__attrType) {
             this.__attrType = new DTDAttributeDeclaration("type", "CDATA", "#IMPLIED", null);
         }
@@ -728,6 +775,8 @@ HTML401StrictDTD.prototype = {
 
     __attrName: null,
     get attrName() {
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.attrName() invoked\n");
+
         if (!this.__attrName) {
             this.__attrName = new DTDAttributeDeclaration("name", "CDATA", "#IMPLIED", null);
         }
@@ -736,7 +785,9 @@ HTML401StrictDTD.prototype = {
     },
 
     __attrHref: null,
-    get attrCharset() {
+    get attrHref() {
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.attrHref() invoked\n");
+
         if (!this.__attrHref) {
             this.__attrHref = new DTDAttributeDeclaration("href", "CDATA", "#IMPLIED", null);
         }

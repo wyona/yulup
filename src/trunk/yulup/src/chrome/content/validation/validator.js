@@ -133,7 +133,7 @@ function ElementEditVAL(aValidator, aNode) {
 
     /* DEBUG */ dump("Yulup:validator.js:ElementEditVAL() invoked\n");
 
-    NodeEditVal.call(this, aValidator, aNode);
+    NodeEditVAL.call(this, aValidator, aNode);
 }
 
 ElementEditVAL.prototype = {
@@ -198,7 +198,7 @@ function CharacterDataEditVAL(aValidator, aNode) {
 
     /* DEBUG */ dump("Yulup:validator.js:CharacterDataEditVAL() invoked\n");
 
-    NodeEditVal.call(this, aValidator, aNode);
+    NodeEditVAL.call(this, aValidator, aNode);
 }
 
 CharacterDataEditVAL.prototype = {
@@ -236,7 +236,7 @@ function DocumentEditVAL(aValidator, aNode) {
 
     /* DEBUG */ dump("Yulup:validator.js:DocumentEditVAL() invoked\n");
 
-    NodeEditVal.call(this, aValidator, aNode);
+    NodeEditVAL.call(this, aValidator, aNode);
 }
 
 DocumentEditVAL.prototype = {

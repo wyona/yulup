@@ -82,14 +82,20 @@ DTDElementTypeDeclaration.prototype = {
     },
 
     getAllChildren: function () {
+        /* DEBUG */ dump("Yulup:dtd.js:DTDElementTypeDeclaration.getAllChildren() invoked\n");
+
         return null;
     },
 
     getParents: function () {
+        /* DEBUG */ dump("Yulup:dtd.js:DTDElementTypeDeclaration.getParents() invoked\n");
+
         return (this.__parents ? this.__parents : new Array());
     },
 
     getAttributes: function () {
+        /* DEBUG */ dump("Yulup:dtd.js:DTDElementTypeDeclaration.getAttributes() invoked\n");
+
         return (this.__attributes ? this.__attributes.getAttributes() : new Array());
     }
 };
@@ -173,6 +179,8 @@ DTDNotationDeclaration.prototype = {
 
 
 function DTDAttrList() {
+    /* DEBUG */ dump("Yulup:dtd.js:DTDAttrList() invoked\n");
+
     this.__attrList = new Array();
 
     for (var i = 0; i < arguments.length; i++)
@@ -183,6 +191,8 @@ DTDAttrList.prototype = {
     __attrList: null,
 
     getAttributes: function () {
-        return this.__attrlist;
+        /* DEBUG */ dump("Yulup:dtd.js:DTDAttrList.getAttributes() invoked\n");
+
+        return this.__attrList;
     }
 };
