@@ -652,6 +652,7 @@ HTML401StrictDTD.prototype = {
     __proto__:  DTD.prototype,
 
     // TODO: complete me
+    /*
     elementMap: {
         TT      : this.elemTT,
         I       : this.elemI,
@@ -685,6 +686,11 @@ HTML401StrictDTD.prototype = {
         LABEL   : this.elemLABEL,
         BUTTON  : this.elemBUTTON
     },
+    */
+
+    elementMap: {
+        A: this.elemA
+    },
 
     __elemA: null,
     get elemA() {
@@ -705,9 +711,36 @@ HTML401StrictDTD.prototype = {
     __attrCharset: null,
     get attrCharset() {
         if (!this.__attrCharset) {
-
+            this.__attrCharset = new DTDAttributeDeclaration("charset", "CDATA", "#IMPLIED", null);
         }
 
         return this.__attrCharset;
+    },
+
+    __attrType: null,
+    get attrType() {
+        if (!this.__attrType) {
+            this.__attrType = new DTDAttributeDeclaration("type", "CDATA", "#IMPLIED", null);
+        }
+
+        return this.__attrType;
+    },
+
+    __attrName: null,
+    get attrName() {
+        if (!this.__attrName) {
+            this.__attrName = new DTDAttributeDeclaration("name", "CDATA", "#IMPLIED", null);
+        }
+
+        return this.__attrName;
+    },
+
+    __attrHref: null,
+    get attrCharset() {
+        if (!this.__attrHref) {
+            this.__attrHref = new DTDAttributeDeclaration("href", "CDATA", "#IMPLIED", null);
+        }
+
+        return this.__attrHref;
     }
 };

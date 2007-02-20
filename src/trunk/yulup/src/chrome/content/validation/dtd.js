@@ -93,17 +93,64 @@ DTDElementTypeDeclaration.prototype = {
 };
 
 
-function DTDAttributeDeclaration() {
+function DTDAttributeDeclaration(aName, aType, aConstraint, aDefaultValue) {
+    /* DEBUG */ YulupDebug.ASSERT(aName != null);
+    /* DEBUG */ YulupDebug.ASSERT(aType != null);
+
     /* DEBUG */ dump("Yulup:dtd.js:DTDAttributeDeclaration() invoked\n");
 
     DTDDeclaration.call(this);
+
+    this.__name = aName;
+    this.__type = aType;
+
+    switch (aConstraint) {
+        case "#REQUIRED":
+            this.__isRequired     = true;
+            break;
+        case "#IMPLIED":
+            this.__isValueImplied = false;
+            break;
+        case "#FIXED":
+            this.__isValueFixed   = true;
+            break;
+    }
+
+    this.__defaultValue = aDefaultValue;
 }
 
 DTDAttributeDeclaration.prototype = {
     __proto__:  DTDDeclaration.prototype,
 
+    __name          : null,
+    __type          : null,
+    __isRequired    : false,
+    __isValueImplied: false,
+    __isValueFixed  : false,
+    __defaultValue  : "",
+
+    get name() {
+        return this.__name;
+    },
+
+    get type() {
+        return this.__type;
+    },
+
     get isRequired() {
-        return false;
+        return this.__isRequired;
+    },
+
+    get isValueImplied() {
+        return this.__isValueImplied;
+    },
+
+    get isValueFixed() {
+        return this.__isValueFixed;
+    },
+
+    get defaultValue() {
+        return this.__defaultValue;
     }
 };
 
