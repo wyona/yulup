@@ -683,64 +683,1428 @@ function HTML401StrictDTD() {
     /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD() invoked\n");
 
     DTD.call(this);
-
-    this.__attrMap = new Object();
-    this.__elemMap = new Object();
 }
 
 HTML401StrictDTD.prototype = {
     __proto__:  DTD.prototype,
 
-    __elemMap: null,
-    __attrMap: null,
-
     // TODO: complete me
     __elemGenerators: {
-        A: function() { return new DTDElementTypeDeclaration("A", null, null, new DTDAttrList(this.getAttribute("charset"), this.getAttribute("type"), this.getAttribute("name"), this.getAttribute("href"))); }
+        TT        : function() { return new DTDElementTypeDeclaration("TT", null, null, new DTDAttrList(this.getAttributes("TT"))); },
+        I         : function() { return new DTDElementTypeDeclaration("I", null, null, new DTDAttrList(this.getAttributes("I"))); },
+        B         : function() { return new DTDElementTypeDeclaration("B", null, null, new DTDAttrList(this.getAttributes("B"))); },
+        BIG       : function() { return new DTDElementTypeDeclaration("BIG", null, null, new DTDAttrList(this.getAttributes("BIG"))); },
+        SMALL     : function() { return new DTDElementTypeDeclaration("SMALL", null, null, new DTDAttrList(this.getAttributes("SMALL"))); },
+        EM        : function() { return new DTDElementTypeDeclaration("EM", null, null, new DTDAttrList(this.getAttributes("EM"))); },
+        STRONG    : function() { return new DTDElementTypeDeclaration("STRONG", null, null, new DTDAttrList(this.getAttributes("STRONG"))); },
+        DFN       : function() { return new DTDElementTypeDeclaration("DFN", null, null, new DTDAttrList(this.getAttributes("DFN"))); },
+        CODE      : function() { return new DTDElementTypeDeclaration("CODE", null, null, new DTDAttrList(this.getAttributes("CODE"))); },
+        SAMP      : function() { return new DTDElementTypeDeclaration("SAMP", null, null, new DTDAttrList(this.getAttributes("SAMP"))); },
+        KBD       : function() { return new DTDElementTypeDeclaration("KBD", null, null, new DTDAttrList(this.getAttributes("KBD"))); },
+        VAR       : function() { return new DTDElementTypeDeclaration("VAR", null, null, new DTDAttrList(this.getAttributes("VAR"))); },
+        CITE      : function() { return new DTDElementTypeDeclaration("CITE", null, null, new DTDAttrList(this.getAttributes("CITE"))); },
+        ABBR      : function() { return new DTDElementTypeDeclaration("ABBR", null, null, new DTDAttrList(this.getAttributes("ABBR"))); },
+        ACRONYM   : function() { return new DTDElementTypeDeclaration("ACRONYM", null, null, new DTDAttrList(this.getAttributes("ACRONYM"))); },
+        SUB       : function() { return new DTDElementTypeDeclaration("SUB", null, null, new DTDAttrList(this.getAttributes("SUB"))); },
+        SUP       : function() { return new DTDElementTypeDeclaration("SUP", null, null, new DTDAttrList(this.getAttributes("SUP"))); },
+        SPAN      : function() { return new DTDElementTypeDeclaration("SPAN", null, null, new DTDAttrList(this.getAttributes("SPAN"))); },
+        BDO       : function() { return new DTDElementTypeDeclaration("BDO", null, null, new DTDAttrList(this.getAttributes("BDO"))); },
+        BR        : function() { return new DTDElementTypeDeclaration("BR", null, null, new DTDAttrList(this.getAttributes("BR"))); },
+        BODY      : function() { return new DTDElementTypeDeclaration("BODY", null, null, new DTDAttrList(this.getAttributes("BODY"))); },
+        DIV       : function() { return new DTDElementTypeDeclaration("DIV", null, null, new DTDAttrList(this.getAttributes("DIV"))); },
+        A         : function() { return new DTDElementTypeDeclaration("A", null, null, new DTDAttrList(this.getAttributes("A"))); },
+        IMG       : function() { return new DTDElementTypeDeclaration("IMG", null, null, new DTDAttrList(this.getAttributes("IMG"))); },
+        HR        : function() { return new DTDElementTypeDeclaration("HR", null, null, new DTDAttrList(this.getAttributes("HR"))); },
+        P         : function() { return new DTDElementTypeDeclaration("P", null, null, new DTDAttrList(this.getAttributes("P"))); },
+        H1        : function() { return new DTDElementTypeDeclaration("H1", null, null, new DTDAttrList(this.getAttributes("H1"))); },
+        H2        : function() { return new DTDElementTypeDeclaration("H2", null, null, new DTDAttrList(this.getAttributes("H2"))); },
+        H3        : function() { return new DTDElementTypeDeclaration("H3", null, null, new DTDAttrList(this.getAttributes("H3"))); },
+        H4        : function() { return new DTDElementTypeDeclaration("H4", null, null, new DTDAttrList(this.getAttributes("H4"))); },
+        H5        : function() { return new DTDElementTypeDeclaration("H5", null, null, new DTDAttrList(this.getAttributes("H5"))); },
+        H6        : function() { return new DTDElementTypeDeclaration("H6", null, null, new DTDAttrList(this.getAttributes("H6"))); },
+        PRE       : function() { return new DTDElementTypeDeclaration("PRE", null, null, new DTDAttrList(this.getAttributes("PRE"))); },
+        Q         : function() { return new DTDElementTypeDeclaration("Q", null, null, new DTDAttrList(this.getAttributes("Q"))); },
+        BLOCKQUOTE: function() { return new DTDElementTypeDeclaration("BLOCKQUOTE", null, null, new DTDAttrList(this.getAttributes("BLOCKQUOTE"))); },
+        INS       : function() { return new DTDElementTypeDeclaration("INS", null, null, new DTDAttrList(this.getAttributes("INS"))); },
+        DEL       : function() { return new DTDElementTypeDeclaration("DEL", null, null, new DTDAttrList(this.getAttributes("DEL"))); },
+        DL        : function() { return new DTDElementTypeDeclaration("DL", null, null, new DTDAttrList(this.getAttributes("DL"))); },
+        DT        : function() { return new DTDElementTypeDeclaration("DT", null, null, new DTDAttrList(this.getAttributes("DT"))); },
+        DD        : function() { return new DTDElementTypeDeclaration("DD", null, null, new DTDAttrList(this.getAttributes("DD"))); },
+        OL        : function() { return new DTDElementTypeDeclaration("OL", null, null, new DTDAttrList(this.getAttributes("OL"))); },
+        UL        : function() { return new DTDElementTypeDeclaration("UL", null, null, new DTDAttrList(this.getAttributes("UL"))); },
+        LI        : function() { return new DTDElementTypeDeclaration("LI", null, null, new DTDAttrList(this.getAttributes("LI"))); },
+        TABLE     : function() { return new DTDElementTypeDeclaration("TABLE", null, null, new DTDAttrList(this.getAttributes("TABLE"))); },
+        CAPTION   : function() { return new DTDElementTypeDeclaration("CAPTION", null, null, new DTDAttrList(this.getAttributes("CAPTION"))); },
+        THEAD     : function() { return new DTDElementTypeDeclaration("THEAD", null, null, new DTDAttrList(this.getAttributes("THEAD"))); },
+        TFOOT     : function() { return new DTDElementTypeDeclaration("TFOOT", null, null, new DTDAttrList(this.getAttributes("TFOOT"))); },
+        TBODY     : function() { return new DTDElementTypeDeclaration("TBODY", null, null, new DTDAttrList(this.getAttributes("TBODY"))); },
+        COLGROUP  : function() { return new DTDElementTypeDeclaration("COLGROUP", null, null, new DTDAttrList(this.getAttributes("COLGROUP"))); },
+        COL       : function() { return new DTDElementTypeDeclaration("COL", null, null, new DTDAttrList(this.getAttributes("COL"))); },
+        TR        : function() { return new DTDElementTypeDeclaration("TR", null, null, new DTDAttrList(this.getAttributes("TR"))); },
+        TH        : function() { return new DTDElementTypeDeclaration("TH", null, null, new DTDAttrList(this.getAttributes("TH"))); },
+        TD        : function() { return new DTDElementTypeDeclaration("TD", null, null, new DTDAttrList(this.getAttributes("TD"))); }
     },
 
     // TODO: complete me
     __attrGenerators: {
-        charset: function() { return new DTDAttributeDeclaration("charset", "CDATA", "#IMPLIED", null); },
-        type   : function() { return new DTDAttributeDeclaration("type", "CDATA", "#IMPLIED", null); },
-        name   : function() { return new DTDAttributeDeclaration("name", "CDATA", "#IMPLIED", null); },
-        href   : function() { return new DTDAttributeDeclaration("href", "CDATA", "#IMPLIED", null); }
-    },
+        TT: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
 
-    __lookupCache: function (aEntryName, aCache, aGeneratorTable) {
-        var generator = null;
-        var entry     = null;
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
 
-        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.__lookupCache() invoked\n");
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
 
-        if (aCache[aEntryName]) {
-            // entry is already in the cache
-            return aCache[aEntryName];
-        } else {
-            // generate a new entry
-            generator = aGeneratorTable[aEntryName];
+        I: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
 
-            if (generator) {
-                entry = generator.call(this);
-                aCache[aEntryName] = entry;
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
 
-                return entry;
-            } else {
-                // no generator found for this entry
-                return null;
-            }
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        B: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        BIG: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        SMALL: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        EM: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        STRONG: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        DFN: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        CODE: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        SAMP: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        KBD: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        VAR: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        CITE: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        ABBR: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        ACRONYM: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        SUB: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        SUP: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        SPAN: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        BDO: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#REQUIRED", null); },
+        },
+
+        BR: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); }
+        },
+
+        BODY: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* BODY specific attrs */
+            onload     : function() { return new DTDAttributeDeclaration("onload", "CDATA", "#IMPLIED", null); },
+            onunload   : function() { return new DTDAttributeDeclaration("onunload", "CDATA", "#IMPLIED", null); }
+        },
+
+        DIV: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        A: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* A specific attrs */
+            charset    : function() { return new DTDAttributeDeclaration("charset", "CDATA", "#IMPLIED", null); },
+            type       : function() { return new DTDAttributeDeclaration("type", "CDATA", "#IMPLIED", null); },
+            name       : function() { return new DTDAttributeDeclaration("name", "CDATA", "#IMPLIED", null); },
+            href       : function() { return new DTDAttributeDeclaration("href", "CDATA", "#IMPLIED", null); },
+            hreflang   : function() { return new DTDAttributeDeclaration("hreflang", "NAME", "#IMPLIED", null); },
+            rel        : function() { return new DTDAttributeDeclaration("rel", "CDATA", "#IMPLIED", null); },
+            rev        : function() { return new DTDAttributeDeclaration("rev", "CDATA", "#IMPLIED", null); },
+            accesskey  : function() { return new DTDAttributeDeclaration("accesskey", "CDATA", "#IMPLIED", null); },
+            shape      : function() { return new DTDAttributeDeclaration("shape", new DTDContentSet("rect", "circle", "poly", "default"), null, "rect"); },
+            coords     : function() { return new DTDAttributeDeclaration("coords", "CDATA", "#IMPLIED", null); },
+            tabindex   : function() { return new DTDAttributeDeclaration("tabindex", "NUMBER", "#IMPLIED", null); },
+            onfocus    : function() { return new DTDAttributeDeclaration("onfocus", "CDATA", "#IMPLIED", null); },
+            onblur     : function() { return new DTDAttributeDeclaration("onblur", "CDATA", "#IMPLIED", null); }
+        },
+
+        IMG: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* IMG specific attrs */
+            src        : function() { return new DTDAttributeDeclaration("src", "CDATA", "#REQUIRED", null); },
+            alt        : function() { return new DTDAttributeDeclaration("alt", "CDATA", "#REQUIRED", null); },
+            longdesc   : function() { return new DTDAttributeDeclaration("longdesc", "CDATA", "#IMPLIED", null); },
+            name       : function() { return new DTDAttributeDeclaration("name", "CDATA", "#IMPLIED", null); },
+            height     : function() { return new DTDAttributeDeclaration("height", "CDATA", "#IMPLIED", null); },
+            width      : function() { return new DTDAttributeDeclaration("width", "CDATA", "#IMPLIED", null); },
+            usemap     : function() { return new DTDAttributeDeclaration("usemap", "CDATA", "#IMPLIED", null); },
+            ismap      : function() { return new DTDAttributeDeclaration("ismap", new DTDContentSet("ismap"), "#IMPLIED", null); }
+        },
+
+        HR: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        P: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        H1: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        H2: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        H3: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        H4: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        H5: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        H6: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        PRE: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        Q: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* Q specific attrs */
+            cite       : function() { return new DTDAttributeDeclaration("cite", "CDATA", "#IMPLIED", null); }
+        },
+
+        BLOCKQUOTE: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* BLOCKQUOTE specific attrs */
+            cite       : function() { return new DTDAttributeDeclaration("cite", "CDATA", "#IMPLIED", null); }
+        },
+
+        INS: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* INS specific attrs */
+            cite       : function() { return new DTDAttributeDeclaration("cite", "CDATA", "#IMPLIED", null); },
+            datetime   : function() { return new DTDAttributeDeclaration("datetime", "CDATA", "#IMPLIED", null); }
+        },
+
+        DEL: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* DEL specific attrs */
+            cite       : function() { return new DTDAttributeDeclaration("cite", "CDATA", "#IMPLIED", null); },
+            datetime   : function() { return new DTDAttributeDeclaration("datetime", "CDATA", "#IMPLIED", null); }
+        },
+
+        DL: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        DT: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        DD: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        OL: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        UL: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        LI: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        TABLE: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* TABLE specific attrs */
+            summary    : function() { return new DTDAttributeDeclaration("summary", "CDATA", "#IMPLIED", null); },
+            width      : function() { return new DTDAttributeDeclaration("width", "CDATA", "#IMPLIED", null); },
+            border     : function() { return new DTDAttributeDeclaration("border", "CDATA", "#IMPLIED", null); },
+            frame      : function() { return new DTDAttributeDeclaration("frame", new DTDContentSet("void", "above", "below", "hsides", "lhs", "rhs", "vsides", "box", "border"), "#IMPLIED", null); },
+            rules      : function() { return new DTDAttributeDeclaration("rules", new DTDContentSet("node", "groups", "rows", "cols", "all"), "#IMPLIED", null); },
+            cellspacing: function() { return new DTDAttributeDeclaration("cellspacing", "CDATA", "#IMPLIED", null); },
+            cellpadding: function() { return new DTDAttributeDeclaration("cellpadding", "CDATA", "#IMPLIED", null); }
+        },
+
+        CAPTION: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); }
+        },
+
+        COLGROUP: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* COLGROUP specific attrs */
+            span       : function() { return new DTDAttributeDeclaration("span", "NUMBER", null, "1"); },
+            width      : function() { return new DTDAttributeDeclaration("width", "CDATA", "#IMPLIED", null); },
+            align      : function() { return new DTDAttributeDeclaration("align", new DTDContentSet("left", "center", "right", "justify", "char"), "#IMPLIED", null); },
+            char       : function() { return new DTDAttributeDeclaration("char", "CDATA", "#IMPLIED", null); },
+            charoff    : function() { return new DTDAttributeDeclaration("charoff", "CDATA", "#IMPLIED", null); },
+            valign     : function() { return new DTDAttributeDeclaration("valign", new DTDContentSet("top", "middle", "bottom", "baseline"), "#IMPLIED", null); }
+        },
+
+        COL: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* COL specific attrs */
+            span       : function() { return new DTDAttributeDeclaration("span", "NUMBER", null, "1"); },
+            width      : function() { return new DTDAttributeDeclaration("width", "CDATA", "#IMPLIED", null); },
+            align      : function() { return new DTDAttributeDeclaration("align", new DTDContentSet("left", "center", "right", "justify", "char"), "#IMPLIED", null); },
+            char       : function() { return new DTDAttributeDeclaration("char", "CDATA", "#IMPLIED", null); },
+            charoff    : function() { return new DTDAttributeDeclaration("charoff", "CDATA", "#IMPLIED", null); },
+            valign     : function() { return new DTDAttributeDeclaration("valign", new DTDContentSet("top", "middle", "bottom", "baseline"), "#IMPLIED", null); }
+        },
+
+        THEAD: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* THEAD specific attrs */
+            align      : function() { return new DTDAttributeDeclaration("align", new DTDContentSet("left", "center", "right", "justify", "char"), "#IMPLIED", null); },
+            char       : function() { return new DTDAttributeDeclaration("char", "CDATA", "#IMPLIED", null); },
+            charoff    : function() { return new DTDAttributeDeclaration("charoff", "CDATA", "#IMPLIED", null); },
+            valign     : function() { return new DTDAttributeDeclaration("valign", new DTDContentSet("top", "middle", "bottom", "baseline"), "#IMPLIED", null); }
+        },
+
+        TBODY: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* TBODY specific attrs */
+            align      : function() { return new DTDAttributeDeclaration("align", new DTDContentSet("left", "center", "right", "justify", "char"), "#IMPLIED", null); },
+            char       : function() { return new DTDAttributeDeclaration("char", "CDATA", "#IMPLIED", null); },
+            charoff    : function() { return new DTDAttributeDeclaration("charoff", "CDATA", "#IMPLIED", null); },
+            valign     : function() { return new DTDAttributeDeclaration("valign", new DTDContentSet("top", "middle", "bottom", "baseline"), "#IMPLIED", null); }
+        },
+
+        TFOOT: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* TFOOT specific attrs */
+            align      : function() { return new DTDAttributeDeclaration("align", new DTDContentSet("left", "center", "right", "justify", "char"), "#IMPLIED", null); },
+            char       : function() { return new DTDAttributeDeclaration("char", "CDATA", "#IMPLIED", null); },
+            charoff    : function() { return new DTDAttributeDeclaration("charoff", "CDATA", "#IMPLIED", null); },
+            valign     : function() { return new DTDAttributeDeclaration("valign", new DTDContentSet("top", "middle", "bottom", "baseline"), "#IMPLIED", null); }
+        },
+
+        TR: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* TR specific attrs */
+            align      : function() { return new DTDAttributeDeclaration("align", new DTDContentSet("left", "center", "right", "justify", "char"), "#IMPLIED", null); },
+            char       : function() { return new DTDAttributeDeclaration("char", "CDATA", "#IMPLIED", null); },
+            charoff    : function() { return new DTDAttributeDeclaration("charoff", "CDATA", "#IMPLIED", null); },
+            valign     : function() { return new DTDAttributeDeclaration("valign", new DTDContentSet("top", "middle", "bottom", "baseline"), "#IMPLIED", null); }
+        },
+
+        TH: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* TH specific attrs */
+            abbr       : function() { return new DTDAttributeDeclaration("abbr", "CDATA", "#IMPLIED", null); },
+            axis       : function() { return new DTDAttributeDeclaration("axis", "CDATA", "#IMPLIED", null); },
+            headers    : function() { return new DTDAttributeDeclaration("headers", "IDREFS", "#IMPLIED", null); },
+            scope      : function() { return new DTDAttributeDeclaration("scope", new DTDContentSet("row", "col", "rowgroup", "colgroup"), "#IMPLIED", null); },
+            rowspan    : function() { return new DTDAttributeDeclaration("rowspan", "NUMBER", null, "1"); },
+            colspan    : function() { return new DTDAttributeDeclaration("colspan", "NUMBER", null, "1"); },
+            align      : function() { return new DTDAttributeDeclaration("align", new DTDContentSet("left", "center", "right", "justify", "char"), "#IMPLIED", null); },
+            char       : function() { return new DTDAttributeDeclaration("char", "CDATA", "#IMPLIED", null); },
+            charoff    : function() { return new DTDAttributeDeclaration("charoff", "CDATA", "#IMPLIED", null); },
+            valign     : function() { return new DTDAttributeDeclaration("valign", new DTDContentSet("top", "middle", "bottom", "baseline"), "#IMPLIED", null); }
+        },
+
+        TD: {
+            /* coreattrs */
+            id         : function() { return new DTDAttributeDeclaration("id", "ID", "#IMPLIED", null); },
+            class      : function() { return new DTDAttributeDeclaration("class", "CDATA", "#IMPLIED", null); },
+            style      : function() { return new DTDAttributeDeclaration("style", "CDATA", "#IMPLIED", null); },
+            title      : function() { return new DTDAttributeDeclaration("title", "CDATA", "#IMPLIED", null); },
+
+            /* i18n */
+            lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#IMPLIED", null); },
+
+            /* events */
+            onclick    : function() { return new DTDAttributeDeclaration("onclick", "CDATA", "#IMPLIED", null); },
+            ondblclick : function() { return new DTDAttributeDeclaration("ondblclick", "CDATA", "#IMPLIED", null); },
+            onmousedown: function() { return new DTDAttributeDeclaration("onmousedown", "CDATA", "#IMPLIED", null); },
+            onmouseup  : function() { return new DTDAttributeDeclaration("onmouseup", "CDATA", "#IMPLIED", null); },
+            onmouseover: function() { return new DTDAttributeDeclaration("onmouseover", "CDATA", "#IMPLIED", null); },
+            onmousemove: function() { return new DTDAttributeDeclaration("onmousemove", "CDATA", "#IMPLIED", null); },
+            onmouseout : function() { return new DTDAttributeDeclaration("onmouseout", "CDATA", "#IMPLIED", null); },
+            onkeypress : function() { return new DTDAttributeDeclaration("onkeypress", "CDATA", "#IMPLIED", null); },
+            onkeydown  : function() { return new DTDAttributeDeclaration("onkeydown", "CDATA", "#IMPLIED", null); },
+            onkeyup    : function() { return new DTDAttributeDeclaration("onkeyup", "CDATA", "#IMPLIED", null); },
+
+            /* TH specific attrs */
+            abbr       : function() { return new DTDAttributeDeclaration("abbr", "CDATA", "#IMPLIED", null); },
+            axis       : function() { return new DTDAttributeDeclaration("axis", "CDATA", "#IMPLIED", null); },
+            headers    : function() { return new DTDAttributeDeclaration("headers", "IDREFS", "#IMPLIED", null); },
+            scope      : function() { return new DTDAttributeDeclaration("scope", new DTDContentSet("row", "col", "rowgroup", "colgroup"), "#IMPLIED", null); },
+            rowspan    : function() { return new DTDAttributeDeclaration("rowspan", "NUMBER", null, "1"); },
+            colspan    : function() { return new DTDAttributeDeclaration("colspan", "NUMBER", null, "1"); },
+            align      : function() { return new DTDAttributeDeclaration("align", new DTDContentSet("left", "center", "right", "justify", "char"), "#IMPLIED", null); },
+            char       : function() { return new DTDAttributeDeclaration("char", "CDATA", "#IMPLIED", null); },
+            charoff    : function() { return new DTDAttributeDeclaration("charoff", "CDATA", "#IMPLIED", null); },
+            valign     : function() { return new DTDAttributeDeclaration("valign", new DTDContentSet("top", "middle", "bottom", "baseline"), "#IMPLIED", null); }
         }
-    },
-
-    getElement: function (aElemName) {
-        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.getElement() invoked\n");
-
-        return this.__lookupCache(aElemName, this.__elemMap, this.__elemGenerators);
-    },
-
-    getAttribute: function (aAttrName) {
-        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.getAttribute() invoked\n");
-
-        return this.__lookupCache(aAttrName, this.__attrMap, this.__attrGenerators);
     }
 };
