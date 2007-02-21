@@ -137,6 +137,11 @@
              label="&fileOperationUpload.label;" tooltiptext="&fileOperationUpload.tooltip;"/>
   </commandset>
 
+  <commandset id="uiYulupEditorModificationCommandset">
+    <command id="cmd_yulup_editattributes" oncommand="Editor.editAttributes()"
+             label="&editOperationEditAttributes.label;" tooltiptext="&editOperationEditAttributes.tooltip;"/>
+  </commandset>
+
   <commandset id="uiYulupEditorWidgetCommandset"/>
 
   <broadcasterset>
@@ -206,6 +211,8 @@
             disabled="true">
         <menupopup id="uiYulupEditorEditorContextMenuInsertMenupopup"/>
       </menu>
+      <menuitem id="uiYulupEditorEditorContextEditAttributes"
+                command="cmd_yulup_editattributes"/>
     </popup>
   </popupset>
 

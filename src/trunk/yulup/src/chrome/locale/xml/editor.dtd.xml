@@ -93,6 +93,11 @@
     <name xml:lang="de">Einfügen</name>
   </entity>
 
+  <entity id="editOperationEditAttributes.label">
+    <name xml:lang="en">Edit attributes</name>
+    <name xml:lang="de">Attribute editieren</name>
+  </entity>
+
   <entity id="fileOperationExit.label">
     <name xml:lang="en">Exit</name>
     <name xml:lang="de">Beenden</name>
@@ -295,6 +300,11 @@
   <entity id="editOperationInsertMenu.tooltip">
     <name xml:lang="en">Insert at current position</name>
     <name xml:lang="de">Einfügen an der aktuellen Position</name>
+  </entity>
+
+  <entity id="editOperationEditAttributes.tooltip">
+    <name xml:lang="en">Edit the attributes of this element</name>
+    <name xml:lang="de">Editieren der Attribute des aktuellen Elements</name>
   </entity>
 
   <entity id="fileOperationExit.tooltip">

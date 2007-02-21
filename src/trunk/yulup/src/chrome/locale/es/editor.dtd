@@ -14,6 +14,7 @@
 <!ENTITY editOperationFindReplace.label "Reemplazar">
 <!ENTITY editOperationSurroundMenu.label "Mark as">
 <!ENTITY editOperationInsertMenu.label "Insert">
+<!ENTITY editOperationEditAttributes.label "Edit attributes">
 <!ENTITY fileOperationExit.label "Salir">
 <!ENTITY fileOperationInfobarToggle.label "Infobar">
 <!ENTITY fileOperationNew.label "Nuevo">
@@ -49,6 +50,7 @@
 <!ENTITY editOperationFindReplace.tooltip "Reemplazar una cadena">
 <!ENTITY editOperationSurroundMenu.tooltip "Mark current selection as">
 <!ENTITY editOperationInsertMenu.tooltip "Insert at current position">
+<!ENTITY editOperationEditAttributes.tooltip "Edit the attributes of this element">
 <!ENTITY fileOperationExit.tooltip "Salir del editor">
 <!ENTITY fileOperationInfobarToggle.tooltip "Open/Close Infobar">
 <!ENTITY fileOperationNew.tooltip "Crear un documento nuevo">
