@@ -63,6 +63,7 @@ function View(aEditorController, aModel, aBarrier, aContextMenuPopup) {
 
 View.prototype = {
     __contextMenuPopup: null,
+    __contextTarget   : null,
 
     controller      : null,
     model           : null,
@@ -244,6 +245,10 @@ View.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aSelectionListener != null);
     },
 
+    getContextTarget: function () {
+        return this.__contextTarget;
+    },
+
     /**
      * Show a context menu for this view.
      *
@@ -251,6 +256,10 @@ View.prototype = {
      * @return {Undefined} does not have a return value
      */
     showContextMenu: function (aEvent) {
+        // store the event target
+        this.__contextTarget = aEvent.originalTarget;
+
+        // open the context menu
         this.__contextMenuPopup.showPopup(this.editor, aEvent.clientX, aEvent.clientY, "context");
     },
 
