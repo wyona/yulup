@@ -186,6 +186,7 @@ WidgetManager.prototype = {
 
             // add command to editor.xul
             widgetCommand = document.createElement("command");
+            // TODO: change to cmd_yulup_widget_* scheme to prevent potential clashes (change deps as well)
             widgetCommand.setAttribute("id", "cmd_" + widget.attributes["name"]);
             widgetCommand.setAttribute("disabled", "false");
             widgetCommand.setAttribute("label", widget.attributes["name"]);
