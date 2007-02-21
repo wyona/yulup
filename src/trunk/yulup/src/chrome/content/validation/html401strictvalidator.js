@@ -226,7 +226,7 @@ HTML401StrictElementEditVAL.prototype = {
     __lookupElem: function (aElemName) {
         /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictElementEditVAL.__lookupElem(\"" + aElemName + "\") invoked\n");
 
-        return this.__validator.dtd.elementMap[aElemName];
+        return this.__validator.dtd.getElement(aElemName);
     },
 
     /**
@@ -683,115 +683,64 @@ function HTML401StrictDTD() {
     /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD() invoked\n");
 
     DTD.call(this);
+
+    this.__attrMap = new Object();
+    this.__elemMap = new Object();
 }
 
 HTML401StrictDTD.prototype = {
     __proto__:  DTD.prototype,
 
+    __elemMap: null,
+    __attrMap: null,
+
     // TODO: complete me
-    /*
-    elementMap: {
-        TT      : this.elemTT,
-        I       : this.elemI,
-        B       : this.elemB,
-        BIG     : this.elemBIG,
-        SMALL   : this.elemSMALL,
-        EM      : this.elemEM,
-        STRONG  : this.elemSTRONG,
-        DFN     : this.elemDFN,
-        CODE    : this.elemCODE,
-        SAMP    : this.elemSAMP,
-        KBD     : this.elemKBD,
-        VAR     : this.elemVAR,
-        CITE    : this.elemCITE,
-        ABBR    : this.elemABBR,
-        ACRONYM : this.elemACRONYM,
-        A       : this.elemA,
-        IMG     : this.elemIMG,
-        OBJECT  : this.elemOBJECT,
-        BR      : this.elemBR,
-        SCRIPT  : this.elemSCRIPT,
-        MAP     : this.elemMAP,
-        Q       : this.elemQ,
-        SUB     : this.elemSUB,
-        SUP     : this.elemSUP,
-        SPAN    : this.elemSPAN,
-        BDO     : this.elemBDO,
-        INPUT   : this.elemINPUT,
-        SELECT  : this.elemSELECT,
-        TEXTAREA: this.elemTEXTAREA,
-        LABEL   : this.elemLABEL,
-        BUTTON  : this.elemBUTTON
+    __elemGenerators: {
+        A: function() { return new DTDElementTypeDeclaration("A", null, null, new DTDAttrList(this.getAttribute("charset"), this.getAttribute("type"), this.getAttribute("name"), this.getAttribute("href"))); }
     },
-    */
 
-    get elementMap() {
-        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.elementMap() invoked\n");
+    // TODO: complete me
+    __attrGenerators: {
+        charset: function() { return new DTDAttributeDeclaration("charset", "CDATA", "#IMPLIED", null); },
+        type   : function() { return new DTDAttributeDeclaration("type", "CDATA", "#IMPLIED", null); },
+        name   : function() { return new DTDAttributeDeclaration("name", "CDATA", "#IMPLIED", null); },
+        href   : function() { return new DTDAttributeDeclaration("href", "CDATA", "#IMPLIED", null); }
+    },
 
-        return {
-            A: this.elemA
+    __lookupCache: function (aEntryName, aCache, aGeneratorTable) {
+        var generator = null;
+        var entry     = null;
+
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.__lookupCache() invoked\n");
+
+        if (aCache[aEntryName]) {
+            // entry is already in the cache
+            return aCache[aEntryName];
+        } else {
+            // generate a new entry
+            generator = aGeneratorTable[aEntryName];
+
+            if (generator) {
+                entry = generator.call(this);
+                aCache[aEntryName] = entry;
+
+                return entry;
+            } else {
+                // no generator found for this entry
+                return null;
+            }
         }
     },
 
-    __elemA: null,
-    get elemA() {
-        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.elemA() invoked\n");
+    getElement: function (aElemName) {
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.getElement() invoked\n");
 
-        if (!this.__elemA) {
-            this.__elemA = new DTDElementTypeDeclaration("A",
-                                                         null,
-                                                         null,
-                                                         new DTDAttrList(this.attrCharset,
-                                                                         this.attrType,
-                                                                         this.attrName,
-                                                                         this.attrHref)
-                                                         );
-        }
-
-        return this.__elemA;
+        return this.__lookupCache(aElemName, this.__elemMap, this.__elemGenerators);
     },
 
-    __attrCharset: null,
-    get attrCharset() {
-        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.attrCharset() invoked\n");
+    getAttribute: function (aAttrName) {
+        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.getAttribute() invoked\n");
 
-        if (!this.__attrCharset) {
-            this.__attrCharset = new DTDAttributeDeclaration("charset", "CDATA", "#IMPLIED", null);
-        }
-
-        return this.__attrCharset;
-    },
-
-    __attrType: null,
-    get attrType() {
-        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.attrType() invoked\n");
-
-        if (!this.__attrType) {
-            this.__attrType = new DTDAttributeDeclaration("type", "CDATA", "#IMPLIED", null);
-        }
-
-        return this.__attrType;
-    },
-
-    __attrName: null,
-    get attrName() {
-        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.attrName() invoked\n");
-
-        if (!this.__attrName) {
-            this.__attrName = new DTDAttributeDeclaration("name", "CDATA", "#IMPLIED", null);
-        }
-
-        return this.__attrName;
-    },
-
-    __attrHref: null,
-    get attrHref() {
-        /* DEBUG */ dump("Yulup:html401strictvalidator.js:HTML401StrictDTD.attrHref() invoked\n");
-
-        if (!this.__attrHref) {
-            this.__attrHref = new DTDAttributeDeclaration("href", "CDATA", "#IMPLIED", null);
-        }
-
-        return this.__attrHref;
+        return this.__lookupCache(aAttrName, this.__attrMap, this.__attrGenerators);
     }
 };
