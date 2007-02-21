@@ -28,9 +28,76 @@
 
 function DTD() {
     /* DEBUG */ dump("Yulup:dtd.js:DTD() invoked\n");
+
+    this.__attrMap = new Object();
+    this.__elemMap = new Object();
 }
 
-DTD.prototype = {};
+DTD.prototype = {
+    __elemMap: null,
+    __attrMap: null,
+
+    __attrGenerators: null,
+    __elemGenerators: null,
+
+    __lookupCache: function (aEntryName, aCache, aGeneratorTable) {
+        var generator = null;
+        var entry     = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aEntryName      != null);
+        /* DEBUG */ YulupDebug.ASSERT(aCache          != null);
+        /* DEBUG */ YulupDebug.ASSERT(aGeneratorTable != null);
+
+        /* DEBUG */ dump("Yulup:dtd.js:DTD.__lookupCache() invoked\n");
+
+        if (aCache[aEntryName]) {
+            // entry is already in the cache
+            return aCache[aEntryName];
+        } else {
+            // generate a new entry
+            generator = aGeneratorTable[aEntryName];
+
+            if (generator) {
+                entry = generator.call(this);
+                aCache[aEntryName] = entry;
+
+                return entry;
+            } else {
+                // no generator found for this entry
+                return null;
+            }
+        }
+    },
+
+    getElement: function (aElemName) {
+        /* DEBUG */ YulupDebug.ASSERT(aElemName != null);
+
+        /* DEBUG */ dump("Yulup:dtd.js:DTD.getElement() invoked\n");
+
+        return this.__lookupCache(aElemName, this.__elemMap, this.__elemGenerators);
+    },
+
+    getAttributes: function (aElemName) {
+        var generators = null;
+        var attributes = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aElemName != null);
+
+        /* DEBUG */ dump("Yulup:dtd.js:DTD.getAttributes() invoked\n");
+
+        generators = this.__attrGenerators[aElemName];
+
+        if (generators) {
+            attributes = new Array();
+
+            for (var attr in generators) {
+                attributes.push(generators[attr].call(this));
+            }
+        }
+
+        return attributes;
+    }
+};
 
 
 function DTDDeclaration() {
@@ -101,16 +168,16 @@ DTDElementTypeDeclaration.prototype = {
 };
 
 
-function DTDAttributeDeclaration(aName, aType, aConstraint, aDefaultValue) {
-    /* DEBUG */ YulupDebug.ASSERT(aName != null);
-    /* DEBUG */ YulupDebug.ASSERT(aType != null);
+function DTDAttributeDeclaration(aName, aContentModel, aConstraint, aDefaultValue) {
+    /* DEBUG */ YulupDebug.ASSERT(aName         != null);
+    /* DEBUG */ YulupDebug.ASSERT(aContentModel != null);
 
     /* DEBUG */ dump("Yulup:dtd.js:DTDAttributeDeclaration() invoked\n");
 
     DTDDeclaration.call(this);
 
-    this.__name = aName;
-    this.__type = aType;
+    this.__name         = aName;
+    this.__contentModel = aContentModel;
 
     switch (aConstraint) {
         case "#REQUIRED":
@@ -131,7 +198,7 @@ DTDAttributeDeclaration.prototype = {
     __proto__:  DTDDeclaration.prototype,
 
     __name          : null,
-    __type          : null,
+    __contentModel  : null,
     __isRequired    : false,
     __isValueImplied: false,
     __isValueFixed  : false,
@@ -163,6 +230,14 @@ DTDAttributeDeclaration.prototype = {
 
     get defaultValue() {
         return this.__defaultValue;
+    },
+
+    get allowedValues() {
+        if (this.__contentModel instanceof DTDContentSet) {
+            return this.__contentModel.toArray();
+        } else {
+            return null;
+        }
     }
 };
 
@@ -183,16 +258,51 @@ function DTDAttrList() {
 
     this.__attrList = new Array();
 
-    for (var i = 0; i < arguments.length; i++)
-        this.__attrList.push(arguments[i]);
+    for (var i = 0; i < arguments.length; i++) {
+        if (arguments[i] instanceof Array) {
+            this.__unrollArray(this.__attrList, arguments[i]);
+        } else {
+            this.__attrList.push(arguments[i]);
+        }
+    }
 }
 
 DTDAttrList.prototype = {
     __attrList: null,
 
+    __unrollArray: function (aTarget, aArray) {
+        /* DEBUG */ YulupDebug.ASSERT(aTarget != null);
+        /* DEBUG */ YulupDebug.ASSERT(aArray  != null);
+
+        /* DEBUG */ dump("Yulup:dtd.js:DTDAttrList.__unrollArray() invoked\n");
+
+        for (var i = 0; i < aArray.length; i++) {
+            aTarget.push(aArray[i]);
+        }
+    },
+
     getAttributes: function () {
         /* DEBUG */ dump("Yulup:dtd.js:DTDAttrList.getAttributes() invoked\n");
 
         return this.__attrList;
+    }
+};
+
+
+function DTDContentSet() {
+    this.__set = new Array();
+
+    /* DEBUG */ dump("Yulup:dtd.js:DTDContentSet() invoked\n");
+
+    for (var i = 0; i < arguments.length; i++) {
+        this.__set.push(arguments[i]);
+    }
+}
+
+DTDContentSet.prototype = {
+    toArray: function () {
+        /* DEBUG */ dump("Yulup:dtd.js:DTDContentSet.toArray() invoked\n");
+
+        return this.__set;
     }
 };
