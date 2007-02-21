@@ -253,7 +253,7 @@ HTML401StrictElementEditVAL.prototype = {
         children = elem.getAllChildren();
 
         for (var i = 0; i < children.length; i++) {
-            map.addNameNS(children[i].namespaceURI, children[i].name);
+            map.addNameNS(children[i].namespaceURI, children[i].name, children[i]);
         }
 
         return map;
@@ -295,7 +295,7 @@ HTML401StrictElementEditVAL.prototype = {
         parents = elem.getParents();
 
         for (var i = 0; i < parents.length; i++) {
-            map.addNameNS(parents[i].namespaceURI, parents[i].name);
+            map.addNameNS(parents[i].namespaceURI, parents[i].name, parents[i]);
         }
 
         return map;
@@ -351,7 +351,7 @@ HTML401StrictElementEditVAL.prototype = {
         attrs = elem.getAttributes();
 
         for (var i = 0; i < attrs.length; i++) {
-            map.addNameNS(attrs[i].namespaceURI, attrs[i].name);
+            map.addNameNS(attrs[i].namespaceURI, attrs[i].name, attrs[i]);
         }
 
         return map;
@@ -381,7 +381,7 @@ HTML401StrictElementEditVAL.prototype = {
 
         for (var i = 0; i < attrs.length; i++) {
             if (attrs[i].isRequired)
-                map.addNameNS(attrs[i].namespaceURI, attrs[i].name);
+                map.addNameNS(attrs[i].namespaceURI, attrs[i].name, attrs[i]);
         }
 
         return map;
