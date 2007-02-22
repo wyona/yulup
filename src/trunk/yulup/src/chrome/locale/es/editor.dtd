@@ -39,6 +39,10 @@
 <!ENTITY waitDescription.label "Abriendo el documento">
 <!ENTITY yulupServerURIDialog.title "Introducir la URI del servidor">
 <!ENTITY yulupServerURIDialogLabel.label "Introduzca la URI del servidor al que desea subir el documento">
+<!ENTITY uiYulupXPathToolBarExpressionLabel.label "Path">
+<!ENTITY uiYulupXPathToolBarExpressionLabel.tooltip "Shows the XPath to the current node">
+<!ENTITY uiYulupXPathToolBarNSAwareCheckbox.label "Namespace Aware">
+<!ENTITY uiYulupXPathToolBarNSAwareCheckbox.tooltip "If enabled, back-propagation takes namespaces into account">
 <!ENTITY editOperationCopy.tooltip "Copiar la selección en el portapapeles">
 <!ENTITY editOperationCut.tooltip "Cortar la selección y copiarla en el portapapeles">
 <!ENTITY editOperationPaste.tooltip "Pegar del portapapeles">

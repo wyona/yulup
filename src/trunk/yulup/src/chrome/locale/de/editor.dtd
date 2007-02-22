@@ -38,7 +38,11 @@
 <!ENTITY wysiwygViewTab.label "WYSIWYG">
 <!ENTITY waitDescription.label "Dokument wird geöffnet">
 <!ENTITY yulupServerURIDialog.title "Server URI eingeben">
-<!ENTITY yulupServerURIDialogLabel.label "Bitten die URI des Servers angeben, auf den das Dokument hochgeladen werden soll">
+<!ENTITY yulupServerURIDialogLabel.label "Bitte die URI des Servers angeben, auf den das Dokument hochgeladen werden soll">
+<!ENTITY uiYulupXPathToolBarExpressionLabel.label "Pfad">
+<!ENTITY uiYulupXPathToolBarExpressionLabel.tooltip "Zeigt den XPath zum aktuellen Node an">
+<!ENTITY uiYulupXPathToolBarNSAwareCheckbox.label "Berücksichtige Namespaces">
+<!ENTITY uiYulupXPathToolBarNSAwareCheckbox.tooltip "Falls aktiviert werden Namespaces bei der Rückpropagation berücksichtigt">
 <!ENTITY editOperationCopy.tooltip "Auswahl in Zwischenablage kopieren">
 <!ENTITY editOperationCut.tooltip "Auswahl ausschneiden und in Zwischenablage kopieren">
 <!ENTITY editOperationPaste.tooltip "Aus der Zwischenablage einfügen">

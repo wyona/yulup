@@ -358,10 +358,10 @@
            align="center"
            hidden="true">
     <toolbarbutton id="uiYulupXPathToolBarCloseButton" class="uiEditorFooterToolBarCloseButton" tooltiptext="Close XPath Toolbar" value="close" hidden="true"/>
-    <label id="uiYulupXPathToolBarExpressionLabel" value="XPath:"/>
-    <label id="uiYulupXPathToolBarXPathExpression" crop="end" flex="1"/>
-    <checkbox id="uiYulupXPathToolBarNSAwareCheckbox" label="Namespace Aware" checked="true"/>
-    <checkbox id="uiYulupXPathToolBarUseNiceNamesCheckbox" label="Use Nice Names" hidden="true"/>
+    <label id="uiYulupXPathToolBarExpressionLabel" value="&uiYulupXPathToolBarExpressionLabel.label;:" tooltiptext="&uiYulupXPathToolBarExpressionLabel.tooltip;"/>
+    <label id="uiYulupXPathToolBarXPathExpression" tooltiptext="&uiYulupXPathToolBarExpressionLabel.tooltip;" crop="end" flex="1"/>
+    <checkbox id="uiYulupXPathToolBarNSAwareCheckbox" label="&uiYulupXPathToolBarNSAwareCheckbox.label;" tooltiptext="&uiYulupXPathToolBarNSAwareCheckbox.tooltip;" checked="true"/>
+    <!--<checkbox id="uiYulupXPathToolBarUseNiceNamesCheckbox" label="Use Nice Names" hidden="true"/>-->
   </toolbar>
 
 </window>

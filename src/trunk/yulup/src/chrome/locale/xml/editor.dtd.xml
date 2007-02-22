@@ -236,8 +236,28 @@
 
   <entity id="yulupServerURIDialogLabel.label">
     <name xml:lang="en">Enter the URI of the server you want to upload the document to</name>
-    <name xml:lang="de">Bitten die URI des Servers angeben, auf den das Dokument hochgeladen werden soll</name>
+    <name xml:lang="de">Bitte die URI des Servers angeben, auf den das Dokument hochgeladen werden soll</name>
     <name xml:lang="es">Introduzca la URI del servidor al que desea subir el documento</name>
+  </entity>
+
+  <entity id="uiYulupXPathToolBarExpressionLabel.label">
+    <name xml:lang="en">Path</name>
+    <name xml:lang="de">Pfad</name>
+  </entity>
+
+  <entity id="uiYulupXPathToolBarExpressionLabel.tooltip">
+    <name xml:lang="en">Shows the XPath to the current node</name>
+    <name xml:lang="de">Zeigt den XPath zum aktuellen Node an</name>
+  </entity>
+
+  <entity id="uiYulupXPathToolBarNSAwareCheckbox.label">
+    <name xml:lang="en">Namespace Aware</name>
+    <name xml:lang="de">Berücksichtige Namespaces</name>
+  </entity>
+
+  <entity id="uiYulupXPathToolBarNSAwareCheckbox.tooltip">
+    <name xml:lang="en">If enabled, back-propagation takes namespaces into account</name>
+    <name xml:lang="de">Falls aktiviert werden Namespaces bei der Rückpropagation berücksichtigt</name>
   </entity>
 
   <entity id="editOperationCopy.tooltip">
