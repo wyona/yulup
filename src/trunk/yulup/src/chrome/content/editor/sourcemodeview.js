@@ -114,6 +114,9 @@ SourceModeView.prototype = {
             this.view = sourceEditor.getEditor(sourceEditor.contentWindow);
             this.view.QueryInterface(Components.interfaces.nsIEditor);
 
+            // mark as readonly
+            this.view.flags |= Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
+
             // hook up DocumentStateListener
             this.view.addDocumentStateListener(new DocumentStateListener(this.model));
 
@@ -241,7 +244,9 @@ SourceModeView.prototype = {
             this.view.selectAll();
             this.view.deleteSelection(0);
             this.view.beginningOfDocument();
+            this.view.flags &= ~Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
             this.view.insertText(this.model.getDocument());
+            this.view.flags |= Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
             this.view.beginningOfDocument();
 
             // print document to console
@@ -290,10 +295,16 @@ SourceModeView.prototype = {
         /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.enterView() invoked\n");
 
         this.editviewElem.toggleDisplayBlur();
+
+        // mark editor writable
+        this.view.flags &= ~Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
     },
 
     leaveView: function () {
         /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.leaveView() invoked\n");
+
+        // mark editor readonly
+        this.view.flags |= Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
 
         this.editviewElem.toggleDisplayBlur();
     },

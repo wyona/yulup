@@ -133,6 +133,9 @@ WYSIWYGXSLTModeView.prototype = {
             this.view = wysiwygXSLTEditor.getEditor(wysiwygXSLTEditor.contentWindow);
             this.view.QueryInterface(Components.interfaces.nsIEditor);
 
+            // mark as readonly
+            this.view.flags |= Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
+
             // hook up DocumentStateListener
             this.view.addDocumentStateListener(new DocumentStateListener(this.model));
 
@@ -877,12 +880,18 @@ WYSIWYGXSLTModeView.prototype = {
 
         this.editviewElem.toggleDisplayBlur();
 
+        // mark editor writable
+        this.view.flags &= ~Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
+
         // show XPathToolBar
         document.getElementById("uiYulupXPathToolBar").hidden = false;
     },
 
     leaveView: function () {
         /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.leaveView() invoked\n");
+
+        // mark editor readonly
+        this.view.flags |= Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
 
         this.editviewElem.toggleDisplayBlur();
 

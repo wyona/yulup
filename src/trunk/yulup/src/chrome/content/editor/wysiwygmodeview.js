@@ -97,6 +97,9 @@ WYSIWYGModeView.prototype = {
             this.view = wysiwygEditor.getEditor(wysiwygEditor.contentWindow);
             this.view.QueryInterface(Components.interfaces.nsIEditor);
 
+            // mark as readonly
+            this.view.flags |= Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
+
             // TODO: experimental, remove after use
             this.validator = Validation.validatorFactory(this.view.document, "-//W3C//DTD HTML 4.01//EN");
 
@@ -281,10 +284,16 @@ WYSIWYGModeView.prototype = {
         /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.enterView() invoked\n");
 
         this.editviewElem.toggleDisplayBlur();
+
+        // mark editor writable
+        this.view.flags &= ~Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
     },
 
     leaveView: function () {
         /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.leaveView() invoked\n");
+
+        // mark editor readonly
+        this.view.flags |= Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
 
         this.editviewElem.toggleDisplayBlur();
     },
