@@ -97,6 +97,9 @@ WYSIWYGModeView.prototype = {
             this.view = wysiwygEditor.getEditor(wysiwygEditor.contentWindow);
             this.view.QueryInterface(Components.interfaces.nsIEditor);
 
+            // TODO: experimental, remove after use
+            this.validator = Validation.validatorFactory(this.view.document, "-//W3C//DTD HTML 4.01//EN");
+
             // hook up DocumentStateListener
             this.view.addDocumentStateListener(new DocumentStateListener(this.model));
 

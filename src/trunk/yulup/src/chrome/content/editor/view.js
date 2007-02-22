@@ -103,6 +103,8 @@ View.prototype = {
                  * we are just booting up the editor, no other view has yet been shown,
                  * and this.controller.activeView is null. */
                 if (this.controller.activeView) {
+                    this.controller.activeView.leaveView();
+
                     /* DEBUG */ dumpTree(this.controller.activeView.editor);
 
                     /* Check if the previous view was modified. If this is the case,
@@ -112,8 +114,6 @@ View.prototype = {
                     /* We indeed switched tabs, therefore we have
                      * to synchronise the other view first. */
                     this.controller.activeView.syncToModel();
-
-                    this.controller.activeView.leaveView();
                 }
 
                 // set currently selected view
