@@ -349,6 +349,7 @@ var Editor = {
      * @return {Boolean} return true on success, false otherwise
      */
     openFromFile: function () {
+        var mimeType         = null;
         var editorParameters = null;
         var documentURI      = null;
 
@@ -356,7 +357,16 @@ var Editor = {
 
         if (Editor.checkClose()) {
             if (documentURI = PersistenceService.queryOpenFileURI()) {
-                editorParameters = new EditorParameters(documentURI, null, null, null, null, null, null);
+                // figure out MIME type from document URI
+                try {
+                    mimeType = Components.classes["@mozilla.org/mime;1"].getService(Components.interfaces.nsIMIMEService).getTypeFromURI(documentURI);
+                } catch (exception) {
+                    // could not figure out MIME type
+                    /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:openFromFile", exception);
+                    /* DEBUG */ Components.utils.reportError(exception);
+                }
+
+                editorParameters = new EditorParameters(documentURI, mimeType, null, null, null, null, null);
 
                 // replace the current editor
                 Editor.replaceEditor(editorParameters);
