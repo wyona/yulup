@@ -186,8 +186,7 @@ WidgetManager.prototype = {
 
             // add command to editor.xul
             widgetCommand = document.createElement("command");
-            // TODO: change to cmd_yulup_widget_* scheme to prevent potential clashes (change deps as well)
-            widgetCommand.setAttribute("id", "cmd_" + widget.attributes["name"]);
+            widgetCommand.setAttribute("id", "cmd_yulup_widget_" + widget.attributes["name"]);
             widgetCommand.setAttribute("disabled", "false");
             widgetCommand.setAttribute("label", widget.attributes["name"]);
             widgetCommand.setAttribute("tooltiptext", widget.attributes["description"]);
@@ -211,12 +210,12 @@ WidgetManager.prototype = {
             widgetButton = document.createElement("canvasbutton");
             widgetButton.setAttribute("id", "uiWidget" + widget.attributes["name"]);
             widgetButton.setAttribute("style", "-moz-box-orient: vertical;");
-            widgetButton.setAttribute("command", "cmd_" + widget.attributes["name"]);
+            widgetButton.setAttribute("command", "cmd_yulup_widget_" + widget.attributes["name"]);
             toolbarButtons.appendChild(widgetButton);
 
             // add command to context menu
             menuItem = document.createElement("menuitem");
-            menuItem.setAttribute("command", "cmd_" + widget.attributes["name"]);
+            menuItem.setAttribute("command", "cmd_yulup_widget_" + widget.attributes["name"]);
 
             switch (widget.attributes["type"]) {
                 case "surround":
