@@ -95,12 +95,16 @@
   <binding id="editviewsource"
            extends="chrome://yulup/content/editor/editor.xml#editviewbasebinding">
     <content>
-        <xul:hbox align="stretch" flex="1" style="overflow: auto;">
+      <xul:stack align="stretch" flex="1">
+        <xul:hbox align="stretch" flex="1">
           <xul:vbox style="width: 2em; border: 1px solid grey; display: none;" align="stretch"/>
           <xul:editor type="content" flex="1" style="border: 1px solid grey; background: white;" onload="this.onLoadHandler(event)"/>
         </xul:hbox>
+        <xul:vbox flex="1" style="margin: 1px 1px 1px 1px; background: white; opacity: 0.8;"/>
+      </xul:stack>
     </content>
     <implementation>
+      <field name="__blurEnabled">true</field>
       <constructor>
         /* DEBUG */ dump("Yulup:editor.xml:editviewsource.ctor invoked\n");
         /* DEBUG */ dump("Yulup:editor.xml:editviewsource.ctor: initialisation completed\n");
@@ -108,7 +112,25 @@
       <method name="getView">
         <body>
           /* DEBUG */ dump("Yulup:editor.xml:editviewsource.getView() invoked\n");
+          return document.getAnonymousNodes(this)[0].childNodes[0].childNodes[1];
+        </body>
+      </method>
+      <method name="__getBlur">
+        <body>
+          /* DEBUG */ dump("Yulup:editor.xml:editviewsource.getBlur() invoked\n");
           return document.getAnonymousNodes(this)[0].childNodes[1];
+        </body>
+      </method>
+      <method name="toggleDisplayBlur">
+        <body>
+          /* DEBUG */ dump("Yulup:editor.xml:editviewsource.toggleDisplayBlur() invoked\n");
+          if (this.__blurEnabled) {
+              this.__getBlur().setAttribute("hidden", "true");
+              this.__blurEnabled = false;
+          } else {
+              this.__getBlur().removeAttribute("hidden");
+              this.__blurEnabled = true;
+          }
         </body>
       </method>
     </implementation>
@@ -117,11 +139,15 @@
   <binding id="editviewwysiwyg"
            extends="chrome://yulup/content/editor/editor.xml#editviewbasebinding">
     <content>
-      <xul:hbox align="stretch" flex="1" style="background-color: white;">
-        <xul:editor type="content" flex="1" style="border: 1px solid grey;" onload="this.onLoadHandler(event)"/>
-      </xul:hbox>
+      <xul:stack align="stretch" flex="1">
+        <xul:hbox align="stretch" flex="1" style="background-color: white;">
+          <xul:editor type="content" flex="1" style="border: 1px solid grey;" onload="this.onLoadHandler(event)"/>
+        </xul:hbox>
+        <xul:vbox flex="1" style="margin: 1px 1px 1px 1px; background: white; opacity: 0.8;"/>
+      </xul:stack>
     </content>
     <implementation>
+      <field name="__blurEnabled">true</field>
       <constructor>
         /* DEBUG */ dump("Yulup:editor.xml:editviewwysiwyg.ctor invoked\n");
         /* DEBUG */ dump("Yulup:editor.xml:editviewwysiwyg.ctor: initialisation completed\n");
@@ -129,7 +155,25 @@
       <method name="getView">
         <body>
           /* DEBUG */ dump("Yulup:editor.xml:editviewwysiwyg.getView() invoked\n");
-          return document.getAnonymousNodes(this)[0].childNodes[0];
+          return document.getAnonymousNodes(this)[0].childNodes[0].childNodes[0];
+        </body>
+      </method>
+      <method name="__getBlur">
+        <body>
+          /* DEBUG */ dump("Yulup:editor.xml:editviewsource.getBlur() invoked\n");
+          return document.getAnonymousNodes(this)[0].childNodes[1];
+        </body>
+      </method>
+      <method name="toggleDisplayBlur">
+        <body>
+          /* DEBUG */ dump("Yulup:editor.xml:editviewsource.toggleDisplayBlur() invoked\n");
+          if (this.__blurEnabled) {
+              this.__getBlur().setAttribute("hidden", "true");
+              this.__blurEnabled = false;
+          } else {
+              this.__getBlur().removeAttribute("hidden");
+              this.__blurEnabled = true;
+          }
         </body>
       </method>
     </implementation>

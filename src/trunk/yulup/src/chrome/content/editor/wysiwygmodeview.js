@@ -277,6 +277,18 @@ WYSIWYGModeView.prototype = {
         }
     },
 
+    enterView: function () {
+        /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.enterView() invoked\n");
+
+        this.editviewElem.toggleDisplayBlur();
+    },
+
+    leaveView: function () {
+        /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.leaveView() invoked\n");
+
+        this.editviewElem.toggleDisplayBlur();
+    },
+
     addSelectionListener: function (aSelectionListener) {
         var retval = false;
 

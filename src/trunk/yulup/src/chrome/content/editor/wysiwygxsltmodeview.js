@@ -875,12 +875,16 @@ WYSIWYGXSLTModeView.prototype = {
     enterView: function () {
         /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.enterView() invoked\n");
 
+        this.editviewElem.toggleDisplayBlur();
+
         // show XPathToolBar
         document.getElementById("uiYulupXPathToolBar").hidden = false;
     },
 
     leaveView: function () {
         /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.leaveView() invoked\n");
+
+        this.editviewElem.toggleDisplayBlur();
 
         // hide XPathToolBar
         document.getElementById("uiYulupXPathToolBar").hidden = true;
