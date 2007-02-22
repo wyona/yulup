@@ -288,4 +288,16 @@
     <name xml:lang="es">Crear un documento nuevo vacío</name>
   </entity>
 
+  <entity id="new.text.html.label">
+    <name xml:lang="en">HTML Document</name>
+    <name xml:lang="de">HTML Dokument</name>
+    <name xml:lang="es">Documento HTML</name>
+  </entity>
+
+  <entity id="new.text.html.tooltip">
+    <name xml:lang="en">Create a new HTML Document</name>
+    <name xml:lang="de">Ein neues HTML Dokument erstellen</name>
+    <name xml:lang="es">Crear un nuevo documento HTML</name>
+  </entity>
+
 </dtd>

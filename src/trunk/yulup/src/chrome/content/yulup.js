@@ -327,13 +327,23 @@ function yulupCreateNewAtomEntry() {
  * @return {Boolean} return true on success, false otherwise
  */
 function yulupOpenFromFile() {
+    var mimeType         = null;
     var editorParameters = null;
     var documentURI      = null;
 
     /* DEBUG */ dump("Yulup:yulup.js:yulupOpenFromFile() invoked\n");
 
     if (documentURI = PersistenceService.queryOpenFileURI()) {
-        editorParameters = new EditorParameters(documentURI, null, null, null, null, null, null);
+        // figure out MIME type from document URI
+        try {
+            mimeType = Components.classes["@mozilla.org/mime;1"].getService(Components.interfaces.nsIMIMEService).getTypeFromURI(documentURI);
+        } catch (exception) {
+            // could not figure out MIME type
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:yulupOpenFromFile", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+        }
+
+        editorParameters = new EditorParameters(documentURI, mimeType, null, null, null, null, null);
 
         // replace the current editor
         yulupCreateNewEditor(editorParameters, null);
@@ -1190,6 +1200,7 @@ var YulupNeutronArchiveRegistry = {
     // registered mime-types
     mimeTypeMap: {
         "text/plain"            : "empty.nar",
+        "text/html"             : "html.nar",
         "application/xml"       : "xml.nar",
         "application/xhtml+xml" : "xhtml.nar",
         "application/atom+xml"  : "atom.nar"
@@ -1207,12 +1218,12 @@ var YulupNeutronArchiveRegistry = {
         var narURI           = null;
         var installDir       = null;
 
-        /* DEBUG */ dump("Yulup:neutronarchive.js:YulupNeutronArchiveRegistry.getArchiveURI(\"" + aMimeType + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:yulup.js:YulupNeutronArchiveRegistry.getArchiveURI(\"" + aMimeType + "\") invoked\n");
 
         narFile = YulupNeutronArchiveRegistry.mimeTypeMap[aMimeType];
 
         if (!narFile) {
-            /* DEBUG */ dump("Yulup:neutronarchive.js:YulupNeutronArchiveRegistry.getArchiveURI: no template NAR for this mime-type\n");
+            /* DEBUG */ dump("Yulup:yulup.js:YulupNeutronArchiveRegistry.getArchiveURI: no template NAR for this mime-type\n");
             return null;
         }
 
@@ -1225,7 +1236,7 @@ var YulupNeutronArchiveRegistry = {
         // create a nsIFileURI pointing to the template NAR file
         narURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newFileURI(installDir);
 
-        /* DEBUG */ dump("Yulup:neutronarchive.js:YulupNeutronArchiveRegistry.getArchiveURI: narURI = \"" + narURI.spec + "\"\n");
+        /* DEBUG */ dump("Yulup:yulup.js:YulupNeutronArchiveRegistry.getArchiveURI: narURI = \"" + narURI.spec + "\"\n");
 
         return narURI;
     },
@@ -1236,7 +1247,7 @@ var YulupNeutronArchiveRegistry = {
      * @return {Array} array of templates
      */
     getAvailableTemplates: function() {
-        /* DEBUG */ dump("Yulup:neutronarchive.js:YulupNeutronArchiveRegistry.getAvailableTemplates() invoked\n");
+        /* DEBUG */ dump("Yulup:yulup.js:YulupNeutronArchiveRegistry.getAvailableTemplates() invoked\n");
 
         return YulupNeutronArchiveRegistry.templates;
     },
@@ -1248,7 +1259,7 @@ var YulupNeutronArchiveRegistry = {
      * @return {Object}       the template object
      */
     getTemplateByName: function(aName) {
-        /* DEBUG */ dump("Yulup:neutronarchive.js:YulupNeutronArchiveRegistry.getTemplateByName() invoked\n");
+        /* DEBUG */ dump("Yulup:yulup.js:YulupNeutronArchiveRegistry.getTemplateByName() invoked\n");
 
         for (var i=0; i<YulupNeutronArchiveRegistry.templates.length; i++) {
             if (YulupNeutronArchiveRegistry.templates[i].name == aName) {
@@ -1268,7 +1279,7 @@ var YulupNeutronArchiveRegistry = {
         var templates = new Array();
         var index     = 0;
 
-        /* DEBUG */ dump("Yulup:neutronarchive.js:YulupNeutronArchiveRegistry.getTemplatesByMimeType(\"" + aMimeType + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:yulup.js:YulupNeutronArchiveRegistry.getTemplatesByMimeType(\"" + aMimeType + "\") invoked\n");
 
         for (var i=0; i<YulupNeutronArchiveRegistry.templates.length; i++) {
             if (YulupNeutronArchiveRegistry.templates[i].mimeType == aMimeType) {
@@ -1288,7 +1299,7 @@ var YulupNeutronArchiveRegistry = {
      * @return {Boolean}           true if the template was registered otherwise false
      */
     registerTemplate: function(aURI, aMimeType, aName) {
-        /* DEBUG */ dump("Yulup:neutronarchive.js:YulupNeutronArchiveRegistry.registerTemplate(\"" + aURI.spec + "\", \"" + aMimeType + "\", \"" + aName + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:yulup.js:YulupNeutronArchiveRegistry.registerTemplate(\"" + aURI.spec + "\", \"" + aMimeType + "\", \"" + aName + "\") invoked\n");
 
         if (!YulupNeutronArchiveRegistry.getTemplateByName(aName)) {
 
@@ -1312,7 +1323,7 @@ var YulupNeutronArchiveRegistry = {
         var archiveURI = null;
         var archive    = null;
 
-        /* DEBUG */ dump("Yulup:neutronarchive.js:YulupNeutronArchiveRegistry.loadLocalTemplates() invoked\n");
+        /* DEBUG */ dump("Yulup:yulup.js:YulupNeutronArchiveRegistry.loadLocalTemplates() invoked\n");
 
         // iterate over all registered NAR files
         for (var archiveName in YulupNeutronArchiveRegistry.mimeTypeMap) {
@@ -1327,7 +1338,7 @@ var YulupNeutronArchiveRegistry = {
 
                     if (!YulupNeutronArchiveRegistry.registerTemplate(archive.introspection.newTemplates.templates[i].uri, archive.introspection.newTemplates.templates[i].mimeType, archive.introspection.newTemplates.templates[i].name)) {
 
-                        /* DEBUG */ dump("Yulup:neutronarchive.js:YulupNeutronArchiveRegistry.loadLocalTemplates() template already registered under name " + archive.introspection.newTemplates.templates[i].name + "\n");
+                        /* DEBUG */ dump("Yulup:yulup.js:YulupNeutronArchiveRegistry.loadLocalTemplates() template already registered under name " + archive.introspection.newTemplates.templates[i].name + "\n");
                     }
                 }
             }
