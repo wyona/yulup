@@ -104,9 +104,6 @@ View.prototype = {
                  * and this.controller.activeView is null. */
                 if (this.controller.activeView) {
                     this.controller.activeView.leaveView();
-
-                    /* DEBUG */ dumpTree(this.controller.activeView.editor);
-
                     /* Check if the previous view was modified. If this is the case,
                      * we have to copy it over to the active view later. */
                     isViewModified = this.controller.activeView.view.documentModified;
