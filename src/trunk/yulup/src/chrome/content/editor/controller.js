@@ -42,7 +42,7 @@ function YulupEditController(aParameterObject) {
 
     if (aParameterObject) {
         /* Parameters did reach us, therefore we can remove our
-         * paramters object from the manager. */
+         * parameters object from the manager. */
         gMainBrowserWindow.yulup.instancesManager.removeInstance(aParameterObject.instanceID);
 
         this.editorParams    = aParameterObject.parameters;
