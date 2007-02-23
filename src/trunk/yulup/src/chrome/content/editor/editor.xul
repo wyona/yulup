@@ -139,7 +139,8 @@
 
   <commandset id="uiYulupEditorModificationCommandset">
     <command id="cmd_yulup_editattributes" oncommand="Editor.editAttributes()"
-             label="&editOperationEditAttributes.label;" tooltiptext="&editOperationEditAttributes.tooltip;"/>
+             label="&editOperationEditAttributes.label;" tooltiptext="&editOperationEditAttributes.tooltip;"
+             disabled="true"/>
   </commandset>
 
   <commandset id="uiYulupEditorWidgetCommandset"/>

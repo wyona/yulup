@@ -763,6 +763,29 @@ var Editor = {
         }
     },
 
+    editAttributes: function () {
+        var target       = null;
+        var allowedAttrs = null;
+
+        /* DEBUG */ dump("Yulup:editor.js:Editor.editAttributes() invoked\n");
+
+        // use mouse click target node instead of current selection
+        target = gEditorController.activeView.getContextTarget();
+
+        if (target.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+            target = target.parentNode;
+        }
+
+        allowedAttrs = gEditorController.activeView.validator.ElementEditVAL(target).allowedAttributes;
+
+        if (allowedAttrs) {
+            for (var i = 0; i < allowedAttrs.length; i ++) {
+                /* DEBUG */ dump("Yulup:editor.js:Editor.editAttributes: attribute namespace = \"" + allowedAttrs.getNamespaceURI(i) + "\", name = \"" + allowedAttrs.getName(i) + "\"\n");
+            }
+        } else
+            /* DEBUG */ dump("Yulup:editor.js:Editor.editAttributes: no attributes available\n");
+    },
+
     goUpdateFileOperationsCommand: function (aCommand) {
         var controller = null;
         var enabled    = null;
