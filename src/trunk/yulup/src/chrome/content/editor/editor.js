@@ -782,8 +782,9 @@ var Editor = {
             for (var i = 0; i < allowedAttrs.length; i ++) {
                 /* DEBUG */ dump("Yulup:editor.js:Editor.editAttributes: attribute namespace = \"" + allowedAttrs.getNamespaceURI(i) + "\", name = \"" + allowedAttrs.getName(i) + "\"\n");
             }
-        } else
+        } else {
             /* DEBUG */ dump("Yulup:editor.js:Editor.editAttributes: no attributes available\n");
+        }
     },
 
     goUpdateFileOperationsCommand: function (aCommand) {
