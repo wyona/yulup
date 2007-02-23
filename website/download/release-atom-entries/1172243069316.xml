@@ -1,0 +1,22 @@
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <atom:title type="text">yulup-0.2.4-r22910.xpi</atom:title>
+  <atom:author>
+    <atom:name>Andreas Wuest</atom:name>
+  </atom:author>
+  <atom:id>urn:www-yulup-org:0-2-4-release</atom:id>
+  <atom:content type="xhtml">
+    <xhtml:div>
+      <xhtml:a href="yulup-0.2.4-r22910.xpi">yulup-0.2.4-r22910.xpi</xhtml:a> (February 23, 2007)
+      <xhtml:br/>
+      <xhtml:br/>
+      Changelog:
+      <xhtml:ul>
+        <xhtml:li>Don't open Atom Sidebar by default.</xhtml:li>
+        <xhtml:li>Improved surround/unsurround.</xhtml:li>
+        <xhtml:li>Discover MIME-types of locally opened documents.</xhtml:li>
+        <xhtml:li>Editor toolbar for local HTML documents.</xhtml:li>
+        <xhtml:li>Mark editor as readonly and prevent re-fill artifacts from rendering while contents are being computed.</xhtml:li>
+      </xhtml:ul>
+    </xhtml:div>
+  </atom:content>
+<atom:updated>2007-02-23T15:04:29.590Z</atom:updated><atom:published>2007-02-23T15:04:29.590Z</atom:published></atom:entry>
