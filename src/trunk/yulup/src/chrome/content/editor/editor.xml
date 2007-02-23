@@ -100,14 +100,18 @@
           <xul:vbox style="width: 2em; border: 1px solid grey; display: none;" align="stretch"/>
           <xul:editor type="content" flex="1" style="border: 1px solid grey; background: white;" onload="this.onLoadHandler(event)"/>
         </xul:hbox>
-        <xul:vbox flex="1" style="margin: 1px 1px 1px 1px; background: white; opacity: 0.8;"/>
+        <xul:vbox flex="1" style="margin: 1px 1px 1px 1px; background: white; opacity: 0.99;"/>
       </xul:stack>
     </content>
     <implementation>
+      <field name="__blurElem">null</field>
       <field name="__blurEnabled">true</field>
+      <field name="__fadeIntervalID">null</field>
       <constructor>
         /* DEBUG */ dump("Yulup:editor.xml:editviewsource.ctor invoked\n");
         /* DEBUG */ dump("Yulup:editor.xml:editviewsource.ctor: initialisation completed\n");
+
+        this.__blurElem = document.getAnonymousNodes(this)[0].childNodes[1];
       </constructor>
       <method name="getView">
         <body>
@@ -115,22 +119,45 @@
           return document.getAnonymousNodes(this)[0].childNodes[0].childNodes[1];
         </body>
       </method>
-      <method name="__getBlur">
-        <body>
-          /* DEBUG */ dump("Yulup:editor.xml:editviewsource.getBlur() invoked\n");
-          return document.getAnonymousNodes(this)[0].childNodes[1];
-        </body>
-      </method>
       <method name="toggleDisplayBlur">
+        <parameter name="aCallback"/>
+        <parameter name="aCallbackSelf"/>
         <body>
           /* DEBUG */ dump("Yulup:editor.xml:editviewsource.toggleDisplayBlur() invoked\n");
           if (this.__blurEnabled) {
-              this.__getBlur().setAttribute("hidden", "true");
-              this.__blurEnabled = false;
+              if (!this.__fadeIntervalID)
+                  this.__fadeIntervalID = window.setInterval(this.__fadeIn, 1, this, aCallback, aCallbackSelf);
           } else {
-              this.__getBlur().removeAttribute("hidden");
+              this.__blurElem.removeAttribute("hidden");
               this.__blurEnabled = true;
           }
+        </body>
+      </method>
+      <method name="__fadeIn">
+        <parameter name="_this_"/>
+        <parameter name="aCallback"/>
+        <parameter name="aCallbackSelf"/>
+        <body>
+          <![CDATA[
+            var blur = null;
+
+            blur = _this_.__blurElem;
+
+            if ((blur.style.opacity - 0.3) > 0) {
+                blur.style.opacity = blur.style.opacity - 0.3;
+            } else {
+                // cancel animation
+                window.clearInterval(_this_.__fadeIntervalID);
+                _this_.__fadeIntervalID = null;
+
+                blur.setAttribute("hidden", "true");
+                blur.style.opacity = 0.99;
+                _this_.__blurEnabled = false;
+
+                if (aCallback)
+                    aCallback.call(aCallbackSelf);
+            }
+          ]]>
         </body>
       </method>
     </implementation>
@@ -143,14 +170,18 @@
         <xul:hbox align="stretch" flex="1" style="background-color: white;">
           <xul:editor type="content" flex="1" style="border: 1px solid grey;" onload="this.onLoadHandler(event)"/>
         </xul:hbox>
-        <xul:vbox flex="1" style="margin: 1px 1px 1px 1px; background: white; opacity: 0.8;"/>
+        <xul:vbox flex="1" style="margin: 1px 1px 1px 1px; background: white; opacity: 0.99;"/>
       </xul:stack>
     </content>
     <implementation>
+      <field name="__blurElem">null</field>
       <field name="__blurEnabled">true</field>
+      <field name="__fadeIntervalID">null</field>
       <constructor>
         /* DEBUG */ dump("Yulup:editor.xml:editviewwysiwyg.ctor invoked\n");
         /* DEBUG */ dump("Yulup:editor.xml:editviewwysiwyg.ctor: initialisation completed\n");
+
+        this.__blurElem = document.getAnonymousNodes(this)[0].childNodes[1];
       </constructor>
       <method name="getView">
         <body>
@@ -158,22 +189,45 @@
           return document.getAnonymousNodes(this)[0].childNodes[0].childNodes[0];
         </body>
       </method>
-      <method name="__getBlur">
-        <body>
-          /* DEBUG */ dump("Yulup:editor.xml:editviewsource.getBlur() invoked\n");
-          return document.getAnonymousNodes(this)[0].childNodes[1];
-        </body>
-      </method>
       <method name="toggleDisplayBlur">
+        <parameter name="aCallback"/>
+        <parameter name="aCallbackSelf"/>
         <body>
-          /* DEBUG */ dump("Yulup:editor.xml:editviewsource.toggleDisplayBlur() invoked\n");
+          /* DEBUG */ dump("Yulup:editor.xml:editviewwysiwyg.toggleDisplayBlur() invoked\n");
           if (this.__blurEnabled) {
-              this.__getBlur().setAttribute("hidden", "true");
-              this.__blurEnabled = false;
+              if (!this.__fadeIntervalID)
+                  this.__fadeIntervalID = window.setInterval(this.__fadeIn, 1, this, aCallback, aCallbackSelf);
           } else {
-              this.__getBlur().removeAttribute("hidden");
+              this.__blurElem.removeAttribute("hidden");
               this.__blurEnabled = true;
           }
+        </body>
+      </method>
+      <method name="__fadeIn">
+        <parameter name="_this_"/>
+        <parameter name="aCallback"/>
+        <parameter name="aCallbackSelf"/>
+        <body>
+          <![CDATA[
+            var blur = null;
+
+            blur = _this_.__blurElem;
+
+            if ((blur.style.opacity - 0.3) > 0) {
+                blur.style.opacity = blur.style.opacity - 0.3;
+            } else {
+                // cancel animation
+                window.clearInterval(_this_.__fadeIntervalID);
+                _this_.__fadeIntervalID = null;
+
+                blur.setAttribute("hidden", "true");
+                blur.style.opacity = 0.99;
+                _this_.__blurEnabled = false;
+
+                if (aCallback)
+                    aCallback.call(aCallbackSelf);
+            }
+          ]]>
         </body>
       </method>
     </implementation>

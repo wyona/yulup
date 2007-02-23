@@ -878,10 +878,7 @@ WYSIWYGXSLTModeView.prototype = {
     enterView: function () {
         /* DEBUG */ dump("Yulup:wysiwygxsltmodeview.js:WYSIWYGXSLTModeView.enterView() invoked\n");
 
-        this.editviewElem.toggleDisplayBlur();
-
-        // mark editor writable
-        this.view.flags &= ~Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
+        this.editviewElem.toggleDisplayBlur(this.setReadWrite, this);
 
         // show XPathToolBar
         document.getElementById("uiYulupXPathToolBar").hidden = false;
@@ -900,6 +897,13 @@ WYSIWYGXSLTModeView.prototype = {
 
         // clear the expression display
         document.getElementById("uiYulupXPathToolBarXPathExpression").value = "";
+    },
+
+    setReadWrite: function () {
+        // mark editor writable
+        this.view.flags &= ~Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
+
+        this.editor.contentWindow.focus();
     },
 
     addSelectionListener: function (aSelectionListener) {

@@ -294,10 +294,7 @@ SourceModeView.prototype = {
     enterView: function () {
         /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.enterView() invoked\n");
 
-        this.editviewElem.toggleDisplayBlur();
-
-        // mark editor writable
-        this.view.flags &= ~Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
+        this.editviewElem.toggleDisplayBlur(this.setReadWrite, this);
     },
 
     leaveView: function () {
@@ -307,6 +304,13 @@ SourceModeView.prototype = {
         this.view.flags |= Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
 
         this.editviewElem.toggleDisplayBlur();
+    },
+
+    setReadWrite: function () {
+        // mark editor writable
+        this.view.flags &= ~Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
+
+        this.editor.contentWindow.focus();
     },
 
     addSelectionListener: function (aSelectionListener) {
