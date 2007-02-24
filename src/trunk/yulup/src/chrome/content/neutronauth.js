@@ -111,19 +111,11 @@ var NeutronAuth = {
     },
 
     __constructResponse: function (aChallenge, aCredentials) {
-        var field       = null;
-        var respBody    = "";
-        var originalUrl = null;
+        var field    = null;
+        var respBody = "";
 
         /* DEBUG */ YulupDebug.ASSERT(aChallenge   != null);
         /* DEBUG */ YulupDebug.ASSERT(aCredentials != null);
-
-        try {
-            originalUrl = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(aChallenge.originalUrl, null, null);
-        } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutronauth.js:__constructResponse", exception);
-            /* DEBUG */ Components.utils.reportError(exception);
-        }
 
         respBody += "<?xml version=\"1.0\"?> \n<authentication xmlns=\"" + NEUTRON_AUTH_10_NAMESPACE + "\"> \n";
 
@@ -131,8 +123,7 @@ var NeutronAuth = {
             respBody += "  <param name=\"" + field + "\"" + ">" + aCredentials[field] + "</param> \n";
         }
 
-        if (originalUrl)
-            respBody += "  <original-request url=\"" + originalUrl + "\"/>\n";
+        respBody += "  <original-request url=\"" + aChallenge.originalUrl + "\"/>\n";
 
         respBody += "</authentication>\n";
 
