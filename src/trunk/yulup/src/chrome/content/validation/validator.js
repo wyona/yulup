@@ -264,18 +264,18 @@ function ValidatorNameList() {
 ValidatorNameList.prototype = {
     __nameArray: null,
 
-    addNameNS: function (aNamespaceURI, aName, aNode) {
+    addNameNS: function (aNamespaceURI, aName, aObject) {
         var nameNSPair = {};
 
         nameNSPair.name         = aName;
         nameNSPair.namespaceURI = aNamespaceURI;
-        nameNSPair.__node       = aNode;
+        nameNSPair.__object     = aObject;
 
         this.__nameArray.push(nameNSPair);
     },
 
-    getNode: function () {
-        return this.__nameArray[aIndex].__node;
+    getObject: function (aIndex) {
+        return this.__nameArray[aIndex].__object;
     },
 
     // nsIDOMNameList members

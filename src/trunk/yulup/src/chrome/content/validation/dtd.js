@@ -168,16 +168,16 @@ DTDElementTypeDeclaration.prototype = {
 };
 
 
-function DTDAttributeDeclaration(aName, aContentModel, aConstraint, aDefaultValue) {
-    /* DEBUG */ YulupDebug.ASSERT(aName         != null);
-    /* DEBUG */ YulupDebug.ASSERT(aContentModel != null);
+function DTDAttributeDeclaration(aName, aType, aConstraint, aDefaultValue, aInformalType) {
+    /* DEBUG */ YulupDebug.ASSERT(aName != null);
+    /* DEBUG */ YulupDebug.ASSERT(aType != null);
 
     /* DEBUG */ dump("Yulup:dtd.js:DTDAttributeDeclaration() invoked\n");
 
     DTDDeclaration.call(this);
 
-    this.__name         = aName;
-    this.__contentModel = aContentModel;
+    this.__name = aName;
+    this.__type = aType;
 
     switch (aConstraint) {
         case "#REQUIRED":
@@ -192,17 +192,32 @@ function DTDAttributeDeclaration(aName, aContentModel, aConstraint, aDefaultValu
     }
 
     this.__defaultValue = aDefaultValue;
+    this.__informalType = aInformalType;
 }
 
 DTDAttributeDeclaration.prototype = {
     __proto__:  DTDDeclaration.prototype,
 
+    __informalType: null,
+    __currentValue: null,
+
     __name          : null,
-    __contentModel  : null,
     __isRequired    : false,
     __isValueImplied: false,
     __isValueFixed  : false,
     __defaultValue  : "",
+
+    get informalType() {
+        return this.__informalType;
+    },
+
+    get currentValue() {
+        return this.__currentValue;
+    },
+
+    set currentValue(aValue) {
+        this.__currentValue = aValue;
+    },
 
     get name() {
         return this.__name;
