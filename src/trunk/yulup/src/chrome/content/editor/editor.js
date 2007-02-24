@@ -764,8 +764,11 @@ var Editor = {
     },
 
     editAttributes: function () {
-        var target       = null;
-        var allowedAttrs = null;
+        var target            = null;
+        var allowedAttrs      = null;
+        var currentAttrValue  = null;
+        var attributeValues   = null;
+        var qualifiedAttrName = null;
 
         /* DEBUG */ dump("Yulup:editor.js:Editor.editAttributes() invoked\n");
 
@@ -780,7 +783,58 @@ var Editor = {
 
         if (allowedAttrs) {
             for (var i = 0; i < allowedAttrs.length; i ++) {
-                /* DEBUG */ dump("Yulup:editor.js:Editor.editAttributes: attribute namespace = \"" + allowedAttrs.getNamespaceURI(i) + "\", name = \"" + allowedAttrs.getName(i) + "\"\n");
+                currentAttrValue = target.getAttributeNS(allowedAttrs.getNamespaceURI(i), allowedAttrs.getName(i));
+
+                if (currentAttrValue)
+                    allowedAttrs.getObject(i).currentValue = currentAttrValue;
+
+                /* DEBUG */ dump("Yulup:editor.js:Editor.editAttributes: attribute namespace = \"" + allowedAttrs.getNamespaceURI(i) + "\", name = \"" + allowedAttrs.getName(i) + "\", current value = \"" + allowedAttrs.getObject(i).currentValue + "\n");
+            }
+
+            attributeValues = AttributeParamsDialog.showAttributeParamsDialog(allowedAttrs, gEditorController, target.localName.toLowerCase());
+
+            if (attributeValues) {
+                /* DEBUG */ dump("Yulup:editor.js:Editor.editAttributes: attributeValues.length = \"" + (attributeValues ? attributeValues.length : attributeValues) + "\"\n");
+
+                // TODO: begin transaction
+
+                try {
+                    for (var i = 0; i < attributeValues.length; i++) {
+                        if (attributeValues[i].value) {
+                            // set attribute
+                            attrNode = target.getAttributeNodeNS(attributeValues[i].attribute.namespaceURI, attributeValues[i].attribute.name);
+
+                            if (attrNode && attrNode.value != attributeValues[i].value) {
+                                // attribute already exists
+                                /* DEBUG */ dump("Yulup:editor.js:Editor.editAttributes: setting attribute \"" + attributeValues[i].attribute.name + "\", value = \"" + attributeValues[i].value + "\"\n");
+
+                                attrNode.value = attributeValues[i].value;
+                            } else {
+                                // create new attribute
+                                qualifiedAttrName = (target.prefix ? target.prefix + ":" : "") + attributeValues[i].attribute.name;
+
+                                /* DEBUG */ dump("Yulup:editor.js:Editor.editAttributes: creating new attribute \"" + qualifiedAttrName  + "\",  value = \"" + attributeValues[i].value + "\"\n");
+
+                                target.setAttributeNS(attributeValues[i].attribute.namespaceURI, qualifiedAttrName, attributeValues[i].value);
+                            }
+                        } else {
+                            // remove attribute
+                            if (target.hasAttributeNS(attributeValues[i].attribute.namespaceURI, attributeValues[i].attribute.name)) {
+                                /* DEBUG */ dump("Yulup:editor.js:Editor.editAttributes: removing attribute \"" + attributeValues[i].attribute.name + "\"\n");
+
+                                target.removeAttributeNS(attributeValues[i].attribute.namespaceURI, attributeValues[i].attribute.name);
+                            }
+                        }
+                    }
+                } catch (exception) {
+                    /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:editAttributes", exception);
+                    /* DEBUG */ Components.utils.reportError(exception);
+                }
+
+                // TODO: end transaction
+
+                // mark model dirty
+                gEditorController.activeView.view.incrementModificationCount(1);
             }
         } else {
             /* DEBUG */ dump("Yulup:editor.js:Editor.editAttributes: no attributes available\n");

@@ -50,6 +50,7 @@
   <script type="application/x-javascript" src="chrome://yulup/content/neutronarchive.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/widget.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/widgetparams.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/editor/attributeparams.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/editor/document.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/editor/model.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/editor/view.js"/>
@@ -139,8 +140,7 @@
 
   <commandset id="uiYulupEditorModificationCommandset">
     <command id="cmd_yulup_editattributes" oncommand="Editor.editAttributes()"
-             label="&editOperationEditAttributes.label;" tooltiptext="&editOperationEditAttributes.tooltip;"
-             disabled="true"/>
+             label="&editOperationEditAttributes.label;" tooltiptext="&editOperationEditAttributes.tooltip;"/>
   </commandset>
 
   <commandset id="uiYulupEditorWidgetCommandset"/>
