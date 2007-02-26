@@ -117,13 +117,15 @@ var NeutronAuth = {
         /* DEBUG */ YulupDebug.ASSERT(aChallenge   != null);
         /* DEBUG */ YulupDebug.ASSERT(aCredentials != null);
 
+        /* DEBUG */ dump("Yulup:neutronauth.js:NeutronAuth.__constructResponse() invoked\n");
+
         respBody += "<?xml version=\"1.0\"?> \n<authentication xmlns=\"" + NEUTRON_AUTH_10_NAMESPACE + "\"> \n";
 
         for (field in aCredentials) {
             respBody += "  <param name=\"" + field + "\"" + ">" + aCredentials[field] + "</param> \n";
         }
 
-        respBody += "  <original-request url=\"" + aChallenge.originalUrl + "\"/>\n";
+        respBody += "  <original-request url=\"" + YulupXMLServices.escapeString(aChallenge.originalUrl) + "\"/>\n";
 
         respBody += "</authentication>\n";
 

@@ -221,6 +221,47 @@ var YulupPreferences = {
     }
 };
 
+
+const YulupXMLServices = {
+    escapeString: function (aString) {
+        /* DEBUG */ YulupDebug.ASSERT(aString != null);
+
+        const escapeRegExp = new RegExp('[<&]', "g");
+
+        const escapeTable = {
+            '<': "&lt;",
+            '&': "&amp;"
+        };
+
+        function lookupReplacementChar(aChar) {
+            return escapeTable[aChar];
+        };
+
+        return aString.replace(escapeRegExp, lookupReplacementChar);
+    },
+
+    escapeCDATAString: function (aString) {
+        /* DEBUG */ YulupDebug.ASSERT(aString != null);
+
+        var retString = null;
+
+        const escapeRegExp = new RegExp('[<>&]', "g");
+
+        const escapeTable = {
+            '<': "&lt;",
+            '>': "&gt;",
+            '&': "&amp;"
+        };
+
+        function lookupReplacementChar(aChar) {
+            return escapeTable[aChar];
+        };
+
+        return aString.replace(escapeRegExp, lookupReplacementChar);
+    }
+};
+
+
 /**
  * YulupException constructor. Instantiates a new object of
  * type YulupException.
