@@ -539,8 +539,6 @@ const Yulup = {
         var currentBrowser     = null;
         var currentDocument    = null;
         var documentURI        = null;
-        //var nsResolver         = null;
-        //var introspection      = null;
         var elemWalker         = null;
         var domElem            = null;
         var introspectionLinks = null;
@@ -565,10 +563,6 @@ const Yulup = {
             documentURI     = currentBrowser.currentURI;
 
             try {
-                //nsResolver = currentDocument.createNSResolver(currentDocument.ownerDocument == null ? currentDocument.documentElement : currentDocument.ownerDocument.documentElement);
-                //introspection = currentDocument.evaluate('html/head/link[@rel="cms.client"]/attribute::href', currentDocument, nsResolver, XPathResult.STRING_TYPE, null);
-                ///* DEBUG */ dump("Yulup:yulup.js:Yulup.introspectionDetector: introspection = \"" + introspection.stringValue + "\"\n");
-
                 // create a tree walker to find the introspection link
                 elemWalker = currentDocument.createTreeWalker(currentDocument, NodeFilter.SHOW_ELEMENT, null, false);
 
