@@ -87,8 +87,8 @@ const Yulup = {
         /*
         // check if workspace is configured
         if (!WorkspaceService.getWorkspacePath()) {
-        // launch workspace wizard
-        window.openDialog(YULUP_WS_WIZARD_CHROME_URI, "yulupWorkspaceWizard", "resizable=no")
+            // launch workspace wizard
+            window.openDialog(YULUP_WS_WIZARD_CHROME_URI, "yulupWorkspaceWizard", "resizable=no")
         }
         */
 
