@@ -26,10 +26,10 @@
  *
  */
 
-const EDITOR_WINDOW_TITLE           = "Yulup Editor";
-const YULUP_EDITOR_CHROME_URI       = "chrome://yulup/content/editor/editor.xul";
-const YULUP_REPLACE_CHROME_URI      = "chrome://yulup/content/editor/findreplace/findreplacedialog.xul";
-const YULUP_FAVICON_CHROME_URI      = "chrome://yulup/skin/icons/yulup-logo.png";
+const EDITOR_WINDOW_TITLE      = "Yulup Editor";
+const YULUP_EDITOR_CHROME_URI  = "chrome://yulup/content/editor/editor.xul";
+const YULUP_REPLACE_CHROME_URI = "chrome://yulup/content/editor/findreplace/findreplacedialog.xul";
+const YULUP_FAVICON_CHROME_URI = "chrome://yulup/skin/icons/yulup-logo.png";
 
 var gMainBrowserWindow = null;
 
