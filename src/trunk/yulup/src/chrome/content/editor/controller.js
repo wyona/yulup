@@ -31,10 +31,12 @@ const EDITOR_MODE_ATOM    = 2;
 
 var gEditorController = null;
 
-function YulupEditController(aParameterObject) {
+function YulupEditController(aMainBrowserWindow, aParameterObject) {
     var fromTemplate   = false;
     var templateString = null;
     var documentSuffix = null;
+
+    /* DEBUG */ YulupDebug.ASSERT(aMainBrowserWindow != null);
 
     /* DEBUG */ dump("Yulup:controller.js:YulupEditController(\"" + aParameterObject + "\") invoked\n");
 
@@ -43,7 +45,7 @@ function YulupEditController(aParameterObject) {
     if (aParameterObject) {
         /* Parameters did reach us, therefore we can remove our
          * parameters object from the manager. */
-        gMainBrowserWindow.yulup.instancesManager.removeInstance(aParameterObject.instanceID);
+        aMainBrowserWindow.yulup.instancesManager.removeInstance(aParameterObject.instanceID);
 
         this.editorParams    = aParameterObject.parameters;
         this.archiveRegistry = aParameterObject.archiveRegistry;

@@ -42,7 +42,7 @@ var Editor = {
     __windowList          : [],
     __callerSessionHistory: null,
     __controlledShutdown  : false,
-
+    __mainBrowserWindow   : null,
 
     /**
      * Main entry point for editor creation. Creates a new
@@ -89,12 +89,14 @@ var Editor = {
             document.getElementById("uiYulupEditorToolbox").removeAttribute("hidden");
 
             // get a handle on the main browser window
-            gMainBrowserWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+            Editor.__mainBrowserWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
                 .getInterface(Components.interfaces.nsIWebNavigation)
                 .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
                 .rootTreeItem
                 .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
                 .getInterface(Components.interfaces.nsIDOMWindow);
+
+            gMainBrowserWindow = Editor.__mainBrowserWindow;
 
             /* DEBUG */ dump("Yulup:editor.js:Editor.onLoadListener: window.location.search = \"" + window.location.search + "\"\n");
 
@@ -102,7 +104,7 @@ var Editor = {
             if (window.location.search && window.location.search != "") {
                 instanceID = window.location.search.slice(1);
 
-                if (parameterObject = gMainBrowserWindow.yulup.instancesManager.retrieveInstance(instanceID)) {
+                if (parameterObject = Editor.__mainBrowserWindow.yulup.instancesManager.retrieveInstance(instanceID)) {
                     // save our tab for replaceEditor
                     Editor.__editorTab = parameterObject.tab;
 
@@ -111,10 +113,10 @@ var Editor = {
                     Editor.__callerSessionHistory = parameterObject.sessionHistory;
 
                     // set favicon
-                    gMainBrowserWindow.getBrowser().setIcon(Editor.__editorTab, YULUP_FAVICON_CHROME_URI);
+                    Editor.__mainBrowserWindow.getBrowser().setIcon(Editor.__editorTab, YULUP_FAVICON_CHROME_URI);
 
                     // instantiate the editor
-                    new YulupEditController(parameterObject);
+                    new YulupEditController(Editor.__mainBrowserWindow, parameterObject);
                 } else {
                     /* Looks like the user hit reload, and therefore the
                      * instance corresponding to our instance ID has already
@@ -130,7 +132,7 @@ var Editor = {
                 }
             } else {
                 // no instance ID given, therefore load an empty editor
-                new YulupEditController(null);
+                new YulupEditController(Editor.__mainBrowserWindow, null);
             }
 
             // install shutdown handlers
@@ -237,7 +239,7 @@ var Editor = {
 
         try {
             // prepare parameters for pick-up
-            instanceID = gMainBrowserWindow.yulup.instancesManager.addInstance(Editor.__editorTab, aEditorParameters, null);
+            instanceID = Editor.__mainBrowserWindow.yulup.instancesManager.addInstance(Editor.__editorTab, aEditorParameters, null);
 
             // construct target URI
             targetURI = YULUP_EDITOR_CHROME_URI + "?" + instanceID;
@@ -249,7 +251,7 @@ var Editor = {
 
             // clean up
             if (instanceID)
-                gMainBrowserWindow.yulup.instancesManager.removeInstance(instanceID);
+                Editor.__mainBrowserWindow.yulup.instancesManager.removeInstance(instanceID);
 
             return;
         }
@@ -297,7 +299,7 @@ var Editor = {
             Editor.shutdownEditor();
 
             /* DEBUG */ dump("Yulup:editor.js:Editor.exitEditor: replacing tab with URI = \"" + Editor.__triggerURI + "\"\n");
-            gMainBrowserWindow.yulup.replaceTab(Editor.__editorTab, Editor.__triggerURI, Editor.__callerSessionHistory);
+            Editor.__mainBrowserWindow.yulup.replaceTab(Editor.__editorTab, Editor.__triggerURI, Editor.__callerSessionHistory);
         }
     },
 
@@ -969,7 +971,7 @@ var Editor = {
             Editor.shutdownEditor();
 
             /* DEBUG */ dump("Yulup:editor.js:Editor.documentCheckinFinished: replacing tab\n");
-            gMainBrowserWindow.yulup.replaceTab(Editor.__editorTab, Editor.__triggerURI, Editor.__callerSessionHistory);
+            Editor.__mainBrowserWindow.yulup.replaceTab(Editor.__editorTab, Editor.__triggerURI, Editor.__callerSessionHistory);
         }
     },
 
