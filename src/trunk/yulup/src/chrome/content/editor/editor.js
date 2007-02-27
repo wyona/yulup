@@ -33,11 +33,11 @@ const YULUP_REPLACE_CHROME_URI      = "chrome://yulup/content/editor/findreplace
 const YULUP_FAVICON_CHROME_URI      = "chrome://yulup/skin/icons/yulup-logo.png";
 
 var gMainBrowserWindow  = null;
-var gYulupTab           = null;
 var gTriggerURI         = null;
 var gControlledShutdown = false;
 
 var Editor = {
+    __editorTab           : null,
     __findWindow          : null,
     __replaceWindow       : null,
     __windowList          : [],
@@ -104,14 +104,14 @@ var Editor = {
 
                 if (parameterObject = gMainBrowserWindow.yulup.instancesManager.retrieveInstance(instanceID)) {
                     // save our tab for replaceEditor
-                    gYulupTab = parameterObject.tab;
+                    Editor.__editorTab = parameterObject.tab;
 
                     // save our trigger URI
                     gTriggerURI = parameterObject.triggerURI;
                     Editor.__callerSessionHistory = parameterObject.sessionHistory;
 
                     // set favicon
-                    gMainBrowserWindow.getBrowser().setIcon(gYulupTab, YULUP_FAVICON_CHROME_URI);
+                    gMainBrowserWindow.getBrowser().setIcon(Editor.__editorTab, YULUP_FAVICON_CHROME_URI);
 
                     // instantiate the editor
                     new YulupEditController(parameterObject);
@@ -237,7 +237,7 @@ var Editor = {
 
         try {
             // prepare parameters for pick-up
-            instanceID = gMainBrowserWindow.yulup.instancesManager.addInstance(gYulupTab, aEditorParameters, null);
+            instanceID = gMainBrowserWindow.yulup.instancesManager.addInstance(Editor.__editorTab, aEditorParameters, null);
 
             // construct target URI
             targetURI = YULUP_EDITOR_CHROME_URI + "?" + instanceID;
@@ -297,7 +297,7 @@ var Editor = {
             Editor.shutdownEditor();
 
             /* DEBUG */ dump("Yulup:editor.js:Editor.exitEditor: replacing tab with URI = \"" + gTriggerURI + "\"\n");
-            gMainBrowserWindow.yulup.replaceTab(gYulupTab, gTriggerURI, Editor.__callerSessionHistory);
+            gMainBrowserWindow.yulup.replaceTab(Editor.__editorTab, gTriggerURI, Editor.__callerSessionHistory);
         }
     },
 
@@ -969,7 +969,7 @@ var Editor = {
             Editor.shutdownEditor();
 
             /* DEBUG */ dump("Yulup:editor.js:Editor.documentCheckinFinished: replacing tab\n");
-            gMainBrowserWindow.yulup.replaceTab(gYulupTab, gTriggerURI, Editor.__callerSessionHistory);
+            gMainBrowserWindow.yulup.replaceTab(Editor.__editorTab, gTriggerURI, Editor.__callerSessionHistory);
         }
     },
 
