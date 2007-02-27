@@ -43,558 +43,13 @@ var gInstancesManager            = null;
 
 /* Registers our init code to be run (see
  * http://developer.mozilla.org/en/docs/Extension_FAQ#Why_doesn.27t_my_script_run_properly.3F) */
-window.addEventListener('load', yulupInitYulup, false);
+window.addEventListener("load", initYulup, false);
 
-/**
- * Event handler for setting up Yulup for the active browser window.
- *
- * @return {Undefined}
- */
-function yulupInitYulup() {
-    /* DEBUG */ dump("Yulup:yulup.js:yulupInitYulup() invoked\n");
-
-    gMainBrowserWindow = window;
-
-    initialCleanUp(NAR_TMP_DIR, WIDGET_TMP_DIR);
-
-    // initialize the template registry
-    YulupNeutronArchiveRegistry.loadLocalTemplates();
-
-    /*
-    // check if workspace is configured
-    if (!WorkspaceService.getWorkspacePath()) {
-        // launch workspace wizard
-        window.openDialog(YULUP_WS_WIZARD_CHROME_URI, "yulupWorkspaceWizard", "resizable=no")
-    }
-    */
-
-    new Yulup();
+function initYulup() {
+    Yulup.initYulup();
 }
 
-/**
- * Create a new editor instance.
- *
- * @param  {EditorParameters} aEditorParameters the editor parameters object
- * @return {Undefined} does not have a return value
- */
-function yulupCreateNewEditor(aEditorParameters, aTriggerURI) {
-    var openInNewTab       = null;
-    var currentTab         = null;
-    var yulupTab           = null;
-    var sessionHistory     = null;
-    var sessionHistoryList = null;
-    var historyEntries     = null;
-    var instanceID         = null;
-    var targetURI          = null;
-    var tabBrowser         = null;
-
-    /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNewEditor(\"" + aEditorParameters + "\", \"" + aTriggerURI + "\") invoked\n");
-
-    try {
-        // get the currently selected tab (getBrowser() (defined in browser.js) returns a reference to the Tabbrowser element)
-        currentTab = self.getBrowser().selectedTab;
-
-        // never open in a new tab if no trigger URI is available
-        if (aTriggerURI) {
-            // check if we should open in a new tab or in the current tab
-            if ((openInNewTab = YulupPreferences.getBoolPref("editor.", "openinnewtab")) != null) {
-                if (!openInNewTab && !currentTab) {
-                    openInNewTab = true;
-                }
-            } else {
-                // fall back to opening in new tab
-                openInNewTab = true;
-            }
-        } else {
-            openInNewTab = true;
-        }
-
-        // create a new tab
-        yulupTab = self.getBrowser().addTab("");
-
-        // remove the default context menu
-        self.getBrowser().getBrowserForTab(yulupTab).removeAttribute("contextmenu");
-
-        // copy session history
-        try {
-            sessionHistory = self.getBrowser().getBrowserForTab(currentTab).webNavigation.sessionHistory;
-
-            // iterate over all history entries in aSessionHistory and add them to the new tab's session history
-            historyEntries = sessionHistory.SHistoryEnumerator;
-
-            sessionHistoryList = new Array();
-
-            while (historyEntries.hasMoreElements()) {
-                sessionHistoryList.push(historyEntries.getNext());
-            }
-        } catch (exception) {
-            /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNewEditor: " + exception + "\n");
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:yulupCreateNewEditor", exception);
-
-            sessionHistoryList = null;
-        }
-
-        // prepare parameters for pick-up
-        instanceID = gInstancesManager.addInstance(yulupTab, aEditorParameters, aTriggerURI, sessionHistoryList);
-
-        // construct target URI
-        targetURI = YULUP_EDITOR_CHROME_URI + "?" + instanceID;
-
-        // load editor
-        self.getBrowser().getBrowserForTab(yulupTab).loadURIWithFlags(targetURI, Components.interfaces.nsIWebNavigation.LOAD_FLAGS_BYPASS_HISTORY, null, null);
-
-        // switch ui to newly created tab
-        self.getBrowser().selectedTab = yulupTab;
-
-        if (!openInNewTab) {
-            // remove current tab
-            tabBrowser = self.getBrowser();
-            window.setTimeout(function() { tabBrowser.removeTab(currentTab); }, 0);
-        }
-    } catch (exception) {
-        dump("Yulup:yulup.js:yulupCreateNewEditor: failed to open new editor tab: " + exception.toString() + "\n");
-
-        // clean up
-        if (instanceID)
-            gInstancesManager.removeInstance(instanceID);
-
-        return;
-    }
-
-    /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNewEditor: new tab created\n");
-}
-
-
-/**
- * YulupEditorInstancesManager constructor. Instantiates a new object of
- * type YulupEditorInstancesManager.
- *
- * The editor instance manager manages all currently open editors
- * for a given browser window. Before opening a new editor,
- * create a new instance in the instance manager, and add parameters
- * to pass to the new editor.
- *
- * Once added to the instance manager, you can retrieve the object
- * holding the instance information by means of the retrieveInstance()
- * method. You can also delete the instance once you do not need the
- * information held by the instance object anymore by using the
- * removeInstance() method.
- *
- * Note that no part of Yulup actually depends on having the
- * instance object around any longer than the editor has retrieved
- * its parameters from it. Therefore it is save for the editor to delete
- * the instance object form the manager as soon as it has read the
- * information it needed.
- *
- * @constructor
- * @return {YulupEditorInstancesManager}
- */
-
-function YulupEditorInstancesManager() {
-    /* DEBUG */ dump("Yulup:yulup.js:YulupEditorInstancesManager() invoked\n");
-
-    this.instanceHashtable = new Object();
-}
-
-YulupEditorInstancesManager.prototype = {
-    instanceHashtable: null,
-
-    /**
-     * Create a new management object to manage the editor instance
-     * associated with this management object.
-     *
-     * @param  {nsIDOMNode}       aTab              a XUL <tab> node
-     * @param  {EditorParameters} aEditorParameters the editor parameters object
-     * @param  {String}           aTriggerURI       the URI of the document from which this new instance was triggered
-     * @param  {Array}            aSessionHistory   the session history of the browser contained in aTab
-     * @return {String} returns an instance ID of the newly created management instance
-     */
-    addInstance: function (aTab, aEditorParameters, aTriggerURI, aSessionHistory) {
-        var editorInstance = null;
-        var instanceID     = null;
-
-        // create an instance ID for this instance
-        instanceID = Date.now();
-
-        editorInstance = new Object();
-        editorInstance.instanceID      = instanceID;
-        editorInstance.tab             = aTab;
-        editorInstance.parameters      = aEditorParameters;
-        editorInstance.triggerURI      = aTriggerURI;
-        editorInstance.sessionHistory  = aSessionHistory;
-        editorInstance.archiveRegistry = YulupNeutronArchiveRegistry;
-
-        // add instance to the hash table
-        this.instanceHashtable[instanceID] = editorInstance;
-
-        return instanceID;
-    },
-
-    /**
-     * Remove the instance identified by the passed instance ID
-     * from the instance manager.
-     *
-     * Not that after removing an instance, you cannot retrieve it
-     * anymoare.
-     *
-     * @param  {Integer}   aInstanceID the ID of the instance to remove
-     * @return {Undefined} does not have a return value
-     */
-    removeInstance: function (aInstanceID) {
-        delete this.instanceHashtable[aInstanceID];
-    },
-
-    /**
-     * Return the instance indentified by the passed instance ID.
-     *
-     * @param  {Integer} aInstanceID the ID of the instance to return
-     * @return {Object}  returns the instance object requested by the passed instance ID
-     */
-    retrieveInstance: function (aInstanceID) {
-        return this.instanceHashtable[aInstanceID];
-    }
-};
-
-
-/**
- * Create a new editor instance starting with a built-in
- * document template.
- *
- * @param  {String}  aTemplateName a template identifier
- * @return {Boolean} return true on success, false otherwise
- */
-function yulupCreateNew(aTemplateName) {
-    var editorParameters = null;
-    var template         = null;
-
-    /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNew(\"" + aTemplateName + "\") invoked\n");
-
-    template = YulupNeutronArchiveRegistry.getTemplateByName(aTemplateName);
-
-    if (template.mimeType == "application/atom+xml") {
-        // create a new context aware atom entry
-        if (yulupCreateNewAtomEntry()) {
-            return true;
-        }
-    }
-
-    // set editor parameters according to NAR template
-    editorParameters = new EditorParameters(template.uri, template.mimeType, null, null, null, null);
-
-    yulupCreateNewEditor(editorParameters, null);
-
-    return true;
-}
-
-/**
- * Create a new editor instance starting with a built-in
- * Atom entry template. Upon saving, the entry is attached
- * to the feed selected at the time this method was called.
- *
- * @return {Boolean} return true on success, false otherwise
- */
-function yulupCreateNewAtomEntry() {
-    var editorParameters = null;
-    var feedURI          = null;
-    var template         = null;
-
-    /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNewAtomEntry() invoked\n");
-
-    // get feed URI
-    if (document.getElementById("sidebar").docShell && document.getElementById("sidebar").contentDocument.getElementById("uiYulupAtomSidebarPage")) {
-        feedURI = document.getElementById("sidebar").contentDocument.getElementById("uiYulupAtomSidebarPage").currentFeed.feedURI;
-    }
-
-    if (feedURI) {
-        /* DEBUG */ dump("Yulup:yulup.js:yulupCreateNewAtomEntry: feed URI = \"" + feedURI.spec + "\"\n");
-
-        // get the first atom template
-        template = YulupNeutronArchiveRegistry.getTemplatesByMimeType("application/atom+xml")[0];
-
-        editorParameters = new AtomEditorParameters(template.uri, feedURI,  "application/atom+xml");
-        yulupCreateNewEditor(editorParameters, null);
-
-        return true;
-    }
-
-    return false;
-}
-
-/**
- * Create a new editor instance starting with a document
- * loaded from the local file system.
- *
- * @return {Boolean} return true on success, false otherwise
- */
-function yulupOpenFromFile() {
-    var mimeType         = null;
-    var editorParameters = null;
-    var documentURI      = null;
-
-    /* DEBUG */ dump("Yulup:yulup.js:yulupOpenFromFile() invoked\n");
-
-    if (documentURI = PersistenceService.queryOpenFileURI()) {
-        // figure out MIME type from document URI
-        try {
-            mimeType = Components.classes["@mozilla.org/mime;1"].getService(Components.interfaces.nsIMIMEService).getTypeFromURI(documentURI);
-        } catch (exception) {
-            // could not figure out MIME type
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:yulupOpenFromFile", exception);
-            /* DEBUG */ Components.utils.reportError(exception);
-        }
-
-        editorParameters = new EditorParameters(documentURI, mimeType, null, null, null, null, null);
-
-        // replace the current editor
-        yulupCreateNewEditor(editorParameters, null);
-
-        return true;
-    }
-
-    // user aborted
-    return false;
-}
-
-/**
- * Create a new editor instance starting with a document
- * loaded from a remote host.
- *
- * @return {Boolean} return true on success, false otherwise
- */
-function yulupOpenFromCMS() {
-    /* DEBUG */ dump("Yulup:yulup.js:yulupOpenFromCMS() invoked\n");
-
-    throw new YulupEditorException("Yulup:yulup.js:yulupOpenFromCMS: method not implemented.");
-}
-
-/**
- * Create a new editor instance starting with a document
- * loaded from a remote host, using the Neutron "open"
- * operation.
- *
- * @return {Undefined} does not have a return value
- */
-function yulupCheckoutNoLockFromCMS(aFragment) {
-    var editorParameters = null;
-
-    /* DEBUG */ dump("Yulup:yulup.js:yulupCheckoutNoLockFromCMS(\"" + aFragment + "\") invoked\n");
-
-    if (gCurrentNeutronIntrospection) {
-        editorParameters = new NeutronEditorParameters(gCurrentNeutronIntrospection.queryFragmentOpenURI(aFragment), gCurrentNeutronIntrospection, aFragment, "open");
-
-        yulupCreateNewEditor(editorParameters,  (gCurrentNeutronIntrospection.associatedWithURI ? gCurrentNeutronIntrospection.associatedWithURI.spec : null));
-    } else {
-        /* We should never have no introspection object when
-         * we reach this function. */
-    }
-}
-
-/**
- * Create a new editor instance starting with a document
- * loaded from a remote host, using the Neutron "checkout"
- * operation.
- *
- * @return {Undefined} does not have a return value
- */
-function yulupCheckoutFromCMS(aFragment) {
-    var editorParameters = null;
-
-    /* DEBUG */ dump("Yulup:yulup.js:yulupCheckoutFromCMS(\"" + aFragment + "\") invoked\n");
-
-    if (gCurrentNeutronIntrospection) {
-        editorParameters = new NeutronEditorParameters(gCurrentNeutronIntrospection.queryFragmentCheckoutURI(aFragment), gCurrentNeutronIntrospection, aFragment, "checkout");
-
-        yulupCreateNewEditor(editorParameters, (gCurrentNeutronIntrospection.associatedWithURI ? gCurrentNeutronIntrospection.associatedWithURI.spec : null));
-    } else {
-        /* We should never have no introspection object when
-         * we reach this function. */
-    }
-}
-
-function yulupResourceUpload() {
-    var sitetreeURI     = null;
-    var serverURIString = null;
-    var ioService       = null;
-
-    // check for sitetree URI
-    if (gCurrentNeutronIntrospection                            &&
-        gCurrentNeutronIntrospection.queryNavigation()          &&
-        gCurrentNeutronIntrospection.queryNavigation().sitetree &&
-        gCurrentNeutronIntrospection.queryNavigation().sitetree.uri) {
-        sitetreeURI = gCurrentNeutronIntrospection.queryNavigation().sitetree.uri;
-    } else {
-        // query for server address
-        serverURIString = ServerURIPrompt.showServerURIDialog();
-
-        if (!serverURIString) {
-            // user cancelled
-            return true;
-        } else if (serverURIString == "") {
-            return false;
-        }
-
-        ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-
-        try {
-            sitetreeURI = ioService.newURI(serverURIString, null, null);
-        } catch (exception) {
-            /* DEBUG */ dump("Yulup:yulup.js:yulupResourceUpload: server URI \"" + serverURIString + "\" is not a valid URI: " + exception + "\n");
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:yulupResourceUpload", exception);
-
-            alert(document.getElementById("uiYulupEditorStringbundle").getString("editorURINotValidFailure.label") + ": \"" + serverURIString + "\".");
-            return false;
-        }
-    }
-
-    // open dialog
-    ResourceUploadDialog.showResourceUploadDialog(sitetreeURI);
-
-    return true;
-}
-
-function yulupOpenYulupPreferences() {
-    var instantApply = null;
-    var features     = null;
-
-    try {
-        instantApply = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).getBoolPref("browser.preferences.instantApply");
-        features = "chrome,titlebar,toolbar" + (instantApply ? ",dialog=no" : ",modal");
-    } catch (exception) {
-        features = "chrome,titlebar,toolbar,modal";
-    }
-
-    window.openDialog(YULUP_PREFERENCES_CHROME_URI, "yulupPreferencesWindow", features);
-}
-
-/**
- * Load the Yulup help into a new browser window.
- *
- * @return {Undefined} does not have a return value
- */
-function yulupShowHelp() {
-    var helpWindow = null;
-
-    helpWindow = window.open("chrome://yulup/content/help/helpbrowser.xul", "yulupHelpBrowserWindow", "chrome,menubar=no,resizable=yes,centerscreen");
-
-    /* If the window was already open, the content gets reloaded. In order
-     * to bring such a window to the front we have to focus it. */
-    if (helpWindow)
-        helpWindow.focus();
-}
-
-/**
- * Load the Yulup demosite into the currently active tab.
- *
- * @return {Undefined} does not have a return value
- */
-function yulupShowDemoSite() {
-    self.getBrowser().selectedBrowser.loadURI(YULUP_DEMO_SITE_URI, null, null);
-}
-
-/**
- * Load the Yulup website into the currently active tab.
- *
- * @return {Undefined} does not have a return value
- */
-function yulupShowAboutYulup() {
-    self.getBrowser().selectedBrowser.loadURI(YULUP_WEB_SITE_URI, null, null);
-}
-
-/**
- * Walk through a DOM tree on the sibling axes until a DOM node
- * named aNodeName is found.
- *
- * Note that this method does not recursively inspect children
- * elements.
- *
- * @param  {nsIDOMTreeWalker} aTreeWalker the tree walker to use
- * @param  {String}           aNodeName   the name of the node to find
- * @return {nsIDOMNode}       returns the node if found, null otherwise
- */
-function yulupWalkTo(aTreeWalker, aNodeName) {
-    var domElem = null;
-
-    /* DEBUG */ dump("Yulup:yulup.js:yulupWalkTo(\"" + aTreeWalker + "\", \"" + aNodeName + "\") invoked\n");
-
-    for (domElem = aTreeWalker.firstChild(); domElem != null && domElem.nodeName != aNodeName && domElem.nodeName != aNodeName.toUpperCase(); domElem = aTreeWalker.nextSibling()) {
-        /* DEBUG */ dump("Yulup:yulup.js:yulupWalkTo: current node = \"" + domElem.nodeName + "\"\n");
-    }
-
-    /* DEBUG */ dump("Yulup:yulup.js:yulupWalkTo: resulting node = \"" + (domElem ? domElem.nodeName : domElem) + "\"\n");
-
-    return domElem;
-}
-
-
-/**
- * Yulup constructor. Instantiates a new object of
- * type Yulup.
- *
- * @constructor
- * @return {Yulup} a new Yulup object
- */
-function Yulup() {
-    /* DEBUG */ dump("Yulup:yulup.js:Yulup() invoked\n");
-
-    /* Initialise introspection state controller. We initialise
-     * it to "undefined" so one of the state actions always gets
-     * executed when we hit a webpage for the first time. */
-    this.currentState = "undefined";
-
-    // cache element requests for often used elements
-    this.yulupEditMenu                               = document.getElementById("uiYulupEditToolbarbutton");
-    this.yulupEditMenuEditMenuitem                   = document.getElementById("uiYulupEditMenuitem");
-    this.yulupEditMenuCheckoutMenuitem               = document.getElementById("uiYulupEditCheckoutMenuitem");
-    this.yulupEditMenuCheckoutNoLockMenuitem         = document.getElementById("uiYulupEditCheckoutNoLockMenuitem");
-    this.yulupEditMenuCheckoutMenuitemLabel          = document.getElementById("uiYulupEditCheckoutMenuitem").getAttribute("label");
-    this.yulupEditMenuCheckoutNoLockMenuitemLabel    = document.getElementById("uiYulupEditCheckoutNoLockMenuitem").getAttribute("label");
-    this.yulupEditMenuCheckoutMenu                   = document.getElementById("uiYulupEditCheckoutMenu");
-    this.yulupEditMenuCheckoutNoLockMenu             = document.getElementById("uiYulupEditCheckoutNoLockMenu");
-    this.yulupEditMenuCheckoutMenupopup              = document.getElementById("uiYulupEditCheckoutMenupopup");
-    this.yulupEditMenuCheckoutNoLockMenupopup        = document.getElementById("uiYulupEditCheckoutNoLockMenupopup");
-    this.yulupEditMenuResourceUploadMenuitem         = document.getElementById("uiYulupUploadMenuitem");
-    this.yulupEditMenuRealmSeparator                 = document.getElementById("uiYulupRealmSeparator");
-    this.yulupEditMenuExtrasSeparator                = document.getElementById("uiYulupExtrasSeparator");
-    this.yulupOperationNewFromTemplateLocalMenu      = document.getElementById("uiYulupOperationNewFromTemplateLocalMenu");
-    this.yulupOperationNewFromTemplateLocalMenupopup = document.getElementById("uiYulupOperationNewFromTemplateLocalMenupopup");
-    this.uiYulupEditMenupopup                        = document.getElementById("uiYulupEditMenupopup");
-    this.yulupOpenAtomSidebarObserver                = document.getElementById("uiOpenYulupAtomSidebar");
-    this.yulupDocument                               = document;
-
-    this.yulupEditMenu.setAttribute("disabled", "false");
-
-    // create an editor instance manager
-    this.instancesManager = new YulupEditorInstancesManager();
-    gInstancesManager = this.instancesManager;
-
-    // install tab switch listener to capture tab switches
-    self.getBrowser().tabContainer.addEventListener("select", new YulupTabSwitchListener(this), false);
-
-    /* Install a progress listener to catch document loading on tabbrowser.
-     * This listener will only get called if a state change occurs on the
-     * currently active tab (which is good, since we are not interested on
-     * what is going on in the other tabs).
-     *
-     * Note that the listener throws lots of NS_ERROR_NOT_IMPLEMENTED ex-
-     * ceptions due to a bug that tabbrowser.xml does not honor the event
-     * filter mask (see https://bugzilla.mozilla.org/show_bug.cgi?id=320663). */
-    this.installWebProgressListener(self.getBrowser());
-
-
-    buildNewMenu(YulupNeutronArchiveRegistry.getAvailableTemplates(), this.yulupOperationNewFromTemplateLocalMenupopup, this.yulupOperationNewFromTemplateLocalMenu, "yulupCreateNew");
-
-
-    /* Call the introspection detector since we may have missed a STATE_STOP
-     * of the current tab during initial handler installation. */
-    this.introspectionDetector();
-
-    // add ourself to the window
-    window.yulup = this;
-
-    /* DEBUG */ dump("Yulup:yulup.js:Yulup: initialisation completed\n");
-}
-
-Yulup.prototype = {
+const Yulup = {
     __currentNeutronIntrospection              : null,
     yulupEditMenu                              : null,
     yulupEditMenuEditMenuitem                  : null,
@@ -621,6 +76,449 @@ Yulup.prototype = {
     set currentNeutronIntrospection(aValue) {
         this.__currentNeutronIntrospection = aValue;
         gCurrentNeutronIntrospection       = aValue;
+    },
+
+    /**
+     * Event handler for setting up Yulup for the active browser window.
+     *
+     * @return {Undefined}
+     */
+    initYulup: function () {
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.initYulup() invoked\n");
+
+        gMainBrowserWindow = window;
+
+        initialCleanUp(NAR_TMP_DIR, WIDGET_TMP_DIR);
+
+        // initialize the template registry
+        YulupNeutronArchiveRegistry.loadLocalTemplates();
+
+        /*
+        // check if workspace is configured
+        if (!WorkspaceService.getWorkspacePath()) {
+        // launch workspace wizard
+        window.openDialog(YULUP_WS_WIZARD_CHROME_URI, "yulupWorkspaceWizard", "resizable=no")
+        }
+        */
+
+        /* Initialise introspection state controller. We initialise
+         * it to "undefined" so one of the state actions always gets
+         * executed when we hit a webpage for the first time. */
+        this.currentState = "undefined";
+
+        // cache element requests for often used elements
+        this.yulupEditMenu                               = document.getElementById("uiYulupEditToolbarbutton");
+        this.yulupEditMenuEditMenuitem                   = document.getElementById("uiYulupEditMenuitem");
+        this.yulupEditMenuCheckoutMenuitem               = document.getElementById("uiYulupEditCheckoutMenuitem");
+        this.yulupEditMenuCheckoutNoLockMenuitem         = document.getElementById("uiYulupEditCheckoutNoLockMenuitem");
+        this.yulupEditMenuCheckoutMenuitemLabel          = document.getElementById("uiYulupEditCheckoutMenuitem").getAttribute("label");
+        this.yulupEditMenuCheckoutNoLockMenuitemLabel    = document.getElementById("uiYulupEditCheckoutNoLockMenuitem").getAttribute("label");
+        this.yulupEditMenuCheckoutMenu                   = document.getElementById("uiYulupEditCheckoutMenu");
+        this.yulupEditMenuCheckoutNoLockMenu             = document.getElementById("uiYulupEditCheckoutNoLockMenu");
+        this.yulupEditMenuCheckoutMenupopup              = document.getElementById("uiYulupEditCheckoutMenupopup");
+        this.yulupEditMenuCheckoutNoLockMenupopup        = document.getElementById("uiYulupEditCheckoutNoLockMenupopup");
+        this.yulupEditMenuResourceUploadMenuitem         = document.getElementById("uiYulupUploadMenuitem");
+        this.yulupEditMenuRealmSeparator                 = document.getElementById("uiYulupRealmSeparator");
+        this.yulupEditMenuExtrasSeparator                = document.getElementById("uiYulupExtrasSeparator");
+        this.yulupOperationNewFromTemplateLocalMenu      = document.getElementById("uiYulupOperationNewFromTemplateLocalMenu");
+        this.yulupOperationNewFromTemplateLocalMenupopup = document.getElementById("uiYulupOperationNewFromTemplateLocalMenupopup");
+        this.uiYulupEditMenupopup                        = document.getElementById("uiYulupEditMenupopup");
+        this.yulupOpenAtomSidebarObserver                = document.getElementById("uiOpenYulupAtomSidebar");
+        this.yulupDocument                               = document;
+
+        this.yulupEditMenu.setAttribute("disabled", "false");
+
+        // create an editor instance manager
+        this.instancesManager = new YulupEditorInstancesManager();
+        gInstancesManager = this.instancesManager;
+
+        // install tab switch listener to capture tab switches
+        self.getBrowser().tabContainer.addEventListener("select", new YulupTabSwitchListener(this), false);
+
+        /* Install a progress listener to catch document loading on tabbrowser.
+         * This listener will only get called if a state change occurs on the
+         * currently active tab (which is good, since we are not interested on
+         * what is going on in the other tabs).
+         *
+         * Note that the listener throws lots of NS_ERROR_NOT_IMPLEMENTED ex-
+         * ceptions due to a bug that tabbrowser.xml does not honor the event
+         * filter mask (see https://bugzilla.mozilla.org/show_bug.cgi?id=320663). */
+        this.installWebProgressListener(self.getBrowser());
+
+
+        buildNewMenu(YulupNeutronArchiveRegistry.getAvailableTemplates(), this.yulupOperationNewFromTemplateLocalMenupopup, this.yulupOperationNewFromTemplateLocalMenu, "yulupCreateNew");
+
+
+        /* Call the introspection detector since we may have missed a STATE_STOP
+         * of the current tab during initial handler installation. */
+        this.introspectionDetector();
+
+        // add ourself to the window
+        window.yulup = this;
+
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup: initialisation completed\n");
+    },
+
+    /**
+     * Create a new editor instance.
+     *
+     * @param  {EditorParameters} aEditorParameters the editor parameters object
+     * @return {Undefined} does not have a return value
+     */
+    yulupCreateNewEditor: function (aEditorParameters, aTriggerURI) {
+        var openInNewTab       = null;
+        var currentTab         = null;
+        var yulupTab           = null;
+        var sessionHistory     = null;
+        var sessionHistoryList = null;
+        var historyEntries     = null;
+        var instanceID         = null;
+        var targetURI          = null;
+        var tabBrowser         = null;
+
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCreateNewEditor(\"" + aEditorParameters + "\", \"" + aTriggerURI + "\") invoked\n");
+
+        try {
+            // get the currently selected tab (getBrowser() (defined in browser.js) returns a reference to the Tabbrowser element)
+            currentTab = self.getBrowser().selectedTab;
+
+            // never open in a new tab if no trigger URI is available
+            if (aTriggerURI) {
+                // check if we should open in a new tab or in the current tab
+                if ((openInNewTab = YulupPreferences.getBoolPref("editor.", "openinnewtab")) != null) {
+                    if (!openInNewTab && !currentTab) {
+                        openInNewTab = true;
+                    }
+                } else {
+                    // fall back to opening in new tab
+                    openInNewTab = true;
+                }
+            } else {
+                openInNewTab = true;
+            }
+
+            // create a new tab
+            yulupTab = self.getBrowser().addTab("");
+
+            // remove the default context menu
+            self.getBrowser().getBrowserForTab(yulupTab).removeAttribute("contextmenu");
+
+            // copy session history
+            try {
+                sessionHistory = self.getBrowser().getBrowserForTab(currentTab).webNavigation.sessionHistory;
+
+                // iterate over all history entries in aSessionHistory and add them to the new tab's session history
+                historyEntries = sessionHistory.SHistoryEnumerator;
+
+                sessionHistoryList = new Array();
+
+                while (historyEntries.hasMoreElements()) {
+                    sessionHistoryList.push(historyEntries.getNext());
+                }
+            } catch (exception) {
+                /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCreateNewEditor: " + exception + "\n");
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.yulupCreateNewEditor", exception);
+
+                sessionHistoryList = null;
+            }
+
+            // prepare parameters for pick-up
+            instanceID = gInstancesManager.addInstance(yulupTab, aEditorParameters, aTriggerURI, sessionHistoryList);
+
+            // construct target URI
+            targetURI = YULUP_EDITOR_CHROME_URI + "?" + instanceID;
+
+            // load editor
+            self.getBrowser().getBrowserForTab(yulupTab).loadURIWithFlags(targetURI, Components.interfaces.nsIWebNavigation.LOAD_FLAGS_BYPASS_HISTORY, null, null);
+
+            // switch ui to newly created tab
+            self.getBrowser().selectedTab = yulupTab;
+
+            if (!openInNewTab) {
+                // remove current tab
+                tabBrowser = self.getBrowser();
+                window.setTimeout(function() { tabBrowser.removeTab(currentTab); }, 0);
+            }
+        } catch (exception) {
+            dump("Yulup:yulup.js:Yulup.yulupCreateNewEditor: failed to open new editor tab: " + exception.toString() + "\n");
+
+            // clean up
+            if (instanceID)
+                gInstancesManager.removeInstance(instanceID);
+
+            return;
+        }
+
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCreateNewEditor: new tab created\n");
+    },
+
+    /**
+     * Create a new editor instance starting with a built-in
+     * document template.
+     *
+     * @param  {String}  aTemplateName a template identifier
+     * @return {Boolean} return true on success, false otherwise
+     */
+    yulupCreateNew: function (aTemplateName) {
+        var editorParameters = null;
+        var template         = null;
+
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCreateNew(\"" + aTemplateName + "\") invoked\n");
+
+        template = YulupNeutronArchiveRegistry.getTemplateByName(aTemplateName);
+
+        if (template.mimeType == "application/atom+xml") {
+            // create a new context aware atom entry
+            if (this.yulupCreateNewAtomEntry()) {
+                return true;
+            }
+        }
+
+        // set editor parameters according to NAR template
+        editorParameters = new EditorParameters(template.uri, template.mimeType, null, null, null, null);
+
+        this.yulupCreateNewEditor(editorParameters, null);
+
+        return true;
+    },
+
+    /**
+     * Create a new editor instance starting with a built-in
+     * Atom entry template. Upon saving, the entry is attached
+     * to the feed selected at the time this method was called.
+     *
+     * @return {Boolean} return true on success, false otherwise
+     */
+    yulupCreateNewAtomEntry: function () {
+        var editorParameters = null;
+        var feedURI          = null;
+        var template         = null;
+
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCreateNewAtomEntry() invoked\n");
+
+        // get feed URI
+        if (document.getElementById("sidebar").docShell && document.getElementById("sidebar").contentDocument.getElementById("uiYulupAtomSidebarPage")) {
+            feedURI = document.getElementById("sidebar").contentDocument.getElementById("uiYulupAtomSidebarPage").currentFeed.feedURI;
+        }
+
+        if (feedURI) {
+            /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCreateNewAtomEntry: feed URI = \"" + feedURI.spec + "\"\n");
+
+            // get the first atom template
+            template = YulupNeutronArchiveRegistry.getTemplatesByMimeType("application/atom+xml")[0];
+
+            editorParameters = new AtomEditorParameters(template.uri, feedURI,  "application/atom+xml");
+            this.yulupCreateNewEditor(editorParameters, null);
+
+            return true;
+        }
+
+        return false;
+    },
+
+    /**
+     * Create a new editor instance starting with a document
+     * loaded from the local file system.
+     *
+     * @return {Boolean} return true on success, false otherwise
+     */
+    yulupOpenFromFile: function () {
+        var mimeType         = null;
+        var editorParameters = null;
+        var documentURI      = null;
+
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupOpenFromFile() invoked\n");
+
+        if (documentURI = PersistenceService.queryOpenFileURI()) {
+            // figure out MIME type from document URI
+            try {
+                mimeType = Components.classes["@mozilla.org/mime;1"].getService(Components.interfaces.nsIMIMEService).getTypeFromURI(documentURI);
+            } catch (exception) {
+                // could not figure out MIME type
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.yulupOpenFromFile", exception);
+                /* DEBUG */ Components.utils.reportError(exception);
+            }
+
+            editorParameters = new EditorParameters(documentURI, mimeType, null, null, null, null, null);
+
+            // replace the current editor
+            this.yulupCreateNewEditor(editorParameters, null);
+
+            return true;
+        }
+
+        // user aborted
+        return false;
+    },
+
+    /**
+     * Create a new editor instance starting with a document
+     * loaded from a remote host.
+     *
+     * @return {Boolean} return true on success, false otherwise
+     */
+    yulupOpenFromCMS: function () {
+        /* DEBUG */ dump("Yulup:yulup.js:yulupOpenFromCMS() invoked\n");
+
+        throw new YulupEditorException("Yulup:yulup.js:Yulup.yulupOpenFromCMS: method not implemented.");
+    },
+
+    /**
+     * Create a new editor instance starting with a document
+     * loaded from a remote host, using the Neutron "open"
+     * operation.
+     *
+     * @return {Undefined} does not have a return value
+     */
+    yulupCheckoutNoLockFromCMS: function (aFragment) {
+        var editorParameters = null;
+
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCheckoutNoLockFromCMS(\"" + aFragment + "\") invoked\n");
+
+        if (gCurrentNeutronIntrospection) {
+            editorParameters = new NeutronEditorParameters(gCurrentNeutronIntrospection.queryFragmentOpenURI(aFragment), gCurrentNeutronIntrospection, aFragment, "open");
+
+            this.yulupCreateNewEditor(editorParameters,  (gCurrentNeutronIntrospection.associatedWithURI ? gCurrentNeutronIntrospection.associatedWithURI.spec : null));
+        } else {
+            /* We should never have no introspection object when
+             * we reach this function. */
+        }
+    },
+
+    /**
+     * Create a new editor instance starting with a document
+     * loaded from a remote host, using the Neutron "checkout"
+     * operation.
+     *
+     * @return {Undefined} does not have a return value
+     */
+    yulupCheckoutFromCMS: function (aFragment) {
+        var editorParameters = null;
+
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCheckoutFromCMS(\"" + aFragment + "\") invoked\n");
+
+        if (gCurrentNeutronIntrospection) {
+            editorParameters = new NeutronEditorParameters(gCurrentNeutronIntrospection.queryFragmentCheckoutURI(aFragment), gCurrentNeutronIntrospection, aFragment, "checkout");
+
+            this.yulupCreateNewEditor(editorParameters, (gCurrentNeutronIntrospection.associatedWithURI ? gCurrentNeutronIntrospection.associatedWithURI.spec : null));
+        } else {
+            /* We should never have no introspection object when
+             * we reach this function. */
+        }
+    },
+
+    yulupResourceUpload: function () {
+        var sitetreeURI     = null;
+        var serverURIString = null;
+        var ioService       = null;
+
+        // check for sitetree URI
+        if (gCurrentNeutronIntrospection                            &&
+            gCurrentNeutronIntrospection.queryNavigation()          &&
+            gCurrentNeutronIntrospection.queryNavigation().sitetree &&
+            gCurrentNeutronIntrospection.queryNavigation().sitetree.uri) {
+            sitetreeURI = gCurrentNeutronIntrospection.queryNavigation().sitetree.uri;
+        } else {
+            // query for server address
+            serverURIString = ServerURIPrompt.showServerURIDialog();
+
+            if (!serverURIString) {
+                // user cancelled
+                return true;
+            } else if (serverURIString == "") {
+                return false;
+            }
+
+            ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+
+            try {
+                sitetreeURI = ioService.newURI(serverURIString, null, null);
+            } catch (exception) {
+                /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupResourceUpload: server URI \"" + serverURIString + "\" is not a valid URI: " + exception + "\n");
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.yulupResourceUpload", exception);
+
+                alert(document.getElementById("uiYulupEditorStringbundle").getString("editorURINotValidFailure.label") + ": \"" + serverURIString + "\".");
+                return false;
+            }
+        }
+
+        // open dialog
+        ResourceUploadDialog.showResourceUploadDialog(sitetreeURI);
+
+        return true;
+    },
+
+    yulupOpenYulupPreferences: function () {
+        var instantApply = null;
+        var features     = null;
+
+        try {
+            instantApply = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).getBoolPref("browser.preferences.instantApply");
+            features = "chrome,titlebar,toolbar" + (instantApply ? ",dialog=no" : ",modal");
+        } catch (exception) {
+            features = "chrome,titlebar,toolbar,modal";
+        }
+
+        window.openDialog(YULUP_PREFERENCES_CHROME_URI, "yulupPreferencesWindow", features);
+    },
+
+    /**
+     * Load the Yulup help into a new browser window.
+     *
+     * @return {Undefined} does not have a return value
+     */
+    yulupShowHelp: function () {
+        var helpWindow = null;
+
+        helpWindow = window.open("chrome://yulup/content/help/helpbrowser.xul", "yulupHelpBrowserWindow", "chrome,menubar=no,resizable=yes,centerscreen");
+
+        /* If the window was already open, the content gets reloaded. In order
+         * to bring such a window to the front we have to focus it. */
+        if (helpWindow)
+            helpWindow.focus();
+    },
+
+    /**
+     * Load the Yulup demosite into the currently active tab.
+     *
+     * @return {Undefined} does not have a return value
+     */
+    yulupShowDemoSite: function () {
+        self.getBrowser().selectedBrowser.loadURI(YULUP_DEMO_SITE_URI, null, null);
+    },
+
+    /**
+     * Load the Yulup website into the currently active tab.
+     *
+     * @return {Undefined} does not have a return value
+     */
+    yulupShowAboutYulup: function () {
+        self.getBrowser().selectedBrowser.loadURI(YULUP_WEB_SITE_URI, null, null);
+    },
+
+    /**
+     * Walk through a DOM tree on the sibling axes until a DOM node
+     * named aNodeName is found.
+     *
+     * Note that this method does not recursively inspect children
+     * elements.
+     *
+     * @param  {nsIDOMTreeWalker} aTreeWalker the tree walker to use
+     * @param  {String}           aNodeName   the name of the node to find
+     * @return {nsIDOMNode}       returns the node if found, null otherwise
+     */
+    yulupWalkTo: function (aTreeWalker, aNodeName) {
+        var domElem = null;
+
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupWalkTo(\"" + aTreeWalker + "\", \"" + aNodeName + "\") invoked\n");
+
+        for (domElem = aTreeWalker.firstChild(); domElem != null && domElem.nodeName != aNodeName && domElem.nodeName != aNodeName.toUpperCase(); domElem = aTreeWalker.nextSibling()) {
+            /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupWalkTo: current node = \"" + domElem.nodeName + "\"\n");
+        }
+
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupWalkTo: resulting node = \"" + (domElem ? domElem.nodeName : domElem) + "\"\n");
+
+        return domElem;
     },
 
     /**
@@ -688,9 +586,9 @@ Yulup.prototype = {
                  * non-XML documents (i.e. like traditional HTML documents), but represents
                  * them in all lowercase when parsing XML files, we have to test against
                  * both cases each time we look at a node name. */
-                if (yulupWalkTo(elemWalker, "html")) {
+                if (this.yulupWalkTo(elemWalker, "html")) {
                     // element <html> found, find <head>
-                    if (yulupWalkTo(elemWalker, "head")) {
+                    if (this.yulupWalkTo(elemWalker, "head")) {
                         // element <head> found, find <link>s
                         for (domElem = elemWalker.firstChild(); domElem; domElem = elemWalker.nextSibling()) {
                             if (domElem.nodeName == "link" || domElem.nodeName == "LINK") {
@@ -961,7 +859,7 @@ Yulup.prototype = {
         editorParameters = new AtomEditorParameters(aURI, null, "application/atom+xml", null);
 
         // replace the current editor
-        yulupCreateNewEditor(editorParameters, null);
+        this.yulupCreateNewEditor(editorParameters, null);
 
         return true;
     },
@@ -1345,3 +1243,93 @@ var YulupNeutronArchiveRegistry = {
         }
     }
 }
+
+/**
+ * YulupEditorInstancesManager constructor. Instantiates a new object of
+ * type YulupEditorInstancesManager.
+ *
+ * The editor instance manager manages all currently open editors
+ * for a given browser window. Before opening a new editor,
+ * create a new instance in the instance manager, and add parameters
+ * to pass to the new editor.
+ *
+ * Once added to the instance manager, you can retrieve the object
+ * holding the instance information by means of the retrieveInstance()
+ * method. You can also delete the instance once you do not need the
+ * information held by the instance object anymore by using the
+ * removeInstance() method.
+ *
+ * Note that no part of Yulup actually depends on having the
+ * instance object around any longer than the editor has retrieved
+ * its parameters from it. Therefore it is save for the editor to delete
+ * the instance object form the manager as soon as it has read the
+ * information it needed.
+ *
+ * @constructor
+ * @return {YulupEditorInstancesManager}
+ */
+
+function YulupEditorInstancesManager() {
+    /* DEBUG */ dump("Yulup:yulup.js:YulupEditorInstancesManager() invoked\n");
+
+    this.instanceHashtable = new Object();
+}
+
+YulupEditorInstancesManager.prototype = {
+    instanceHashtable: null,
+
+    /**
+     * Create a new management object to manage the editor instance
+     * associated with this management object.
+     *
+     * @param  {nsIDOMNode}       aTab              a XUL <tab> node
+     * @param  {EditorParameters} aEditorParameters the editor parameters object
+     * @param  {String}           aTriggerURI       the URI of the document from which this new instance was triggered
+     * @param  {Array}            aSessionHistory   the session history of the browser contained in aTab
+     * @return {String} returns an instance ID of the newly created management instance
+     */
+    addInstance: function (aTab, aEditorParameters, aTriggerURI, aSessionHistory) {
+        var editorInstance = null;
+        var instanceID     = null;
+
+        // create an instance ID for this instance
+        instanceID = Date.now();
+
+        editorInstance = new Object();
+        editorInstance.instanceID      = instanceID;
+        editorInstance.tab             = aTab;
+        editorInstance.parameters      = aEditorParameters;
+        editorInstance.triggerURI      = aTriggerURI;
+        editorInstance.sessionHistory  = aSessionHistory;
+        editorInstance.archiveRegistry = YulupNeutronArchiveRegistry;
+
+        // add instance to the hash table
+        this.instanceHashtable[instanceID] = editorInstance;
+
+        return instanceID;
+    },
+
+    /**
+     * Remove the instance identified by the passed instance ID
+     * from the instance manager.
+     *
+     * Not that after removing an instance, you cannot retrieve it
+     * anymoare.
+     *
+     * @param  {Integer}   aInstanceID the ID of the instance to remove
+     * @return {Undefined} does not have a return value
+     */
+    removeInstance: function (aInstanceID) {
+        delete this.instanceHashtable[aInstanceID];
+    },
+
+    /**
+     * Return the instance indentified by the passed instance ID.
+     *
+     * @param  {Integer} aInstanceID the ID of the instance to return
+     * @return {Object}  returns the instance object requested by the passed instance ID
+     */
+    retrieveInstance: function (aInstanceID) {
+        return this.instanceHashtable[aInstanceID];
+    }
+};
