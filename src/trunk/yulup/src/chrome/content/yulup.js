@@ -39,7 +39,6 @@ const INTROSPECTION_TYPE_APP     = 1;
 
 var gMainBrowserWindow           = null;
 var gCurrentNeutronIntrospection = null;
-var gInstancesManager            = null;
 
 /* Registers our init code to be run (see
  * http://developer.mozilla.org/en/docs/Extension_FAQ#Why_doesn.27t_my_script_run_properly.3F) */
@@ -130,7 +129,6 @@ const Yulup = {
 
         // create an editor instance manager
         this.instancesManager = new YulupEditorInstancesManager();
-        gInstancesManager = this.instancesManager;
 
         // install tab switch listener to capture tab switches
         self.getBrowser().tabContainer.addEventListener("select", new YulupTabSwitchListener(this), false);
@@ -223,7 +221,7 @@ const Yulup = {
             }
 
             // prepare parameters for pick-up
-            instanceID = gInstancesManager.addInstance(yulupTab, aEditorParameters, aTriggerURI, sessionHistoryList);
+            instanceID = this.instancesManager.addInstance(yulupTab, aEditorParameters, aTriggerURI, sessionHistoryList);
 
             // construct target URI
             targetURI = YULUP_EDITOR_CHROME_URI + "?" + instanceID;
@@ -244,7 +242,7 @@ const Yulup = {
 
             // clean up
             if (instanceID)
-                gInstancesManager.removeInstance(instanceID);
+                this.instancesManager.removeInstance(instanceID);
 
             return;
         }
