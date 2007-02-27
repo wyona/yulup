@@ -28,7 +28,6 @@
 
 const EDITOR_WINDOW_TITLE           = "Yulup Editor";
 const YULUP_EDITOR_CHROME_URI       = "chrome://yulup/content/editor/editor.xul";
-const YULUP_CONFIRMCLOSE_CHROME_URI = "chrome://yulup/content/editor/confirmclose.xul";
 const YULUP_REPLACE_CHROME_URI      = "chrome://yulup/content/editor/findreplace/findreplacedialog.xul";
 const YULUP_FAVICON_CHROME_URI      = "chrome://yulup/skin/icons/yulup-logo.png";
 
@@ -167,23 +166,6 @@ var Editor = {
 
             aEvent.QueryInterface(Components.interfaces.nsIDOMBeforeUnloadEvent);
             aEvent.returnValue = Editor.getStringbundleString("editorCloseConfirmation2.label");
-
-            /*
-            returnObject    = new Object();
-            applicableItems = new Array();
-
-            if (gEditorController.document instanceof NeutronDocument) {
-                applicableItems.push("savecms");
-                applicableItems.push("checkincms");
-            }
-
-            if (window.openDialog(YULUP_CONFIRMCLOSE_CHROME_URI, "yulupEditorConfirmCloseDialog", "modal,resizable=no", returnObject, applicableItems)) {
-                if (returnObject.returnValue) {
-                    // user selected save
-                    Editor.saveDispatcher(returnObject.returnValue);
-                }
-            }
-            */
         }
 
         return true;
