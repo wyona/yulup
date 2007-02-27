@@ -146,7 +146,7 @@ const Yulup = {
         this.installWebProgressListener(self.getBrowser());
 
 
-        buildNewMenu(YulupNeutronArchiveRegistry.getAvailableTemplates(), this.yulupOperationNewFromTemplateLocalMenupopup, this.yulupOperationNewFromTemplateLocalMenu, "yulupCreateNew");
+        YulupMenuBuilder.buildNewMenu(YulupNeutronArchiveRegistry.getAvailableTemplates(), this.yulupOperationNewFromTemplateLocalMenupopup, this.yulupOperationNewFromTemplateLocalMenu, "Yulup.yulupCreateNew");
 
 
         /* Call the introspection detector since we may have missed a STATE_STOP
@@ -774,8 +774,8 @@ const Yulup = {
                 this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("label", this.yulupEditMenuCheckoutNoLockMenuitemLabel);
 
                 if (gCurrentNeutronIntrospection) {
-                    this.buildFragmentsMenu(gCurrentNeutronIntrospection.queryOpenFragments(), this.yulupEditMenuCheckoutNoLockMenuitem, this.yulupEditMenuCheckoutNoLockMenu, this.yulupEditMenuCheckoutNoLockMenupopup, "yulupCheckoutNoLockFromCMS");
-                    this.buildFragmentsMenu(gCurrentNeutronIntrospection.queryCheckoutFragments(), this.yulupEditMenuCheckoutMenuitem, this.yulupEditMenuCheckoutMenu, this.yulupEditMenuCheckoutMenupopup, "yulupCheckoutFromCMS");
+                    this.buildFragmentsMenu(gCurrentNeutronIntrospection.queryOpenFragments(), this.yulupEditMenuCheckoutNoLockMenuitem, this.yulupEditMenuCheckoutNoLockMenu, this.yulupEditMenuCheckoutNoLockMenupopup, "Yulup.yulupCheckoutNoLockFromCMS");
+                    this.buildFragmentsMenu(gCurrentNeutronIntrospection.queryCheckoutFragments(), this.yulupEditMenuCheckoutMenuitem, this.yulupEditMenuCheckoutMenu, this.yulupEditMenuCheckoutMenupopup, "Yulup.yulupCheckoutFromCMS");
                 }
 
                 if (this.currentAPPIntrospection) {

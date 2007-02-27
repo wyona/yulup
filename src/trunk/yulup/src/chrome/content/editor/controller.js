@@ -48,7 +48,7 @@ function YulupEditController(aParameterObject) {
         this.editorParams    = aParameterObject.parameters;
         this.archiveRegistry = aParameterObject.archiveRegistry;
 
-        buildNewMenu(this.archiveRegistry.getAvailableTemplates(), document.getElementById("uiYulupOperationNewFromTemplateLocalMenupopup"), document.getElementById("uiYulupOperationNewFromTemplateLocalMenu"), "Editor.createNew");
+        YulupMenuBuilder.buildNewMenu(this.archiveRegistry.getAvailableTemplates(), document.getElementById("uiYulupOperationNewFromTemplateLocalMenupopup"), document.getElementById("uiYulupOperationNewFromTemplateLocalMenu"), "Editor.createNew");
 
         switch (this.editorParams.type) {
             case "NeutronEditorParameters":
