@@ -95,7 +95,7 @@ var NeutronAuth = {
 
         try {
             if (aResponseStatusCode == 200) {
-                Authentication.addRealmToYulupMenu(aContext.realm, aContext.logoutURI);
+                gMainBrowserWindow.yulup.addRealmToYulupMenu(aContext.realm, aContext.logoutURI);
 
                 // success, we are authenticated, restart initial request
                 NetworkService.performHTTPRequest(aContext.request);

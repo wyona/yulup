@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -23,6 +23,7 @@
 
 /**
  * @author Gregor Imboden
+ * @author Andreas Wuest
  *
  */
 
@@ -31,10 +32,9 @@ const YULUP_AUTHENTICATION_CHROME_URI = "chrome://yulup/content/authenticationdi
 const AUTHENTICATION_PASSWORD_FIELD_IDENTIFIER = "password";
 const AUTHENTICATION_FORM_HISTORY_ID           = "yulup";
 
-var gAuthException = null;
-var gResponseFlag  = null;
+const Authentication = {
+    __authException: null,
 
-var Authentication = {
     uiYulupEditorAuthenticationOnDialogLoadHandler: function () {
         var authException         = null;
         var uiAuthenticationLabel = null;
@@ -42,20 +42,20 @@ var Authentication = {
         var elem                  = null;
         var field                 = null;
 
-        gAuthException = window.arguments[1];
+        Authentication.__authException = window.arguments[1];
 
-        /* DEBUG */ dump("Yulup:authentication.js:Authentication.uiYulupEditorAuthenticationOnDialogLoadHandler() invoked: " + gAuthException + "\n");
+        /* DEBUG */ dump("Yulup:authentication.js:Authentication.uiYulupEditorAuthenticationOnDialogLoadHandler() invoked: " + Authentication.__authException + "\n");
 
         uiAuthenticationLabel = document.getElementById('uiYulupEditorAuthenticationLabel');
 
-        if (gAuthException.infoMessage) {
-            uiAuthenticationLabel.setAttribute("value", gAuthException.infoMessage);
+        if (Authentication.__authException.infoMessage) {
+            uiAuthenticationLabel.setAttribute("value", Authentication.__authException.infoMessage);
         }
 
         uiAuthenticationRows = document.getElementById('uiYulupEditorAuthenticationRows');
 
         // extend authenticationdialog.xul with the fields from the exception
-        for (field in gAuthException.params) {
+        for (field in Authentication.__authException.params) {
             elem = document.createElement("row");
             elem.setAttribute("id", "row" + field);
             elem.setAttribute("align", "center");
@@ -63,11 +63,12 @@ var Authentication = {
 
             elem = document.createElement("label");
             elem.setAttribute("control", field);
-            elem.setAttribute("value", gAuthException.params[field]);
+            elem.setAttribute("value", Authentication.__authException.params[field]);
             elem.setAttribute("flex", "1");
             document.getElementById("row" + field).appendChild(elem);
 
             elem = document.createElement("textbox");
+
             if (field.toLowerCase().indexOf(AUTHENTICATION_PASSWORD_FIELD_IDENTIFIER) > -1) {
                 elem.setAttribute("type", "password");
             } else {
@@ -79,6 +80,7 @@ var Authentication = {
                 elem.setAttribute("forcecomplete", "true");
                 elem.setAttribute("onchange", "Authentication.addToFormHistory('"+field+"')");
             }
+
             elem.setAttribute("id", field);
             elem.setAttribute("size", "30");
             elem.setAttribute("flex", "2")
@@ -119,7 +121,7 @@ var Authentication = {
         returnObject.returnValue = new Array();
 
         /* DEBUG */ dump("Yulup:authentication.js:Authentication.save: returnObject.returnValue:\n" );
-        for (field in gAuthException.params) {
+        for (field in Authentication.__authException.params) {
             returnObject.returnValue[field] = document.getElementById(field).value;
             /* DEBUG */ dump(field + " " + returnObject.returnValue[field] + "\n");
         }
@@ -159,27 +161,30 @@ var Authentication = {
     * Invoke the Logout URI
     *
     * @param {String}            aURI         URI for the logout action
-    * @param {String}            aRealm       Realm on the server
+    * @param {String}            aRealm       the realm on the server
+    * @param {Yulup}             aYulup       the Yulup object
     * @param {nsIDOMXULDocument} aXULDocument the XUL document which contains the Yulup menu
     */
-    authenticationLogout: function (aURI, aRealm, aXULDocument) {
+    authenticationLogout: function (aURI, aRealm, aYulup, aXULDocument) {
         var context = null;
 
         /* DEBUG */ dump("Yulup:authentication.js:Authentication.authenticationLogout() invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aURI         != null);
         /* DEBUG */ YulupDebug.ASSERT(aRealm       != null);
+        /* DEBUG */ YulupDebug.ASSERT(aYulup       != null);
         /* DEBUG */ YulupDebug.ASSERT(aXULDocument != null);
 
         /* DEBUG */ dump("Yulup:authentication.js:Authentication.authenticationLogout: logoutUrl = \"" + aURI + "\"\n");
 
-        context = { realm: aRealm, document: aXULDocument };
+        context = { realm: aRealm, yulup: aYulup, document: aXULDocument };
 
         try {
             NetworkService.httpRequestGET(aURI, null, Authentication.__logoutFinished, context, false, false);
         } catch (exception) {
             // TODO: fix yanel or introduce sort of relative URI resolving
             YulupDebug.dumpExceptionToConsole("Yulup:authentication.js:Authentication.authenticationLogout()", exception);
+            // TODO: don't show an alert!
             alert("Yulup:authentication.js:Authentication.authenticationLogout():\n" + exception.message);
         }
 
@@ -191,66 +196,18 @@ var Authentication = {
         /* DEBUG */ YulupDebug.ASSERT(aResponseStatusCode                                           != null);
         /* DEBUG */ YulupDebug.ASSERT(aContext                                                      != null);
         /* DEBUG */ YulupDebug.ASSERT(aContext.realm                                                != null);
+        /* DEBUG */ YulupDebug.ASSERT(aContext.yulup                                                != null);
         /* DEBUG */ YulupDebug.ASSERT(aContext.document                                             != null);
-        /* DEBUG */ YulupDebug.ASSERT(aContext.document.getElementById("uiYulupAuthStringbundle") != null);
+        /* DEBUG */ YulupDebug.ASSERT(aContext.document.getElementById("uiYulupAuthStringbundle")   != null);
+
+        // TODO: load stringbundle (lazily) dynamically
 
         if (aResponseStatusCode && aResponseStatusCode == 200) {
             alert(aContext.document.getElementById("uiYulupAuthStringbundle").getString("yulupLogoutSuccess.label") + " \"" + aContext.realm + "\".");
 
-            Authentication.removeRealmFromYulupMenu(aContext.realm, aContext.document);
+            aContext.yulup.removeRealmFromYulupMenu(aContext.realm);
         } else if (aResponseStatusCode) {
             alert(aContext.document.getElementById("uiYulupAuthStringbundle").getString("yulupLogoutFailed.label") + " \""+ aContext.realm + "\".");
         }
-    },
-
-    // move realm menuitem addition code into yulup.js (or, ultimately, into a binding)
-    addRealmToYulupMenu: function (aRealm, aLogoutURI) {
-        var uiYulupEditRealm = null;
-
-        /* DEBUG */ YulupDebug.ASSERT(aRealm             != null);
-        /* DEBUG */ YulupDebug.ASSERT(aLogoutURI         != null);
-        /* DEBUG */ YulupDebug.ASSERT(gMainBrowserWindow != null);
-
-        // add realm to yulup menu
-        uiYulupEditRealm = gMainBrowserWindow.yulup.yulupDocument.getElementById("uiYulupEditRealm" + aRealm +"Menuitem");
-
-        // check if such a menu item already exists
-        if (!uiYulupEditRealm) {
-            elem = gMainBrowserWindow.yulup.yulupDocument.createElement("menuitem");
-            elem.setAttribute("id", "uiYulupEditRealm" + aRealm +"Menuitem");
-            elem.setAttribute("label", gMainBrowserWindow.yulup.yulupDocument.getElementById("uiYulupOverlayStringbundle").getString("editToolbarbuttonLogoutFrom.label") + " \"" + aRealm + "\"");
-            elem.setAttribute("tooltiptext", gMainBrowserWindow.yulup.yulupDocument.getElementById("uiYulupOverlayStringbundle").getString("editToolbarbuttonLogoutFrom.tooltip"));
-            elem.setAttribute("oncommand", "Authentication.authenticationLogout('" + aLogoutURI + "','" + aRealm + "', document)");
-
-            // go to the extras separator
-            insertTargetElem = gMainBrowserWindow.yulup.yulupEditMenuExtrasSeparator;
-
-            /* If the left sibling of our insert target is the realm separator, we are the
-             * only logout item, and therefore we have to unhide the separator. */
-            if (insertTargetElem.previousSibling == gMainBrowserWindow.yulup.yulupEditMenuRealmSeparator) {
-                gMainBrowserWindow.yulup.yulupEditMenuRealmSeparator.removeAttribute("hidden");
-            }
-
-            gMainBrowserWindow.yulup.uiYulupEditMenupopup.insertBefore(elem, insertTargetElem);
-        }
-    },
-
-    // move realm menuitem removal code into yulup.js (or, ultimately, into a binding)
-    removeRealmFromYulupMenu: function (aRealm, aXULDocument) {
-        var uiYulupEditRealm          = null;
-        var uiYulupEditRealmSeparator = null;
-
-        /* DEBUG */ YulupDebug.ASSERT(aRealm       != null);
-        /* DEBUG */ YulupDebug.ASSERT(aXULDocument != null);
-
-        uiYulupEditRealm          = aXULDocument.getElementById("uiYulupEditRealm" + aRealm + "Menuitem");
-        uiYulupEditRealmSeparator = aXULDocument.getElementById("uiYulupRealmSeparator");
-
-        // remove realm menuitem from yulup.xul
-        uiYulupEditRealm.parentNode.removeChild(uiYulupEditRealm);
-
-        // if there are no more logout entries, hide the realm separator
-        if (uiYulupEditRealmSeparator.nextSibling == aXULDocument.getElementById("uiYulupExtrasSeparator"))
-            uiYulupEditRealmSeparator.setAttribute("hidden", "true");
     }
 };

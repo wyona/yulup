@@ -486,6 +486,63 @@ const Yulup = {
         self.getBrowser().selectedBrowser.loadURI(YULUP_WEB_SITE_URI, null, null);
     },
 
+    authenticationLogout: function (aLogoutURI, aRealm) {
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.authenticationLogout() invoked\n");
+
+        Authentication.authenticationLogout(aLogoutURI, aRealm, this, document);
+    },
+
+    addRealmToYulupMenu: function (aRealm, aLogoutURI) {
+        var uiYulupEditRealm = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aRealm     != null);
+        /* DEBUG */ YulupDebug.ASSERT(aLogoutURI != null);
+
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.addRealmToYulupMenu() invoked\n");
+
+        // add realm to yulup menu
+        uiYulupEditRealm = document.getElementById("uiYulupEditRealm" + aRealm + "Menuitem");
+
+        // check if such a menu item already exists
+        if (!uiYulupEditRealm) {
+            elem = document.createElement("menuitem");
+            elem.setAttribute("id", "uiYulupEditRealm" + aRealm + "Menuitem");
+            elem.setAttribute("label", document.getElementById("uiYulupOverlayStringbundle").getString("editToolbarbuttonLogoutFrom.label") + " \"" + aRealm + "\"");
+            elem.setAttribute("tooltiptext", document.getElementById("uiYulupOverlayStringbundle").getString("editToolbarbuttonLogoutFrom.tooltip"));
+            elem.setAttribute("oncommand", "Yulup.authenticationLogout('" + aLogoutURI + "','" + aRealm + "')");
+
+            // go to the extras separator
+            insertTargetElem = this.yulupEditMenuExtrasSeparator;
+
+            /* If the left sibling of our insert target is the realm separator, we are the
+             * only logout item, and therefore we have to unhide the separator. */
+            if (insertTargetElem.previousSibling == this.yulupEditMenuRealmSeparator) {
+                this.yulupEditMenuRealmSeparator.removeAttribute("hidden");
+            }
+
+            this.uiYulupEditMenupopup.insertBefore(elem, insertTargetElem);
+        }
+    },
+
+    removeRealmFromYulupMenu: function (aRealm) {
+        var uiYulupEditRealm          = null;
+        var uiYulupEditRealmSeparator = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aRealm != null);
+
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.removeRealmFromYulupMenu() invoked\n");
+
+        uiYulupEditRealm          = document.getElementById("uiYulupEditRealm" + aRealm + "Menuitem");
+        uiYulupEditRealmSeparator = document.getElementById("uiYulupRealmSeparator");
+
+        // remove realm menuitem from yulup.xul
+        uiYulupEditRealm.parentNode.removeChild(uiYulupEditRealm);
+
+        // if there are no more logout entries, hide the realm separator
+        if (uiYulupEditRealmSeparator.nextSibling == document.getElementById("uiYulupExtrasSeparator"))
+            uiYulupEditRealmSeparator.setAttribute("hidden", "true");
+    },
+
     /**
      * Walk through a DOM tree on the sibling axes until a DOM node
      * named aNodeName is found.
