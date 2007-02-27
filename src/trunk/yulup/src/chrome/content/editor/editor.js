@@ -32,9 +32,8 @@ const YULUP_CONFIRMCLOSE_CHROME_URI = "chrome://yulup/content/editor/confirmclos
 const YULUP_REPLACE_CHROME_URI      = "chrome://yulup/content/editor/findreplace/findreplacedialog.xul";
 const YULUP_FAVICON_CHROME_URI      = "chrome://yulup/skin/icons/yulup-logo.png";
 
-var gMainBrowserWindow  = null;
-var gTriggerURI         = null;
-var gControlledShutdown = false;
+var gMainBrowserWindow = null;
+var gTriggerURI        = null;
 
 var Editor = {
     __editorTab           : null,
@@ -42,6 +41,7 @@ var Editor = {
     __replaceWindow       : null,
     __windowList          : [],
     __callerSessionHistory: null,
+    __controlledShutdown  : false,
 
 
     /**
@@ -160,7 +160,7 @@ var Editor = {
          * a controlled shutdown, i.e. neither an "open" or "new"
          * method has been called, and the user was not yet asked
          * for confirmation. */
-        if (gEditorController && gEditorController.initialised && gEditorController.model.isDirty() && !gControlledShutdown && gEditorController.editStateController.isCurrentState(gEditorController.editStateController.STATE_SUPERIOR_DOCUMENTOK)) {
+        if (gEditorController && gEditorController.initialised && gEditorController.model.isDirty() && !Editor.__controlledShutdown && gEditorController.editStateController.isCurrentState(gEditorController.editStateController.STATE_SUPERIOR_DOCUMENTOK)) {
             /* DEBUG */ dump("Yulup:editor.js:Editor.onBeforeUnloadListener: not a controlled shutdown\n");
 
             aEvent.QueryInterface(Components.interfaces.nsIDOMBeforeUnloadEvent);
@@ -233,7 +233,7 @@ var Editor = {
         /* DEBUG */ dump("Yulup:editor.js:Editor.replaceEditor(\"" + aEditorParameters + "\") invoked\n");
 
         // we reached this method with consent by the user
-        gControlledShutdown = true;
+        Editor.__controlledShutdown = true;
 
         try {
             // prepare parameters for pick-up
