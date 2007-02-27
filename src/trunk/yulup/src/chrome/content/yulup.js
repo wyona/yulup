@@ -37,8 +37,7 @@ const YULUP_WEB_SITE_URI           = "http://www.yulup.org/";
 const INTROSPECTION_TYPE_NEUTRON = 0;
 const INTROSPECTION_TYPE_APP     = 1;
 
-var gMainBrowserWindow           = null;
-var gCurrentNeutronIntrospection = null;
+var gMainBrowserWindow = null;
 
 /* Registers our init code to be run (see
  * http://developer.mozilla.org/en/docs/Extension_FAQ#Why_doesn.27t_my_script_run_properly.3F) */
@@ -49,7 +48,12 @@ function initYulup() {
 }
 
 const Yulup = {
-    __currentNeutronIntrospection              : null,
+    currentNeutronIntrospection: null,
+    currentAPPIntrospection    : null,
+    instancesManager           : null,
+    activeWebProgressListener  : null,
+    currentState               : null,
+
     yulupEditMenu                              : null,
     yulupEditMenuEditMenuitem                  : null,
     yulupEditMenuCheckoutMenuitem              : null,
@@ -64,18 +68,6 @@ const Yulup = {
     yulupOperationNewFromTemplateLocalMenu     : null,
     yulupOperationNewFromTemplateLocalMenupopup: null,
     yulupOpenAtomSidebarObserver               : null,
-    instancesManager                           : null,
-    activeWebProgressListener                  : null,
-    currentState                               : null,
-
-    get currentNeutronIntrospection() {
-        return this.__currentNeutronIntrospection;
-    },
-
-    set currentNeutronIntrospection(aValue) {
-        this.__currentNeutronIntrospection = aValue;
-        gCurrentNeutronIntrospection       = aValue;
-    },
 
     /**
      * Event handler for setting up Yulup for the active browser window.
@@ -373,10 +365,10 @@ const Yulup = {
 
         /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCheckoutNoLockFromCMS(\"" + aFragment + "\") invoked\n");
 
-        if (gCurrentNeutronIntrospection) {
-            editorParameters = new NeutronEditorParameters(gCurrentNeutronIntrospection.queryFragmentOpenURI(aFragment), gCurrentNeutronIntrospection, aFragment, "open");
+        if (this.currentNeutronIntrospection) {
+            editorParameters = new NeutronEditorParameters(this.currentNeutronIntrospection.queryFragmentOpenURI(aFragment), this.currentNeutronIntrospection, aFragment, "open");
 
-            this.yulupCreateNewEditor(editorParameters,  (gCurrentNeutronIntrospection.associatedWithURI ? gCurrentNeutronIntrospection.associatedWithURI.spec : null));
+            this.yulupCreateNewEditor(editorParameters, (this.currentNeutronIntrospection.associatedWithURI ? this.currentNeutronIntrospection.associatedWithURI.spec : null));
         } else {
             /* We should never have no introspection object when
              * we reach this function. */
@@ -395,10 +387,10 @@ const Yulup = {
 
         /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCheckoutFromCMS(\"" + aFragment + "\") invoked\n");
 
-        if (gCurrentNeutronIntrospection) {
-            editorParameters = new NeutronEditorParameters(gCurrentNeutronIntrospection.queryFragmentCheckoutURI(aFragment), gCurrentNeutronIntrospection, aFragment, "checkout");
+        if (this.currentNeutronIntrospection) {
+            editorParameters = new NeutronEditorParameters(this.currentNeutronIntrospection.queryFragmentCheckoutURI(aFragment), this.currentNeutronIntrospection, aFragment, "checkout");
 
-            this.yulupCreateNewEditor(editorParameters, (gCurrentNeutronIntrospection.associatedWithURI ? gCurrentNeutronIntrospection.associatedWithURI.spec : null));
+            this.yulupCreateNewEditor(editorParameters, (this.currentNeutronIntrospection.associatedWithURI ? this.currentNeutronIntrospection.associatedWithURI.spec : null));
         } else {
             /* We should never have no introspection object when
              * we reach this function. */
@@ -411,11 +403,11 @@ const Yulup = {
         var ioService       = null;
 
         // check for sitetree URI
-        if (gCurrentNeutronIntrospection                            &&
-            gCurrentNeutronIntrospection.queryNavigation()          &&
-            gCurrentNeutronIntrospection.queryNavigation().sitetree &&
-            gCurrentNeutronIntrospection.queryNavigation().sitetree.uri) {
-            sitetreeURI = gCurrentNeutronIntrospection.queryNavigation().sitetree.uri;
+        if (this.currentNeutronIntrospection                            &&
+            this.currentNeutronIntrospection.queryNavigation()          &&
+            this.currentNeutronIntrospection.queryNavigation().sitetree &&
+            this.currentNeutronIntrospection.queryNavigation().sitetree.uri) {
+            sitetreeURI = this.currentNeutronIntrospection.queryNavigation().sitetree.uri;
         } else {
             // query for server address
             serverURIString = ServerURIPrompt.showServerURIDialog();
@@ -555,9 +547,9 @@ const Yulup = {
 
         /* DEBUG */ dump("Yulup:yulup.js:Yulup.introspectionDetector() invoked\n");
 
-        gCurrentNeutronIntrospection = null;
-        this.currentAPPIntrospection = null;
-        introspectionLinks           = new Array();
+        this.currentNeutronIntrospection = null;
+        this.currentAPPIntrospection     = null;
+        introspectionLinks               = new Array();
 
         /* Get the current browser. We could pass this in from the web
          * progress listener, but if the user switches tabs between the
@@ -738,7 +730,7 @@ const Yulup = {
                  * nothing has to be done. (This is the regular case
                  * when you are just surfing the web.) */
                 if (this.currentState != "none") {
-                    gCurrentNeutronIntrospection = null;
+                    this.currentNeutronIntrospection = null;
 
                     // restore menu item labels
                     this.yulupEditMenuCheckoutMenuitem.setAttribute("label", this.yulupEditMenuCheckoutMenuitemLabel);
@@ -771,9 +763,9 @@ const Yulup = {
                 this.yulupEditMenuCheckoutMenuitem.setAttribute("label", this.yulupEditMenuCheckoutMenuitemLabel);
                 this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("label", this.yulupEditMenuCheckoutNoLockMenuitemLabel);
 
-                if (gCurrentNeutronIntrospection) {
-                    this.buildFragmentsMenu(gCurrentNeutronIntrospection.queryOpenFragments(), this.yulupEditMenuCheckoutNoLockMenuitem, this.yulupEditMenuCheckoutNoLockMenu, this.yulupEditMenuCheckoutNoLockMenupopup, "Yulup.yulupCheckoutNoLockFromCMS");
-                    this.buildFragmentsMenu(gCurrentNeutronIntrospection.queryCheckoutFragments(), this.yulupEditMenuCheckoutMenuitem, this.yulupEditMenuCheckoutMenu, this.yulupEditMenuCheckoutMenupopup, "Yulup.yulupCheckoutFromCMS");
+                if (this.currentNeutronIntrospection) {
+                    this.buildFragmentsMenu(this.currentNeutronIntrospection.queryOpenFragments(), this.yulupEditMenuCheckoutNoLockMenuitem, this.yulupEditMenuCheckoutNoLockMenu, this.yulupEditMenuCheckoutNoLockMenupopup, "Yulup.yulupCheckoutNoLockFromCMS");
+                    this.buildFragmentsMenu(this.currentNeutronIntrospection.queryCheckoutFragments(), this.yulupEditMenuCheckoutMenuitem, this.yulupEditMenuCheckoutMenu, this.yulupEditMenuCheckoutMenupopup, "Yulup.yulupCheckoutFromCMS");
                 }
 
                 if (this.currentAPPIntrospection) {
@@ -815,7 +807,7 @@ const Yulup = {
 
                 break;
             case "failed":
-                gCurrentNeutronIntrospection = null;
+                this.currentNeutronIntrospection = null;
 
                 // restore menu item labels
                 this.yulupEditMenuCheckoutMenuitem.setAttribute("label", this.yulupEditMenuCheckoutMenuitemLabel);
