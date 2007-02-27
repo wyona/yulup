@@ -2,7 +2,7 @@
 
 <!--
 # ***** BEGIN LICENSE BLOCK *****
-# Copyright 2006 Wyona AG Zurich
+# Copyright 2006-2007 Wyona AG Zurich
 #
 # This file is part of Yulup.
 #
@@ -71,7 +71,7 @@
 
     <commandset id="uiYulupMainCommandSet">
       <command id="command_yulup_newatomentry"
-               oncommand="Yulup.yulupCreateNewAtomEntry()"
+               oncommand="Yulup.createNewAtomEntry()"
                label="&fileOperationNewAtomEntryMenuitem.label;"
                tooltiptext="&fileOperationNewAtomEntryMenuitem.tooltip;"
                disabled="true"/>
@@ -93,7 +93,7 @@
                    label="&editToolbarbutton.label;">
       <menupopup id="uiYulupEditMenupopup">
         <menuitem id="uiYulupEditCheckoutNoLockMenuitem"
-                  oncommand="Yulup.yulupCheckoutNoLockFromCMS(0)"
+                  oncommand="Yulup.checkoutNoLockFromCMS(0)"
                   label="&editCheckoutNoLockMenuitem.label;" tooltiptext="&editCheckoutNoLockMenuitem.tooltip;"
                   disabled="true"/>
         <menu id="uiYulupEditCheckoutNoLockMenu"
@@ -103,7 +103,7 @@
           <menupopup id="uiYulupEditCheckoutNoLockMenupopup"/>
         </menu>
         <menuitem id="uiYulupEditCheckoutMenuitem"
-                  oncommand="Yulup.yulupCheckoutFromCMS(0)"
+                  oncommand="Yulup.checkoutFromCMS(0)"
                   label="&editCheckoutMenuitem.label;" tooltiptext="&editCheckoutMenuitem.tooltip;"
                   disabled="true"/>
         <menu id="uiYulupEditCheckoutMenu"
@@ -113,7 +113,7 @@
           <menupopup id="uiYulupEditCheckoutMenupopup"/>
         </menu>
         <menuitem id="uiYulupEditDeleteMenuitem"
-                  oncommand="Yulup.yulupDeleteFromCMS(0)"
+                  oncommand="Yulup.deleteFromCMS(0)"
                   label="&editDeleteMenuitem.label;" tooltiptext="&editDeleteMenuitem.tooltip;"
                   disabled="true"/>
         <menu id="uiYulupEditDeleteMenu"
@@ -126,14 +126,14 @@
         <menuseparator/>
 
         <menuitem id="uiYulupEditMenuitem"
-                  oncommand="Yulup.yulupCreateNewEditor(new EditorParameters(document.getElementById('content').currentURI, null, null, null, null, null, null), null)"
+                  oncommand="Yulup.createNewEditor(new EditorParameters(document.getElementById('content').currentURI, null, null, null, null, null, null), null)"
                   label="&editMenuitem.label;" tooltiptext="&editMenuitem.tooltip;"
                   disabled="false"/>
 
         <menuseparator/>
 
         <menuitem id="uiYulupUploadMenuitem"
-                  oncommand="Yulup.yulupResourceUpload()"
+                  oncommand="Yulup.uploadResource()"
                   label="&fileOperationUploadMenuitem.label;" tooltiptext="&fileOperationUploadMenuitem.tooltip;"/>
 
         <menuseparator/>
@@ -162,11 +162,11 @@
               disabled="false">
           <menupopup id="uiYulupOperationNewMenupopup">
             <menuitem id="uiYulupOperationOpenLocalMenuitem"
-                      oncommand="Yulup.yulupOpenFromFile()"
+                      oncommand="Yulup.openFromFile()"
                       label="&fileOperationOpenLocalMenuitem.label;" tooltiptext="&fileOperationOpenLocalMenuitem.tooltip;"
                       disabled="false"/>
             <menuitem id="uiYulupOperationOpenCMSMenuitem"
-                      oncommand="Yulup.yulupOpenFromCMS()"
+                      oncommand="Yulup.openFromCMS()"
                       label="&fileOperationOpenCMSMenuitem.label;" tooltiptext="&fileOperationOpenCMSMenuitem.tooltip;"
                       disabled="true"/>
           </menupopup>
@@ -182,15 +182,15 @@
 
         <menuitem id="uiYulupEditPreferencesMenuitem"
                   label="&editPreferencesMenuitem.label;" tooltiptext="&editPreferencesMenuitem.tooltip;"
-                  oncommand="Yulup.yulupOpenYulupPreferences()"/>
+                  oncommand="Yulup.openYulupPreferences()"/>
         <menuitem id="uiYulupEditHelpMenuitem"
-                  oncommand="Yulup.yulupShowHelp()"
+                  oncommand="Yulup.showHelp()"
                   label="&editHelpMenuitem.label;" tooltiptext="&editHelpMenuitem.tooltip;"/>
         <menuitem id="uiYulupEditDemoMenuitem"
-                  oncommand="Yulup.yulupShowDemoSite()"
+                  oncommand="Yulup.showDemoSite()"
                   label="&editDemoMenuitem.label;" tooltiptext="&editDemoMenuitem.tooltip;"/>
         <menuitem id="uiYulupEditAboutYulupMenuitem"
-                  oncommand="Yulup.yulupShowAboutYulup()"
+                  oncommand="Yulup.showAboutYulup()"
                   label="&editAboutYulupMenuitem.label;" tooltiptext="&editAboutYulupMenuitem.tooltip;"/>
 
         <menuseparator/>

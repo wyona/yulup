@@ -136,7 +136,7 @@ const Yulup = {
         this.installWebProgressListener(self.getBrowser());
 
 
-        YulupMenuBuilder.buildNewMenu(YulupNeutronArchiveRegistry.getAvailableTemplates(), this.yulupOperationNewFromTemplateLocalMenupopup, this.yulupOperationNewFromTemplateLocalMenu, "Yulup.yulupCreateNew");
+        YulupMenuBuilder.buildNewMenu(YulupNeutronArchiveRegistry.getAvailableTemplates(), this.yulupOperationNewFromTemplateLocalMenupopup, this.yulupOperationNewFromTemplateLocalMenu, "Yulup.createNew");
 
 
         /* Call the introspection detector since we may have missed a STATE_STOP
@@ -155,7 +155,7 @@ const Yulup = {
      * @param  {EditorParameters} aEditorParameters the editor parameters object
      * @return {Undefined} does not have a return value
      */
-    yulupCreateNewEditor: function (aEditorParameters, aTriggerURI) {
+    createNewEditor: function (aEditorParameters, aTriggerURI) {
         var openInNewTab       = null;
         var currentTab         = null;
         var yulupTab           = null;
@@ -166,7 +166,7 @@ const Yulup = {
         var targetURI          = null;
         var tabBrowser         = null;
 
-        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCreateNewEditor(\"" + aEditorParameters + "\", \"" + aTriggerURI + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.createNewEditor(\"" + aEditorParameters + "\", \"" + aTriggerURI + "\") invoked\n");
 
         try {
             // get the currently selected tab (getBrowser() (defined in browser.js) returns a reference to the Tabbrowser element)
@@ -206,8 +206,8 @@ const Yulup = {
                     sessionHistoryList.push(historyEntries.getNext());
                 }
             } catch (exception) {
-                /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCreateNewEditor: " + exception + "\n");
-                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.yulupCreateNewEditor", exception);
+                /* DEBUG */ dump("Yulup:yulup.js:Yulup.createNewEditor: " + exception + "\n");
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.createNewEditor", exception);
 
                 sessionHistoryList = null;
             }
@@ -230,7 +230,7 @@ const Yulup = {
                 window.setTimeout(function() { tabBrowser.removeTab(currentTab); }, 0);
             }
         } catch (exception) {
-            dump("Yulup:yulup.js:Yulup.yulupCreateNewEditor: failed to open new editor tab: " + exception.toString() + "\n");
+            dump("Yulup:yulup.js:Yulup.createNewEditor: failed to open new editor tab: " + exception.toString() + "\n");
 
             // clean up
             if (instanceID)
@@ -239,7 +239,7 @@ const Yulup = {
             return;
         }
 
-        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCreateNewEditor: new tab created\n");
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.createNewEditor: new tab created\n");
     },
 
     /**
@@ -249,17 +249,17 @@ const Yulup = {
      * @param  {String}  aTemplateName a template identifier
      * @return {Boolean} return true on success, false otherwise
      */
-    yulupCreateNew: function (aTemplateName) {
+    createNew: function (aTemplateName) {
         var editorParameters = null;
         var template         = null;
 
-        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCreateNew(\"" + aTemplateName + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.createNew(\"" + aTemplateName + "\") invoked\n");
 
         template = YulupNeutronArchiveRegistry.getTemplateByName(aTemplateName);
 
         if (template.mimeType == "application/atom+xml") {
             // create a new context aware atom entry
-            if (this.yulupCreateNewAtomEntry()) {
+            if (this.createNewAtomEntry()) {
                 return true;
             }
         }
@@ -267,7 +267,7 @@ const Yulup = {
         // set editor parameters according to NAR template
         editorParameters = new EditorParameters(template.uri, template.mimeType, null, null, null, null);
 
-        this.yulupCreateNewEditor(editorParameters, null);
+        this.createNewEditor(editorParameters, null);
 
         return true;
     },
@@ -279,12 +279,12 @@ const Yulup = {
      *
      * @return {Boolean} return true on success, false otherwise
      */
-    yulupCreateNewAtomEntry: function () {
+    createNewAtomEntry: function () {
         var editorParameters = null;
         var feedURI          = null;
         var template         = null;
 
-        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCreateNewAtomEntry() invoked\n");
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.createNewAtomEntry() invoked\n");
 
         // get feed URI
         if (document.getElementById("sidebar").docShell && document.getElementById("sidebar").contentDocument.getElementById("uiYulupAtomSidebarPage")) {
@@ -292,13 +292,13 @@ const Yulup = {
         }
 
         if (feedURI) {
-            /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCreateNewAtomEntry: feed URI = \"" + feedURI.spec + "\"\n");
+            /* DEBUG */ dump("Yulup:yulup.js:Yulup.createNewAtomEntry: feed URI = \"" + feedURI.spec + "\"\n");
 
             // get the first atom template
             template = YulupNeutronArchiveRegistry.getTemplatesByMimeType("application/atom+xml")[0];
 
             editorParameters = new AtomEditorParameters(template.uri, feedURI,  "application/atom+xml");
-            this.yulupCreateNewEditor(editorParameters, null);
+            this.createNewEditor(editorParameters, null);
 
             return true;
         }
@@ -312,12 +312,12 @@ const Yulup = {
      *
      * @return {Boolean} return true on success, false otherwise
      */
-    yulupOpenFromFile: function () {
+    openFromFile: function () {
         var mimeType         = null;
         var editorParameters = null;
         var documentURI      = null;
 
-        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupOpenFromFile() invoked\n");
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.openFromFile() invoked\n");
 
         if (documentURI = PersistenceService.queryOpenFileURI()) {
             // figure out MIME type from document URI
@@ -325,14 +325,14 @@ const Yulup = {
                 mimeType = Components.classes["@mozilla.org/mime;1"].getService(Components.interfaces.nsIMIMEService).getTypeFromURI(documentURI);
             } catch (exception) {
                 // could not figure out MIME type
-                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.yulupOpenFromFile", exception);
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.openFromFile", exception);
                 /* DEBUG */ Components.utils.reportError(exception);
             }
 
             editorParameters = new EditorParameters(documentURI, mimeType, null, null, null, null, null);
 
             // replace the current editor
-            this.yulupCreateNewEditor(editorParameters, null);
+            this.createNewEditor(editorParameters, null);
 
             return true;
         }
@@ -347,10 +347,10 @@ const Yulup = {
      *
      * @return {Boolean} return true on success, false otherwise
      */
-    yulupOpenFromCMS: function () {
-        /* DEBUG */ dump("Yulup:yulup.js:yulupOpenFromCMS() invoked\n");
+    openFromCMS: function () {
+        /* DEBUG */ dump("Yulup:yulup.js:openFromCMS() invoked\n");
 
-        throw new YulupEditorException("Yulup:yulup.js:Yulup.yulupOpenFromCMS: method not implemented.");
+        throw new YulupEditorException("Yulup:yulup.js:Yulup.openFromCMS: method not implemented.");
     },
 
     /**
@@ -360,15 +360,15 @@ const Yulup = {
      *
      * @return {Undefined} does not have a return value
      */
-    yulupCheckoutNoLockFromCMS: function (aFragment) {
+    checkoutNoLockFromCMS: function (aFragment) {
         var editorParameters = null;
 
-        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCheckoutNoLockFromCMS(\"" + aFragment + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.checkoutNoLockFromCMS(\"" + aFragment + "\") invoked\n");
 
         if (this.currentNeutronIntrospection) {
             editorParameters = new NeutronEditorParameters(this.currentNeutronIntrospection.queryFragmentOpenURI(aFragment), this.currentNeutronIntrospection, aFragment, "open");
 
-            this.yulupCreateNewEditor(editorParameters, (this.currentNeutronIntrospection.associatedWithURI ? this.currentNeutronIntrospection.associatedWithURI.spec : null));
+            this.createNewEditor(editorParameters, (this.currentNeutronIntrospection.associatedWithURI ? this.currentNeutronIntrospection.associatedWithURI.spec : null));
         } else {
             /* We should never have no introspection object when
              * we reach this function. */
@@ -382,22 +382,22 @@ const Yulup = {
      *
      * @return {Undefined} does not have a return value
      */
-    yulupCheckoutFromCMS: function (aFragment) {
+    checkoutFromCMS: function (aFragment) {
         var editorParameters = null;
 
-        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupCheckoutFromCMS(\"" + aFragment + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.checkoutFromCMS(\"" + aFragment + "\") invoked\n");
 
         if (this.currentNeutronIntrospection) {
             editorParameters = new NeutronEditorParameters(this.currentNeutronIntrospection.queryFragmentCheckoutURI(aFragment), this.currentNeutronIntrospection, aFragment, "checkout");
 
-            this.yulupCreateNewEditor(editorParameters, (this.currentNeutronIntrospection.associatedWithURI ? this.currentNeutronIntrospection.associatedWithURI.spec : null));
+            this.createNewEditor(editorParameters, (this.currentNeutronIntrospection.associatedWithURI ? this.currentNeutronIntrospection.associatedWithURI.spec : null));
         } else {
             /* We should never have no introspection object when
              * we reach this function. */
         }
     },
 
-    yulupResourceUpload: function () {
+    uploadResource: function () {
         var sitetreeURI     = null;
         var serverURIString = null;
         var ioService       = null;
@@ -424,8 +424,8 @@ const Yulup = {
             try {
                 sitetreeURI = ioService.newURI(serverURIString, null, null);
             } catch (exception) {
-                /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupResourceUpload: server URI \"" + serverURIString + "\" is not a valid URI: " + exception + "\n");
-                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.yulupResourceUpload", exception);
+                /* DEBUG */ dump("Yulup:yulup.js:Yulup.uploadResource: server URI \"" + serverURIString + "\" is not a valid URI: " + exception + "\n");
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.uploadResource", exception);
 
                 alert(document.getElementById("uiYulupEditorStringbundle").getString("editorURINotValidFailure.label") + ": \"" + serverURIString + "\".");
                 return false;
@@ -438,7 +438,7 @@ const Yulup = {
         return true;
     },
 
-    yulupOpenYulupPreferences: function () {
+    openYulupPreferences: function () {
         var instantApply = null;
         var features     = null;
 
@@ -457,7 +457,7 @@ const Yulup = {
      *
      * @return {Undefined} does not have a return value
      */
-    yulupShowHelp: function () {
+    showHelp: function () {
         var helpWindow = null;
 
         helpWindow = window.open("chrome://yulup/content/help/helpbrowser.xul", "yulupHelpBrowserWindow", "chrome,menubar=no,resizable=yes,centerscreen");
@@ -473,7 +473,7 @@ const Yulup = {
      *
      * @return {Undefined} does not have a return value
      */
-    yulupShowDemoSite: function () {
+    showDemoSite: function () {
         self.getBrowser().selectedBrowser.loadURI(YULUP_DEMO_SITE_URI, null, null);
     },
 
@@ -482,7 +482,7 @@ const Yulup = {
      *
      * @return {Undefined} does not have a return value
      */
-    yulupShowAboutYulup: function () {
+    showAboutYulup: function () {
         self.getBrowser().selectedBrowser.loadURI(YULUP_WEB_SITE_URI, null, null);
     },
 
@@ -497,16 +497,16 @@ const Yulup = {
      * @param  {String}           aNodeName   the name of the node to find
      * @return {nsIDOMNode}       returns the node if found, null otherwise
      */
-    yulupWalkTo: function (aTreeWalker, aNodeName) {
+    walkToElement: function (aTreeWalker, aNodeName) {
         var domElem = null;
 
-        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupWalkTo(\"" + aTreeWalker + "\", \"" + aNodeName + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.walkToElement(\"" + aTreeWalker + "\", \"" + aNodeName + "\") invoked\n");
 
         for (domElem = aTreeWalker.firstChild(); domElem != null && domElem.nodeName != aNodeName && domElem.nodeName != aNodeName.toUpperCase(); domElem = aTreeWalker.nextSibling()) {
-            /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupWalkTo: current node = \"" + domElem.nodeName + "\"\n");
+            /* DEBUG */ dump("Yulup:yulup.js:Yulup.walkToElement: current node = \"" + domElem.nodeName + "\"\n");
         }
 
-        /* DEBUG */ dump("Yulup:yulup.js:Yulup.yulupWalkTo: resulting node = \"" + (domElem ? domElem.nodeName : domElem) + "\"\n");
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.walkToElement: resulting node = \"" + (domElem ? domElem.nodeName : domElem) + "\"\n");
 
         return domElem;
     },
@@ -570,9 +570,9 @@ const Yulup = {
                  * non-XML documents (i.e. like traditional HTML documents), but represents
                  * them in all lowercase when parsing XML files, we have to test against
                  * both cases each time we look at a node name. */
-                if (this.yulupWalkTo(elemWalker, "html")) {
+                if (this.walkToElement(elemWalker, "html")) {
                     // element <html> found, find <head>
-                    if (this.yulupWalkTo(elemWalker, "head")) {
+                    if (this.walkToElement(elemWalker, "head")) {
                         // element <head> found, find <link>s
                         for (domElem = elemWalker.firstChild(); domElem; domElem = elemWalker.nextSibling()) {
                             if (domElem.nodeName == "link" || domElem.nodeName == "LINK") {
@@ -758,8 +758,8 @@ const Yulup = {
                 this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("label", this.yulupEditMenuCheckoutNoLockMenuitemLabel);
 
                 if (this.currentNeutronIntrospection) {
-                    this.buildFragmentsMenu(this.currentNeutronIntrospection.queryOpenFragments(), this.yulupEditMenuCheckoutNoLockMenuitem, this.yulupEditMenuCheckoutNoLockMenu, this.yulupEditMenuCheckoutNoLockMenupopup, "Yulup.yulupCheckoutNoLockFromCMS");
-                    this.buildFragmentsMenu(this.currentNeutronIntrospection.queryCheckoutFragments(), this.yulupEditMenuCheckoutMenuitem, this.yulupEditMenuCheckoutMenu, this.yulupEditMenuCheckoutMenupopup, "Yulup.yulupCheckoutFromCMS");
+                    this.buildFragmentsMenu(this.currentNeutronIntrospection.queryOpenFragments(), this.yulupEditMenuCheckoutNoLockMenuitem, this.yulupEditMenuCheckoutNoLockMenu, this.yulupEditMenuCheckoutNoLockMenupopup, "Yulup.checkoutNoLockFromCMS");
+                    this.buildFragmentsMenu(this.currentNeutronIntrospection.queryCheckoutFragments(), this.yulupEditMenuCheckoutMenuitem, this.yulupEditMenuCheckoutMenu, this.yulupEditMenuCheckoutMenupopup, "Yulup.checkoutFromCMS");
                 }
 
                 if (this.currentAPPIntrospection) {
@@ -843,7 +843,7 @@ const Yulup = {
         editorParameters = new AtomEditorParameters(aURI, null, "application/atom+xml", null);
 
         // replace the current editor
-        this.yulupCreateNewEditor(editorParameters, null);
+        this.createNewEditor(editorParameters, null);
 
         return true;
     },
