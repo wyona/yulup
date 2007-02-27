@@ -225,6 +225,9 @@ WidgetManager.prototype = {
 
             switch (widget.attributes["type"]) {
                 case "surround":
+                    menuItem.setAttribute("autocheck", "false");
+                    menuItem.setAttribute("type", "checkbox");
+
                     surroundMenu.appendChild(menuItem);
 
                     if (surroundMenu.parentNode.hasAttribute("disabled"))
@@ -485,15 +488,23 @@ var WidgetHandler = {
     activateCommand: function (aCommand) {
         /* DEBUG */ YulupDebug.ASSERT(aCommand != null);
 
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.activateCommand(\"" + aCommand.getAttribute("id") + "\") invoked\n");
+
         // hack to refire command update
         aCommand.removeAttribute("active");
+
+        // mark command as enabled
         aCommand.setAttribute("active", "true");
+        aCommand.setAttribute("checked", "true");
     },
 
     deactivateCommand: function (aCommand) {
         /* DEBUG */ YulupDebug.ASSERT(aCommand != null);
 
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.deactivateCommand(\"" + aCommand.getAttribute("id") + "\") invoked\n");
+
         aCommand.removeAttribute("active");
+        aCommand.setAttribute("checked", "false");
     },
 
     updateCommandActiveStates: function (aWidgetCommandList, aSelection) {
@@ -511,6 +522,8 @@ var WidgetHandler = {
             /* Add all element names on the path from the current selection anchor
              * to the element names map. */
             node = aSelection.anchorNode;
+
+            /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.updateCommandActiveStates: current anchor node = \"" + (node ? node.nodeName : node) + "\"\n");
 
             while (node) {
                 if (node.localName)
