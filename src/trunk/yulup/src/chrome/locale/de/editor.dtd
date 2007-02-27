@@ -9,6 +9,8 @@
 <!ENTITY editOperationRedo.label "Wiederherstellen">
 <!ENTITY editOperationUndo.label "Rückgängig">
 <!ENTITY editOperationSelectAll.label "Alles auswählen">
+<!ENTITY editOperationSelectContents.label "Inhalt auswählen">
+<!ENTITY editOperationSelectContents.tooltip "Ganzer inhalt des aktuellen Elements auswählen">
 <!ENTITY editOperationDelete.label "Löschen">
 <!ENTITY editOperationFind.label "Suchen">
 <!ENTITY editOperationFindReplace.label "Ersetzen">

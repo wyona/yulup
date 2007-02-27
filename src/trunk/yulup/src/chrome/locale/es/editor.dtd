@@ -9,6 +9,8 @@
 <!ENTITY editOperationRedo.label "Rehacer">
 <!ENTITY editOperationUndo.label "Deshacer">
 <!ENTITY editOperationSelectAll.label "Select All">
+<!ENTITY editOperationSelectContents.label "Select Contents">
+<!ENTITY editOperationSelectContents.tooltip "Select all contents of the current element">
 <!ENTITY editOperationDelete.label "Delete">
 <!ENTITY editOperationFind.label "Buscar">
 <!ENTITY editOperationFindReplace.label "Reemplazar">

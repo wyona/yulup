@@ -66,6 +66,16 @@
     <name xml:lang="de">Alles auswählen</name>
   </entity>
 
+  <entity id="editOperationSelectContents.label">
+    <name xml:lang="en">Select Contents</name>
+    <name xml:lang="de">Inhalt auswählen</name>
+  </entity>
+
+  <entity id="editOperationSelectContents.tooltip">
+    <name xml:lang="en">Select all contents of the current element</name>
+    <name xml:lang="de">Ganzer inhalt des aktuellen Elements auswählen</name>
+  </entity>
+
   <entity id="editOperationDelete.label">
     <name xml:lang="en">Delete</name>
     <name xml:lang="de">Löschen</name>

@@ -113,6 +113,8 @@
              label="&editOperationDelete.label;"    tooltiptext="&editOperationDelete.tooltip;"/>
     <command id="cmd_selectAll" oncommand="Editor.goDoCommand('cmd_selectAll')" disabled="false"
              label="&editOperationSelectAll.label;" tooltiptext="&editOperationSelectAll.tooltip;"/>
+    <command id="cmd_yulup_selectContents" oncommand="Editor.goDoCommand('cmd_yulup_selectContents')" disabled="false"
+             label="&editOperationSelectContents.label;" tooltiptext="&editOperationSelectContents.tooltip;"/>
   </commandset>
 
   <commandset id="uiYulupEditorFileOperationsSaveCommandset">
@@ -139,7 +141,7 @@
   </commandset>
 
   <commandset id="uiYulupEditorModificationCommandset">
-    <command id="cmd_yulup_editattributes" oncommand="Editor.editAttributes()"
+    <command id="cmd_yulup_editattributes" oncommand="Editor.goDoCommand('cmd_yulup_editattributes')"
              label="&editOperationEditAttributes.label;" tooltiptext="&editOperationEditAttributes.tooltip;"/>
   </commandset>
 
@@ -196,6 +198,8 @@
       <menuseparator/>
       <menuitem id="uiYulupEditorEditorContextSelectAll"
                 command="cmd_selectAll"/>
+      <menuitem id="uiYulupEditorEditorContextSelectContents"
+                command="cmd_yulup_selectContents"/>
       <menuseparator/>
       <menuitem id="uiYulupEditorEditorContextFind"
                 command="cmd_yulup_find"/>

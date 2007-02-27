@@ -68,6 +68,36 @@
           <a xmlns="" href="http://www.yulup.org"/>
         </fragment>
       </widget>
+      <widget type="surround" name="Heading 1" description="Insert title with level 1">
+        <fragment>
+          <h1 xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Heading 2" description="Insert title with level 2">
+        <fragment>
+          <h2 xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Heading 3" description="Insert title with level 3">
+        <fragment>
+          <h3 xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Heading 4" description="Insert title with level 4">
+        <fragment>
+          <h4 xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Heading 5" description="Insert title with level 5">
+        <fragment>
+          <h5 xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Heading 6" description="Insert title with level 6">
+        <fragment>
+          <h6 xmlns=""/>
+        </fragment>
+      </widget>
       <widget type="insert" name="Image" description="Insert image" icon="icons/image.png">
         <attribute name="src" xpath="img/attribute::src" type="resource"/>
         <attribute name="alt" xpath="img/attribute::alt"/>
