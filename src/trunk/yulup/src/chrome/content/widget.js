@@ -162,24 +162,28 @@ WidgetManager.prototype = {
             widget.icon               = aWidgets[i].icon;
             widget.iconURI            = aWidgets[i].iconURI;
 
-            switch (widget.attributes["type"]) {
-                case "surround":
-                case "insert":
-                    // create the widget directory
-                    widgetDir = this.tmpDir.clone();
-                    widgetDir.append(widget.attributes["name"]);
-                    widgetDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
+            /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: widget.icon = \"" + widget.icon + "\"\n");
 
-                    // create the widget icon file
-                    iconFile = widgetDir.clone();
-                    iconFile.append(widget.icon);
-                    iconFile.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0755);
+            if (widget.icon) {
+                switch (widget.attributes["type"]) {
+                    case "surround":
+                    case "insert":
+                        // create the widget directory
+                        widgetDir = this.tmpDir.clone();
+                        widgetDir.append(widget.attributes["name"]);
+                        widgetDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
 
-                    /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: tmp icon file = \"" + iconFile.path + "\"\n");
+                        // create the widget icon file
+                        iconFile = widgetDir.clone();
+                        iconFile.append(widget.icon);
+                        iconFile.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0755);
 
-                    widget.tmpIconFile = iconFile;
-                    widget.tmpIconURI  = ioService.newFileURI(widget.tmpIconFile);
-                break;
+                        /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: tmp icon file = \"" + iconFile.path + "\"\n");
+
+                        widget.tmpIconFile = iconFile;
+                        widget.tmpIconURI  = ioService.newFileURI(widget.tmpIconFile);
+                        break;
+                }
             }
 
             this.widgets[this.widgets.length] = widget;
@@ -207,11 +211,13 @@ WidgetManager.prototype = {
             }
 
             // add toolbarbutton to editor.xul
-            widgetButton = document.createElement("canvasbutton");
-            widgetButton.setAttribute("id", "uiWidget" + widget.attributes["name"]);
-            widgetButton.setAttribute("style", "-moz-box-orient: vertical;");
-            widgetButton.setAttribute("command", "cmd_yulup_widget_" + widget.attributes["name"]);
-            toolbarButtons.appendChild(widgetButton);
+            if (widget.icon) {
+                widgetButton = document.createElement("canvasbutton");
+                widgetButton.setAttribute("id", "uiWidget" + widget.attributes["name"]);
+                widgetButton.setAttribute("style", "-moz-box-orient: vertical;");
+                widgetButton.setAttribute("command", "cmd_yulup_widget_" + widget.attributes["name"]);
+                toolbarButtons.appendChild(widgetButton);
+            }
 
             // add command to context menu
             menuItem = document.createElement("menuitem");
@@ -248,16 +254,20 @@ WidgetManager.prototype = {
         /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget(\"" + aLoadFinishedCallback + "\") invoked\n");
 
         for (var i = 0; i < this.widgets.length; i++) {
-            switch (this.widgets[i].attributes["type"]) {
-                case "surround":
-                case "insert":
-                    contextObj = {
-                        widget: this.widgets[i],
-                        callback: aLoadFinishedCallback
-                    };
+            if (this.widgets[i].icon) {
+                switch (this.widgets[i].attributes["type"]) {
+                    case "surround":
+                    case "insert":
+                        contextObj = {
+                            widget: this.widgets[i],
+                            callback: aLoadFinishedCallback
+                        };
 
-                    NetworkService.httpFetchToFile(this.widgets[i].iconURI.spec, this.widgets[i].tmpIconFile, this.requestFinishedHandler, contextObj, true);
-                break;
+                        NetworkService.httpFetchToFile(this.widgets[i].iconURI.spec, this.widgets[i].tmpIconFile, this.requestFinishedHandler, contextObj, true);
+                        break;
+                }
+            } else {
+                aLoadFinishedCallback(null, null, null);
             }
         }
     },

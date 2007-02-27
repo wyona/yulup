@@ -199,9 +199,9 @@ YulupEditController.archiveLoadFinished = function (aResultFile, aException) {
 };
 
 /**
- * Register the downloaded widget in the WidgetManager
+ * Install the widget icon in the WidgetManager
  *
- * @param  {nsIFile}   aResultFile the downloaded widget icon file
+ * @param  {nsIFile}   aResultFile the downloaded widget icon file, if available
  * @param  {Exception} aException
  * @param  {Widget}    aWidget     the widget belonging to to aResultFile
  * @return {Undefined} does not have a return value
