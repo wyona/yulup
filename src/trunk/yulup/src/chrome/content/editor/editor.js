@@ -402,7 +402,7 @@ var Editor = {
 
         // if document is XML, perform well-formedness check
         if (gEditorController.model.documentReference.isContentXML()) {
-            if (wellFormednessError = checkWellFormedness(gEditorController.model.getDocument())) {
+            if (wellFormednessError = YulupXMLServices.checkWellFormedness(gEditorController.model.getDocument())) {
                 promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
 
                 if (promptService.confirmEx(null,

@@ -107,7 +107,7 @@ var Neutron = {
             if (aDocumentData) {
                 /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspection: loading introspection file \"" + uri + "\" succeeded\n");
 
-                if ((wellFormednessError = checkWellFormedness(aDocumentData)) != null) {
+                if ((wellFormednessError = YulupXMLServices.checkWellFormedness(aDocumentData)) != null) {
                     throw new YulupException(Neutron.createWellFormednessAlertString(wellFormednessError));
                 }
 

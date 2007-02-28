@@ -112,7 +112,7 @@ var APP = {
         try {
             if (aDocumentData) {
                 // load successful
-                if ((wellFormednessError = checkWellFormedness(aDocumentData)) != null) {
+                if ((wellFormednessError = YulupXMLServices.checkWellFormedness(aDocumentData)) != null) {
                     throw new YulupException(APP.createWellFormednessAlertString(wellFormednessError));
                 }
 
