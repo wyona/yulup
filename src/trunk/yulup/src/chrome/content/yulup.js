@@ -23,6 +23,7 @@
 
 /**
  * @author Andreas Wuest
+ * @author Gregor Imboden
  *
  */
 
@@ -79,7 +80,7 @@ const Yulup = {
 
         gMainBrowserWindow = window;
 
-        initialCleanUp(NAR_TMP_DIR, WIDGET_TMP_DIR);
+        this.initialTempCleanUp(NAR_TMP_DIR, WIDGET_TMP_DIR);
 
         // initialize the template registry
         YulupNeutronArchiveRegistry.loadLocalTemplates();
@@ -146,7 +147,49 @@ const Yulup = {
         // add ourself to the window
         window.yulup = this;
 
-        /* DEBUG */ dump("Yulup:yulup.js:Yulup: initialisation completed\n");
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.initYulup: initialisation completed\n");
+    },
+
+    /**
+     * Remove all temporary directories.
+     *
+     * This method should be called when yulup is started to
+     * clean up lost widgets in case of a browser crash, kill, ...
+     * This function takes an arbitrary number of arguments whereas
+     * each argument denotes a temporary storage directory that will be
+     * cleaned.
+     *
+     * @param  {String}    aDir directory unter TmpD which contains temporary files
+     * @return {Undefined} does not have a return value
+     */
+    initialTempCleanUp: function (aDir) {
+        var tmpDir        = null;
+        var currentTmpDir = null;
+        var widgetDir     = null;
+
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.initialTempCleanUp() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aDir != null);
+
+        // get the temp directory
+        tmpDir = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("TmpD", Components.interfaces.nsIFile);
+
+        // clean up the temp directories
+        for (var i=0; i < arguments.length; i++) {
+            currentTmpDir = tmpDir.clone();
+            currentTmpDir.append(arguments[i]);
+
+            /* DEBUG */ dump("Yulup:yulup.js:Yulup.initialTempCleanUp: cleaning \"" + currentTmpDir.path + "\"\n");
+
+            try {
+                if (currentTmpDir.exists()) {
+                    currentTmpDir.remove(true);
+                }
+            } catch (exception) {
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.initialTempCleanUp", exception);
+                /* DEBUG */ Components.utils.reportError(exception);
+            }
+        }
     },
 
     /**

@@ -29,7 +29,7 @@
 
 const WIDGET_TMP_DIR = "yulup-widgets";
 
-const TIDYWIDGETFRAGMENT_CHROME_URI    = "chrome://yulup/content/tidywidgetfragment.xsl";
+const TIDYWIDGETFRAGMENT_CHROME_URI = "chrome://yulup/content/tidywidgetfragment.xsl";
 
 /**
   * Instantiates a new Object of the type Widget
@@ -561,49 +561,6 @@ var WidgetHandler = {
         WidgetHandler.updateCommandActiveStates(commandList, aView.view.selection);
     }
 };
-
-
-/**
-  * Remove all temporary directories.
-  *
-  * This method should be called when yulup is started to
-  * clean up lost widgets incase of a browser crash, kill, ...
-  * This function takes an arbitrary number of arguments whereas
-  * each argument denotes a temporary storage directory that will be
-  * cleaned.
-  *
-  * @param  {String}    aDir directory unter TmpD which contains temporary files
-  * @return {Undefined} does not have a return value
-  */
-function initialCleanUp(aDir) {
-    var tmpDir        = null;
-    var currentTmpDir = null;
-    var widgetDir     = null;
-
-    /* DEBUG */ dump("Yulup:widget.js:initialCleanUp() invoked\n");
-
-    /* DEBUG */ YulupDebug.ASSERT(aDir != null);
-
-    // get the temp directory
-    tmpDir = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("TmpD", Components.interfaces.nsIFile);
-
-    // clean up the temp directories
-    for (var i=0; i < arguments.length; i++) {
-        currentTmpDir = tmpDir.clone();
-        currentTmpDir.append(arguments[i]);
-
-        /* DEBUG */ dump("Yulup:widget.js:initialCleanUp: cleaning \"" + currentTmpDir.path + "\"\n");
-
-        try {
-            if (currentTmpDir.exists()) {
-                currentTmpDir.remove(true);
-            }
-        } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:widget.js:initialCleanUp", exception);
-            /* DEBUG */ Components.utils.reportError(exception);
-        }
-    }
-}
 
 
 function WidgetUpdateSelectionListener(aWidgetCommandList) {
