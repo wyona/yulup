@@ -1,0 +1,20 @@
+<!ENTITY annotationSidebarPage.title "Annotation Sidebar">
+<!ENTITY openYulupAnnotationSidebar.modifiers "shift accel">
+<!ENTITY openYulupAnnotationSidebar.key "J">
+<!ENTITY annotationSidebarFeedInfoGroupbox.label "Annotation Information:">
+<!ENTITY annotationSidebarFirstButton.label "First entry">
+<!ENTITY annotationSidebarPreviousButton.label "Previous entries">
+<!ENTITY annotationSidebarNextButton.label "Next entries">
+<!ENTITY annotationSidebarSearch.label "Search:">
+<!ENTITY annotationSidebarLastButton.label "Last entry">
+<!ENTITY annotationSidebarFeedEntriesGroupbox.label "Annotation Entries:">
+<!ENTITY annotationSidebarFeedEntriesTreeColumnTitle.label "Title">
+<!ENTITY annotationSidebarDescriptionNoFeed.label "This annotation is currently not available">
+<!ENTITY annotationSidebarFeedEntriesDescription.label "No annotation entrys">
+<!ENTITY annotationSidebarDescriptionLoading.label "Loading annotation...">
+<!ENTITY annotationSidebarSearch.accesskey "J">
+<!ENTITY annotationSidebarDescriptionNoContent.label "No annotations available">
+<!ENTITY annotationSidebarContentTitle.label "Title:">
+<!ENTITY annotationSidebarContentName.label "Author:">
+<!ENTITY annotationSidebarContentDate.label "Date:">
+<!ENTITY annotationSidebarContentBody.label "Annotation:">

@@ -1,0 +1,13 @@
+<!ENTITY workspaceWizard.title "Workspace Einstellungen">
+<!ENTITY workspaceLocationPageDescription.label "Workspace Ablage konfigurieren">
+<!ENTITY workspaceLocationDescription_0.label "Der Workspace wird benützt für bla bla bla.">
+<!ENTITY workspaceLocationDescription_1.label "Der Workspace wird benützt für bla bla bla.">
+<!ENTITY workspaceLocationDescription_2.label "Der Workspace wird benützt für bla bla bla.">
+<!ENTITY workspaceLocationTextboxLabel.label "Ort für Workspace auswählen">
+<!ENTITY workspaceLocationSelectorButton.label "Auswählen">
+<!ENTITY workspaceAlwaysDownloadPageDescription.label "Automatisches speichern konfigurieren">
+<!ENTITY workspaceAlwaysDownloadDescription_0.label "Dokumente, die im Editor geöffnet werden, können automatisch in den Workspace abgelegt werden. Dies ermöglicht bla bla bla.">
+<!ENTITY workspaceAlwaysDownloadDescriptionCheckbox.label "Automatisch eine lokale Kopie speichern">
+<!ENTITY workspaceConclusionDescription_0.label "Sie haben die folgenden Einstellungen vorgenommen:">
+<!ENTITY workspaceConclusionPathConfig.label "Workspace Pfad">
+<!ENTITY workspaceConclusionDownloadConfig.label "Immer speichern">

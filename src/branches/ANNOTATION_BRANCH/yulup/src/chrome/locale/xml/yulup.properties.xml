@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dtd xmlns="http://yulup.wyona.org/1.0">
+
+  <entity id="editToolbarbutton.tooltip">
+    <name xml:lang="en">Show all actions you can apply to the current document</name>
+    <name xml:lang="de">Zeige alle Aktionen die auf dem aktuellen Dokument ausgeführt werden können</name>
+    <name xml:lang="es">Mostrar todas las acciones aplicables al documento actual</name>
+  </entity>
+
+  <entity id="editToolbarbuttonLogoutFrom.label">
+    <name xml:lang="en">Logout from</name>
+    <name xml:lang="de">Abmelden von</name>
+    <name xml:lang="es">Salir de</name>
+  </entity>
+
+  <entity id="editToolbarbuttonLogoutFrom.tooltip">
+    <name xml:lang="en">Logout from a realm</name>
+    <name xml:lang="de">Von einem Realm abmelden</name>
+    <name xml:lang="es">Salir de un realm</name>
+  </entity>
+
+  <entity id="yulupDocumentUploadSuccess.label">
+    <name xml:lang="en">Document saved successfully.</name>
+    <name xml:lang="de">Das Dokument wurde erfolgreich gespeichert.</name>
+    <name xml:lang="es">Documento guardado con éxito.</name>
+  </entity>
+
+  <entity id="yulupDocumentUploadError.label">
+    <name xml:lang="en">Unable to save</name>
+    <name xml:lang="de">Das Speichern schlug fehl von</name>
+    <name xml:lang="es">No se pudo guardar</name>
+  </entity>
+
+  <entity id="yulupDocumentUploadServerError.label">
+    <name xml:lang="en">Saving document did not succeed. The server replied with the following message</name>
+    <name xml:lang="de">Das Dokument konnte nicht gespeichert werden. Der Server antwortete mit der folgenden Nachricht</name>
+    <name xml:lang="es">El documento no pudo guardarse. El servidor respondió con el siguiente mensaje</name>
+  </entity>
+
+  <entity id="yulupDocumentUploadFailure.label">
+    <name xml:lang="en">Document could not be saved.</name>
+    <name xml:lang="de">Das Dokument konnte nicht gespeichert werden.</name>
+    <name xml:lang="es">El documento no pudo guardarse.</name>
+  </entity>
+
+  <entity id="yulupIntrospectionLoadFailure.label">
+    <name xml:lang="en">Failed to load introspection.</name>
+    <name xml:lang="de">Das Laden der Introspektion ist fehlgeschlagen.</name>
+    <name xml:lang="es">La carga de la introspección fue fallida.</name>
+  </entity>
+
+  <entity id="yulupResourceUploadNoFileProvided.label">
+    <name xml:lang="en">You first have to specify the file which you want to upload.</name>
+    <name xml:lang="de">Es muss zuerst eine Datei zum Hochladen angegeben werden.</name>
+    <name xml:lang="es">Debe especificar primero el archivo que desea subir.</name>
+  </entity>
+
+  <entity id="yulupResourceUploadNoTargetResourceProvided.label">
+    <name xml:lang="en">You first have to select a target on the remote host.</name>
+    <name xml:lang="de">Es muss zuerst ein Zielverzeichnis auf dem Server angegeben werden.</name>
+    <name xml:lang="es">Debe seleccionar primero un objetivo en el servidor remoto.</name>
+  </entity>
+
+  <entity id="yulupResourceUploadNoResourceNameProvided.label">
+    <name xml:lang="en">You first have to specify the name for the uploaded resource on the remote host.</name>
+    <name xml:lang="de">Es muss zuerst eine Name für die Datei auf dem Server angegeben werden.</name>
+    <name xml:lang="es">Debe especificar primero el nombre para el recurso a subir al servidor remoto.</name>
+  </entity>
+
+  <entity id="yulupSitetreeLoadFailure.label">
+    <name xml:lang="en">The remote directory failed to load.</name>
+    <name xml:lang="de">Die Verzeichnishierarchie auf dem Server konnte nicht geladen werden.</name>
+    <name xml:lang="es">No se pudo cargar el directorio remoto.</name>
+  </entity>
+
+  <entity id="yulupResourceUploadProgressDialogTitle.label">
+    <name xml:lang="en">Uploading File</name>
+    <name xml:lang="de">Datei Hochladen</name>
+    <name xml:lang="es">Subiendo archivo</name>
+  </entity>
+
+</dtd>

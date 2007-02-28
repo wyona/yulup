@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+
+<window id="uiEditorWindow"
+        orient="horizontal"
+        align="stretch"
+        onload="initEditor()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript">
+    var gEditorElem = null;
+    var gEditor     = null;
+
+    function initEditor() {
+        dump("initEditor() invoked\n");
+        // test dynamic tab insertion
+        var editorWindow             = null;
+        var editorElem               = null;
+
+        editorElem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "editor");
+        editorElem.setAttribute("type", "content");
+        editorElem.setAttribute("flex", "1");
+        editorElem.setAttribute("style", "border: 2px solid black; margin: 2px 2px 2px 2px;");
+        editorElem.setAttribute("onload", "continueInit()");
+
+        editorWindow = document.getElementById("uiEditorWindow");
+        editorWindow.appendChild(editorElem);
+
+        gEditorElem = editorElem;
+
+        //window.setTimeout(continueInit, 100);
+    }
+
+    function continueInit(aEvent) {
+        dump("continueInit() invoked (chocked initialisation)\n");
+
+        aEvent.stopPropagation();
+
+        var editorElem = gEditorElem;
+
+        // set up
+        //editorElem = document.getElementById("uiEditor");
+        editorElem.makeEditable("text", false);
+
+        gEditor = editorElem.getEditor(editorElem.contentWindow);
+        gEditor.QueryInterface(Components.interfaces.nsIPlaintextEditor);
+
+        editorElem.contentWindow.addEventListener("keypress", function (event) { event.preventBubble(); }, true);
+
+        dump("editorElem status = \"" + editorElem.editingSession.editorStatus  + "\"\n");
+        dump("is editable = \"" + gEditor.isDocumentEditable  + "\"\n");
+    }
+
+    function addText() {
+        gEditor.insertText("Hello?");
+    }
+  </script>
+
+  <button label="Add Text" oncommand="addText()"/>
+  <!--<editor id="uiEditor" type="content" flex="1" style="border: 2px solid black; margin: 2px 2px 2px 2px;" onload="event.stopPropagation();"/>-->
+
+</window>

@@ -1,0 +1,300 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://test/skin/canvasbutton.css" type="text/css"?>
+
+<window id="uiEditorWindow"
+        orient="vertical"
+        align="stretch"
+        onload="initEditor()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript">
+    <![CDATA[
+    var gEditorElem = null;
+    var gEditor     = null;
+
+    var DOMSerialiser = {
+        /**
+         * Serialises to stdout the tree rooted at the passed node.
+         *
+         * @param  {nsIDOMNode} aNode the root of the tree to serialise
+         * @return {Undefined}  does not have a return value
+         */
+        serialiseDOMTree: function (aNode) {
+            var child = null;
+
+            DOMSerialiser.emitNodeStart(aNode);
+
+            for (child = aNode.firstChild; child != null; child = child.nextSibling) {
+                DOMSerialiser.serialiseDOMTree(child);
+            }
+
+            DOMSerialiser.emitNodeEnd(aNode);
+        },
+
+        /**
+         * Emits a textual representation of the passed DOM node.
+         *
+         * This method should be called before the subtree of the
+         * node is visited.
+         *
+         * @param  {nsIDOMNode} aNode the node to serialise
+         * @return {Undefined}  does not have a return value
+         */
+        emitNodeStart: function (aNode) {
+            switch (aNode.nodeType) {
+                case Components.interfaces.nsIDOMNode.ELEMENT_NODE:
+                    dump("<" + aNode.nodeName);
+
+                    if (aNode.hasAttributes()) {
+                        // emit the attributes
+                        for (var i = 0; i < aNode.attributes.length; i++) {
+                            if (aNode.attributes.item(i).nodeName.search("_moz") == -1 && aNode.attributes.item(i).nodeValue.search("_moz") == -1)
+                                dump(" " + aNode.attributes.item(i).nodeName + "=\"" + aNode.attributes.item(i).nodeValue + "\"");
+                        }
+                    }
+
+                    if (aNode.hasChildNodes()) {
+                        dump(">");
+                    } else {
+                        dump("/>");
+                    }
+                    break;
+                case Components.interfaces.nsIDOMNode.TEXT_NODE:
+                    dump(aNode.nodeValue);
+                    break;
+                case Components.interfaces.nsIDOMNode.PROCESSING_INSTRUCTION_NODE:
+                    dump("<?" + aNode.target + " " + aNode.data + "?>");
+                    break;
+                case Components.interfaces.nsIDOMNode.COMMENT_NODE:
+                    dump("<!--" + aNode.nodeValue + "-->");
+                    break;
+                case Components.interfaces.nsIDOMNode.DOCUMENT_NODE:
+                    // the document itself; nothing to emit here
+                    break;
+                case Components.interfaces.nsIDOMNode.DOCUMENT_TYPE_NODE:
+                    // TODO: emit notations (see http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-412266927)
+                    dump("<!DOCTYPE " + aNode.name + (aNode.publicId ? " PUBLIC \"" + aNode.publicId + "\" " : " ")  + "\"" + aNode.systemId + "\">\n");
+                    break;
+                case Components.interfaces.nsIDOMNode.DOCUMENT_FRAGMENT_NODE:
+                    // for all child nodes of the fragment, emit their trees
+                    dump("fragment: ");
+                    break;
+                default:
+                    dump("UNKNOWN node \"" + aNode.nodeName + "\" of node type \"" + aNode.nodeType + "\" encountered\n");
+            }
+        },
+
+        /**
+         * Emits a textual representation of the passed DOM node.
+         *
+         * This method should be called after the subtree of the
+         * node was visited.
+         *
+         * @param  {nsIDOMNode} aNode the node to serialise
+         * @return {Undefined}  does not have a return value
+         */
+        emitNodeEnd: function (aNode) {
+            switch (aNode.nodeType) {
+                case 1:
+                    if (aNode.hasChildNodes()) {
+                        dump("</" + aNode.nodeName + ">");
+                    }
+                    break;
+                default:
+            }
+        }
+    };
+
+    function initEditor() {
+        dump("\n\n\ninitEditor() invoked\n");
+        // test dynamic tab insertion
+        var editorWindow             = null;
+        var editorElem               = null;
+
+        editorElem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "editor");
+        editorElem.setAttribute("type", "content");
+        editorElem.setAttribute("flex", "1");
+        editorElem.setAttribute("style", "border: 2px solid black; margin: 2px 2px 2px 2px;");
+        editorElem.setAttribute("onload", "event.stopPropagation()");
+
+        editorWindow = document.getElementById("uiEditorWindow");
+        editorWindow.appendChild(editorElem);
+
+        gEditorElem = editorElem;
+
+        window.setTimeout(continueInit, 100);
+    }
+
+    function continueInit() {
+        dump("continueInit() invoked (chocked initialisation)\n");
+
+        var editorElem = gEditorElem;
+
+        // set up
+        editorElem.makeEditable("html", false);
+
+        gEditor = editorElem.getEditor(editorElem.contentWindow);
+        gEditor.QueryInterface(Components.interfaces.nsIHTMLEditor);
+        gEditor.isCSSEnabled = false;
+
+        editorElem.contentWindow.addEventListener("keypress", function (event) { event.stopPropagation(); }, true);
+
+        editorElem.contentWindow.addEventListener("focus", function (event) { dump("editorElem.contentWindow received focus\n"); }, true);
+        editorElem.addEventListener("focus", function (event) { dump("editorElem received focus\n"); }, true);
+
+        // add selection listener
+        editorElem.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new WidgetUpdateSelectionListener());
+
+        dump("editorElem status = \"" + editorElem.editingSession.editorStatus  + "\"\n");
+        dump("is editable = \"" + gEditor.isDocumentEditable  + "\"\n");
+    }
+
+    /*
+    var gCommandList = [["cmd_yulup_widget_bold",   "b"],
+                          ["cmd_yulup_widget_italic", "i"],
+                          ["cmd_yulup_widget_tt",     "tt"]];
+    */
+
+    var gCommandList = {
+        "b":"cmd_yulup_widget_bold",
+        "i": "cmd_yulup_widget_italic",
+        "tt": "cmd_yulup_widget_tt"
+    };
+
+    function WidgetUpdateSelectionListener() {}
+
+    WidgetUpdateSelectionListener.prototype = {
+        notifySelectionChanged: function (aDocument, aSelection, aReason) {
+            ///* DEBUG */ dump("Yulup:domops-test.js:WidgetUpdateSelectionListener.notifySelectionChanged() invoked\n");
+
+            updateCommandActiveStates(aSelection);
+        }
+    };
+
+    function updateCommandActiveStates(aSelection) {
+        // check all commands
+        if (aSelection.isCollapsed) {
+            for (var elem in gCommandList) {
+                if (pathToRootContains(elem, aSelection.anchorNode)) {
+                    dump("Yulup:domops-test.js:WidgetUpdateSelectionListener.notifySelectionChanged: \"" + gCommandList[elem] + "\" command active\n");
+
+                    // hack to refire command update
+                    document.getElementById(gCommandList[elem]).removeAttribute("active");
+                    document.getElementById(gCommandList[elem]).setAttribute("active", "true");
+                } else {
+                    document.getElementById(gCommandList[elem]).removeAttribute("active");
+                }
+            }
+        }
+    }
+
+    function activateCommandByElemName(aElementName) {
+        // hack to refire command update
+        document.getElementById(gCommandList[aElementName]).removeAttribute("active");
+        document.getElementById(gCommandList[aElementName]).setAttribute("active", "true");
+    }
+
+    function deactivateCommandByElemName(aElementName) {
+        document.getElementById(gCommandList[aElementName]).removeAttribute("active");
+    }
+
+    function addText() {
+        gEditor.insertHTML("<span>1234567891234<b>boldbold</b>foooo<i>italicitalic</i>1234567891234</span>");
+    }
+
+    function doUndo() {
+        dump("NOT IMPLEMENTED\n");
+    }
+
+    function doRedo() {
+        dump("NOT IMPLEMENTED\n");
+    }
+
+    function printDOMTree() {
+        dump("printDOMTree() invoked\n");
+        DOMSerialiser.serialiseDOMTree(gEditor.document);
+        dump("\n");
+    }
+
+    function doBold() {
+        dump("doBold() invoked\n");
+
+        doSurroundCmd(gEditor.selection, "b");
+    }
+
+    function doItalic() {
+        dump("doItalic() invoked\n");
+
+        doSurroundCmd(gEditor.selection, "i");
+    }
+
+    function doTT() {
+        var selection = null;
+
+        dump("doTT() invoked\n");
+
+        doSurroundCmd(gEditor.selection, "tt");
+    }
+
+    function doSurroundCmd(aSelection, aElementName) {
+        var elemAtom = null;
+        var textNode = null;
+
+        /* DEBUG */ dump("Yulup:domops-test.js:doSurroundCmd(\"" + aSelection + "\", \"" + aElementName + "\") invoked\n");
+
+        elemAtom = Components.classes["@mozilla.org/atom-service;1"].getService(Components.interfaces.nsIAtomService).getAtom(aElementName);
+
+        if (pathToRootContains(aElementName, aSelection.anchorNode)) {
+            /* DEBUG */ dump("Yulup:domops-test.js:doSurroundCmd: unsurround\n");
+            gEditor.removeInlineProperty(elemAtom, null);
+
+            deactivateCommandByElemName(aElementName);
+        } else {
+            /* DEBUG */ dump("Yulup:domops-test.js:doSurroundCmd: surround\n");
+            gEditor.setInlineProperty(elemAtom, null, null);
+
+            activateCommandByElemName(aElementName);
+        }
+    }
+
+    function pathToRootContains(aElementName, aStartNode) {
+        var elemName = null;
+        var node     = null;
+
+        ///* DEBUG */ dump("Yulup:domops-test.js:pathToRootContains(\"" + aElementName + "\", \"" + aStartNode + "\") invoked\n");
+
+        elemName = aElementName.toLowerCase();
+        node     = aStartNode;
+
+        while (node) {
+            if (node.nodeType == Components.interfaces.nsIDOMNode.ELEMENT_NODE &&
+                node.localName.toLowerCase() == elemName)
+                return node;
+
+            node = node.parentNode;
+        }
+
+        return null;
+    }
+    ]]>
+  </script>
+
+  <commandset id="uiWidgetCommandSet">
+    <command id="cmd_yulup_widget_bold"   oncommand="doBold()"/>
+    <command id="cmd_yulup_widget_italic" oncommand="doItalic()"/>
+    <command id="cmd_yulup_widget_tt"     oncommand="doTT()"/>
+  </commandset>
+
+  <toolbar id="uiToolbar">
+    <button label="Add Text" oncommand="addText()"/>
+    <button label="Print Tree" oncommand="printDOMTree()"/>
+    <canvasbutton id="uiYulupBold"   label="Bold"   command="cmd_yulup_widget_bold"   image="chrome://test/skin/bold.png"/>
+    <canvasbutton id="uiYulupItalic" label="Italic" command="cmd_yulup_widget_italic" image="chrome://test/skin/bold.png"/>
+    <canvasbutton id="uiYulupTT"     label="Mono"   command="cmd_yulup_widget_tt"     image="chrome://test/skin/bold.png"/>
+    <button id="uiYulupUndo"   label="Undo"   oncommand="doUndo()"/>
+    <button id="uiYulupRedo"   label="Redo"   oncommand="doRedo()"/>
+  </toolbar>
+
+</window>

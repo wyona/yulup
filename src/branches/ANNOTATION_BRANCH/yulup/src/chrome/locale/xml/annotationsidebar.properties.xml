@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<!--
+ * @author Florian Fricker
+ *
+ * Add multi-language support for the annotation sidebar
+ *
+-->
+
+<dtd xmlns="http://yulup.wyona.org/1.0">
+
+ <entity id="annotationSidebarFeedInformationBoxAuthor.label">
+    <name xml:lang="en">Author</name>
+    <name xml:lang="es">Autor</name>
+ </entity>
+  
+</dtd>

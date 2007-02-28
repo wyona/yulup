@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+
+<!--
+# ***** BEGIN LICENSE BLOCK *****
+# Copyright 2006 Wyona AG Zurich
+#
+# This file is part of Yulup.
+#
+# Yulup is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Yulup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Yulup; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# ***** END LICENSE BLOCK *****
+  -->
+
+<!--
+ * @author Florian Fricker
+ *
+ * This file includes the XUL code for the AnnotationDialog window.
+ * The file gets loaded by the AnnotationSidebarOverlay file.
+ *
+-->
+
+<!-- Load the css file to format the xul dialog -->
+<?xml-stylesheet href="chrome://yulup/skin/annotation.css" type="text/css"?>
+
+<!-- Load the dtd xml file for language support -->
+<!DOCTYPE dialog SYSTEM "chrome://yulup/locale/annotation.dtd">
+
+<!-- Add some listeners to the dialog -->
+<dialog id="uiYulupEditorAnnotationDialog"
+        orient="vertical"
+        align="stretch"
+        title="&annotationDialog.title;"
+        buttons="accept, cancel"
+        buttonlabelaccept="&annotationButtonName.accept;"
+        onload="Annotation.onLoadListener()"
+        ondialogcancel="return Annotation.onDialogCancelListener()"
+        ondialogaccept="return Annotation.onDialogSaveListener()"
+        persist="screenX screenY width height"
+        style="font: -moz-dialog;"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <!-- Get the annotation class to create the annotation protocol -->
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/common.js"/>
+
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/annotation.js"/>
+
+  <!-- Build the dialog for the annotation information -->
+  <vbox>
+    <grid flex="1">
+      <columns>
+        <column/>
+        <column flex="1"/>
+      </columns>
+      <rows>
+        <!-- Place a image to the dialog -->
+        <row align="center" style="margin-bottom: 15px">
+          <vbox align="center">
+            <image id="annotationImage"/>
+          </vbox>
+          <label id="uiPointerStringLabel"/>
+        </row>
+        <!-- Create the name textbox -->
+        <row align="center">
+          <label control="uiAnnotationAutorNameStringTextbox" value="&annotationAutorNameStringTextbox.label;:"/>
+          <textbox id="uiAutorNameStringTextbox"/>
+        </row>
+        <!-- Create the title textbox -->
+        <row align="center">
+          <label control="uiAnnotationTitleStringTextbox" value="&annotationTitleStringTextbox.label;:"/>
+          <textbox id="uiAnnotationTitleStringTextbox"/>
+        </row>
+        <!-- Create the body textbox -->
+        <row align="center">
+          <label control="uiAnnotationCommentStringTextbox" value="&annotationCommentStringTextbox.label;:"/>
+          <textbox multiline="true" rows="5" id="uiAnnotationCommentStringTextbox"/>
+        </row>
+      </rows>
+    </grid>
+  </vbox>
+
+</dialog>

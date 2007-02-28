@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+
+<!--
+ * @author Florian Fricker
+ *
+ * Add multi-language support for the annotation layout
+ *
+-->
+
+<dtd xmlns="http://yulup.wyona.org/1.0">
+
+<entity id="annotationDialog.title">
+	<name xml:lang="en">Annotation</name>
+	<name xml:lang="de">Annotation</name>
+</entity>
+
+<entity id="annotationPointerStringTextbox.label">
+	<name xml:lang="en">Quote</name>
+	<name xml:lang="de">Absatz</name>
+</entity>
+
+<entity id="annotationAutorNameStringTextbox.label">
+	<name xml:lang="en">Autor</name>
+	<name xml:lang="de">Autor</name>
+</entity>
+
+<entity id="annotationCommentStringTextbox.label">
+	<name xml:lang="en">Comment</name>
+	<name xml:lang="de">Kommentar</name>
+</entity>
+
+<entity id="annotationTitleStringTextbox.label">
+	<name xml:lang="en">Subject</name>
+	<name xml:lang="de">Titel</name>
+</entity>
+
+<entity id="annotationButtonName.accept">
+	<name xml:lang="en">Save</name>
+	<name xml:lang="de">Speichern</name>
+</entity>
+
+<entity id="annotationButtonName.cancle">
+	<name xml:lang="en">Cancle</name>
+	<name xml:lang="de">Abbrechen</name>
+</entity>
+
+</dtd>

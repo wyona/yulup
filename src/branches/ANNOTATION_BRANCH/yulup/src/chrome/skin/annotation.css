@@ -1,0 +1,7 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* ------------------------ Images ------------------------ */
+
+#annotationImage {
+  list-style-image: url("chrome://yulup/skin/icons/default/yulup-annotation.png");
+}

@@ -1,0 +1,18 @@
+<!ENTITY atomSidebarDescriptionNoContent.label "No hay contenido Atom disponible">
+<!ENTITY atomSidebarDescriptionNoFeed.label "Este feed no está disponible actualmente">
+<!ENTITY atomSidebarDescriptionLoading.label "Cargando feed..">
+<!ENTITY atomSidebarFeedEntriesDescription.label "Este feed no tiene entradas">
+<!ENTITY atomSidebarFeedInfoGroupbox.label "Información del feed:">
+<!ENTITY atomSidebarFeedEntriesGroupbox.label "Entradas del feed:">
+<!ENTITY atomSidebarSearch.label "Buscar:">
+<!ENTITY atomSidebarSearch.accesskey "S">
+<!ENTITY atomSidebarFeedEntriesTreeColumnTitle.label "Título">
+<!ENTITY atomSidebarFirstButton.label "Primera entrada">
+<!ENTITY atomSidebarPreviousButton.label "Entradas previas">
+<!ENTITY atomSidebarNextButton.label "Entradas siguientes">
+<!ENTITY atomSidebarLastButton.label "Última entrada">
+<!ENTITY atomSidebarFeedEntriesContextMenuEdit.label "Editar">
+<!ENTITY atomSidebarFeedEntriesContextMenuDelete.label "Eliminar">
+<!ENTITY atomSidebarPage.title "Atom Sidebar">
+<!ENTITY openYulupAtomSidebar.key "A">
+<!ENTITY openYulupAtomSidebar.modifiers "shift accel">

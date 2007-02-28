@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<!--
+# ***** BEGIN LICENSE BLOCK *****
+# Copyright 2006 Wyona AG Zurich
+#
+# This file is part of Yulup.
+#
+# Yulup is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Yulup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Yulup; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# ***** END LICENSE BLOCK *****
+-->
+
+<project default="generate-catalogs" basedir=".">
+
+    <target name="generate-catalogs" description="Generate language catalogs">
+        <!-- english -->
+        <xslt destdir="en" basedir="xml" includes="*.dtd.xml" extension="" style="xslt/xml2dtd.xsl">
+            <param name="language" expression="en"/>
+        </xslt>
+        <xslt destdir="en" basedir="xml" includes="*.properties.xml" extension="" style="xslt/xml2properties.xsl">
+            <param name="language" expression="en"/>
+        </xslt>
+        <!-- german -->
+        <xslt destdir="de" basedir="xml" includes="*.dtd.xml" extension="" style="xslt/xml2dtd.xsl">
+            <param name="language" expression="de"/>
+        </xslt>
+        <xslt destdir="de" basedir="xml" includes="*.properties.xml" extension="" style="xslt/xml2properties.xsl">
+            <param name="language" expression="de"/>
+        </xslt>
+        <!-- french -->
+        <xslt destdir="fr" basedir="xml" includes="*.dtd.xml" extension="" style="xslt/xml2dtd.xsl">
+            <param name="language" expression="fr"/>
+        </xslt>
+        <xslt destdir="fr" basedir="xml" includes="*.properties.xml" extension="" style="xslt/xml2properties.xsl">
+            <param name="language" expression="fr"/>
+        </xslt>
+        <!-- spanish -->
+        <xslt destdir="es" basedir="xml" includes="*.dtd.xml" extension="" style="xslt/xml2dtd.xsl">
+            <param name="language" expression="es"/>
+        </xslt>
+        <xslt destdir="es" basedir="xml" includes="*.properties.xml" extension="" style="xslt/xml2properties.xsl">
+            <param name="language" expression="es"/>
+        </xslt>
+        <!-- kurdish -->
+        <xslt destdir="ku" basedir="xml" includes="*.dtd.xml" extension="" style="xslt/xml2dtd.xsl">
+            <param name="language" expression="ku"/>
+        </xslt>
+        <xslt destdir="ku" basedir="xml" includes="*.properties.xml" extension="" style="xslt/xml2properties.xsl">
+            <param name="language" expression="ku"/>
+        </xslt>
+        <!-- turkish -->
+        <xslt destdir="tr" basedir="xml" includes="*.dtd.xml" extension="" style="xslt/xml2dtd.xsl">
+            <param name="language" expression="tr"/>
+        </xslt>
+        <xslt destdir="tr" basedir="xml" includes="*.properties.xml" extension="" style="xslt/xml2properties.xsl">
+            <param name="language" expression="tr"/>
+        </xslt>
+    </target>
+
+</project>

@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+
+<window id="uiEditorWindow"
+        orient="vertical"
+        align="stretch"
+        onload="initEditor()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript">
+<![CDATA[
+    var gEditorElem    = null;
+    var gEditor        = null;
+    var gCaretReadonly = false;
+
+    function initEditor() {
+        dump("######## YulupTEST:editor-test.js:initEditor() invoked\n");
+        // test dynamic tab insertion
+        var editorHbox = null;
+        var editorElem = null;
+
+        editorElem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "editor");
+        editorElem.setAttribute("type", "content");
+        editorElem.setAttribute("flex", "1");
+        editorElem.setAttribute("style", "border: 2px solid black; margin: 2px 2px 2px 2px;");
+        editorElem.setAttribute("onload", "event.stopPropagation()");
+
+        editorHbox = document.getElementById("uiEditorHbox");
+        editorHbox.appendChild(editorElem);
+
+        gEditorElem = editorElem;
+
+        window.setTimeout(continueInit, 100);
+    }
+
+    function continueInit() {
+        dump("######## YulupTEST:editor-test.js:continueInit() invoked (chocked initialisation)\n");
+
+        var editorElem          = gEditorElem;
+        var selectionController = null;
+
+        // set up
+        editorElem.makeEditable("text", false);
+
+        gEditor = editorElem.getEditor(editorElem.contentWindow);
+        gEditor.QueryInterface(Components.interfaces.nsIEditor);
+
+        gEditor.enableUndo(true);
+        gEditor.rootElement.style.fontFamily = "-moz-fixed";
+        gEditor.rootElement.style.whiteSpace = "pre";
+        gEditor.rootElement.style.margin = 0;
+
+        //gEditor.rootElement.addEventListener("keypress", function (event) { event.preventBubble(); }, true);
+
+        // add selection listener
+        editorElem.contentWindow.getSelection().QueryInterface(Components.interfaces.nsISelectionPrivate).addSelectionListener(new SourceModeModeLineListener(document.getElementById("uiFooterToolbar")));
+
+        // make the caret visible even if the current selection is not collapsed
+        selectionController = gEditor.selectionController;
+        selectionController.setCaretVisibilityDuringSelection(true);
+
+        gEditor.QueryInterface(Components.interfaces.nsIPlaintextEditor);
+
+        dump("editorElem status = \"" + editorElem.editingSession.editorStatus  + "\"\n");
+        dump("is editable = \"" + gEditor.isDocumentEditable  + "\"\n");
+    }
+
+    function SourceModeModeLineListener(aModeLine) {
+
+        this.__modeLine = aModeLine;
+    }
+
+    SourceModeModeLineListener.prototype = {
+        notifySelectionChanged: function (aDocument, aSelection, aReason) {
+            ///* DEBUG */ dump("Yulup:sourcemode-linenumber-test.js:SourceModeModeLineListener.notifySelectionChanged() invoked\n");
+
+            /* DEBUG */ dump("Yulup:sourcemode-linenumber-test.js:SourceModeModeLineListener.notifySelectionChanged: selection.focusNode = \"" + gEditor.selection.focusNode + "\"\n");
+            /* DEBUG */ dump("Yulup:sourcemode-linenumber-test.js:SourceModeModeLineListener.notifySelectionChanged: selection.focusOffset = \"" + gEditor.selection.focusOffset + "\"\n");
+            /* DEBUG */ dump("Yulup:sourcemode-linenumber-test.js:SourceModeModeLineListener.notifySelectionChanged: selection.anchorNode = \"" + gEditor.selection.anchorNode + "\"\n");
+            /* DEBUG */ dump("Yulup:sourcemode-linenumber-test.js:SourceModeModeLineListener.notifySelectionChanged: selection.anchorOffset = \"" + gEditor.selection.anchorOffset + "\"\n");
+
+            //this.__modeLine.line =
+            document.getElementById("uiFooterToolbarLineIndicator").value = "" + getLineNumber(gEditor.selection);
+            document.getElementById("uiFooterToolbarColumnIndicator").value = "" + getColumnNumber(gEditor.selection);
+        }
+    };
+
+    function getLineNumber(aSelection) {
+        var bodyNode = null;
+
+         /* DEBUG */ dump("Yulup:sourcemode-linenumber-test.js:getLineNumber(\"" + aSelection + "\") invoked\n");
+
+        // traverse the editor's body element and count the <br/> elements until the current focusNode text node is reached
+
+        return 0;
+    }
+
+    function getColumnNumber(aSelection) {
+        var bodyNode = null;
+        var node     = null;
+        var column   = 0;
+
+        /* DEBUG */ dump("Yulup:sourcemode-linenumber-test.js:getColumnNumber(\"" + aSelection + "\") invoked\n");
+
+        node = aSelection.focusNode;
+
+        // get the current selection offset of the focusNode
+        if (node.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+            /* DEBUG */ dump("Yulup:sourcemode-linenumber-test.js:getColumnNumber: focus node is NODE_TEXT\n");
+
+            column = aSelection.focusOffset;
+
+            node = node.previousSibling;
+
+            // move to the left-most sibling which is still a text node, adding all data lengths
+            while (node && node.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+                column += node.length;
+                node = node.previousSibling;
+            }
+
+            return column;
+        }
+
+        bodyNode = getEditorBody();
+        /* DEBUG */ dump("Yulup:sourcemode-linenumber-test.js:getColumnNumber: bodyNode = \"" + bodyNode + "\"\n");
+
+        if (node == bodyNode) {
+            /* DEBUG */ dump("Yulup:sourcemode-linenumber-test.js:getColumnNumber: focus node is body node\n");
+
+            node = bodyNode.childNodes.item(aSelection.focusOffset);
+
+            /* DEBUG */ dump("Yulup:sourcemode-linenumber-test.js:getColumnNumber: indirect node is = \"" + node + "\"\n");
+
+            if (!node) {
+                node = bodyNode.lastChild;
+            }
+
+            if (node)
+                node = node.previousSibling;
+
+            /* DEBUG */ dump("Yulup:sourcemode-linenumber-test.js:getColumnNumber: previous sibling node is = \"" + node + "\"\n");
+
+            if (node && node.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+                /* DEBUG */ dump("Yulup:sourcemode-linenumber-test.js:getColumnNumber: previous text node found\n");
+
+                // move to the left-most sibling which is still a text node, adding all data lengths
+                while (node && node.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+                    column += node.length;
+                    node = node.previousSibling;
+                }
+
+                return column;
+            }
+        }
+
+        return 0;
+    }
+
+    function getEditorBody() {
+        // return the body node of the editor
+
+        /* The editor's document looks like this:
+         *   #document
+         *     |- html
+         *     |- HTML
+         *          |- HEAD
+         *          |- BODY
+         *               |- #text
+         *               |- br
+         *               |- #text
+         *               ...
+         */
+
+        return gEditor.document.childNodes.item(1).childNodes.item(1);
+    }
+
+    function addText() {
+        dump("######## YulupTEST:editor-test.js:addText() invoked\n");
+
+        gEditor.insertText("Hello?");
+    }
+
+    function fillEditor() {
+        var documentString = "<html><head></head><body>Some editable text. <span>Some none-editable text.</span> Some editable text.</body>";
+
+        dump("######## YulupTEST:editor-test.js:fillEditor() invoked\n");
+
+        gEditor.selectAll();
+        gEditor.deleteSelection(0);
+        gEditor.beginningOfDocument();
+        gEditor.insertText(documentString);
+        gEditor.beginningOfDocument();
+    }
+]]>
+  </script>
+
+  <button label="Fill Editor" oncommand="fillEditor()"/>
+  <hbox id="uiEditorHbox" flex="1">
+    <button label="Add Text" oncommand="addText()"/>
+  </hbox>
+
+  <toolbar id="uiFooterToolbar"
+           class="uiEditorFooterToolBar"
+           fullscreentoolbar="true"
+           align="center">
+    <label id="uiFooterToolbarLineLabel" value="Line:"/>
+    <label id="uiFooterToolbarLineIndicator" value="" flex="1"/>
+    <label id="uiFooterToolbarColumnLabel" value="Column:"/>
+    <label id="uiFooterToolbarColumnIndicator" value="" flex="1"/>
+  </toolbar>
+
+</window>

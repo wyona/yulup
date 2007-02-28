@@ -1,0 +1,24 @@
+<!ENTITY prefWindow.title "Yulup Einstellungen">
+<!ENTITY generalPrefPane.label "Allgemein">
+<!ENTITY generalWorkspaceGroupbox.label "Workspace">
+<!ENTITY generalWorkspaceTextboxLabel.label "Ort des Workspaces auswählen">
+<!ENTITY generalWorkspaceSelectorButton.label "Auswählen">
+<!ENTITY generalWorkspaceAlwaysDownload.label "Automatisch eine lokale Kopie speichern">
+<!ENTITY generalDefaultServerGroupbox.label "Standard CMS">
+<!ENTITY generalDefaultServerTextboxLabel.label "URI des standard CMS eingeben">
+<!ENTITY generalSidebarsGroupbox.label "Sidebars">
+<!ENTITY generalSidebarsAtomAutoOpen.label "Atom Sidebar automatisch öffnen">
+<!ENTITY editorPrefPane.label "Editor">
+<!ENTITY editorKeyBindingsGroupbox.label "Tastaturkürzel">
+<!ENTITY editorKeyBindingsMenulistLabel.label "Tastaturkürzelschema auswählen">
+<!ENTITY editorKeyBindingsNone.label "Keines">
+<!ENTITY editorKeyBindingsReadline.label "Readline (Emacs)">
+<!ENTITY editorKeyBindingsUseSpacesForTabLabel.label "Leerzeichen anstatt Tab verwenden">
+<!ENTITY editorKeyBindingsNoOfSpacesLabel.label "Anzahl Leerzeichen">
+<!ENTITY editorLayoutGroupbox.label "Layout">
+<!ENTITY editorLayoutWrapToWindow.label "Text im Source Editor auf Fensterbreite umbrechen">
+<!ENTITY editorThemeGroupbox.label "Aussehen">
+<!ENTITY editorThemeMenulistLabel.label "Aussehen auswählen">
+<!ENTITY editorThemeDefaultTheme.label "Standard">
+<!ENTITY editorAppearanceOpenInNewTab.label "Editor in neuem Tab öffnen">
+<!ENTITY editorPrefChangeNote.label "Die Editoreinstellungen treten erst nach einem Neustart des Editors in Effekt.">

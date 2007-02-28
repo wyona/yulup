@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dtd xmlns="http://yulup.wyona.org/1.0">
+
+  <entity id="editorWidgetInsertSelect.label">
+    <name xml:lang="en">Select</name>
+    <name xml:lang="de">Auswählen</name>
+    <name xml:lang="es">Seleccionar</name>
+  </entity>
+
+  <entity id="editorFilePickerOpen.label">
+    <name xml:lang="en">Open File for Editing</name>
+    <name xml:lang="de">Datei zum bearbeiten öffnen</name>
+    <name xml:lang="es">Abrir archivo para edición</name>
+  </entity>
+
+  <entity id="editorFilePickerSaveAs.label">
+    <name xml:lang="en">"Save File As..."</name>
+    <name xml:lang="de">Datei speichern unter...</name>
+    <name xml:lang="es">Guardar como...</name>
+  </entity>
+
+  <entity id="editorTabSourceView.label">
+    <name xml:lang="en">Source</name>
+    <name xml:lang="de">Quelltext</name>
+    <name xml:lang="es">Fuente</name>
+  </entity>
+
+  <entity id="editorTabWYSIWYGView.label">
+    <name xml:lang="en">WYSIWYG</name>
+  </entity>
+
+  <entity id="editorCloseConfirmation.label">
+    <name xml:lang="en">The document has been changed. Really close this document?</name>
+    <name xml:lang="de">Das Dokument wurde verändert. Soll das Dokument wirklich geschlossen werden?</name>
+    <name xml:lang="es">El documento ha sido modificado. ¿Desea realmente cerrar este documento?</name>
+  </entity>
+
+  <entity id="editorCloseConfirmation2.label">
+    <name xml:lang="en">The document has unsaved changes.</name>
+    <name xml:lang="de">Das Dokument wurde verändert.</name>
+    <name xml:lang="es">El documento contiene cambios que no han sido guardados</name>
+  </entity>
+
+  <entity id="editorNeutronArchiveExtractionError.label">
+    <name xml:lang="en">An error occured while extracting the neutron archive file.</name>
+    <name xml:lang="de">Währen dem Entpacken der Neutron-Archiv Datei trat ein Fehler auf.</name>
+    <name xml:lang="es">Ocurrió un error en la extracción del fichero de archivo de neutron.</name>
+  </entity>
+
+  <entity id="editorWellFormednessDialog.label">
+    <name xml:lang="en">Do you want to save anyway?</name>
+    <name xml:lang="de">Möchten Sie trotzdem speichern?</name>
+    <name xml:lang="es">¿Desea guardar de todos modos?</name>
+  </entity>
+
+  <entity id="editorWellFormednessError0.label">
+    <name xml:lang="en">Document not well-formed</name>
+    <name xml:lang="de">Das Dokument is nicht well-formed</name>
+    <name xml:lang="es">El documento no está bien formado</name>
+  </entity>
+
+  <entity id="editorWellFormednessError1.label">
+    <name xml:lang="en">line number</name>
+    <name xml:lang="de">Zeile</name>
+    <name xml:lang="es">número de línea</name>
+  </entity>
+
+  <entity id="editorWellFormednessError2.label">
+    <name xml:lang="en">column</name>
+    <name xml:lang="de">Spalte</name>
+    <name xml:lang="es">columna</name>
+  </entity>
+
+  <entity id="editorCheckinAndExitConfirmation.label">
+    <name xml:lang="en">This operation will check the document back in to the CMS, release the lock you are currently holding on the document, and exit the editor.\nIf you do not want to exit, cancel and consider to save a temporary copy of the document.</name>
+    <name xml:lang="de">Diese Operation checkt das Dokument im CMS ein, hebt die Sperre auf, die Sie zur Zeit auf dem Dokument haben, und beendet den Editor.\nFalls Sie den Editor nicht verlassen möchten, brechen Sie ab, und sichern das Dokument z.B. in eine temporäre Kopie.</name>
+    <name xml:lang="es">Esta operación realizará un check-in del documento en el CMS, finalizará el bloqueo que mantiene actualmente sobre el documento y saldrá del editor.\nSi no desea salir, cancele y guarde los cambios en una copia temporal del documento.</name>
+  </entity>
+
+  <entity id="editorDocumentUploadSuccess.label">
+    <name xml:lang="en">Document saved successfully.</name>
+    <name xml:lang="de">Das Dokument wurde erfolgreich gespeichert.</name>
+    <name xml:lang="es">El documento se guardó con éxito.</name>
+  </entity>
+
+  <entity id="editorDocumentUploadError.label">
+    <name xml:lang="en">Unable to save</name>
+    <name xml:lang="de">Das Speichern schlug fehl von</name>
+    <name xml:lang="es">No se pudo guardar</name>
+  </entity>
+
+  <entity id="editorDocumentUploadServerError.label">
+    <name xml:lang="en">Saving document did not succeed. The server replied with the following message</name>
+    <name xml:lang="de">Das Dokument konnte nicht gespeichert werden. Der Server antwortete mit der folgenden Nachricht</name>
+    <name xml:lang="es">El documento no se pudo guardar. El servidor respondió con el siguiente mensaje</name>
+  </entity>
+
+  <entity id="editorDocumentUploadFailure.label">
+    <name xml:lang="en">Document could not be saved.</name>
+    <name xml:lang="de">Das Dokument konnte nicht gespeichert werden.</name>
+    <name xml:lang="es">El documento no se pudo guardar.</name>
+  </entity>
+
+  <entity id="editorDocumentSaveFailure.label">
+    <name xml:lang="en">Saving document did not succeed.</name>
+    <name xml:lang="de">Das Dokument konnte nicht gespeichert werden.</name>
+    <name xml:lang="es">El documento no se pudo guardar.</name>
+  </entity>
+
+  <entity id="editorURINotValidFailure.label">
+    <name xml:lang="en">The entered URI is not a valid URI</name>
+    <name xml:lang="de">Die eingegebene URI ist nicht in Ordnung</name>
+    <name xml:lang="es">La URI introducida no es una URI válida</name>
+  </entity>
+
+  <entity id="editorTargetLocationNotValidFailure.label">
+    <name xml:lang="en">The target location is not a valid URI</name>
+    <name xml:lang="de">Der angegebene Zielort ist nicht in Ordnung</name>
+    <name xml:lang="es">La localización objetivo no es una URI válida</name>
+  </entity>
+
+  <entity id="editorTabSwitchError.label">
+    <name xml:lang="en">An internal error occurred during switching the view.</name>
+    <name xml:lang="de">Ein programminternes Problem trat während dem Wechseln des Reiters auf.</name>
+    <name xml:lang="es">Ocurrió un error interno durante el cambio de vista.</name>
+  </entity>
+
+  <entity id="editorDocumentLoadError0.label">
+    <name xml:lang="en">Unable to load</name>
+    <name xml:lang="de">Das Laden schlug fehl von</name>
+    <name xml:lang="es">No se pudo cargar</name>
+  </entity>
+
+  <entity id="editorDocumentLoadError1.label">
+    <name xml:lang="en">An error occurred during document load.</name>
+    <name xml:lang="de">Während dem Laden des Dokumentes ist ein Fehler aufgetreten.</name>
+    <name xml:lang="es">Ocurrió un error durante la carga del documento.</name>
+  </entity>
+
+  <entity id="editorDocumentLoadServerError.label">
+    <name xml:lang="en">The server replied with the following message</name>
+    <name xml:lang="de">Der Server antwortete mit der folgenden Nachricht</name>
+    <name xml:lang="es">El servidor respondió con el siguiente mensaje</name>
+  </entity>
+
+  <entity id="editorDocumentLoadFailure.label">
+    <name xml:lang="en">Failed to load document.</name>
+    <name xml:lang="de">Das Laden des Dokumentes ist fehlgeschlagen.</name>
+    <name xml:lang="es">No se pudo cargar el documento</name>
+  </entity>
+
+  <entity id="editorGuidedTagInserterElementName.label">
+    <name xml:lang="en">Element name</name>
+    <name xml:lang="de">Element Name</name>
+    <name xml:lang="es">Nombre del elemento</name>
+  </entity>
+
+  <entity id="editorGuidedTagInserterAttributeName.label">
+    <name xml:lang="en">Attribute name</name>
+    <name xml:lang="de">Attribut Name</name>
+    <name xml:lang="es">Nombre del atributo</name>
+  </entity>
+
+  <entity id="editorGuidedTagInserterAttributeValue.label">
+    <name xml:lang="en">Attribute value</name>
+    <name xml:lang="de">Attribut Wert</name>
+    <name xml:lang="es">Valor del atributo</name>
+  </entity>
+
+  <entity id="editorGuidedTagInserterCreate.label">
+    <name xml:lang="en">Create</name>
+    <name xml:lang="de">Erzeuge</name>
+    <name xml:lang="es">Crear</name>
+  </entity>
+
+  <entity id="editorGuidedTagInserterNonEmptyButton.label">
+    <name xml:lang="en">Non-empty Tag</name>
+    <name xml:lang="de">Nicht-leeres Tag</name>
+    <name xml:lang="es">Etiqueta no vacía</name>
+  </entity>
+
+  <entity id="editorGuidedTagInserterEmptyButton.label">
+    <name xml:lang="en">Empty Tag</name>
+    <name xml:lang="de">Leeres Tag</name>
+    <name xml:lang="es">Etiqueta vacía</name>
+  </entity>
+
+  <entity id="editorGuidedTagInserterAbortButton.label">
+    <name xml:lang="en">Abort</name>
+    <name xml:lang="de">Abbrechen</name>
+    <name xml:lang="es">Abortar</name>
+  </entity>
+
+  <entity id="editorTabSourceView.tooltip">
+    <name xml:lang="en">Edit document source code</name>
+    <name xml:lang="de">Editieren des Dokumentes im Quelltext</name>
+    <name xml:lang="es">Editar el código fuente del documento</name>
+  </entity>
+
+  <entity id="editorTabWYSIWYGView.tooltip">
+    <name xml:lang="en">Edit document in WYSIWYG mode</name>
+    <name xml:lang="de">Editieren des Dokumentes im WYSIWYG Modus</name>
+    <name xml:lang="es">Editar el documento en modo WYSIWYG</name>
+  </entity>
+
+  <entity id="editorGuidedTagInserterNonEmptyButton.tooltip">
+    <name xml:lang="en">Inserts a non-empty tag</name>
+    <name xml:lang="de">Fügt ein nicht-leeres Tag ein</name>
+    <name xml:lang="es">Inserta una etiqueta no vacía</name>
+  </entity>
+
+  <entity id="editorGuidedTagInserterEmptyButton.tooltip">
+    <name xml:lang="en">Inserts an empty tag</name>
+    <name xml:lang="de">Fügt ein leeres Tag ein</name>
+    <name xml:lang="es">Inserta una etiqueta vacía</name>
+  </entity>
+
+  <entity id="editorGuidedTagInserterAbortButton.tooltip">
+    <name xml:lang="en">Abort querying and do not insert anything</name>
+    <name xml:lang="de">Abbrechen und nichts einfügen</name>
+    <name xml:lang="es">Abortar la petición y no insertar nada</name>
+  </entity>
+
+  <entity id="editorWellFormednessDialog.title">
+    <name xml:lang="en">Well-formedness Error</name>
+    <name xml:lang="de">Well-formedness Fehler</name>
+    <name xml:lang="es">Error well-formedness</name>
+  </entity>
+
+  <entity id="editorCheckinAndExitConfirmation.title">
+    <name xml:lang="en">Check Document back in to CMS</name>
+    <name xml:lang="de">Dokument einchecken</name>
+    <name xml:lang="es">Realizar un check-in del documento en el CMS</name>
+  </entity>
+
+  <entity id="yulupResourceSelectionNoResourceProvided.label">
+    <name xml:lang="en">You first have to select a resource on the remote host.</name>
+    <name xml:lang="de">Es muss zuerst eine Resource auf dem Server angegeben werden.</name>
+    <name xml:lang="es">Primero debe seleccionar un recurso en el servidor remoto.</name>
+  </entity>
+
+  <entity id="new.application.xhtml.xml.label">
+    <name xml:lang="en">XHTML Document</name>
+    <name xml:lang="de">XHTML Dokument</name>
+    <name xml:lang="es">Documento XHTML</name>
+  </entity>
+
+  <entity id="new.application.xhtml.xml.tooltip">
+    <name xml:lang="en">Create a new XHTML Document</name>
+    <name xml:lang="de">Ein neues XHTML Dokument erstellen</name>
+    <name xml:lang="es">Crear un nuevo documento XHTML</name>
+  </entity>
+
+  <entity id="new.application.atom.xml.label">
+    <name xml:lang="en">Atom entry</name>
+    <name xml:lang="de">Atom Eintrag</name>
+    <name xml:lang="es">Entrada Atom</name>
+  </entity>
+
+  <entity id="new.application.atom.xml.tooltip">
+    <name xml:lang="en">Create a new Atom entry</name>
+    <name xml:lang="de">Einen neuen Atom Eintrag erstellen</name>
+    <name xml:lang="es">Crear una nueva entrada Atom</name>
+  </entity>
+
+  <entity id="new.application.xml.label">
+    <name xml:lang="en">XML Document</name>
+    <name xml:lang="de">XML Dokument</name>
+    <name xml:lang="es">Documento XML</name>
+  </entity>
+
+  <entity id="new.application.xml.tooltip">
+    <name xml:lang="en">Create a new XML Document</name>
+    <name xml:lang="de">Ein neues XML Dokument erstellen</name>
+    <name xml:lang="es">Crear un nuevo documento XML</name>
+  </entity>
+
+  <entity id="new.text.plain.label">
+    <name xml:lang="en">Empty Document</name>
+    <name xml:lang="de">Leeres Dokument</name>
+    <name xml:lang="es">Documento vacío</name>
+  </entity>
+
+  <entity id="new.text.plain.tooltip">
+    <name xml:lang="en">Create a new empty document</name>
+    <name xml:lang="de">Ein neues, leeres Dokument erstellen</name>
+    <name xml:lang="es">Crear un documento nuevo vacío</name>
+  </entity>
+
+  <entity id="new.text.html.label">
+    <name xml:lang="en">HTML Document</name>
+    <name xml:lang="de">HTML Dokument</name>
+    <name xml:lang="es">Documento HTML</name>
+  </entity>
+
+  <entity id="new.text.html.tooltip">
+    <name xml:lang="en">Create a new HTML Document</name>
+    <name xml:lang="de">Ein neues HTML Dokument erstellen</name>
+    <name xml:lang="es">Crear un nuevo documento HTML</name>
+  </entity>
+
+</dtd>

@@ -1,0 +1,1199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../../../utils/customization/style.xsl"?>
+
+<!DOCTYPE article [
+  <!ENTITY % docbook PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+  %docbook;
+  <!ENTITY % local SYSTEM "../../../../../utils/customization/commons.dtd">
+  %local;
+]>
+
+<article>
+  <articleinfo>
+    <title>&project; User Manual</title>
+    <authorgroup>
+      <author>
+        <firstname>Andreas</firstname>
+        <surname>Wuest</surname>
+        <email>awuest@student.ethz.ch</email>
+        <affiliation>
+          <corpname>Wyona AG</corpname>
+        </affiliation>
+      </author>
+      <author>
+        <firstname>Michael</firstname>
+        <surname>Wechner</surname>
+        <email>michi@wyona.com</email>
+        <affiliation>
+          <jobtitle>CEO</jobtitle>
+          <corpname>Wyona AG</corpname>
+        </affiliation>
+        <affiliation>
+          <orgname>Apache Software Foundation</orgname>
+        </affiliation>
+      </author>
+    </authorgroup>
+    <!-- All dates specified in ISO "YYYY-MM-DD" format -->
+    <pubdate>2007-01-26</pubdate>
+    <!-- Most recent revision goes at the top; list in descending order -->
+    <!--
+    <revhistory>
+      <revision>
+        <revnumber>0.1.2</revnumber>
+        <date>2007-01-15</date>
+        <authorinitials>AW</authorinitials>
+        <revremark>Updated to reflect Yulup 0.2.0.</revremark>
+      </revision>
+      <revision>
+        <revnumber>0.1.1</revnumber>
+        <date>2006-12-13</date>
+        <authorinitials>AW</authorinitials>
+        <revremark>Updated and more content added.</revremark>
+      </revision>
+      <revision>
+        <revnumber>0.1.0</revnumber>
+        <date>2006-08-08</date>
+        <authorinitials>AW</authorinitials>
+        <revremark>First initial draft.</revremark>
+      </revision>
+    </revhistory>
+    -->
+    <abstract>
+      <para>The user manual for <emphasis>&project;</emphasis>.</para>
+    </abstract>
+  </articleinfo>
+
+  <section>
+    <title>Introduction</title>
+    <para>
+      &project; is a <ulink url="http://neutron.wyona.org/">Neutron</ulink>-enabled editing client, based on the <ulink url="http://www.mozilla.org/">Mozilla</ulink> platform. It is available as an <emphasis>extension</emphasis> (also called <emphasis>add-on</emphasis>) for <ulink url="http://www.mozilla.com/firefox/">Mozilla Firefox</ulink>.
+    </para>
+    <para>
+      With &project;, you can edit the following document types:
+      <itemizedlist>
+        <listitem>
+          <formalpara>
+            <title>XML</title>
+            You can edit plain <emphasis>XML</emphasis> documents in source mode.
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>XML with associated XSLT</title>
+            You can edit <emphasis>XML</emphasis> with associated <emphasis>XSLT</emphasis> documents in source as well as WYSIWYG mode. To display your XML document in the WYSIWYG mode, it is first transformed using the associated XSLT document. Any changes you make to your document in the WYSIWYG view are then propagated back to your XML source.
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>XHTML</title>
+            You can edit <emphasis>XHTML</emphasis> documents in source as well as WYSIWYG mode.
+          </formalpara>
+        </listitem>
+        <listitem>
+          <formalpara>
+            <title>HTML</title>
+            You can edit <emphasis>HTML</emphasis> documents in source as well as WYSIWYG mode.
+          </formalpara>
+        </listitem>
+      </itemizedlist>
+    </para>
+    <para>
+      &project; allows for seamless interaction with Neutron-enabled Content Management Systems, making editing a breeze. When visiting a certain document, you can directly check out the source from your CMS, edit it, and store it back without further interaction with the CMS.
+    </para>
+    <para>
+      The &project; editor strives to bridge the gap between the Web and the desktop. Traditional editors were either stand-alone desktop applications, or in-browser tools. Stand-alone applications obviously lead to an impedance-mismatch between the user's browsing and publishing activity on the Web and the editing of documents. In-browser editors on the other hand can avoid this gap, but lack the features of a stand-alone application like access to the desktop, offline editing, import/export filters, etc. Furthermore, they often perform poorly or have scalability issues.
+    </para>
+    <para>
+      &project; tries to bring together the Web and the desktop, offering the full capabilities of a conventional desktop application, but avoiding the gap between the browsing and publishing workflow by being integrated seamlessly into the browser. This enables the user to stay in the same application, no matter if she is browsing, reading, editing or publishing.
+    </para>
+  </section>
+
+  <section>
+    <title>Notational Conventions</title>
+    <para>
+      <itemizedlist>
+        <listitem>
+          <formalpara>
+            <title>Keyboard Shortcuts</title>
+            Keyboard shortcut combinations may contain a component called <keycap>Accel</keycap>. This is a platform specific key used to start certain shortcut combinations.
+          </formalpara>
+          <para>
+            On Mac OS X, the <keycap>Accel</keycap> component denotes the <keycap>Cmd</keycap> key. On all other platforms, this denotes the <keycap>Ctrl</keycap> key.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </para>
+  </section>
+
+  <section>
+    <title>System Requirements</title>
+    <para>
+      &project; requires <ulink url="http://www.mozilla.com/firefox/">Mozilla Firefox</ulink> with a minimum version of 1.5. The &project; editor is a platform-independent application, and can therefore be run on every machine which also runs Firefox.
+    </para>
+  </section>
+
+  <section>
+    <title>Installation</title>
+    <para>
+      For a first-time install, please refer to the <xref linkend="install" endterm="install.title"/> section. If you want to update a &project; installation to the latest version, refer to section <xref linkend="update" endterm="update.title"/>.
+    </para>
+    <section id="install">
+      <title id="install.title">Install</title>
+      <para>
+        <orderedlist>
+          <listitem>
+            <para>
+              Open Firefox.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Go to <ulink url="http://www.yulup.org/">http://www.yulup.org/</ulink>.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Click the <emphasis>Download &project;</emphasis> link.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              In the requester which just popped up, click <guibutton>Install Now</guibutton>.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Restart Firefox.
+            </para>
+          </listitem>
+        </orderedlist>
+        You are done. You can verify that the installation was successful by opening Firefox's extension manager (<guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Extensions</guimenuitem> for Firefox 1.5; <guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Add-ons</guimenuitem> for Firefox 2.0). There, an entry for &project; should appear.
+      </para>
+    </section>
+    <section id="update">
+      <title id="update.title">Update</title>
+      <para>
+        <orderedlist>
+          <listitem>
+            <para>
+              Open Firefox's extension manager (<guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Extensions</guimenuitem> for Firefox 1.5; <guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Add-ons</guimenuitem> for Firefox 2.0).
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Click on the <guibutton>Find Updates</guibutton> button and wait until Firefox has finished searching for available updates. If an update for &project; is available, a button labeled <guibutton>Update Now</guibutton> appears to the right of the &project; entry.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Click the <guibutton>Update Now</guibutton> button and wait until Firefox has downloaded the update.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Restart Firefox.
+            </para>
+          </listitem>
+        </orderedlist>
+        You are done.
+      </para>
+    </section>
+  </section>
+
+  <section>
+    <title>Concepts</title>
+    <section>
+      <title>Webbrowser View and Editor View</title>
+      <para>
+        The <emphasis>Webbrowser View</emphasis> is your normal web browser.
+        <figure>
+          <title>Webbrowser View</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="figures/webbrowser_view.png" format="PNG" scale="90"/>
+            </imageobject>
+            <textobject>
+              <phrase>Webbrowser view</phrase>
+            </textobject>
+          </mediaobject>
+        </figure>
+        The only difference you experience is the &project; menu icon placed in the upper right corner of the window. This is the main entry point to &project;, and allows you to open documents, edit, create, upload and delete documents, and access the preferences dialog.
+      </para>
+      <para>
+        Normally, most of these items are disabled though. But if you visit a web page which allows introspection e.g. via Neutron or the Atom Publishing Protocol, these items are enabled, and allow you to directly interact with the CMS/web server which contains the current document.
+      </para>
+      <para>
+        If you choose to edit an existing document or to create a new document, you are then transferred to the <emphasis>Editor View</emphasis>.
+        <figure>
+          <title>Editor View</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="figures/editor_view.png" format="PNG" scale="90"/>
+            </imageobject>
+            <textobject>
+              <phrase>Editor view</phrase>
+            </textobject>
+          </mediaobject>
+        </figure>
+      </para>
+    </section>
+    <section>
+      <title>Webpages, Documents and Document Fragments</title>
+      <para>
+        It is important to realise that a webpage, as you may see when browsing a CMS, is not actually what is stored on the server as the source, and not necessarily every portion in a webpage can be edited. For example, a typical <emphasis>webpage</emphasis> may consists of a navigational part, a main content part, and a news section. The navigational part may not be editable, because it is generated dynamically by the webserver, and not stored in any <emphasis>document</emphasis> source file. Furthermore, the main content and the news section themselves may not live inside the same document. In fact, your webserver may dynamically aggregate these two parts (called <emphasis>document fragments</emphasis>) from two different source files, and then add the navigational part.
+      </para>
+      <para>
+        But there is more to that. After having constructed such a document, it may not be displayable by a webbrowser, because its format lacks the representational aspects of a webpage, i.e. the formatting. These formatting instructions may come from another different document, and the webserver first has to process the content, applying this representational information.
+      </para>
+      <para>
+        This makes it clear that it is not straight forward to edit a webpage as you can see it rendered by your webbrowser. Although this is perfectly possible, it may not have the effect you would like to see, namely the changes you made in that webpage to be incorporated back into the various source documents which make up this webpage.
+      </para>
+      <para>
+        What you would like to do is therefore having a way of making the changes you want directly in the various document fragments a webpage is made up from, but nevertheless having the document rendered like it would be by a webbrowser if you would not be editing it.
+      </para>
+    </section>
+  </section>
+
+  <section>
+    <title>Opening and Creating new Documents</title>
+    <para>
+      You can open and create documents starting from two different points: either from your normal webbrowser view or from within the editor itself.
+    </para>
+    <section>
+      <title>Opening Documents</title>
+      <section>
+        <title>From the Webbrowser View</title>
+        <section>
+          <title>Open Document from CMS</title>
+          <para>
+            When viewing a webpage in your browser which resides on a Neutron-enabled CMS, you are offered the possibility to open that document's source directly from the CMS. This means that the latest revision of the document underlying your currently displayed webpage is fetched from the CMS, and, depending on the opening mode, is either checked out from the CMS (meaning that you acquire a lock on that document), or simply opened (meaning no lock is created on the server side).
+          </para>
+          <para>
+            <itemizedlist>
+              <listitem>
+                <formalpara>
+                  <title>Open and Edit</title>
+                  If the server offers you the option of opening the document without locking, then a menu item labelled <guimenuitem>Open and Edit</guimenuitem> is enabled in the &project; Browser Menu.
+                  <figure>
+                    <title><emphasis>Open and Edit</emphasis> from the &project; Menu</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="figures/open_yulupmenu.png" format="PNG"/>
+                      </imageobject>
+                      <textobject>
+                        <phrase>Open and Edit from the &project; Menu</phrase>
+                      </textobject>
+                    </mediaobject>
+                  </figure>
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Checkout and Edit</title>
+                  If the server offers you the option of opening the document with locking, then a menu item labelled <guimenuitem>Checkout and Edit</guimenuitem> is enabled in the &project; Browser Menu. By checking out a document from the CMS like this, you are acquiring a lock on this document. This means that only you can currently edit this document, and no one else can edit this document in the meantime.
+                  <figure>
+                    <title><emphasis>Checkout and Edit</emphasis> from the &project; Menu</title>
+                    <mediaobject>
+                      <imageobject>
+                        <imagedata fileref="figures/checkout_yulupmenu.png" format="PNG"/>
+                      </imageobject>
+                      <textobject>
+                        <phrase>Checkout and Edit from the &project; Menu</phrase>
+                      </textobject>
+                    </mediaobject>
+                  </figure>
+                </formalpara>
+                <para>
+                  Note that the implementation of the locking mechanism is up to the web server. The web server may either hold the lock indefinitely, until you checkin the document again, or it may decide to drop the lock after a certain amount of time.
+                </para>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section>
+          <title>Open Document As-Is</title>
+          <para>
+            You can also open a document as-is, using the <guimenuitem>Edit Locally</guimenuitem> menu item. This simply reloads the document you are currently viewing into the editor. This enables you to edit arbitrary web pages. Of course, you cannot store such a document back to the web server, but you can still save it to your local filesystem.
+            <figure>
+              <title><emphasis>Edit Locally</emphasis></title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="figures/edit_locally.png" format="PNG"/>
+                </imageobject>
+                <textobject>
+                  <phrase>Edit a document locally</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+          </para>
+        </section>
+      </section>
+      <section>
+        <title>Inside the Editor</title>
+        <section>
+          <title>Open Document from CMS</title>
+        </section>
+        <section>
+          <title>Open Document from Local Filesystem</title>
+        </section>
+      </section>
+    </section>
+    <section>
+      <title>Creating Documents</title>
+      <section>
+        <title>From the Webbrowser View</title>
+      </section>
+      <section>
+        <title>Inside the Editor</title>
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <title>Saving Documents</title>
+    <para>
+      Once a document was modified in the editor, there are several possibilities to store the document.
+    </para>
+    <section>
+      <title>Save Document</title>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <formalpara>
+              <title>Save to file</title>
+              Saves the modifications to the local file system.
+            </formalpara>
+            <para>
+              This menu item is only available if the document contains changes and the document was either loaded from the local file system, or was previously saved to the local file system.
+            </para>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>Save temporary copy (<keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>T</keycap></keycombo>) [this feature will be activated in a future release]</title>
+              Saves a temporary copy to your local workspace.
+            </formalpara>
+            <para>
+              This menu item is only available if the document contains changes.
+            </para>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>Save back to CMS (<keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>S</keycap></keycombo>)</title>
+              Saves the modifications back to the CMS but does not release the lock held on this document.
+            </formalpara>
+            <para>
+              This menu item is only visible if the document contains changes and the server supports storing without lock-release.
+            </para>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>Check back in to CMS and exit (<keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>C</keycap></keycombo>)</title>
+              Saves the modifications back to the CMS, releases the lock held on this document and exits the editor. After exiting, the modified document is reloaded from the document source and rendered in the editor tab so you can immediately check how your document looks like.
+            </formalpara>
+            <para>
+              This menu item is only visible if the document contains changes and the server supports storing with lock-release.
+            </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+    <section>
+      <title>Save Document As...</title>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <formalpara>
+              <title>Save to file system as...</title>
+              Saves the document to the local file system. You are asked to supply a path to the place where you want the document to be stored.
+            </formalpara>
+          </listitem>
+        </itemizedlist>
+        <itemizedlist>
+          <listitem>
+            <formalpara>
+              <title>Save to CMS as...</title>
+              Saves the document to the CMS. You are asked to supply a path to the place where you want the document to be stored.
+              <figure>
+                <title><emphasis>Save to CMS as...</emphasis> inside the Editor</title>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="figures/upload_document.png" format="PNG"/>
+                  </imageobject>
+                  <textobject>
+                    <phrase>Save to CMS as.. inside the editor</phrase>
+                  </textobject>
+                </mediaobject>
+              </figure>
+            </formalpara>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+  </section>
+
+  <section>
+    <title>Uploading Documents/Assets</title>
+    <para>
+      <figure>
+        <title>Specify the CMS URI</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/upload_specifyuri.png" format="PNG"/>
+          </imageobject>
+          <textobject>
+            <phrase>Specify the CMS URI</phrase>
+          </textobject>
+        </mediaobject>
+      </figure>
+      <figure>
+        <title>Upload a Document or Asset</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/upload_asset.png" format="PNG"/>
+          </imageobject>
+          <textobject>
+            <phrase>Upload a document or asset</phrase>
+          </textobject>
+        </mediaobject>
+      </figure>
+    </para>
+    <section>
+      <title>From the Webbrowser View</title>
+    </section>
+    <section>
+      <title>Inside the Editor</title>
+    </section>
+  </section>
+
+  <section>
+    <title>Editing Documents</title>
+    <para>
+      There are two fundamentally different editing modes in &project;: the <emphasis>Source</emphasis> and <emphasis>WYSIWYG</emphasis> mode. In the <emphasis>Source</emphasis> mode you can edit documents on the source level, i.e. you can directly modify the document markup. In the <emphasis>WYSIWYG</emphasis> mode view, you modify the graphical representation of a document. With other words: whatever you do, the document looks exactly like it is served by your web server and later rendered by the browser.
+    </para>
+    <para>
+      Despite these two different modes, they share a common toolbar.
+      <figure>
+        <title>Editor Toolbar</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/edit_toolbar.png" format="PNG"/>
+          </imageobject>
+          <textobject>
+            <phrase>Editor toolbar</phrase>
+          </textobject>
+        </mediaobject>
+      </figure>
+      This toolbar provides you the ability to save, upload, open or create new documents, undo/redo operations, cut, copy and paste from and to the system clipboard, as well as modify the document currently edited by e.g. inserting new elements.
+    </para>
+
+    <section>
+      <title>Source Mode</title>
+      <section id="guidedtaginserter">
+        <title>Guided Tag Inserter</title>
+        <para>
+          The guided tag inserter helps to insert elements at the current cursor position. It can create two tag types, namely empty (tags only consisting of an opening tag, ending with a "/") and non-empty tags. The guided tag inserter is invoked by pressing <emphasis>C-i</emphasis>.
+        </para>
+        <para>
+          If a block of text is currently selected, then the guided tag inserter will surround this block with the newly created tag, but only if a non-empty tag is generated. Otherwise, the current selection is overwritten.
+        </para>
+        <para>
+          The guided tag inserter first asks for the tag name.
+          <figure>
+            <title>Guided Tag Inserter (Element Name)</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="figures/guidedtaginserter_elemname.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <phrase>Guided Tag Inserter asking for the element name</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+          If you hit return without entering any text into the tag name field, the guided tag inserter aborts without inserting any text into the editor. Otherwise, if you have indeed entered a tag name, it goes into a loop and asks for attribute names and their values.
+          <figure>
+            <title>Guided Tag Inserter (Attribute Name)</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="figures/guidedtaginserter_attrname.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <phrase>Guided Tag Inserter asking for the attribute name</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+          <figure>
+            <title>Guided Tag Inserter (Attribute Value)</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="figures/guidedtaginserter_attrvalue.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <phrase>Guided Tag Inserter asking for the attribute value</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+          If you hit return without entering any text into the attribute name field, the guided tag inserter proceeds to ask you if you want to create an empty (e.g. <markup>&lt;section/&gt;</markup>) or a non-empty tag (e.g. <markup>&lt;section&gt;&lt;/section&gt;</markup>).
+          <figure>
+            <title>Guided Tag Inserter (Tag Mode)</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="figures/guidedtaginserter_finish.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <phrase>Guided Tag Inserter asking if you want to insert and empty or a non-empty tag</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+          If you hit return without entering any text into the attribute value field, the guided tag inserter asks you for the next attribute name.
+        </para>
+        <para>
+          You can leave the guided tag inserter at any time by clicking "Abort". No text is inserted into the editor in this case.
+        </para>
+      </section>
+    </section>
+
+    <section>
+      <title>WYSIWYG Mode</title>
+      <section>
+        <title>XHTML Mode</title>
+      </section>
+      <section>
+        <title>XML Mode</title>
+        <section>
+          <title>XPath Toolbar</title>
+          <para>
+            The XPath toolbar shows you the path from the document root to the current selection. This means that whatever you insert at the current position is going to end up at the shown path in the XML source document.
+            <figure>
+              <title>XPath Toolbar</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="figures/xpath_toolbar.png" format="PNG"/>
+                </imageobject>
+                <textobject>
+                  <phrase>XPath toolbar showing the path from the document root to the current selection</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+            Furthermore, the XPath toolbar lets you choose between <emphasis>namespace-aware</emphasis> and <emphasis>namespace-unaware</emphasis> mode. If you select the namespace-aware mode, this means that whatever you insert at the current position is actually inserted at the namespaced path in the source document. If you choose the namespace-unaware mode, the back-propagation does not take namespaces into account. You might require this mode for certain documents which are otherwise not editable in namespace-aware mode.
+          </para>
+        </section>
+      </section>
+    </section>
+
+    <section>
+      <title>Key Bindings</title>
+      <para>
+        Note that the <xref linkend="standardkeybindings" endterm="standardkeybindings.title"/> are always active. See <xref linkend="pref_keybindings"/> for how to select different key bindings.
+        </para>
+        <para>
+          The <keycap>C</keycap> key means <keycap>Ctrl</keycap> and is valid for all platforms. Note that there are additional platform-dependent key bindings (for those, please refer to the user manual of your Operating System).
+        </para>
+        <section id="standardkeybindings">
+          <title id="standardkeybindings.title">Standard Key Bindings</title>
+          <para>
+            <bridgehead>Inserting</bridgehead>
+            <itemizedlist>
+              <listitem>
+                <formalpara>
+                  <title>C-i (Source mode only)</title>
+                  Open the guided tag/element inserter (see <xref linkend="guidedtaginserter"/>).
+                </formalpara>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section>
+          <title>Readline (Emacs) Key Bindings</title>
+          <para>
+            The following key bindings are activated by default.
+            <bridgehead>Moving and Selecting</bridgehead>
+            <itemizedlist>
+              <listitem>
+                <formalpara>
+                  <title>C-a</title>
+                  Move to beginning of line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-A</title>
+                  Select to beginning of line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-b</title>
+                  Move to previous character.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-B</title>
+                  Select previous character.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-e</title>
+                  Move to end of line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-E</title>
+                  Select to end of line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-f</title>
+                  Move to next character.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-F</title>
+                  Select next character.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-n</title>
+                  Move to next line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-N</title>
+                  Select to next line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-p</title>
+                  Move to previous line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-P</title>
+                  Select to previous line.
+                </formalpara>
+              </listitem>
+            </itemizedlist>
+            <bridgehead>Deleting</bridgehead>
+            <itemizedlist>
+              <listitem>
+                <formalpara>
+                  <title>C-d</title>
+                  Delete (delete next character).
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-h</title>
+                  Backspace (delete previous character)
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-k</title>
+                  Delete to end of line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-u</title>
+                  Delete complete current line.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-w</title>
+                  Delete previous word.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>C-W</title>
+                  Delete next word.
+                </formalpara>
+              </listitem>
+            </itemizedlist>
+            <bridgehead>Undo/Redo</bridgehead>
+            <itemizedlist>
+              <listitem>
+                <formalpara>
+                  <title>C-_</title>
+                  Undo last action.
+                </formalpara>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+    </section>
+
+    <section>
+      <title>Find &amp; Replace</title>
+      <section>
+        <title>Find</title>
+        <para>
+          The <emphasis>Find</emphasis> dialog can be opened using either the corresponding button on the editor toolbar, or by pressing <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>F</keycap></keycombo>.
+          <figure>
+            <title>Find Dialog</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="figures/find_dialog.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <phrase>Find dialog</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+          <itemizedlist>
+            <listitem>
+              <formalpara>
+                <title>Search for</title>
+                Enter the phrase you want to search for.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Match case</title>
+                Select if you want the search to be case-sensitive.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Match entire word only</title>
+                Select if the search term should only be matched if the occurrence is an individual word.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Search backwards</title>
+                Select if the search should be performed backwards with regard to the current cursor position.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Wrap around</title>
+                Select if the search should wrap around the end (or the beginning, if <emphasis>Search backwards</emphasis> is selected) of the document.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Find</title>
+                Perform the search. If the search term was not found, <emphasis>Phrase not found</emphasis> is displayed at the bottom of the dialog.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Cancel</title>
+                Close the dialog.
+              </formalpara>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+      <section>
+        <title>Find &amp; Replace</title>
+        <para>
+          The <emphasis>Find &amp; Replace</emphasis> dialog can be opened using either the corresponding button on the editor toolbar, or by pressing <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>R</keycap></keycombo>.
+          <figure>
+            <title>Find &amp; Replace Dialog</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="figures/findreplace_dialog.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <phrase>Find &amp; replace dialog</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+          <itemizedlist>
+            <listitem>
+              <formalpara>
+                <title>Search for</title>
+                Enter the phrase you want to search for.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Replace with</title>
+                Enter the phrase with which you want to replace the search term. If left empty, occurrences of the search term are removed.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Match case</title>
+                Select if you want the search to be case-sensitive.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Match entire word only</title>
+                Select if the search term should only be matched if the occurrence is an individual word.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Search backwards</title>
+                Select if the search should be performed backwards with regard to the current cursor position.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Wrap around</title>
+                Select if the search should wrap around the end (or the beginning, if <emphasis>Search backwards</emphasis> is selected) of the document.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Replace All</title>
+                Replace all occurrences of the search term in the document. At the end of the process, the number of replaced occurrences is displayed at the bottom of the dialog.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Replace and Find</title>
+                Replace the currently selected text in the document (if the selection matches the search term), and find the next occurrence. If the currently selected text in the document does not match the currently entered search term, then this function is disabled.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Find</title>
+                Perform the search. If the search term was not found, <emphasis>Phrase not found</emphasis> is displayed at the bottom of the dialog.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Cancel</title>
+                Close the dialog.
+              </formalpara>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+    </section>
+
+    <section>
+      <title>Exiting the Editor</title>
+      <para>
+        There are multiple ways to close the editor.
+        <itemizedlist>
+          <listitem>
+            <formalpara>
+              <title>Exit Button (<keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>E</keycap></keycombo>)</title>
+              When leaving the editor via the <emphasis>Exit</emphasis> button on the editor toolbar, you are first asked if you really want to quit the editor, should the document contain unsaved changes. After you asserted to indeed leave the editor, or if the document did not contain any unsaved modifications, the editor tab is replaced by a new tab which contains the reloaded original document.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>Check back in to CMS and exit (<keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>C</keycap></keycombo>)</title>
+              After the document is checked back in to the CMS, the editor tab is replaced by a new tab which contains the reloaded original document.
+            </formalpara>
+          </listitem>
+          <listitem>
+            <formalpara>
+              <title>Tab close (<keycombo action="simul"><keycap>Accel</keycap><keycap>W</keycap></keycombo>)</title>
+              When closing the editor tab (via the tab close button, the menu, the context menu, or the key combination), you are first asked if you really want to quit the editor, should the document contain unsaved changes. After you asserted to indeed leave the editor, or if the document did not contain any unsaved modifications, the editor tab is closed.
+            </formalpara>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+  </section>
+
+  <section>
+    <title>Authentication</title>
+    <para>
+      The CMS serving the documents to edit may decide to protect individual documents. In order to access such documents, you might have to authenticate yourself to the system by entering a set of credentials.
+    </para>
+    <section>
+      <title>Login</title>
+      <para>
+        If the server handles authentication through Yulup, you are presented with a dialog consisting of several fields, as defined by the CMS. There are two kind of fields: normal text fields, and password fields.
+        <figure>
+          <title>Authentication Dialog Example</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="figures/auth_dialog.png" format="PNG"/>
+            </imageobject>
+            <textobject>
+              <phrase>Example authentication dialog showing two fields to enter a user name and a password</phrase>
+            </textobject>
+          </mediaobject>
+        </figure>
+      </para>
+      <para>
+        Authentication in Yulup is realms based, i.e. you can be logged in to several different realms simultaneously.
+      </para>
+      <section>
+        <title>Text Fields (Autocompleted)</title>
+        <para>
+          Text fields use autocompletion, i.e. any term you have once entered into such a field is presented later on in a pop-up menu. The autocomplete pop-up menu opens once you start typing in the text field, and the currently entered string is a prefix matching one of the entries in the autocompletion history. In order to select such an offered string, you can navigate this pop-up menu using the cursor keys.
+        </para>
+        <para>
+          If you want to delete one of the offered strings from the autocompletion history, select the entry in the pop-up menu using the cursor keys, and, once selected, press <keycombo action="simul"><keycap>Shift</keycap><keycap>Delete</keycap></keycombo>.
+        </para>
+      </section>
+      <section>
+        <title>Password Fields</title>
+        <para>
+          Password fields are fields which do not directly show the text you enter. Instead, they use stars or bullets to represent characters, so that individuals standing by your screen cannot retrieve the entered password by looking at the text.
+        </para>
+      </section>
+    </section>
+    <section>
+      <title>Logout</title>
+      <para>
+        If the login was handled by Yulup, then you can also use Yulup to logout from a certain realm. In order to log out from a realm, open the Yulup menu and choose <guimenuitem>Logout from "..."</guimenuitem>, "..." being the name of the realm from which you want to logout from.
+        <figure>
+          <title>Logout from a Realm</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="figures/logout_realm.png" format="PNG"/>
+            </imageobject>
+            <textobject>
+              <phrase>Logout from realm "Yulup Website"</phrase>
+            </textobject>
+          </mediaobject>
+        </figure>
+      </para>
+    </section>
+  </section>
+
+  <section>
+    <title>Sidebars</title>
+    <para>
+      Sidebars are UI elements which are usually opened on the left hand side of the web browser. There are several standard sidebars delivered with Firefox, and &project; adds two new ones, an Atom sidebar and a Neutron sidebar.
+    </para>
+    <para>
+      Sidebars can generally be accessed either via the <guimenu>View</guimenu> &gt;&gt; <guisubmenu>Sidebar</guisubmenu> menu, or via a keyboard shortcut specific to each sidebar.
+    </para>
+    <section>
+      <title>Atom Sidebar</title>
+      <para>
+        The Atom sidebar can be accessed either via the <guimenu>View</guimenu> &gt;&gt; <guisubmenu>Sidebar</guisubmenu> &gt;&gt; <guimenuitem>Atom Sidebar</guimenuitem> menu item, via the <guimenuitem>Atom Sidebar</guimenuitem> menu item in the &project; menu, or via the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>A</keycap></keycombo> keyboard shortcut.
+      </para>
+      <para>
+        Once the Atom sidebar is open, you can close it by unchecking it in one of the above mentioned menus, by hitting the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>A</keycap></keycombo> keyboard shortcut again, or by clicking the <guibutton>close</guibutton> button in the upper right corner of the sidebar.
+      </para>
+      <para>
+        Note that the Atom sidebar cannot be opened if the currently shown document does not contain a link to an APP Service Document.
+        <figure>
+          <title>Atom Sidebar</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="figures/atom_sidebar.png" format="PNG"/>
+            </imageobject>
+            <textobject>
+              <phrase>Atom sidebar showing a news feed and the context menu for one of the feed items</phrase>
+            </textobject>
+          </mediaobject>
+        </figure>
+      </para>
+      <section>
+        <title>Selecting Workspaces and Collections</title>
+        <para>
+          You can select a specific <emphasis>workspace</emphasis> by opening the top-most menu-popup.
+        </para>
+        <para>
+          You can select a specific <emphasis>collection</emphasis> inside the selected workspace by opening the second top-most menu-popup.
+        </para>
+      </section>
+      <section>
+        <title>Feed Information</title>
+        <para>
+          The <emphasis>Feed Information</emphasis> view shows information about the selected feed, e.g. author(s), copyright, etc.
+        </para>
+      </section>
+      <section>
+        <title>Feed Entries</title>
+        <para>
+          The <emphasis>Feed Entries</emphasis> view shows the titles of the individual feed entries of the selected feed.
+        </para>
+        <para>
+          A feed entry can be selected by clicking on the feed entry with the left mouse button.
+        </para>
+        <para>
+          Multiple consecutive feed entries can be selected by selecting the first feed entry, then pressing <keycap>Shift</keycap>, and finally selecting the last entry. You can also create a selection of non-consecutive entries by pressing <keycap>Meta</keycap> and selecting each entry you want to add to the selection one by one.
+        </para>
+        <para>
+          The feed entry context menu can be opened by pressing the right mouse button on a feed entry.
+        </para>
+        <section>
+          <title>Editing Feed Entries</title>
+          <para>
+            By opening the context menu of a specific feed item, you can then select the <guimenuitem>Edit</guimenuitem> menu item to open the editor.
+          </para>
+          <para>
+            If you select multiple feed entries before opening the feed entry context menu and selecting <guimenuitem>Edit</guimenuitem>, then multiple editor tabs are opened, one for each entry.
+          </para>
+        </section>
+        <section>
+          <title>Deleting Feed Entries</title>
+          <para>
+            By opening the context menu of a specific feed item, you can then select the <guimenuitem>Delete</guimenuitem> menu item to delete the selected item.
+          </para>
+          <para>
+            If you select multiple feed entries before opening the feed entry context menu and selecting <guimenuitem>Delete</guimenuitem>, then all selected feed entries are deleted.
+          </para>
+        </section>
+      </section>
+      <section>
+        <title>Searching a Feed</title>
+        <para>
+          By entering text in the search box at the bottom of the Atom sidebar, you can search through all feed entry titles of the currently shown feed. If one or multiple feed entry titles match, these feed entries are selected.
+        </para>
+      </section>
+    </section>
+    <section>
+      <title>Neutron Sidebar</title>
+      <para>
+        
+      </para>
+    </section>
+  </section>
+
+  <section>
+    <title>Preferences</title>
+    <para>
+      You can open the preferences dialog by either choosing <guimenuitem>Preferences</guimenuitem> in the &project; menu, or by opening the extension manager, selecting the &project; entry, and then clicking on the <guibutton>Preferences</guibutton> button.
+    </para>
+    <para>
+      The preferences dialog is divided into two sections: <emphasis>General</emphasis>, and <emphasis>Editor</emphasis>.
+    </para>
+    <section>
+      <title>General</title>
+      <para>
+        In the <emphasis>General</emphasis> section, you can edit settings related to the overall usage of &project;.
+      </para>
+      <figure>
+        <title>Preferences <emphasis>General</emphasis></title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/preferences_general.png" format="PNG"/>
+          </imageobject>
+          <textobject>
+            <phrase>General settings</phrase>
+          </textobject>
+        </mediaobject>
+      </figure>
+      <section>
+        <title>Workspace</title>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <formalpara>
+                <title>Workspace Location</title>
+                Select a directory on your local file system for the &project; workspace. The workspace is used to store local temporary copies of the document you are editing to enable offline processing.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Always Save Local Copy</title>
+                Check this option if you would like &project; to automatically store a version of the documents you are editing in your local workspace. If this option is not set, you have to tell &project; explicitly to save a document in your workspace.
+              </formalpara>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+      <section>
+        <title>Default CMS</title>
+        <para>
+          Enter the URI of the CMS you use most. This URI is evaluated e.g. when you try to upload a new document to your CMS, but no CMS URI can be found via Neutron.
+        </para>
+      </section>
+      <section>
+        <title>Sidebars</title>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <formalpara>
+                <title>Open Atom Sidebar Automatically</title>
+                Check this option if you would like &project; to automatically open the Atom sidebar every time a page containing a link to an APP Service Document is accessed.
+              </formalpara>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+    </section>
+    <section>
+      <title>Editor</title>
+      <para>
+        In the <emphasis>Editor</emphasis> section, you can edit settings related to the &project; editor.
+      </para>
+      <figure>
+        <title>Preferences <emphasis>Editor</emphasis></title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/preferences_editor.png" format="PNG"/>
+          </imageobject>
+          <textobject>
+            <phrase>Editor settings</phrase>
+          </textobject>
+        </mediaobject>
+      </figure>
+      <section id="pref_keybindings">
+        <title>Key Bindings</title>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <formalpara>
+                <title>Select Key Binding</title>
+                Select the key binding you want to use in the editor.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Spaces instead of Tabs</title>
+                Select if you want the <keycap>TAB</keycap> to produce real tabs or spaces.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Number of Spaces</title>
+                Specify the amount of <keycap>space</keycap> characters a <keycap>TAB</keycap> should produce. If you have set the editor to use spaces instead of tabs, then the editor will insert the specified amount of space characters when the <keycap>TAB</keycap> key is used.
+              </formalpara>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+      <section>
+        <title>Layout</title>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <formalpara>
+                <title>Wrap Source</title>
+                Select if you want the source mode editor to wrap the text to the window width. Note that if a non-wrappable line (i.e. a line consisting of consecutive characters without interleaved whitespace) is present, you might still have to scroll horizontally.
+              </formalpara>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+      <section>
+        <title>Appearance</title>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <formalpara>
+                <title>Editor Appearance</title>
+                Select the icon theme you want the editor to use.
+              </formalpara>
+            </listitem>
+            <listitem>
+              <formalpara>
+                <title>Open Editor in new Tab</title>
+                Select if you want the editor to open in a new tab, or replace the tab from which the editor was opened.
+              </formalpara>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+    </section>
+  </section>
+
+</article>

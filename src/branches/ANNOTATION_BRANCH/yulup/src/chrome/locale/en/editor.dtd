@@ -1,0 +1,84 @@
+<!ENTITY editorAcceptButton.label "Ok">
+<!ENTITY editorCancelButton.label "Cancel">
+<!ENTITY editorUploadButton.label "Upload">
+<!ENTITY editorCloseButton.label "Close">
+<!ENTITY editorToolboxToggleTextItem.label "Show icons only">
+<!ENTITY editOperationCopy.label "Copy">
+<!ENTITY editOperationCut.label "Cut">
+<!ENTITY editOperationPaste.label "Paste">
+<!ENTITY editOperationRedo.label "Redo">
+<!ENTITY editOperationUndo.label "Undo">
+<!ENTITY editOperationSelectAll.label "Select All">
+<!ENTITY editOperationSelectContents.label "Select Contents">
+<!ENTITY editOperationSelectContents.tooltip "Select all contents of the current element">
+<!ENTITY editOperationDelete.label "Delete">
+<!ENTITY editOperationFind.label "Find">
+<!ENTITY editOperationFindReplace.label "Replace">
+<!ENTITY editOperationSurroundMenu.label "Mark as">
+<!ENTITY editOperationInsertMenu.label "Insert">
+<!ENTITY editOperationEditAttributes.label "Edit attributes">
+<!ENTITY fileOperationExit.label "Exit">
+<!ENTITY fileOperationInfobarToggle.label "Infobar">
+<!ENTITY fileOperationNew.label "New">
+<!ENTITY fileOperationNewFromTemplateLocalMenuitem.label "New from local template">
+<!ENTITY fileOperationNewFromTemplateCMSMenuitem.label "New from remote template">
+<!ENTITY fileOperationOpen.label "Open">
+<!ENTITY fileOperationOpenLocalMenuitem.label "Open from local file system">
+<!ENTITY fileOperationOpenCMSMenuitem.label "Open from remote">
+<!ENTITY fileOperationSave.label "Save">
+<!ENTITY fileOperationSaveLocalMenuitem.label "Save to file">
+<!ENTITY fileOperationSaveTempMenuitem.label "Save temporary copy">
+<!ENTITY fileOperationSaveCMSMenuitem.label "Save back to CMS">
+<!ENTITY fileOperationCheckinCMSMenuitem.label "Check back in to CMS">
+<!ENTITY fileOperationCheckinCMSAndExitMenuitem.label "Check back in to CMS and exit">
+<!ENTITY fileOperationSaveAs.label "Save As...">
+<!ENTITY fileOperationSaveAsLocalMenuitem.label "Save to file system as...">
+<!ENTITY fileOperationSaveAsCMSMenuitem.label "Save to CMS as...">
+<!ENTITY fileOperationUpload.label "Upload">
+<!ENTITY fileOperationUpload.tooltip "Upload a resouce to the server">
+<!ENTITY sourceViewTab.label "Source">
+<!ENTITY wysiwygViewTab.label "WYSIWYG">
+<!ENTITY waitDescription.label "Opening the document">
+<!ENTITY yulupServerURIDialog.title "Enter server URI">
+<!ENTITY yulupServerURIDialogLabel.label "Enter the URI of the server you want to upload the document to">
+<!ENTITY uiYulupXPathToolBarExpressionLabel.label "Path">
+<!ENTITY uiYulupXPathToolBarExpressionLabel.tooltip "Shows the XPath to the current node">
+<!ENTITY uiYulupXPathToolBarNSAwareCheckbox.label "Namespace Aware">
+<!ENTITY uiYulupXPathToolBarNSAwareCheckbox.tooltip "If enabled, back-propagation takes namespaces into account">
+<!ENTITY editOperationCopy.tooltip "Copy selection to clipboard">
+<!ENTITY editOperationCut.tooltip "Cut selection and copy to clipboard">
+<!ENTITY editOperationPaste.tooltip "Paste from clipboard">
+<!ENTITY editOperationRedo.tooltip "Redo last operation">
+<!ENTITY editOperationUndo.tooltip "Undo last operation">
+<!ENTITY editOperationSelectAll.tooltip "Select all text">
+<!ENTITY editOperationDelete.tooltip "Delete selection">
+<!ENTITY editOperationFind.tooltip "Find a string">
+<!ENTITY editOperationFindReplace.tooltip "Replace a string">
+<!ENTITY editOperationSurroundMenu.tooltip "Mark current selection as">
+<!ENTITY editOperationInsertMenu.tooltip "Insert at current position">
+<!ENTITY editOperationEditAttributes.tooltip "Edit the attributes of this element">
+<!ENTITY fileOperationExit.tooltip "Exit the editor">
+<!ENTITY fileOperationInfobarToggle.tooltip "Open/Close Infobar">
+<!ENTITY fileOperationNew.tooltip "Create a new document">
+<!ENTITY fileOperationNewFromTemplateLocalMenuitem.tooltip "Create a new document based on a local template">
+<!ENTITY fileOperationNewFromTemplateCMSMenuitem.tooltip "Create a new document based on a template from CMS">
+<!ENTITY fileOperationOpen.tooltip "Open an existing document">
+<!ENTITY fileOperationOpenLocalMenuitem.tooltip "Open document from file system and edit">
+<!ENTITY fileOperationOpenCMSMenuitem.tooltip "Checkout document from CMS and edit">
+<!ENTITY fileOperationSave.tooltip "Save document">
+<!ENTITY fileOperationSaveLocalMenuitem.tooltip "Save document to file">
+<!ENTITY fileOperationSaveTempMenuitem.tooltip "Save a temporary copy of the document to the file system">
+<!ENTITY fileOperationSaveCMSMenuitem.tooltip "Save document back to the CMS (do not release the lock)">
+<!ENTITY fileOperationCheckinCMSMenuitem.tooltip "Check document back in to the CMS (releases the lock)">
+<!ENTITY fileOperationCheckinCMSAndExitMenuitem.tooltip "Check document back in to the CMS (releases the lock) and exit the editor">
+<!ENTITY fileOperationSaveAs.tooltip "Save document as...">
+<!ENTITY fileOperationSaveAsLocalMenuitem.tooltip "Save document to file system as...">
+<!ENTITY fileOperationSaveAsCMSMenuitem.tooltip "Save document to CMS as...">
+<!ENTITY sourceViewTab.tooltip "View the source code of the document">
+<!ENTITY wysiwygViewTab.tooltip "View the WYSIWYG representation of the document">
+<!ENTITY editorWidgetInsertDialog.title "Set Attributes">
+<!ENTITY editorWidgetInsert.label "Set attributes for element">
+<!ENTITY editorResourceUploadDialog.title "Resource Upload">
+<!ENTITY editorResourceSelectDialog.title "Select Resource">
+<!ENTITY editorResourceTree.label "Sitetree">
+<!ENTITY editorResourceUploadRemoteName.label "Filename on Server">

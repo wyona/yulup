@@ -1,0 +1,7 @@
+<!ENTITY annotationDialog.title "Annotation">
+<!ENTITY annotationPointerStringTextbox.label "Absatz">
+<!ENTITY annotationAutorNameStringTextbox.label "Autor">
+<!ENTITY annotationCommentStringTextbox.label "Kommentar">
+<!ENTITY annotationTitleStringTextbox.label "Titel">
+<!ENTITY annotationButtonName.accept "Speichern">
+<!ENTITY annotationButtonName.cancle "Abbrechen">

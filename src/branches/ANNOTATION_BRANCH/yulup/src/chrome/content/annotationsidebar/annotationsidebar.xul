@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+
+<!--
+# ***** BEGIN LICENSE BLOCK *****
+# Copyright 2006 Wyona AG Zurich
+#
+# This file is part of Yulup.
+#
+# Yulup is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Yulup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Yulup; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# ***** END LICENSE BLOCK *****
+-->
+
+<!--
+ * @author Florian Fricker
+ *
+ * This file includes the XUL code for the Annotation sidebar.
+ * The file gets loaded by the AnnotationSidebar-overlay file.
+ *
+-->
+
+<!-- Load the css to formate the AnnotationSidebar -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://yulup/skin/annotationsidebar.css" type="text/css"?>
+
+<!-- Load the dtd xml file for language support -->
+<!DOCTYPE page SYSTEM "chrome://yulup/locale/annotationsidebar.dtd">
+
+<!-- Initialize the SidebarPage and add some listener for load and unload the sidebar -->
+<page id="uiYulupAnnotationSidebarPage"
+      title="&annotationSidebarPage.title;"
+      onload="AnnotationSidebar.onLoadListener()"
+      onunload="AnnotationSidebar.onUnloadListener()"
+      xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
+
+  <!-- Add some special name-labels to the sidebar (AtomSidebar standart) -->
+  <stringbundle id="uiYulupAnnotationSidebarStringbundle" src="chrome://yulup/locale/annotationsidebar.properties"/>
+
+  <!-- Load some some Java-Script files to add the required classes -->
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/common.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/neutron.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/annotationsidebar/annotationsidebar.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/networkservice.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/annotationparser10.js"/>
+
+  <!-- Build the sidebar deck -->
+  <deck id="uiYulupAnnotationSidebarContentDeck" selectedIndex="1" orient="vertical" align="stretch" flex="1">
+    <vbox flex="1">
+
+      <!-- Display the deck with a preloader (Note: throbber is not implemented yet) -->
+      <deck id="uiYulupAnnotationSidebarDeck"
+            onselect="if (this.selectedIndex != 2) { document.getElementById('uiYulupAnnotationSidebarFeedLoadingThrobber').removeAttribute('busy'); }"
+            selectedIndex="0"
+            orient="vertical"
+            align="stretch"
+            flex="1">
+
+        <!-- Cretate the labels to display the annotation ifnormation -->
+        <vbox stretch="align" flex="1">
+          <groupbox flex="1">
+            <caption label="&annotationSidebarFeedInfoGroupbox.label;" style="font-size: x-small;"/>
+
+            <label id="uiYulupAnnotationSidebarDeckTitleLabel" value="&annotationSidebarContentTitle.label;"/>
+            <label id="uiYulupAnnotationSidebarDeckTitle"/>
+            <label value=""/>
+
+            <label id="uiYulupAnnotationSidebarDeckNameLabel" value="&annotationSidebarContentName.label;"/>
+            <label id="uiYulupAnnotationSidebarDeckName"/>
+            <label value=""/>
+
+            <label id="uiYulupAnnotationSidebarDeckDateLabel" value="&annotationSidebarContentDate.label;"/>
+            <label id="uiYulupAnnotationSidebarDeckDate"/>
+            <label value=""/>
+
+            <label id="uiYulupAnnotationSidebarDeckBodyLabel" value="&annotationSidebarContentBody.label;"/>
+            <label id="uiYulupAnnotationSidebarDeckBody"/>
+
+
+          </groupbox>
+
+          <!-- Split the sidebar in tow pieces -->
+          <splitter/>
+
+          <!-- Create a groupbox for showing the tree view -->
+          <groupbox flex="2">
+            <caption label="&annotationSidebarFeedEntriesGroupbox.label;" style="font-size: x-small;"/>
+
+            <deck id="uiYulupAnnotationSidebarFeedEntriesDeck" selectedIndex="0" orient="vertical" align="stretch" flex="1">
+
+              <tree id="uiYulupAnnotationSidebarFeedEntriesTree"
+                    enableColumnDrag="false"
+                    hidecolumnpicker="true"
+                    seltype="single"
+                    flex="1">
+                <treecols>
+                  <treecol id="titleColumn" label="&annotationSidebarFeedEntriesTreeColumnTitle.label;" flex="1"/>
+                </treecols>
+                <treechildren context="uiYulupAnnotationSidebarFeedEntriesContextMenu"/>
+              </tree>
+
+              <!-- Add diverent labels to the "in groupbox" tree element -->
+              <vbox>
+                <spacer align="stretch" flex="1"/>
+                <description class="uiYulupAnnotationSidebarFeedError">
+                  &annotationSidebarFeedEntriesDescription.label;
+                </description>
+                <spacer align="stretch" flex="1"/>
+              </vbox>
+            </deck>
+
+          </groupbox>
+
+        </vbox>
+
+        <!-- Add diverent labels to the "out groupbox" sidebar element -->
+        <groupbox align="stretch" flex="1">
+          <spacer align="stretch" flex="1"/>
+          <description class="uiYulupAnnotationSidebarFeedError">
+            &annotationSidebarDescriptionNoFeed.label;
+          </description>
+          <spacer align="stretch" flex="1"/>
+        </groupbox>
+      </deck>
+    </vbox>
+  </deck>
+</page>

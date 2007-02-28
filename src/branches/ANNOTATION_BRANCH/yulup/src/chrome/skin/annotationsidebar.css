@@ -1,0 +1,30 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* ----------------- Feed Sidebar Font ------------------ */
+
+.uiYulupAnnotationSidebarFeedError {
+  text-align: center;
+  white-space: normal;
+  font-weight: bolder;
+  margin: 0px 0px 0px 0px;
+}
+
+/* ----------------- Annotation loading throbber (Not implemented) ------------------ */
+
+#uiYulupAnnotationSidebarFeedLoadingThrobber {
+  -moz-appearance: none;
+  -moz-user-focus: ignore;
+  background-color: transparent;
+  padding: 4px 4px 4px 4px;
+  list-style-image: url("chrome://global/skin/icons/notloading_16.png");
+}
+
+#uiYulupAnnotationSidebarFeedLoadingThrobber[busy="true"] {
+  list-style-image: url("chrome://global/skin/icons/loading_16.gif");
+}
+
+/* ----------------- Deck Font ------------------ */
+
+#uiYulupAnnotationSidebarDeckTitleLabel, #uiYulupAnnotationSidebarDeckNameLabel, #uiYulupAnnotationSidebarDeckDateLabel, #uiYulupAnnotationSidebarDeckBodyLabel {
+  font-weight: bold;
+}

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+
+<!--
+# ***** BEGIN LICENSE BLOCK *****
+# Copyright 2006 Wyona AG Zurich
+#
+# This file is part of Yulup.
+#
+# Yulup is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Yulup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Yulup; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# ***** END LICENSE BLOCK *****
+-->
+
+<!--
+ * @author Florian Fricker
+ *
+ * This file includes the XUL code for the Annotation overlay menu window.
+ * The file gets loaded by the yulup menu propertie file.
+ *
+-->
+
+<!-- Load the dtd xml file for language support -->
+<!DOCTYPE overlay SYSTEM "chrome://yulup/locale/annotationsidebar.dtd">
+
+<!-- Load the overlay element -->
+<overlay id="uiYulupAnnotationSidebarOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <!-- Handle the annotation popup menue -->
+  <menupopup id="viewSidebarMenu">
+    <menuitem key="key_openYulupAnnotationSidebar" observes="uiOpenYulupAnnotationSidebar"/>
+  </menupopup>
+
+  <!-- Set the hotkey for the sidebar -->
+  <keyset id="mainKeyset">
+    <key id="key_openYulupAnnotationSidebar"
+         key="&openYulupAnnotationSidebar.key;"
+         modifiers="&openYulupAnnotationSidebar.modifiers;"
+         command="uiOpenYulupAnnotationSidebar"/>
+  </keyset>
+
+  <!-- Initialize the broadcaster and import the Annotation-Sidebar interface -->
+  <broadcasterset id="mainBroadcasterSet">
+    <broadcaster id="uiOpenYulupAnnotationSidebar"
+                 label="&annotationSidebarPage.title;"
+                 autoCheck="false"
+                 type="checkbox"
+                 group="sidebar"
+                 sidebarurl="chrome://yulup/content/annotationsidebar/annotationsidebar.xul"
+                 sidebartitle="&annotationSidebarPage.title;"
+                 oncommand="toggleSidebar('uiOpenYulupAnnotationSidebar');"
+                 disabled="true"/>
+  </broadcasterset>
+</overlay>

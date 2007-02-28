@@ -1,0 +1,1979 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Yulup User Manual</title>
+    <link rel="stylesheet" href="user_manual.css" type="text/css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.69.1"/>
+    <meta name="description" content="The user manual for Yulup."/>
+  </head>
+  <body>
+    <div class="article" lang="en">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title"><a id="id52610"/>Yulup User Manual</h1>
+          </div>
+          <div>
+            <div class="authorgroup">
+              <div class="author">
+                <h3 class="author"><span class="firstname">Andreas</span> <span class="surname">Wuest</span></h3>
+                <div class="affiliation">
+                  <span class="corpname">Wyona AG<br/></span>
+                </div>
+                <code class="email">&lt;<a href="mailto:awuest@student.ethz.ch">awuest@student.ethz.ch</a>&gt;</code>
+              </div>
+              <div class="author">
+                <h3 class="author"><span class="firstname">Michael</span> <span class="surname">Wechner</span></h3>
+                <div class="affiliation">
+                  <span class="jobtitle">CEO<br/></span>
+                  <span class="corpname">Wyona AG<br/></span>
+                </div>
+                <div class="affiliation">
+                  <span class="orgname">Apache Software Foundation<br/></span>
+                </div>
+                <code class="email">&lt;<a href="mailto:michi@wyona.com">michi@wyona.com</a>&gt;</code>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="pubdate">2007-01-26</p>
+          </div>
+          <div>
+            <div class="abstract">
+              <p class="title">
+                <b>Abstract</b>
+              </p>
+              <p>The user manual for <span class="emphasis"><em>Yulup</em></span>.</p>
+            </div>
+          </div>
+        </div>
+        <hr/>
+      </div>
+      <div class="toc">
+        <p>
+          <b>Table of Contents</b>
+        </p>
+        <dl>
+          <dt>
+            <span class="section">
+              <a href="#id52705">1. Introduction</a>
+            </span>
+          </dt>
+          <dt>
+            <span class="section">
+              <a href="#id52840">2. Notational Conventions</a>
+            </span>
+          </dt>
+          <dt>
+            <span class="section">
+              <a href="#id52885">3. System Requirements</a>
+            </span>
+          </dt>
+          <dt>
+            <span class="section">
+              <a href="#id52905">4. Installation</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#install">4.1. Install</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#update">4.2. Update</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id53093">5. Concepts</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id53098">5.1. Webbrowser View and Editor View</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#id53196">5.2. Webpages, Documents and Document Fragments</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id53252">6. Opening and Creating new Documents</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id53260">6.1. Opening Documents</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#id53266">6.1.1. From the Webbrowser View</a>
+                    </span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="section">
+                          <a href="#id53272">6.1.1.1. Open Document from CMS</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id53393">6.1.1.2. Open Document As-Is</a>
+                        </span>
+                      </dt>
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="section">
+                      <a href="#id53440">6.1.2. Inside the Editor</a>
+                    </span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="section">
+                          <a href="#id53446">6.1.2.1. Open Document from CMS</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id53453">6.1.2.2. Open Document from Local Filesystem</a>
+                        </span>
+                      </dt>
+                    </dl>
+                  </dd>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#id53462">6.2. Creating Documents</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#id53468">6.2.1. From the Webbrowser View</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id53475">6.2.2. Inside the Editor</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id53484">7. Saving Documents</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id53495">7.1. Save Document</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#id53616">7.2. Save Document As...</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id53689">8. Uploading Documents/Assets</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id53751">8.1. From the Webbrowser View</a>
+                </span>
+              </dt>
+              <dt>
+                <span class="section">
+                  <a href="#id53758">8.2. Inside the Editor</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id53766">9. Editing Documents</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id53831">9.1. Source Mode</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#guidedtaginserter">9.1.1. Guided Tag Inserter</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#id54005">9.2. WYSIWYG Mode</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#id54011">9.2.1. XHTML Mode</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id54018">9.2.2. XML Mode</a>
+                    </span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="section">
+                          <a href="#id54023">9.2.2.1. XPath Toolbar</a>
+                        </span>
+                      </dt>
+                    </dl>
+                  </dd>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#id54082">9.3. Key Bindings</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#standardkeybindings">9.3.1. Standard Key Bindings</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id54156">9.3.2. Readline (Emacs) Key Bindings</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#id54392">9.4. Find &amp; Replace</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#id54398">9.4.1. Find</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id54545">9.4.2. Find &amp; Replace</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#id54736">9.5. Exiting the Editor</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id54826">10. Authentication</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id54838">10.1. Login</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#id54884">10.1.1. Text Fields (Autocompleted)</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id54917">10.1.2. Password Fields</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#id54933">10.2. Logout</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id54979">11. Sidebars</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id55007">11.1. Atom Sidebar</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#id55097">11.1.1. Selecting Workspaces and Collections</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id55121">11.1.2. Feed Information</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id55137">11.1.3. Feed Entries</a>
+                    </span>
+                  </dt>
+                  <dd>
+                    <dl>
+                      <dt>
+                        <span class="section">
+                          <a href="#id55177">11.1.3.1. Editing Feed Entries</a>
+                        </span>
+                      </dt>
+                      <dt>
+                        <span class="section">
+                          <a href="#id55202">11.1.3.2. Deleting Feed Entries</a>
+                        </span>
+                      </dt>
+                    </dl>
+                  </dd>
+                  <dt>
+                    <span class="section">
+                      <a href="#id55229">11.1.4. Searching a Feed</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#id55245">11.2. Neutron Sidebar</a>
+                </span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="section">
+              <a href="#id55256">12. Preferences</a>
+            </span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="section">
+                  <a href="#id55288">12.1. General</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#id55329">12.1.1. Workspace</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id55375">12.1.2. Default CMS</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id55388">12.1.3. Sidebars</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="section">
+                  <a href="#id55412">12.2. Editor</a>
+                </span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="section">
+                      <a href="#pref_keybindings">12.2.1. Key Bindings</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id55521">12.2.2. Layout</a>
+                    </span>
+                  </dt>
+                  <dt>
+                    <span class="section">
+                      <a href="#id55548">12.2.3. Appearance</a>
+                    </span>
+                  </dt>
+                </dl>
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id52705"/>1. Introduction</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      Yulup is a <a href="http://neutron.wyona.org/">Neutron</a>-enabled editing client, based on the <a href="http://www.mozilla.org/">Mozilla</a> platform. It is available as an <span class="emphasis"><em>extension</em></span> (also called <span class="emphasis"><em>add-on</em></span>) for <a href="http://www.mozilla.com/firefox/">Mozilla Firefox</a>.
+    </p>
+        <p>
+      With Yulup, you can edit the following document types:
+      </p>
+        <div class="itemizedlist">
+          <ul>
+            <li>
+              <p><b>XML. </b>
+            You can edit plain <span class="emphasis"><em>XML</em></span> documents in source mode.
+          </p>
+            </li>
+            <li>
+              <p><b>XML with associated XSLT. </b>
+            You can edit <span class="emphasis"><em>XML</em></span> with associated <span class="emphasis"><em>XSLT</em></span> documents in source as well as WYSIWYG mode. To display your XML document in the WYSIWYG mode, it is first transformed using the associated XSLT document. Any changes you make to your document in the WYSIWYG view are then propagated back to your XML source.
+          </p>
+            </li>
+            <li>
+              <p><b>XHTML. </b>
+            You can edit <span class="emphasis"><em>XHTML</em></span> documents in source as well as WYSIWYG mode.
+          </p>
+            </li>
+            <li>
+              <p><b>HTML. </b>
+            You can edit <span class="emphasis"><em>HTML</em></span> documents in source as well as WYSIWYG mode.
+          </p>
+            </li>
+          </ul>
+        </div>
+        <p>
+    </p>
+        <p>
+      Yulup allows for seamless interaction with Neutron-enabled Content Management Systems, making editing a breeze. When visiting a certain document, you can directly check out the source from your CMS, edit it, and store it back without further interaction with the CMS.
+    </p>
+        <p>
+      The Yulup editor strives to bridge the gap between the Web and the desktop. Traditional editors were either stand-alone desktop applications, or in-browser tools. Stand-alone applications obviously lead to an impedance-mismatch between the user's browsing and publishing activity on the Web and the editing of documents. In-browser editors on the other hand can avoid this gap, but lack the features of a stand-alone application like access to the desktop, offline editing, import/export filters, etc. Furthermore, they often perform poorly or have scalability issues.
+    </p>
+        <p>
+      Yulup tries to bring together the Web and the desktop, offering the full capabilities of a conventional desktop application, but avoiding the gap between the browsing and publishing workflow by being integrated seamlessly into the browser. This enables the user to stay in the same application, no matter if she is browsing, reading, editing or publishing.
+    </p>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id52840"/>2. Notational Conventions</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      </p>
+        <div class="itemizedlist">
+          <ul>
+            <li>
+              <p><b>Keyboard Shortcuts. </b>
+            Keyboard shortcut combinations may contain a component called <span><strong class="keycap">Accel</strong></span>. This is a platform specific key used to start certain shortcut combinations.
+          </p>
+              <p>
+            On Mac OS X, the <span><strong class="keycap">Accel</strong></span> component denotes the <span><strong class="keycap">Cmd</strong></span> key. On all other platforms, this denotes the <span><strong class="keycap">Ctrl</strong></span> key.
+          </p>
+            </li>
+          </ul>
+        </div>
+        <p>
+    </p>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id52885"/>3. System Requirements</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      Yulup requires <a href="http://www.mozilla.com/firefox/">Mozilla Firefox</a> with a minimum version of 1.5. The Yulup editor is a platform-independent application, and can therefore be run on every machine which also runs Firefox.
+    </p>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id52905"/>4. Installation</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      For a first-time install, please refer to the <a href="#install">Install</a> section. If you want to update a Yulup installation to the latest version, refer to section <a href="#update">Update</a>.
+    </p>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="install"/>4.1. Install</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        </p>
+          <div class="orderedlist">
+            <ol type="1">
+              <li>
+                <p>
+              Open Firefox.
+            </p>
+              </li>
+              <li>
+                <p>
+              Go to <a href="http://www.yulup.org/">http://www.yulup.org/</a>.
+            </p>
+              </li>
+              <li>
+                <p>
+              Click the <span class="emphasis"><em>Download Yulup</em></span> link.
+            </p>
+              </li>
+              <li>
+                <p>
+              In the requester which just popped up, click <span class="guibutton">Install Now</span>.
+            </p>
+              </li>
+              <li>
+                <p>
+              Restart Firefox.
+            </p>
+              </li>
+            </ol>
+          </div>
+          <p>
+        You are done. You can verify that the installation was successful by opening Firefox's extension manager (<span class="guimenu">Tools</span> &gt;&gt; <span class="guimenuitem">Extensions</span> for Firefox 1.5; <span class="guimenu">Tools</span> &gt;&gt; <span class="guimenuitem">Add-ons</span> for Firefox 2.0). There, an entry for Yulup should appear.
+      </p>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="update"/>4.2. Update</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        </p>
+          <div class="orderedlist">
+            <ol type="1">
+              <li>
+                <p>
+              Open Firefox's extension manager (<span class="guimenu">Tools</span> &gt;&gt; <span class="guimenuitem">Extensions</span> for Firefox 1.5; <span class="guimenu">Tools</span> &gt;&gt; <span class="guimenuitem">Add-ons</span> for Firefox 2.0).
+            </p>
+              </li>
+              <li>
+                <p>
+              Click on the <span class="guibutton">Find Updates</span> button and wait until Firefox has finished searching for available updates. If an update for Yulup is available, a button labeled <span class="guibutton">Update Now</span> appears to the right of the Yulup entry.
+            </p>
+              </li>
+              <li>
+                <p>
+              Click the <span class="guibutton">Update Now</span> button and wait until Firefox has downloaded the update.
+            </p>
+              </li>
+              <li>
+                <p>
+              Restart Firefox.
+            </p>
+              </li>
+            </ol>
+          </div>
+          <p>
+        You are done.
+      </p>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id53093"/>5. Concepts</h2>
+            </div>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id53098"/>5.1. Webbrowser View and Editor View</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        The <span class="emphasis"><em>Webbrowser View</em></span> is your normal web browser.
+        </p>
+          <div class="figure">
+            <a id="id53111"/>
+            <p class="title">
+              <b>Figure 1. Webbrowser View</b>
+            </p>
+            <div class="mediaobject">
+              <img src="figures/webbrowser_view.png" width="486" alt="Webbrowser view"/>
+            </div>
+          </div>
+          <p>
+        The only difference you experience is the Yulup menu icon placed in the upper right corner of the window. This is the main entry point to Yulup, and allows you to open documents, edit, create, upload and delete documents, and access the preferences dialog.
+      </p>
+          <p>
+        Normally, most of these items are disabled though. But if you visit a web page which allows introspection e.g. via Neutron or the Atom Publishing Protocol, these items are enabled, and allow you to directly interact with the CMS/web server which contains the current document.
+      </p>
+          <p>
+        If you choose to edit an existing document or to create a new document, you are then transferred to the <span class="emphasis"><em>Editor View</em></span>.
+        </p>
+          <div class="figure">
+            <a id="id53165"/>
+            <p class="title">
+              <b>Figure 2. Editor View</b>
+            </p>
+            <div class="mediaobject">
+              <img src="figures/editor_view.png" width="486" alt="Editor view"/>
+            </div>
+          </div>
+          <p>
+      </p>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id53196"/>5.2. Webpages, Documents and Document Fragments</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        It is important to realise that a webpage, as you may see when browsing a CMS, is not actually what is stored on the server as the source, and not necessarily every portion in a webpage can be edited. For example, a typical <span class="emphasis"><em>webpage</em></span> may consists of a navigational part, a main content part, and a news section. The navigational part may not be editable, because it is generated dynamically by the webserver, and not stored in any <span class="emphasis"><em>document</em></span> source file. Furthermore, the main content and the news section themselves may not live inside the same document. In fact, your webserver may dynamically aggregate these two parts (called <span class="emphasis"><em>document fragments</em></span>) from two different source files, and then add the navigational part.
+      </p>
+          <p>
+        But there is more to that. After having constructed such a document, it may not be displayable by a webbrowser, because its format lacks the representational aspects of a webpage, i.e. the formatting. These formatting instructions may come from another different document, and the webserver first has to process the content, applying this representational information.
+      </p>
+          <p>
+        This makes it clear that it is not straight forward to edit a webpage as you can see it rendered by your webbrowser. Although this is perfectly possible, it may not have the effect you would like to see, namely the changes you made in that webpage to be incorporated back into the various source documents which make up this webpage.
+      </p>
+          <p>
+        What you would like to do is therefore having a way of making the changes you want directly in the various document fragments a webpage is made up from, but nevertheless having the document rendered like it would be by a webbrowser if you would not be editing it.
+      </p>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id53252"/>6. Opening and Creating new Documents</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      You can open and create documents starting from two different points: either from your normal webbrowser view or from within the editor itself.
+    </p>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id53260"/>6.1. Opening Documents</h3>
+              </div>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id53266"/>6.1.1. From the Webbrowser View</h4>
+                </div>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id53272"/>6.1.1.1. Open Document from CMS</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+            When viewing a webpage in your browser which resides on a Neutron-enabled CMS, you are offered the possibility to open that document's source directly from the CMS. This means that the latest revision of the document underlying your currently displayed webpage is fetched from the CMS, and, depending on the opening mode, is either checked out from the CMS (meaning that you acquire a lock on that document), or simply opened (meaning no lock is created on the server side).
+          </p>
+              <p>
+            </p>
+              <div class="itemizedlist">
+                <ul>
+                  <li>
+                    <p><b>Open and Edit. </b>
+                  If the server offers you the option of opening the document without locking, then a menu item labelled <span class="guimenuitem">Open and Edit</span> is enabled in the Yulup Browser Menu.
+                  </p>
+                    <div class="figure">
+                      <a id="id53301"/>
+                      <p class="title">
+                        <b>Figure 3. <span class="emphasis"><em>Open and Edit</em></span> from the Yulup Menu</b>
+                      </p>
+                      <div class="mediaobject">
+                        <img src="figures/open_yulupmenu.png" alt="Open and Edit from the Yulup Menu"/>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <p><b>Checkout and Edit. </b>
+                  If the server offers you the option of opening the document with locking, then a menu item labelled <span class="guimenuitem">Checkout and Edit</span> is enabled in the Yulup Browser Menu. By checking out a document from the CMS like this, you are acquiring a lock on this document. This means that only you can currently edit this document, and no one else can edit this document in the meantime.
+                  </p>
+                    <div class="figure">
+                      <a id="id53325"/>
+                      <p class="title">
+                        <b>Figure 4. <span class="emphasis"><em>Checkout and Edit</em></span> from the Yulup Menu</b>
+                      </p>
+                      <div class="mediaobject">
+                        <img src="figures/checkout_yulupmenu.png" alt="Checkout and Edit from the Yulup Menu"/>
+                      </div>
+                    </div>
+                    <p>
+                  Note that the implementation of the locking mechanism is up to the web server. The web server may either hold the lock indefinitely, until you checkin the document again, or it may decide to drop the lock after a certain amount of time.
+                </p>
+                  </li>
+                </ul>
+              </div>
+              <p>
+          </p>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id53393"/>6.1.1.2. Open Document As-Is</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+            You can also open a document as-is, using the <span class="guimenuitem">Edit Locally</span> menu item. This simply reloads the document you are currently viewing into the editor. This enables you to edit arbitrary web pages. Of course, you cannot store such a document back to the web server, but you can still save it to your local filesystem.
+            </p>
+              <div class="figure">
+                <a id="id53410"/>
+                <p class="title">
+                  <b>Figure 5. <span class="emphasis"><em>Edit Locally</em></span></b>
+                </p>
+                <div class="mediaobject">
+                  <img src="figures/edit_locally.png" alt="Edit a document locally"/>
+                </div>
+              </div>
+              <p>
+          </p>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id53440"/>6.1.2. Inside the Editor</h4>
+                </div>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id53446"/>6.1.2.1. Open Document from CMS</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id53453"/>6.1.2.2. Open Document from Local Filesystem</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id53462"/>6.2. Creating Documents</h3>
+              </div>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id53468"/>6.2.1. From the Webbrowser View</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id53475"/>6.2.2. Inside the Editor</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id53484"/>7. Saving Documents</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      Once a document was modified in the editor, there are several possibilities to store the document.
+    </p>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id53495"/>7.1. Save Document</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        </p>
+          <div class="itemizedlist">
+            <ul>
+              <li>
+                <p><b>Save to file. </b>
+              Saves the modifications to the local file system.
+            </p>
+                <p>
+              This menu item is only available if the document contains changes and the document was either loaded from the local file system, or was previously saved to the local file system.
+            </p>
+              </li>
+              <li>
+                <p><b>Save temporary copy (<span><strong class="keycap">Accel</strong></span>+<span><strong class="keycap">Shift</strong></span>+<span><strong class="keycap">T</strong></span>) [this feature will be activated in a future release]. </b>
+              Saves a temporary copy to your local workspace.
+            </p>
+                <p>
+              This menu item is only available if the document contains changes.
+            </p>
+              </li>
+              <li>
+                <p><b>Save back to CMS (<span><strong class="keycap">Accel</strong></span>+<span><strong class="keycap">Shift</strong></span>+<span><strong class="keycap">S</strong></span>). </b>
+              Saves the modifications back to the CMS but does not release the lock held on this document.
+            </p>
+                <p>
+              This menu item is only visible if the document contains changes and the server supports storing without lock-release.
+            </p>
+              </li>
+              <li>
+                <p><b>Check back in to CMS and exit (<span><strong class="keycap">Accel</strong></span>+<span><strong class="keycap">Shift</strong></span>+<span><strong class="keycap">C</strong></span>). </b>
+              Saves the modifications back to the CMS, releases the lock held on this document and exits the editor. After exiting, the modified document is reloaded from the document source and rendered in the editor tab so you can immediately check how your document looks like.
+            </p>
+                <p>
+              This menu item is only visible if the document contains changes and the server supports storing with lock-release.
+            </p>
+              </li>
+            </ul>
+          </div>
+          <p>
+      </p>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id53616"/>7.2. Save Document As...</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        </p>
+          <div class="itemizedlist">
+            <ul>
+              <li>
+                <p><b>Save to file system as... </b>
+              Saves the document to the local file system. You are asked to supply a path to the place where you want the document to be stored.
+            </p>
+              </li>
+            </ul>
+          </div>
+          <p>
+        </p>
+          <div class="itemizedlist">
+            <ul>
+              <li>
+                <p><b>Save to CMS as... </b>
+              Saves the document to the CMS. You are asked to supply a path to the place where you want the document to be stored.
+              </p>
+                <div class="figure">
+                  <a id="id53653"/>
+                  <p class="title">
+                    <b>Figure 6. <span class="emphasis"><em>Save to CMS as...</em></span> inside the Editor</b>
+                  </p>
+                  <div class="mediaobject">
+                    <img src="figures/upload_document.png" alt="Save to CMS as.. inside the editor"/>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <p>
+      </p>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id53689"/>8. Uploading Documents/Assets</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      </p>
+        <div class="figure">
+          <a id="id53697"/>
+          <p class="title">
+            <b>Figure 7. Specify the CMS URI</b>
+          </p>
+          <div class="mediaobject">
+            <img src="figures/upload_specifyuri.png" alt="Specify the CMS URI"/>
+          </div>
+        </div>
+        <p>
+      </p>
+        <div class="figure">
+          <a id="id53723"/>
+          <p class="title">
+            <b>Figure 8. Upload a Document or Asset</b>
+          </p>
+          <div class="mediaobject">
+            <img src="figures/upload_asset.png" alt="Upload a document or asset"/>
+          </div>
+        </div>
+        <p>
+    </p>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id53751"/>8.1. From the Webbrowser View</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id53758"/>8.2. Inside the Editor</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id53766"/>9. Editing Documents</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      There are two fundamentally different editing modes in Yulup: the <span class="emphasis"><em>Source</em></span> and <span class="emphasis"><em>WYSIWYG</em></span> mode. In the <span class="emphasis"><em>Source</em></span> mode you can edit documents on the source level, i.e. you can directly modify the document markup. In the <span class="emphasis"><em>WYSIWYG</em></span> mode view, you modify the graphical representation of a document. With other words: whatever you do, the document looks exactly like it is served by your web server and later rendered by the browser.
+    </p>
+        <p>
+      Despite these two different modes, they share a common toolbar.
+      </p>
+        <div class="figure">
+          <a id="id53800"/>
+          <p class="title">
+            <b>Figure 9. Editor Toolbar</b>
+          </p>
+          <div class="mediaobject">
+            <img src="figures/edit_toolbar.png" alt="Editor toolbar"/>
+          </div>
+        </div>
+        <p>
+      This toolbar provides you the ability to save, upload, open or create new documents, undo/redo operations, cut, copy and paste from and to the system clipboard, as well as modify the document currently edited by e.g. inserting new elements.
+    </p>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id53831"/>9.1. Source Mode</h3>
+              </div>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="guidedtaginserter"/>9.1.1. Guided Tag Inserter</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          The guided tag inserter helps to insert elements at the current cursor position. It can create two tag types, namely empty (tags only consisting of an opening tag, ending with a "/") and non-empty tags. The guided tag inserter is invoked by pressing <span class="emphasis"><em>C-i</em></span>.
+        </p>
+            <p>
+          If a block of text is currently selected, then the guided tag inserter will surround this block with the newly created tag, but only if a non-empty tag is generated. Otherwise, the current selection is overwritten.
+        </p>
+            <p>
+          The guided tag inserter first asks for the tag name.
+          </p>
+            <div class="figure">
+              <a id="id53867"/>
+              <p class="title">
+                <b>Figure 10. Guided Tag Inserter (Element Name)</b>
+              </p>
+              <div class="mediaobject">
+                <img src="figures/guidedtaginserter_elemname.png" alt="Guided Tag Inserter asking for the element name"/>
+              </div>
+            </div>
+            <p>
+          If you hit return without entering any text into the tag name field, the guided tag inserter aborts without inserting any text into the editor. Otherwise, if you have indeed entered a tag name, it goes into a loop and asks for attribute names and their values.
+          </p>
+            <div class="figure">
+              <a id="id53899"/>
+              <p class="title">
+                <b>Figure 11. Guided Tag Inserter (Attribute Name)</b>
+              </p>
+              <div class="mediaobject">
+                <img src="figures/guidedtaginserter_attrname.png" alt="Guided Tag Inserter asking for the attribute name"/>
+              </div>
+            </div>
+            <p>
+          </p>
+            <div class="figure">
+              <a id="id53927"/>
+              <p class="title">
+                <b>Figure 12. Guided Tag Inserter (Attribute Value)</b>
+              </p>
+              <div class="mediaobject">
+                <img src="figures/guidedtaginserter_attrvalue.png" alt="Guided Tag Inserter asking for the attribute value"/>
+              </div>
+            </div>
+            <p>
+          If you hit return without entering any text into the attribute name field, the guided tag inserter proceeds to ask you if you want to create an empty (e.g. <span class="markup">&lt;section/&gt;</span>) or a non-empty tag (e.g. <span class="markup">&lt;section&gt;&lt;/section&gt;</span>).
+          </p>
+            <div class="figure">
+              <a id="id53967"/>
+              <p class="title">
+                <b>Figure 13. Guided Tag Inserter (Tag Mode)</b>
+              </p>
+              <div class="mediaobject">
+                <img src="figures/guidedtaginserter_finish.png" alt="Guided Tag Inserter asking if you want to insert and empty or a non-empty tag"/>
+              </div>
+            </div>
+            <p>
+          If you hit return without entering any text into the attribute value field, the guided tag inserter asks you for the next attribute name.
+        </p>
+            <p>
+          You can leave the guided tag inserter at any time by clicking "Abort". No text is inserted into the editor in this case.
+        </p>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id54005"/>9.2. WYSIWYG Mode</h3>
+              </div>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id54011"/>9.2.1. XHTML Mode</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id54018"/>9.2.2. XML Mode</h4>
+                </div>
+              </div>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id54023"/>9.2.2.1. XPath Toolbar</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+            The XPath toolbar shows you the path from the document root to the current selection. This means that whatever you insert at the current position is going to end up at the shown path in the XML source document.
+            </p>
+              <div class="figure">
+                <a id="id54035"/>
+                <p class="title">
+                  <b>Figure 14. XPath Toolbar</b>
+                </p>
+                <div class="mediaobject">
+                  <img src="figures/xpath_toolbar.png" alt="XPath toolbar showing the path from the document root to the current selection"/>
+                </div>
+              </div>
+              <p>
+            Furthermore, the XPath toolbar lets you choose between <span class="emphasis"><em>namespace-aware</em></span> and <span class="emphasis"><em>namespace-unaware</em></span> mode. If you select the namespace-aware mode, this means that whatever you insert at the current position is actually inserted at the namespaced path in the source document. If you choose the namespace-unaware mode, the back-propagation does not take namespaces into account. You might require this mode for certain documents which are otherwise not editable in namespace-aware mode.
+          </p>
+            </div>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id54082"/>9.3. Key Bindings</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        Note that the <a href="#standardkeybindings">Standard Key Bindings</a> are always active. See <a href="#pref_keybindings" title="12.2.1.&#xA0;Key Bindings">Section 12.2.1, “Key Bindings”</a> for how to select different key bindings.
+        </p>
+          <p>
+          The <span><strong class="keycap">C</strong></span> key means <span><strong class="keycap">Ctrl</strong></span> and is valid for all platforms. Note that there are additional platform-dependent key bindings (for those, please refer to the user manual of your Operating System).
+        </p>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="standardkeybindings"/>9.3.1. Standard Key Bindings</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+            </p>
+            <h5><a id="id54130"/>Inserting</h5>
+            <p>
+            </p>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <p><b>C-i (Source mode only). </b>
+                  Open the guided tag/element inserter (see <a href="#guidedtaginserter" title="9.1.1.&#xA0;Guided Tag Inserter">Section 9.1.1, “Guided Tag Inserter”</a>).
+                </p>
+                </li>
+              </ul>
+            </div>
+            <p>
+          </p>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id54156"/>9.3.2. Readline (Emacs) Key Bindings</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+            The following key bindings are activated by default.
+            </p>
+            <h5><a id="id54165"/>Moving and Selecting</h5>
+            <p>
+            </p>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <p><b>C-a. </b>
+                  Move to beginning of line.
+                </p>
+                </li>
+                <li>
+                  <p><b>C-A. </b>
+                  Select to beginning of line.
+                </p>
+                </li>
+                <li>
+                  <p><b>C-b. </b>
+                  Move to previous character.
+                </p>
+                </li>
+                <li>
+                  <p><b>C-B. </b>
+                  Select previous character.
+                </p>
+                </li>
+                <li>
+                  <p><b>C-e. </b>
+                  Move to end of line.
+                </p>
+                </li>
+                <li>
+                  <p><b>C-E. </b>
+                  Select to end of line.
+                </p>
+                </li>
+                <li>
+                  <p><b>C-f. </b>
+                  Move to next character.
+                </p>
+                </li>
+                <li>
+                  <p><b>C-F. </b>
+                  Select next character.
+                </p>
+                </li>
+                <li>
+                  <p><b>C-n. </b>
+                  Move to next line.
+                </p>
+                </li>
+                <li>
+                  <p><b>C-N. </b>
+                  Select to next line.
+                </p>
+                </li>
+                <li>
+                  <p><b>C-p. </b>
+                  Move to previous line.
+                </p>
+                </li>
+                <li>
+                  <p><b>C-P. </b>
+                  Select to previous line.
+                </p>
+                </li>
+              </ul>
+            </div>
+            <p>
+            </p>
+            <h5><a id="id54300"/>Deleting</h5>
+            <p>
+            </p>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <p><b>C-d. </b>
+                  Delete (delete next character).
+                </p>
+                </li>
+                <li>
+                  <p><b>C-h. </b>
+                  Backspace (delete previous character)
+                </p>
+                </li>
+                <li>
+                  <p><b>C-k. </b>
+                  Delete to end of line.
+                </p>
+                </li>
+                <li>
+                  <p><b>C-u. </b>
+                  Delete complete current line.
+                </p>
+                </li>
+                <li>
+                  <p><b>C-w. </b>
+                  Delete previous word.
+                </p>
+                </li>
+                <li>
+                  <p><b>C-W. </b>
+                  Delete next word.
+                </p>
+                </li>
+              </ul>
+            </div>
+            <p>
+            </p>
+            <h5><a id="id54372"/>Undo/Redo</h5>
+            <p>
+            </p>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <p><b>C-_. </b>
+                  Undo last action.
+                </p>
+                </li>
+              </ul>
+            </div>
+            <p>
+          </p>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id54392"/>9.4. Find &amp; Replace</h3>
+              </div>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id54398"/>9.4.1. Find</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          The <span class="emphasis"><em>Find</em></span> dialog can be opened using either the corresponding button on the editor toolbar, or by pressing <span><strong class="keycap">Accel</strong></span>+<span><strong class="keycap">Shift</strong></span>+<span><strong class="keycap">F</strong></span>.
+          </p>
+            <div class="figure">
+              <a id="id54423"/>
+              <p class="title">
+                <b>Figure 15. Find Dialog</b>
+              </p>
+              <div class="mediaobject">
+                <img src="figures/find_dialog.png" alt="Find dialog"/>
+              </div>
+            </div>
+            <p>
+          </p>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <p><b>Search for. </b>
+                Enter the phrase you want to search for.
+              </p>
+                </li>
+                <li>
+                  <p><b>Match case. </b>
+                Select if you want the search to be case-sensitive.
+              </p>
+                </li>
+                <li>
+                  <p><b>Match entire word only. </b>
+                Select if the search term should only be matched if the occurrence is an individual word.
+              </p>
+                </li>
+                <li>
+                  <p><b>Search backwards. </b>
+                Select if the search should be performed backwards with regard to the current cursor position.
+              </p>
+                </li>
+                <li>
+                  <p><b>Wrap around. </b>
+                Select if the search should wrap around the end (or the beginning, if <span class="emphasis"><em>Search backwards</em></span> is selected) of the document.
+              </p>
+                </li>
+                <li>
+                  <p><b>Find. </b>
+                Perform the search. If the search term was not found, <span class="emphasis"><em>Phrase not found</em></span> is displayed at the bottom of the dialog.
+              </p>
+                </li>
+                <li>
+                  <p><b>Cancel. </b>
+                Close the dialog.
+              </p>
+                </li>
+              </ul>
+            </div>
+            <p>
+        </p>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id54545"/>9.4.2. Find &amp; Replace</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          The <span class="emphasis"><em>Find &amp; Replace</em></span> dialog can be opened using either the corresponding button on the editor toolbar, or by pressing <span><strong class="keycap">Accel</strong></span>+<span><strong class="keycap">Shift</strong></span>+<span><strong class="keycap">R</strong></span>.
+          </p>
+            <div class="figure">
+              <a id="id54570"/>
+              <p class="title">
+                <b>Figure 16. Find &amp; Replace Dialog</b>
+              </p>
+              <div class="mediaobject">
+                <img src="figures/findreplace_dialog.png" alt="Find &amp; replace dialog"/>
+              </div>
+            </div>
+            <p>
+          </p>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <p><b>Search for. </b>
+                Enter the phrase you want to search for.
+              </p>
+                </li>
+                <li>
+                  <p><b>Replace with. </b>
+                Enter the phrase with which you want to replace the search term. If left empty, occurrences of the search term are removed.
+              </p>
+                </li>
+                <li>
+                  <p><b>Match case. </b>
+                Select if you want the search to be case-sensitive.
+              </p>
+                </li>
+                <li>
+                  <p><b>Match entire word only. </b>
+                Select if the search term should only be matched if the occurrence is an individual word.
+              </p>
+                </li>
+                <li>
+                  <p><b>Search backwards. </b>
+                Select if the search should be performed backwards with regard to the current cursor position.
+              </p>
+                </li>
+                <li>
+                  <p><b>Wrap around. </b>
+                Select if the search should wrap around the end (or the beginning, if <span class="emphasis"><em>Search backwards</em></span> is selected) of the document.
+              </p>
+                </li>
+                <li>
+                  <p><b>Replace All. </b>
+                Replace all occurrences of the search term in the document. At the end of the process, the number of replaced occurrences is displayed at the bottom of the dialog.
+              </p>
+                </li>
+                <li>
+                  <p><b>Replace and Find. </b>
+                Replace the currently selected text in the document (if the selection matches the search term), and find the next occurrence. If the currently selected text in the document does not match the currently entered search term, then this function is disabled.
+              </p>
+                </li>
+                <li>
+                  <p><b>Find. </b>
+                Perform the search. If the search term was not found, <span class="emphasis"><em>Phrase not found</em></span> is displayed at the bottom of the dialog.
+              </p>
+                </li>
+                <li>
+                  <p><b>Cancel. </b>
+                Close the dialog.
+              </p>
+                </li>
+              </ul>
+            </div>
+            <p>
+        </p>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id54736"/>9.5. Exiting the Editor</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        There are multiple ways to close the editor.
+        </p>
+          <div class="itemizedlist">
+            <ul>
+              <li>
+                <p><b>Exit Button (<span><strong class="keycap">Accel</strong></span>+<span><strong class="keycap">Shift</strong></span>+<span><strong class="keycap">E</strong></span>). </b>
+              When leaving the editor via the <span class="emphasis"><em>Exit</em></span> button on the editor toolbar, you are first asked if you really want to quit the editor, should the document contain unsaved changes. After you asserted to indeed leave the editor, or if the document did not contain any unsaved modifications, the editor tab is replaced by a new tab which contains the reloaded original document.
+            </p>
+              </li>
+              <li>
+                <p><b>Check back in to CMS and exit (<span><strong class="keycap">Accel</strong></span>+<span><strong class="keycap">Shift</strong></span>+<span><strong class="keycap">C</strong></span>). </b>
+              After the document is checked back in to the CMS, the editor tab is replaced by a new tab which contains the reloaded original document.
+            </p>
+              </li>
+              <li>
+                <p><b>Tab close (<span><strong class="keycap">Accel</strong></span>+<span><strong class="keycap">W</strong></span>). </b>
+              When closing the editor tab (via the tab close button, the menu, the context menu, or the key combination), you are first asked if you really want to quit the editor, should the document contain unsaved changes. After you asserted to indeed leave the editor, or if the document did not contain any unsaved modifications, the editor tab is closed.
+            </p>
+              </li>
+            </ul>
+          </div>
+          <p>
+      </p>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id54826"/>10. Authentication</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      The CMS serving the documents to edit may decide to protect individual documents. In order to access such documents, you might have to authenticate yourself to the system by entering a set of credentials.
+    </p>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id54838"/>10.1. Login</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        If the server handles authentication through Yulup, you are presented with a dialog consisting of several fields, as defined by the CMS. There are two kind of fields: normal text fields, and password fields.
+        </p>
+          <div class="figure">
+            <a id="id54850"/>
+            <p class="title">
+              <b>Figure 17. Authentication Dialog Example</b>
+            </p>
+            <div class="mediaobject">
+              <img src="figures/auth_dialog.png" alt="Example authentication dialog showing two fields to enter a user name and a password"/>
+            </div>
+          </div>
+          <p>
+      </p>
+          <p>
+        Authentication in Yulup is realms based, i.e. you can be logged in to several different realms simultaneously.
+      </p>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id54884"/>10.1.1. Text Fields (Autocompleted)</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          Text fields use autocompletion, i.e. any term you have once entered into such a field is presented later on in a pop-up menu. The autocomplete pop-up menu opens once you start typing in the text field, and the currently entered string is a prefix matching one of the entries in the autocompletion history. In order to select such an offered string, you can navigate this pop-up menu using the cursor keys.
+        </p>
+            <p>
+          If you want to delete one of the offered strings from the autocompletion history, select the entry in the pop-up menu using the cursor keys, and, once selected, press <span><strong class="keycap">Shift</strong></span>+<span><strong class="keycap">Delete</strong></span>.
+        </p>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id54917"/>10.1.2. Password Fields</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          Password fields are fields which do not directly show the text you enter. Instead, they use stars or bullets to represent characters, so that individuals standing by your screen cannot retrieve the entered password by looking at the text.
+        </p>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id54933"/>10.2. Logout</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        If the login was handled by Yulup, then you can also use Yulup to logout from a certain realm. In order to log out from a realm, open the Yulup menu and choose <span class="guimenuitem">Logout from "..."</span>, "..." being the name of the realm from which you want to logout from.
+        </p>
+          <div class="figure">
+            <a id="id54949"/>
+            <p class="title">
+              <b>Figure 18. Logout from a Realm</b>
+            </p>
+            <div class="mediaobject">
+              <img src="figures/logout_realm.png" alt="Logout from realm &quot;Yulup Website&quot;"/>
+            </div>
+          </div>
+          <p>
+      </p>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id54979"/>11. Sidebars</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      Sidebars are UI elements which are usually opened on the left hand side of the web browser. There are several standard sidebars delivered with Firefox, and Yulup adds two new ones, an Atom sidebar and a Neutron sidebar.
+    </p>
+        <p>
+      Sidebars can generally be accessed either via the <span class="guimenu">View</span> &gt;&gt; <span class="guisubmenu">Sidebar</span> menu, or via a keyboard shortcut specific to each sidebar.
+    </p>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id55007"/>11.1. Atom Sidebar</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        The Atom sidebar can be accessed either via the <span class="guimenu">View</span> &gt;&gt; <span class="guisubmenu">Sidebar</span> &gt;&gt; <span class="guimenuitem">Atom Sidebar</span> menu item, via the <span class="guimenuitem">Atom Sidebar</span> menu item in the Yulup menu, or via the <span><strong class="keycap">Accel</strong></span>+<span><strong class="keycap">Shift</strong></span>+<span><strong class="keycap">A</strong></span> keyboard shortcut.
+      </p>
+          <p>
+        Once the Atom sidebar is open, you can close it by unchecking it in one of the above mentioned menus, by hitting the <span><strong class="keycap">Accel</strong></span>+<span><strong class="keycap">Shift</strong></span>+<span><strong class="keycap">A</strong></span> keyboard shortcut again, or by clicking the <span class="guibutton">close</span> button in the upper right corner of the sidebar.
+      </p>
+          <p>
+        Note that the Atom sidebar cannot be opened if the currently shown document does not contain a link to an APP Service Document.
+        </p>
+          <div class="figure">
+            <a id="id55068"/>
+            <p class="title">
+              <b>Figure 19. Atom Sidebar</b>
+            </p>
+            <div class="mediaobject">
+              <img src="figures/atom_sidebar.png" alt="Atom sidebar showing a news feed and the context menu for one of the feed items"/>
+            </div>
+          </div>
+          <p>
+      </p>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id55097"/>11.1.1. Selecting Workspaces and Collections</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          You can select a specific <span class="emphasis"><em>workspace</em></span> by opening the top-most menu-popup.
+        </p>
+            <p>
+          You can select a specific <span class="emphasis"><em>collection</em></span> inside the selected workspace by opening the second top-most menu-popup.
+        </p>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id55121"/>11.1.2. Feed Information</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          The <span class="emphasis"><em>Feed Information</em></span> view shows information about the selected feed, e.g. author(s), copyright, etc.
+        </p>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id55137"/>11.1.3. Feed Entries</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          The <span class="emphasis"><em>Feed Entries</em></span> view shows the titles of the individual feed entries of the selected feed.
+        </p>
+            <p>
+          A feed entry can be selected by clicking on the feed entry with the left mouse button.
+        </p>
+            <p>
+          Multiple consecutive feed entries can be selected by selecting the first feed entry, then pressing <span><strong class="keycap">Shift</strong></span>, and finally selecting the last entry. You can also create a selection of non-consecutive entries by pressing <span><strong class="keycap">Meta</strong></span> and selecting each entry you want to add to the selection one by one.
+        </p>
+            <p>
+          The feed entry context menu can be opened by pressing the right mouse button on a feed entry.
+        </p>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id55177"/>11.1.3.1. Editing Feed Entries</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+            By opening the context menu of a specific feed item, you can then select the <span class="guimenuitem">Edit</span> menu item to open the editor.
+          </p>
+              <p>
+            If you select multiple feed entries before opening the feed entry context menu and selecting <span class="guimenuitem">Edit</span>, then multiple editor tabs are opened, one for each entry.
+          </p>
+            </div>
+            <div class="section" lang="en">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title"><a id="id55202"/>11.1.3.2. Deleting Feed Entries</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+            By opening the context menu of a specific feed item, you can then select the <span class="guimenuitem">Delete</span> menu item to delete the selected item.
+          </p>
+              <p>
+            If you select multiple feed entries before opening the feed entry context menu and selecting <span class="guimenuitem">Delete</span>, then all selected feed entries are deleted.
+          </p>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id55229"/>11.1.4. Searching a Feed</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          By entering text in the search box at the bottom of the Atom sidebar, you can search through all feed entry titles of the currently shown feed. If one or multiple feed entry titles match, these feed entries are selected.
+        </p>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id55245"/>11.2. Neutron Sidebar</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        
+      </p>
+        </div>
+      </div>
+      <div class="section" lang="en">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title"><a id="id55256"/>12. Preferences</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+      You can open the preferences dialog by either choosing <span class="guimenuitem">Preferences</span> in the Yulup menu, or by opening the extension manager, selecting the Yulup entry, and then clicking on the <span class="guibutton">Preferences</span> button.
+    </p>
+        <p>
+      The preferences dialog is divided into two sections: <span class="emphasis"><em>General</em></span>, and <span class="emphasis"><em>Editor</em></span>.
+    </p>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id55288"/>12.1. General</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        In the <span class="emphasis"><em>General</em></span> section, you can edit settings related to the overall usage of Yulup.
+      </p>
+          <div class="figure">
+            <a id="id55301"/>
+            <p class="title">
+              <b>Figure 20. Preferences <span class="emphasis"><em>General</em></span></b>
+            </p>
+            <div class="mediaobject">
+              <img src="figures/preferences_general.png" alt="General settings"/>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id55329"/>12.1.1. Workspace</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          </p>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <p><b>Workspace Location. </b>
+                Select a directory on your local file system for the Yulup workspace. The workspace is used to store local temporary copies of the document you are editing to enable offline processing.
+              </p>
+                </li>
+                <li>
+                  <p><b>Always Save Local Copy. </b>
+                Check this option if you would like Yulup to automatically store a version of the documents you are editing in your local workspace. If this option is not set, you have to tell Yulup explicitly to save a document in your workspace.
+              </p>
+                </li>
+              </ul>
+            </div>
+            <p>
+        </p>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id55375"/>12.1.2. Default CMS</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          Enter the URI of the CMS you use most. This URI is evaluated e.g. when you try to upload a new document to your CMS, but no CMS URI can be found via Neutron.
+        </p>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id55388"/>12.1.3. Sidebars</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          </p>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <p><b>Open Atom Sidebar Automatically. </b>
+                Check this option if you would like Yulup to automatically open the Atom sidebar every time a page containing a link to an APP Service Document is accessed.
+              </p>
+                </li>
+              </ul>
+            </div>
+            <p>
+        </p>
+          </div>
+        </div>
+        <div class="section" lang="en">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title"><a id="id55412"/>12.2. Editor</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+        In the <span class="emphasis"><em>Editor</em></span> section, you can edit settings related to the Yulup editor.
+      </p>
+          <div class="figure">
+            <a id="id55406"/>
+            <p class="title">
+              <b>Figure 21. Preferences <span class="emphasis"><em>Editor</em></span></b>
+            </p>
+            <div class="mediaobject">
+              <img src="figures/preferences_editor.png" alt="Editor settings"/>
+            </div>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="pref_keybindings"/>12.2.1. Key Bindings</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          </p>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <p><b>Select Key Binding. </b>
+                Select the key binding you want to use in the editor.
+              </p>
+                </li>
+                <li>
+                  <p><b>Spaces instead of Tabs. </b>
+                Select if you want the <span><strong class="keycap">TAB</strong></span> to produce real tabs or spaces.
+              </p>
+                </li>
+                <li>
+                  <p><b>Number of Spaces. </b>
+                Specify the amount of <span><strong class="keycap">space</strong></span> characters a <span><strong class="keycap">TAB</strong></span> should produce. If you have set the editor to use spaces instead of tabs, then the editor will insert the specified amount of space characters when the <span><strong class="keycap">TAB</strong></span> key is used.
+              </p>
+                </li>
+              </ul>
+            </div>
+            <p>
+        </p>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id55521"/>12.2.2. Layout</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          </p>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <p><b>Wrap Source. </b>
+                Select if you want the source mode editor to wrap the text to the window width. Note that if a non-wrappable line (i.e. a line consisting of consecutive characters without interleaved whitespace) is present, you might still have to scroll horizontally.
+              </p>
+                </li>
+              </ul>
+            </div>
+            <p>
+        </p>
+          </div>
+          <div class="section" lang="en">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title"><a id="id55548"/>12.2.3. Appearance</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+          </p>
+            <div class="itemizedlist">
+              <ul>
+                <li>
+                  <p><b>Editor Appearance. </b>
+                Select the icon theme you want the editor to use.
+              </p>
+                </li>
+                <li>
+                  <p><b>Open Editor in new Tab. </b>
+                Select if you want the editor to open in a new tab, or replace the tab from which the editor was opened.
+              </p>
+                </li>
+              </ul>
+            </div>
+            <p>
+        </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

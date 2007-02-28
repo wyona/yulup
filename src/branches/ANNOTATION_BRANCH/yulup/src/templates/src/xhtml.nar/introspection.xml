@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+
+<introspection xmlns="http://www.wyona.org/neutron/1.0">
+  <edit mime-type="application/xhtml+xml" name="XHTML template">
+    <widgets>
+      <widget type="surround" name="Bold" description="Style text bold" icon="icons/bold.png">
+        <fragment>
+          <b xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Italic" description="Style text italic" icon="icons/italic.png">
+        <fragment>
+          <i xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Underline" description="Style text underline" icon="icons/underline.png">
+        <fragment>
+          <u xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Strike" description="Style text strikethrough" icon="icons/strikethrough.png">
+        <fragment>
+          <strike xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Monospace" description="Style text monospace" icon="icons/bold.png">
+        <fragment>
+          <tt xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="insert" name="Table" description="Insert a table" icon="icons/table.png">
+        <attribute name="Border" xpath="table/attribute::border"/>
+        <attribute name="Padding" xpath="table/attribute::cellpadding"/>
+        <attribute name="Spacing" xpath="table/attribute::cellspacing"/>
+        <attribute name="Bgcolor" xpath="table/attribute::bgcolor" type="color"/>
+        <fragment>
+          <table border="0" cellpadding="0" cellspacing="0" bgcolor="#DDDDDD" xmlns="">
+            <tr>
+              <td>Column 1, Row 1</td>
+              <td>Column 2, Row 1</td>
+            </tr>
+            <tr>
+              <td>Column 1, Row 2</td>
+              <td>Column 2, Row 2</td>
+            </tr>
+          </table>
+        </fragment>
+      </widget>
+      <widget type="insert" name="Unordered List" description="Insert unordered list" icon="icons/ulist.png">
+        <fragment>
+          <ul xmlns="">
+            <li>List Item 1</li>
+            <li>List Item 2</li>
+          </ul>
+        </fragment>
+      </widget>
+      <widget type="insert" name="Ordered List" description="Insert ordered list" icon="icons/ulist.png">
+        <fragment>
+          <ol xmlns="">
+            <li>List Item 1</li>
+            <li>List Item 2</li>
+          </ol>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Link" description="Insert hypertext link" icon="icons/hlink.png">
+        <attribute name="href" xpath="a/attribute::href" type="resource"/>
+        <fragment>
+          <a xmlns="" href="http://www.yulup.org"/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Heading 1" description="Insert title with level 1">
+        <fragment>
+          <h1 xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Heading 2" description="Insert title with level 2">
+        <fragment>
+          <h2 xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Heading 3" description="Insert title with level 3">
+        <fragment>
+          <h3 xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Heading 4" description="Insert title with level 4">
+        <fragment>
+          <h4 xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Heading 5" description="Insert title with level 5">
+        <fragment>
+          <h5 xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Heading 6" description="Insert title with level 6">
+        <fragment>
+          <h6 xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="insert" name="Image" description="Insert image" icon="icons/image.png">
+        <attribute name="src" xpath="img/attribute::src" type="resource"/>
+        <attribute name="alt" xpath="img/attribute::alt"/>
+        <fragment>
+          <img xmlns="" src="http://www.yulup.org/images/whale-logo.gif" alt="Yulup Logo"/>
+        </fragment>
+      </widget>
+    </widgets>
+  </edit>
+
+  <new>
+    <template name="XHTML Document" mime-type="application/xhtml+xml" uri="xhtml-template.xml"/>
+  </new>
+</introspection>

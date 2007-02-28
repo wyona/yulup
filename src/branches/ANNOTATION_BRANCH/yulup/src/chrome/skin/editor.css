@@ -1,0 +1,101 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* ------------------------ Bindings ------------------------ */
+
+#uiYulupEditorTabbox {
+  -moz-binding: url('chrome://yulup/content/editor/editor.xml#editortabbox');
+}
+
+editor {
+  -moz-binding: url('chrome://yulup/content/editor/editor.xml#editor');
+}
+
+editview[type="source"] {
+  -moz-binding: url('chrome://yulup/content/editor/editor.xml#editviewsource');
+}
+
+editview[type="wysiwyg"] {
+  -moz-binding: url('chrome://yulup/content/editor/editor.xml#editviewwysiwyg');
+}
+
+editcontroller {
+  -moz-binding: url('chrome://yulup/content/editor/editor.xml#editcontroller');
+}
+
+/* ------------------------ Sidebar ------------------------- */
+
+#uiYulupEditorInfobar {
+  -moz-appearance: dialog;
+}
+
+#uiYulupEditorInfobarHeader {
+  border-bottom: 1px solid #A3A3A3;
+  background: url("chrome://global/skin/inset_gradient_1px.png") repeat !important;
+}
+
+#uiYulupEditorInfobarHeader > label {
+  font: icon;
+  color: #000000;
+}
+
+#uiYulupEditorInfobarSplitter {
+  border-right: 1px solid #8e8e8e;
+  border-left: 1px solid #bebebe;
+  background-color: #ececec;
+}
+
+/* ---------------------- Content Deck ---------------------- */
+
+#uiYulupEditorWaitDescription {
+  text-align: center;
+  font-size: x-large;
+  font-weight: bolder;
+  max-height: 1em;
+  margin: 0px 0px 0px 0px;
+}
+
+/* -------------------------- Tabs -------------------------- */
+
+.tabs-left {
+  /* use !important because default css uses it
+   * as well (otherwise we couldn't override it). */
+  -moz-box-flex: 0 !important;
+}
+
+/* ------------------------ Toolbox  ------------------------ */
+
+toolbox[showiconsonly="true"] .toolbarbutton-text {
+  display: none;
+}
+
+/* -------------------- Footer Toolbars  -------------------- */
+
+.uiEditorFooterToolBar {
+  background-image: url("chrome://yulup/skin/icons/white-gray-gradient.png");
+  background-repeat: repeat-x;
+  background-position: bottom right;
+  padding-left: 6px;
+  background-color: rgb(246, 246, 246);
+  border-top: 1px solid #b3b3b3;
+  border-bottom: none;
+  padding-right: 2px;
+  color: #565656;
+}
+
+.uiEditorFooterToolBarCloseButton {
+  padding-right: 4px !important;
+  list-style-image: url("chrome://yulup/skin/icons/footer-close.png") !important;
+  border: none;
+}
+
+.uiEditorFooterToolBarCloseButton:hover:active {
+  list-style-image: url("chrome://yulup/skin/icons/footer-close-active.png") !important;
+}
+
+.uiEditorFooterToolBarCloseButton > label {
+  display: none;
+}
+
+#uiYulupXPathToolBarExpressionLabel {
+  font-weight: bold;
+}

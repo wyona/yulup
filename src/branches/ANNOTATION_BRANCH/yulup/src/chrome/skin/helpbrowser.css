@@ -1,0 +1,50 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* -------------------- Toolbar Buttons  -------------------- */
+
+#uiYulupHelpBrowserBackButton {
+  -moz-box-orient: vertical;
+  min-width: 0px;
+  list-style-image: url("chrome://yulup/skin/icons/yulup-helpbrowser-back.png");
+  -moz-image-region: rect(0px 24px 24px 0px);
+}
+
+#uiYulupHelpBrowserBackButton[disabled="false"]:active {
+  -moz-image-region: rect(24px 24px 48px 0px) !important;
+}
+
+#uiYulupHelpBrowserBackButton[disabled="true"] {
+  -moz-image-region: rect(48px 24px 72px 0px) !important;
+}
+
+
+#uiYulupHelpBrowserForwardButton {
+  -moz-box-orient: vertical;
+  min-width: 0px;
+  list-style-image: url("chrome://yulup/skin/icons/yulup-helpbrowser-forward.png");
+  -moz-image-region: rect(0px 24px 24px 0px);
+}
+
+#uiYulupHelpBrowserForwardButton[disabled="false"]:active {
+  -moz-image-region: rect(24px 24px 48px 0px) !important;
+}
+
+#uiYulupHelpBrowserForwardButton[disabled="true"] {
+  -moz-image-region: rect(48px 24px 72px 0px) !important;
+}
+
+
+#uiYulupHelpBrowserHomeButton {
+  -moz-box-orient: vertical;
+  min-width: 0px;
+  list-style-image: url("chrome://yulup/skin/icons/yulup-helpbrowser-home.png");
+  -moz-image-region: rect(0px 24px 24px 0px);
+}
+
+#uiYulupHelpBrowserHomeButton[disabled="false"]:active {
+  -moz-image-region: rect(24px 24px 48px 0px) !important;
+}
+
+#uiYulupHelpBrowserHomeButton[disabled="true"] {
+  -moz-image-region: rect(48px 24px 72px 0px) !important;
+}

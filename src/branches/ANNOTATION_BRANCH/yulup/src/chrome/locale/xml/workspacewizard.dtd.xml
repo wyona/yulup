@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dtd xmlns="http://yulup.wyona.org/1.0">
+
+  <entity id="workspaceWizard.title">
+    <name xml:lang="en">Workspace Wizard</name>
+    <name xml:lang="de">Workspace Einstellungen</name>
+  </entity>
+
+  <entity id="workspaceLocationPageDescription.label">
+    <name xml:lang="en">Configure the Workspace Location</name>
+    <name xml:lang="de">Workspace Ablage konfigurieren</name>
+    <name xml:lang="es">Configurar la ubicación del workspace</name>
+  </entity>
+
+  <entity id="workspaceLocationDescription_0.label">
+    <name xml:lang="en">The workspace is used for storing documents locally. This enables you to download documents to your local filesystem and then work on the document whilst being offline.</name>
+    <name xml:lang="de">Der Workspace wird benützt für bla bla bla.</name>
+    <name xml:lang="es">El workspace se utiliza para almacenar documentos localmente. Esto le permite descargar documentos a su sistema de archivos local y posteriormente trabajar en los documentos cuando no esté conectado.</name>
+  </entity>
+
+  <entity id="workspaceLocationDescription_1.label">
+    <name xml:lang="en">After becoming online again, Yulup will compare the modified documents to the versions on the CMS, and inform you about potential conflicts with documents which were changed on the server in the meantime.</name>
+    <name xml:lang="de">Der Workspace wird benützt für bla bla bla.</name>
+    <name xml:lang="es">Tras volverse a conectar, Yulup comparará los documentos modificados con las versiones en el CMS y le informará de los conflictos potenciales con los documentos que hayan sido modificados en el servidor durante el tiempo que ha estado desconectado.</name>
+  </entity>
+
+  <entity id="workspaceLocationDescription_2.label">
+    <name xml:lang="en">Furthermore, you can edit the documents stored in the workspace from outside of Yulup. Also, you can add resources to your workspace, and the next time you tell Yulup to sync with the server, these resources are automatically uploaded to the CMS.</name>
+    <name xml:lang="de">Der Workspace wird benützt für bla bla bla.</name>
+    <name xml:lang="es">Además, puede editar los documentos almacenados en el workspace fuera de Yulup. También puede añadir recursos a su workspace y la próxima vez que solicite a Yulup que se sincronice con el servidor, estos recursos se subirán automáticamente al servidor.</name>
+  </entity>
+
+  <entity id="workspaceLocationTextboxLabel.label">
+    <name xml:lang="en">Select workspace location</name>
+    <name xml:lang="de">Ort für Workspace auswählen</name>
+    <name xml:lang="es">Seleccionar la localización del workspace</name>
+  </entity>
+
+  <entity id="workspaceLocationSelectorButton.label">
+    <name xml:lang="en">Select</name>
+    <name xml:lang="de">Auswählen</name>
+    <name xml:lang="es">Seleccionar</name>
+  </entity>
+
+  <entity id="workspaceAlwaysDownloadPageDescription.label">
+    <name xml:lang="en">Configure Document Auto Save</name>
+    <name xml:lang="de">Automatisches speichern konfigurieren</name>
+    <name xml:lang="es">Configurar el guardado automático</name>
+  </entity>
+
+  <entity id="workspaceAlwaysDownloadDescription_0.label">
+    <name xml:lang="en">Documents opened in the editor can automatically be save to the workspace. This enables you to bla bla bla.</name>
+    <name xml:lang="de">Dokumente, die im Editor geöffnet werden, können automatisch in den Workspace abgelegt werden. Dies ermöglicht bla bla bla.</name>
+    <name xml:lang="es">Los documentos abiertos en el editor pueden guardarse de forma automática en el workspace.</name>
+  </entity>
+
+  <entity id="workspaceAlwaysDownloadDescriptionCheckbox.label">
+    <name xml:lang="en">Always save local copy</name>
+    <name xml:lang="de">Automatisch eine lokale Kopie speichern</name>
+    <name xml:lang="es">Siempre guardar una copia local</name>
+  </entity>
+
+  <entity id="workspaceConclusionDescription_0.label">
+    <name xml:lang="en">You have chosen the following configuration:</name>
+    <name xml:lang="de">Sie haben die folgenden Einstellungen vorgenommen:</name>
+    <name xml:lang="es">Ha elegido la siguiente configuración:</name>
+  </entity>
+
+  <entity id="workspaceConclusionPathConfig.label">
+    <name xml:lang="en">Workspace Path</name>
+    <name xml:lang="de">Workspace Pfad</name>
+    <name xml:lang="es">Ruta del workspace</name>
+  </entity>
+
+  <entity id="workspaceConclusionDownloadConfig.label">
+    <name xml:lang="en">Always store</name>
+    <name xml:lang="de">Immer speichern</name>
+    <name xml:lang="es">Siempre guardar</name>
+  </entity>
+
+</dtd>

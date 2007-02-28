@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<!--
+# ***** BEGIN LICENSE BLOCK *****
+# Copyright 2006 Wyona AG Zurich
+#
+# This file is part of Yulup.
+#
+# Yulup is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Yulup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Yulup; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# ***** END LICENSE BLOCK *****
+-->
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>yulup-prototyping@wyona.com</em:id>
+    <em:version>0.1.0</em:version>
+    <em:type>2</em:type>
+
+    <!-- Target application is Mozilla Firefox 1.5.0 to 3.0.0.* -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>1.5.0</em:minVersion>
+        <em:maxVersion>3.0.0.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+    <!-- Extension information -->
+    <em:name>Wyona Yulup (Prototyping Harness)</em:name>
+    <em:description>Yulup prototyping harness.</em:description>
+    <em:creator>Andreas Wuest</em:creator>
+  </Description>
+</RDF>

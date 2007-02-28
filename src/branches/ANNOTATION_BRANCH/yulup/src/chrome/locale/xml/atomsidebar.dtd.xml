@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dtd xmlns="http://yulup.wyona.org/1.0">
+
+  <entity id="atomSidebarDescriptionNoContent.label">
+    <name xml:lang="en">No Atom content available</name>
+    <name xml:lang="es">No hay contenido Atom disponible</name>
+  </entity>
+
+  <entity id="atomSidebarDescriptionNoFeed.label">
+    <name xml:lang="en">This feed is currently not available</name>
+    <name xml:lang="es">Este feed no está disponible actualmente</name>
+  </entity>
+
+  <entity id="atomSidebarDescriptionLoading.label">
+    <name xml:lang="en">Loading feed...</name>
+    <name xml:lang="es">Cargando feed..</name>
+  </entity>
+
+  <entity id="atomSidebarFeedEntriesDescription.label">
+    <name xml:lang="en">This feed has no entries</name>
+    <name xml:lang="es">Este feed no tiene entradas</name>
+  </entity>
+
+  <entity id="atomSidebarFeedInfoGroupbox.label">
+    <name xml:lang="en">Feed Information:</name>
+    <name xml:lang="es">Información del feed:</name>
+  </entity>
+
+  <entity id="atomSidebarFeedEntriesGroupbox.label">
+    <name xml:lang="en">Feed Entries:</name>
+    <name xml:lang="es">Entradas del feed:</name>
+  </entity>
+
+  <entity id="atomSidebarSearch.label">
+    <name xml:lang="en">Search:</name>
+    <name xml:lang="es">Buscar:</name>
+  </entity>
+
+  <entity id="atomSidebarSearch.accesskey">
+    <name xml:lang="en">S</name>
+  </entity>
+
+  <entity id="atomSidebarFeedEntriesTreeColumnTitle.label">
+    <name xml:lang="en">Title</name>
+    <name xml:lang="es">Título</name>
+  </entity>
+
+  <entity id="atomSidebarFirstButton.label">
+    <name xml:lang="en">First entry</name>
+    <name xml:lang="es">Primera entrada</name>
+  </entity>
+
+  <entity id="atomSidebarPreviousButton.label">
+    <name xml:lang="en">Previous entries</name>
+    <name xml:lang="es">Entradas previas</name>
+  </entity>
+
+  <entity id="atomSidebarNextButton.label">
+    <name xml:lang="en">Next entries</name>
+    <name xml:lang="es">Entradas siguientes</name>
+  </entity>
+
+  <entity id="atomSidebarLastButton.label">
+    <name xml:lang="en">Last entry</name>
+    <name xml:lang="es">Última entrada</name>
+  </entity>
+
+  <entity id="atomSidebarFeedEntriesContextMenuEdit.label">
+    <name xml:lang="en">Edit</name>
+    <name xml:lang="es">Editar</name>
+  </entity>
+
+  <entity id="atomSidebarFeedEntriesContextMenuDelete.label">
+    <name xml:lang="en">Delete</name>
+    <name xml:lang="es">Eliminar</name>
+  </entity>
+
+  <entity id="atomSidebarPage.title">
+    <name xml:lang="en">Atom Sidebar</name>
+  </entity>
+
+  <entity id="openYulupAtomSidebar.key">
+    <name xml:lang="en">A</name>
+  </entity>
+
+  <entity id="openYulupAtomSidebar.modifiers">
+    <name xml:lang="en">shift accel</name>
+  </entity>
+
+</dtd>

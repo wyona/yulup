@@ -1,0 +1,185 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* -------------------- Toolbar Buttons  -------------------- */
+/* note: rect(top_edge right_edge bottom_edge left_edge) */
+
+#uiFileOperationExit {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-exit.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiFileOperationExit[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiFileOperationExit[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}
+
+
+#uiFileOperationNew {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-new.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiFileOperationNew[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiFileOperationNew[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}
+
+
+#uiFileOperationOpen {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-open.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiFileOperationOpen[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiFileOperationOpen[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}
+
+
+#uiFileOperationSave {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-save.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiFileOperationSave[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiFileOperationSave[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}
+
+
+#uiFileOperationSaveAs {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-saveas.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiFileOperationSaveAs[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiFileOperationSaveAs[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}
+
+
+#uiFileOperationUpload {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-upload.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiFileOperationUpload[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiFileOperationUpload[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}
+
+
+#uiEditOperationUndo {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-undo.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiEditOperationUndo[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiEditOperationUndo[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}
+
+
+#uiEditOperationRedo {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-redo.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiEditOperationRedo[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiEditOperationRedo[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}
+
+
+#uiEditOperationCut {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-cut.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiEditOperationCut[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiEditOperationCut[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}
+
+
+#uiEditOperationCopy {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-copy.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiEditOperationCopy[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiEditOperationCopy[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}
+
+
+#uiEditOperationPaste {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-paste.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiEditOperationPaste[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiEditOperationPaste[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}
+
+
+#uiEditOperationFind {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-find.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiEditOperationFind[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiEditOperationFind[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}
+
+
+#uiEditOperationFindReplace {
+  list-style-image: url("chrome://yulup/skin/icons/themes/Industrial/yulup-findreplace.png") !important;
+  -moz-image-region: rect(0px 25px 23px 0px) !important;
+}
+
+#uiEditOperationFindReplace[disabled="false"]:active {
+  -moz-image-region: rect(24px 25px 47px 0px) !important;
+}
+
+#uiEditOperationFindReplace[disabled="true"] {
+  -moz-image-region: rect(48px 25px 71px 0px) !important;
+}
