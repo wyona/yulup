@@ -507,38 +507,18 @@ var WidgetHandler = {
         aCommand.setAttribute("checked", "false");
     },
 
-    updateCommandActiveStates: function (aWidgetCommandList, aSelection) {
-        var elemNameMap = null;
-        var node        = null;
-
+    updateCommandActiveStates: function (aWidgetCommandList, aElemNameMap) {
         /* DEBUG */ YulupDebug.ASSERT(aWidgetCommandList != null);
-        /* DEBUG */ YulupDebug.ASSERT(aSelection         != null);
+        /* DEBUG */ YulupDebug.ASSERT(aElemNameMap       != null);
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.updateCommandActiveStates() invoked\n");
 
-        if (aSelection.isCollapsed) {
-            elemNameMap = {};
-
-            /* Add all element names on the path from the current selection anchor
-             * to the element names map. */
-            node = aSelection.anchorNode;
-
-            /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.updateCommandActiveStates: current anchor node = \"" + (node ? node.nodeName : node) + "\"\n");
-
-            while (node) {
-                if (node.localName)
-                    elemNameMap[node.localName.toLowerCase()] = true;
-
-                node = node.parentNode;
-            }
-
-            // check all commands
-            for (var elemName in aWidgetCommandList) {
-                if (elemNameMap[elemName]) {
-                    WidgetHandler.activateCommand(aWidgetCommandList[elemName]);
-                } else {
-                    WidgetHandler.deactivateCommand(aWidgetCommandList[elemName]);
-                }
+        // check all commands
+        for (var elemName in aWidgetCommandList) {
+            if (aElemNameMap.hasOwnProperty(elemName)) {
+                WidgetHandler.activateCommand(aWidgetCommandList[elemName]);
+            } else {
+                WidgetHandler.deactivateCommand(aWidgetCommandList[elemName]);
             }
         }
     },
@@ -558,25 +538,6 @@ var WidgetHandler = {
         }
 
         // update all widgets
-        WidgetHandler.updateCommandActiveStates(commandList, aView.view.selection);
-    }
-};
-
-
-function WidgetUpdateSelectionListener(aWidgetCommandList) {
-    /* DEBUG */ YulupDebug.ASSERT(aWidgetCommandList != null);
-
-    /* DEBUG */ dump("Yulup:widget.js:WidgetUpdateSelectionListener() invoked\n");
-
-    this.__widgetCommandList = aWidgetCommandList;
-}
-
-WidgetUpdateSelectionListener.prototype = {
-    __widgetCommandList: null,
-
-    notifySelectionChanged: function (aDocument, aSelection, aReason) {
-        /* DEBUG */ dump("Yulup:widget.js:WidgetUpdateSelectionListener.notifySelectionChanged() invoked\n");
-
-        WidgetHandler.updateCommandActiveStates(this.__widgetCommandList, aSelection);
+        WidgetHandler.updateCommandActiveStates(commandList, aView.getNodesToRoot(aView.view.selection));
     }
 };

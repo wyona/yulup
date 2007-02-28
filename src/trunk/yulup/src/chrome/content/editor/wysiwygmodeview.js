@@ -155,7 +155,7 @@ WYSIWYGModeView.prototype = {
             // hook up selection listeners
             this.addSelectionListener(new CutCopySelectionListener(this));
 
-            widgetUpSelListener = new WidgetUpdateSelectionListener(this.controller.widgetManager.surroundCommandList);
+            widgetUpSelListener = new WYSIWYGUpdateSelectionListener(this, this.controller.widgetManager.surroundCommandList);
             this.addSelectionListener(widgetUpSelListener);
 
             // clear undo and redo stacks
@@ -458,6 +458,38 @@ WYSIWYGModeView.prototype = {
         }
 
         return null;
+    },
+
+    getNodesToRoot: function (aSelection) {
+        var elemNameMap = null;
+        var node        = null;
+        var position    = 0;
+
+        /* DEBUG */ YulupDebug.ASSERT(aSelection != null);
+
+        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.getNodesToRoot() invoked\n");
+
+        elemNameMap = {};
+
+        if (aSelection.isCollapsed) {
+            /* Add all element names on the path from the current selection anchor
+             * to the element names map. */
+            node = aSelection.anchorNode;
+
+            /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.getNodesToRoot: current anchor node = \"" + (node ? node.nodeName : node) + "\"\n");
+
+            while (node) {
+                if (node.localName)
+                    elemNameMap[node.localName.toLowerCase()] = position++;
+
+                node = node.parentNode;
+            }
+        }
+
+        for (var elemName in elemNameMap)
+            /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.getNodesToRoot: elem name map entry = \"" + elemName + "\"\n");
+
+        return elemNameMap;
     }
 };
 
@@ -1064,5 +1096,27 @@ WYSIWYGEditAttributesCommand.prototype = {
         } else {
             return false;
         }
+    }
+};
+
+
+function WYSIWYGUpdateSelectionListener(aView, aWidgetCommandList) {
+    /* DEBUG */ YulupDebug.ASSERT(aView              != null);
+    /* DEBUG */ YulupDebug.ASSERT(aWidgetCommandList != null);
+
+    /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener() invoked\n");
+
+    this.__view              = aView;
+    this.__widgetCommandList = aWidgetCommandList;
+}
+
+WYSIWYGUpdateSelectionListener.prototype = {
+    __view             : null,
+    __widgetCommandList: null,
+
+    notifySelectionChanged: function (aDocument, aSelection, aReason) {
+        /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged() invoked\n");
+
+        WidgetHandler.updateCommandActiveStates(this.__widgetCommandList, this.__view.getNodesToRoot(aSelection));
     }
 };
