@@ -98,6 +98,16 @@
           <h6 xmlns=""/>
         </fragment>
       </widget>
+      <widget type="surround" name="Paragraph" description="Insert a paragraph">
+        <fragment>
+          <p xmlns=""/>
+        </fragment>
+      </widget>
+      <widget type="surround" name="Div" description="Insert a div">
+        <fragment>
+          <div xmlns=""/>
+        </fragment>
+      </widget>
       <widget type="insert" name="Image" description="Insert image" icon="icons/image.png">
         <attribute name="src" xpath="img/attribute::src" type="resource"/>
         <attribute name="alt" xpath="img/attribute::alt"/>
