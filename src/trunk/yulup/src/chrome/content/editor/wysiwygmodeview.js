@@ -302,6 +302,9 @@ WYSIWYGModeView.prototype = {
         /* DEBUG */ dump("Yulup:sourcemodeview.js:SourceModeView.enterView() invoked\n");
 
         this.editviewElem.toggleDisplayBlur(this.setReadWrite, this);
+
+        // show path toolbar
+        document.getElementById("uiYulupEditorPathToolBar").hidden = false;
     },
 
     leaveView: function () {
@@ -311,6 +314,9 @@ WYSIWYGModeView.prototype = {
         this.view.flags |= Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
 
         this.editviewElem.toggleDisplayBlur();
+
+        // hide path toolbar
+        document.getElementById("uiYulupEditorPathToolBar").hidden = true;
     },
 
     setReadWrite: function () {
@@ -471,7 +477,7 @@ WYSIWYGModeView.prototype = {
 
         elemNameMap = {};
 
-        if (aSelection.isCollapsed) {
+        if (aSelection.anchorNode) {
             /* Add all element names on the path from the current selection anchor
              * to the element names map. */
             node = aSelection.anchorNode;
@@ -480,7 +486,7 @@ WYSIWYGModeView.prototype = {
 
             while (node) {
                 if (node.localName)
-                    elemNameMap[node.localName.toLowerCase()] = position++;
+                    elemNameMap[node.localName.toLowerCase()] = { node: node, position: position++ };
 
                 node = node.parentNode;
             }
@@ -1108,15 +1114,45 @@ function WYSIWYGUpdateSelectionListener(aView, aWidgetCommandList) {
 
     this.__view              = aView;
     this.__widgetCommandList = aWidgetCommandList;
+    this.__locationPathBox   = document.getElementById("uiYulupEditorPathToolBarPathBox");
 }
 
 WYSIWYGUpdateSelectionListener.prototype = {
     __view             : null,
     __widgetCommandList: null,
+    __locationPathBox  : null,
 
     notifySelectionChanged: function (aDocument, aSelection, aReason) {
+        var elemNameMap  = null;
+        var elemNameList = null;
+        var elem         = null;
+
         /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged() invoked\n");
 
-        WidgetHandler.updateCommandActiveStates(this.__widgetCommandList, this.__view.getNodesToRoot(aSelection));
+        elemNameMap = this.__view.getNodesToRoot(aSelection);
+
+        WidgetHandler.updateCommandActiveStates(this.__widgetCommandList, elemNameMap);
+
+        elemNameList = new Array();
+        locationPath = "";
+
+        for (var elemName in elemNameMap) {
+            elemNameList[elemNameMap[elemName].position] = elemName;
+        }
+
+        // clean previous path
+        while (this.__locationPathBox.firstChild)
+            this.__locationPathBox.removeChild(this.__locationPathBox.firstChild);
+
+        // add new path
+        for (var i = elemNameList.length - 1; i >= 0; i--) {
+            elem = document.createElementNS(XUL_NAMESPACE_URI, "label");
+            elem.setAttribute("value", "/");
+            this.__locationPathBox.appendChild(elem);
+
+            elem = document.createElementNS(XUL_NAMESPACE_URI, "button");
+            elem.setAttribute("label", elemNameList[i]);
+            this.__locationPathBox.appendChild(elem);
+        }
     }
 };

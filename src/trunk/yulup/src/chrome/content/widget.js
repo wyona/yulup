@@ -537,7 +537,8 @@ var WidgetHandler = {
             WidgetHandler.deactivateCommand(commandList[elemName]);
         }
 
-        // update all widgets
-        WidgetHandler.updateCommandActiveStates(commandList, aView.getNodesToRoot(aView.view.selection));
+        // update all widgets if the view supports reading the DOM
+        if ("getNodesToRoot" in aView)
+            WidgetHandler.updateCommandActiveStates(commandList, aView.getNodesToRoot(aView.view.selection));
     }
 };

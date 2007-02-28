@@ -357,6 +357,15 @@
            align="center"
            hidden="true"/>
 
+  <toolbar id="uiYulupEditorPathToolBar"
+           class="uiEditorFooterToolBar"
+           fullscreentoolbar="true"
+           align="center"
+           hidden="true">
+    <label id="uiYulupEditorPathToolBarPathLabel" value="&uiYulupEditorPathToolBarPathLabel.label;:" tooltiptext="&uiYulupEditorPathToolBarPathLabel.tooltip;"/>
+    <hbox align="center" id="uiYulupEditorPathToolBarPathBox" tooltiptext="&uiYulupEditorPathToolBarPathLabel.tooltip;"/>
+  </toolbar>
+
   <toolbar id="uiYulupXPathToolBar"
            class="uiEditorFooterToolBar"
            fullscreentoolbar="true"

@@ -41,6 +41,8 @@
 <!ENTITY waitDescription.label "Abriendo el documento">
 <!ENTITY yulupServerURIDialog.title "Introducir la URI del servidor">
 <!ENTITY yulupServerURIDialogLabel.label "Introduzca la URI del servidor al que desea subir el documento">
+<!ENTITY uiYulupEditorPathToolBarPathLabel.label "Path">
+<!ENTITY uiYulupEditorPathToolBarPathLabel.tooltip "Shows the path to the current element">
 <!ENTITY uiYulupXPathToolBarExpressionLabel.label "Path">
 <!ENTITY uiYulupXPathToolBarExpressionLabel.tooltip "Shows the XPath to the current node">
 <!ENTITY uiYulupXPathToolBarNSAwareCheckbox.label "Namespace Aware">

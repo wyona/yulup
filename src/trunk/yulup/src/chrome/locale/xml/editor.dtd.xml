@@ -250,6 +250,16 @@
     <name xml:lang="es">Introduzca la URI del servidor al que desea subir el documento</name>
   </entity>
 
+  <entity id="uiYulupEditorPathToolBarPathLabel.label">
+    <name xml:lang="en">Path</name>
+    <name xml:lang="de">Pfad</name>
+  </entity>
+
+  <entity id="uiYulupEditorPathToolBarPathLabel.tooltip">
+    <name xml:lang="en">Shows the path to the current element</name>
+    <name xml:lang="de">Zeigt den Pfad zum aktuellen Element an</name>
+  </entity>
+
   <entity id="uiYulupXPathToolBarExpressionLabel.label">
     <name xml:lang="en">Path</name>
     <name xml:lang="de">Pfad</name>

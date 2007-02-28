@@ -880,7 +880,7 @@ WYSIWYGXSLTModeView.prototype = {
 
         this.editviewElem.toggleDisplayBlur(this.setReadWrite, this);
 
-        // show XPathToolBar
+        // show XPath toolbar
         document.getElementById("uiYulupXPathToolBar").hidden = false;
     },
 

@@ -99,3 +99,7 @@ toolbox[showiconsonly="true"] .toolbarbutton-text {
 #uiYulupXPathToolBarExpressionLabel {
   font-weight: bold;
 }
+
+#uiYulupEditorPathToolBarPathLabel {
+  font-weight: bold;
+}
