@@ -1076,7 +1076,8 @@ WYSIWYGEditAttributesCommand.prototype = {
         var allowedAttrs      = null;
         var currentAttrValue  = null;
         var attributeValues   = null;
-        var qualifiedAttrName = null;
+        var changeAttrTxn     = null;
+        var attrNode          = null;
 
         dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
 
@@ -1099,56 +1100,57 @@ WYSIWYGEditAttributesCommand.prototype = {
                     for (var i = 0; i < allowedAttrs.length; i ++) {
                         currentAttrValue = target.getAttributeNS(allowedAttrs.getNamespaceURI(i), allowedAttrs.getName(i));
 
+                        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: current node attr value = \"" + currentAttrValue + "\"\n");
+
+                        // TODO: don't pass the currentAttrValue via the stored attribute representation
                         if (currentAttrValue)
                             allowedAttrs.getObject(i).currentValue = currentAttrValue;
 
-                        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: attribute namespace = \"" + allowedAttrs.getNamespaceURI(i) + "\", name = \"" + allowedAttrs.getName(i) + "\", current value = \"" + allowedAttrs.getObject(i).currentValue + "\n");
+                        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: attribute namespace = \"" + allowedAttrs.getNamespaceURI(i) + "\", name = \"" + allowedAttrs.getName(i) + "\", current value = \"" + allowedAttrs.getObject(i).currentValue + "\"\n");
                     }
 
                     attributeValues = AttributeParamsDialog.showAttributeParamsDialog(allowedAttrs, this.__view.controller, target.localName.toLowerCase());
 
-                    if (attributeValues) {
+                    if (attributeValues && attributeValues.length > 0) {
                         /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: attributeValues.length = \"" + (attributeValues ? attributeValues.length : attributeValues) + "\"\n");
 
-                        // TODO: begin transaction
+                        // begin transaction
+                        this.__view.view.beginTransaction();
 
                         try {
                             for (var i = 0; i < attributeValues.length; i++) {
+                                changeAttrTxn = null;
+                                attrNode      = target.getAttributeNodeNS(attributeValues[i].attribute.namespaceURI, attributeValues[i].attribute.name);
+
                                 if (attributeValues[i].value) {
                                     // set attribute
-                                    attrNode = target.getAttributeNodeNS(attributeValues[i].attribute.namespaceURI, attributeValues[i].attribute.name);
 
-                                    if (attrNode && attrNode.value != attributeValues[i].value) {
-                                        // attribute already exists
-                                        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: setting attribute \"" + attributeValues[i].attribute.name + "\", value = \"" + attributeValues[i].value + "\"\n");
-
-                                        attrNode.value = attributeValues[i].value;
-                                    } else {
-                                        // create new attribute
-                                        qualifiedAttrName = (target.prefix ? target.prefix + ":" : "") + attributeValues[i].attribute.name;
-
-                                        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: creating new attribute \"" + qualifiedAttrName  + "\",  value = \"" + attributeValues[i].value + "\"\n");
-
-                                        target.setAttributeNS(attributeValues[i].attribute.namespaceURI, qualifiedAttrName, attributeValues[i].value);
+                                    if (!attrNode || (attrNode && attrNode.value != attributeValues[i].value)) {
+                                        // attribute node does not exist or does not have the desired value
+                                        changeAttrTxn = new YulupEditorChangeAttributeNSTransaction(target.ownerDocument, target, attributeValues[i].attribute.namespaceURI, attributeValues[i].attribute.name, attributeValues[i].value, false);
                                     }
                                 } else {
                                     // remove attribute
-                                    if (target.hasAttributeNS(attributeValues[i].attribute.namespaceURI, attributeValues[i].attribute.name)) {
-                                        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: removing attribute \"" + attributeValues[i].attribute.name + "\"\n");
 
-                                        target.removeAttributeNS(attributeValues[i].attribute.namespaceURI, attributeValues[i].attribute.name);
+                                    if (attrNode) {
+                                        // attribute node indeed exists
+                                        changeAttrTxn = new YulupEditorChangeAttributeNSTransaction(target.ownerDocument, target, attributeValues[i].attribute.namespaceURI, attributeValues[i].attribute.name, null, true);
                                     }
                                 }
+
+                                if (changeAttrTxn)
+                                    this.__view.view.doTransaction(changeAttrTxn);
                             }
                         } catch (exception) {
                             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand", exception);
                             /* DEBUG */ Components.utils.reportError(exception);
                         }
 
-                        // TODO: end transaction
+                        // end transaction
+                        this.__view.view.endTransaction();
 
-                        // mark model dirty
-                        this.__view.view.incrementModificationCount(1);
+                        // inform observer about state change
+                        this.__view.undoRedoObserver.updateCommands();
                     }
 
                     return true;
