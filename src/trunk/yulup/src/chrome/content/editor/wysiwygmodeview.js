@@ -469,6 +469,7 @@ WYSIWYGModeView.prototype = {
     getNodesToRoot: function (aSelection) {
         var elemNameMap = null;
         var node        = null;
+        var nodeName    = null;
         var position    = 0;
 
         /* DEBUG */ YulupDebug.ASSERT(aSelection != null);
@@ -485,8 +486,10 @@ WYSIWYGModeView.prototype = {
             /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.getNodesToRoot: current anchor node = \"" + (node ? node.nodeName : node) + "\"\n");
 
             while (node) {
-                if (node.localName)
-                    elemNameMap[node.localName.toLowerCase()] = { node: node, position: position++ };
+                if (node.localName) {
+                    nodeName = node.localName.toLowerCase();
+                    elemNameMap[nodeName] = { node: node, name: nodeName, position: position++ };
+                }
 
                 node = node.parentNode;
             }
@@ -1123,9 +1126,10 @@ WYSIWYGUpdateSelectionListener.prototype = {
     __locationPathBox  : null,
 
     notifySelectionChanged: function (aDocument, aSelection, aReason) {
-        var elemNameMap  = null;
-        var elemNameList = null;
-        var elem         = null;
+        var elemNameMap             = null;
+        var elemNameList            = null;
+        var currentLocationPathNode = null;
+        var elem                    = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged() invoked\n");
 
@@ -1137,22 +1141,66 @@ WYSIWYGUpdateSelectionListener.prototype = {
         locationPath = "";
 
         for (var elemName in elemNameMap) {
-            elemNameList[elemNameMap[elemName].position] = elemName;
+            elemNameList[elemNameMap[elemName].position] = elemNameMap[elemName];
         }
 
-        // clean previous path
-        while (this.__locationPathBox.firstChild)
-            this.__locationPathBox.removeChild(this.__locationPathBox.firstChild);
+        /* Invariant: currentLocationPathNode always points to a "/" label or null,
+         * and a "/" label always has a non-null next sibling. */
+        currentLocationPathNode = this.__locationPathBox.firstChild;
 
-        // add new path
         for (var i = elemNameList.length - 1; i >= 0; i--) {
-            elem = document.createElementNS(XUL_NAMESPACE_URI, "label");
-            elem.setAttribute("value", "/");
-            this.__locationPathBox.appendChild(elem);
+            if (currentLocationPathNode) {
+                if (currentLocationPathNode.nextSibling.locationNode == elemNameList[i].node) {
+                    /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: path element \"" + elemNameList[i].name + "\" already exists\n");
 
-            elem = document.createElementNS(XUL_NAMESPACE_URI, "button");
-            elem.setAttribute("label", elemNameList[i]);
-            this.__locationPathBox.appendChild(elem);
+                    currentLocationPathNode = currentLocationPathNode.nextSibling.nextSibling;
+                } else {
+                    /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: replacing path element \"" + currentLocationPathNode.nextSibling.label + "\" by \"" + elemNameList[i].name + "\"\n");
+
+                    elem = document.createElementNS(XUL_NAMESPACE_URI, "button");
+                    elem.setAttribute("label", elemNameList[i].name);
+                    elem.setAttribute("tooltiptext", "Click to open menu to modify this element");
+                    elem.locationNode = elemNameList[i].node;
+                    this.__locationPathBox.replaceChild(elem, currentLocationPathNode.nextSibling);
+
+                    currentLocationPathNode = elem.nextSibling;
+                }
+            } else {
+                /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: creating new path section for \"" + elemNameList[i].name + "\"\n");
+
+                elem = document.createElementNS(XUL_NAMESPACE_URI, "label");
+                elem.setAttribute("value", "/");
+                this.__locationPathBox.appendChild(elem);
+
+                elem = document.createElementNS(XUL_NAMESPACE_URI, "button");
+                elem.setAttribute("label", elemNameList[i].name);
+                elem.setAttribute("tooltiptext", "Click to open menu to modify this element");
+                elem.locationNode = elemNameList[i].node;
+                this.__locationPathBox.appendChild(elem);
+
+                currentLocationPathNode = elem.nextSibling;
+            }
+        }
+
+        // remove remaining siblings
+        if (currentLocationPathNode)
+            this.__deleteSelfAndFollowingSiblings(currentLocationPathNode);
+    },
+
+    __deleteSelfAndFollowingSiblings: function (aNode) {
+        var parentNode = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
+
+        /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.__deleteSelfAndFollowingSiblings() invoked\n");
+
+        parentNode = aNode.parentNode;
+
+        if (parentNode) {
+            while (parentNode.lastChild != aNode)
+                parentNode.removeChild(parentNode.lastChild);
+
+            parentNode.removeChild(aNode);
         }
     }
 };
