@@ -187,6 +187,7 @@ WYSIWYGModeView.prototype = {
             commandTable.registerCommand("cmd_yulup_selectContextContents", selectContentsCommand);
             commandTable.registerCommand("cmd_yulup_editAttributes", editAttributesCommand);
             commandTable.registerCommand("cmd_yulup_editContextAttributes", editAttributesCommand);
+            commandTable.registerCommand("cmd_yulup_deleteContextElement", new WYSIWYGDeleteContextElementCommand(this, widgetUpSelListener));
 
             /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.setUp: initialisation completed\n");
         } catch (exception) {
@@ -234,7 +235,7 @@ WYSIWYGModeView.prototype = {
             this.view.beginningOfDocument();
 
             // print document to console
-            /* DEBUG */ dumpTree(this.controller.activeView.editor);
+            ///* DEBUG */ dumpTree(this.controller.activeView.editor);
 
             // rewrite URIs
             this.uriRewriter.rewriteURIs();
@@ -960,8 +961,6 @@ WYSIWYGSelectContentsCommand.prototype = {
                 selectionNode = this.__view.getContextTarget();
             }
 
-            dump("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Yulup:wysiwygmodeview.js:WYSIWYGSelectContentsCommand.doCommand: selectionNode = \"" + (selectionNode ? selectionNode.nodeName : selectionNode) + "\" invoked\n");
-
             if (selectionNode) {
                 if (selectionNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
                     selectionNode = selectionNode.parentNode;
@@ -987,6 +986,64 @@ WYSIWYGSelectContentsCommand.prototype = {
 
     getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
         dump("Yulup:wysiwygmodeview.js:WYSIWYGSelectContentsCommand.getCommandStateParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+
+        aParams.setBooleanValue("state_enabled", true);
+    },
+
+    isCommandEnabled: function (aCommandName, aCommandContext) {
+        return true;
+    }
+};
+
+
+/**
+ * WYSIWYGDeleteContextElementCommand constructor. Instantiates a new object of
+ * type WYSIWYGDeleteContextElementCommand.
+ *
+ * Implements nsIControllerCommand.
+ *
+ * @constructor
+ */
+function WYSIWYGDeleteContextElementCommand(aView, aSelectionChangeHandler) {
+    /* DEBUG */ YulupDebug.ASSERT(aView                   != null);
+    /* DEBUG */ YulupDebug.ASSERT(aSelectionChangeHandler != null);
+
+    this.__view                   = aView;
+    this.__selectionChangeHandler = aSelectionChangeHandler;
+}
+
+WYSIWYGDeleteContextElementCommand.prototype = {
+    __view                  : null,
+    __selectionChangeHandler: null,
+
+    doCommand: function (aCommandName, aCommandContext) {
+        var selectionNode = null;
+
+        dump("Yulup:wysiwygmodeview.js:WYSIWYGDeleteContextElementCommand.doCommand(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+        if ("cmd_yulup_deleteContextElement" == aCommandName) {
+            selectionNode = this.__view.getContextTarget();
+
+            if (selectionNode) {
+                this.__view.view.deleteNode(selectionNode);
+
+                this.__selectionChangeHandler.notifySelectionChanged(aCommandContext.document, aCommandContext.selection, null);
+
+                return true;
+            }
+        }
+
+        return false;
+    },
+
+    doCommandParams: function (aCommandName, aParams, aCommandContext) {
+        dump("Yulup:wysiwygmodeview.js:WYSIWYGDeleteContextElementCommand.doCommandParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+
+        return this.doCommand(aCommandName, aCommandContext);
+    },
+
+    getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
+        dump("Yulup:wysiwygmodeview.js:WYSIWYGDeleteContextElementCommand.getCommandStateParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
 
         aParams.setBooleanValue("state_enabled", true);
     },

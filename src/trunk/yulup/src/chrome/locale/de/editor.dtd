@@ -11,6 +11,8 @@
 <!ENTITY editOperationSelectAll.label "Alles auswählen">
 <!ENTITY editOperationSelectContents.label "Inhalt auswählen">
 <!ENTITY editOperationSelectContents.tooltip "Ganzer inhalt des aktuellen Elements auswählen">
+<!ENTITY editOperationdeleteContextElement.label "Element löschen">
+<!ENTITY editOperationdeleteContextElement.tooltip "Aktuelles Element samt Inhalt löschen">
 <!ENTITY editOperationDelete.label "Löschen">
 <!ENTITY editOperationFind.label "Suchen">
 <!ENTITY editOperationFindReplace.label "Ersetzen">

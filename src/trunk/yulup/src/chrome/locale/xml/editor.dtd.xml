@@ -76,6 +76,16 @@
     <name xml:lang="de">Ganzer inhalt des aktuellen Elements auswählen</name>
   </entity>
 
+  <entity id="editOperationdeleteContextElement.label">
+    <name xml:lang="en">Delete Element</name>
+    <name xml:lang="de">Element löschen</name>
+  </entity>
+
+  <entity id="editOperationdeleteContextElement.tooltip">
+    <name xml:lang="en">Delete the element including its content</name>
+    <name xml:lang="de">Aktuelles Element samt Inhalt löschen</name>
+  </entity>
+
   <entity id="editOperationDelete.label">
     <name xml:lang="en">Delete</name>
     <name xml:lang="de">Löschen</name>

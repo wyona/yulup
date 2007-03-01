@@ -917,6 +917,7 @@ var Editor = {
         Editor.goUpdateCommand("cmd_yulup_selectContextContents");
         Editor.goUpdateCommand("cmd_yulup_editAttributes");
         Editor.goUpdateCommand("cmd_yulup_editContextAttributes");
+        Editor.goUpdateCommand("cmd_yulup_deleteContextElement");
     },
 
     updateSaveMenu: function () {
