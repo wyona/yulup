@@ -16,7 +16,7 @@
 <!ENTITY editOperationFindReplace.label "Replace">
 <!ENTITY editOperationSurroundMenu.label "Mark as">
 <!ENTITY editOperationInsertMenu.label "Insert">
-<!ENTITY editOperationEditAttributes.label "Edit attributes">
+<!ENTITY editOperationEditAttributes.label "Edit Attributes">
 <!ENTITY fileOperationExit.label "Exit">
 <!ENTITY fileOperationInfobarToggle.label "Infobar">
 <!ENTITY fileOperationNew.label "New">

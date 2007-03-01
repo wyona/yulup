@@ -82,11 +82,13 @@ WYSIWYGModeView.prototype = {
      * @return {Undefined} does not have a return value
      */
     setUp: function () {
-        var wysiwygEditor       = null;
-        var keyBinding          = null;
-        var widgetUpSelListener = null;
-        var commandController   = null;
-        var commandTable        = null;
+        var wysiwygEditor         = null;
+        var keyBinding            = null;
+        var widgetUpSelListener   = null;
+        var selectContentsCommand = null;
+        var editAttributesCommand = null;
+        var commandController     = null;
+        var commandTable          = null;
 
         /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.setUp() invoked\n");
 
@@ -178,8 +180,13 @@ WYSIWYGModeView.prototype = {
 
             commandTable = commandController.QueryInterface(Components.interfaces.nsIInterfaceRequestor).getInterface(Components.interfaces.nsIControllerCommandTable);
 
-            commandTable.registerCommand("cmd_yulup_selectContents", new WYSIWYGSelectContentsCommand(this, widgetUpSelListener));
-            commandTable.registerCommand("cmd_yulup_editattributes", new WYSIWYGEditAttributesCommand(this));
+            selectContentsCommand = new WYSIWYGSelectContentsCommand(this, widgetUpSelListener);
+            editAttributesCommand = new WYSIWYGEditAttributesCommand(this);
+
+            commandTable.registerCommand("cmd_yulup_selectContents", selectContentsCommand);
+            commandTable.registerCommand("cmd_yulup_selectContextContents", selectContentsCommand);
+            commandTable.registerCommand("cmd_yulup_editAttributes", editAttributesCommand);
+            commandTable.registerCommand("cmd_yulup_editContextAttributes", editAttributesCommand);
 
             /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.setUp: initialisation completed\n");
         } catch (exception) {
@@ -946,8 +953,14 @@ WYSIWYGSelectContentsCommand.prototype = {
 
         dump("Yulup:wysiwygmodeview.js:WYSIWYGSelectContentsCommand.doCommand(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
 
-        if ("cmd_yulup_selectContents" == aCommandName) {
-            selectionNode = aCommandContext.selection.anchorNode;
+        if ("cmd_yulup_selectContents" == aCommandName || "cmd_yulup_selectContextContents" == aCommandName) {
+            if ("cmd_yulup_selectContents" == aCommandName) {
+                selectionNode = aCommandContext.selection.anchorNode;
+            } else {
+                selectionNode = this.__view.getContextTarget();
+            }
+
+            dump("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Yulup:wysiwygmodeview.js:WYSIWYGSelectContentsCommand.doCommand: selectionNode = \"" + (selectionNode ? selectionNode.nodeName : selectionNode) + "\" invoked\n");
 
             if (selectionNode) {
                 if (selectionNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
@@ -1010,73 +1023,79 @@ WYSIWYGEditAttributesCommand.prototype = {
 
         dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
 
-        if ("cmd_yulup_editattributes" == aCommandName) {
-            // use mouse click target node instead of current selection
-            target = this.__view.getContextTarget();
-
-            if (target.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
-                target = target.parentNode;
+        if ("cmd_yulup_editAttributes" == aCommandName || "cmd_yulup_editContextAttributes" == aCommandName) {
+            if ("cmd_yulup_editAttributes" == aCommandName) {
+                target = this.__view.view.selection.anchorNode;
+            } else {
+                // use mouse click target node
+                target = this.__view.getContextTarget();
             }
 
-            allowedAttrs = this.__view.validator.ElementEditVAL(target).allowedAttributes;
-
-            if (allowedAttrs) {
-                for (var i = 0; i < allowedAttrs.length; i ++) {
-                    currentAttrValue = target.getAttributeNS(allowedAttrs.getNamespaceURI(i), allowedAttrs.getName(i));
-
-                    if (currentAttrValue)
-                        allowedAttrs.getObject(i).currentValue = currentAttrValue;
-
-                    /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: attribute namespace = \"" + allowedAttrs.getNamespaceURI(i) + "\", name = \"" + allowedAttrs.getName(i) + "\", current value = \"" + allowedAttrs.getObject(i).currentValue + "\n");
+            if (target) {
+                if (target.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+                    target = target.parentNode;
                 }
 
-                attributeValues = AttributeParamsDialog.showAttributeParamsDialog(allowedAttrs, this.__view.controller, target.localName.toLowerCase());
+                allowedAttrs = this.__view.validator.ElementEditVAL(target).allowedAttributes;
 
-                if (attributeValues) {
-                    /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: attributeValues.length = \"" + (attributeValues ? attributeValues.length : attributeValues) + "\"\n");
+                if (allowedAttrs) {
+                    for (var i = 0; i < allowedAttrs.length; i ++) {
+                        currentAttrValue = target.getAttributeNS(allowedAttrs.getNamespaceURI(i), allowedAttrs.getName(i));
 
-                    // TODO: begin transaction
+                        if (currentAttrValue)
+                            allowedAttrs.getObject(i).currentValue = currentAttrValue;
 
-                    try {
-                        for (var i = 0; i < attributeValues.length; i++) {
-                            if (attributeValues[i].value) {
-                                // set attribute
-                                attrNode = target.getAttributeNodeNS(attributeValues[i].attribute.namespaceURI, attributeValues[i].attribute.name);
-
-                                if (attrNode && attrNode.value != attributeValues[i].value) {
-                                    // attribute already exists
-                                    /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: setting attribute \"" + attributeValues[i].attribute.name + "\", value = \"" + attributeValues[i].value + "\"\n");
-
-                                    attrNode.value = attributeValues[i].value;
-                                } else {
-                                    // create new attribute
-                                    qualifiedAttrName = (target.prefix ? target.prefix + ":" : "") + attributeValues[i].attribute.name;
-
-                                    /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: creating new attribute \"" + qualifiedAttrName  + "\",  value = \"" + attributeValues[i].value + "\"\n");
-
-                                    target.setAttributeNS(attributeValues[i].attribute.namespaceURI, qualifiedAttrName, attributeValues[i].value);
-                                }
-                            } else {
-                                // remove attribute
-                                if (target.hasAttributeNS(attributeValues[i].attribute.namespaceURI, attributeValues[i].attribute.name)) {
-                                    /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: removing attribute \"" + attributeValues[i].attribute.name + "\"\n");
-
-                                    target.removeAttributeNS(attributeValues[i].attribute.namespaceURI, attributeValues[i].attribute.name);
-                                }
-                            }
-                        }
-                    } catch (exception) {
-                        /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand", exception);
-                        /* DEBUG */ Components.utils.reportError(exception);
+                        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: attribute namespace = \"" + allowedAttrs.getNamespaceURI(i) + "\", name = \"" + allowedAttrs.getName(i) + "\", current value = \"" + allowedAttrs.getObject(i).currentValue + "\n");
                     }
 
-                    // TODO: end transaction
+                    attributeValues = AttributeParamsDialog.showAttributeParamsDialog(allowedAttrs, this.__view.controller, target.localName.toLowerCase());
 
-                    // mark model dirty
-                    this.__view.view.incrementModificationCount(1);
+                    if (attributeValues) {
+                        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: attributeValues.length = \"" + (attributeValues ? attributeValues.length : attributeValues) + "\"\n");
+
+                        // TODO: begin transaction
+
+                        try {
+                            for (var i = 0; i < attributeValues.length; i++) {
+                                if (attributeValues[i].value) {
+                                    // set attribute
+                                    attrNode = target.getAttributeNodeNS(attributeValues[i].attribute.namespaceURI, attributeValues[i].attribute.name);
+
+                                    if (attrNode && attrNode.value != attributeValues[i].value) {
+                                        // attribute already exists
+                                        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: setting attribute \"" + attributeValues[i].attribute.name + "\", value = \"" + attributeValues[i].value + "\"\n");
+
+                                        attrNode.value = attributeValues[i].value;
+                                    } else {
+                                        // create new attribute
+                                        qualifiedAttrName = (target.prefix ? target.prefix + ":" : "") + attributeValues[i].attribute.name;
+
+                                        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: creating new attribute \"" + qualifiedAttrName  + "\",  value = \"" + attributeValues[i].value + "\"\n");
+
+                                        target.setAttributeNS(attributeValues[i].attribute.namespaceURI, qualifiedAttrName, attributeValues[i].value);
+                                    }
+                                } else {
+                                    // remove attribute
+                                    if (target.hasAttributeNS(attributeValues[i].attribute.namespaceURI, attributeValues[i].attribute.name)) {
+                                        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: removing attribute \"" + attributeValues[i].attribute.name + "\"\n");
+
+                                        target.removeAttributeNS(attributeValues[i].attribute.namespaceURI, attributeValues[i].attribute.name);
+                                    }
+                                }
+                            }
+                        } catch (exception) {
+                            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand", exception);
+                            /* DEBUG */ Components.utils.reportError(exception);
+                        }
+
+                        // TODO: end transaction
+
+                        // mark model dirty
+                        this.__view.view.incrementModificationCount(1);
+                    }
+
+                    return true;
                 }
-
-                return true;
             }
         }
 
@@ -1100,7 +1119,7 @@ WYSIWYGEditAttributesCommand.prototype = {
     isCommandEnabled: function (aCommandName, aCommandContext) {
         dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.isCommandEnabled(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
 
-        if ("cmd_yulup_editattributes" == aCommandName) {
+        if ("cmd_yulup_editAttributes" == aCommandName || "cmd_yulup_editContextAttributes" == aCommandName) {
             return true;
         } else {
             return false;
@@ -1118,12 +1137,14 @@ function WYSIWYGUpdateSelectionListener(aView, aWidgetCommandList) {
     this.__view              = aView;
     this.__widgetCommandList = aWidgetCommandList;
     this.__locationPathBox   = document.getElementById("uiYulupEditorPathToolBarPathBox");
+    this.__menuPopup         = document.getElementById("uiYulupEditorEditorToolbarMenu");
 }
 
 WYSIWYGUpdateSelectionListener.prototype = {
     __view             : null,
     __widgetCommandList: null,
     __locationPathBox  : null,
+    __menuPopup        : null,
 
     notifySelectionChanged: function (aDocument, aSelection, aReason) {
         var elemNameMap             = null;
@@ -1157,13 +1178,10 @@ WYSIWYGUpdateSelectionListener.prototype = {
                 } else {
                     /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: replacing path element \"" + currentLocationPathNode.nextSibling.label + "\" by \"" + elemNameList[i].name + "\"\n");
 
-                    elem = document.createElementNS(XUL_NAMESPACE_URI, "button");
-                    elem.setAttribute("label", elemNameList[i].name);
-                    elem.setAttribute("tooltiptext", "Click to open menu to modify this element");
-                    elem.locationNode = elemNameList[i].node;
-                    this.__locationPathBox.replaceChild(elem, currentLocationPathNode.nextSibling);
+                    currentLocationPathNode.nextSibling.label        = elemNameList[i].name;
+                    currentLocationPathNode.nextSibling.locationNode = elemNameList[i].node;
 
-                    currentLocationPathNode = elem.nextSibling;
+                    currentLocationPathNode = currentLocationPathNode.nextSibling.nextSibling;
                 }
             } else {
                 /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: creating new path section for \"" + elemNameList[i].name + "\"\n");
@@ -1172,10 +1190,8 @@ WYSIWYGUpdateSelectionListener.prototype = {
                 elem.setAttribute("value", "/");
                 this.__locationPathBox.appendChild(elem);
 
-                elem = document.createElementNS(XUL_NAMESPACE_URI, "button");
-                elem.setAttribute("label", elemNameList[i].name);
-                elem.setAttribute("tooltiptext", "Click to open menu to modify this element");
-                elem.locationNode = elemNameList[i].node;
+                elem = this.__createPathButton(elemNameList[i].name, elemNameList[i].node);
+
                 this.__locationPathBox.appendChild(elem);
 
                 currentLocationPathNode = elem.nextSibling;
@@ -1185,6 +1201,25 @@ WYSIWYGUpdateSelectionListener.prototype = {
         // remove remaining siblings
         if (currentLocationPathNode)
             this.__deleteSelfAndFollowingSiblings(currentLocationPathNode);
+    },
+
+    __createPathButton: function (aName, aNode) {
+        var button = null;
+        var self   = this;
+
+        /* DEBUG */ YulupDebug.ASSERT(aName != null);
+        /* DEBUG */ YulupDebug.ASSERT(aNode != null);
+
+        /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.__createPathButton() invoked\n");
+
+        button = document.createElementNS(XUL_NAMESPACE_URI, "button");
+        button.setAttribute("label", aName);
+        // TODO: i18n
+        button.setAttribute("tooltiptext", "Click to open menu to modify this element");
+        button.locationNode = aNode;
+        button.addEventListener("command", function (aEvent) { self.__showContextMenu(aEvent); }, false);
+
+        return button;
     },
 
     __deleteSelfAndFollowingSiblings: function (aNode) {
@@ -1201,6 +1236,18 @@ WYSIWYGUpdateSelectionListener.prototype = {
                 parentNode.removeChild(parentNode.lastChild);
 
             parentNode.removeChild(aNode);
+        }
+    },
+
+    __showContextMenu: function (aEvent) {
+        /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.__showContextMenu() invoked\n");
+
+        if (aEvent.originalTarget.locationNode) {
+            // store the locationNode as contextTarget
+            this.__view.setContextTarget(aEvent.originalTarget.locationNode);
+
+            // open the context menu
+            this.__menuPopup.showPopup(aEvent.originalTarget, -1, -1, "popup", "bottomleft", "topleft");
         }
     }
 };

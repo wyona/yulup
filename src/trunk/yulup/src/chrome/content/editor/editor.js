@@ -914,7 +914,9 @@ var Editor = {
         /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateContextCommands() invoked\n");
 
         Editor.goUpdateCommand("cmd_yulup_selectContents");
-        Editor.goUpdateCommand("cmd_yulup_editattributes");
+        Editor.goUpdateCommand("cmd_yulup_selectContextContents");
+        Editor.goUpdateCommand("cmd_yulup_editAttributes");
+        Editor.goUpdateCommand("cmd_yulup_editContextAttributes");
     },
 
     updateSaveMenu: function () {

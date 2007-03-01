@@ -115,6 +115,8 @@
              label="&editOperationSelectAll.label;" tooltiptext="&editOperationSelectAll.tooltip;"/>
     <command id="cmd_yulup_selectContents" oncommand="Editor.goDoCommand('cmd_yulup_selectContents')" disabled="false"
              label="&editOperationSelectContents.label;" tooltiptext="&editOperationSelectContents.tooltip;"/>
+    <command id="cmd_yulup_selectContextContents" oncommand="Editor.goDoCommand('cmd_yulup_selectContextContents')" disabled="false"
+             label="&editOperationSelectContents.label;" tooltiptext="&editOperationSelectContents.tooltip;"/>
   </commandset>
 
   <commandset id="uiYulupEditorFileOperationsSaveCommandset">
@@ -141,7 +143,9 @@
   </commandset>
 
   <commandset id="uiYulupEditorModificationCommandset">
-    <command id="cmd_yulup_editattributes" oncommand="Editor.goDoCommand('cmd_yulup_editattributes')"
+    <command id="cmd_yulup_editAttributes" oncommand="Editor.goDoCommand('cmd_yulup_editAttributes')"
+             label="&editOperationEditAttributes.label;" tooltiptext="&editOperationEditAttributes.tooltip;"/>
+    <command id="cmd_yulup_editContextAttributes" oncommand="Editor.goDoCommand('cmd_yulup_editContextAttributes')"
              label="&editOperationEditAttributes.label;" tooltiptext="&editOperationEditAttributes.tooltip;"/>
   </commandset>
 
@@ -181,10 +185,11 @@
                 type="checkbox"
                 oncommand="Editor.toggleToolbarButtonText()"/>
     </popup>
+
     <popup id="uiYulupEditorEditorContextMenu">
-      <menuitem id="uiYulupEditorEditorContextCut"
+      <menuitem id="uiYulupEditorEditorContextUndo"
                 command="cmd_undo"/>
-      <menuitem id="uiYulupEditorEditorContextCut"
+      <menuitem id="uiYulupEditorEditorContextRedo"
                 command="cmd_redo"/>
       <menuseparator/>
       <menuitem id="uiYulupEditorEditorContextCut"
@@ -217,7 +222,15 @@
         <menupopup id="uiYulupEditorEditorContextMenuInsertMenupopup"/>
       </menu>
       <menuitem id="uiYulupEditorEditorContextEditAttributes"
-                command="cmd_yulup_editattributes"/>
+                command="cmd_yulup_editAttributes"/>
+    </popup>
+
+    <popup id="uiYulupEditorEditorToolbarMenu">
+      <menuitem id="uiYulupEditorEditorContextSelectContents"
+                command="cmd_yulup_selectContextContents"/>
+      <menuseparator/>
+      <menuitem id="uiYulupEditorEditorContextEditAttributes"
+                command="cmd_yulup_editContextAttributes"/>
     </popup>
   </popupset>
 

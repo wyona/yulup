@@ -246,6 +246,10 @@ View.prototype = {
         return this.__contextTarget;
     },
 
+    setContextTarget: function (aValue) {
+        this.__contextTarget = aValue;
+    },
+
     /**
      * Show a context menu for this view.
      *

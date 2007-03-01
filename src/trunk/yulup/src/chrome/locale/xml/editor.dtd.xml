@@ -104,7 +104,7 @@
   </entity>
 
   <entity id="editOperationEditAttributes.label">
-    <name xml:lang="en">Edit attributes</name>
+    <name xml:lang="en">Edit Attributes</name>
     <name xml:lang="de">Attribute editieren</name>
   </entity>
 
