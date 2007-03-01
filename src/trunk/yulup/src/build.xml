@@ -17,6 +17,7 @@
   <target name="pkg-deploy" description="Deploy the XPI file" depends="init, pkg-clean, pkg">
     <move todir="${download-dir}">
       <fileset file="../pkg/${filename}"/>
+      <fileset file="../pkg/${filename}.md5"/>
       <fileset file="../pkg/update.rdf"/>
     </move>
   </target>
@@ -91,6 +92,9 @@
     <zip comment="Yulup ${version}" destfile="../pkg/${filename}">
       <fileset dir="../pkg/tmp"/>
     </zip>
+
+    <!-- generate an MD5 checksum for the XPI -->
+    <checksum file="../pkg/${filename}" algorithm="md5" forceoverwrite="yes"/>
 
     <!-- update the update.rdf with the currently built version -->
     <copy file="../pkg/update.rdf.template" tofile="../pkg/update.rdf"/>
