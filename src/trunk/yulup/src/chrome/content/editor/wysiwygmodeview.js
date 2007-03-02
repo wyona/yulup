@@ -1106,11 +1106,7 @@ WYSIWYGEditAttributesCommand.prototype = {
                     for (var i = 0; i < allowedAttrs.length; i ++) {
                         currentAttrValue = target.getAttributeNS(allowedAttrs.getNamespaceURI(i), allowedAttrs.getName(i));
 
-                        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: current node attr value = \"" + currentAttrValue + "\"\n");
-
-                        // TODO: don't pass the currentAttrValue via the stored attribute representation, or remove the following if test which presents empty values from resetting the stored value
-                        if (currentAttrValue)
-                            allowedAttrs.getObject(i).currentValue = currentAttrValue;
+                        allowedAttrs.getObject(i).currentValue = currentAttrValue;
 
                         /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: attribute namespace = \"" + allowedAttrs.getNamespaceURI(i) + "\", name = \"" + allowedAttrs.getName(i) + "\", current value = \"" + allowedAttrs.getObject(i).currentValue + "\"\n");
                     }
