@@ -474,17 +474,27 @@ WYSIWYGModeView.prototype = {
         return null;
     },
 
+    /**
+     * Return a list of nodes, starting from the anchor node of the
+     * a selection up to and including the root node.
+     *
+     * Note that the node at index 0 of the returned list is the
+     * selection node, and the node at the highest index is the
+     * root node.
+     *
+     * @param  {nsISelection} aSelection the selection
+     * @return {Array} returns an array of nodes
+     */
     getNodesToRoot: function (aSelection) {
-        var elemNameMap = null;
-        var node        = null;
-        var nodeName    = null;
-        var position    = 0;
+        var elemNameList = null;
+        var node         = null;
+        var position     = 0;
 
         /* DEBUG */ YulupDebug.ASSERT(aSelection != null);
 
         /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.getNodesToRoot() invoked\n");
 
-        elemNameMap = {};
+        elemNameList = new Array();
 
         if (aSelection.anchorNode) {
             /* Add all element names on the path from the current selection anchor
@@ -495,18 +505,14 @@ WYSIWYGModeView.prototype = {
 
             while (node) {
                 if (node.localName) {
-                    nodeName = node.localName.toLowerCase();
-                    elemNameMap[nodeName] = { node: node, name: nodeName, position: position++ };
+                    elemNameList[position++] = { node: node, name: node.localName.toLowerCase() };
                 }
 
                 node = node.parentNode;
             }
         }
 
-        for (var elemName in elemNameMap)
-            /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.getNodesToRoot: elem name map entry = \"" + elemName + "\"\n");
-
-        return elemNameMap;
+        return elemNameList;
     }
 };
 
@@ -1102,7 +1108,7 @@ WYSIWYGEditAttributesCommand.prototype = {
 
                         /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.doCommand: current node attr value = \"" + currentAttrValue + "\"\n");
 
-                        // TODO: don't pass the currentAttrValue via the stored attribute representation
+                        // TODO: don't pass the currentAttrValue via the stored attribute representation, or remove the following if test which presents empty values from resetting the stored value
                         if (currentAttrValue)
                             allowedAttrs.getObject(i).currentValue = currentAttrValue;
 
@@ -1206,23 +1212,15 @@ WYSIWYGUpdateSelectionListener.prototype = {
     __menuPopup        : null,
 
     notifySelectionChanged: function (aDocument, aSelection, aReason) {
-        var elemNameMap             = null;
         var elemNameList            = null;
         var currentLocationPathNode = null;
         var elem                    = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged() invoked\n");
 
-        elemNameMap = this.__view.getNodesToRoot(aSelection);
+        elemNameList = this.__view.getNodesToRoot(aSelection);
 
-        WidgetHandler.updateCommandActiveStates(this.__widgetCommandList, elemNameMap);
-
-        elemNameList = new Array();
-        locationPath = "";
-
-        for (var elemName in elemNameMap) {
-            elemNameList[elemNameMap[elemName].position] = elemNameMap[elemName];
-        }
+        WidgetHandler.updateCommandActiveStates(this.__widgetCommandList, elemNameList);
 
         /* Invariant: currentLocationPathNode always points to a "/" label or null,
          * and a "/" label always has a non-null next sibling. */
@@ -1243,7 +1241,7 @@ WYSIWYGUpdateSelectionListener.prototype = {
                     currentLocationPathNode = currentLocationPathNode.nextSibling.nextSibling;
                 }
             } else {
-                /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: creating new path section for \"" + elemNameList[i].name + "\"\n");
+                /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: creating new path section " + i + " for \"" + elemNameList[i].name + "\"\n");
 
                 elem = document.createElementNS(XUL_NAMESPACE_URI, "label");
                 elem.setAttribute("value", "/");

@@ -507,15 +507,23 @@ var WidgetHandler = {
         aCommand.setAttribute("checked", "false");
     },
 
-    updateCommandActiveStates: function (aWidgetCommandList, aElemNameMap) {
+    updateCommandActiveStates: function (aWidgetCommandList, aElemNameList) {
+        var elemNameMap = null;
+
         /* DEBUG */ YulupDebug.ASSERT(aWidgetCommandList != null);
-        /* DEBUG */ YulupDebug.ASSERT(aElemNameMap       != null);
+        /* DEBUG */ YulupDebug.ASSERT(aElemNameList      != null);
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.updateCommandActiveStates() invoked\n");
 
+        elemNameMap = {};
+
+        for (var i = 0; i < aElemNameList.length; i++) {
+            elemNameMap[aElemNameList[i].name] = true;
+        }
+
         // check all commands
         for (var elemName in aWidgetCommandList) {
-            if (aElemNameMap.hasOwnProperty(elemName)) {
+            if (elemNameMap.hasOwnProperty(elemName)) {
                 WidgetHandler.activateCommand(aWidgetCommandList[elemName]);
             } else {
                 WidgetHandler.deactivateCommand(aWidgetCommandList[elemName]);
