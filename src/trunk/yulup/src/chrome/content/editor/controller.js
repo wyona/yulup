@@ -127,10 +127,8 @@ YulupEditController.onCommandShowView = function (aView, aTitle) {
         }
     }
 
-    if (switchSuccessful) {
+    if (switchSuccessful)
         YulupEditController.updateWindowTitle(aTitle);
-        Editor.goUpdateContextCommands();
-    }
 };
 
 /**

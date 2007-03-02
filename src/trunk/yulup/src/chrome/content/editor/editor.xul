@@ -114,11 +114,11 @@
              label="&editOperationDelete.label;"    tooltiptext="&editOperationDelete.tooltip;"/>
     <command id="cmd_selectAll" oncommand="Editor.goDoCommand('cmd_selectAll')" disabled="false"
              label="&editOperationSelectAll.label;" tooltiptext="&editOperationSelectAll.tooltip;"/>
-    <command id="cmd_yulup_selectContents" oncommand="Editor.goDoCommand('cmd_yulup_selectContents')" disabled="true"
-             label="&editOperationSelectContents.label;" tooltiptext="&editOperationSelectContents.tooltip;"/>
+    <command id="cmd_yulup_selectContents"        oncommand="Editor.goDoCommand('cmd_yulup_selectContents')"        disabled="true"
+             label="&editOperationSelectContents.label;"       tooltiptext="&editOperationSelectContents.tooltip;"/>
     <command id="cmd_yulup_selectContextContents" oncommand="Editor.goDoCommand('cmd_yulup_selectContextContents')" disabled="true"
-             label="&editOperationSelectContents.label;" tooltiptext="&editOperationSelectContents.tooltip;"/>
-    <command id="cmd_yulup_deleteContextElement" oncommand="Editor.goDoCommand('cmd_yulup_deleteContextElement')" disabled="true"
+             label="&editOperationSelectContents.label;"       tooltiptext="&editOperationSelectContents.tooltip;"/>
+    <command id="cmd_yulup_deleteContextElement"  oncommand="Editor.goDoCommand('cmd_yulup_deleteContextElement')"  disabled="true"
              label="&editOperationdeleteContextElement.label;" tooltiptext="&editOperationdeleteContextElement.tooltip;"/>
   </commandset>
 
@@ -146,10 +146,14 @@
   </commandset>
 
   <commandset id="uiYulupEditorModificationCommandset">
-    <command id="cmd_yulup_editAttributes" oncommand="Editor.goDoCommand('cmd_yulup_editAttributes')"
+    <command id="cmd_yulup_editAttributes"        oncommand="Editor.goDoCommand('cmd_yulup_editAttributes')"        disabled="true"
              label="&editOperationEditAttributes.label;" tooltiptext="&editOperationEditAttributes.tooltip;"/>
-    <command id="cmd_yulup_editContextAttributes" oncommand="Editor.goDoCommand('cmd_yulup_editContextAttributes')"
+    <command id="cmd_yulup_editContextAttributes" oncommand="Editor.goDoCommand('cmd_yulup_editContextAttributes')" disabled="true"
              label="&editOperationEditAttributes.label;" tooltiptext="&editOperationEditAttributes.tooltip;"/>
+    <command id="cmd_yulup_moveUp"                oncommand="Editor.goDoCommand('cmd_yulup_moveUp')"                disabled="true"
+             label="&editOperationMoveUp.label;"         tooltiptext="&editOperationMoveUp.tooltip;"/>
+    <command id="cmd_yulup_moveDown"              oncommand="Editor.goDoCommand('cmd_yulup_moveDown')"              disabled="true"
+             label="&editOperationMoveDown.label;"       tooltiptext="&editOperationMoveDown.tooltip;"/>
   </commandset>
 
   <commandset id="uiYulupEditorWidgetCommandset"/>
@@ -189,7 +193,8 @@
                 oncommand="Editor.toggleToolbarButtonText()"/>
     </popup>
 
-    <popup id="uiYulupEditorEditorContextMenu">
+    <popup id="uiYulupEditorEditorContextMenu"
+           onpopupshowing="Editor.goUpdateEditorContextCommands()">
       <menuitem id="uiYulupEditorEditorContextUndo"
                 command="cmd_undo"/>
       <menuitem id="uiYulupEditorEditorContextRedo"
@@ -228,11 +233,17 @@
                 command="cmd_yulup_editAttributes"/>
     </popup>
 
-    <popup id="uiYulupEditorEditorToolbarMenu">
+    <popup id="uiYulupEditorEditorLocationBarMenu"
+           onpopupshowing="Editor.goUpdateLocationBarContextCommands()">
       <menuitem id="uiYulupEditorEditorContextDeleteContextElement"
                 command="cmd_yulup_deleteContextElement"/>
       <menuitem id="uiYulupEditorEditorContextSelectContextContents"
                 command="cmd_yulup_selectContextContents"/>
+      <menuseparator/>
+      <menuitem id="uiYulupEditorEditorContextMoveUp"
+                command="cmd_yulup_moveUp"/>
+      <menuitem id="uiYulupEditorEditorContextMoveDown"
+                command="cmd_yulup_moveDown"/>
       <menuseparator/>
       <menuitem id="uiYulupEditorEditorContextEditAttributes"
                 command="cmd_yulup_editContextAttributes"/>

@@ -13,6 +13,10 @@
 <!ENTITY editOperationSelectContents.tooltip "Ganzer inhalt des aktuellen Elements auswählen">
 <!ENTITY editOperationdeleteContextElement.label "Element löschen">
 <!ENTITY editOperationdeleteContextElement.tooltip "Aktuelles Element samt Inhalt löschen">
+<!ENTITY editOperationMoveUp.label "Nach oben">
+<!ENTITY editOperationMoveUp.tooltip "Element nach oben verschieben">
+<!ENTITY editOperationMoveDown.label "Nach unten">
+<!ENTITY editOperationMoveDown.tooltip "Element nach unten verschieben">
 <!ENTITY editOperationDelete.label "Löschen">
 <!ENTITY editOperationFind.label "Suchen">
 <!ENTITY editOperationFindReplace.label "Ersetzen">

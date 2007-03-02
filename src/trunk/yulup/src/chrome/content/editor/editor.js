@@ -910,14 +910,22 @@ var Editor = {
         Editor.goUpdateCommand("cmd_paste");
     },
 
-    goUpdateContextCommands: function () {
-        /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateContextCommands() invoked\n");
+    goUpdateEditorContextCommands: function () {
+        /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateEditorContextCommands() invoked\n");
 
+        Editor.goUpdateCommand("cmd_yulup_selectAll");
         Editor.goUpdateCommand("cmd_yulup_selectContents");
-        Editor.goUpdateCommand("cmd_yulup_selectContextContents");
         Editor.goUpdateCommand("cmd_yulup_editAttributes");
-        Editor.goUpdateCommand("cmd_yulup_editContextAttributes");
+    },
+
+    goUpdateLocationBarContextCommands: function () {
+        /* DEBUG */ dump("Yulup:editor.js:Editor.goUpdateLocationBarContextCommands() invoked\n");
+
         Editor.goUpdateCommand("cmd_yulup_deleteContextElement");
+        Editor.goUpdateCommand("cmd_yulup_selectContextContents");
+        Editor.goUpdateCommand("cmd_yulup_moveUp");
+        Editor.goUpdateCommand("cmd_yulup_moveDown");
+        Editor.goUpdateCommand("cmd_yulup_editContextAttributes");
     },
 
     updateSaveMenu: function () {

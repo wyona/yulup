@@ -87,6 +87,7 @@ WYSIWYGModeView.prototype = {
         var widgetUpSelListener   = null;
         var selectContentsCommand = null;
         var editAttributesCommand = null;
+        var moveCommand           = null;
         var commandController     = null;
         var commandTable          = null;
 
@@ -182,12 +183,15 @@ WYSIWYGModeView.prototype = {
 
             selectContentsCommand = new WYSIWYGSelectContentsCommand(this, widgetUpSelListener);
             editAttributesCommand = new WYSIWYGEditAttributesCommand(this);
+            moveCommand           = new WYSIWYGMoveContextCommand(this, widgetUpSelListener);
 
             commandTable.registerCommand("cmd_yulup_selectContents", selectContentsCommand);
             commandTable.registerCommand("cmd_yulup_selectContextContents", selectContentsCommand);
             commandTable.registerCommand("cmd_yulup_editAttributes", editAttributesCommand);
             commandTable.registerCommand("cmd_yulup_editContextAttributes", editAttributesCommand);
             commandTable.registerCommand("cmd_yulup_deleteContextElement", new WYSIWYGDeleteContextElementCommand(this, widgetUpSelListener));
+            commandTable.registerCommand("cmd_yulup_moveUp", moveCommand);
+            commandTable.registerCommand("cmd_yulup_moveDown", moveCommand);
 
             /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.setUp: initialisation completed\n");
         } catch (exception) {
@@ -993,11 +997,27 @@ WYSIWYGSelectContentsCommand.prototype = {
     getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
         dump("Yulup:wysiwygmodeview.js:WYSIWYGSelectContentsCommand.getCommandStateParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
 
-        aParams.setBooleanValue("state_enabled", true);
+        aParams.setBooleanValue("state_enabled", this.isCommandEnabled(aCommandName, aCommandContext));
     },
 
     isCommandEnabled: function (aCommandName, aCommandContext) {
-        return true;
+        var selectionNode = null;
+
+        dump("Yulup:wysiwygmodeview.js:WYSIWYGSelectContentsCommand.isCommandEnabled(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+        if ("cmd_yulup_selectContents" == aCommandName || "cmd_yulup_selectContextContents" == aCommandName) {
+            if ("cmd_yulup_selectContents" == aCommandName) {
+                selectionNode = aCommandContext.selection.anchorNode;
+            } else {
+                selectionNode = this.__view.getContextTarget();
+            }
+
+            if (selectionNode) {
+                return true;
+            }
+        }
+
+        return false;
     }
 };
 
@@ -1051,11 +1071,187 @@ WYSIWYGDeleteContextElementCommand.prototype = {
     getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
         dump("Yulup:wysiwygmodeview.js:WYSIWYGDeleteContextElementCommand.getCommandStateParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
 
-        aParams.setBooleanValue("state_enabled", true);
+        aParams.setBooleanValue("state_enabled", this.isCommandEnabled(aCommandName, aCommandContext));
     },
 
     isCommandEnabled: function (aCommandName, aCommandContext) {
-        return true;
+        var selectionNode = null;
+
+        dump("Yulup:wysiwygmodeview.js:WYSIWYGDeleteContextElementCommand.isCommandEnabled(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+        if ("cmd_yulup_deleteContextElement" == aCommandName) {
+            selectionNode = this.__view.getContextTarget();
+
+            if (selectionNode) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+};
+
+
+/**
+ * WYSIWYGMoveContextCommand constructor. Instantiates a new object of
+ * type WYSIWYGMoveContextCommand.
+ *
+ * Implements nsIControllerCommand.
+ *
+ * @constructor
+ */
+function WYSIWYGMoveContextCommand(aView, aSelectionChangeHandler) {
+    /* DEBUG */ YulupDebug.ASSERT(aView                   != null);
+    /* DEBUG */ YulupDebug.ASSERT(aSelectionChangeHandler != null);
+
+    this.__view                   = aView;
+    this.__selectionChangeHandler = aSelectionChangeHandler;
+}
+
+WYSIWYGMoveContextCommand.prototype = {
+    __view                  : null,
+    __selectionChangeHandler: null,
+
+    doCommand: function (aCommandName, aCommandContext) {
+        var targetNode   = null;
+        var childNodes   = null;
+        var siblingElem  = null;
+        var position     = null;
+        var found        = false;
+
+        dump("Yulup:wysiwygmodeview.js:WYSIWYGMoveContextCommand.doCommand(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+        if ("cmd_yulup_moveUp" == aCommandName || "cmd_yulup_moveDown" == aCommandName) {
+            targetNode = this.__view.getContextTarget();
+
+            parentNode = targetNode.parentNode;
+
+            if (parentNode) {
+                childNodes = parentNode.childNodes;
+
+                switch (aCommandName) {
+                    case "cmd_yulup_moveUp":
+                        for (position = 0; position < childNodes.length; position++) {
+                            if (childNodes.item(position) == targetNode) {
+                                found = true;
+                                break;
+                            } else if (childNodes.item(position).nodeType == Components.interfaces.nsIDOMNode.ELEMENT_NODE) {
+                                // store the closest younger sibling element to the current position
+                                siblingElem = { node: childNodes.item(position), position: position };
+                            }
+                        }
+
+                        break;
+                    case "cmd_yulup_moveDown":
+                        for (position = (childNodes.length - 1); position >= 0; position--) {
+                            if (childNodes.item(position) == targetNode) {
+                                found = true;
+                                break;
+                            } else if (childNodes.item(position).nodeType == Components.interfaces.nsIDOMNode.ELEMENT_NODE) {
+                                // store the closest older sibling element to the current position
+                                siblingElem = { node: childNodes.item(position), position: position };
+                            }
+                        }
+
+                        break;
+                }
+
+                if (found && siblingElem) {
+                    // begin transaction
+                    this.__view.view.beginTransaction();
+
+                    try {
+                        this.__view.view.deleteNode(targetNode);
+                        this.__view.view.insertNode(targetNode, parentNode, siblingElem.position);
+                    } catch  (exception) {
+                        /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:wysiwygmodeview.js:WYSIWYGMoveContextCommand.doCommand", exception);
+                        /* DEBUG */ Components.utils.reportError(exception);
+                    }
+
+                    // end transaction
+                    this.__view.view.endTransaction();
+
+                    // inform observer about state change
+                    this.__view.undoRedoObserver.updateCommands();
+                }
+
+                aCommandContext.selection.removeAllRanges();
+                aCommandContext.selection.selectAllChildren(targetNode);
+
+                this.__selectionChangeHandler.notifySelectionChanged(aCommandContext.document, aCommandContext.selection, null);
+
+                return true;
+            }
+        }
+
+        return false;
+    },
+
+    doCommandParams: function (aCommandName, aParams, aCommandContext) {
+        dump("Yulup:wysiwygmodeview.js:WYSIWYGMoveContextCommand.doCommandParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+
+        return this.doCommand(aCommandName, aCommandContext);
+    },
+
+    getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
+        dump("Yulup:wysiwygmodeview.js:WYSIWYGMoveContextCommand.getCommandStateParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+
+        aParams.setBooleanValue("state_enabled", this.isCommandEnabled(aCommandName, aCommandContext));
+    },
+
+    isCommandEnabled: function (aCommandName, aCommandContext) {
+        var targetNode   = null;
+        var childNodes   = null;
+        var siblingElem  = null;
+        var position     = null;
+        var found        = false;
+
+        dump("Yulup:wysiwygmodeview.js:WYSIWYGMoveContextCommand.isCommandEnabled(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+        if ("cmd_yulup_moveUp" == aCommandName || "cmd_yulup_moveDown" == aCommandName) {
+            targetNode = this.__view.getContextTarget();
+
+            if (targetNode) {
+                parentNode = targetNode.parentNode;
+
+                if (parentNode) {
+                    childNodes = parentNode.childNodes;
+
+                    switch (aCommandName) {
+                        case "cmd_yulup_moveUp":
+                            for (position = 0; position < childNodes.length; position++) {
+                                if (childNodes.item(position) == targetNode) {
+                                    found = true;
+                                    break;
+                                } else if (childNodes.item(position).nodeType == Components.interfaces.nsIDOMNode.ELEMENT_NODE) {
+                                    // store the closest younger sibling element to the current position
+                                    siblingElem = { node: childNodes.item(position), position: position };
+                                }
+                            }
+
+                            break;
+                        case "cmd_yulup_moveDown":
+                            for (position = (childNodes.length - 1); position >= 0; position--) {
+                                if (childNodes.item(position) == targetNode) {
+                                    found = true;
+                                    break;
+                                } else if (childNodes.item(position).nodeType == Components.interfaces.nsIDOMNode.ELEMENT_NODE) {
+                                    // store the closest older sibling element to the current position
+                                    siblingElem = { node: childNodes.item(position), position: position };
+                                }
+                            }
+
+                            break;
+                    }
+
+                    if (found && siblingElem) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 };
 
@@ -1174,17 +1370,28 @@ WYSIWYGEditAttributesCommand.prototype = {
     getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
         dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.getCommandStateParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
 
-        aParams.setBooleanValue("state_enabled", true);
+        aParams.setBooleanValue("state_enabled", this.isCommandEnabled(aCommandName, aCommandContext));
     },
 
     isCommandEnabled: function (aCommandName, aCommandContext) {
+        var target = null;
+
         dump("Yulup:wysiwygmodeview.js:WYSIWYGEditAttributesCommand.isCommandEnabled(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
 
         if ("cmd_yulup_editAttributes" == aCommandName || "cmd_yulup_editContextAttributes" == aCommandName) {
-            return true;
-        } else {
-            return false;
+            if ("cmd_yulup_editAttributes" == aCommandName) {
+                target = this.__view.view.selection.anchorNode;
+            } else {
+                // use mouse click target node
+                target = this.__view.getContextTarget();
+            }
+
+            if (target) {
+                return true;
+            }
         }
+
+        return false;
     }
 };
 
@@ -1198,7 +1405,7 @@ function WYSIWYGUpdateSelectionListener(aView, aWidgetCommandList) {
     this.__view              = aView;
     this.__widgetCommandList = aWidgetCommandList;
     this.__locationPathBox   = document.getElementById("uiYulupEditorPathToolBarPathBox");
-    this.__menuPopup         = document.getElementById("uiYulupEditorEditorToolbarMenu");
+    this.__menuPopup         = document.getElementById("uiYulupEditorEditorLocationBarMenu");
 }
 
 WYSIWYGUpdateSelectionListener.prototype = {

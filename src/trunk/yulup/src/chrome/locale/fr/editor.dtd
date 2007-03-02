@@ -13,6 +13,10 @@
 <!ENTITY editOperationSelectContents.tooltip "Select all contents of the current element">
 <!ENTITY editOperationdeleteContextElement.label "Delete Element">
 <!ENTITY editOperationdeleteContextElement.tooltip "Delete the element including its content">
+<!ENTITY editOperationMoveUp.label "Move Up">
+<!ENTITY editOperationMoveUp.tooltip "Move element up">
+<!ENTITY editOperationMoveDown.label "Move Down">
+<!ENTITY editOperationMoveDown.tooltip "Move element down">
 <!ENTITY editOperationDelete.label "Delete">
 <!ENTITY editOperationFind.label "Find">
 <!ENTITY editOperationFindReplace.label "Replace">
