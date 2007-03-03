@@ -1,0 +1,23 @@
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <atom:title type="text">yulup-0.2.5-r23098.xpi</atom:title>
+  <atom:author>
+    <atom:name>Andreas Wuest</atom:name>
+  </atom:author>
+  <atom:id>urn:www-yulup-org:0-2-5-release</atom:id>
+  <atom:content type="xhtml">
+    <xhtml:div>
+      <xhtml:a href="yulup-0.2.5-r23098.xpi">yulup-0.2.5-r23098.xpi</xhtml:a> <xhtml:a href="http://svn.wyona.com/repos/public/yulup/website/download/yulup-0.2.5-r23098.xpi.md5">(md5)</xhtml:a> (March 02, 2007)
+      <xhtml:br/>
+      <xhtml:br/>
+      Changelog:
+      <xhtml:ul>
+        <xhtml:li>More XHTML widgets added.</xhtml:li>
+        <xhtml:li>New commands for the WYSIWYG mode view added.</xhtml:li>
+        <xhtml:li>Attribute editing of existing elements added.</xhtml:li>
+        <xhtml:li>WYSIWYG location toolbar added.</xhtml:li>
+        <xhtml:li>Correctly escape URIs for XML enveloping.</xhtml:li>
+        <xhtml:li>Lots of under-the-hood changes.</xhtml:li>
+      </xhtml:ul>
+    </xhtml:div>
+  </atom:content>
+<atom:updated>2007-03-03T01:09:07.493Z</atom:updated><atom:published>2007-03-03T01:07:50.870Z</atom:published></atom:entry>
