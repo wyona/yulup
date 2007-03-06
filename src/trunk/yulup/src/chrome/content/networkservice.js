@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -36,6 +36,21 @@ const SUPPORTED_AUTHENTICATION_SCHEMES =  "Neutron-Auth";
 const DEFAULT_CHAR_SET = "UTF-8";
 
 var NetworkService = {
+    /**
+     * Checks if the given status code is of the
+     * 2xx Successful family.
+     *
+     * @param  {Number} aStatusCode  the status code to check
+     * @return {Boolean} returns true if the given status code is greater-or-equal-than 200 and less-than 300
+     */
+    isStatusSuccess: function (aStatusCode) {
+        /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.isStatusSuccess(\"" + aStatusCode + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aStatusCode != null);
+
+        return (200 <= aStatusCode && aStatusCode < 300);
+    },
+
     /**
      * Perform a file download over HTTP.
      *

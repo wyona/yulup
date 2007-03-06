@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -94,7 +94,7 @@ var NeutronAuth = {
         /* DEBUG */ YulupDebug.ASSERT(aContext.logoutURI  != null);
 
         try {
-            if (aResponseStatusCode == 200) {
+            if (NetworkService.isStatusSuccess(aResponseStatusCode)) {
                 gMainBrowserWindow.yulup.addRealmToYulupMenu(aContext.realm, aContext.logoutURI);
 
                 // success, we are authenticated, restart initial request

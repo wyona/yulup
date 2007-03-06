@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -316,7 +316,7 @@ Document.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aLoadFinishedCallback         != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aLoadFinishedCallback) == "function");
 
-        NetworkService.httpRequestGET(this.loadURI.spec, null, this.__requestFinishedHandler, aLoadFinishedCallback, false, true);
+        NetworkService.httpRequestGET(this.loadURI.spec, null, this.__loadFinishedHandler, aLoadFinishedCallback, false, true);
     },
 
     /**
@@ -334,7 +334,7 @@ Document.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aUploadFinishedCallback         != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aUploadFinishedCallback) == "function");
 
-        NetworkService.httpRequestPUT(this.loadURI.spec, null, aDocumentData, this.contentType, this.__requestFinishedHandler, aUploadFinishedCallback, false, true);
+        NetworkService.httpRequestPUT(this.loadURI.spec, null, aDocumentData, this.contentType, this.__uploadFinishedHandler, aUploadFinishedCallback, false, true);
     },
 
     /**
@@ -377,7 +377,7 @@ Document.prototype = {
     },
 
     /**
-     * The handler which gets called via a callback after a request has
+     * The handler which gets called via a callback after a load has
      * finished.
      *
      * Calls aRequestFinishedCallback upon completion. If
@@ -400,14 +400,63 @@ Document.prototype = {
      * @param  {Error}    aException               an exception, or null if everything went well
      * @return {Undefined} does not have a return value
      */
-    __requestFinishedHandler: function (aDocumentData, aResponseStatusCode, aRequestFinishedCallback, aResponseHeaders, aException) {
-        /* DEBUG */ dump("Yulup:document.js:Document.__requestFinishedHandler() invoked\n");
+    __loadFinishedHandler: function (aDocumentData, aResponseStatusCode, aRequestFinishedCallback, aResponseHeaders, aException) {
+        /* DEBUG */ dump("Yulup:document.js:Document.__loadFinishedHandler() invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aResponseStatusCode              != null);
         /* DEBUG */ YulupDebug.ASSERT(aRequestFinishedCallback         != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aRequestFinishedCallback) == "function");
 
         if (aResponseStatusCode == 200) {
+            // success, call back to original caller
+            aRequestFinishedCallback(aDocumentData, null);
+        } else {
+            if (aException) {
+                aRequestFinishedCallback(null, aException);
+            } else {
+                try {
+                    // parse error message (throws an exeception)
+                    Neutron.response(aDocumentData);
+                } catch (exception) {
+                    aRequestFinishedCallback(null, exception);
+                    return;
+                }
+            }
+        }
+    },
+
+    /**
+     * The handler which gets called via a callback after an upload has
+     * finished.
+     *
+     * Calls aRequestFinishedCallback upon completion. If
+     * the request succeeded, aRequestFinishedCallback(String, null)
+     * is called (where String might be "" if the request was a
+     * PUT or POST request). aRequestFinishedCallback(null, NeutronException)
+     * if the server threw a Neutron exception during the request.
+     * aRequestFinishedCallback(null, Error) if an internal error
+     * occurred while fullfilling the request.
+     *
+     * Don't use "this" inside this method because the callback
+     * will not provide a pointer to it. If you need "this", you
+     * must wrap this handler in an anonymous function when you
+     * pass it to httpRequestGET().
+     *
+     * @param  {String}   aDocumentData            the data returned by the request
+     * @param  {Long}     aResponseStatusCode      the status code of the response
+     * @param  {Function} aRequestFinishedCallback a function with the signature function(String, Error)
+     * @param  {Array}    aResponseHeaders         the response headers
+     * @param  {Error}    aException               an exception, or null if everything went well
+     * @return {Undefined} does not have a return value
+     */
+    __uploadFinishedHandler: function (aDocumentData, aResponseStatusCode, aRequestFinishedCallback, aResponseHeaders, aException) {
+        /* DEBUG */ dump("Yulup:document.js:Document.__uploadFinishedHandler() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aResponseStatusCode              != null);
+        /* DEBUG */ YulupDebug.ASSERT(aRequestFinishedCallback         != null);
+        /* DEBUG */ YulupDebug.ASSERT(typeof(aRequestFinishedCallback) == "function");
+
+        if (NetworkService.isStatusSuccess(aResponseStatusCode)) {
             // success, call back to original caller
             aRequestFinishedCallback(aDocumentData, null);
         } else {
@@ -558,7 +607,7 @@ NeutronDocument.prototype = {
 
         if (this.loadMethod == "GET") {
             // we have to proxy this request because it is a Neutron request, i.e. we have to deal with potential Neutron protocol exceptions
-            NetworkService.httpRequestGET(this.loadURI.spec, null, this.__requestFinishedHandler, aLoadFinishedCallback, false, true);
+            NetworkService.httpRequestGET(this.loadURI.spec, null, this.__loadFinishedHandler, aLoadFinishedCallback, false, true);
         } else {
             // unknown request method
             throw new YulupEditorException("Yulup:document.js:NeutronDocument.loadDocument: request method \"" + this.uploadMethod + "\" unknown.");
@@ -583,10 +632,10 @@ NeutronDocument.prototype = {
         // we have to proxy this request because it is a Neutron request, i.e. we have to deal with potential Neutron protocol exceptions
         switch (this.uploadMethod) {
             case "PUT":
-                NetworkService.httpRequestPUT(this.uploadURI.spec, null, aDocumentData, this.contentType, this.__requestFinishedHandler, aUploadFinishedCallback, false, true);
+                NetworkService.httpRequestPUT(this.uploadURI.spec, null, aDocumentData, this.contentType, this.__uploadFinishedHandler, aUploadFinishedCallback, false, true);
                 break;
             case "POST":
-                NetworkService.httpRequestPOST(this.uploadURI.spec, null, aDocumentData, this.contentType, this.__requestFinishedHandler, aUploadFinishedCallback, false, true);
+                NetworkService.httpRequestPOST(this.uploadURI.spec, null, aDocumentData, this.contentType, this.__uploadFinishedHandler, aUploadFinishedCallback, false, true);
                 break;
             default:
                 // unknown request method
@@ -595,7 +644,7 @@ NeutronDocument.prototype = {
     },
 
     /**
-     * The handler which gets called via a callback after a request has
+     * The handler which gets called via a callback after a load has
      * finished.
      *
      * Calls aRequestFinishedCallback upon completion. If
@@ -618,14 +667,63 @@ NeutronDocument.prototype = {
      * @param  {Error}    aException               an exception, or null if everything went well
      * @return {Undefined} does not have a return value
      */
-    __requestFinishedHandler: function (aDocumentData, aResponseStatusCode, aRequestFinishedCallback, aResponseHeaders, aException) {
-        /* DEBUG */ dump("Yulup:document.js:NeutronDocument.__requestFinishedHandler() invoked\n");
+    __loadFinishedHandler: function (aDocumentData, aResponseStatusCode, aRequestFinishedCallback, aResponseHeaders, aException) {
+        /* DEBUG */ dump("Yulup:document.js:NeutronDocument.__loadFinishedHandler() invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aResponseStatusCode              != null);
         /* DEBUG */ YulupDebug.ASSERT(aRequestFinishedCallback         != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aRequestFinishedCallback) == "function");
 
         if (aResponseStatusCode == 200) {
+            // success, call back to original caller
+            aRequestFinishedCallback(aDocumentData, null);
+        } else {
+            if (aException) {
+                aRequestFinishedCallback(null, aException);
+            } else {
+                try {
+                    // parse error message (throws an exeception)
+                    Neutron.response(aDocumentData);
+                } catch (exception) {
+                    aRequestFinishedCallback(null, exception);
+                    return;
+                }
+            }
+        }
+    },
+
+    /**
+     * The handler which gets called via a callback after an upload has
+     * finished.
+     *
+     * Calls aRequestFinishedCallback upon completion. If
+     * the request succeeded, aRequestFinishedCallback(String, null)
+     * is called (where String might be "" if the request was a
+     * PUT or POST request). aRequestFinishedCallback(null, NeutronException)
+     * if the server threw a Neutron exception during the request.
+     * aRequestFinishedCallback(null, Error) if an internal error
+     * occurred while fullfilling the request.
+     *
+     * Don't use "this" inside this method because the callback
+     * will not provide a pointer to it. If you need "this", you
+     * must wrap this handler in an anonymous function when you
+     * pass it to httpRequestGET().
+     *
+     * @param  {String}   aDocumentData            the data returned by the request
+     * @param  {Long}     aResponseStatusCode      the status code of the response
+     * @param  {Function} aRequestFinishedCallback a function with the signature function(String, Error)
+     * @param  {Array}    aResponseHeaders         the response headers
+     * @param  {Error}    aException               an exception, or null if everything went well
+     * @return {Undefined} does not have a return value
+     */
+    __uploadFinishedHandler: function (aDocumentData, aResponseStatusCode, aRequestFinishedCallback, aResponseHeaders, aException) {
+        /* DEBUG */ dump("Yulup:document.js:NeutronDocument.__uploadFinishedHandler() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aResponseStatusCode              != null);
+        /* DEBUG */ YulupDebug.ASSERT(aRequestFinishedCallback         != null);
+        /* DEBUG */ YulupDebug.ASSERT(typeof(aRequestFinishedCallback) == "function");
+
+        if (NetworkService.isStatusSuccess(aResponseStatusCode)) {
             // success, call back to original caller
             aRequestFinishedCallback(aDocumentData, null);
         } else {
@@ -813,7 +911,7 @@ XMLDocument.prototype = {
 
         this.loadStatus = XMLDocument.LOADING;
 
-        //NetworkService.httpRequestGET(this.loadURI.spec, null, this.__requestFinishedHandler);
+        //NetworkService.httpRequestGET(this.loadURI.spec, null, this.__loadFinishedHandler);
 
         // TODO: use asynch loading via networkservice instead of nsIDOMXMLDocument
         xmlDocument = Components.classes["@mozilla.org/xml/xml-document;1"].createInstance(Components.interfaces.nsIDOMXMLDocument);
@@ -835,8 +933,8 @@ XMLDocument.prototype = {
         }
     },
 
-    __requestFinishedHandler: function (aDocumentData, aResponseStatusCode, aSelf) {
-        /* DEBUG */ dump("Yulup:document.js:XMLDocument.__requestFinishedHandler(\"" + aDocumentData + "\", \"" + aResponseStatusCode + "\", \"" + aSelf + "\") invoked\n");
+    __loadFinishedHandler: function (aDocumentData, aResponseStatusCode, aSelf) {
+        /* DEBUG */ dump("Yulup:document.js:XMLDocument.__loadFinishedHandler(\"" + aDocumentData + "\", \"" + aResponseStatusCode + "\", \"" + aSelf + "\") invoked\n");
 
         if (aResponseStatusCode == 200) {
             // success, set document data

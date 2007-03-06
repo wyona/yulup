@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -266,7 +266,7 @@ var ResourceUploadDialog = {
         /* DEBUG */ YulupDebug.ASSERT(aRequestFinishedCallback         != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aRequestFinishedCallback) == "function");
 
-        if (aResponseStatusCode == 200 && !aException) {
+        if (NetworkService.isStatusSuccess(aResponseStatusCode) && !aException) {
             // success, call back to original caller
             aRequestFinishedCallback(aDocumentData, null);
         } else {

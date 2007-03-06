@@ -202,7 +202,7 @@ const Authentication = {
 
         // TODO: load stringbundle (lazily) dynamically
 
-        if (aResponseStatusCode && aResponseStatusCode == 200) {
+        if (aResponseStatusCode && NetworkService.isStatusSuccess(aResponseStatusCode)) {
             alert(aContext.document.getElementById("uiYulupAuthStringbundle").getString("yulupLogoutSuccess.label") + " \"" + aContext.realm + "\".");
 
             aContext.yulup.removeRealmFromYulupMenu(aContext.realm);
