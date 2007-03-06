@@ -68,7 +68,6 @@ var APP = {
      * @return {Undefined} does not have a return value
      */
     __requestFinishedHandler: function(aDocumentData, aResponseStatusCode, aContext, aResponseHeaders) {
-
         /* DEBUG */ dump("Yulup:atom.js:APP.__requestFinishedHandler() invoked\n");
 
         if (aResponseStatusCode == 200) {
