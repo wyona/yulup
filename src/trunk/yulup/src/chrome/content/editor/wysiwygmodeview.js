@@ -1400,7 +1400,7 @@ function WYSIWYGUpdateSelectionListener(aView, aWidgetCommandList) {
     /* DEBUG */ YulupDebug.ASSERT(aView              != null);
     /* DEBUG */ YulupDebug.ASSERT(aWidgetCommandList != null);
 
-    /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener() invoked\n");
+    /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener() invoked\n");
 
     this.__view              = aView;
     this.__widgetCommandList = aWidgetCommandList;
@@ -1419,7 +1419,7 @@ WYSIWYGUpdateSelectionListener.prototype = {
         var currentLocationPathNode = null;
         var elem                    = null;
 
-        /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged() invoked\n");
+        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged() invoked\n");
 
         elemNameList = this.__view.getNodesToRoot(aSelection);
 
@@ -1432,11 +1432,11 @@ WYSIWYGUpdateSelectionListener.prototype = {
         for (var i = elemNameList.length - 1; i >= 0; i--) {
             if (currentLocationPathNode) {
                 if (currentLocationPathNode.nextSibling.locationNode == elemNameList[i].node) {
-                    /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: path element \"" + elemNameList[i].name + "\" already exists\n");
+                    /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: path element \"" + elemNameList[i].name + "\" already exists\n");
 
                     currentLocationPathNode = currentLocationPathNode.nextSibling.nextSibling;
                 } else {
-                    /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: replacing path element \"" + currentLocationPathNode.nextSibling.label + "\" by \"" + elemNameList[i].name + "\"\n");
+                    /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: replacing path element \"" + currentLocationPathNode.nextSibling.label + "\" by \"" + elemNameList[i].name + "\"\n");
 
                     currentLocationPathNode.nextSibling.label        = elemNameList[i].name;
                     currentLocationPathNode.nextSibling.locationNode = elemNameList[i].node;
@@ -1444,7 +1444,7 @@ WYSIWYGUpdateSelectionListener.prototype = {
                     currentLocationPathNode = currentLocationPathNode.nextSibling.nextSibling;
                 }
             } else {
-                /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: creating new path section " + i + " for \"" + elemNameList[i].name + "\"\n");
+                /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: creating new path section " + i + " for \"" + elemNameList[i].name + "\"\n");
 
                 elem = document.createElementNS(XUL_NAMESPACE_URI, "label");
                 elem.setAttribute("value", "/");
@@ -1470,7 +1470,7 @@ WYSIWYGUpdateSelectionListener.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(aName != null);
         /* DEBUG */ YulupDebug.ASSERT(aNode != null);
 
-        /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.__createPathButton() invoked\n");
+        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.__createPathButton() invoked\n");
 
         button = document.createElementNS(XUL_NAMESPACE_URI, "button");
         button.setAttribute("label", aName);
@@ -1487,7 +1487,7 @@ WYSIWYGUpdateSelectionListener.prototype = {
 
         /* DEBUG */ YulupDebug.ASSERT(aNode != null);
 
-        /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.__deleteSelfAndFollowingSiblings() invoked\n");
+        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.__deleteSelfAndFollowingSiblings() invoked\n");
 
         parentNode = aNode.parentNode;
 
@@ -1500,7 +1500,7 @@ WYSIWYGUpdateSelectionListener.prototype = {
     },
 
     __showContextMenu: function (aEvent) {
-        /* DEBUG */ dump("Yulup:widget.js:WYSIWYGUpdateSelectionListener.__showContextMenu() invoked\n");
+        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.__showContextMenu() invoked\n");
 
         if (aEvent.originalTarget.locationNode) {
             // store the locationNode as contextTarget
