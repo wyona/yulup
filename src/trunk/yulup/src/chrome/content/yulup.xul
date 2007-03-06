@@ -174,7 +174,8 @@
 
         <menuseparator/>
 
-        <menuitem key="key_openYulupAtomSidebar" observes="uiOpenYulupAtomSidebar"/>
+        <menuitem key="key_openYulupAtomSidebar"    observes="uiOpenYulupAtomSidebar"/>
+        <menuitem key="key_openYulupNeutronSidebar" observes="uiOpenYulupNeutronSidebar"/>
 
         <menuseparator id="uiYulupRealmSeparator" hidden="true"/>
 
