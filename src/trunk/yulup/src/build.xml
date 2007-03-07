@@ -29,6 +29,7 @@
   <property name="basename" value="yulup"/>
   <property name="version" value="${RDF.Description.em:version}"/>
   <property name="id" value="${RDF.Description.em:id}"/>
+  <property name="filename" value="${basename}-${version}.xpi"/>
   <property name="download-dir" value="../../../../website/download"/>
   <property name="nightly-dir" value="../../../../website/download/nightly/"/>
   <property name="user-manual-dir" value="../doc/"/>
@@ -37,11 +38,7 @@
     <splash imageurl="file://${basedir}/../../../../website/images/whale-logo.gif" showduration="1000"/>
   </target>
 
-  <target name="pkg-deploy" description="Deploy the XPI file" depends="init">
-    <property name="filename" value="${basename}-${version}.xpi"/>
-
-    <antcall target="pkg"/>
-
+  <target name="pkg-deploy" description="Deploy the XPI file" depends="init, pkg-clean, pkg">
     <move todir="${download-dir}">
       <fileset file="../pkg/${filename}"/>
       <fileset file="../pkg/${filename}.md5"/>
@@ -51,7 +48,6 @@
 
   <target name="pkg-deploy-nightly" description="Deploy the XPI nightly file" depends="init">
     <property name="debug" value="true"/>
-    <property name="filename" value="${basename}-${version}-nightly.xpi"/>
 
     <antcall target="pkg"/>
 
@@ -59,12 +55,11 @@
       <fileset file="../pkg/${filename}"/>
       <fileset file="../pkg/${filename}.md5"/>
     </move>
+
+    <delete file="../pkg/update.rdf"/>
   </target>
 
   <target name="pkg" description="Build the XPI file" depends="pkg-clean">
-    <!-- set filename if not already set by a higher-order target -->
-    <property name="filename" value="${basename}-${version}.xpi"/>
-
     <echo message="Package version is ${version}. Constructed package filename is ${filename}."/>
 
     <!-- build the locales -->
