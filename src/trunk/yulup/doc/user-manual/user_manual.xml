@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+# ***** BEGIN LICENSE BLOCK *****
+# Copyright 2006-2007 Wyona AG Zurich
+#
+# This file is part of Yulup.
+#
+# Yulup is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Yulup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Yulup; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# ***** END LICENSE BLOCK *****
+-->
+
 <?xml-stylesheet type="text/xsl" href="../../../../../utils/customization/style.xsl"?>
 
 <!DOCTYPE article [
@@ -15,26 +39,14 @@
       <author>
         <firstname>Andreas</firstname>
         <surname>Wuest</surname>
-        <email>awuest@student.ethz.ch</email>
+        <email>andreas.wuest@wyona.com</email>
         <affiliation>
           <corpname>Wyona AG</corpname>
-        </affiliation>
-      </author>
-      <author>
-        <firstname>Michael</firstname>
-        <surname>Wechner</surname>
-        <email>michi@wyona.com</email>
-        <affiliation>
-          <jobtitle>CEO</jobtitle>
-          <corpname>Wyona AG</corpname>
-        </affiliation>
-        <affiliation>
-          <orgname>Apache Software Foundation</orgname>
         </affiliation>
       </author>
     </authorgroup>
     <!-- All dates specified in ISO "YYYY-MM-DD" format -->
-    <pubdate>2007-01-26</pubdate>
+    <pubdate>2007-02-07</pubdate>
     <!-- Most recent revision goes at the top; list in descending order -->
     <!--
     <revhistory>
@@ -1049,11 +1061,33 @@
         </para>
       </section>
     </section>
-    <section>
-      <title>Neutron Sidebar</title>
+    <section id="neutronsidebar">
+      <title id="neutronsidebar.title">Neutron Sidebar</title>
       <para>
-        
+        The Neutron sidebar can be accessed either via the <guimenu>View</guimenu> &gt;&gt; <guisubmenu>Sidebar</guisubmenu> &gt;&gt; <guimenuitem>Neutron Sidebar</guimenuitem> menu item, via the <guimenuitem>Neutron Sidebar</guimenuitem> menu item in the &project; menu, or via the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>N</keycap></keycombo> keyboard shortcut.
       </para>
+      <para>
+        Once the Neutron sidebar is open, you can close it by unchecking it in one of the above mentioned menus, by hitting the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>N</keycap></keycombo> keyboard shortcut again, or by clicking the <guibutton>close</guibutton> button in the upper right corner of the sidebar.
+      </para>
+      <para>
+        <figure>
+          <title>Neutron Sidebar</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="figures/neutron_sidebar.png" format="PNG"/>
+            </imageobject>
+            <textobject>
+              <phrase>Neutron sidebar showing several collections and resources</phrase>
+            </textobject>
+          </mediaobject>
+        </figure>
+      </para>
+      <section>
+        <title>Navigating</title>
+        <para>
+          The remote hierarchy can be navigated by clicking on the arrow icons left to collections; this will open or close the collection, depending on its current state.
+        </para>
+      </section>
     </section>
   </section>
 
@@ -1100,10 +1134,10 @@
           </itemizedlist>
         </para>
       </section>
-      <section>
-        <title>Default CMS</title>
+      <section id="defaultcms">
+        <title id="defaultcms.title">Default CMS</title>
         <para>
-          Enter the URI of the CMS you use most. This URI is evaluated e.g. when you try to upload a new document to your CMS, but no CMS URI can be found via Neutron.
+          Enter the URI of the CMS you use most. This URI is evaluated e.g. when using the <xref linkend="neutronsidebar" endterm="neutronsidebar.title"/>, or when you try to upload a new document to your CMS, but no CMS URI can be found via Neutron.
         </para>
       </section>
       <section>
@@ -1195,5 +1229,15 @@
       </section>
     </section>
   </section>
+
+  <appendix>
+    <title>Using &project; with WebDAV</title>
+    <para>
+      You can use &project; together with a WebDAV-enabled backend for browsing and storing documents. In order to use WebDAV, simply point your default CMS (see <xref linkend="defaultcms" endterm="defaultcms.title"/>) to your WebDAV server.
+    </para>
+    <para>
+      Then, you can use the <xref linkend="neutronsidebar" endterm="neutronsidebar.title"/> to browse the WebDAV repository, and you can use the various upload functionalities to store documents on your WebDAV server.
+    </para>
+  </appendix>
 
 </article>
