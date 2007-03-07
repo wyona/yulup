@@ -58,7 +58,6 @@
     <move todir="${nightly-dir}">
       <fileset file="../pkg/${filename}"/>
       <fileset file="../pkg/${filename}.md5"/>
-      <fileset file="../pkg/update.rdf"/>
     </move>
   </target>
 
