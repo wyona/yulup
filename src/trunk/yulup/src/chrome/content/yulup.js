@@ -76,6 +76,9 @@ const Yulup = {
      * @return {Undefined}
      */
     initYulup: function () {
+        var yulupToolbarbutton = null;
+        var navigationToolbar  = null;
+
         /* DEBUG */ dump("Yulup:yulup.js:Yulup.initYulup() invoked\n");
 
         gMainBrowserWindow = window;
@@ -97,6 +100,29 @@ const Yulup = {
          * it to "undefined" so one of the state actions always gets
          * executed when we hit a webpage for the first time. */
         this.currentState = "undefined";
+
+        yulupToolbarbutton = document.getElementById("uiYulupEditToolbarbutton");
+
+        if (!yulupToolbarbutton) {
+            /* DEBUG */ dump("Yulup:yulup.js:Yulup.initYulup: Yulup toolbarbutton is not located in the browser window\n");
+
+            // get the navbar (our default toolbar) and check its state
+            navigationToolbar = document.getElementById("nav-bar");
+
+            if (navigationToolbar && navigationToolbar.getAttribute("collapsed") != "true") {
+                // add the yulup toolbarbutton to the navbar
+                /* TODO: we should only do this the first time the application starts; otherwise, the
+                 * Yulup toolbarbutton will be constantly added back to the UI. */
+
+                /* DEBUG */ dump("Yulup:yulup.js:Yulup.initYulup: adding the Yulup toolbarbutton to the navigation bar\n");
+
+                navigationToolbar.insertItem("uiYulupEditToolbarbutton");
+                navigationToolbar.setAttribute("currentset", navigationToolbar.currentSet);
+                document.persist("nav-bar", "currentset");
+            } else {
+                // tell the user he should place the yulup toolbarbutton somewhere else
+            }
+        }
 
         // TODO: separate UI from backend startup
 
