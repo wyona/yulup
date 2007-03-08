@@ -98,6 +98,8 @@ const Yulup = {
          * executed when we hit a webpage for the first time. */
         this.currentState = "undefined";
 
+        // TODO: separate UI from backend startup
+
         // cache element requests for often used elements
         this.yulupEditMenu                               = document.getElementById("uiYulupEditToolbarbutton");
         this.yulupEditMenuEditMenuitem                   = document.getElementById("uiYulupEditMenuitem");
