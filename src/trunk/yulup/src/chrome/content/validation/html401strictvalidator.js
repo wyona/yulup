@@ -1188,7 +1188,7 @@ HTML401StrictDTD.prototype = {
 
             /* i18n */
             lang       : function() { return new DTDAttributeDeclaration("lang", "NAME", "#IMPLIED", null); },
-            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#REQUIRED", null); },
+            dir        : function() { return new DTDAttributeDeclaration("charset", new DTDContentSet("ltr", "rtl"), "#REQUIRED", null); }
         },
 
         BR: {
