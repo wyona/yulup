@@ -1,0 +1,21 @@
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <atom:title type="text">yulup-0.2.6-r23527.xpi</atom:title>
+  <atom:author>
+    <atom:name>Andreas Wuest</atom:name>
+  </atom:author>
+  <atom:id>urn:www-yulup-org:0-2-6-release</atom:id>
+  <atom:content type="xhtml">
+    <xhtml:div>
+      <xhtml:a href="yulup-0.2.6-r23527.xpi">yulup-0.2.6-r23527.xpi</xhtml:a> <xhtml:a href="http://svn.wyona.com/repos/public/yulup/website/download/yulup-0.2.6-r23527.xpi.md5">(md5)</xhtml:a> (March 30, 2007)
+      <xhtml:br/>
+      <xhtml:br/>
+      Changelog:
+      <xhtml:ul>
+        <xhtml:li>Fixed status code checking.</xhtml:li>
+        <xhtml:li>Added Neutron sidebar entry to the Yulup menu.</xhtml:li>
+        <xhtml:li>Made Yulup menu icon moveable.</xhtml:li>
+        <xhtml:li>Various under-the-hood changes.</xhtml:li>
+      </xhtml:ul>
+    </xhtml:div>
+  </atom:content>
+<atom:updated>2007-03-30T16:02:27.625Z</atom:updated><atom:published>2007-03-30T16:01:30.877Z</atom:published></atom:entry>
