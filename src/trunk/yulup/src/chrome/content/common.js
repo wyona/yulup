@@ -378,6 +378,7 @@ function Barrier(aNoOfThreads, aCallback, aContext) {
 Barrier.prototype = {
     noOfThreads: null,
     callback   : null,
+    context    : null,
 
     arrive: function () {
         /* DEBUG */ dump("Yulup:common.js:Barrier.arrive() invoked\n");
