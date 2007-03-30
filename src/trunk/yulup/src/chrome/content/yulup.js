@@ -120,7 +120,15 @@ const Yulup = {
                 navigationToolbar.setAttribute("currentset", navigationToolbar.currentSet);
                 document.persist("nav-bar", "currentset");
             } else {
-                // tell the user he should place the yulup toolbarbutton somewhere else
+                // TODO: tell the user he should place the yulup toolbarbutton somewhere else
+
+                /* DEBUG */ dump("Yulup:yulup.js:Yulup.initYulup: toobar not shown, adding toolbarbutton anyway\n");
+
+                if (navigationToolbar) {
+                    navigationToolbar.insertItem("uiYulupEditToolbarbutton");
+                    navigationToolbar.setAttribute("currentset", navigationToolbar.currentSet);
+                    document.persist("nav-bar", "currentset");
+                }
             }
         }
 
