@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -329,6 +329,63 @@ const YulupXMLServices = {
         } else {
             return null;
         }
+    }
+};
+
+
+var YulupContentServices = {
+    /**
+     * Determines the content type of the given URI. If the
+     * content type could not be determined, the fallback type
+     * is returned.
+     *
+     * If no fallback type is specified, and the type sniffing
+     * failed, null is returned.
+     *
+     * @param  {nsIURI} aURI          the URI for which the content type should be determined
+     * @param  {String} aFallbackType  the type to fall back to if the content type could not be determined
+     * @return {String}  returns the URI's content type or null if it could not be determined
+     */
+    getContentTypeFromURI: function (aURI, aFallbackType) {
+        var mimeType = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aURI != null);
+
+        try {
+            mimeType = Components.classes["@mozilla.org/mime;1"].getService(Components.interfaces.nsIMIMEService).getTypeFromURI(aURI);
+        } catch (exception) {
+            // could not figure out MIME type, use fall back
+            mimeType = aFallbackType;
+        }
+
+        return mimeType;
+    },
+
+    /**
+     * Determines the content type of the given file. If the
+     * content type could not be determined, the fallback type
+     * is returned.
+     *
+     * If not fallback type is specified, and the type sniffing
+     * failed, null is returned.
+     *
+     * @param  {nsIFile} aFile          the file for which the content type should be determined
+     * @param  {String}  aFallbackType  the type to fall back to if the content type could not be determined
+     * @return {String}  returns the file's content type or null if it could not be determined
+     */
+    getContentTypeFromFile: function (aFile, aFallbackType) {
+        var mimeType = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aFile != null);
+
+        try {
+            mimeType = Components.classes["@mozilla.org/mime;1"].getService(Components.interfaces.nsIMIMEService).getTypeFromFile(aFile);
+        } catch (exception) {
+            // could not figure out MIME type, use fall back
+            mimeType = aFallbackType;
+        }
+
+        return mimeType;
     }
 };
 

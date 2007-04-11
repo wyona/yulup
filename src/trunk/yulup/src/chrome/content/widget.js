@@ -353,17 +353,12 @@ var WidgetHandler = {
         var namespaces       = null;
         var nsResolver       = null;
         var resolverFunction = null;
-        var sitetreeURI      = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.getParametrizedWidgetFragment() invoked\n");
 
         nsResolver = new ConfigurableNsResolver(aWidget.fragment);
 
-        if (gEditorController.editorParams.navigation && gEditorController.editorParams.navigation.sitetree) {
-            sitetreeURI = gEditorController.editorParams.navigation.sitetree.uri;
-        }
-
-        if ((attributes = WidgetDialog.showWidgetInsertDialog(aWidget, nsResolver, sitetreeURI)) != null) {
+        if ((attributes = WidgetDialog.showWidgetInsertDialog(aWidget, nsResolver, gEditorController, window)) != null) {
             paramFragment = aWidget.fragment.cloneNode(true);
 
             for (var i = 0; i < aWidget.fragmentAttributes.length; i++) {

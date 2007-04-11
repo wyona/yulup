@@ -342,13 +342,7 @@ var Editor = {
         if (Editor.checkClose()) {
             if (documentURI = PersistenceService.queryOpenFileURI()) {
                 // figure out MIME type from document URI
-                try {
-                    mimeType = Components.classes["@mozilla.org/mime;1"].getService(Components.interfaces.nsIMIMEService).getTypeFromURI(documentURI);
-                } catch (exception) {
-                    // could not figure out MIME type
-                    /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:openFromFile", exception);
-                    /* DEBUG */ Components.utils.reportError(exception);
-                }
+                mimeType = YulupContentServices.getContentTypeFromURI(documentURI);
 
                 editorParameters = new EditorParameters(documentURI, mimeType, null, null, null, null, null);
 

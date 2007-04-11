@@ -33,23 +33,30 @@ const DEFAULT_COLORPICKER_VALUE = "#FFFFFF";
 
 var WidgetDialog = {
     __fragmentAttributes: null,
+    __sitetreeURI       : null,
+    __topWindow         : null,
 
     uiYulupEditorWidgetInsertOnDialogLoadHandler: function() {
-        var widget      = null;
-        var nsResolver  = null;
-        var sitetreeURI = null;
-        var widgetRows  = null;
-        var label       = null;
-        var elem        = null;
-        var row         = null;
-        var container   = null;
-        var textbox     = null;
+        var widget           = null;
+        var nsResolver       = null;
+        var editorController = null;
+        var widgetRows       = null;
+        var label            = null;
+        var elem             = null;
+        var row              = null;
+        var container        = null;
+        var textbox          = null;
 
         /* DEBUG */ dump("Yulup:widgetparams.js:WidgetDialog.uiYulupEditorWidgetInsertOnDialogLoadHandler() invoked\n");
 
-        widget      = window.arguments[1];
-        nsResolver  = window.arguments[2];
-        sitetreeURI = window.arguments[3];
+        widget           = window.arguments[1];
+        nsResolver       = window.arguments[2];
+        editorController = window.arguments[3];
+        this.__topWindow = window.arguments[4];
+
+        if (editorController.editorParams.navigation && editorController.editorParams.navigation.sitetree) {
+            this.__sitetreeURI = editorController.editorParams.navigation.sitetree.uri;
+        }
 
         WidgetDialog.__fragmentAttributes = widget.fragmentAttributes;
 
@@ -89,12 +96,13 @@ var WidgetDialog = {
                     elem = document.createElement("button");
                     elem.setAttribute("id", "button" + widget.fragmentAttributes[i].name);
                     elem.setAttribute("label", document.getElementById("uiYulupEditorStringbundle").getString("editorWidgetInsertSelect.label"));
+                    elem.setAttribute("name", widget.fragmentAttributes[i].name);
 
                     // the resource attribute type needs a sitetree URI
-                    if (sitetreeURI == null) {
+                    if (this.__sitetreeURI == null) {
                         elem.setAttribute("disabled", "true");
                     } else {
-                        elem.setAttribute("oncommand", "ResourceSelectDialog.doSelectCommand(\"" + sitetreeURI.spec + "\", \"" + widget.fragmentAttributes[i].name + "\")");
+                        elem.setAttribute("oncommand", "WidgetDialog.doSelectCommandProxy(this)");
                     }
 
                     container.appendChild(elem);
@@ -126,10 +134,19 @@ var WidgetDialog = {
         }
     },
 
-    showWidgetInsertDialog: function(aWidget, aNSResolver, aSitetreeURI) {
+    /**
+     * Shows the widget parameterisation dialog.
+     *
+     * @param  {Widget}                aWidget            the widget to parameterise
+     * @param  {nsIDOMXPathNSResolver} aNSResolver        a namespace resolver for this widget
+     * @param  {YulupEditController}   aEditorController  an editor controller
+     * @param  {nsIDOMWindow}          aWindow            a handle to a non-modal window
+     * @return {Undefined}  does not have a return value
+     */
+    showWidgetInsertDialog: function(aWidget, aNSResolver, aEditorController, aWindow) {
         returnObject = new Object();
 
-        if (window.openDialog(YULUP_WIDGET_INSERT_CHROME_URI, "yulupWidgetInsertDialog", "modal,resizable=no,centerscreen", returnObject, aWidget, aNSResolver, aSitetreeURI)) {
+        if (window.openDialog(YULUP_WIDGET_INSERT_CHROME_URI, "yulupWidgetInsertDialog", "modal,resizable=no,centerscreen", returnObject, aWidget, aNSResolver, aEditorController, aWindow)) {
             if (returnObject.returnValue) {
                 return returnObject.returnValue;
             }
@@ -219,5 +236,9 @@ var WidgetDialog = {
         }
 
         return retval;
+    },
+
+    doSelectCommandProxy: function (aElement) {
+        ResourceSelectDialog.doSelectCommand(this.__sitetreeURI, aElement.getAttribute("name"), this.__topWindow);
     }
 };

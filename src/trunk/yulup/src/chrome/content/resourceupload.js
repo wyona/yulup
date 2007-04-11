@@ -112,16 +112,10 @@ var ResourceUploadDialog = {
         }
 
         if (returnObject.resourceURI && returnObject.collectionURI && returnObject.resourceName) {
-            // figure out MIME type
-            mimeService = Components.classes["@mozilla.org/mime;1"].getService(Components.interfaces.nsIMIMEService);
-            sourceFile  = PersistenceService.getFileDescriptor(returnObject.resourceURI);
+            sourceFile = PersistenceService.getFileDescriptor(returnObject.resourceURI);
 
-            try {
-                mimeType = mimeService.getTypeFromFile(sourceFile);
-            } catch (exception) {
-                // could not figure out MIME type, fall back to generic octet-stream
-                mimeType = "application/octet-stream";
-            }
+            // figure out MIME type
+            mimeType = YulupContentServices.getContentTypeFromFile(sourceFile, "application/octet-stream");
 
             // construct target URI
             targetURI = returnObject.collectionURI.spec + "/" + returnObject.resourceName;
@@ -142,10 +136,8 @@ var ResourceUploadDialog = {
      */
     showDocumentUploadDialog: function (aURI, aDocumentName) {
         var returnObject   = null;
-        var mimeService    = null;
         var sourceFile     = null;
         var targetURI      = null;
-        var mimeType       = null;
         var progressDialog = null;
 
         /* DEBUG */ dump("Yulup:resourceupload.js:ResourceUploadDialog.showDocumentUploadDialog() invoked\n");
@@ -183,7 +175,7 @@ var ResourceUploadDialog = {
         /* DEBUG */ dump("Yulup:resourceupload.js:ResourceUploadDialog.uploadResource() invoked\n");
 
         if (window.arguments[0])
-            resourceURI   = document.getElementById("uiYulupResourceUploadTextBox").value;
+            resourceURI = document.getElementById("uiYulupResourceUploadTextBox").value;
 
         resourceName  = document.getElementById("uiYulupResourceUploadRemoteNameTextBox").value;
         collectionURI = document.getElementById("uiYulupResourceUploadTree").view.wrappedJSObject.getCurrentCollectionURI();

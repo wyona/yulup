@@ -38,9 +38,7 @@ var ResourceSelectDialog = {
 
         tree = document.getElementById("uiYulupResourceSelectTree");
 
-        sitetreeURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(window.arguments[0], null, null);
-
-        tree.view = new SitetreeView(sitetreeURI, ResourceSelectDialog.sitetreeErrorListener);
+        tree.view = new SitetreeView(window.arguments[0], ResourceSelectDialog.sitetreeErrorListener);
     },
 
     sitetreeErrorListener: function () {
@@ -85,25 +83,115 @@ var ResourceSelectDialog = {
         return true;
     },
 
-    doSelectCommand: function(aURI, aTextBoxId) {
-        var returnObject = null;
-
-        /* DEBUG */ YulupDebug.ASSERT(aURI       != null);
-        /* DEBUG */ YulupDebug.ASSERT(aTextBoxId != null);
+    /**
+     * Selects a local or remote asset and performs
+     * upload if needed.
+     *
+     * @param  {nsIURI}       aSitetreeURI  the URI of the sitetree
+     * @param  {String}       aTextBoxId    a textbox ID to write the selected URI to
+     * @param  {nsIDOMWindow} aWindow       a handle to a non-modal window
+     * @return {Undefined}  does not have a return value
+     */
+    doSelectCommand: function(aSitetreeURI, aTextBoxId, aWindow) {
+        var enumLabels     = null;
+        var objectSource   = null;
+        var localFileURI   = null;
+        var objectTarget   = null;
+        var returnObject   = null;
+        var progressDialog = null;
+        var mimeType       = null;
+        var sourceFile     = null;
+        var targetURI      = null;
+        var uploadURI      = null;
 
         /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialog.doSelectCommand() invoked\n");
 
-        returnObject = {
-            error: null,
-            returnValue: null
-        };
+        /* DEBUG */ YulupDebug.ASSERT(aSitetreeURI != null);
+        /* DEBUG */ YulupDebug.ASSERT(aTextBoxId   != null);
+        /* DEBUG */ YulupDebug.ASSERT(aWindow      != null);
 
-        if (window.openDialog(YULUP_RESOURCE_SELECT_CHROME_URI, "yulupWidgetResourceSelectDialog", "modal,resizable=no,centerscreen", aURI, returnObject)) {
-            if (returnObject.returnValue) {
-                /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialog.doSelectCommand: inserting URI \"" + returnObject.returnValue.spec + "\"\n");
-                document.getElementById(aTextBoxId).setAttribute("value", returnObject.returnValue.spec);
+        // TODO: i18n
+        enumLabels = ["Local", "Remote"];
+
+        // find out if we should select a local or a remote resource
+        // TODO: i18n
+        if ((objectSource = YulupDialogService.openEnumDialog("Select Source", "Please select the source of the resource.", enumLabels, 0)) == null)
+            return;
+
+        if (objectSource != null && objectSource != -1) {
+            /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialog.doSelectCommand: selection source = \"" + objectSource + "\"\n");
+
+            switch (objectSource) {
+                case 0:
+                    // select from local
+                    localFileURI = PersistenceService.queryOpenFileURI();
+
+                    if (!localFileURI)
+                        return;
+
+                    // find out where to place the local resource
+                    // TODO: i18n
+                    enumLabels = ["Near the document", "Select target manually"];
+
+                    // TODO: i18n
+                    if ((objectTarget = YulupDialogService.openEnumDialog("Select Target", "Please select where your asset should be stored.", enumLabels, 0)) == null)
+                        return;
+
+                    switch (objectTarget) {
+                        case 0:
+                            // upload the object relative to the document URI
+                            // TODO: get document URI
+                            uploadURI = "http://demo.yulup.org/" + localFileURI.file.leafName;
+
+                            break;
+                        case 1:
+                            // query for the upload location
+                            uploadURI = ResourceUploadDialog.showDocumentUploadDialog(aSitetreeURI);
+
+                            if (!uploadURI)
+                                return;
+
+                            break;
+                        default:
+                            return;
+                    }
+
+                    // upload the object
+                    progressDialog = new ProgressDialog(aWindow, document.getElementById("uiYulupOverlayStringbundle").getString("yulupResourceUploadProgressDialogTitle.label"), uploadURI);
+
+                    // figure out MIME type
+                    mimeType = YulupContentServices.getContentTypeFromURI(localFileURI);
+
+                    sourceFile = PersistenceService.getFileDescriptor(localFileURI.path);
+
+                    // TODO: after closing the dialog, the download dies
+                    NetworkService.httpRequestUploadFile(uploadURI, sourceFile, null, mimeType, ResourceUploadDialog.__uploadRequestFinishedHandler, ResourceUploadDialog.__resourceUploadFinished, false, true, progressDialog);
+
+                    targetURI = uploadURI;
+
+                    break;
+                case 1:
+                    // select from remote
+                    returnObject = {
+                        error: null,
+                        returnValue: null
+                    };
+
+                    if (!window.openDialog(YULUP_RESOURCE_SELECT_CHROME_URI, "yulupWidgetResourceSelectDialog", "modal,resizable=no,centerscreen", aSitetreeURI, returnObject))
+                        return;
+
+                    if (!returnObject.returnValue)
+                        return;
+
+                    targetURI = returnObject.returnValue.spec;
+
+                    break;
+                default:
+                    return;
             }
+
+            /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialog.doSelectCommand: inserting URI \"" + targetURI + "\"\n");
+            document.getElementById(aTextBoxId).setAttribute("value", targetURI);
         }
     }
-
 };
