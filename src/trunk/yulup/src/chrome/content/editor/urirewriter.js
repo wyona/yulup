@@ -117,8 +117,8 @@ URIRewriter.prototype = {
         try {
             newURI = this.__ioService.newURI(originalURI, null, aBaseURI);
 
-            aNode.setAttribute("src", newURI.spec);
-            aNode.__yulupOriginalURI = originalURI;
+            aNode.setAttribute("src", encodeURI(newURI.spec));
+            aNode.__yulupOriginalURI = encodeURI(originalURI);
 
             /* DEBUG */ dump("Yulup:urirewriter.js:URIRewriter.__rewriteImgURI: new image URI is \"" + aNode.getAttribute("src") + "\"\n");
         } catch (exception) {
@@ -139,8 +139,8 @@ URIRewriter.prototype = {
             try {
                 newURI = this.__ioService.newURI(originalURI, null, aBaseURI);
 
-                aNode.setAttribute("href", newURI.spec);
-                aNode.__yulupOriginalURI = originalURI;
+                aNode.setAttribute("href", encodeURI(newURI.spec));
+                aNode.__yulupOriginalURI = encodeURI(originalURI);
 
                 /* DEBUG */ dump("Yulup:urirewriter.js:URIRewriter.__rewriteAURI: new anchor URI is \"" + aNode.getAttribute("href") + "\"\n");
             } catch (exception) {
@@ -160,8 +160,8 @@ URIRewriter.prototype = {
         try {
             newURI = this.__ioService.newURI(originalURI, null, aBaseURI);
 
-            aNode.setAttribute("href", newURI.spec);
-            aNode.__yulupOriginalURI = originalURI;
+            aNode.setAttribute("href", encodeURI(newURI.spec));
+            aNode.__yulupOriginalURI = encodeURI(originalURI);
 
             /* DEBUG */ dump("Yulup:urirewriter.js:URIRewriter.__rewriteLinkURI: new link URI is \"" + aNode.getAttribute("href") + "\"\n");
         } catch (exception) {
