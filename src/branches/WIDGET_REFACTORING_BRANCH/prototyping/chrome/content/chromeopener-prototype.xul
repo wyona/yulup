@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<window id="uiChromeOpenerWindow"
+        orient="vertical"
+        align="stretch"
+        onload="initIFrame()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript">
+    const CHROME_OPEN_URI = "chrome://test/content/contextmenu-prototype.xul";
+
+    function initIFrame() {
+        dump("initIFrame() invoked\n");
+    }
+
+    function openEditorInIFrame() {
+        window.open(CHROME_OPEN_URI, "contextMenutest", "chrome,resizable=yes");
+    }
+
+    function openEditorInIFrame() {
+        document.getElementById("uiYulupChromeContainer").setAttribute("src", CHROME_OPEN_URI);
+    }
+
+    function openEditorInSubWindow() {
+        var subWindow = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "window");
+
+        subWindow.setAttribute("flex", "1");
+
+        document.getElementById("uiChromeOpenerWindow").appendChild(subWindow);
+    }
+  </script>
+
+  <button label="Open chrome in iframe"     oncommand="openEditorInIFrame()"/>
+  <button label="Open chrome in sub-window" oncommand="openEditorInSubWindow()"/>
+  <button label="Open chrome in new window" oncommand="openEditorInNewWindow()"/>
+  <iframe id="uiYulupChromeContainer" flex="1" style="border: 1px solid black;"/>
+
+</window>

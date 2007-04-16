@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://test/skin/canvasbutton.css" type="text/css"?>
+
+<window id="uiEditorWindow"
+        orient="vertical"
+        align="stretch"
+        onload="onLoadListener()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <script type="application/x-javascript">
+      var gImg = null;
+
+function onLoadListener() {
+      dump("onLoadListener() invoked\n");
+
+      gImg = new Image();
+      gImg.onload = startDrawing;
+      gImg.src = "chrome://test/skin/bold.png";
+}
+
+function startDrawing() {
+    drawNormal();
+    drawInactive();
+    drawActive();
+}
+
+function drawNormal() {
+    dump("drawNormal() invoked\n");
+    var ctx = document.getElementById("buttonCanvas0").getContext("2d");
+
+    ctx.drawImage(gImg, 0, 0);
+}
+
+function drawInactive() {
+    dump("drawNormal() invoked\n");
+    var ctx = document.getElementById("buttonCanvas1").getContext("2d");
+
+    ctx.globalAlpha = 0.5;
+    ctx.drawImage(gImg, 0, 0);
+}
+
+function drawActive() {
+    dump("drawActive() invoked\n");
+    var ctx = document.getElementById("buttonCanvas2").getContext("2d");
+
+    ctx.drawImage(gImg, 0, 0);
+
+    ctx.globalCompositeOperation = "source-atop";
+    ctx.globalAlpha = 0.3;
+    ctx.fillRect(0, 0, 26, 26);
+}
+  </script>
+
+  <hbox>
+    <spacer flex="1"/>
+
+    <button label="Set disabled" oncommand="document.getElementById('uiTestCanvasButton').setAttribute('disabled', 'true')"/>
+    <button label="Unset disabled" oncommand="document.getElementById('uiTestCanvasButton').setAttribute('disabled', 'false')"/>
+    <button label="Remove disabled" oncommand="document.getElementById('uiTestCanvasButton').removeAttribute('disabled')"/>
+
+    <vbox style="border: 1px solid red;">
+      <label value="Canvas:"/>
+      <xhtml:canvas id="buttonCanvas0" width="60" height="60" style="border: 1px solid green;"></xhtml:canvas>
+      <xhtml:canvas id="buttonCanvas1" width="60" height="60" style="border: 1px solid green;"></xhtml:canvas>
+      <xhtml:canvas id="buttonCanvas2" width="60" height="60" style="border: 1px solid green;"></xhtml:canvas>
+      <canvasbutton id="uiTestCanvasButton"
+                    oncommand="alert('hello');"
+                    label="test"
+                    tooltiptext="dude"
+                    image="chrome://test/skin/bold.png"
+                    disabled="true"/>
+      <spacer flex="1" style="border: 1px solid blue;"/>
+    </vbox>
+    <spacer flex="1"/>
+  </hbox>
+
+  <toolbar id="uiYulupEditorToolbar"
+           toolbarname="Yulup Editor Toolbar">
+    <canvasbutton id="uiTestCanvasButton1"
+                  oncommand="alert('hello');"
+                  label="teseeeeeeet 1"
+                  tooltiptext="dude"
+                  image="chrome://test/skin/bold.png"
+                  disabled="true"/>
+    <canvasbutton id="uiTestCanvasButton2"
+                  oncommand="alert('hello');"
+                  label="teeeest 2"
+                  tooltiptext="dude"
+                  image="chrome://test/skin/bold.png"
+                  disabled="true"/>
+    <canvasbutton id="uiTestCanvasButton3"
+                  oncommand="alert('hello');"
+                  label="teeeest 2"
+                  tooltiptext="dude"
+                  image="chrome://test/skin/bold.png"/>
+    <toolbarbutton id="uiTestCanvasButton4"
+                  oncommand="alert('hello');"
+                  label="teeeest 3"
+                  tooltiptext="dude"
+                  image="chrome://test/skin/bold.png"
+                  disabled="true"
+                   style="-moz-box-orient: vertical;"/>
+    <toolbarbutton id="uiTestCanvasButton5"
+                  oncommand="alert('hello');"
+                  label="teeeest 3"
+                  tooltiptext="dude"
+                  image="chrome://test/skin/bold.png"
+                   style="-moz-box-orient: vertical;"/>
+  </toolbar>
+
+</window>

@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+
+<!--
+# ***** BEGIN LICENSE BLOCK *****
+# Copyright 2006-2007 Wyona AG Zurich
+#
+# This file is part of Yulup.
+#
+# Yulup is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Yulup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Yulup; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# ***** END LICENSE BLOCK *****
+-->
+
+<!-- Overlays chrome://browser/content/browser.xul -->
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://yulup/skin/yulup.css" type="text/css"?>
+
+<!DOCTYPE overlay [
+  <!ENTITY % yulupDTD SYSTEM "chrome://yulup/locale/yulup.dtd">
+  %yulupDTD;
+  <!ENTITY % editorDTD  SYSTEM "chrome://yulup/locale/editor.dtd">
+  %editorDTD;
+]>
+
+<overlay id="uiYulupOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript" src="chrome://yulup/content/common.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/yulup.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/editor/document.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/editor/editorparams.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/persistenceservice.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/networkservice.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/neutron.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/neutronparser10.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/neutronarchive.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/widget.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/atom.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/atomsidebar/atomsidebar.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/appparser09.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/atomparser10.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/neutronauth.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/neutronauthparser10.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/authentication.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/newmenu.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/serveruriprompt.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/sitetree.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/webdavservice.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/webdavparser10.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/resourceupload.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/progressdialog.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/workspaceservice.js"/>
+
+  <!-- overlay the main stringbundle set -->
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="uiYulupOverlayStringbundle" src="chrome://yulup/locale/yulup.properties"/>
+    <stringbundle id="uiYulupAuthStringbundle"    src="chrome://yulup/locale/authentication.properties"/>
+    <stringbundle id="uiYulupEditorStringbundle"  src="chrome://yulup/locale/editor.properties"/>
+  </stringbundleset>
+
+  <!-- overlay the main command set -->
+  <commandset id="mainCommandSet">
+    <command id="command_yulup_newatomentry"
+             oncommand="Yulup.createNewAtomEntry()"
+             label="&fileOperationNewAtomEntryMenuitem.label;"
+             tooltiptext="&fileOperationNewAtomEntryMenuitem.tooltip;"
+             disabled="true"/>
+  </commandset>
+
+  <!-- overlay the toolbar palette -->
+  <toolbarpalette id="BrowserToolbarPalette">
+    <popupset>
+      <tooltip id="uiYulupEditToolbarbuttonWarnTooltip" noautohide="true" orient="vertical">
+        <description value="&editToolbarbuttonWarnTooltip1.tooltip;" style="font-weight: bolder"/>
+        <description value="&editToolbarbuttonWarnTooltip2.tooltip;"/>
+        <description value="&editToolbarbuttonWarnTooltip3.tooltip;"/>
+      </tooltip>
+    </popupset>
+
+    <toolbarbutton id="uiYulupEditToolbarbutton"
+                   type="menu"
+                   class="toolbarbutton-1"
+                   introspection="no"
+                   disabled="true"
+                   label="&editToolbarbutton.label;">
+      <menupopup id="uiYulupEditMenupopup">
+        <menuitem id="uiYulupEditCheckoutNoLockMenuitem"
+                  oncommand="Yulup.checkoutNoLockFromCMS(0)"
+                  label="&editCheckoutNoLockMenuitem.label;" tooltiptext="&editCheckoutNoLockMenuitem.tooltip;"
+                  disabled="true"/>
+        <menu id="uiYulupEditCheckoutNoLockMenu"
+              label="&editCheckoutNoLockMenu.label;" tooltiptext="&editCheckoutNoLockMenu.tooltip;"
+              disabled="true"
+              hidden="true">
+          <menupopup id="uiYulupEditCheckoutNoLockMenupopup"/>
+        </menu>
+        <menuitem id="uiYulupEditCheckoutMenuitem"
+                  oncommand="Yulup.checkoutFromCMS(0)"
+                  label="&editCheckoutMenuitem.label;" tooltiptext="&editCheckoutMenuitem.tooltip;"
+                  disabled="true"/>
+        <menu id="uiYulupEditCheckoutMenu"
+              label="&editCheckoutMenu.label;" tooltiptext="&editCheckoutMenu.tooltip;"
+              disabled="true"
+              hidden="true">
+          <menupopup id="uiYulupEditCheckoutMenupopup"/>
+        </menu>
+        <menuitem id="uiYulupEditDeleteMenuitem"
+                  oncommand="Yulup.deleteFromCMS(0)"
+                  label="&editDeleteMenuitem.label;" tooltiptext="&editDeleteMenuitem.tooltip;"
+                  disabled="true"/>
+        <menu id="uiYulupEditDeleteMenu"
+              label="&editDeleteMenu.label;" tooltiptext="&editDeleteMenu.tooltip;"
+              disabled="true"
+              hidden="true">
+          <menupopup id="uiYulupEditDeleteMenupopup"/>
+        </menu>
+
+        <menuseparator/>
+
+        <menuitem id="uiYulupEditMenuitem"
+                  oncommand="Yulup.createNewEditor(new EditorParameters(document.getElementById('content').currentURI, null, null, null, null, null, null), null)"
+                  label="&editMenuitem.label;" tooltiptext="&editMenuitem.tooltip;"
+                  disabled="false"/>
+
+        <menuseparator/>
+
+        <menuitem id="uiYulupUploadMenuitem"
+                  oncommand="Yulup.uploadResource()"
+                  label="&fileOperationUploadMenuitem.label;" tooltiptext="&fileOperationUploadMenuitem.tooltip;"/>
+
+        <menuseparator/>
+
+        <menu id="uiYulupOperationNewMenu"
+              label="&editOperationNewMenu.label;" tooltiptext="&editOperationNewMenu.tooltip;"
+              disabled="false">
+          <menupopup id="uiYulupOperationNewMenupopup">
+            <menuitem id="uiYulupOperationNewAtomEntryMenuitem"
+                      observes="command_yulup_newatomentry"/>
+            <menuseparator/>
+            <menu id="uiYulupOperationNewFromTemplateLocalMenu"
+                      label="&fileOperationNewFromTemplateLocalMenuitem.label;" tooltiptext="&fileOperationNewFromTemplateLocalMenuitem.tooltip;"
+                      disabled="true">
+              <menupopup id="uiYulupOperationNewFromTemplateLocalMenupopup"/>
+            </menu>
+            <menuitem id="uiYulupOperationNewFromTemplateCMSMenuitem"
+                      oncommand="Yulup.yulupCreateNewFromTemplateCMS()"
+                      label="&fileOperationNewFromTemplateCMSMenuitem.label;" tooltiptext="&fileOperationNewFromTemplateCMSMenuitem.tooltip;"
+                      disabled="true"/>
+          </menupopup>
+        </menu>
+
+        <menu id="uiYulupOperationOpenMenu"
+              label="&editOperationOpenMenu.label;" tooltiptext="&editOperationOpenMenu.tooltip;"
+              disabled="false">
+          <menupopup id="uiYulupOperationNewMenupopup">
+            <menuitem id="uiYulupOperationOpenLocalMenuitem"
+                      oncommand="Yulup.openFromFile()"
+                      label="&fileOperationOpenLocalMenuitem.label;" tooltiptext="&fileOperationOpenLocalMenuitem.tooltip;"
+                      disabled="false"/>
+            <menuitem id="uiYulupOperationOpenCMSMenuitem"
+                      oncommand="Yulup.openFromCMS()"
+                      label="&fileOperationOpenCMSMenuitem.label;" tooltiptext="&fileOperationOpenCMSMenuitem.tooltip;"
+                      disabled="true"/>
+          </menupopup>
+        </menu>
+
+        <menuseparator/>
+
+        <menuitem key="key_openYulupAtomSidebar"    observes="uiOpenYulupAtomSidebar"/>
+        <menuitem key="key_openYulupNeutronSidebar" observes="uiOpenYulupNeutronSidebar"/>
+
+        <menuseparator id="uiYulupRealmSeparator" hidden="true"/>
+
+        <menuseparator id="uiYulupExtrasSeparator"/>
+
+        <menuitem id="uiYulupEditPreferencesMenuitem"
+                  label="&editPreferencesMenuitem.label;" tooltiptext="&editPreferencesMenuitem.tooltip;"
+                  oncommand="Yulup.openYulupPreferences()"/>
+        <menuitem id="uiYulupEditHelpMenuitem"
+                  oncommand="Yulup.showHelp()"
+                  label="&editHelpMenuitem.label;" tooltiptext="&editHelpMenuitem.tooltip;"/>
+        <menuitem id="uiYulupEditDemoMenuitem"
+                  oncommand="Yulup.showDemoSite()"
+                  label="&editDemoMenuitem.label;" tooltiptext="&editDemoMenuitem.tooltip;"/>
+        <menuitem id="uiYulupEditAboutYulupMenuitem"
+                  oncommand="Yulup.showAboutYulup()"
+                  label="&editAboutYulupMenuitem.label;" tooltiptext="&editAboutYulupMenuitem.tooltip;"/>
+
+        <menuseparator/>
+
+        <menuitem id="uiYulupVersionStringMenuitem"
+                  label="&editVersionStringMenuitem.label;" tooltiptext="&editVersionStringMenuitem.tooltip;"
+                  disabled="true"/>
+      </menupopup>
+    </toolbarbutton>
+  </toolbarpalette>
+</overlay>

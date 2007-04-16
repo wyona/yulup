@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+<!-- this RDF is based on http://developer.mozilla.org/en/docs/install.rdf -->
+
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>yulup@wyona.com</em:id>
+    <em:version>0.2.7-rXXXXX-dev</em:version>
+    <em:type>2</em:type>
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>1.5</em:minVersion>
+        <em:maxVersion>2.0.0.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <em:name>Wyona Yulup</em:name>
+    <em:description>Seamless Content Management.</em:description>
+    <em:creator>Andreas Wuest (Wyona Inc.)</em:creator>
+    <em:contributor>Michael Wechner (Wyona Inc.)</em:contributor>
+    <em:contributor>Gregor Imboden (Wyona Inc.)</em:contributor>
+    <em:contributor>Thomas Comiotto (University of Zurich)</em:contributor>
+    <em:homepageURL>http://www.yulup.org/</em:homepageURL>
+    <!-- NOTE: please comment out the following line for uploading the XPI to Mozilla Add-ons -->
+    <em:updateURL>http://www.yulup.org/download/update.rdf</em:updateURL>
+    <em:optionsURL>chrome://yulup/content/preferences/preferences.xul</em:optionsURL>
+    <em:iconURL>chrome://yulup/skin/icons/yulup-logo.png</em:iconURL>
+  </Description>
+</RDF>

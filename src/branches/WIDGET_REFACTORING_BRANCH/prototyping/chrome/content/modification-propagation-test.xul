@@ -1,0 +1,343 @@
+<?xml version="1.0"?>
+
+<window id="uiEditorWindow"
+        orient="vertical"
+        align="stretch"
+        onload="initEditor()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript">
+<![CDATA[
+//const XML_SOURCE = "chrome://test/content/helloworld.xml";
+//const XSL_SOURCE = "chrome://test/content/helloworld.xsl";
+const XML_SOURCE = "chrome://test/content/hello.odt";
+//const XSL_SOURCE = "chrome://test/content/odt2xhtml.xsl";
+const XSL_SOURCE = "http://wyona.org/osr-101/clients/yulup/demo/odt2xhtml.xsl";
+const XSL_SOURCETAGGER = "chrome://test/content/sourcetagger.xsl";
+const XSL_IDCOPIER     = "chrome://test/content/idcopier.xsl";
+
+var gEditorElem     = null;
+var gEditor         = null;
+var gTaggedDocument = null;
+var gSourceNodeMap  = null;
+var gXhtmlNodeMap   = null;
+
+function initEditor() {
+    dump("######## YulupTEST:modification-propagation-test.js:initEditor() invoked\n");
+
+    document.getElementById("iframe1").setAttribute("src", XML_SOURCE);
+    document.getElementById("iframe2").setAttribute("src", XSL_SOURCETAGGER);
+    document.getElementById("iframe3").setAttribute("src", XSL_IDCOPIER);
+    document.getElementById("iframe4").setAttribute("src", XSL_SOURCE);
+
+    var editorHbox = null;
+    var editorElem = null;
+
+    editorElem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "editor");
+    editorElem.setAttribute("type", "content");
+    editorElem.setAttribute("flex", "1");
+    editorElem.setAttribute("style", "border: 2px solid black;");
+    editorElem.setAttribute("onload", "event.stopPropagation()");
+
+    editorHbox = document.getElementById("uiEditorVbox");
+    editorHbox.appendChild(editorElem);
+
+    gEditorElem = editorElem;
+
+    window.setTimeout(continueInit, 100);
+}
+
+function continueInit() {
+    dump("######## YulupTEST:modification-propagation-test.js:continueInit() invoked (chocked initialisation)\n");
+
+    var editorElem          = gEditorElem;
+    var selectionController = null;
+
+    // set up
+    editorElem.makeEditable("text", false);
+
+    editorElem.contentWindow.addEventListener("keypress", function (event) { event.preventBubble(); }, true);
+
+    gEditor = editorElem.getEditor(editorElem.contentWindow);
+    gEditor.QueryInterface(Components.interfaces.nsIEditor);
+
+    // make the caret visible even if the current selection is not collapsed
+    selectionController = gEditor.selectionController;
+    selectionController.setCaretVisibilityDuringSelection(true);
+
+    gEditor.QueryInterface(Components.interfaces.nsIPlaintextEditor);
+}
+
+function fillIframe(aIframe, aDocument) {
+    var dataString = "";
+
+    dataString = "data:application/xhtml+xml," + serialiseXML(aDocument);
+    aIframe.setAttribute("src", dataString);
+}
+
+function fillEditor(aDataString) {
+    gEditor.QueryInterface(Components.interfaces.nsIHTMLEditor).rebuildDocumentFromSource(aDataString);
+}
+
+function generateXHTML() {
+    var inputIframe    = null;
+    var idCopierIframe = null;
+    var dataString     = null;
+
+    /* DEBUG */ dump("######## YulupTEST:modification-propagation-test.js:generateXHTML() invoked\n");
+
+    inputIframe    = document.getElementById("iframe1");
+    idCopierIframe = document.getElementById("iframe3");
+
+    /* DEBUG */ dump("######## YulupTEST:modification-propagation-test.js:generateXHTML: input source =\n" + serialiseXML(inputIframe.contentDocument) + "\n");
+
+    // add import
+    insertXSLTImport(loadIDCopierXSLT(), XSL_SOURCE);
+
+    fillIframe(idCopierIframe, idCopierIframe.contentDocument);
+
+    // tag source with IDs
+    gTaggedDocument = transformXML(inputIframe.contentDocument, loadTaggerXSLT());
+
+    // normalise tree
+    gTaggedDocument.normalize();
+
+    // show tagged source document
+    fillIframe(inputIframe, gTaggedDocument);
+
+    // create a one-to-one node mapping for the source document
+    gSourceNodeMap = createNodeMap(gTaggedDocument, true);
+    /* DEBUG */ dump("######## YulupTEST:modification-propagation-test.js:generateXHTML: source mapping =\n" + dumpMapping(gSourceNodeMap) + "\n");
+
+    try{
+        // apply document style
+        xhtmlDocument  = transformXML(gTaggedDocument, loadIDCopierXSLT());
+    } catch (exception) {
+        dump("######## YulupTEST:modification-propagation-test.js:generateXHTML: transformation failed: exception = \"" + exception + "\"\n");
+    }
+    fillEditor(serialiseXML(xhtmlDocument));
+
+    // mark editor's contentDocument root as -moz-user-select: none
+    //gEditorElem.contentDocument.childNodes[1].setAttribute("style", "-moz-user-select: none");
+
+    // normalise tree
+    gEditorElem.contentDocument.normalize();
+
+    // create a one-to-many node mapping for the edited document
+    gXhtmlNodeMap = createNodeMap(gEditorElem.contentDocument, false);
+    /* DEBUG */ dump("######## YulupTEST:modification-propagation-test.js:generateXHTML: xhtml mapping =\n" + dumpMapping(gXhtmlNodeMap) + "\n");
+}
+
+function storeBack() {
+    // normalise tree
+    gEditorElem.contentDocument.normalize();
+
+    // create an up-to-date one-to-many node mapping for the edited document
+    gXhtmlNodeMap = createNodeMap(gEditorElem.contentDocument, false);
+    /* DEBUG */ dump("######## YulupTEST:modification-propagation-test.js:storeBack: xhtml mapping =\n" + dumpMapping(gXhtmlNodeMap) + "\n");
+
+    // propagate modifications
+    propagateModifications(gSourceNodeMap, gXhtmlNodeMap);
+
+    // dump tree
+    /* DEBUG */ dump("######## YulupTEST:modification-propagation-test.js:generateXHTML: modified source =\n" + serialiseXML(gTaggedDocument) + "\n");
+
+    // show in source iframe
+    fillIframe(document.getElementById("iframe1"), gTaggedDocument);
+}
+
+
+/**
+ * Map _yulup-id's to objects.
+ *
+ * Note that the tree passed in must be normalised.
+ */
+function createNodeMap(aNode, aOneToOne) {
+    var nodeMap = null;
+
+    // walk over the tree
+    nodeMap = (new NodeMapper(aNode, aOneToOne)).map();
+
+    return nodeMap;
+}
+
+function scrubNode(aNode) {
+    if (aNode.nodeType == Components.interfaces.nsIDOMNode.ELEMENT_NODE) {
+        // remove "_moz_dirty"
+        aNode.removeAttribute("_moz_dirty");
+        aNode.removeAttribute("type");
+    }
+
+    // recursively descend into child nodes
+    for (var i = 0; i < aNode.childNodes.length; i++) {
+        scrubNode(aNode.childNodes[i]);
+    }
+
+    return aNode;
+}
+
+function propagateModifications(aSourceNodeMap, aXHTMLNodeMap) {
+    var xhtmlNode    = null;
+
+    /* For every node in the XHTML node map, copy the content of the child nodes
+     * to the corresponding node in the source node map. */
+    for (var xhtmlNode in aXHTMLNodeMap) {
+        // remove all child nodes from source document node
+        while (aSourceNodeMap[xhtmlNode].hasChildNodes())
+            aSourceNodeMap[xhtmlNode].removeChild(aSourceNodeMap[xhtmlNode].firstChild);
+
+        // add all child nodes from all XHTML nodes
+        for (var i = 0; i < aXHTMLNodeMap[xhtmlNode].length; i++) {
+            for (var j = 0; j < aXHTMLNodeMap[xhtmlNode][i].childNodes.length; j++) {
+                /* DEBUG */ dump("######## YulupTEST:modification-propagation-test.js:propagateModifications: appending node \"" +  aXHTMLNodeMap[xhtmlNode][i].childNodes[j] + "\"\n");
+                aSourceNodeMap[xhtmlNode].appendChild(scrubNode(aXHTMLNodeMap[xhtmlNode][i].childNodes[j].cloneNode(true)));
+            }
+        }
+    }
+}
+
+function loadTaggerXSLT() {
+    return document.getElementById("iframe2").contentDocument;
+}
+
+function loadIDCopierXSLT() {
+    return document.getElementById("iframe3").contentDocument;
+}
+
+function insertXSLTImport(aXStylesheetDocument, aImportURI) {
+    var rootNode   = null;
+    var importNode = null;
+
+    // get root node
+    rootNode = aXStylesheetDocument.evaluate("xsl:stylesheet", aXStylesheetDocument, aXStylesheetDocument.createNSResolver(aXStylesheetDocument.documentElement), XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
+
+    /* DEBUG */ dump("######## YulupTEST:modification-propagation-test.js:insertXSLTImport: root node = \"" + rootNode + "\"\n");
+    /* DEBUG */ dump("######## YulupTEST:modification-propagation-test.js:insertXSLTImport: root node output =\n" + serialiseXML(rootNode) + "\n");
+
+    // add import statement
+    importNode = aXStylesheetDocument.createElementNS("http://www.w3.org/1999/XSL/Transform", "import");
+    importNode.setAttribute("href", aImportURI);
+    rootNode.insertBefore(importNode, rootNode.firstChild);
+
+    /* DEBUG */ dump("######## YulupTEST:modification-propagation-test.js:insertXSLTImport: root node output =\n" + serialiseXML(rootNode) + "\n");
+}
+
+function transformXML(aDocument, aXStylesheetDocument) {
+    var xsltProcessor       = null;
+    var transformedDocument = null;
+
+    xsltProcessor = new XSLTProcessor();
+
+    xsltProcessor.importStylesheet(aXStylesheetDocument);
+
+    transformedDocument = xsltProcessor.transformToDocument(aDocument);
+
+    /* DEBUG */ dump("######## YulupTEST:modification-propagation-test.js:transformXML: transformed output =\n" + serialiseXML(transformedDocument) + "\n");
+
+    return transformedDocument;
+}
+
+function serialiseXML(aNode) {
+    return (new XMLSerializer()).serializeToString(aNode);
+}
+
+function dumpMapping (aNodeMapping) {
+    var resultString = "";
+
+    for (var property in aNodeMapping) {
+        resultString += property + " = " + aNodeMapping[property] + "\n";
+    }
+
+    return resultString;
+}
+
+function NodeMapper(aNode, aOneToOne) {
+    this.rootNode = aNode;
+    this.oneToOne = aOneToOne;
+}
+
+NodeMapper.prototype = {
+    rootNode:    null,
+    nodeMapping: null,
+    oneToOne:    null,
+
+    /**
+     * Map a DOM document starting from the root node which was set
+     * by the constructor.
+     *
+     * @return {Object} a mapping of the document
+     */
+    map: function () {
+        /* DEBUG */ dump("Yulup:view.js:NodeMapper.map() invoked\n");
+
+        this.nodeMapping = new Object();
+
+        if (this.oneToOne)
+            this.mapDOMTreeOneToOne(this.rootNode);
+        else
+            this.mapDOMTreeOneToMany(this.rootNode);
+
+        return this.nodeMapping;
+    },
+
+    /**
+     * Map a node to its Yulup-ID.
+     *
+     * @param  {nsIDOMNode} aNode the node to map
+     * @return {Undefined} does not have a return value
+     */
+    mapDOMTreeOneToOne: function(aNode) {
+        var child = null;
+
+        if (aNode.nodeType == Components.interfaces.nsIDOMNode.ELEMENT_NODE && aNode.hasAttribute("_yulup-id")) {
+            this.nodeMapping[aNode.getAttribute("_yulup-id")] = aNode;
+        }
+
+        for (child = aNode.firstChild; child != null; child = child.nextSibling) {
+            this.mapDOMTreeOneToOne(child);
+        }
+    },
+
+    /**
+     * Map a node to its Yulup-ID.
+     *
+     * @param  {nsIDOMNode} aNode the node to map
+     * @return {Undefined} does not have a return value
+     */
+    mapDOMTreeOneToMany: function(aNode) {
+        var child = null;
+
+        if (aNode.nodeType == Components.interfaces.nsIDOMNode.ELEMENT_NODE && aNode.hasAttribute("_yulup-id")) {
+            // mark node as -moz-user-select: normal
+            aNode.setAttribute("style", "-moz-user-select: text");
+
+            if (this.nodeMapping[aNode.getAttribute("_yulup-id")] == undefined)
+                this.nodeMapping[aNode.getAttribute("_yulup-id")] = new Array();
+
+            this.nodeMapping[aNode.getAttribute("_yulup-id")].push(aNode);
+        }
+
+        for (child = aNode.firstChild; child != null; child = child.nextSibling) {
+            this.mapDOMTreeOneToMany(child);
+        }
+    }
+};
+]]>
+  </script>
+
+  <hbox>
+    <button label="Transform" flex="1" oncommand="generateXHTML()"/>
+    <button label="Propagate" flex="1" oncommand="storeBack()"/>
+  </hbox>
+  <hbox flex="1">
+    <vbox flex="1">
+      <iframe id="iframe1" flex="1" style="border: 1px solid black" onload="event.stopPropagation()"/>
+      <iframe id="iframe2" flex="1" style="border: 1px solid black" onload="event.stopPropagation()"/>
+      <iframe id="iframe3" flex="1" style="border: 1px solid black" onload="event.stopPropagation()"/>
+    </vbox>
+    <vbox id="uiEditorVbox" flex="1">
+      <iframe id="iframe4" flex="1" style="border: 1px solid black" onload="event.stopPropagation()"/>
+    </vbox>
+  </hbox>
+
+</window>

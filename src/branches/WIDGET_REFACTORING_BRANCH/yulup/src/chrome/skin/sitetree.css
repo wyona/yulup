@@ -1,0 +1,11 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+treechildren::-moz-tree-image(collection) {
+  list-style-image: url("chrome://yulup/skin/icons/sitetree-collection.png");
+  padding-right: 3px;
+}
+
+treechildren::-moz-tree-image(collection-unavailable) {
+  list-style-image: url("chrome://yulup/skin/icons/sitetree-collection-unavailable.png");
+  padding-right: 3px;
+}

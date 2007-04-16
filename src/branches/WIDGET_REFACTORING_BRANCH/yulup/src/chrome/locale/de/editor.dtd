@@ -1,0 +1,92 @@
+<!ENTITY editorAcceptButton.label "Ok">
+<!ENTITY editorCancelButton.label "Abbrechen">
+<!ENTITY editorUploadButton.label "Hochladen">
+<!ENTITY editorCloseButton.label "Schliessen">
+<!ENTITY editorToolboxToggleTextItem.label "Nur Icons zeigen">
+<!ENTITY editOperationCopy.label "Kopieren">
+<!ENTITY editOperationCut.label "Ausschneiden">
+<!ENTITY editOperationPaste.label "Einfügen">
+<!ENTITY editOperationRedo.label "Wiederherstellen">
+<!ENTITY editOperationUndo.label "Rückgängig">
+<!ENTITY editOperationSelectAll.label "Alles auswählen">
+<!ENTITY editOperationSelectContents.label "Inhalt auswählen">
+<!ENTITY editOperationSelectContents.tooltip "Ganzer inhalt des aktuellen Elements auswählen">
+<!ENTITY editOperationdeleteContextElement.label "Element löschen">
+<!ENTITY editOperationdeleteContextElement.tooltip "Aktuelles Element samt Inhalt löschen">
+<!ENTITY editOperationMoveUp.label "Nach oben">
+<!ENTITY editOperationMoveUp.tooltip "Element nach oben verschieben">
+<!ENTITY editOperationMoveDown.label "Nach unten">
+<!ENTITY editOperationMoveDown.tooltip "Element nach unten verschieben">
+<!ENTITY editOperationDelete.label "Löschen">
+<!ENTITY editOperationFind.label "Suchen">
+<!ENTITY editOperationFindReplace.label "Ersetzen">
+<!ENTITY editOperationSurroundMenu.label "Auszeichnen als">
+<!ENTITY editOperationInsertMenu.label "Einfügen">
+<!ENTITY editOperationEditAttributes.label "Attribute editieren">
+<!ENTITY fileOperationExit.label "Beenden">
+<!ENTITY fileOperationInfobarToggle.label "Infobar">
+<!ENTITY fileOperationNew.label "Neu">
+<!ENTITY fileOperationNewFromTemplateLocalMenuitem.label "Neue von lokaler Vorlage">
+<!ENTITY fileOperationNewFromTemplateCMSMenuitem.label "Neue von entfernter Vorlage">
+<!ENTITY fileOperationOpen.label "Öffnen">
+<!ENTITY fileOperationOpenLocalMenuitem.label "Von der Festplatte öffnen">
+<!ENTITY fileOperationOpenCMSMenuitem.label "Entfernt öffnen">
+<!ENTITY fileOperationSave.label "Speichern">
+<!ENTITY fileOperationSaveLocalMenuitem.label "In Datei speichern">
+<!ENTITY fileOperationSaveTempMenuitem.label "Temporäre Kopie speichern">
+<!ENTITY fileOperationSaveCMSMenuitem.label "Zurück ins CMS speichern">
+<!ENTITY fileOperationCheckinCMSMenuitem.label "Ins CMS einchecken">
+<!ENTITY fileOperationCheckinCMSAndExitMenuitem.label "Ins CMS einchecken und beenden">
+<!ENTITY fileOperationSaveAs.label "Speichern unter...">
+<!ENTITY fileOperationSaveAsLocalMenuitem.label "Auf Festplatte speichern als...">
+<!ENTITY fileOperationSaveAsCMSMenuitem.label "Im CMS speichern als...">
+<!ENTITY fileOperationUpload.label "Hochladen">
+<!ENTITY fileOperationUpload.tooltip "Eine Ressource auf den Server hochladen">
+<!ENTITY sourceViewTab.label "Quelltext">
+<!ENTITY wysiwygViewTab.label "WYSIWYG">
+<!ENTITY waitDescription.label "Dokument wird geöffnet">
+<!ENTITY yulupServerURIDialog.title "Server URI eingeben">
+<!ENTITY yulupServerURIDialogLabel.label "Bitte die URI des Servers angeben, auf den das Dokument hochgeladen werden soll">
+<!ENTITY uiYulupEditorPathToolBarPathLabel.label "Pfad">
+<!ENTITY uiYulupEditorPathToolBarPathLabel.tooltip "Zeigt den Pfad zum aktuellen Element an">
+<!ENTITY uiYulupXPathToolBarExpressionLabel.label "Pfad">
+<!ENTITY uiYulupXPathToolBarExpressionLabel.tooltip "Zeigt den XPath zum aktuellen Node an">
+<!ENTITY uiYulupXPathToolBarNSAwareCheckbox.label "Berücksichtige Namespaces">
+<!ENTITY uiYulupXPathToolBarNSAwareCheckbox.tooltip "Falls aktiviert werden Namespaces bei der Rückpropagation berücksichtigt">
+<!ENTITY editOperationCopy.tooltip "Auswahl in Zwischenablage kopieren">
+<!ENTITY editOperationCut.tooltip "Auswahl ausschneiden und in Zwischenablage kopieren">
+<!ENTITY editOperationPaste.tooltip "Aus der Zwischenablage einfügen">
+<!ENTITY editOperationRedo.tooltip "Letzte Operation wiederholen">
+<!ENTITY editOperationUndo.tooltip "Letzte Operation rückgängig machen">
+<!ENTITY editOperationSelectAll.tooltip "Ganzer Text auswählen">
+<!ENTITY editOperationDelete.tooltip "Auswahl löschen">
+<!ENTITY editOperationFind.tooltip "Einen String Suchen">
+<!ENTITY editOperationFindReplace.tooltip "Einen String ersetzen">
+<!ENTITY editOperationSurroundMenu.tooltip "Auswahl auszeichnen als">
+<!ENTITY editOperationInsertMenu.tooltip "Einfügen an der aktuellen Position">
+<!ENTITY editOperationEditAttributes.tooltip "Editieren der Attribute des aktuellen Elements">
+<!ENTITY fileOperationExit.tooltip "Den Editor beenden">
+<!ENTITY fileOperationInfobarToggle.tooltip "Infobar öffnen/schliessen">
+<!ENTITY fileOperationNew.tooltip "Neues Dokument erstellen">
+<!ENTITY fileOperationNewFromTemplateLocalMenuitem.tooltip "Neues Dokument nach lokaler Vorlage erstellen">
+<!ENTITY fileOperationNewFromTemplateCMSMenuitem.tooltip "Neues Dokuman nach CMS Vorlage erstellen">
+<!ENTITY fileOperationOpen.tooltip "Öffne ein bestehendes Dokument">
+<!ENTITY fileOperationOpenLocalMenuitem.tooltip "Dokument von Festplatte öffnen und editieren">
+<!ENTITY fileOperationOpenCMSMenuitem.tooltip "Dokument von CMS auchecken und editieren">
+<!ENTITY fileOperationSave.tooltip "Dokument speichern">
+<!ENTITY fileOperationSaveLocalMenuitem.tooltip "Dokument in Datei speichern">
+<!ENTITY fileOperationSaveTempMenuitem.tooltip "Temporäre Kopie des Dokuments auf der Festplatte speichern">
+<!ENTITY fileOperationSaveCMSMenuitem.tooltip "Dokument im CMS speichern (Sperrung nicht aufheben)">
+<!ENTITY fileOperationCheckinCMSMenuitem.tooltip "Dokument im CMS speichern (Sperrung aufeben)">
+<!ENTITY fileOperationCheckinCMSAndExitMenuitem.tooltip "Dokument im CMS speichern (Sperrung aufeben) und den Editor verlassen">
+<!ENTITY fileOperationSaveAs.tooltip "Dokument Speichern unter...">
+<!ENTITY fileOperationSaveAsLocalMenuitem.tooltip "Dokument auf Festplatte speichern als...">
+<!ENTITY fileOperationSaveAsCMSMenuitem.tooltip "Dokument im CMS speichern als...">
+<!ENTITY sourceViewTab.tooltip "Den Quelltext des Dokuments betrachten">
+<!ENTITY wysiwygViewTab.tooltip "Die WYSIWYG Darstellung des Dokuments betrachen">
+<!ENTITY editorWidgetInsertDialog.title "Setze Attribute">
+<!ENTITY editorWidgetInsert.label "Setze Attribute für das Element">
+<!ENTITY editorResourceUploadDialog.title "Resource Hochladen">
+<!ENTITY editorResourceSelectDialog.title "Resource Auswählen">
+<!ENTITY editorResourceTree.label "Seitenstruktur">
+<!ENTITY editorResourceUploadRemoteName.label "Dateiname auf Server">

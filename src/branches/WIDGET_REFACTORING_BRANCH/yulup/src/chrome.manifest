@@ -1,0 +1,12 @@
+content yulup             chrome/content/
+locale  yulup en          chrome/locale/en/
+locale  yulup de          chrome/locale/de/
+locale  yulup es          chrome/locale/es/
+locale  yulup fr          chrome/locale/fr/
+locale  yulup ku          chrome/locale/ku/
+locale  yulup tr          chrome/locale/tr/
+skin    yulup classic/1.0 chrome/skin/
+overlay chrome://browser/content/browser.xul chrome://yulup/content/yulup.xul
+overlay chrome://browser/content/browser.xul chrome://yulup/content/atomsidebar/atomsidebar-overlay.xul
+overlay chrome://browser/content/browser.xul chrome://yulup/content/neutronsidebar/neutronsidebar-overlay.xul
+style	chrome://global/content/customizeToolbar.xul chrome://yulup/skin/yulup.css

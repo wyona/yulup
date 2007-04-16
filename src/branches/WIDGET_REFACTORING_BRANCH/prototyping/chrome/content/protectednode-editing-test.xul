@@ -1,0 +1,1106 @@
+<?xml version="1.0"?>
+
+<window id="uiEditorWindow"
+        orient="vertical"
+        align="stretch"
+        onload="initEditor()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript">
+<![CDATA[
+    // NOTE: for how to install a selection-listener, see http://lxr.mozilla.org/mozilla1.8.0/source/toolkit/components/viewsource/content/viewSource.js#219
+
+    //const TESTDOC_URI = "http://wyona.org/osr-101/clients/yulup/demo/unizh/unizh.xhtml";
+    const TESTDOC_URI = "http://wyona.org/osr-101/clients/yulup/trunk/yulup/prototypes/prototype1/test/testdocs/developers_2.xhtml";
+
+    //var gEditingRoots = [ "/html:html/html:body/html:div/html:div/html:div/html:div" ];
+    var gEditingRoots = [ "//html:div[@id='editable1']", "//html:div[@id='editable2']" ];
+
+    var gEditorElem    = null;
+    var gEditor        = null;
+    var gCaretReadonly = false;
+
+    function initEditor() {
+        dump("######## YulupTEST:protectednode-editing-test.js:initEditor() invoked\n");
+        // test dynamic tab insertion
+        var editorHbox = null;
+        var editorElem = null;
+
+        editorElem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "editor");
+        editorElem.setAttribute("type", "content");
+        editorElem.setAttribute("flex", "1");
+        editorElem.setAttribute("style", "border: 2px solid black; margin: 2px 2px 2px 2px;");
+        editorElem.setAttribute("onload", "event.stopPropagation()");
+
+        editorHbox = document.getElementById("uiEditorHbox");
+        editorHbox.appendChild(editorElem);
+
+        gEditorElem = editorElem;
+
+        window.setTimeout(continueInit, 100);
+    }
+
+    function continueInit() {
+        var editorElem          = gEditorElem;
+        var selectionController = null;
+        var commandController   = null;
+        var commandTable        = null;
+        var deleteCommands      = null;
+
+        dump("######## YulupTEST:protectednode-editing-test.js:continueInit() invoked (chocked initialisation)\n");
+
+        // set up
+        editorElem.makeEditable("text", false);
+
+        gEditor = editorElem.getEditor(editorElem.contentWindow);
+        gEditor.QueryInterface(Components.interfaces.nsIEditor);
+
+        // hook up EditActionListener
+        gEditor.addEditActionListener(new EditActionListener());
+
+        //gEditor.rootElement.addEventListener("keypress", function (event) { event.preventBubble(); }, true);
+
+        // make the caret visible even if the current selection is not collapsed
+        selectionController = gEditor.selectionController;
+        selectionController.setCaretVisibilityDuringSelection(true);
+
+        gEditor.QueryInterface(Components.interfaces.nsIPlaintextEditor);
+
+        editorElem.contentWindow.addEventListener("keypress", textEditorKeyListener, true);
+
+        commandController = Components.classes["@mozilla.org/embedcomp/base-command-controller;1"].createInstance(Components.interfaces.nsIControllerContext);
+        commandController.init(null);
+
+        // the context set via setCommandContext is passed as the third argument to each doCommand* call
+        commandController.setCommandContext(editorElem);
+        editorElem.contentWindow.controllers.insertControllerAt(0, commandController);
+
+        deleteCommands     = new DeleteCommands(gEditor);
+        cutCommand         = new CutCommand(gEditor);
+        cutOrDeleteCommand = new CutOrDeleteCommand(gEditor);
+        insertTextCommand  = new InsertTextCommand(gEditor);
+
+        commandTable = commandController.QueryInterface(Components.interfaces.nsIInterfaceRequestor).getInterface(Components.interfaces.nsIControllerCommandTable);
+        commandTable.registerCommand("cmd_delete", deleteCommands);
+        commandTable.registerCommand("cmd_deleteCharBackward", deleteCommands);
+        commandTable.registerCommand("cmd_deleteCharForward", deleteCommands);
+        commandTable.registerCommand("cmd_deleteWordBackward", deleteCommands);
+        commandTable.registerCommand("cmd_deleteWordForward", deleteCommands);
+        commandTable.registerCommand("cmd_deleteToBeginningOfLine", deleteCommands);
+        commandTable.registerCommand("cmd_deleteToEndOfLine", deleteCommands);
+
+        commandTable.registerCommand("cmd_cut", cutCommand);
+
+        commandTable.registerCommand("cmd_cutOrDelete", cutOrDeleteCommand);
+
+        commandTable.registerCommand("cmd_insertText", insertTextCommand);
+
+        dump("editorElem status = \"" + editorElem.editingSession.editorStatus  + "\"\n");
+        dump("is editable = \"" + gEditor.isDocumentEditable  + "\"\n");
+    }
+
+
+    /**
+     * DeleteCommands constructor. Instantiates a new object of
+     * type DeleteCommands.
+     *
+     * Implements nsIControllerCommand.
+     *
+     * @constructor
+     */
+    function DeleteCommands(aEditor) {
+        this.editor = aEditor;
+    }
+
+    DeleteCommands.prototype = {
+        editor: null,
+
+        doCommand: function (aCommandName, aCommandContext) {
+            var deleteDirection   = null;
+
+            dump("######## YulupTEST:protectednode-editing-test.js:DeleteCommands.doCommand(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+            deleteDirection = Components.interfaces.nsIEditor.eNone;
+
+            if ("cmd_delete" == aCommandName)
+                deleteDirection = Components.interfaces.nsIEditor.ePrevious;
+            else if ("cmd_deleteCharBackward" == aCommandName)
+                deleteDirection = Components.interfaces.nsIEditor.ePrevious;
+            else if ("cmd_deleteCharForward" == aCommandName)
+                deleteDirection = Components.interfaces.nsIEditor.eNext;
+            else if ("cmd_deleteWordBackward" == aCommandName)
+                deleteDirection = Components.interfaces.nsIEditor.ePreviousWord;
+            else if ("cmd_deleteWordForward" == aCommandName)
+                deleteDirection = Components.interfaces.nsIEditor.eNextWord;
+            else if ("cmd_deleteToBeginningOfLine" == aCommandName)
+                deleteDirection = Components.interfaces.nsIEditor.eToBeginningOfLine;
+            else if ("cmd_deleteToEndOfLine" == aCommandName)
+                deleteDirection = Components.interfaces.nsIEditor.eToEndOfLine;
+
+            // actually delete the selection
+            gEditor.deleteSelection(deleteDirection);
+
+            return true;
+        },
+
+        doCommandParams: function (aCommandName, aParams, aCommandContext) {
+            dump("######## YulupTEST:protectednode-editing-test.js:DeleteCommands.doCommandParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+
+            return this.doCommand(aCommandName, aCommandContext);
+        },
+
+        getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
+            dump("######## YulupTEST:protectednode-editing-test.js:DeleteCommands.getCommandStateParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+        },
+
+        isCommandEnabled: function (aCommandName, aCommandContext) {
+            var retVal              = false;
+            var selectionController = null;
+
+            dump("######## YulupTEST:protectednode-editing-test.js:DeleteCommands.isCommandEnabled(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+            if (aCommandName == "cmd_delete") {
+                retVal = (this.editor.canCut() && isSelectionSelectable(this.editor.selection));
+            } else {
+                selectionController = this.editor.selectionController;
+
+                switch (aCommandName) {
+                case "cmd_deleteCharBackward":
+                    if (this.editor.selection.isCollapsed) {
+                        // extend selection
+                        try {
+                            selectionController.characterMove(false, true);
+                        } catch (exception) {
+                            /* We might have reached a point in the document where all text
+                             * left to the current selection is unselectable. */
+                            retVal = false;
+                            break;
+                        }
+
+                        // check selection
+                        retVal = isSelectionSelectable(this.editor.selection);
+
+                        // revert selection extension
+                        selectionController.characterMove(true, true);
+                    } else {
+                        // check selection
+                        retVal = isSelectionSelectable(this.editor.selection);
+                    }
+                    break;
+                case "cmd_deleteCharForward":
+                    if (this.editor.selection.isCollapsed) {
+                        // extend selection
+                        try {
+                            selectionController.characterMove(true, true);
+                        } catch (exception) {
+                            /* We might have reached a point in the document where all text
+                             * right to the current selection is unselectable. */
+                            retVal = false;
+                            break;
+                        }
+
+                        // check selection
+                        retVal = isSelectionSelectable(this.editor.selection);
+
+                        // revert selection extension
+                        selectionController.characterMove(false, true);
+                    } else {
+                        // check selection
+                        retVal = isSelectionSelectable(this.editor.selection);
+                    }
+                    break;
+                case "cmd_deleteWordBackward":
+                    if (this.editor.selection.isCollapsed) {
+                        // extend selection
+                        selectionController.wordMove(false, true);
+
+                        // check selection
+                        retVal = isSelectionSelectable(this.editor.selection);
+
+                        // revert selection extension
+                        selectionController.wordMove(true, true);
+                    } else {
+                        // check selection
+                        retVal = isSelectionSelectable(this.editor.selection);
+                    }
+                    break;
+                case "cmd_deleteWordForward":
+                    if (this.editor.selection.isCollapsed) {
+                        // extend selection
+                        selectionController.wordMove(true, true);
+
+                        // check selection
+                        retVal = isSelectionSelectable(this.editor.selection);
+
+                        // revert selection extension
+                        selectionController.wordMove(false, true);
+                    } else {
+                        // check selection
+                        retVal = isSelectionSelectable(this.editor.selection);
+                    }
+                    break;
+                case "cmd_deleteToBeginningOfLine":
+                    if (this.editor.selection.isCollapsed) {
+                        // extend selection
+
+                        // check selection
+                        retVal = isSelectionSelectable(this.editor.selection);
+
+                        // revert selection extension
+
+                    } else {
+                        // check selection
+                        retVal = isSelectionSelectable(this.editor.selection);
+                    }
+                    break;
+                case "cmd_deleteToEndOfLine":
+                    if (this.editor.selection.isCollapsed) {
+                        // extend selection
+
+                        // check selection
+                        retVal = isSelectionSelectable(this.editor.selection);
+
+                        // revert selection extension
+
+                    } else {
+                        // check selection
+                        retVal = isSelectionSelectable(this.editor.selection);
+                    }
+                    break;
+                default:
+                    retVal = false;
+                }
+            }
+
+            dump("######## YulupTEST:protectednode-editing-test.js:DeleteCommands.isCommandEnabled: " + aCommandName + " retVal = \"" + retVal + "\"\n");
+
+            return retVal;
+        }
+    }
+
+    /**
+     * CutCommand constructor. Instantiates a new object of
+     * type CutCommand.
+     *
+     * Implements nsIControllerCommand.
+     *
+     * @constructor
+     */
+    function CutCommand(aEditor) {
+        this.editor = aEditor;
+    }
+
+    CutCommand.prototype = {
+        editor: null,
+
+        doCommand: function (aCommandName, aCommandContext) {
+            var deleteDirection = null;
+
+            dump("######## YulupTEST:protectednode-editing-test.js:CutCommand.doCommand(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+            deleteDirection = Components.interfaces.nsIEditor.eNone;
+
+            if ("cmd_cut" == aCommandName) {
+                this.editor.cut();
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        doCommandParams: function (aCommandName, aParams, aCommandContext) {
+            dump("######## YulupTEST:protectednode-editing-test.js:CutCommand.doCommandParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+
+            return this.doCommand(aCommandName, aCommandContext);
+        },
+
+        getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
+            dump("######## YulupTEST:protectednode-editing-test.js:CutCommand.getCommandStateParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+        },
+
+        isCommandEnabled: function (aCommandName, aCommandContext) {
+            var retVal = false;
+
+            dump("######## YulupTEST:protectednode-editing-test.js:CutCommand.isCommandEnabled(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+            if (aCommandName == "cmd_cut") {
+                retVal = (this.editor.canCut() && isSelectionSelectable(this.editor.selection));
+            }
+
+            dump("######## YulupTEST:protectednode-editing-test.js:CutCommand.isCommandEnabled: " + aCommandName + " retVal = \"" + retVal + "\"\n");
+
+            return retVal;
+        }
+    }
+
+    /**
+     * CutOrDeleteCommand constructor. Instantiates a new object of
+     * type CutOrDeleteCommand.
+     *
+     * Implements nsIControllerCommand.
+     *
+     * @constructor
+     */
+    function CutOrDeleteCommand(aEditor) {
+        this.editor = aEditor;
+    }
+
+    CutOrDeleteCommand.prototype = {
+        editor: null,
+
+        doCommand: function (aCommandName, aCommandContext) {
+            var deleteDirection = null;
+
+            dump("######## YulupTEST:protectednode-editing-test.js:CutOrDeleteCommand.doCommand(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+            deleteDirection = Components.interfaces.nsIEditor.eNone;
+
+            if ("cmd_cutOrDelete" == aCommandName) {
+                if (this.editor.selection && this.editor.selection.isCollapsed) {
+                    this.editor.deleteSelection(Components.interfaces.nsIEditor.eNext);
+                } else {
+                    this.editor.cut();
+                }
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        doCommandParams: function (aCommandName, aParams, aCommandContext) {
+            dump("######## YulupTEST:protectednode-editing-test.js:CutOrDeleteCommand.doCommandParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+
+            return this.doCommand(aCommandName, aCommandContext);
+        },
+
+        getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
+            dump("######## YulupTEST:protectednode-editing-test.js:CutOrDeleteCommand.getCommandStateParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+        },
+
+        isCommandEnabled: function (aCommandName, aCommandContext) {
+            var retVal              = false;
+            var selectionController = null;
+
+            dump("######## YulupTEST:protectednode-editing-test.js:CutOrDeleteCommand.isCommandEnabled(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+            if (aCommandName == "cmd_cutOrDelete") {
+                if (this.editor.selection) {
+                    if (this.editor.selection.isCollapsed) {
+                        selectionController = this.editor.selectionController;
+
+                        // extend selection
+                        try {
+                            selectionController.characterMove(true, true);
+                        } catch (exception) {
+                            /* We might have reached a point in the document where all text
+                             * right to the current selection is unselectable. */
+                            dump("######## YulupTEST:protectednode-editing-test.js:CutOrDeleteCommand.isCommandEnabled: " + aCommandName + " retVal = \"" + retVal + "\"\n");
+
+                            return false;
+                        }
+
+                        // check selection
+                        retVal = isSelectionSelectable(this.editor.selection);
+
+                        // revert selection extension
+                        selectionController.characterMove(false, true);
+                    } else {
+                        retVal = isSelectionSelectable(this.editor.selection);
+                    }
+                } else {
+                    retVal = this.editor.canCut();
+                }
+            }
+
+            dump("######## YulupTEST:protectednode-editing-test.js:CutOrDeleteCommand.isCommandEnabled: " + aCommandName + " retVal = \"" + retVal + "\"\n");
+
+            return retVal;
+        }
+    }
+
+    // TODO: ah well, only called by embedders at the moment.
+    /**
+     * InsertTextCommand constructor. Instantiates a new object of
+     * type InsertTextCommand.
+     *
+     * Implements nsIControllerCommand.
+     *
+     * @constructor
+     */
+    function InsertTextCommand(aEditor) {
+        this.editor = aEditor;
+    }
+
+    InsertTextCommand.prototype = {
+        editor: null,
+
+        doCommand: function (aCommandName, aCommandContext) {
+
+            dump("######## YulupTEST:protectednode-editing-test.js:InsertTextCommand.doCommand(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+            // not implemented
+        },
+
+        doCommandParams: function (aCommandName, aParams, aCommandContext) {
+            var insertionText = null;
+
+            dump("######## YulupTEST:protectednode-editing-test.js:InsertTextCommand.doCommandParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+
+            // get text to insert from command params
+            insertionText = aParams.getStringValue("state_data");
+
+            if (!insertionText.length == 0)
+                return this.editor.insertText(insertionText);
+        },
+
+        getCommandStateParams: function (aCommandName, aParams, aCommandContext) {
+            dump("######## YulupTEST:protectednode-editing-test.js:InsertTextCommand.getCommandStateParams(\"" + aCommandName + "\", \"" + aParams + "\", \"" + aCommandContext + "\") invoked\n");
+        },
+
+        isCommandEnabled: function (aCommandName, aCommandContext) {
+            var retVal = false;
+
+            dump("######## YulupTEST:protectednode-editing-test.js:InsertTextCommand.isCommandEnabled(\"" + aCommandName + "\", \"" + aCommandContext + "\") invoked\n");
+
+            if (aCommandName == "cmd_insertText") {
+                if (this.editor.isDocumentEditable) {
+                    // check if we are in the process of overwriting a non-collapsed selection
+                    if (!this.editor.selection.isCollapsed) {
+                        // check selection
+                        retVal = isSelectionSelectable(this.editor.selection);
+                    }
+                } else {
+                    retVal = true;
+                }
+            } else {
+                retVal = false;
+            }
+
+            dump("######## YulupTEST:protectednode-editing-test.js:InsertTextCommand.isCommandEnabled: " + aCommandName + " retVal = \"" + retVal + "\"\n");
+
+            return retVal;
+        }
+    }
+
+    function isSelectionSelectable(aSelection) {
+        var domRange       = null;
+        var startContainer = null;
+        var endContainer   = null;
+        var isSelectable   = null;
+
+        // get all nsIDOMRange's contained in the current selection
+        for (var i = 0; i < aSelection.rangeCount; i++) {
+            domRange = aSelection.getRangeAt(i);
+
+            dump("######## YulupTEST:protectednode-editing-test.js:isSelectionSelectable: domRange = \"" + domRange + "\"\n");
+
+            /*
+            // get the deepest common ancestor container (nsIDOMNode)
+            ancestorContainer = domRange.commonAncestorContainer;
+
+            // walk the range to check for elements with "-moz-user-select: none" styles
+            if (ancestorContainer.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+            */
+                /* This is an optimisation for the common case that start and end
+                 * point of the selection are inside the same text node, and their
+                 * deepest common ancestor is that very text node. Don't remove it, since
+                 * isTreeSelectable() relies on that check here! */
+            /*
+                if (ancestorContainer.parentNode.getAttribute("style") == "-moz-user-select: none")
+                    return false;
+            } else {
+                if (!isTreeSelectable(ancestorContainer))
+                    return false;
+            }
+            */
+
+            startContainer = (domRange.startContainer.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE ?
+                              domRange.startContainer :
+                              domRange.startContainer.childNodes.item(domRange.startOffset));
+
+            endContainer   = (domRange.endContainer.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE ?
+                              domRange.endContainer :
+                              domRange.endContainer.childNodes.item(domRange.endOffset - 1));
+
+            dump("######## YulupTEST:protectednode-editing-test.js:isSelectionSelectable: start container = \"" + Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(startContainer) + "\"\n");
+            dump("######## YulupTEST:protectednode-editing-test.js:isSelectionSelectable: end container   = \"" + Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(endContainer) + "\"\n");
+
+            if (startContainer == endContainer) {
+                // no need for walking the tree
+                if (startContainer.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+                    if (startContainer.parentNode.getAttribute("_yulup-non-editable-node") == "true")
+                        return false;
+                } else {
+                    if (startContainer.getAttribute("_yulup-non-editable-node") == "true")
+                        return false;
+                }
+            } else {
+                isSelectable = isTreeSelectable2(startContainer.parentNode, startContainer, endContainer, false);
+                dump("######## YulupTEST:protectednode-editing-test.js:isSelectionSelectable: is selectable = \"" + isSelectable + "\"\n");
+                if (isSelectable == NOT_SELECTABLE) {
+                    return false;
+                }
+            }
+        }
+
+        // if none of the checks returned false, the selection is indeed selectable
+        return true;
+    }
+
+    const END_OF_RANGE   = 0;
+    const IS_SELECTABLE  = 1;
+    const NOT_SELECTABLE = 2;
+
+    function isTreeSelectable2(aNode, aStartNode, aEndNode, aHasParent) {
+        var child  = null;
+        var retVal = null;
+
+        dump("######## YulupTEST:protectednode-editing-test.js:isTreeSelectable2(\"" + aNode + "\", \"" + aStartNode + "\", \"" + aEndNode + "\", \"" + aHasParent + "\") invoked\n");
+        dump("######## YulupTEST:protectednode-editing-test.js:isTreeSelectable2: inspecting subtree =\n" + Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(aNode) + "\n");
+
+        try {
+            // test selectability
+            if (aNode.nodeType != Components.interfaces.nsIDOMNode.TEXT_NODE && aNode.getAttribute("_yulup-non-editable-node") == "true")
+                return NOT_SELECTABLE;
+
+            // check if we arrived at the end of the selection
+            if (aNode == aEndNode)
+                return END_OF_RANGE;
+
+            // go down the tree
+            for (child = (aStartNode ? aStartNode.nextSibling : aNode.firstChild); child != null; child = child.nextSibling) {
+                if ((retVal = isTreeSelectable2(child, null, aEndNode, true)) != IS_SELECTABLE) {
+                    dump("++++++++++++++++++++++++++++++ YulupTEST:protectednode-editing-test.js:isTreeSelectable2: go down retVal = \"" + retVal + "\"\n");
+                    return retVal;
+                }
+            }
+
+            // go up the tree if we have not been on our way down
+            if (!aHasParent) {
+                if ((retVal = isTreeSelectable2(aNode.parentNode, aNode, aEndNode, false)) != IS_SELECTABLE) {
+                    dump("++++++++++++++++++++++++++++++ YulupTEST:protectednode-editing-test.js:isTreeSelectable2: go up retVal = \"" + retVal + "\"\n");
+                    return retVal;
+                }
+            }
+
+            // if we arrive here, we have not found any non-selectable node
+            return IS_SELECTABLE;
+        } catch (exception) {
+            dump("******** YulupTEST:protectednode-editing-test.js:isTreeSelectable2: an error occurred = \"" + exception + "\"\n");
+            Components.utils.reportError(exception);
+            return NOT_SELECTABLE;
+        }
+    }
+
+    function isTreeSelectable(aNode) {
+        var retVal = null;
+        var child  = null;
+
+        dump("######## YulupTEST:protectednode-editing-test.js:isTreeSelectable(\"" + aNode + "\") invoked\n");
+        dump("######## YulupTEST:protectednode-editing-test.js:isTreeSelectable: tree =\n" + Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(aNode) + "\n");
+
+        // TODO: optimise with regard to that -moz-user-select only occurs in parents of leaf text nodes
+
+        if (aNode.nodeType != Components.interfaces.nsIDOMNode.TEXT_NODE && aNode.getAttribute("style") == "-moz-user-select: none") {
+            return false;
+        } else {
+            //dump("######## YulupTEST:protectednode-editing-test.js:isTreeSelectable: firstChild = \"" + aNode.firstChild + "\"\n");
+            for (child = aNode.firstChild; child != null; child = child.nextSibling) {
+                if (!isTreeSelectable(child))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Keypress listener.
+     *
+     * Note that this method basically mimics as much as necessary of the
+     * nsTextEditorKeyListener::KeyPress method from nsEditorEventListeners.cpp
+     * (see http://lxr.mozilla.org/mozilla1.8.0/source/editor/libeditor/text/nsEditorEventListeners.cpp).
+     *
+     * See also https://bugzilla.mozilla.org/attachment.cgi?id=227048 of bug
+     * https://bugzilla.mozilla.org/show_bug.cgi?id=237964 for how to
+     * handle "protected" nodes.
+     *
+     * TODO: should we map NS_OK to return true and everything else to return false?
+     *
+     * How editor event handling works (see also: http://developer.mozilla.org/en/docs/Using_the_Editor_from_XUL):
+     *
+     * Editing operations happen in response to user events: mouse, key, drag and drop, and
+     * IME (international text input) events. In order to receive these events, the editor
+     * registers several event listeners on the document being edited. In addition, editor
+     * actions in the user interface are propagated via the XUL and JavaScript, and call
+     * methods on the nsEditorShell. This editor command dispatching is described separately.
+     *
+     * The following event listeners are registered:
+     *   * In nsHTMLEditor::InstallEventListeners(), we install the following. These get
+     *     installed for all types of editor (i.e. for text widgets and composer):
+     *       o nsTextEditorKeyListener (as a nsIDOMKeyListener)
+     *       o nsTextEditorMouseListener (as a nsIDOMMouseListener)
+     *       o nsTextEditorFocusListener (as a nsIDOMFocusListener)
+     *       o nsTextEditorTextListener (as a nsIDOMTextListener)
+     *       o nsTextEditorCompositionListener (as a nsIDOMCompositionListener)
+     *       o nsTextEditorDragListener (as a nsIDOMDragListener)
+     *   * In nsEditorShell::PrepareDocumentForEditing(), we install a mouse listener. This
+     *     only happens for situations where the nsEditorShell is used (i.e. not for text widgets):
+     *       o nsEditorShellMouseListener (as a nsIDOMMouseListener)
+     *
+     * nsTextEditorKeyListener:
+     *   This event listener handles key presses for typing, and other editing operations (backspace,
+     *   delete, enter/return). Cases that it does not handle explicitly it passes on to
+     *   nsHTMLEditor::EditorKeyPress(), which is where normal typing keys end up. Note that it only
+     *   responds to the KeyPress event; KeyDown and KeyUp events are ignored.
+     *
+     * So what happens to a key press once it's got to the nsTextEditorKeyListener? How does that end
+     * up in the document? Let's trace through.
+     *   * nsTextEditorKeyListener::KeyPress() gets the key press event. For normal character keys,
+     *     that falls into nsHTMLEditor::EditorKeyPress().
+     *   * nsHTMLEditor::EditorKeyPress() gets the character code from the key event, puts that into
+     *     a string, and calls nsHTMLEditor::TypedText(), which simply calls nsHTMLEditor::InsertText().
+     *   * nsHTMLEditor::InsertText() hides quite a bit of complexity in some stack-based classes.
+     *
+     *     nsAutoPlaceHolderBatch is a utility class that wraps text insertion with calls to turn off
+     *     selection and layout updating (to avoid flicker), and the maintenance of a placeholder
+     *     transaction. This placeholder transaction enables us to batch typing events together, so that
+     *     an Undo undoes the whole series of keystrokes.
+     *
+     *     Another stack-based class, nsAutoRules, ensures that text insertion is wrapped with calls
+     *     to nsHTMLEditor::StartOperation() / EndOperation(). These functions call BeforeEdit() and
+     *     AfterEdit() on the current typing rules.
+     *
+     *     Now, we initialize a nsTextRulesInfo with the information about the string being inserted,
+     *     and call WillDoAction() on the current [writing-rules.html editing rules]. Because the
+     *     implementation of inserting text differs between the different rules (plain text vs. HTML,
+     *     for example), it is handled entirely by the rules code, in the WillDoAction()call.
+     *
+     *     In Composer, we are using nsHTMLEditRules, so we end up in nsHTMLEditRules::WillDoAction().
+     *     For text insertion, this drops into nsHTMLEditRules::WillInsertText(). This code first deletes
+     *     the selection if there is one (e.g. you are typing over selected text), then calls a generic
+     *     pre-insertion call WillInsert(), which sets up inline styles for the inserted text, and moves
+     *     the selection to an appropriate place where the text is to be inserted.
+     *
+     *     Now we are ready to actually insert the text. Recall that we're going through a generic
+     *     InsertText() call, so this code deals with pasting long strings, as well as inserting single
+     *     characters. The code thus has to do the correct thing with linebreaks, so has a special case
+     *     for inserting into <pre> sections. We call into the normal insertion code, which loops through
+     *     the input string looking for linebreaks, and inserts each text run, followed by a <br> when
+     *     necessary. When handling key presses, this will just insert a single character.
+     *
+     *     We fall out of the WillDoAction() call, and drop into WillDoAction(), which, for text insertion,
+     *     does nothing.
+     *
+     *     The last thing that happens on a keypress is that nsTextEditorKeyListener::KeyPress() calls
+     *     ScrollSelectionIntoView(), which, as the name suggests, ensures that the text that was just
+     *     entered is visible.
+     *
+     * @param  {nsIDOMEvent} aEvent
+     * @return {Boolean}
+     */
+    function textEditorKeyListener(aEvent) {
+        var keyEvent                 = null;
+        var keyCode                  = null;
+        var editorFlags              = null;
+        var isAnyModifierKeyButShift = null;
+        var isShiftModifierKey       = null;
+        var commandController        = null;
+
+        dump("event type = \"" + aEvent.type + "\"\n");
+        dump("selection  = \"" + gEditor.selection + "\"\n");
+
+        // prevent keypress events from invoking FAYT
+        aEvent.preventBubble();
+
+        keyEvent = aEvent.QueryInterface(Components.interfaces.nsIDOMKeyEvent);
+
+        keyCode = keyEvent.keyCode;
+
+        // if we are readonly or disabled, then do nothing.
+
+        gEditor.QueryInterface(Components.interfaces.nsIEditor);
+
+        editorFlags = gEditor.flags;
+
+        if (editorFlags & Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask ||
+            editorFlags & Components.interfaces.nsIPlaintextEditor.eEditorDisabledMask)
+            return true;
+
+        /* If there is no charCode, then it's a key that doesn't map to a character,
+         * so look for special keys using keyCode. */
+        if (0 != keyCode) {
+            isAnyModifierKeyButShift = keyEvent.altKey;
+
+            if (!isAnyModifierKeyButShift) {
+                isAnyModifierKeyButShift = keyEvent.metaKey;
+
+                if (!isAnyModifierKeyButShift) {
+                    isAnyModifierKeyButShift = keyEvent.ctrlKey;
+                }
+            }
+
+            switch (keyCode) {
+                case Components.interfaces.nsIDOMKeyEvent.DOM_VK_META:
+                case Components.interfaces.nsIDOMKeyEvent.DOM_VK_SHIFT:
+                case Components.interfaces.nsIDOMKeyEvent.DOM_VK_CONTROL:
+                case Components.interfaces.nsIDOMKeyEvent.DOM_VK_ALT:
+                    dump("key event = DOM_VK_META, DOM_VK_SHIFT, DOM_VK_CONTROL, DOM_VK_ALT\n");
+
+                    // we consumed this event
+                    aEvent.preventDefault();
+                    return true;
+                    break;
+
+                case Components.interfaces.nsIDOMKeyEvent.DOM_VK_BACK_SPACE:
+                    dump("key event = DOM_VK_BACK_SPACE\n");
+
+                    if (isAnyModifierKeyButShift)
+                        return true;
+
+                    /* In order to be able to proctect certain nodes on the DOM, we have to make sure that:
+                     *   - if current selection is collapsed, ePrevious is not a protected node
+                     *   - if current selection is not collapsed, the selection does not contain any
+                     *     protected nodes */
+                    commandController = gEditorElem.contentWindow.controllers.getControllerForCommand("cmd_deleteCharBackward");
+                    if (commandController && commandController.isCommandEnabled("cmd_deleteCharBackward"))
+                        commandController.doCommand("cmd_deleteCharBackward");
+
+                    // we consumed this event
+                    aEvent.preventDefault();
+                    return true;
+                    break;
+
+                case Components.interfaces.nsIDOMKeyEvent.DOM_VK_DELETE:
+                    dump("key event = DOM_VK_DELETE\n");
+
+                    /* On certain platforms (such as windows) the shift key
+                     * modifies what delete does (cmd_cut in this case).
+                     * Bailing here to allow the keybindings to do the cut.*/
+                    isShiftModifierKey = keyEvent.shiftKey;
+
+                    if (isAnyModifierKeyButShift || isShiftModifierKey)
+                        return true;
+
+                    commandController = gEditorElem.contentWindow.controllers.getControllerForCommand("cmd_deleteCharForward");
+                    if (commandController && commandController.isCommandEnabled("cmd_deleteCharForward"))
+                        commandController.doCommand("cmd_deleteCharForward");
+
+                    // we consumed this event
+                    aEvent.preventDefault();
+                    return true;
+                    break;
+
+                case Components.interfaces.nsIDOMKeyEvent.DOM_VK_TAB:
+                    dump("key event = DOM_VK_TAB\n");
+
+                    if ((editorFlags & Components.interfaces.nsIPlaintextEditor.eEditorSingleLineMask) ||
+                        (editorFlags & Components.interfaces.nsIPlaintextEditor.eEditorPasswordMask)   ||
+                        (editorFlags & Components.interfaces.nsIPlaintextEditor.eEditorWidgetMask))
+                        return true;
+
+                    if (isAnyModifierKeyButShift)
+                        return true;
+
+                    // else we insert the tab straight through
+                    gEditor.QueryInterface(Components.interfaces.nsIPlaintextEditor);
+                    gEditor.handleKeyPress(keyEvent);
+
+                    // let HandleKeyPress consume the event
+                    return true;
+                    break;
+
+                case Components.interfaces.nsIDOMKeyEvent.DOM_VK_RETURN:
+                case Components.interfaces.nsIDOMKeyEvent.DOM_VK_ENTER:
+                    dump("key event = DOM_VK_RETURN, DOM_VK_ENTER\n");
+
+                    if (isAnyModifierKeyButShift)
+                        return true;
+
+                    if (!(editorFlags & Components.interfaces.nsIPlaintextEditor.eEditorSingleLineMask)) {
+                        gEditor.QueryInterface(Components.interfaces.nsIPlaintextEditor);
+                        gEditor.handleKeyPress(keyEvent);
+
+                        // we consumed the event
+                        aEvent.preventDefault();
+                    }
+
+                    return true;
+            }
+        }
+
+        gEditor.QueryInterface(Components.interfaces.nsIPlaintextEditor);
+        //gEditor.handleKeyPress(aEvent);
+
+        // check if we are in the process of overwriting a non-collapsed selection
+        if (!gEditor.selection.isCollapsed) {
+            // check selection
+            if (!isSelectionSelectable(gEditor.selection)) {
+                // consume the event
+                aEvent.preventDefault();
+            }
+        }
+
+        // we don't PreventDefault() here or keybindings like control-x won't work
+
+        return true;
+    }
+
+    function addText() {
+        dump("######## YulupTEST:protectednode-editing-test.js:addText() invoked\n");
+
+        gEditor.insertText("Hello?");
+    }
+
+    function fillEditor() {
+        var documentString = "<html><head></head><body>Some editable text. <span style=\"-moz-user-select: text\">Some none-editable text.<span style=\"-moz-user-select: none\">Editable child.</span></span> Some editable text.</body>";
+
+        dump("######## YulupTEST:protectednode-editing-test.js:fillEditor() invoked\n");
+
+        gEditor.QueryInterface(Components.interfaces.nsIHTMLEditor);
+        gEditor.rebuildDocumentFromSource(documentString);
+    }
+
+    function fillEditorWithSample() {
+        var editingRoots = null;
+        var documentXML  = null;
+        var documentBody = null;
+
+        dump("######## YulupTEST:protectednode-editing-test.js:fillEditorWithSample() invoked\n");
+
+        documentXML = loadDocument(TESTDOC_URI);
+
+        dump("document after load = " + Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(documentXML) + "\n");
+
+        markEditingRoots(documentXML, gEditingRoots);
+
+        // get document body
+        documentBody = documentXML.evaluate("//html:body", documentXML, nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
+        propagateNonSelectable(documentXML, documentBody, documentBody.hasAttribute("_yulup-editable"));
+
+        dump("document after augmentation = " + Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(documentXML) + "\n");
+
+        //replaceDOMTree(gEditorElem, documentXML);
+
+        gEditor.QueryInterface(Components.interfaces.nsIHTMLEditor);
+
+        gEditor.rebuildDocumentFromSource(Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(documentXML));
+    }
+
+    function loadDocument(aURI) {
+        dump("######## YulupTEST:protectednode-editing-test.js:loadDocument(\"" + aURI + "\") invoked\n");
+
+        var documentXML = Components.classes["@mozilla.org/xml/xml-document;1"].createInstance(Components.interfaces.nsIDOMXMLDocument);
+        documentXML.async = false;
+
+        return (documentXML.load(aURI) ? documentXML : null);
+    }
+
+    function propagateNonSelectable(aDOMDocument, aNode, aPathEditable) {
+        var child      = null;
+        var retNode    = null;
+
+        dump("######## YulupTEST:protectednode-editing-test.js:propagateNonSelectable(\"" + aDOMDocument + "\", \"" + aNode + "\", \"" + aPathEditable + "\") invoked\n");
+
+        retNode = aNode;
+
+        if (aNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE) {
+            // text nodes are always leaf
+            if (!aPathEditable)
+                retNode = wrapNodeNonSelectable(aDOMDocument, aNode);
+        } else {
+            if (aNode.hasAttribute("_yulup-editable"))
+                aPathEditable = (aNode.getAttribute("_yulup-editable") == "true");
+
+            for (child = aNode.firstChild; child != null; child = child.nextSibling) {
+                /* If the callee replaces child with a different node, nextSibling
+                 * would point somewhere bad, therefore we always have to return
+                 * the current node. */
+                child = propagateNonSelectable(aDOMDocument, child, aPathEditable);
+            }
+        }
+
+        return retNode;
+    }
+
+    function wrapNodeNonSelectable(aDOMDocument, aNode) {
+        var wrapperNode = null;
+        var parentNode  = null;
+
+        // TODO: place span element in a special namespace
+        wrapperNode = aDOMDocument.createElement("span");
+        wrapperNode.setAttribute("_yulup-disposable", true);
+        wrapperNode.setAttribute("_yulup-non-editable-node", "true");
+        /* TODO: use nsIEditorStyleSheets to overlay a stylesheet which maps
+         * from _yulup-non-editable-node=true to a -moz-user-select: none
+         * style. */
+        wrapperNode.setAttribute("style", "-moz-user-select: none");
+
+        aNode.parentNode.replaceChild(wrapperNode, aNode);
+
+        wrapperNode.appendChild(aNode);
+
+        return wrapperNode;
+    }
+
+    function markEditingRoots(aDocumentXML, aEditingRootsArray) {
+        var editingRoot  = null;
+
+        dump("######## YulupTEST:protectednode-editing-test.js:markEditingRoots(\"" + aDocumentXML + "\", \"" + aEditingRootsArray + "\") invoked\n");
+
+        for (var i = 0; i < aEditingRootsArray.length; i++) {
+            editingRoot = aDocumentXML.evaluate(aEditingRootsArray[i], aDocumentXML, nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
+
+            dump("root = \"" + editingRoot + "\"\n");
+
+            // mark as editable
+            //editingRoot.subTreeEditable = true;
+            editingRoot.setAttribute("_yulup-editable", "true");
+        }
+    }
+
+    function nsResolver(aPrefix) {
+        var namespace = null;
+
+        var namespace = {
+            "html" : "http://www.w3.org/1999/xhtml"
+        };
+
+        return namespace[aPrefix] || null;
+    }
+
+    function toggleReadonly() {
+        var selectionController = null;
+
+        dump("######## YulupTEST:protectednode-editing-test.js:toggleReadonly() invoked\n");
+
+        gCaretReadonly = !gCaretReadonly;
+
+        gEditor.QueryInterface(Components.interfaces.nsIEditor);
+
+        dump("nsIEditor flags before change = \"" + gEditor.flags + "\"\n");
+
+        if (gCaretReadonly) {
+            // make editor readonly
+            gEditor.flags |= Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
+        } else {
+            // make editor readwrite
+            gEditor.flags ^= Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
+        }
+
+        dump("nsIEditor flags after change  = \"" + gEditor.flags + "\"\n");
+
+        selectionController = gEditor.selectionController;
+        selectionController.setCaretReadOnly(gCaretReadonly);
+        selectionController.setCaretEnabled(true);
+    }
+
+    /**
+     * EditActionListener constructor. Instantiates a new object of
+     * type EditActionListener.
+     *
+     * Note that this type implements the nsIEditActionListener
+     * interface.
+     *
+     * @constructor
+     * @return {EditActionListener}
+     */
+    function EditActionListener() {
+        /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:EditActionListener() invoked.\n");
+    }
+
+    EditActionListener.prototype = {
+        WillCreateNode: function (aTag, aParent, aPosition) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:WillCreateNode: tag = \"" + aTag + "\", parent = \"" + aParent.nodeName + "\", position = \"" + aPosition + "\"\n");
+        },
+
+        DidCreateNode: function (aTag, aNode, aParent, aPosition, aResult) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:DidCreateNode:  tag = \"" + aTag + "\", parent = \"" + aParent.nodeName + "\", position = \"" + aPosition + "\", result = \"" + aResult + "\"\n");
+        },
+
+        WillInsertNode: function (aNode, aParent, aPosition) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:WillInsertNode: node = \"" + aNode.nodeName + "\", parent = \"" + aParent.nodeName + "\", position = \"" + aPosition + "\"\n");
+        },
+
+        DidInsertNode: function (aNode, aParent, aPosition, aResult) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:DidInsertNode:  node = \"" + aNode.nodeName + "\", parent = \"" + aParent.nodeName + "\", position = \"" + aPosition + "\", result = \"" + aResult + "\"\n");
+        },
+
+        WillDeleteNode: function (aChild) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:WillDeleteNode: child = \"" + aChild.nodeName + "\"\n");
+        },
+
+        DidDeleteNode: function (aChild, aResult) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:DidDeleteNode:  child = \"" + aChild.nodeName + "\", result = \"" + aResult + "\"\n");
+        },
+
+        WillSplitNode: function (aExistingRightNode, aOffset) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:WillSplitNode:  right node = \"" + aExistingRightNode.nodeName + "\", offset = \"" + aOffset + "\"\n");
+        },
+
+        DidSplitNode: function (aExistingRightNode, aOffset, aNewLeftNode, aResult) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:DidSplitNode:   right node = \"" + aExistingRightNode.nodeName + "\", offset = \"" + aOffset + "\", new left node = \"" + aNewLeftNode.nodeName + "\", result = \"" + aResult + "\"\n");
+        },
+
+        WillJoinNodes: function (aLeftNode, aRightNode, aParent) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:WillJoinNodes:  left node = \"" + aLeftNode.nodeName + "\", right node = \"" + aRightNode.nodeName + "\", parent node = \"" + aParent.nodeName + "\"\n");
+        },
+
+        DidJoinNodes: function (aLeftNode, aRightNode, aParent, aResult) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:DidJoinNodes:   left node = \"" + aLeftNode.nodeName + "\", right node = \"" + aRightNode.nodeName + "\", parent node = \"" + aParent.nodeName + "\", result = \"" + aResult + "\"\n");
+        },
+
+        WillInsertText: function (aTextNode, aOffset, aString) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:WillInsertText: text node = \"" + aTextNode.nodeName + "\", offset = \"" + aOffset + "\", string = \"" + aString + "\"\n");
+        },
+
+        DidInsertText: function (aTextNode, aOffset, aString, aResult) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:DidInsertText: text node = \"" + aTextNode.nodeName + "\", offset = \"" + aOffset + "\", string = \"" + aString + "\", result = \"" + aResult + "\"\n");
+        },
+
+        WillDeleteText: function (aTextNode, aOffset, aLength) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:WillDeleteText: text node = \"" + aTextNode.nodeName + "\", offset = \"" + aOffset + "\", length = \"" + aLength + "\"\n");
+        },
+
+        DidDeleteText: function (aTextNode, aOffset, aLength, aResult) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:DidDeleteText: text node = \"" + aTextNode.nodeName + "\", offset = \"" + aOffset + "\", length = \"" + aLength + "\", result = \"" + aResult + "\"\n");
+        },
+
+        WillDeleteSelection: function (aSelection) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:WillDeleteSelection: selection = \"" + aSelection + "\"\n");
+        },
+
+        DidDeleteSelection: function (aSelection) {
+            /* DEBUG */ dump("######## YulupTEST:protectednode-editing-test.js:DidDeleteSelection: selection = \"" + aSelection + "\"\n");
+        }
+    };
+
+    function replaceDOMTree(aEditor, aDOMTree) {
+        var importedDOMTree = null;
+
+        dump("######## YulupTEST:protectednode-editing-test.js:replaceDOMTree(\"" + aEditor + "\", \"" + aDOMTree + "\") invoked\n");
+
+        dump("aEditor.contentDocument = \"" + aEditor.contentDocument + "\"\n");
+
+        dump("aEditor.contentDocument =\n" + Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(aEditor.contentDocument) + "\n");
+
+        while (aEditor.contentDocument.hasChildNodes())
+                aEditor.contentDocument.removeChild(aEditor.contentDocument.firstChild);
+
+        importedDOMTree = aEditor.contentDocument.importNode(aDOMTree.documentElement, true);
+
+        dump("importedDOMTree =\n" + Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(importedDOMTree) + "\n");
+
+        aEditor.contentDocument.appendChild(importedDOMTree);
+    }
+]]>
+  </script>
+
+  <button label="Fill Editor" oncommand="fillEditor()"/>
+  <button label="Fill Editor with Sample" oncommand="fillEditorWithSample()"/>
+  <button label="Toggle Readonly" oncommand="toggleReadonly()"/>
+  <hbox id="uiEditorHbox" flex="1">
+    <button label="Add Text" oncommand="addText()"/>
+  </hbox>
+
+</window>

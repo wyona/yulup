@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+
+<window id="uiEditorWindow"
+        orient="vertical"
+        align="stretch"
+        onload="onLoadHandler()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript">
+function onLoadHandler() {
+    /* DEBUG */ dump("YulupTEST:contenthandler-test.js:onLoadHandler() invoked\n");
+
+    var uri                   = "http://www.wyona.org/osr-101/clients/yulup/developers.xhtml";
+    var ioService             = null;
+    var channel               = null;
+    var streamListener        = null;
+
+    ioService             = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+
+    channel = ioService.newChannelFromURI(ioService.newURI(uri, null, null));
+
+    streamListener = new StreamListener(loadFinished);
+
+    channel.asyncOpen(streamListener, null);
+}
+
+function loadFinished(aDocumentData) {
+    /* DEBUG */ dump("YulupTEST:contenthandler-test.js:loadFinished() invoked\n");
+
+    if (aDocumentData) {
+        // output data
+        /* DEBUG */ dump("YulupTEST:contenthandler-test.js:loadFinished: document data =\n" + aDocumentData + "\n");
+    } else {
+        // load failed
+        /* DEBUG */ dump("YulupTEST:contenthandler-test.js:loadFinished: load failed\n");
+    }
+}
+
+function StreamListener(aCallbackFunction) {
+    /* DEBUG */ dump("YulupTEST:contenthandler-test.js:StreamListener(\"" + aCallbackFunction + "\") invoked\n");
+
+    this.loadFinishedCallback = aCallbackFunction;
+}
+
+StreamListener.prototype = {
+    loadFinishedCallback: null,
+    documentData        : null,
+
+    QueryInterface: function (aUUID) {
+        /* DEBUG */ dump("YulupTEST:contenthandler-test.js:StreamListener.QueryInterface(\"" + aUUID + "\") invoked\n");
+
+        if (aUUID.equals(Components.interfaces.nsISupports) ||
+            aUUID.equals(Components.interfaces.nsISupportsWeakReference) ||
+            aUUID.equals(Components.interfaces.nsIStreamListener) ||
+            aUUID.equals(Components.interfaces.nsIRequestObserver)) {
+            return this;
+        } else {
+            throw Components.results.NS_NOINTERFACE;
+        }
+    },
+
+    GetWeakReference: function () {
+        /* DEBUG */ dump("YulupTEST:contenthandler-test.js:StreamListener.GetWeakReference() invoked\n");
+
+        throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
+    },
+
+    onStartRequest: function (aRequest, aContext) {
+        /* DEBUG */ dump("YulupTEST:contenthandler-test.js:StreamListener.onStartRequest(\"" + aRequest + "\", \"" + aContext + "\") invoked\n");
+
+        this.documentData = "";
+    },
+
+    onStopRequest: function (aRequest, aContext, aStatusCode) {
+        /* DEBUG */ dump("YulupTEST:contenthandler-test.js:StreamListener.onStopRequest(\"" + aRequest + "\", \"" + aContext + "\", \"" + aStatusCode + "\") invoked\n");
+
+        if (Components.isSuccessCode(aStatusCode)) {
+            // request was successfull
+            this.loadFinishedCallback(this.documentData);
+        } else {
+            // request failed
+            this.loadFinishedCallback(null);
+        }
+    },
+
+    onDataAvailable: function (aRequest, aContext, aInputStream, aOffset, aCount) {
+        var scriptableInputStream = null;
+
+        /* DEBUG */ dump("YulupTEST:contenthandler-test.js:StreamListener.onDataAvailable(\"" + aRequest + "\", \"" + aContext + "\", \"" + aInputStream + "\", \"" + aOffset + "\", \"" + aCount + "\") invoked\n");
+
+        scriptableInputStream = Components.classes["@mozilla.org/scriptableinputstream;1"].createInstance(Components.interfaces.nsIScriptableInputStream);
+        scriptableInputStream.init(aInputStream);
+
+        // read aCount bytes from the stream
+        this.documentData += scriptableInputStream.read(aCount);
+    }
+}
+  </script>
+
+  <button label="Hello"/>
+
+</window>

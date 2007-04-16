@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+
+<window id="uiEditorWindow"
+        orient="horizontal"
+        align="stretch"
+        onload="initEditor()"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript">
+    <![CDATA[
+    var gEditorElem = null;
+    var gEditor     = null;
+
+    function initEditor() {
+        dump("initEditor() invoked\n");
+        // test dynamic tab insertion
+        var editorWindow             = null;
+        var editorElem               = null;
+
+        editorElem = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "editor");
+        editorElem.setAttribute("type", "content");
+        editorElem.setAttribute("flex", "1");
+        editorElem.setAttribute("style", "border: 2px solid black; margin: 2px 2px 2px 2px;");
+        editorElem.setAttribute("onload", "event.stopPropagation()");
+
+        editorWindow = document.getElementById("uiEditorContainer");
+        //editorWindow.appendChild(editorElem);
+        editorWindow.insertBefore(editorElem, document.getElementById("uiEditorHider"));
+
+        gEditorElem = editorElem;
+
+        editorWindow.selectedIndex = 1;
+
+        window.setTimeout(continueInit, 100);
+    }
+
+    function continueInit() {
+        dump("continueInit() invoked (chocked initialisation)\n");
+
+        var editorElem = gEditorElem;
+
+        // set up
+        //editorElem = document.getElementById("uiEditor");
+        editorElem.makeEditable("text", false);
+
+        gEditor = editorElem.getEditor(editorElem.contentWindow);
+        gEditor.QueryInterface(Components.interfaces.nsIPlaintextEditor);
+
+        editorElem.contentWindow.addEventListener("keypress", function (event) { event.preventBubble(); }, true);
+
+        dump("editorElem status = \"" + editorElem.editingSession.editorStatus  + "\"\n");
+        dump("is editable = \"" + gEditor.isDocumentEditable  + "\"\n");
+    }
+
+    function switchDeck() {
+        dump("switchDeck() invoked\n");
+
+        if (document.getElementById("uiEditorHider").getAttribute("hidden")) {
+            document.getElementById("uiEditorHider").removeAttribute("hidden");
+            gEditor.flags |= Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
+        } else {
+            document.getElementById("uiEditorHider").setAttribute("hidden", "true");
+            gEditor.flags &= ~Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
+        }
+
+        /*
+        if (!(gEditor.flags & Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask)) {
+            //document.getElementById("uiEditorHider").removeAttribute("hidden");
+            //gEditorElem.style.opacity = 1.0;
+            //gEditorElem.setAttribute("style", "border: 2px solid black; margin: 2px 2px 2px 2px;");
+            gEditor.flags |= Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
+        } else {
+            //document.getElementById("uiEditorHider").setAttribute("hidden", "true");
+            //gEditorElem.style.opacity = 0.3;
+            //gEditorElem.setAttribute("style", "border: 2px solid black; margin: 2px 2px 2px 2px; opacity: 0.3;");
+            gEditor.flags &= ~Components.interfaces.nsIPlaintextEditor.eEditorReadonlyMask;
+        }
+        */
+    }
+    ]]>
+  </script>
+
+  <button label="Switch decks" oncommand="switchDeck()"/>
+  <stack id="uiEditorContainer" align="stretch" flex="1">
+    <!--<vbox id="uiEditorHider" flex="1" align="center" style="border: 1px solid blue; background: blue; opacity: 0.7;" hidden="true">-->
+    <vbox id="uiEditorHider" flex="1" align="center" style="border: 1px solid blue; background: white url('chrome://test/skin/editor-overlay-blue.png'); background-repeat: repeat-y; opacity: 0.7;" hidden="true">
+      <label value="overlay" flex="1"/>
+    </vbox>
+  </stack>
+
+</window>

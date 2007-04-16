@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+
+<!--
+# ***** BEGIN LICENSE BLOCK *****
+# Copyright 2006-2007 Wyona AG Zurich
+#
+# This file is part of Yulup.
+#
+# Yulup is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Yulup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Yulup; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# ***** END LICENSE BLOCK *****
+-->
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://yulup/skin/sitetree.css" type="text/css"?>
+
+<!DOCTYPE dialog [
+  <!ENTITY % yulupDTD SYSTEM "chrome://yulup/locale/yulup.dtd">
+  %yulupDTD;
+  <!ENTITY % editorDTD  SYSTEM "chrome://yulup/locale/editor.dtd">
+  %editorDTD;
+]>
+
+<dialog id="uiYulupEditorResourceSelectDialog"
+        orient="vertical"
+        align="stretch"
+        title="&editorResourceSelectDialog.title;"
+        buttons="cancel, accept"
+        buttonlabelaccept="&editorAcceptButton.label;"
+        buttonlabelcancel="&editorCancelButton.label;"
+        ondialogaccept="return ResourceSelectDialog.save()"
+        onload="ResourceSelectDialog.uiYulupEditorResourceSelectOnDialogLoadHandler()"
+        style="font: -moz-dialog; width: 400px;"
+        persist="screenX screenY"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script type="application/x-javascript"
+            src="chrome://yulup/content/common.js"/>
+    <script type="application/x-javascript"
+            src="chrome://yulup/content/widget.js"/>
+    <script type="application/x-javascript"
+            src="chrome://yulup/content/resourceselect.js"/>
+    <script type="application/x-javascript"
+            src="chrome://yulup/content/networkservice.js"/>
+    <script type="application/x-javascript"
+            src="chrome://yulup/content/neutron.js"/>
+    <script type="application/x-javascript"
+            src="chrome://yulup/content/neutronparser10.js"/>
+    <script type="application/x-javascript"
+            src="chrome://yulup/content/neutronauth.js"/>
+    <script type="application/x-javascript"
+            src="chrome://yulup/content/sitetree.js"/>
+    <script type="application/x-javascript"
+            src="chrome://yulup/content/webdavservice.js"/>
+    <script type="application/x-javascript"
+            src="chrome://yulup/content/webdavparser10.js"/>
+
+    <stringbundle id="uiYulupEditorStringbundle" src="chrome://yulup/locale/editor.properties"/>
+
+    <tree id="uiYulupResourceSelectTree"
+          enableColumnDrag="false"
+          hidecolumnpicker="true"
+          rows="13"
+          seltype="single">
+      <treecols id="uiYulupResourceSelectTreeCols">
+        <treecol id="uiYulupResourceSelectTreeCol" label="&editorResourceTree.label;" primary="true" flex="1"/>
+      </treecols>
+      <treechildren/>
+    </tree>
+
+</dialog>
