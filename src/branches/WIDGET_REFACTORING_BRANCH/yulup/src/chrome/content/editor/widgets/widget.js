@@ -149,57 +149,53 @@ WidgetManager.prototype = {
         insertMenu     = document.getElementById("uiYulupEditorEditorContextMenuInsertMenupopup");
 
         for (var i = 0; i < aWidgets.length; i++) {
-            if (this.getWidgetByName(aWidgets[i].attributes["name"])) {
-                // skip duplicate widgets
-                continue;
-            }
+            widget = aWidgets[i];
 
-            widget = new Widget();
+            // TODO: is this.widgets actually used somewhere?
+            this.widgets.push(widget);
 
-            widget.attributes         = aWidgets[i].attributes;
-            widget.fragment           = aWidgets[i].fragment;
-            widget.fragmentAttributes = aWidgets[i].fragmentAttributes;
-            widget.icon               = aWidgets[i].icon;
-            widget.iconURI            = aWidgets[i].iconURI;
+            if (widget instanceof NeutronWidget) {
+                /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: widget id \"" + widget.id + "\" is of type NeutronWidget\n");
 
-            /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: widget.icon = \"" + widget.icon + "\"\n");
+                /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: widget.icon = \"" + widget.icon + "\"\n");
 
-            if (widget.icon) {
-                switch (widget.attributes["type"]) {
-                    case "surround":
-                    case "insert":
-                        // create the widget directory
-                        widgetDir = this.tmpDir.clone();
-                        widgetDir.append(widget.attributes["name"]);
-                        widgetDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
+                if (widget.icon) {
+                    // create the widget directory
+                    widgetDir = this.tmpDir.clone();
+                    widgetDir.append(widget.id);
+                    widgetDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
 
-                        // create the widget icon file
-                        iconFile = widgetDir.clone();
-                        iconFile.append(widget.icon);
-                        iconFile.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0755);
+                    // create the widget icon file
+                    iconFile = widgetDir.clone();
+                    iconFile.append(widget.icon);
+                    iconFile.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0755);
 
-                        /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: tmp icon file = \"" + iconFile.path + "\"\n");
+                    /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: tmp icon file = \"" + iconFile.path + "\"\n");
 
-                        widget.tmpIconFile = iconFile;
-                        widget.tmpIconURI  = ioService.newFileURI(widget.tmpIconFile);
-                        break;
+                    widget.tmpIconFile = iconFile;
+                    widget.tmpIconURI  = ioService.newFileURI(widget.tmpIconFile);
                 }
+
+                // add command to editor.xul
+                widgetCommand = document.createElement("command");
+                widgetCommand.setAttribute("id", "cmd_yulup_widget_" + widget.id);
+                widgetCommand.setAttribute("disabled", "false");
+                widgetCommand.setAttribute("label", widget.getNameByLang(YulupAppServices.getAppLocale()));
+                widgetCommand.setAttribute("tooltiptext", widget.getDescriptionByLang(YulupAppServices.getAppLocale()));
+                widgetCommand.setAttribute("oncommand", "WidgetHandler.doWidgetCommand(this, \"" + widget.id + "\")");
+                commandSet.appendChild(widgetCommand);
             }
 
-            this.widgets[this.widgets.length] = widget;
+            if (widget instanceof NeutronWidgetGroup) {
+                /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: widget id \"" + widget.id + "\" is of type NeutronWidgetGroup\n");
+            }
 
-            // add command to editor.xul
-            widgetCommand = document.createElement("command");
-            widgetCommand.setAttribute("id", "cmd_yulup_widget_" + widget.attributes["name"]);
-            widgetCommand.setAttribute("disabled", "false");
-            widgetCommand.setAttribute("label", widget.attributes["name"]);
-            widgetCommand.setAttribute("tooltiptext", widget.attributes["description"]);
-            widgetCommand.setAttribute("oncommand", "WidgetHandler.doWidgetCommand(this, \"" + widget.attributes["name"] + "\")");
-            commandSet.appendChild(widgetCommand);
 
+
+            // TODO: flatten out list of widgets and then re-loop?
             // get top-level element name
-            if (widget.attributes["type"] === "surround") {
-                surroundingElementName = widget.fragment.documentElement;
+            if (widget.supportsActionSurround()) {
+                surroundingElementName = widget.getSurroundActionFragment().documentElement;
 
                 if (surroundingElementName && surroundingElementName.localName) {
                     /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidgets: registering surrounding action for element name \"" + widget.fragment.documentElement.localName.toLowerCase() + "\"\n");
@@ -213,34 +209,31 @@ WidgetManager.prototype = {
             // add toolbarbutton to editor.xul
             if (widget.icon) {
                 widgetButton = document.createElement("canvasbutton");
-                widgetButton.setAttribute("id", "uiWidget" + widget.attributes["name"]);
+                widgetButton.setAttribute("id", "uiWidget" + widget.id);
                 widgetButton.setAttribute("style", "-moz-box-orient: vertical;");
-                widgetButton.setAttribute("command", "cmd_yulup_widget_" + widget.attributes["name"]);
+                widgetButton.setAttribute("command", "cmd_yulup_widget_" + widget.id);
                 toolbarButtons.appendChild(widgetButton);
             }
 
             // add command to context menu
             menuItem = document.createElement("menuitem");
-            menuItem.setAttribute("command", "cmd_yulup_widget_" + widget.attributes["name"]);
+            menuItem.setAttribute("command", "cmd_yulup_widget_" + widget.id);
 
-            switch (widget.attributes["type"]) {
-                case "surround":
-                    menuItem.setAttribute("autocheck", "false");
-                    menuItem.setAttribute("type", "checkbox");
+            if (widget.supportsActionSurround()) {
+                menuItem.setAttribute("autocheck", "false");
+                menuItem.setAttribute("type", "checkbox");
 
-                    surroundMenu.appendChild(menuItem);
+                surroundMenu.appendChild(menuItem);
 
-                    if (surroundMenu.parentNode.hasAttribute("disabled"))
-                        surroundMenu.parentNode.removeAttribute("disabled");
+                if (surroundMenu.parentNode.hasAttribute("disabled"))
+                    surroundMenu.parentNode.removeAttribute("disabled");
+            }
 
-                    break;
-                case "insert":
-                    insertMenu.appendChild(menuItem);
+            if (widget.supportsActionInsert()) {
+                insertMenu.appendChild(menuItem);
 
-                    if (insertMenu.parentNode.hasAttribute("disabled"))
-                        insertMenu.parentNode.removeAttribute("disabled");
-
-                    break;
+                if (insertMenu.parentNode.hasAttribute("disabled"))
+                    insertMenu.parentNode.removeAttribute("disabled");
             }
         }
     },
@@ -258,17 +251,12 @@ WidgetManager.prototype = {
 
         for (var i = 0; i < this.widgets.length; i++) {
             if (this.widgets[i].icon) {
-                switch (this.widgets[i].attributes["type"]) {
-                    case "surround":
-                    case "insert":
-                        contextObj = {
-                            widget: this.widgets[i],
-                            callback: aLoadFinishedCallback
-                        };
+                contextObj = {
+                    widget: this.widgets[i],
+                    callback: aLoadFinishedCallback
+                };
 
-                        NetworkService.httpFetchToFile(this.widgets[i].iconURI.spec, this.widgets[i].tmpIconFile, this.requestFinishedHandler, contextObj, true);
-                        break;
-                }
+                NetworkService.httpFetchToFile(this.widgets[i].iconURI.spec, this.widgets[i].tmpIconFile, this.requestFinishedHandler, contextObj, true);
             } else {
                 aLoadFinishedCallback(null, null, null);
             }
@@ -287,10 +275,10 @@ WidgetManager.prototype = {
         /* DEBUG */ dump("Yulup:widget.js:WidgetManager.WidgetManager.installWidget() invoked\n");
 
         // set widget image
-        widgetButton = document.getElementById('uiWidget' + aWidget.attributes["name"]);
+        widgetButton = document.getElementById("uiWidget" + aWidget.id);
 
         if (widgetButton)
-            widgetButton.setAttribute('image', aWidget.tmpIconURI.spec);
+            widgetButton.setAttribute("image", aWidget.tmpIconURI.spec);
     },
 
     requestFinishedHandler: function(aResultFile, aResponseStatusCode, aContext) {
@@ -304,6 +292,7 @@ WidgetManager.prototype = {
 
             xmlDoc = new XMLDocument(fileURI);
             xmlDoc.loadDocument();
+
             try {
                 // parse the neutron exception
                 Neutron.response(xmlDoc.documentData);

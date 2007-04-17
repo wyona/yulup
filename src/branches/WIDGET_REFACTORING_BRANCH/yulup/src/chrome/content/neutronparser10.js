@@ -41,6 +41,9 @@
 function NeutronParser10(aDocument, aBaseURI) {
     /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10(\"" + aDocument + "\", \"" + aBaseURI + "\") invoked\n");
 
+     // call super constructor
+    NeutronParser.call(this);
+
     this.documentDOM = aDocument;
     this.baseURI     = aBaseURI;
     this.ioService   = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
@@ -560,7 +563,10 @@ Neutron10Sitetree.prototype = {
 };
 
 
-function Neutron10Widget() {}
+function Neutron10Widget() {
+    // call super constructor
+    NeutronWidget.call(this);
+}
 
 Neutron10Widget.prototype = {
     __proto__: NeutronWidget.prototype,
@@ -573,6 +579,36 @@ Neutron10Widget.prototype = {
     surround: null,
     insert  : null,
 
+    __getByLang: function (aLangMap, aLangID) {
+        var retval      = null;
+        var prefixIndex = null;
+        var langID      = null;
+
+        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang(\"" + aLangMap + "\", \"" + aLangID + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aLangMap != null);
+        /* DEBUG */ YulupDebug.ASSERT(aLangID  != null);
+
+        retval = aLangMap[aLangID];
+
+        if (retval)
+            return retval;
+
+        // try to cut down the lang ID to its prefix
+        prefixIndex = aLangID.indexOf("-");
+        if (prefixIndex > 0)
+            langID = aLangID.substring(0, prefixIndex);
+
+        retval = aLangMap[langID];
+
+        if (retval)
+            return retval;
+
+        // return first value in map
+        for (retval in aLangMap)
+            return retval;
+    },
+
     set name(aValue) {
         var name = {};
 
@@ -586,7 +622,7 @@ Neutron10Widget.prototype = {
     },
 
     getNameByLang: function (aLangID) {
-        return this.__name[aLangID];
+        return this.__getByLang(this.__name, aLangID);
     },
 
     set description(aValue) {
@@ -602,12 +638,37 @@ Neutron10Widget.prototype = {
     },
 
     getDescriptionByLang: function (aLangID) {
-        return this.__desc[aLangID];
+        return this.__getByLang(this.__desc, aLangID);
+    },
+
+    supportsActionSurround: function () {
+        return (this.surround != null);
+    },
+
+    supportsActionInsert: function () {
+        return (this.insert != null);
+    },
+
+    getSurroundActionFragment: function () {
+        if (!this.surround)
+            return null;
+
+        this.surround.fragment;
+    },
+
+    getInsertActionFragment: function () {
+        if (!this.insert)
+            return null;
+
+        this.insert.fragment;
     }
 };
 
 
 function Neutron10WidgetGroup() {
+    // call super constructor
+    NeutronWidgetGroup.call(this);
+
     this.widgets = new Array();
 }
 
@@ -618,7 +679,10 @@ Neutron10WidgetGroup.prototype = {
 };
 
 
-function Neutron10WidgetAction() {}
+function Neutron10WidgetAction() {
+    // call super constructor
+    NeutronWidgetAction.call(this);
+}
 
 Neutron10WidgetAction.prototype = {
     __proto__: NeutronWidgetAction.prototype,
@@ -628,7 +692,10 @@ Neutron10WidgetAction.prototype = {
 };
 
 
-function Neutron10WidgetActionParameter() {}
+function Neutron10WidgetActionParameter() {
+    // call super constructor
+    NeutronWidgetActionParameter.call(this);
+}
 
 Neutron10WidgetActionParameter.prototype = {
     __proto__: NeutronWidgetActionParameter.prototype,
@@ -638,6 +705,36 @@ Neutron10WidgetActionParameter.prototype = {
 
     xpath: null,
     type : null,
+
+    __getByLang: function (aLangMap, aLangID) {
+        var retval      = null;
+        var prefixIndex = null;
+        var langID      = null;
+
+        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10WidgetActionParameter.__getByLang(\"" + aLangMap + "\", \"" + aLangID + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aLangMap != null);
+        /* DEBUG */ YulupDebug.ASSERT(aLangID  != null);
+
+        retval = aLangMap[aLangID];
+
+        if (retval)
+            return retval;
+
+        // try to cut down the lang ID to its prefix
+        prefixIndex = aLangID.indexOf("-");
+        if (prefixIndex > 0)
+            langID = aLangID.substring(0, prefixIndex);
+
+        retval = aLangMap[langID];
+
+        if (retval)
+            return retval;
+
+        // return first value in map
+        for (retval in aLangMap)
+            return retval;
+    },
 
     set name(aValue) {
         var name = {};
@@ -652,7 +749,7 @@ Neutron10WidgetActionParameter.prototype = {
     },
 
     getNameByLang: function (aLangID) {
-        return this.__name[aLangID];
+        return this.__getByLang(this.__name, aLangID);
     },
 
     set description(aValue) {
@@ -668,6 +765,6 @@ Neutron10WidgetActionParameter.prototype = {
     },
 
     getDescriptionByLang: function (aLangID) {
-        return this.__desc[aLangID];
+        return this.__getByLang(this.__desc, aLangID);
     }
 };

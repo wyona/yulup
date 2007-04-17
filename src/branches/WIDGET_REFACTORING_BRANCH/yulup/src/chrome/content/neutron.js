@@ -613,6 +613,9 @@ Introspection.prototype = {
 
         // for all fragments, convert to string
         for (var i = 0; i < this.fragments.length; i++) {
+            /* TODO: get rid of this horrible stringification once all the data is moved
+             *       into their own respective datatypes, so they can toString()
+             *       themselves. */
             objString += "Fragment name:        " + this.fragments[i].name + "\n";
             objString += "Edit MIME-Type:       " + this.fragments[i].mimeType + "\n";
             objString += "Edit Open URI:        " + (this.fragments[i].open.uri ? this.fragments[i].open.uri.spec : this.fragments[i].open.uri) + "\n"; + "\n";
@@ -809,26 +812,76 @@ NeutronProtocolDataNotWellFormedException.prototype = {
  * @constructor
  * @return {NeutronParser}
  */
-function NeutronParser() {}
+function NeutronParser() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronParser() invoked\n");
+}
 
 NeutronParser.prototype = {};
 
 
-function NeutronWidget() {}
+/**
+ * NeutronWidget constructor. Instantiates a new object of
+ * type NeutronWidget.
+ *
+ * Base class for versioned Neutron widgets.
+ *
+ * @constructor
+ * @return {NeutronWidget}
+ */
+function NeutronWidget() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidget() invoked\n");
 
-NeutronWidget.prototype = {};
+    this.id = Date.now().toString();
+}
+
+NeutronWidget.prototype = {
+    id: null
+};
 
 
-function NeutronWidgetGroup() {}
+/**
+ * NeutronWidgetGroup constructor. Instantiates a new object of
+ * type NeutronWidgetGroup.
+ *
+ * Base class for versioned Neutron widget groups.
+ *
+ * @constructor
+ * @return {NeutronWidgetGroup}
+ */
+function NeutronWidgetGroup() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetGroup() invoked\n");
+}
 
 NeutronWidgetGroup.prototype = {};
 
 
-function NeutronWidgetAction() {}
+/**
+ * NeutronWidgetAction constructor. Instantiates a new object of
+ * type NeutronWidgetAction.
+ *
+ * Base class for versioned Neutron widget actions.
+ *
+ * @constructor
+ * @return {NeutronWidgetAction}
+ */
+function NeutronWidgetAction() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetAction() invoked\n");
+}
 
 NeutronWidgetAction.prototype = {};
 
 
-function NeutronWidgetActionParameter() {}
+/**
+ * NeutronWidgetActionParameter constructor. Instantiates a new object of
+ * type NeutronWidgetActionParameter.
+ *
+ * Base class for versioned Neutron widget action parameters.
+ *
+ * @constructor
+ * @return {NeutronWidgetActionParameter}
+ */
+function NeutronWidgetActionParameter() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetActionParameter() invoked\n");
+}
 
 NeutronWidgetActionParameter.prototype = {};
