@@ -29,6 +29,7 @@
 const YULUP_EXTENSION_ID = "yulup@wyona.com";
 const YULUP_PREF_BRANCH  = "extensions.yulup.";
 const NAMESPACE_XUL      = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+const APPLOCALE_FALLBACK = "en";
 
 var YulupPreferences = {
     __branch: null,
@@ -388,6 +389,20 @@ var YulupContentServices = {
         return mimeType;
     }
 };
+
+
+var YulupAppServices = {
+    getAppLocale: function () {
+        try {
+            return Components.classes["@mozilla.org/intl/nslocaleservice;1"]
+                .getService(Components.interfaces.nsILocaleService).getLocaleComponentForUserAgent();
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupAppServices.getAppLocale", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+            return APPLOCALE_FALLBACK;
+        }
+    }
+}
 
 
 /**
