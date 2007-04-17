@@ -371,22 +371,56 @@ NeutronParser10.prototype = {
         var iconIndex   = null;
         var iconFile    = null;
 
-        widgets = aDocument.evaluate("neutron10:widgets/neutron10:widget", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+        widgets = aDocument.evaluate("neutron10:widgets/*[self::neutron10:widget or self::neutron10:widgetgroup]", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 
         while (widget = widgets.iterateNext()) {
-
-            iconFile = aDocument.evaluate("attribute::icon", widget, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-            if ((iconIndex = iconFile.lastIndexOf("/")) != -1) {
-                iconFile = iconFile.substr(iconIndex+1);
+            switch (widget.localName) {
+                case "widget":
+                    widgetArray[index++] = this.__parseWidget(aDocument, widget);
+                    break;
+                case "widgetgroup":
+                    widgetArray[index++] = this.__parseWidgetGroup(aDocument, widget);
+                    break;
+                default:
             }
+        }
 
-            widgetArray[index++] = {
-                attributes:          this.__parseWidgetAttributes(aDocument, widget),
-                icon:                iconFile,
-                iconURI:             ((sourceURI = aDocument.evaluate("attribute::icon", widget, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != "" ? this.ioService.newURI(sourceURI, null, this.baseURI) : null),
-                fragment:            this.__parseWidgetFragment(aDocument, widget),
-                fragmentAttributes:  this.__parseWidgetFragmentAttributes(aDocument, widget)
-            }
+        return (widgetArray.length > 0 ? widgetArray : null);
+    },
+
+    __parseWidget: function (aDocument, aNode) {
+        var widget    = null;
+        var index     = 0;
+        var sourceURI = null;
+        var iconIndex = null;
+        var iconFile  = null;
+
+        iconFile = aDocument.evaluate("attribute::icon", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+        if ((iconIndex = iconFile.lastIndexOf("/")) != -1) {
+            iconFile = iconFile.substr(iconIndex+1);
+        }
+
+        widget = {
+            attributes:          this.__parseWidgetAttributes(aDocument, aNode),
+            icon:                iconFile,
+            iconURI:             ((sourceURI = aDocument.evaluate("attribute::icon", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != "" ? this.ioService.newURI(sourceURI, null, this.baseURI) : null),
+            fragment:            this.__parseWidgetFragment(aDocument, aNode),
+            fragmentAttributes:  this.__parseWidgetFragmentAttributes(aDocument, aNode)
+        }
+
+        return widget;
+    },
+
+    __parseWidgetGroup: function (aDocument, aNode) {
+        var widgets     = null;
+        var widget      = null;
+        var widgetArray = new Array();
+        var index       = 0;
+
+        widgets = aDocument.evaluate("neutron10:widget", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+
+        while (widget = widgets.iterateNext()) {
+            widgetArray[index++] = this.__parseWidget(aDocument, widget);
         }
 
         return (widgetArray.length > 0 ? widgetArray : null);

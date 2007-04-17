@@ -27,7 +27,7 @@
  *
  */
 
-const YULUP_WIDGET_INSERT_CHROME_URI   = "chrome://yulup/content/widgetparamsdialog.xul";
+const YULUP_WIDGET_INSERT_CHROME_URI   = "chrome://yulup/content/editor/widgets/widgetparamsdialog.xul";
 
 const DEFAULT_COLORPICKER_VALUE = "#FFFFFF";
 

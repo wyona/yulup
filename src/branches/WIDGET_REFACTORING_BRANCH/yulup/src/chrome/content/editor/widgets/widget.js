@@ -29,7 +29,7 @@
 
 const WIDGET_TMP_DIR = "yulup-widgets";
 
-const TIDYWIDGETFRAGMENT_CHROME_URI = "chrome://yulup/content/tidywidgetfragment.xsl";
+const TIDYWIDGETFRAGMENT_CHROME_URI = "chrome://yulup/content/editor/widgets/tidywidgetfragment.xsl";
 
 /**
   * Instantiates a new Object of the type Widget

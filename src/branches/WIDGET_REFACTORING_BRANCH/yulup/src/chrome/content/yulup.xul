@@ -47,7 +47,7 @@
   <script type="application/x-javascript" src="chrome://yulup/content/neutron.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/neutronparser10.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/neutronarchive.js"/>
-  <script type="application/x-javascript" src="chrome://yulup/content/widget.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/editor/widgets/widget.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/atom.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/atomsidebar/atomsidebar.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/appparser09.js"/>
