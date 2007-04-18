@@ -31,8 +31,8 @@
   </entity>
 
   <entity id="editorCloseConfirmation.label">
-    <name xml:lang="en">The document has been changed. Really close this document?</name>
-    <name xml:lang="de">Das Dokument wurde verändert. Soll das Dokument wirklich geschlossen werden?</name>
+    <name xml:lang="en">The document has been changed. Really close this document without saving?</name>
+    <name xml:lang="de">Das Dokument wurde verändert. Soll das Dokument wirklich geschlossen werden ohne die Aenderungen zu speichern?</name>
     <name xml:lang="es">El documento ha sido modificado. ¿Desea realmente cerrar este documento?</name>
   </entity>
 
