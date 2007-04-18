@@ -50,31 +50,32 @@ var WidgetDialog = {
         /* DEBUG */ dump("Yulup:widgetparams.js:WidgetDialog.uiYulupEditorWidgetInsertOnDialogLoadHandler() invoked\n");
 
         widget           = window.arguments[1];
-        nsResolver       = window.arguments[2];
-        editorController = window.arguments[3];
-        this.__topWindow = window.arguments[4];
+        widgetAction     = window.arguments[2]
+        nsResolver       = window.arguments[3];
+        editorController = window.arguments[4];
+        this.__topWindow = window.arguments[5];
 
         if (editorController.editorParams.navigation && editorController.editorParams.navigation.sitetree) {
             this.__sitetreeURI = editorController.editorParams.navigation.sitetree.uri;
         }
 
-        WidgetDialog.__fragmentAttributes = widget.fragmentAttributes;
+        WidgetDialog.__fragmentAttributes = widgetAction.parameters;
 
         widgetRows = document.getElementById("uiYulupEditorWidgetInsertRows");
         label      = document.getElementById("uiYulupWidgetInsertAuthenticationLabel");
 
         // set the dialog top-label
-        label.setAttribute("value", label.getAttribute("value") + " \"" +widget.attributes["name"] + "\"");
+        label.setAttribute("value", label.getAttribute("value") + " \"" + widget.name + "\"");
 
-        for (var i=0; i < widget.fragmentAttributes.length; i++) {
+        for (var i=0; i < widgetAction.parameters.length; i++) {
             row = document.createElement("row");
             row.setAttribute("id", "row" + i);
             row.setAttribute("align", "center");
             widgetRows.appendChild(row);
 
             elem = document.createElement("label");
-            elem.setAttribute("control", widget.fragmentAttributes[i].name);
-            elem.setAttribute("value", widget.fragmentAttributes[i].name);
+            elem.setAttribute("control", widgetAction.parameters[i].id);
+            elem.setAttribute("value", widgetAction.parameters[i].name);
             row.appendChild(elem);
 
             container = document.createElement("hbox");
@@ -82,21 +83,21 @@ var WidgetDialog = {
             row.appendChild(container);
 
             textbox = document.createElement("textbox");
-            textbox.setAttribute("id", widget.fragmentAttributes[i].name);
+            textbox.setAttribute("id", widgetAction.parameters[i].id);
             textbox.setAttribute("size", "30");
             textbox.setAttribute("flex", "1");
 
             // set the attribute default value
-            textbox.setAttribute("value", widget.fragment.evaluate(widget.fragmentAttributes[i].xpath, widget.fragment, nsResolver, XPathResult.STRING_TYPE, null).stringValue);
+            textbox.setAttribute("value", widgetAction.fragment.evaluate(widgetAction.parameters[i].xpath, widgetAction.fragment, nsResolver, XPathResult.STRING_TYPE, null).stringValue);
             container.appendChild(textbox);
 
             // add a type specific action button
-            switch (widget.fragmentAttributes[i].type) {
+            switch (widgetAction.parameters[i].type) {
                 case "resource":
                     elem = document.createElement("button");
-                    elem.setAttribute("id", "button" + widget.fragmentAttributes[i].name);
+                    elem.setAttribute("id", "button" + widgetAction.parameters[i].id);
                     elem.setAttribute("label", document.getElementById("uiYulupEditorStringbundle").getString("editorWidgetInsertSelect.label"));
-                    elem.setAttribute("name", widget.fragmentAttributes[i].name);
+                    elem.setAttribute("name", widgetAction.parameters[i].id);
 
                     // the resource attribute type needs a sitetree URI
                     if (this.__sitetreeURI == null) {
@@ -110,14 +111,14 @@ var WidgetDialog = {
                     break;
                 case "color":
                     elem = document.createElement("colorpicker");
-                    elem.setAttribute("id", "colorpicker" + widget.fragmentAttributes[i].name);
+                    elem.setAttribute("id", "colorpicker" + widgetAction.parameters[i].id);
                     elem.setAttribute("type", "button");
-                    elem.setAttribute("onchange", "WidgetDialog.updateColorTextbox(\"" + widget.fragmentAttributes[i].name + "\", this.color)");
+                    elem.setAttribute("onchange", "WidgetDialog.updateColorTextbox(\"" + widgetAction.parameters[i].id + "\", this.color)");
 
                     container.appendChild(elem);
 
                     textbox.setAttribute("maxlength", "7");
-                    textbox.setAttribute("onchange", "WidgetDialog.updateColorPicker(\"colorpicker" + widget.fragmentAttributes[i].name + "\", \"" + widget.fragmentAttributes[i].name + "\", this.value)");
+                    textbox.setAttribute("onchange", "WidgetDialog.updateColorPicker(\"colorpicker" + widgetAction.parameters[i].id + "\", \"" + widgetAction.parameters[i].id + "\", this.value)");
 
                     // fixup color if we have to
                     if (WidgetDialog.__isValidColorValue(textbox.getAttribute("value"))) {
@@ -126,7 +127,7 @@ var WidgetDialog = {
                         textbox.value = DEFAULT_COLORPICKER_VALUE;
                     }
 
-                    window.setTimeout("document.getElementById(\"colorpicker" + widget.fragmentAttributes[i].name + "\").color = \"" + textbox.value + "\"", 0);
+                    window.setTimeout("document.getElementById(\"colorpicker" + widgetAction.parameters[i].id + "\").color = \"" + textbox.value + "\"", 0);
 
                     break;
                 default:
@@ -137,16 +138,17 @@ var WidgetDialog = {
     /**
      * Shows the widget parameterisation dialog.
      *
-     * @param  {Widget}                aWidget            the widget to parameterise
+     * @param  {NeutronWidget}         aWidget            the widget to parameterise
+     * @param  {NeutronWidgetAction}   aWidgetAction      the widget action
      * @param  {nsIDOMXPathNSResolver} aNSResolver        a namespace resolver for this widget
      * @param  {YulupEditController}   aEditorController  an editor controller
      * @param  {nsIDOMWindow}          aWindow            a handle to a non-modal window
      * @return {Undefined}  does not have a return value
      */
-    showWidgetInsertDialog: function(aWidget, aNSResolver, aEditorController, aWindow) {
+    showWidgetInsertDialog: function(aWidget, aWidgetAction, aNSResolver, aEditorController, aWindow) {
         returnObject = new Object();
 
-        if (window.openDialog(YULUP_WIDGET_INSERT_CHROME_URI, "yulupWidgetInsertDialog", "modal,resizable=no,centerscreen", returnObject, aWidget, aNSResolver, aEditorController, aWindow)) {
+        if (window.openDialog(YULUP_WIDGET_INSERT_CHROME_URI, "yulupWidgetInsertDialog", "modal,resizable=no,centerscreen", returnObject, aWidget, aWidgetAction, aNSResolver, aEditorController, aWindow)) {
             if (returnObject.returnValue) {
                 return returnObject.returnValue;
             }
@@ -165,9 +167,9 @@ var WidgetDialog = {
         returnObject.returnValue = new Array();
 
         for (var i=0; i < WidgetDialog.__fragmentAttributes.length; i++) {
-            returnObject.returnValue[WidgetDialog.__fragmentAttributes[i].name] = document.getElementById(WidgetDialog.__fragmentAttributes[i].name).value;
+            returnObject.returnValue[WidgetDialog.__fragmentAttributes[i].id] = document.getElementById(WidgetDialog.__fragmentAttributes[i].id).value;
 
-            /* DEBUG */ dump("Yulup:widgetparams.js:WidgetDialog.save: " + WidgetDialog.__fragmentAttributes[i].name + " " + returnObject.returnValue[WidgetDialog.__fragmentAttributes[i].name] + "\n");
+            /* DEBUG */ dump("Yulup:widgetparams.js:WidgetDialog.save: " + WidgetDialog.__fragmentAttributes[i].id + " " + returnObject.returnValue[WidgetDialog.__fragmentAttributes[i].id] + "\n");
         }
 
         return true;

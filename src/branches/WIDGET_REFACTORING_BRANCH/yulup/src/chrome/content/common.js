@@ -405,7 +405,7 @@ var YulupAppServices = {
             locale = prefService.getComplexValue(localePref, Components.interfaces.nsIPrefLocalizedString).data;
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupAppServices.getAppLocale", exception);
-            /* DEBUG */ Components.utils.reportError(exception);
+            ///* DEBUG */ Components.utils.reportError(exception);
         }
 
         if (locale)

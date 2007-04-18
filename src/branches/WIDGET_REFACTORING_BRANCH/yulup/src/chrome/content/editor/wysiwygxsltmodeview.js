@@ -938,6 +938,10 @@ WYSIWYGXSLTModeView.prototype = {
         }
     },
 
+    prefersSurround: function () {
+        return !this.view.selection.isCollapsed;
+    },
+
     doInsertCommand: function (aCommand, aFragment) {
         var xPath     = null;
         var modelDOM  = null;

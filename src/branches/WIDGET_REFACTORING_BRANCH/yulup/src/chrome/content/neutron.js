@@ -882,6 +882,10 @@ NeutronWidgetAction.prototype = {};
  */
 function NeutronWidgetActionParameter() {
     /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetActionParameter() invoked\n");
+
+    this.id = Date.now().toString();
 }
 
-NeutronWidgetActionParameter.prototype = {};
+NeutronWidgetActionParameter.prototype = {
+    id: null
+};

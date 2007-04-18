@@ -126,20 +126,22 @@ WidgetManager.prototype = {
      * @return {Undefined} does not have a return value
      */
     addWidgets: function(aWidgets) {
+        var ioService              = null;
+        var commandSet             = null;
+        var toolbarButtons         = null;
         var surroundMenu           = null;
         var insertMenu             = null;
         var widget                 = null;
         var widgetDir              = null;
         var iconFile               = null;
-        var ioService              = null;
-        var commandSet             = null;
-        var widgetCommand          = null;
-        var toolbarButtons         = null;
         var widgetButton           = null;
+        var widgetCommand          = null;
         var surroundingElementName = null;
         var menuItem               = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidgets(\"" + aWidgets + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aWidgets != null);
 
         ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 
@@ -150,9 +152,6 @@ WidgetManager.prototype = {
 
         for (var i = 0; i < aWidgets.length; i++) {
             widget = aWidgets[i];
-
-            // TODO: is this.widgets actually used somewhere?
-            this.widgets.push(widget);
 
             if (widget instanceof NeutronWidget) {
                 /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: widget id \"" + widget.id + "\" is of type NeutronWidget\n");
@@ -176,66 +175,90 @@ WidgetManager.prototype = {
                     widget.tmpIconURI  = ioService.newFileURI(widget.tmpIconFile);
                 }
 
-                // add command to editor.xul
-                widgetCommand = document.createElement("command");
-                widgetCommand.setAttribute("id", "cmd_yulup_widget_" + widget.id);
-                widgetCommand.setAttribute("disabled", "false");
-                widgetCommand.setAttribute("label", widget.getNameByLang(YulupAppServices.getAppLocale()));
-                widgetCommand.setAttribute("tooltiptext", widget.getDescriptionByLang(YulupAppServices.getAppLocale()));
-                widgetCommand.setAttribute("oncommand", "WidgetHandler.doWidgetCommand(this, \"" + widget.id + "\")");
-                commandSet.appendChild(widgetCommand);
+                commandID = this.__setUpCommand(widget, commandSet, this.surroundCommandList, surroundMenu, insertMenu);
+
+                // add widget button
+                if (widget.icon) {
+                    widgetButton = document.createElement("canvasbutton");
+                    widgetButton.setAttribute("id", "uiWidget" + widget.id);
+                    widgetButton.setAttribute("style", "-moz-box-orient: vertical;");
+                    widgetButton.setAttribute("command", commandID);
+                    toolbarButtons.appendChild(widgetButton);
+                }
+
+                this.widgets.push(widget);
             }
 
             if (widget instanceof NeutronWidgetGroup) {
                 /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: widget id \"" + widget.id + "\" is of type NeutronWidgetGroup\n");
-            }
 
+                for (var j = 0; j < widget.widgets.length; j++) {
+                    /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: widget id \"" + widget.widgets[j].id + "\" contained in group is of type NeutronWidget\n");
 
+                    commandID = this.__setUpCommand(widget.widgets[j], commandSet, this.surroundCommandList, surroundMenu, insertMenu);
 
-            // TODO: flatten out list of widgets and then re-loop?
-            // get top-level element name
-            if (widget.supportsActionSurround()) {
-                surroundingElementName = widget.getSurroundActionFragment().documentElement;
+                    // TODO: add widgetgroup button
 
-                if (surroundingElementName && surroundingElementName.localName) {
-                    /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidgets: registering surrounding action for element name \"" + widget.fragment.documentElement.localName.toLowerCase() + "\"\n");
-
-                    this.surroundCommandList[widget.fragment.documentElement.localName.toLowerCase()] = widgetCommand;
+                    this.widgets.push(widget.widgets[j]);
                 }
-
-                surroundingElementName = null;
-            }
-
-            // add toolbarbutton to editor.xul
-            if (widget.icon) {
-                widgetButton = document.createElement("canvasbutton");
-                widgetButton.setAttribute("id", "uiWidget" + widget.id);
-                widgetButton.setAttribute("style", "-moz-box-orient: vertical;");
-                widgetButton.setAttribute("command", "cmd_yulup_widget_" + widget.id);
-                toolbarButtons.appendChild(widgetButton);
-            }
-
-            // add command to context menu
-            menuItem = document.createElement("menuitem");
-            menuItem.setAttribute("command", "cmd_yulup_widget_" + widget.id);
-
-            if (widget.supportsActionSurround()) {
-                menuItem.setAttribute("autocheck", "false");
-                menuItem.setAttribute("type", "checkbox");
-
-                surroundMenu.appendChild(menuItem);
-
-                if (surroundMenu.parentNode.hasAttribute("disabled"))
-                    surroundMenu.parentNode.removeAttribute("disabled");
-            }
-
-            if (widget.supportsActionInsert()) {
-                insertMenu.appendChild(menuItem);
-
-                if (insertMenu.parentNode.hasAttribute("disabled"))
-                    insertMenu.parentNode.removeAttribute("disabled");
             }
         }
+    },
+
+    __setUpCommand: function (aWidget, aCommandSet, aSurroundCommandList, aSurroundMenu, aInsertMenu) {
+        var commandID              = null;
+        var widgetCommand          = null;
+        var surroundingElementName = null;
+        var menuItem               = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aWidget              != null);
+        /* DEBUG */ YulupDebug.ASSERT(aCommandSet          != null);
+        /* DEBUG */ YulupDebug.ASSERT(aSurroundCommandList != null);
+        /* DEBUG */ YulupDebug.ASSERT(aSurroundMenu        != null);
+        /* DEBUG */ YulupDebug.ASSERT(aInsertMenu          != null);
+
+        commandID = "cmd_yulup_widget_" + aWidget.id;
+
+        widgetCommand = document.createElement("command");
+        widgetCommand.setAttribute("id", commandID);
+        widgetCommand.setAttribute("disabled", "false");
+        widgetCommand.setAttribute("label", aWidget.name);
+        widgetCommand.setAttribute("tooltiptext", aWidget.description);
+        widgetCommand.setAttribute("oncommand", "WidgetHandler.doWidgetCommand(this, \"" + aWidget.id + "\")");
+        aCommandSet.appendChild(widgetCommand);
+
+        if (aWidget.supportsActionSurround()) {
+            surroundingElementName = aWidget.getSurroundActionFragment().documentElement;
+
+            if (surroundingElementName && surroundingElementName.localName) {
+                /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: registering surrounding action for element name \"" + aWidget.getSurroundActionFragment().documentElement.localName.toLowerCase() + "\"\n");
+
+                aSurroundCommandList[aWidget.getSurroundActionFragment().documentElement.localName.toLowerCase()] = widgetCommand;
+            }
+        }
+
+        // add command to context menu
+        menuItem = document.createElement("menuitem");
+        menuItem.setAttribute("command", commandID);
+
+        if (aWidget.supportsActionSurround()) {
+            menuItem.setAttribute("autocheck", "false");
+            menuItem.setAttribute("type", "checkbox");
+
+            aSurroundMenu.appendChild(menuItem);
+
+            if (aSurroundMenu.parentNode.hasAttribute("disabled"))
+                aSurroundMenu.parentNode.removeAttribute("disabled");
+        }
+
+        if (aWidget.supportsActionInsert()) {
+            aInsertMenu.appendChild(menuItem);
+
+            if (aInsertMenu.parentNode.hasAttribute("disabled"))
+                aInsertMenu.parentNode.removeAttribute("disabled");
+        }
+
+        return commandID;
     },
 
     /**
@@ -305,9 +328,8 @@ WidgetManager.prototype = {
     },
 
     getWidgetByName: function(aWidgetName) {
-
         for (var i=0; i < this.widgets.length; i++) {
-            if (this.widgets[i].attributes["name"] == aWidgetName) {
+            if (this.widgets[i].id == aWidgetName) {
                 return this.widgets[i];
             }
         }
@@ -326,14 +348,18 @@ WidgetManager.prototype = {
 
 
 var WidgetHandler = {
+    ACTION_SURROUND: 0,
+    ACTION_INSERT  : 1,
+
     /**
      * Update the widgets xml-fragment with the user defined attribute
      * values.
      *
-     * @param  {Widget} aWidget the widget whose fragment will be parametrized
+     * @param  {NeutronWidget}       aWidget        the widget corresponding to the widget action
+     * @param  {NeutronWidgetAction} aWidgetAction  the widget action whose fragment will be parametrized
      * @return {nsIDOMDocumentFragment} returns the parameterised fragment, or null if potential user interaction was canceled
      */
-    getParametrizedWidgetFragment: function(aWidget) {
+    getParametrizedWidgetFragment: function(aWidget, aWidgetAction) {
         var customAttrValue  = null;
         var attrXpath        = null;
         var attrIterator     = null;
@@ -345,17 +371,17 @@ var WidgetHandler = {
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.getParametrizedWidgetFragment() invoked\n");
 
-        nsResolver = new ConfigurableNsResolver(aWidget.fragment);
+        nsResolver = new ConfigurableNsResolver(aWidgetAction.fragment);
 
-        if ((attributes = WidgetDialog.showWidgetInsertDialog(aWidget, nsResolver, gEditorController, window)) != null) {
-            paramFragment = aWidget.fragment.cloneNode(true);
+        if ((attributes = WidgetDialog.showWidgetInsertDialog(aWidget, aWidgetAction, nsResolver, gEditorController, window)) != null) {
+            paramFragment = aWidgetAction.fragment.cloneNode(true);
 
-            for (var i = 0; i < aWidget.fragmentAttributes.length; i++) {
+            for (var i = 0; i < aWidgetAction.parameters.length; i++) {
                 // get the user defined attribute value
-                customAttrValue = attributes[aWidget.fragmentAttributes[i].name];
-                attrXpath       = aWidget.fragmentAttributes[i].xpath;
+                customAttrValue = attributes[aWidgetAction.parameters[i].id];
+                attrXpath       = aWidgetAction.parameters[i].xpath;
 
-                /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.getParametrizedWidgetFragment: value = \"" + customAttrValue + "\", xpath = \"" + attrXpath + "\", name = \"" + aWidget.fragmentAttributes[i].name + "\"\n");
+                /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.getParametrizedWidgetFragment: value = \"" + customAttrValue + "\", xpath = \"" + attrXpath + "\", id = \"" + aWidgetAction.parameters[i].id + "\"\n");
 
                 // get the attribute in the fragment
                 attrIterator = paramFragment.evaluate(attrXpath, paramFragment, nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
@@ -402,33 +428,63 @@ var WidgetHandler = {
     doWidgetCommand: function(aCommand, aWidgetName) {
         var widget   = null;
         var view     = null;
+        var prefersSurround = null;
+        var action          = null;
         var fragment = null;
 
         /* DEBUG */ YulupDebug.ASSERT(aCommand    != null);
         /* DEBUG */ YulupDebug.ASSERT(aWidgetName != null);
 
-        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand() invoked\n");
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand(\"" + aCommand + "\", \"" + aWidgetName + "\") invoked\n");
 
         widget = gEditorController.widgetManager.getWidgetByName(aWidgetName);
         view   = gEditorController.activeView;
 
-        switch (widget.attributes["type"]) {
-            case "insert":
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand: command name = \"" + widget.name + "\"\n");
+
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand: widget supports surround = \"" + widget.supportsActionSurround() + "\"\n");
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand: widget supports insert = \"" + widget.supportsActionInsert() + "\"\n");
+
+        // find out if the view wants surrounding or insertion
+        prefersSurround = view.prefersSurround();
+
+        if (prefersSurround) {
+            /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand: view prefers surround\n");
+
+            if (widget.supportsActionSurround()) {
+                action = WidgetHandler.ACTION_SURROUND;
+            } else {
+                action = WidgetHandler.ACTION_INSERT;
+            }
+        } else {
+            /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand: view prefers insert\n");
+
+            if (widget.supportsActionInsert()) {
+                action = WidgetHandler.ACTION_INSERT;
+            } else {
+                action = WidgetHandler.ACTION_SURROUND;
+            }
+        }
+
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand: decided action = \"" + action + "\"\n");
+
+        switch (action) {
+            case WidgetHandler.ACTION_INSERT:
                 /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand: insert\n");
 
-                fragment = this.__getWidgetFragment(widget);
+                fragment = this.__getWidgetFragment(widget, widget.insert);
 
                 if (fragment)
                     view.doInsertCommand(aCommand, fragment);
 
                 break;
-            case "surround":
+            case WidgetHandler.ACTION_SURROUND:
                 /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.doWidgetCommand: surround\n");
 
-                if (view.isUnsurround(widget.fragment)) {
-                    view.doUnsurroundCommand(aCommand, widget.fragment);
+                if (view.isUnsurround(widget.surround.fragment)) {
+                    view.doUnsurroundCommand(aCommand, widget.surround.fragment);
                 } else {
-                    fragment = this.__getWidgetFragment(widget);
+                    fragment = this.__getWidgetFragment(widget, widget.surround);
 
                     if (fragment)
                         view.doSurroundCommand(aCommand, fragment);
@@ -446,26 +502,29 @@ var WidgetHandler = {
      * Note that this method returns null if the user cancels
      * the fragment configuration.
      *
-     * @param  {Widget} aWidget the widget for which the fragment should be retrieved
+     * @param  {NeutronWidgetAction} aWidgetAction  the widget for which the fragment should be retrieved
      * @return {nsIDOMDocumentFragment} returns the parameterised fragment or null if potential user interaction was canceled
      */
-    __getWidgetFragment: function (aWidget) {
-        var fragment = null;
+    __getWidgetFragment: function (aWidget, aWidgetAction) {
+        var origFragment = null;
+        var fragment     = null;
 
-        /* DEBUG */ YulupDebug.ASSERT(aWidget != null);
+        /* DEBUG */ YulupDebug.ASSERT(aWidgetAction != null);
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.__getWidgetFragment() invoked\n");
 
-        if (aWidget.fragmentAttributes && aWidget.fragment) {
-            if ((fragment = WidgetHandler.getParametrizedWidgetFragment(aWidget)) == null) {
+        if (aWidgetAction.parameters && aWidgetAction.fragment) {
+            if ((fragment = WidgetHandler.getParametrizedWidgetFragment(aWidget, aWidgetAction)) == null) {
+                return null;
+            } else {
+                return this.tidyWidgetFragment(fragment);
+            }
+        } else {
+            if (aWidgetAction.fragment) {
+                return this.tidyWidgetFragment(aWidgetAction.fragment);
+            } else {
                 return null;
             }
-        }
-
-        if (fragment) {
-            return this.tidyWidgetFragment(fragment);
-        } else {
-            return this.tidyWidgetFragment(aWidget.fragment);
         }
     },
 

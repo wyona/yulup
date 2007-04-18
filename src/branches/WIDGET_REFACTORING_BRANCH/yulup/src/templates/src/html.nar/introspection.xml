@@ -8,11 +8,11 @@
         <name xml:lang="de">Paragraph</name>
         <description xml:lang="en">Insert a paragraph</description>
         <description xml:lang="de">Einen Paragraphen einfügen</description>
-        <surround>
+        <insert>
           <fragment>
             <p xmlns=""/>
           </fragment>
-        </surround>
+        </insert>
       </widget>
 
       <widgetgroup>
@@ -308,11 +308,11 @@
         <name xml:lang="de">Div</name>
         <description xml:lang="en">Insert a div</description>
         <description xml:lang="de">Ein Div einfügen</description>
-        <surround>
+        <insert>
           <fragment>
             <div xmlns=""/>
           </fragment>
-        </surround>
+        </insert>
       </widget>
     </widgets>
   </edit>
