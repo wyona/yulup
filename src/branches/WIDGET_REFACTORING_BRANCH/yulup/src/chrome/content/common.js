@@ -393,14 +393,37 @@ var YulupContentServices = {
 
 var YulupAppServices = {
     getAppLocale: function () {
+        var prefService = null;
+        var locale      = null;
+
+        const localePref = "general.useragent.locale";
+
+        prefService = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+
+        // the locale pref may be localised itself
         try {
-            return Components.classes["@mozilla.org/intl/nslocaleservice;1"]
-                .getService(Components.interfaces.nsILocaleService).getLocaleComponentForUserAgent();
+            locale = prefService.getComplexValue(localePref, Components.interfaces.nsIPrefLocalizedString).data;
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupAppServices.getAppLocale", exception);
             /* DEBUG */ Components.utils.reportError(exception);
-            return APPLOCALE_FALLBACK;
         }
+
+        if (locale)
+            return locale;
+
+        // the pref was not localised
+        try {
+            locale = prefService.getCharPref(localePref);
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupAppServices.getAppLocale", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+        }
+
+        if (locale)
+            return locale;
+
+        // we did not get anything out of the prefs
+        return APPLOCALE_FALLBACK;
     }
 }
 
