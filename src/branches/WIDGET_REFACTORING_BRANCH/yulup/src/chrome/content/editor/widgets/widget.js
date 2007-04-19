@@ -134,8 +134,10 @@ WidgetManager.prototype = {
         var widget         = null;
         var widgetDir      = null;
         var iconFile       = null;
+        var commandID      = null;
         var widgetButton   = null;
         var widgetGroup    = null;
+        var messageProxy   = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidgets(\"" + aWidgets + "\") invoked\n");
 
@@ -152,8 +154,6 @@ WidgetManager.prototype = {
             widget = aWidgets[i];
 
             if (widget instanceof NeutronWidget) {
-                /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: widget id \"" + widget.id + "\" is of type NeutronWidget\n");
-
                 /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: widget.icon = \"" + widget.icon + "\"\n");
 
                 if (widget.icon) {
@@ -188,17 +188,17 @@ WidgetManager.prototype = {
             }
 
             if (widget instanceof NeutronWidgetGroup) {
-                /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: widget id \"" + widget.id + "\" is of type NeutronWidgetGroup\n");
-
                 // add widgetgroup button
                 widgetGroup = document.createElement("widgetgroup");
-                var messageProxy = new YulupMessageProxy(widgetGroup);
+
+                messageProxy = new YulupMessageProxy(widgetGroup);
                 widgetGroup.proxy = messageProxy;
+
+                widgetGroup.setAttribute("label", widget.name);
+                widgetGroup.setAttribute("tooltiptext", widget.description);
                 toolbarButtons.appendChild(widgetGroup);
 
                 for (var j = 0; j < widget.widgets.length; j++) {
-                    /* DEBUG */ dump("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Yulup:widget.js:WidgetManager.addWidget: widget id \"" + widget.widgets[j].id + "\" contained in group is of type NeutronWidget\n");
-
                     commandID = this.__setUpCommand(widget.widgets[j], commandSet, this.surroundCommandList, surroundMenu, insertMenu);
 
                     messageProxy.dispatchMessage("addWidget", [widget.widgets[j], commandID]);

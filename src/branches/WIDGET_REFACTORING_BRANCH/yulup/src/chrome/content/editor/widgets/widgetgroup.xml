@@ -35,6 +35,8 @@
   <binding id="widgetgroup">
     <content>
       <xul:menulist/>
+      <xul:label class="toolbarbutton-text" crop="right" flex="1"
+                 xbl:inherits="value=label,crop,toolbarmode"/>
     </content>
 
     <implementation>
