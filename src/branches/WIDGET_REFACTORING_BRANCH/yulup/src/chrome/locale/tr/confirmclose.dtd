@@ -1,7 +1,0 @@
-<!ENTITY editorConfirmCloseDialog.title "Close Yulup">
-<!ENTITY editorConfirmCloseDescription.label "The document has been changed. Really exit the editor?">
-<!ENTITY editorConfirmCloseCancelButton.label "Exit">
-<!ENTITY editorConfirmCloseAcceptButton.label "Save and Exit">
-<!ENTITY editorConfirmCloseCancelButton.tooltip "Exit without saving">
-<!ENTITY editorConfirmCloseAcceptButton.tooltip "Execute the selected save action">
-<!ENTITY confirmCloseMenulist.accesskey "S">

@@ -1,9 +1,0 @@
-<!ENTITY findReplaceSearchFor.label "Search for">
-<!ENTITY findReplaceReplacementString.label "Replace with">
-<!ENTITY findReplaceMatchCase.label "Match case">
-<!ENTITY findReplaceMatchEntireWord.label "Match entire word only">
-<!ENTITY findReplaceSearchBackwards.label "Search backwards">
-<!ENTITY findReplaceWrapAround.label "Wrap around">
-<!ENTITY findReplaceReplaceAllButton.label "Replace All">
-<!ENTITY findReplaceReplaceButton.label "Replace and Find">
-<!ENTITY findReplaceFindNextButton.label "Find">

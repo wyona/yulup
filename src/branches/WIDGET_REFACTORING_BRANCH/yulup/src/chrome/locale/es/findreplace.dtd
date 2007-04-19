@@ -1,9 +1,0 @@
-<!ENTITY findReplaceSearchFor.label "Buscar">
-<!ENTITY findReplaceReplacementString.label "Reemplazar por">
-<!ENTITY findReplaceMatchCase.label "Coincidir con capitalización">
-<!ENTITY findReplaceMatchEntireWord.label "Coincidir sólo con la palabra completa">
-<!ENTITY findReplaceSearchBackwards.label "Buscar hacia atrás">
-<!ENTITY findReplaceWrapAround.label "Continuar desde el principio">
-<!ENTITY findReplaceReplaceAllButton.label "Reemplazar todo">
-<!ENTITY findReplaceReplaceButton.label "Reemplazar y Encontrar">
-<!ENTITY findReplaceFindNextButton.label "Encontrar">
