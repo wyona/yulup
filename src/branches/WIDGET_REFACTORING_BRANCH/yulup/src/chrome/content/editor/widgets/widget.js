@@ -75,7 +75,7 @@ function WidgetManager(aController, aInstanceID) {
     // register a view change listener
     aController.addViewChangedListener(WidgetHandler.viewChangedHandler);
 
-    this.surroundCommandList = {};
+    this.surroundCommandList = new YulupMultiMap();
 }
 
 WidgetManager.prototype = {
@@ -235,9 +235,9 @@ WidgetManager.prototype = {
             surroundingElementName = aWidget.getSurroundActionFragment().documentElement;
 
             if (surroundingElementName && surroundingElementName.localName) {
-                /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: registering surrounding action for element name \"" + aWidget.getSurroundActionFragment().documentElement.localName.toLowerCase() + "\"\n");
+                /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: registering surrounding action for element name \"" + aWidget.getSurroundActionFragment().documentElement.localName.toLowerCase() + "\, widget id = \"" + aWidget.id + "\"\n");
 
-                aSurroundCommandList[aWidget.getSurroundActionFragment().documentElement.localName.toLowerCase()] = widgetCommand;
+                aSurroundCommandList.add(aWidget.getSurroundActionFragment().documentElement.localName.toLowerCase(), widgetCommand);
             }
         }
 
@@ -532,26 +532,38 @@ var WidgetHandler = {
         }
     },
 
-    activateCommand: function (aCommand) {
-        /* DEBUG */ YulupDebug.ASSERT(aCommand != null);
+    activateCommands: function (aCommandList) {
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.activateCommands() invoked\n");
 
-        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.activateCommand(\"" + aCommand.getAttribute("id") + "\") invoked\n");
+        /* DEBUG */ YulupDebug.ASSERT(aCommandList != null);
 
-        // hack to refire command update
-        aCommand.removeAttribute("active");
+        for (var i = 0; i < aCommandList.length; i++) {
+            command = aCommandList[i];
 
-        // mark command as enabled
-        aCommand.setAttribute("active", "true");
-        aCommand.setAttribute("checked", "true");
+            /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.activateCommands: activate command \"" + command.getAttribute("id") + "\"\n");
+
+            // hack to refire command update
+            command.removeAttribute("active");
+
+            // mark command as enabled
+            command.setAttribute("active", "true");
+            command.setAttribute("checked", "true");
+        }
     },
 
-    deactivateCommand: function (aCommand) {
-        /* DEBUG */ YulupDebug.ASSERT(aCommand != null);
+    deactivateCommands: function (aCommandList) {
+        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.deactivateCommands() invoked\n");
 
-        /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.deactivateCommand(\"" + aCommand.getAttribute("id") + "\") invoked\n");
+        /* DEBUG */ YulupDebug.ASSERT(aCommandList != null);
 
-        aCommand.removeAttribute("active");
-        aCommand.setAttribute("checked", "false");
+        for (var i = 0; i < aCommandList.length; i++) {
+            command = aCommandList[i];
+
+            /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.deactivateCommands: deactivate command \"" + command.getAttribute("id") + "\"\n");
+
+            command.removeAttribute("active");
+            command.setAttribute("checked", "false");
+        }
     },
 
     updateCommandActiveStates: function (aWidgetCommandList, aElemNameList) {
@@ -568,12 +580,13 @@ var WidgetHandler = {
             elemNameMap[aElemNameList[i].name] = true;
         }
 
-        // check all commands
-        for (var elemName in aWidgetCommandList) {
+        /* Check for all keys (element names) in the command map
+         * if they are contained in the current element name list. */
+        for (var elemName in aWidgetCommandList.keySet()) {
             if (elemNameMap.hasOwnProperty(elemName)) {
-                WidgetHandler.activateCommand(aWidgetCommandList[elemName]);
+                WidgetHandler.activateCommands(aWidgetCommandList.lookup(elemName));
             } else {
-                WidgetHandler.deactivateCommand(aWidgetCommandList[elemName]);
+                WidgetHandler.deactivateCommands(aWidgetCommandList.lookup(elemName));
             }
         }
     },
@@ -588,8 +601,8 @@ var WidgetHandler = {
         commandList = aView.controller.widgetManager.surroundCommandList;
 
         // deselect all widgets
-        for (var elemName in commandList) {
-            WidgetHandler.deactivateCommand(commandList[elemName]);
+        for (var elemName in commandList.keySet()) {
+            WidgetHandler.deactivateCommands(commandList.lookup(elemName));
         }
 
         // update all widgets if the view supports reading the DOM

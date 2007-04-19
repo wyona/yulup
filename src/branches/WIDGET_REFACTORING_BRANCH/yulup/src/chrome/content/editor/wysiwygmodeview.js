@@ -413,7 +413,9 @@ WYSIWYGModeView.prototype = {
 
             this.view.setInlineProperty(elemAtom, attrName, attrValue);
 
-            WidgetHandler.activateCommand(aCommand);
+            /* TODO: we should perform a map lookup first to activate
+             * all similar commands (would provide nicer UI behaviour). */
+            WidgetHandler.activateCommands([aCommand]);
         }
     },
 
@@ -436,7 +438,9 @@ WYSIWYGModeView.prototype = {
 
             this.view.removeInlineProperty(elemAtom, null);
 
-            WidgetHandler.deactivateCommand(aCommand);
+            /* TODO: we should perform a map lookup first to deactivate
+             * all similar commands (would provide nicer UI behaviour). */
+            WidgetHandler.deactivateCommands([aCommand]);
         }
     },
 

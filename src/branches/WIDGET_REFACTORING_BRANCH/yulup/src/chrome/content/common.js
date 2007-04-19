@@ -574,6 +574,69 @@ Barrier.prototype = {
     }
 };
 
+/**
+ * YulupMultiMap constructor. Instantiates a new object of
+ * type YulupMultiMap.
+ *
+ * YulupMultiMap is a map from {key} -> {value1, value2, ...},
+ * i.e. the map can contain multiple values for the same key.
+ *
+ * @constructor
+ * @return {YulupMultiMap}
+ */
+function YulupMultiMap() {
+    this.__map = {};
+}
+
+YulupMultiMap.prototype = {
+    __map: null,
+
+    /**
+     * Returns the set of keys.
+     *
+     * @return {Object}  returns the set of keys
+     */
+    keySet: function () {
+        return this.__map;
+    },
+
+    /**
+     * Puts a value into the map for the given key. The map
+     * can store multiple values for the same key.
+     *
+     * Note though that the map does not check for duplicate
+     * values for the same key.
+     *
+     * @param  {String} aKey    the key to which the value is associated
+     * @param  {Object} aValue  the value to store, can be null
+     * @return {Undefined}  does not have a return value
+     */
+    add: function (aKey, aValue) {
+        /* DEBUG */ YulupDebug.ASSERT(aKey != null);
+
+        if (!this.__map.hasOwnProperty(aKey))
+            this.__map[aKey] = new Array();
+
+        this.__map[aKey].push(aValue);
+    },
+
+    /**
+     * Returns the values for the given key.
+     *
+     * @param  {String} aKey  the given for which the value should be retrieved
+     * @return {Array}  returns an array of values, or an empty array if no entries exist for the given key
+     */
+    lookup: function (aKey) {
+        var values = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aKey != null);
+
+        values = this.__map[aKey];
+
+        return (values ? values : []);
+    }
+};
+
 
 const YulupDebug = {
     /**
