@@ -8,11 +8,11 @@
         <name xml:lang="de">Paragraph</name>
         <description xml:lang="en">Insert a paragraph</description>
         <description xml:lang="de">Einen Paragraphen einfügen</description>
-        <insert>
+        <surround>
           <fragment>
             <p xmlns=""/>
           </fragment>
-        </insert>
+        </surround>
       </widget>
 
       <widgetgroup>
