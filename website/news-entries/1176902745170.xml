@@ -1,0 +1,12 @@
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <atom:title type="text">First APP Interop Session Summary</atom:title>
+  <atom:author>
+    <atom:name>Michael Wechner</atom:name>
+  </atom:author>
+  <atom:id>urn:www-yulup-org:first-app-interop</atom:id>
+  <atom:content type="xhtml">
+    <xhtml:div>
+Please see the following posts on the first APP interop session by <xhtml:a href="http://www.oreillynet.com/xml/blog/2007/04/atom_publishing_protocol_inter.html">Keith Fahlgren</xhtml:a> and <xhtml:a href="http://www.tbray.org/ongoing/When/200x/2007/04/16/Interop">Tim Bray</xhtml:a>.
+    </xhtml:div>
+  </atom:content>
+<atom:updated>2007-04-18T13:25:45.613Z</atom:updated><atom:published>2007-04-18T13:25:45.613Z</atom:published></atom:entry>
