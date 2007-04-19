@@ -16,6 +16,11 @@
       </widget>
 
       <widgetgroup>
+        <name xml:lang="en">Headings</name>
+        <name xml:lang="de">Titel</name>
+        <description xml:lang="en">Insert titles</description>
+        <description xml:lang="de">Titel einfügen</description>
+
         <widget>
           <name xml:lang="en">Heading 1</name>
           <name xml:lang="de">Title 1</name>
@@ -299,18 +304,6 @@
             <a xmlns="" href="">
               <object class="asset"/>
             </a>
-          </fragment>
-        </insert>
-      </widget>
-
-      <widget>
-        <name xml:lang="en">Div</name>
-        <name xml:lang="de">Div</name>
-        <description xml:lang="en">Insert a div</description>
-        <description xml:lang="de">Ein Div einfügen</description>
-        <insert>
-          <fragment>
-            <div xmlns=""/>
           </fragment>
         </insert>
       </widget>
