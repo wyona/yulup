@@ -94,7 +94,10 @@
             }
 
             if (aEvent.attrName == "active" && (aEvent.newValue == "" || aEvent.newValue == "false")) {
-                this.__menulist.selectedIndex = 0;
+                /* Only select the "none selected" item if the currently
+                 * selected item is the item which went inactive. */
+                if (this.__menulist.selectedItem == aMenuitem)
+                    this.__menulist.selectedIndex = 0;
 
                 return;
             }
