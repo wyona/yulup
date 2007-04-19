@@ -126,18 +126,16 @@ WidgetManager.prototype = {
      * @return {Undefined} does not have a return value
      */
     addWidgets: function(aWidgets) {
-        var ioService              = null;
-        var commandSet             = null;
-        var toolbarButtons         = null;
-        var surroundMenu           = null;
-        var insertMenu             = null;
-        var widget                 = null;
-        var widgetDir              = null;
-        var iconFile               = null;
-        var widgetButton           = null;
-        var widgetCommand          = null;
-        var surroundingElementName = null;
-        var menuItem               = null;
+        var ioService      = null;
+        var commandSet     = null;
+        var toolbarButtons = null;
+        var surroundMenu   = null;
+        var insertMenu     = null;
+        var widget         = null;
+        var widgetDir      = null;
+        var iconFile       = null;
+        var widgetButton   = null;
+        var widgetGroup    = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidgets(\"" + aWidgets + "\") invoked\n");
 
@@ -192,12 +190,18 @@ WidgetManager.prototype = {
             if (widget instanceof NeutronWidgetGroup) {
                 /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: widget id \"" + widget.id + "\" is of type NeutronWidgetGroup\n");
 
+                // add widgetgroup button
+                widgetGroup = document.createElement("widgetgroup");
+                var messageProxy = new YulupMessageProxy(widgetGroup);
+                widgetGroup.proxy = messageProxy;
+                toolbarButtons.appendChild(widgetGroup);
+
                 for (var j = 0; j < widget.widgets.length; j++) {
-                    /* DEBUG */ dump("Yulup:widget.js:WidgetManager.addWidget: widget id \"" + widget.widgets[j].id + "\" contained in group is of type NeutronWidget\n");
+                    /* DEBUG */ dump("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Yulup:widget.js:WidgetManager.addWidget: widget id \"" + widget.widgets[j].id + "\" contained in group is of type NeutronWidget\n");
 
                     commandID = this.__setUpCommand(widget.widgets[j], commandSet, this.surroundCommandList, surroundMenu, insertMenu);
 
-                    // TODO: add widgetgroup button
+                    messageProxy.dispatchMessage("addWidget", [widget.widgets[j], commandID]);
 
                     this.widgets.push(widget.widgets[j]);
                 }

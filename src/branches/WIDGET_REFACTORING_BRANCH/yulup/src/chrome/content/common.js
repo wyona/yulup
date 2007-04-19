@@ -31,7 +31,7 @@ const YULUP_PREF_BRANCH  = "extensions.yulup.";
 const NAMESPACE_XUL      = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 const APPLOCALE_FALLBACK = "en";
 
-var YulupPreferences = {
+const YulupPreferences = {
     __branch: null,
 
     __getBranch: function () {
@@ -334,7 +334,7 @@ const YulupXMLServices = {
 };
 
 
-var YulupContentServices = {
+const YulupContentServices = {
     /**
      * Determines the content type of the given URI. If the
      * content type could not be determined, the fallback type
@@ -391,7 +391,7 @@ var YulupContentServices = {
 };
 
 
-var YulupAppServices = {
+const YulupAppServices = {
     getAppLocale: function () {
         var prefService = null;
         var locale      = null;
@@ -404,7 +404,7 @@ var YulupAppServices = {
         try {
             locale = prefService.getComplexValue(localePref, Components.interfaces.nsIPrefLocalizedString).data;
         } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupAppServices.getAppLocale", exception);
+            ///* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupAppServices.getAppLocale", exception);
             ///* DEBUG */ Components.utils.reportError(exception);
         }
 
@@ -425,41 +425,127 @@ var YulupAppServices = {
         // we did not get anything out of the prefs
         return APPLOCALE_FALLBACK;
     }
-}
+};
+
+
+const YulupLocalisationServices = {
+    __stringBundleService: null,
+
+    /**
+     * Gets the stringbundle service.
+     *
+     * @return {nsIStringBundleService}  returns the stringbundle service, or null if an error occurred
+     */
+    getStringBundleService: function () {
+        if (!this.__stringBundleService)
+            this.__stringBundleService = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
+
+        return this.__stringBundleService;
+    },
+
+    /**
+     * Gets the specified stringbundle.
+     *
+     * @param  {String} aStringBundleURI  the chrome URI where the stringbundle is located
+     * @return {nsIStringBundle}  returns the requested stringbundle, or null if an error occurred
+     */
+    getStringBundle: function (aStringBundleURI) {
+        var stringBundle = null;
+
+        try {
+            stringBundle = this.getStringBundleService().createBundle(aStringBundleURI);
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupLocalisationServices.getStringBundle", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+        }
+
+        return stringBundle;
+    }
+};
 
 
 /**
- * YulupException constructor. Instantiates a new object of
- * type YulupException.
+ * YulupMessageProxy constructor. Instantiates a new object of
+ * type YulupMessageProxy.
  *
  * @constructor
- * @param  {String}         aMessage a descriptive error message
- * @return {YulupException}
+ * @param  {Object} aObject  the object to proxy
+ * @return {YulupMessageProxy}
  */
-function YulupException(aMessage) {
-    // /* DEBUG */ dump("Yulup:common.js:YulupException(" + aMessage + ") invoked\n");
-    this.message = aMessage;
-    this.name    = "YulupException";
+function YulupMessageProxy(aObject) {
+    /* DEBUG */ dump("Yulup:common.js:YulupMessageProxy() invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aObject != null);
+
+    this.__object   = aObject;
+    this.__msgQueue = new Array();
 }
 
-YulupException.prototype.__proto__  = Error.prototype;
+YulupMessageProxy.prototype = {
+    __ready   : false,
+    __object  : null,
+    __msgQueue: null,
 
+    /**
+     * Dispatches a message to the object bound to this
+     * proxy. If the object has not yet signalled its
+     * ready state, then the passed message is queued.
+     *
+     * @param  {String} aMethodName  the name of the method to call
+     * @param  {Array}  aParamsArray  the parameters for the call, or null if no parameters
+     * @return {Undefined}  does not have a return value
+     */
+    dispatchMessage: function (aMethodName, aParamsArray) {
+        /* DEBUG */ dump("Yulup:common.js:YulupMessageProxy.dispatchMessage() invoked\n");
 
-/**
- * YulupEditorException constructor. Instantiates a new object of
- * type YulupEditorException.
- *
- * @constructor
- * @param  {String}               aMessage a descriptive error message
- * @return {YulupEditorException}
- */
-function YulupEditorException(aMessage) {
-    ///* DEBUG */ dump("Yulup:common.js:YulupEditorException(" + aMessage + ") invoked\n");
-    this.message = aMessage;
-    this.name    = "YulupEditorException";
-}
+        /* DEBUG */ YulupDebug.ASSERT(aMethodName != null);
 
-YulupEditorException.prototype.__proto__  = YulupException.prototype;
+        // add message to queue
+        this.__msgQueue.push({ methodName: aMethodName, params: aParamsArray });
+
+        // flush the queue
+        this.flushQueue();
+    },
+
+    /**
+     * Flushes the message queue. Flushing continues even
+     * if one of the call throws an exception.
+     *
+     * @return {Undefined}  does not have a return value
+     */
+    flushQueue: function () {
+        var message = null;
+
+        /* DEBUG */ dump("Yulup:common.js:YulupMessageProxy.flushQueue() invoked\n");
+
+        if (this.__ready) {
+            while (this.__msgQueue.length > 0) {
+                message = this.__msgQueue.shift();
+
+                try {
+                    // send message to the object
+                    this.__object[message.methodName].apply(this.__object, message.params);
+                } catch (exception) {
+                    /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupMessageProxy.flushQueue", exception);
+                    /* DEBUG */ Components.utils.reportError(exception);
+                }
+            }
+        }
+    },
+
+    /**
+     * Sets the ready state and starts flushing the queue.
+     *
+     * @return {Undefined}  does not have a return value
+     */
+    setReady: function () {
+        /* DEBUG */ dump("Yulup:common.js:YulupMessageProxy.setReady() invoked\n");
+
+        this.__ready = true;
+
+        this.flushQueue();
+    }
+};
 
 
 function Barrier(aNoOfThreads, aCallback, aContext) {
@@ -486,10 +572,10 @@ Barrier.prototype = {
             this.callback(this.context);
         }
     }
-}
+};
 
 
-var YulupDebug = {
+const YulupDebug = {
     /**
      * Dumps an exception to stdout, printing its message
      * as well as a stacktrace if available.
@@ -523,7 +609,7 @@ var YulupDebug = {
 };
 
 
-var DOMSerialiser = {
+const DOMSerialiser = {
     /**
      * Serialises to stdout the tree rooted at the passed node.
      *
@@ -613,11 +699,11 @@ var DOMSerialiser = {
 
 
 /**
-  * Instatiates a new object of the type ConfigurableNsResolver
-  *
-  * @param  {nsIXMLDocument} aDocument the xml document where namespaces and prefixes are read from
-  * @return {Undefined}                does not have a return value
-  */
+ * Instatiates a new object of the type ConfigurableNsResolver
+ *
+ * @param  {nsIXMLDocument} aDocument the xml document where namespaces and prefixes are read from
+ * @return {Undefined}                does not have a return value
+ */
 function ConfigurableNsResolver(aDocument) {
     var sorceElements = null;
     var prefix        = null;
@@ -649,3 +735,37 @@ ConfigurableNsResolver.prototype = {
         return this.namespaces[aPrefix] || null;
     }
 };
+
+
+/**
+ * YulupException constructor. Instantiates a new object of
+ * type YulupException.
+ *
+ * @constructor
+ * @param  {String}         aMessage a descriptive error message
+ * @return {YulupException}
+ */
+function YulupException(aMessage) {
+    ///* DEBUG */ dump("Yulup:common.js:YulupException(" + aMessage + ") invoked\n");
+    this.message = aMessage;
+    this.name    = "YulupException";
+}
+
+YulupException.prototype.__proto__  = Error.prototype;
+
+
+/**
+ * YulupEditorException constructor. Instantiates a new object of
+ * type YulupEditorException.
+ *
+ * @constructor
+ * @param  {String}               aMessage a descriptive error message
+ * @return {YulupEditorException}
+ */
+function YulupEditorException(aMessage) {
+    ///* DEBUG */ dump("Yulup:common.js:YulupEditorException(" + aMessage + ") invoked\n");
+    this.message = aMessage;
+    this.name    = "YulupEditorException";
+}
+
+YulupEditorException.prototype.__proto__  = YulupException.prototype;

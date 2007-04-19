@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+
+<!--
+# ***** BEGIN LICENSE BLOCK *****
+# Copyright 2007 Wyona AG Zurich
+#
+# This file is part of Yulup.
+#
+# Yulup is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Yulup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Yulup; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# ***** END LICENSE BLOCK *****
+-->
+
+<!--
+# @author Andreas Wuest
+-->
+
+<bindings id="widgetgroupBindings"
+          xmlns="http://www.mozilla.org/xbl"
+          xmlns:xbl="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <binding id="widgetgroup">
+    <content>
+      <xul:menulist/>
+    </content>
+
+    <implementation>
+      <field name="__menulist">
+        null
+      </field>
+
+      <constructor>
+        <![CDATA[
+          /* DEBUG */ dump("++++++++++++++++++++++++++++++++++++++++++ Yulup:widgetgroup.xml:widgetgroup.ctor() invoked\n");
+
+          this.__menulist = document.getAnonymousNodes(this)[0];
+
+          // add the "none selected" entry
+          this.__menulist.appendItem(YulupLocalisationServices.getStringBundle("chrome://yulup/locale/widgets.properties").GetStringFromName("widgetGroupNoneSelected.label"));
+
+          // tell our message proxy that we are ready and that message dispatching can start
+          this.proxy.setReady();
+        ]]>
+      </constructor>
+
+      <method name="addWidget">
+        <parameter name="aWidget"/>
+        <parameter name="aCommandID"/>
+        <body>
+          <![CDATA[
+            var command  = null;
+            var menuitem = null;
+            var me       = this;
+
+            /* DEBUG */ dump("++++++++++++++++++++++++++++++++++++++++++ Yulup:widgetgroup.xml:widgetgroup.addWidget() invoked\n");
+
+            menuitem = this.__menulist.appendItem(aWidget.name);
+            menuitem.setAttribute("command", aCommandID);
+
+            command = document.getElementById(aCommandID);
+            command.addEventListener("DOMAttrModified", function(aEvent) { me.widgetStateChanged(aEvent); }, false);
+          ]]>
+        </body>
+      </method>
+
+      <method name="widgetStateChanged">
+        <parameter name="aEvent"/>
+        <body>
+          <![CDATA[
+            /* DEBUG */ dump("++++++++++++++++++++++++++++++++++++++++++ Yulup:widgetgroup.xml:widgetgroup.widgetStateChanged(\"" + aEvent + "\") invoked\n");
+
+            /* DEBUG */ dump("Yulup:widgetgroup.xml:widgetgroup.widgetStateChanged: element \"" + aEvent.originalTarget.id + "\" changed attribute \"" + aEvent.attrName + "\" from \"" + aEvent.prevValue + "\" to \"" + aEvent.newValue + "\"\n");
+          ]]>
+        </body>
+      </method>
+    </implementation>
+  </binding>
+</bindings>
