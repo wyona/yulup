@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -203,18 +203,6 @@ var Neutron = {
         }
 
         return neutronParser;
-    },
-
-    /**
-     * Save an asset at the indicated path on the server.
-     *
-     * @param  {Asset}     aAsset the asset to save
-     * @param  {String}    aPath  the location on the CMS where the asset should be saved
-     * @return {Undefined}
-     * @throws {Error}     NeutronTransactionException
-     */
-    save: function (aAsset, aPath) {
-        // ...
     }
 };
 
@@ -625,6 +613,9 @@ Introspection.prototype = {
 
         // for all fragments, convert to string
         for (var i = 0; i < this.fragments.length; i++) {
+            /* TODO: get rid of this horrible stringification once all the data is moved
+             *       into their own respective datatypes, so they can toString()
+             *       themselves. */
             objString += "Fragment name:        " + this.fragments[i].name + "\n";
             objString += "Edit MIME-Type:       " + this.fragments[i].mimeType + "\n";
             objString += "Edit Open URI:        " + (this.fragments[i].open.uri ? this.fragments[i].open.uri.spec : this.fragments[i].open.uri) + "\n"; + "\n";
@@ -751,6 +742,68 @@ NeutronProtocolException.prototype.__proto__ = Error.prototype;
 
 
 /**
+ * NeutronProtocolCheckinException constructor.
+ * Instantiates a new object of type
+ * NeutronProtocolCheckinException.
+ *
+ * @constructor
+ * @param  {String}                          aMessage a descriptive error message
+ * @return {NeutronProtocolCheckinException}
+ */
+function NeutronProtocolCheckinException(aMessage) {
+    /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronProtocolCheckinException(\"" + aMessage + "\") invoked\n");
+
+    NeutronProtocolException.call(this, aMessage);
+
+    this.name = "NeutronProtocolCheckinException";
+}
+
+/**
+ * @field {String} aURL       the URI of the document on which the error occurred
+ * @field {String} aLockedBy  the name of the user who holds the current lock
+ * @field {String} aBreakLock a URI to GET which breaks the current lock
+ */
+NeutronProtocolCheckinException.prototype = {
+    __proto__: NeutronProtocolException.prototype,
+
+    url:       null,
+    lockedBy:  null,
+    breakLock: null
+};
+
+
+/**
+ * NeutronProtocolDataNotWellFormedException constructor.
+ * Instantiates a new object of type
+ * NeutronProtocolDataNotWellFormedException.
+ *
+ * @constructor
+ * @param  {String}                                    aMessage a descriptive error message
+ * @return {NeutronProtocolDataNotWellFormedException}
+ */
+function NeutronProtocolDataNotWellFormedException(aMessage) {
+    /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronProtocolDataNotWellFormedException(\"" + aMessage + "\") invoked\n");
+
+    NeutronProtocolException.call(this, aMessage);
+
+    this.name = "NeutronProtocolDataNotWellFormedException";
+}
+
+/**
+ * @field {String} aURL        the URI of the document on which the error occurred
+ * @field {String} aLineNumber the line number on which the error occurred
+ * @field {String} aError      the actual problem in the document as reported by the validator
+ */
+NeutronProtocolDataNotWellFormedException.prototype = {
+    __proto__: NeutronProtocolException.prototype,
+
+    url:        null,
+    lineNumber: null,
+    error:      null
+};
+
+
+/**
  * NeutronParser constructor. Instantiates a new object of
  * type NeutronParser.
  *
@@ -759,4 +812,80 @@ NeutronProtocolException.prototype.__proto__ = Error.prototype;
  * @constructor
  * @return {NeutronParser}
  */
-function NeutronParser() {}
+function NeutronParser() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronParser() invoked\n");
+}
+
+NeutronParser.prototype = {};
+
+
+/**
+ * NeutronWidget constructor. Instantiates a new object of
+ * type NeutronWidget.
+ *
+ * Base class for versioned Neutron widgets.
+ *
+ * @constructor
+ * @return {NeutronWidget}
+ */
+function NeutronWidget() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidget() invoked\n");
+
+    this.id = Date.now().toString();
+}
+
+NeutronWidget.prototype = {
+    id: null
+};
+
+
+/**
+ * NeutronWidgetGroup constructor. Instantiates a new object of
+ * type NeutronWidgetGroup.
+ *
+ * Base class for versioned Neutron widget groups.
+ *
+ * @constructor
+ * @return {NeutronWidgetGroup}
+ */
+function NeutronWidgetGroup() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetGroup() invoked\n");
+}
+
+NeutronWidgetGroup.prototype = {};
+
+
+/**
+ * NeutronWidgetAction constructor. Instantiates a new object of
+ * type NeutronWidgetAction.
+ *
+ * Base class for versioned Neutron widget actions.
+ *
+ * @constructor
+ * @return {NeutronWidgetAction}
+ */
+function NeutronWidgetAction() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetAction() invoked\n");
+}
+
+NeutronWidgetAction.prototype = {};
+
+
+/**
+ * NeutronWidgetActionParameter constructor. Instantiates a new object of
+ * type NeutronWidgetActionParameter.
+ *
+ * Base class for versioned Neutron widget action parameters.
+ *
+ * @constructor
+ * @return {NeutronWidgetActionParameter}
+ */
+function NeutronWidgetActionParameter() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetActionParameter() invoked\n");
+
+    this.id = Date.now().toString();
+}
+
+NeutronWidgetActionParameter.prototype = {
+    id: null
+};

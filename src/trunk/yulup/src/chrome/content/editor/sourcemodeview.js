@@ -345,6 +345,10 @@ SourceModeView.prototype = {
         }
     },
 
+    prefersSurround: function () {
+        return !this.view.selection.isCollapsed;
+    },
+
     doInsertCommand: function (aCommand, aFragment) {
         var fragmentData = null;
 

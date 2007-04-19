@@ -1,119 +1,311 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <introspection xmlns="http://www.wyona.org/neutron/1.0">
   <edit mime-type="application/xhtml+xml" name="XHTML template">
     <widgets>
-      <widget type="surround" name="Bold" description="Style text bold" icon="icons/bold.png">
-        <fragment>
-          <b xmlns=""/>
-        </fragment>
+      <widget icon="icons/bold.png">
+        <name xml:lang="en">Paragraph</name>
+        <name xml:lang="de">Paragraph</name>
+        <description xml:lang="en">Insert a paragraph</description>
+        <description xml:lang="de">Einen Paragraphen einfügen</description>
+        <surround>
+          <fragment>
+            <p xmlns=""/>
+          </fragment>
+        </surround>
       </widget>
-      <widget type="surround" name="Italic" description="Style text italic" icon="icons/italic.png">
-        <fragment>
-          <i xmlns=""/>
-        </fragment>
+
+      <widgetgroup>
+        <name xml:lang="en">Headings</name>
+        <name xml:lang="de">Titel</name>
+        <description xml:lang="en">Insert titles</description>
+        <description xml:lang="de">Titel einfügen</description>
+
+        <widget>
+          <name xml:lang="en">Heading 1</name>
+          <name xml:lang="de">Title 1</name>
+          <description xml:lang="en">A heading of level 1</description>
+          <description xml:lang="de">Ein Titel der Hierarchie 1</description>
+          <surround>
+            <fragment>
+              <h1 xmlns=""/>
+            </fragment>
+          </surround>
+        </widget>
+
+        <widget>
+          <name xml:lang="en">Heading 2</name>
+          <name xml:lang="de">Title 2</name>
+          <description xml:lang="en">A heading of level 2</description>
+          <description xml:lang="de">Ein Titel der Hierarchie 2</description>
+          <surround>
+            <fragment>
+              <h2 xmlns=""/>
+            </fragment>
+          </surround>
+        </widget>
+
+        <widget>
+          <name xml:lang="en">Heading 3</name>
+          <name xml:lang="de">Title 3</name>
+          <description xml:lang="en">A heading of level 3</description>
+          <description xml:lang="de">Ein Titel der Hierarchie 3</description>
+          <surround>
+            <fragment>
+              <h3 xmlns=""/>
+            </fragment>
+          </surround>
+        </widget>
+
+        <widget>
+          <name xml:lang="en">Heading 4</name>
+          <name xml:lang="de">Title 4</name>
+          <description xml:lang="en">A heading of level 4</description>
+          <description xml:lang="de">Ein Titel der Hierarchie 4</description>
+          <surround>
+            <fragment>
+              <h4 xmlns=""/>
+            </fragment>
+          </surround>
+        </widget>
+
+        <widget>
+          <name xml:lang="en">Heading 5</name>
+          <name xml:lang="de">Title 5</name>
+          <description xml:lang="en">A heading of level 5</description>
+          <description xml:lang="de">Ein Titel der Hierarchie 5</description>
+          <surround>
+            <fragment>
+              <h5 xmlns=""/>
+            </fragment>
+          </surround>
+        </widget>
+
+        <widget>
+          <name xml:lang="en">Heading 6</name>
+          <name xml:lang="de">Title 6</name>
+          <description xml:lang="en">A heading of level 6</description>
+          <description xml:lang="de">Ein Titel der Hierarchie 6</description>
+          <surround>
+            <fragment>
+              <h6 xmlns=""/>
+            </fragment>
+          </surround>
+        </widget>
+      </widgetgroup>
+
+      <widget icon="icons/bold.png">
+        <name xml:lang="en">Bold</name>
+        <name xml:lang="de">Fett</name>
+        <description xml:lang="en">Mark text bold</description>
+        <description xml:lang="de">Text als fett markieren</description>
+        <surround>
+          <fragment>
+            <b xmlns=""/>
+          </fragment>
+        </surround>
       </widget>
-      <widget type="surround" name="Underline" description="Style text underline" icon="icons/underline.png">
-        <fragment>
-          <u xmlns=""/>
-        </fragment>
+
+      <widget icon="icons/italic.png">
+        <name xml:lang="en">Italic</name>
+        <name xml:lang="de">Kursiv</name>
+        <description xml:lang="en">Mark text italic</description>
+        <description xml:lang="de">Text als kursiv markieren</description>
+        <surround>
+          <fragment>
+            <i xmlns=""/>
+          </fragment>
+        </surround>
       </widget>
-      <widget type="surround" name="Strike" description="Style text strikethrough" icon="icons/strikethrough.png">
-        <fragment>
-          <strike xmlns=""/>
-        </fragment>
+
+      <widget icon="icons/underline.png">
+        <name xml:lang="en">Underline</name>
+        <name xml:lang="de">Unterstreichen</name>
+        <description xml:lang="en">Mark text underline</description>
+        <description xml:lang="de">Text als unterstrichen markieren</description>
+        <surround>
+          <fragment>
+            <u xmlns=""/>
+          </fragment>
+        </surround>
       </widget>
-      <widget type="surround" name="Monospace" description="Style text monospace" icon="icons/bold.png">
-        <fragment>
-          <tt xmlns=""/>
-        </fragment>
+
+      <widget icon="icons/strikethrough.png">
+        <name xml:lang="en">Strike</name>
+        <name xml:lang="de">Durchstreichen</name>
+        <description xml:lang="en">Mark text strikethrough</description>
+        <description xml:lang="de">Text als durchgestrichen markieren</description>
+        <surround>
+          <fragment>
+            <strike xmlns=""/>
+          </fragment>
+        </surround>
       </widget>
-      <widget type="insert" name="Table" description="Insert a table" icon="icons/table.png">
-        <attribute name="Border" xpath="table/attribute::border"/>
-        <attribute name="Padding" xpath="table/attribute::cellpadding"/>
-        <attribute name="Spacing" xpath="table/attribute::cellspacing"/>
-        <attribute name="Bgcolor" xpath="table/attribute::bgcolor" type="color"/>
-        <fragment>
-          <table border="0" cellpadding="0" cellspacing="0" bgcolor="#DDDDDD" xmlns="">
-            <tr>
-              <td>Column 1, Row 1</td>
-              <td>Column 2, Row 1</td>
-            </tr>
-            <tr>
-              <td>Column 1, Row 2</td>
-              <td>Column 2, Row 2</td>
-            </tr>
-          </table>
-        </fragment>
+
+      <widget icon="icons/bold.png">
+        <name xml:lang="en">Monospace</name>
+        <name xml:lang="de">Festbreitenschrift</name>
+        <description xml:lang="en">Mark text monospace</description>
+        <description xml:lang="de">Text als in festbreitenschrift darstellen</description>
+        <surround>
+          <fragment>
+            <tt xmlns=""/>
+          </fragment>
+        </surround>
       </widget>
-      <widget type="insert" name="Unordered List" description="Insert unordered list" icon="icons/ulist.png">
-        <fragment>
-          <ul xmlns="">
-            <li>List Item 1</li>
-            <li>List Item 2</li>
-          </ul>
-        </fragment>
+
+      <widget icon="icons/table.png">
+        <name xml:lang="en">Table</name>
+        <name xml:lang="de">Tabelle</name>
+        <description xml:lang="en">Insert a table</description>
+        <description xml:lang="de">Tabelle einfügen</description>
+        <insert>
+          <parameter xpath="table/attribute::border">
+            <name xml:lang="en">Border</name>
+            <name xml:lang="de">Rand</name>
+            <description xml:lang="en">Border thickness</description>
+            <description xml:lang="de">Randbreite</description>
+          </parameter>
+          <parameter xpath="table/attribute::cellpadding">
+            <name xml:lang="en">Padding</name>
+            <name xml:lang="de">Füller</name>
+            <description xml:lang="en">Padding space</description>
+            <description xml:lang="de">Füllbreite</description>
+          </parameter>
+          <parameter xpath="table/attribute::cellspacing">
+            <name xml:lang="en">Spacing</name>
+            <name xml:lang="de">Leerrand</name>
+            <description xml:lang="en">Spacing thickness</description>
+            <description xml:lang="de">Leerrandbreite</description>
+          </parameter>
+          <parameter xpath="table/attribute::bgcolor" type="color">
+            <name xml:lang="en">Background color</name>
+            <name xml:lang="de">Hintergrundfarbe</name>
+            <description xml:lang="en">Color of the table background</description>
+            <description xml:lang="de">Hintergrundfarbe der Tabelle</description>
+          </parameter>
+          <fragment>
+            <table border="0" cellpadding="0" cellspacing="0" bgcolor="#DDDDDD" xmlns="">
+              <tr>
+                <td>Column 1, Row 1</td>
+                <td>Column 2, Row 1</td>
+              </tr>
+              <tr>
+                <td>Column 1, Row 2</td>
+                <td>Column 2, Row 2</td>
+              </tr>
+            </table>
+          </fragment>
+        </insert>
       </widget>
-      <widget type="insert" name="Ordered List" description="Insert ordered list" icon="icons/ulist.png">
-        <fragment>
-          <ol xmlns="">
-            <li>List Item 1</li>
-            <li>List Item 2</li>
-          </ol>
-        </fragment>
+
+      <widget icon="icons/ulist.png">
+        <name xml:lang="en">Unordered List</name>
+        <name xml:lang="de">Ungeordnete Liste</name>
+        <description xml:lang="en">Insert an unordered list</description>
+        <description xml:lang="de">Eine ungeordnete Liste einfügen</description>
+        <insert>
+          <fragment>
+            <ul xmlns="">
+              <li>List Item 1</li>
+              <li>List Item 2</li>
+            </ul>
+          </fragment>
+        </insert>
       </widget>
-      <widget type="surround" name="Link" description="Insert hypertext link" icon="icons/hlink.png">
-        <attribute name="href" xpath="a/attribute::href" type="resource"/>
-        <fragment>
-          <a xmlns="" href="http://www.yulup.org"/>
-        </fragment>
+
+      <widget icon="icons/ulist.png">
+        <name xml:lang="en">Ordered List</name>
+        <name xml:lang="de">Geordnete Liste</name>
+        <description xml:lang="en">Insert an ordered list</description>
+        <description xml:lang="de">Eine geordnete Liste einfügen</description>
+        <insert>
+          <fragment>
+            <ol xmlns="">
+              <li>List Item 1</li>
+              <li>List Item 2</li>
+            </ol>
+          </fragment>
+        </insert>
       </widget>
-      <widget type="surround" name="Heading 1" description="Insert title with level 1">
-        <fragment>
-          <h1 xmlns=""/>
-        </fragment>
+
+      <widget icon="icons/hlink.png">
+        <name xml:lang="en">Link</name>
+        <name xml:lang="de">Link</name>
+        <description xml:lang="en">Insert a hypertext link</description>
+        <description xml:lang="de">Einen Link einfügen</description>
+        <surround>
+          <parameter xpath="a/attribute::href" type="resource">
+            <name xml:lang="en">URI</name>
+            <name xml:lang="de">URI</name>
+            <description xml:lang="en">Link address</description>
+            <description xml:lang="de">Linkadresse</description>
+          </parameter>
+          <fragment>
+            <a xmlns="" href="http://www.yulup.org"/>
+          </fragment>
+        </surround>
       </widget>
-      <widget type="surround" name="Heading 2" description="Insert title with level 2">
-        <fragment>
-          <h2 xmlns=""/>
-        </fragment>
+
+      <widget icon="icons/image.png">
+        <name xml:lang="en">Image</name>
+        <name xml:lang="de">Bild</name>
+        <description xml:lang="en">Insert an image</description>
+        <description xml:lang="de">Ein Bild einfügen</description>
+        <insert>
+          <parameter xpath="img/attribute::src" type="resource">
+            <name xml:lang="en">URI</name>
+            <name xml:lang="de">URI</name>
+            <description xml:lang="en">Image address</description>
+            <description xml:lang="de">Bildadresse</description>
+          </parameter>
+          <parameter xpath="img/attribute::alt">
+            <name xml:lang="en">Alternative text</name>
+            <name xml:lang="de">Alternativer Text</name>
+            <description xml:lang="en">Alternative text which is shown if image display is disabled or the image could not be loaded</description>
+            <description xml:lang="de">Alternativer text der gezeigt wird, falls das Anzeigen von Bildern unterbunden wurde oder das Bild nicht geladen werden konnte</description>
+          </parameter>
+          <fragment>
+            <img xmlns="" src="http://www.yulup.org/images/whale-logo.gif" alt="Yulup Logo"/>
+          </fragment>
+        </insert>
       </widget>
-      <widget type="surround" name="Heading 3" description="Insert title with level 3">
-        <fragment>
-          <h3 xmlns=""/>
-        </fragment>
-      </widget>
-      <widget type="surround" name="Heading 4" description="Insert title with level 4">
-        <fragment>
-          <h4 xmlns=""/>
-        </fragment>
-      </widget>
-      <widget type="surround" name="Heading 5" description="Insert title with level 5">
-        <fragment>
-          <h5 xmlns=""/>
-        </fragment>
-      </widget>
-      <widget type="surround" name="Heading 6" description="Insert title with level 6">
-        <fragment>
-          <h6 xmlns=""/>
-        </fragment>
-      </widget>
-      <widget type="surround" name="Paragraph" description="Insert a paragraph">
-        <fragment>
-          <p xmlns=""/>
-        </fragment>
-      </widget>
-      <widget type="surround" name="Div" description="Insert a div">
-        <fragment>
-          <div xmlns=""/>
-        </fragment>
-      </widget>
-      <widget type="insert" name="Image" description="Insert image" icon="icons/image.png">
-        <attribute name="src" xpath="img/attribute::src" type="resource"/>
-        <attribute name="alt" xpath="img/attribute::alt"/>
-        <fragment>
-          <img xmlns="" src="http://www.yulup.org/images/whale-logo.gif" alt="Yulup Logo"/>
-        </fragment>
+
+      <widget icon="icons/asset.png">
+        <name xml:lang="en">Asset</name>
+        <name xml:lang="de">Asset</name>
+        <description xml:lang="en">Insert an asset</description>
+        <description xml:lang="de">Ein Asset einfügen</description>
+        <surround>
+          <parameter xpath="a/attribute::href" type="resource">
+            <name xml:lang="en">URI</name>
+            <name xml:lang="de">URI</name>
+            <description xml:lang="en">Asset address</description>
+            <description xml:lang="de">Assetadresse</description>
+          </parameter>
+          <fragment>
+            <a xmlns="" href=""/>
+          </fragment>
+        </surround>
+        <insert>
+          <parameter xpath="a/attribute::href" type="resource">
+            <name xml:lang="en">URI</name>
+            <name xml:lang="de">URI</name>
+            <description xml:lang="en">Asset address</description>
+            <description xml:lang="de">Assetadresse</description>
+          </parameter>
+          <parameter xpath="a/object/text()">
+            <name xml:lang="en">Alternative text</name>
+            <name xml:lang="de">Alternativer Text</name>
+            <description xml:lang="en">Alternative text which is shown if image display is disabled or the image could not be loaded</description>
+            <description xml:lang="de">Alternativer text der gezeigt wird, falls das Anzeigen von Bildern unterbunden wurde oder das Bild nicht geladen werden konnte</description>
+          </parameter>
+          <fragment>
+            <a xmlns="" href="">
+              <object class="asset"/>
+            </a>
+          </fragment>
+        </insert>
       </widget>
     </widgets>
   </edit>

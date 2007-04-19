@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -41,13 +41,16 @@
 function NeutronParser10(aDocument, aBaseURI) {
     /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10(\"" + aDocument + "\", \"" + aBaseURI + "\") invoked\n");
 
+     // call super constructor
+    NeutronParser.call(this);
+
     this.documentDOM = aDocument;
     this.baseURI     = aBaseURI;
     this.ioService   = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 }
 
 NeutronParser10.prototype = {
-    __proto__: NeutronParser,
+    __proto__: NeutronParser.prototype,
 
     documentDOM: null,
     baseURI    : null,
@@ -67,7 +70,8 @@ NeutronParser10.prototype = {
 
         var namespace = {
             "neutron10" : "http://www.wyona.org/neutron/1.0",
-            "D"         : "DAV:"
+            "D"         : "DAV",
+            "xml"       : "http://www.w3.org/XML/1998/namespace"
         };
 
         return namespace[aPrefix] || null;
@@ -255,17 +259,16 @@ NeutronParser10.prototype = {
         var templates     = null;
         var template      = null;
         var templateArray = new Array();
-        var index         = 0;
         var uri           = null;
 
         templates = aDocument.evaluate("neutron10:template", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
 
         while (template = templates.iterateNext()) {
-            templateArray[index++] = {
+            templateArray.push({
                 name: aDocument.evaluate("attribute::name", template, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
                 uri: ((uri = aDocument.evaluate("attribute::uri", template, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != "" ? this.ioService.newURI(uri, null, this.baseURI) : null),
                 mimeType: aDocument.evaluate("attribute::mime-type", template, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue
-            }
+            });
         }
 
         return (templateArray.length > 0 ? templateArray : null);
@@ -311,15 +314,14 @@ NeutronParser10.prototype = {
         var schemas     = null;
         var schema      = null;
         var schemaArray = new Array();
-        var index       = 0;
 
         schemas = aDocument.evaluate("neutron10:schemas/neutron10:schema", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
 
         while (schema = schemas.iterateNext()) {
-            schemaArray[index++] = {
+            schemaArray.push({
                 href: aDocument.evaluate("attribute::href", schema, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
                 type: aDocument.evaluate("attribute::type", schema, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue
-            }
+            });
         }
 
         return (schemaArray.length > 0 ? schemaArray : null);
@@ -329,15 +331,14 @@ NeutronParser10.prototype = {
         var styles     = null;
         var style      = null;
         var styleArray = new Array();
-        var index      = 0;
         var sourceURI  = null;
 
         styles = aDocument.evaluate("neutron10:styles/neutron10:style", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
 
         while (style = styles.iterateNext()) {
-            styleArray[index++] = {
+            styleArray.push({
                 href: ((sourceURI = aDocument.evaluate("attribute::href", style, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != "" ? this.ioService.newURI(sourceURI, null, this.baseURI) : null)
-            }
+            });
         }
 
         return (styleArray.length > 0 ? styleArray : null);
@@ -366,41 +367,163 @@ NeutronParser10.prototype = {
         var widgets     = null;
         var widget      = null;
         var widgetArray = new Array();
-        var index       = 0;
-        var sourceURI   = null;
-        var iconIndex   = null;
-        var iconFile    = null;
 
-        widgets = aDocument.evaluate("neutron10:widgets/neutron10:widget", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+        widgets = aDocument.evaluate("neutron10:widgets/*[self::neutron10:widget or self::neutron10:widgetgroup]", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 
         while (widget = widgets.iterateNext()) {
-
-            iconFile = aDocument.evaluate("attribute::icon", widget, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-            if ((iconIndex = iconFile.lastIndexOf("/")) != -1) {
-                iconFile = iconFile.substr(iconIndex+1);
-            }
-
-            widgetArray[index++] = {
-                attributes:          this.__parseWidgetAttributes(aDocument, widget),
-                icon:                iconFile,
-                iconURI:             ((sourceURI = aDocument.evaluate("attribute::icon", widget, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != "" ? this.ioService.newURI(sourceURI, null, this.baseURI) : null),
-                fragment:            this.__parseWidgetFragment(aDocument, widget),
-                fragmentAttributes:  this.__parseWidgetFragmentAttributes(aDocument, widget)
+            switch (widget.localName) {
+                case "widget":
+                    widgetArray.push(this.__parseWidget(aDocument, widget));
+                    break;
+                case "widgetgroup":
+                    widgetArray.push(this.__parseWidgetGroup(aDocument, widget));
+                    break;
+                default:
             }
         }
 
         return (widgetArray.length > 0 ? widgetArray : null);
     },
 
+    __parseWidget: function (aDocument, aNode) {
+        var widget    = null;
+        var sourceURI = null;
+        var iconIndex = null;
+        var iconFile  = null;
+
+        widget = new Neutron10Widget();
+
+        iconFile = aDocument.evaluate("attribute::icon", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+        if ((iconIndex = iconFile.lastIndexOf("/")) != -1) {
+            iconFile = iconFile.substr(iconIndex+1);
+        }
+
+        widget.icon               = iconFile;
+        widget.iconURI            = ((sourceURI = aDocument.evaluate("attribute::icon", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != "" ? this.ioService.newURI(sourceURI, null, this.baseURI) : null);
+        widget.name               = this.__parseWidgetNames(aDocument, aNode);
+        widget.description        = this.__parseWidgetDescriptions(aDocument, aNode);
+        widget.surround           = this.__parseWidgetSurroundAction(aDocument, aNode);
+        widget.insert             = this.__parseWidgetInsertAction(aDocument, aNode);
+
+        return widget;
+    },
+
+    __parseWidgetGroup: function (aDocument, aNode) {
+        var widgetGroup = null;
+        var widgets     = null;
+        var widget      = null;
+
+        widgetGroup = new Neutron10WidgetGroup();
+
+        widgetGroup.name        = this.__parseWidgetNames(aDocument, aNode);
+        widgetGroup.description = this.__parseWidgetDescriptions(aDocument, aNode);
+
+        widgets = aDocument.evaluate("neutron10:widget", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+
+        while (widget = widgets.iterateNext()) {
+            widgetGroup.widgets.push(this.__parseWidget(aDocument, widget));
+        }
+
+        return widgetGroup;
+    },
+
+    __parseWidgetNames: function (aDocument, aNode) {
+        var names     = null;
+        var name      = null;
+        var nameArray = new Array();
+
+        names = aDocument.evaluate("neutron10:name", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+
+        while (name = names.iterateNext()) {
+            nameArray.push(this.__parseWidgetNameAlikes(aDocument, name));
+        }
+
+        return (nameArray.length > 0 ? nameArray : null);
+    },
+
+    __parseWidgetDescriptions: function (aDocument, aNode) {
+        var descriptions = null;
+        var description  = null;
+        var descArray    = new Array();
+
+        descriptions = aDocument.evaluate("neutron10:description", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+
+        while (description = descriptions.iterateNext()) {
+            descArray.push(this.__parseWidgetNameAlikes(aDocument, description));
+        }
+
+        return (descArray.length > 0 ? descArray : null);
+    },
+
+    __parseWidgetNameAlikes: function (aDocument, aNode) {
+        var lang = null;
+        var text = null;
+
+        lang = aDocument.evaluate("attribute::xml:lang", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+        text = aDocument.evaluate("child::text()", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+
+        return [lang, text];
+    },
+
+    __parseWidgetSurroundAction: function (aDocument, aNode) {
+        var action = null;
+
+        if (action = aDocument.evaluate("neutron10:surround", aNode, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
+            return this.__parseWidgetAction(aDocument, action);
+        }
+
+        return null;
+    },
+
+    __parseWidgetInsertAction: function (aDocument, aNode) {
+        var action = null;
+
+        if (action = aDocument.evaluate("neutron10:insert", aNode, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
+            return this.__parseWidgetAction(aDocument, action);
+        }
+
+        return null;
+    },
+
+    __parseWidgetAction: function (aDocument, aNode) {
+        var action = null;
+
+        action = new Neutron10WidgetAction();
+
+        action.parameters = this.__parseWidgetActionParameters(aDocument, aNode);
+        action.fragment   = this.__parseWidgetFragment(aDocument, aNode);
+
+        return action;
+    },
+
+    __parseWidgetActionParameters: function(aDocument, aNode) {
+        var parameters        = null;
+        var parameter         = null;
+        var widgetActionParam = null;
+        var parameterArray    = new Array();
+
+        parameters = aDocument.evaluate("neutron10:parameter", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+
+        while (parameter = parameters.iterateNext()) {
+            widgetActionParam = new Neutron10WidgetActionParameter();
+
+            widgetActionParam.xpath       = aDocument.evaluate("attribute::xpath", parameter, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+            widgetActionParam.type        = aDocument.evaluate("attribute::type", parameter, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+            widgetActionParam.name        = this.__parseWidgetNames(aDocument, parameter);
+            widgetActionParam.description = this.__parseWidgetDescriptions(aDocument, parameter);
+
+            parameterArray.push(widgetActionParam);
+        }
+
+        return (parameterArray.length > 0 ? parameterArray : null);
+    },
+
     __parseWidgetFragment: function(aDocument, aNode) {
-        var fragment          = null;
-        var fragmentNode      = null;
-        var xmlDoc            = null;
-        var importNode        = null;
+        var fragmentNode = null;
+        var xmlDoc       = null;
+        var importNode   = null;
 
-        fragment = aDocument.evaluate("neutron10:fragment/child::*", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
-
-        fragmentNode = fragment.iterateNext();
+        fragmentNode = aDocument.evaluate("neutron10:fragment/child::*", aNode, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 
         if (fragmentNode) {
             xmlDoc = Components.classes["@mozilla.org/xml/xml-document;1"].createInstance(Components.interfaces.nsIDOMXMLDocument);
@@ -409,41 +532,6 @@ NeutronParser10.prototype = {
         }
 
         return xmlDoc;
-    },
-
-    __parseWidgetAttributes: function(aDocument, aNode) {
-        var attributes        = null;
-        var attribute         = null;
-        var attributeArray    = new Array();
-        var index             = 0;
-
-        attributes = aDocument.evaluate("attribute::*", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
-
-        while (attribute = attributes.iterateNext()) {
-            index++;
-            attributeArray[attribute.name] = attribute.nodeValue;
-        }
-
-        return (index > 0 ? attributeArray : null);
-    },
-
-    __parseWidgetFragmentAttributes: function(aDocument, aNode) {
-        var attributes        = null;
-        var attribute         = null;
-        var attributeArray    = new Array();
-        var index             = 0;
-
-        attributes = aDocument.evaluate("neutron10:attribute", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
-
-        while (attribute = attributes.iterateNext()) {
-            attributeArray[index++] = {
-                name: aDocument.evaluate("attribute::name", attribute, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
-                xpath: aDocument.evaluate("attribute::xpath", attribute, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
-                type: aDocument.evaluate("attribute::type", attribute, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue
-            }
-        }
-
-        return (attributeArray.length > 0 ? attributeArray : null);
     }
 };
 
@@ -485,64 +573,315 @@ Neutron10Sitetree.prototype = {
 };
 
 
-
-/**
- * NeutronProtocolCheckinException constructor.
- * Instantiates a new object of type
- * NeutronProtocolCheckinException.
- *
- * @constructor
- * @param  {String}                          aMessage a descriptive error message
- * @return {NeutronProtocolCheckinException}
- */
-function NeutronProtocolCheckinException(aMessage) {
-    /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronProtocolCheckinException(\"" + aMessage + "\") invoked\n");
-
-    NeutronProtocolException.call(this, aMessage);
-
-    this.name = "NeutronProtocolCheckinException";
+function Neutron10Widget() {
+    // call super constructor
+    NeutronWidget.call(this);
 }
 
-/**
- * @field {String} aURL       the URI of the document on which the error occurred
- * @field {String} aLockedBy  the name of the user who holds the current lock
- * @field {String} aBreakLock a URI to GET which breaks the current lock
- */
-NeutronProtocolCheckinException.prototype = {
-    __proto__: NeutronProtocolException.prototype,
+Neutron10Widget.prototype = {
+    __proto__: NeutronWidget.prototype,
 
-    url:       null,
-    lockedBy:  null,
-    breakLock: null
+    __name     : null,
+    __nameCache: null,
+    __desc     : null,
+    __descCache: null,
+
+    icon    : null,
+    iconURI : null,
+    surround: null,
+    insert  : null,
+
+    __getByLang: function (aLangMap, aLangID) {
+        var retval      = null;
+        var prefixIndex = null;
+        var langID      = null;
+
+        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang(\"" + aLangMap + "\", \"" + aLangID + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aLangMap != null);
+        /* DEBUG */ YulupDebug.ASSERT(aLangID  != null);
+
+        retval = aLangMap[aLangID];
+
+        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang: 1. language ID = \"" + aLangID + "\", retval = \"" + retval + "\"\n");
+
+        if (retval)
+            return retval;
+
+        // try to cut down the lang ID to its prefix
+        prefixIndex = aLangID.indexOf("-");
+        if (prefixIndex > 0)
+            langID = aLangID.substring(0, prefixIndex);
+
+        retval = aLangMap[langID];
+
+        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang: 2. language ID = \"" + langID + "\", retval = \"" + retval + "\"\n");
+
+        if (retval)
+            return retval;
+
+        // return first value in map
+        for (retval in aLangMap)
+            return aLangMap[retval];
+
+        return "";
+    },
+
+    set name(aValue) {
+        var name = {};
+
+        if (aValue) {
+            for (var i = 0; i < aValue.length; i++) {
+                name[aValue[i][0]] = aValue[i][1];
+            }
+        }
+
+        this.__name = name;
+    },
+
+    get name() {
+        if (!this.__nameCache)
+            this.__nameCache = this.__getByLang(this.__name, YulupAppServices.getAppLocale());
+
+        return this.__nameCache;
+    },
+
+    set description(aValue) {
+        var desc = {};
+
+        if (aValue) {
+            for (var i = 0; i < aValue.length; i++) {
+                desc[aValue[i][0]] = aValue[i][1];
+            }
+        }
+
+        this.__desc = desc;
+    },
+
+    get description() {
+        if (!this.__descCache)
+            this.__descCache = this.__getByLang(this.__desc, YulupAppServices.getAppLocale());
+
+        return this.__descCache;
+    },
+
+    supportsActionSurround: function () {
+        return (this.surround != null);
+    },
+
+    supportsActionInsert: function () {
+        return (this.insert != null);
+    },
+
+    getSurroundActionFragment: function () {
+        if (!this.surround)
+            return null;
+
+        return this.surround.fragment;
+    },
+
+    getInsertActionFragment: function () {
+        if (!this.insert)
+            return null;
+
+        return this.insert.fragment;
+    }
 };
 
 
-/**
- * NeutronProtocolDataNotWellFormedException constructor.
- * Instantiates a new object of type
- * NeutronProtocolDataNotWellFormedException.
- *
- * @constructor
- * @param  {String}                                    aMessage a descriptive error message
- * @return {NeutronProtocolDataNotWellFormedException}
- */
-function NeutronProtocolDataNotWellFormedException(aMessage) {
-    /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronProtocolDataNotWellFormedException(\"" + aMessage + "\") invoked\n");
+function Neutron10WidgetGroup() {
+    // call super constructor
+    NeutronWidgetGroup.call(this);
 
-    NeutronProtocolException.call(this, aMessage);
-
-    this.name = "NeutronProtocolDataNotWellFormedException";
+    this.widgets = new Array();
 }
 
-/**
- * @field {String} aURL        the URI of the document on which the error occurred
- * @field {String} aLineNumber the line number on which the error occurred
- * @field {String} aError      the actual problem in the document as reported by the validator
- */
-NeutronProtocolDataNotWellFormedException.prototype = {
-    __proto__: NeutronProtocolException.prototype,
+Neutron10WidgetGroup.prototype = {
+    __proto__: NeutronWidgetGroup.prototype,
 
-    url:        null,
-    lineNumber: null,
-    error:      null
+    __name     : null,
+    __nameCache: null,
+    __desc     : null,
+    __descCache: null,
+
+    widgets: null,
+
+    __getByLang: function (aLangMap, aLangID) {
+        var retval      = null;
+        var prefixIndex = null;
+        var langID      = null;
+
+        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang(\"" + aLangMap + "\", \"" + aLangID + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aLangMap != null);
+        /* DEBUG */ YulupDebug.ASSERT(aLangID  != null);
+
+        retval = aLangMap[aLangID];
+
+        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang: 1. language ID = \"" + aLangID + "\", retval = \"" + retval + "\"\n");
+
+        if (retval)
+            return retval;
+
+        // try to cut down the lang ID to its prefix
+        prefixIndex = aLangID.indexOf("-");
+        if (prefixIndex > 0)
+            langID = aLangID.substring(0, prefixIndex);
+
+        retval = aLangMap[langID];
+
+        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang: 2. language ID = \"" + langID + "\", retval = \"" + retval + "\"\n");
+
+        if (retval)
+            return retval;
+
+        // return first value in map
+        for (retval in aLangMap)
+            return aLangMap[retval];
+
+        return "";
+    },
+
+    set name(aValue) {
+        var name = {};
+
+        if (aValue) {
+            for (var i = 0; i < aValue.length; i++) {
+                name[aValue[i][0]] = aValue[i][1];
+            }
+        }
+
+        this.__name = name;
+    },
+
+    get name() {
+        if (!this.__nameCache)
+            this.__nameCache = this.__getByLang(this.__name, YulupAppServices.getAppLocale());
+
+        return this.__nameCache;
+    },
+
+    set description(aValue) {
+        var desc = {};
+
+        if (aValue) {
+            for (var i = 0; i < aValue.length; i++) {
+                desc[aValue[i][0]] = aValue[i][1];
+            }
+        }
+
+        this.__desc = desc;
+    },
+
+    get description() {
+        if (!this.__descCache)
+            this.__descCache = this.__getByLang(this.__desc, YulupAppServices.getAppLocale());
+
+        return this.__descCache;
+    }
+};
+
+
+function Neutron10WidgetAction() {
+    // call super constructor
+    NeutronWidgetAction.call(this);
 }
+
+Neutron10WidgetAction.prototype = {
+    __proto__: NeutronWidgetAction.prototype,
+
+    parameters: null,
+    fragment  : null
+};
+
+
+function Neutron10WidgetActionParameter() {
+    // call super constructor
+    NeutronWidgetActionParameter.call(this);
+}
+
+Neutron10WidgetActionParameter.prototype = {
+    __proto__: NeutronWidgetActionParameter.prototype,
+
+    __name     : null,
+    __nameCache: null,
+    __desc     : null,
+    __descCache: null,
+
+    xpath: null,
+    type : null,
+
+    __getByLang: function (aLangMap, aLangID) {
+        var retval      = null;
+        var prefixIndex = null;
+        var langID      = null;
+
+        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang(\"" + aLangMap + "\", \"" + aLangID + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aLangMap != null);
+        /* DEBUG */ YulupDebug.ASSERT(aLangID  != null);
+
+        retval = aLangMap[aLangID];
+
+        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang: 1. language ID = \"" + aLangID + "\", retval = \"" + retval + "\"\n");
+
+        if (retval)
+            return retval;
+
+        // try to cut down the lang ID to its prefix
+        prefixIndex = aLangID.indexOf("-");
+        if (prefixIndex > 0)
+            langID = aLangID.substring(0, prefixIndex);
+
+        retval = aLangMap[langID];
+
+        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang: 2. language ID = \"" + langID + "\", retval = \"" + retval + "\"\n");
+
+        if (retval)
+            return retval;
+
+        // return first value in map
+        for (retval in aLangMap)
+            return aLangMap[retval];
+
+        return "";
+    },
+
+    set name(aValue) {
+        var name = {};
+
+        if (aValue) {
+            for (var i = 0; i < aValue.length; i++) {
+                name[aValue[i][0]] = aValue[i][1];
+            }
+        }
+
+        this.__name = name;
+    },
+
+    get name() {
+        if (!this.__nameCache)
+            this.__nameCache = this.__getByLang(this.__name, YulupAppServices.getAppLocale());
+
+        return this.__nameCache;
+    },
+
+    set description(aValue) {
+        var desc = {};
+
+        if (aValue) {
+            for (var i = 0; i < aValue.length; i++) {
+                desc[aValue[i][0]] = aValue[i][1];
+            }
+        }
+
+        this.__desc = desc;
+    },
+
+    get description() {
+        if (!this.__descCache)
+            this.__descCache = this.__getByLang(this.__desc, YulupAppServices.getAppLocale());
+
+        return this.__descCache;
+    }
+};

@@ -1,0 +1,18 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* ------------------------ Bindings ------------------------ */
+
+widgetgroup {
+  -moz-binding: url('chrome://yulup/content/editor/widgets/widgetgroup.xml#widgetgroup');
+  -moz-box-orient: vertical;
+  -moz-box-align: center;
+  margin: 1px 1px 4px 1px;
+}
+
+widgetgroup * {
+  font-size: 11px;
+}
+
+widgetgroup label {
+  margin: 3px 0px 0px 0px;
+}

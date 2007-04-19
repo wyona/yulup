@@ -370,6 +370,10 @@ WYSIWYGModeView.prototype = {
         }
     },
 
+    prefersSurround: function () {
+        return !this.view.selection.isCollapsed;
+    },
+
     doInsertCommand: function (aCommand, aFragment) {
         var fragmentData = null;
 
@@ -409,7 +413,9 @@ WYSIWYGModeView.prototype = {
 
             this.view.setInlineProperty(elemAtom, attrName, attrValue);
 
-            WidgetHandler.activateCommand(aCommand);
+            /* TODO: we should perform a map lookup first to activate
+             * all similar commands (would provide nicer UI behaviour). */
+            WidgetHandler.activateCommands([aCommand]);
         }
     },
 
@@ -432,7 +438,9 @@ WYSIWYGModeView.prototype = {
 
             this.view.removeInlineProperty(elemAtom, null);
 
-            WidgetHandler.deactivateCommand(aCommand);
+            /* TODO: we should perform a map lookup first to deactivate
+             * all similar commands (would provide nicer UI behaviour). */
+            WidgetHandler.deactivateCommands([aCommand]);
         }
     },
 
@@ -1413,6 +1421,7 @@ WYSIWYGUpdateSelectionListener.prototype = {
     __widgetCommandList: null,
     __locationPathBox  : null,
     __menuPopup        : null,
+    __currentNode      : null,
 
     notifySelectionChanged: function (aDocument, aSelection, aReason) {
         var elemNameList            = null;
@@ -1421,46 +1430,51 @@ WYSIWYGUpdateSelectionListener.prototype = {
 
         /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged() invoked\n");
 
-        elemNameList = this.__view.getNodesToRoot(aSelection);
+        // check if the selected node actually changed
+        if (!(aSelection.isCollapsed && (this.__currentNode == aSelection.focusNode))) {
+            this.__currentNode = aSelection.focusNode;
 
-        WidgetHandler.updateCommandActiveStates(this.__widgetCommandList, elemNameList);
+            elemNameList = this.__view.getNodesToRoot(aSelection);
 
-        /* Invariant: currentLocationPathNode always points to a "/" label or null,
-         * and a "/" label always has a non-null next sibling. */
-        currentLocationPathNode = this.__locationPathBox.firstChild;
+            WidgetHandler.updateCommandActiveStates(this.__widgetCommandList, elemNameList);
 
-        for (var i = elemNameList.length - 1; i >= 0; i--) {
-            if (currentLocationPathNode) {
-                if (currentLocationPathNode.nextSibling.locationNode == elemNameList[i].node) {
-                    /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: path element \"" + elemNameList[i].name + "\" already exists\n");
+            /* Invariant: currentLocationPathNode always points to a "/" label or null,
+             * and a "/" label always has a non-null next sibling. */
+            currentLocationPathNode = this.__locationPathBox.firstChild;
 
-                    currentLocationPathNode = currentLocationPathNode.nextSibling.nextSibling;
+            for (var i = elemNameList.length - 1; i >= 0; i--) {
+                if (currentLocationPathNode) {
+                    if (currentLocationPathNode.nextSibling.locationNode == elemNameList[i].node) {
+                        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: path element \"" + elemNameList[i].name + "\" already exists\n");
+
+                        currentLocationPathNode = currentLocationPathNode.nextSibling.nextSibling;
+                    } else {
+                        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: replacing path element \"" + currentLocationPathNode.nextSibling.label + "\" by \"" + elemNameList[i].name + "\"\n");
+
+                        currentLocationPathNode.nextSibling.label        = elemNameList[i].name;
+                        currentLocationPathNode.nextSibling.locationNode = elemNameList[i].node;
+
+                        currentLocationPathNode = currentLocationPathNode.nextSibling.nextSibling;
+                    }
                 } else {
-                    /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: replacing path element \"" + currentLocationPathNode.nextSibling.label + "\" by \"" + elemNameList[i].name + "\"\n");
+                    /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: creating new path section " + i + " for \"" + elemNameList[i].name + "\"\n");
 
-                    currentLocationPathNode.nextSibling.label        = elemNameList[i].name;
-                    currentLocationPathNode.nextSibling.locationNode = elemNameList[i].node;
+                    elem = document.createElementNS(XUL_NAMESPACE_URI, "label");
+                    elem.setAttribute("value", "/");
+                    this.__locationPathBox.appendChild(elem);
 
-                    currentLocationPathNode = currentLocationPathNode.nextSibling.nextSibling;
+                    elem = this.__createPathButton(elemNameList[i].name, elemNameList[i].node);
+
+                    this.__locationPathBox.appendChild(elem);
+
+                    currentLocationPathNode = elem.nextSibling;
                 }
-            } else {
-                /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: creating new path section " + i + " for \"" + elemNameList[i].name + "\"\n");
-
-                elem = document.createElementNS(XUL_NAMESPACE_URI, "label");
-                elem.setAttribute("value", "/");
-                this.__locationPathBox.appendChild(elem);
-
-                elem = this.__createPathButton(elemNameList[i].name, elemNameList[i].node);
-
-                this.__locationPathBox.appendChild(elem);
-
-                currentLocationPathNode = elem.nextSibling;
             }
-        }
 
-        // remove remaining siblings
-        if (currentLocationPathNode)
-            this.__deleteSelfAndFollowingSiblings(currentLocationPathNode);
+            // remove remaining siblings
+            if (currentLocationPathNode)
+                this.__deleteSelfAndFollowingSiblings(currentLocationPathNode);
+        }
     },
 
     __createPathButton: function (aName, aNode) {

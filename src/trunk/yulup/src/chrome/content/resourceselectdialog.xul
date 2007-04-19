@@ -49,7 +49,7 @@
     <script type="application/x-javascript"
             src="chrome://yulup/content/common.js"/>
     <script type="application/x-javascript"
-            src="chrome://yulup/content/widget.js"/>
+            src="chrome://yulup/content/editor/widgets/widget.js"/>
     <script type="application/x-javascript"
             src="chrome://yulup/content/resourceselect.js"/>
     <script type="application/x-javascript"
