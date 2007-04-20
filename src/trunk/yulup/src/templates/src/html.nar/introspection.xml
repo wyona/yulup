@@ -266,7 +266,7 @@
             <description xml:lang="de">Alternativer text der gezeigt wird, falls das Anzeigen von Bildern unterbunden wurde oder das Bild nicht geladen werden konnte</description>
           </parameter>
           <fragment>
-            <img xmlns="" src="http://www.yulup.org/images/whale-logo.gif" alt="Yulup Logo"/>
+            <img xmlns="" src="" alt=""/>
           </fragment>
         </insert>
       </widget>
