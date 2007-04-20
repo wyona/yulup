@@ -34,7 +34,7 @@
 
   <binding id="resourceselector">
     <content>
-      <xul:button type="menu" xbl:inherits="label">
+      <xul:button type="menu" xbl:inherits="label,disabled">
         <xul:menupopup/>
       </xul:button>
     </content>
@@ -50,9 +50,9 @@
 
           this.__menupopup = document.getAnonymousNodes(this)[0].childNodes[0];
 
-
           // tell our message proxy that we are ready and that message dispatching can start
-          this.proxy.setReady();
+          if (this.proxy)
+              this.proxy.setReady();
         ]]>
       </constructor>
 

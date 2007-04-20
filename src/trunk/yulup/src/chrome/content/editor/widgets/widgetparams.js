@@ -96,32 +96,21 @@ var WidgetDialog = {
             // add a type specific action button
             switch (widgetAction.parameters[i].type) {
                 case "resource":
-                    /*
-                    elem = document.createElement("button");
-                    elem.setAttribute("id", "button" + widgetAction.parameters[i].id);
-                    elem.setAttribute("label", document.getElementById("uiYulupEditorStringbundle").getString("editorWidgetInsertSelect.label"));
-                    elem.setAttribute("name", widgetAction.parameters[i].id);
+                    elem = document.createElement("resourceselector");
+                    elem.setAttribute("label", YulupLocalisationServices.getStringBundle("chrome://yulup/locale/widgets.properties").GetStringFromName("resourceSelector.label"));
 
-                    // the resource attribute type needs a sitetree URI
                     if (this.__sitetreeURI == null) {
                         elem.setAttribute("disabled", "true");
                     } else {
-                        elem.setAttribute("oncommand", "WidgetDialog.doSelectCommandProxy(this)");
+                        messageProxy = new YulupMessageProxy(elem);
+                        elem.proxy = messageProxy;
+
+                        // TODO: i18n
+                        messageProxy.dispatchMessage("addItem", ["Local", "WidgetDialog.doSelectCommandProxy(0, " + widgetAction.parameters[i].id + ")"]);
+                        messageProxy.dispatchMessage("addItem", ["Remote", "WidgetDialog.doSelectCommandProxy(1, " + widgetAction.parameters[i].id + ")"]);
                     }
-                    */
-
-                    elem = document.createElement("resourceselector");
-
-                    elem.setAttribute("label", YulupLocalisationServices.getStringBundle("chrome://yulup/locale/widgets.properties").GetStringFromName("resourceSelector.label"));
-
-                    messageProxy = new YulupMessageProxy(elem);
-                    elem.proxy = messageProxy;
 
                     container.appendChild(elem);
-
-                    // TODO: i18n
-                    messageProxy.dispatchMessage("addItem", ["Local", "WidgetDialog.doSelectCommandProxy(0, " + widgetAction.parameters[i].id + ")"]);
-                    messageProxy.dispatchMessage("addItem", ["Remote", "WidgetDialog.doSelectCommandProxy(1, " + widgetAction.parameters[i].id + ")"]);
 
                     break;
                 case "color":
