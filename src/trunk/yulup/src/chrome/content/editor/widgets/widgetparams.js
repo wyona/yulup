@@ -44,6 +44,7 @@ var WidgetDialog = {
         var widgetRows       = null;
         var label            = null;
         var elem             = null;
+        var messageProxy     = null;
         var row              = null;
         var container        = null;
         var textbox          = null;
@@ -95,6 +96,7 @@ var WidgetDialog = {
             // add a type specific action button
             switch (widgetAction.parameters[i].type) {
                 case "resource":
+                    /*
                     elem = document.createElement("button");
                     elem.setAttribute("id", "button" + widgetAction.parameters[i].id);
                     elem.setAttribute("label", document.getElementById("uiYulupEditorStringbundle").getString("editorWidgetInsertSelect.label"));
@@ -106,8 +108,20 @@ var WidgetDialog = {
                     } else {
                         elem.setAttribute("oncommand", "WidgetDialog.doSelectCommandProxy(this)");
                     }
+                    */
+
+                    elem = document.createElement("resourceselector");
+
+                    elem.setAttribute("label", YulupLocalisationServices.getStringBundle("chrome://yulup/locale/widgets.properties").GetStringFromName("resourceSelector.label"));
+
+                    messageProxy = new YulupMessageProxy(elem);
+                    elem.proxy = messageProxy;
 
                     container.appendChild(elem);
+
+                    // TODO: i18n
+                    messageProxy.dispatchMessage("addItem", ["Local", "WidgetDialog.doSelectCommandProxy(0, " + widgetAction.parameters[i].id + ")"]);
+                    messageProxy.dispatchMessage("addItem", ["Remote", "WidgetDialog.doSelectCommandProxy(1, " + widgetAction.parameters[i].id + ")"]);
 
                     break;
                 case "color":
@@ -243,7 +257,20 @@ var WidgetDialog = {
         return retval;
     },
 
-    doSelectCommandProxy: function (aElement) {
-        ResourceSelectDialog.doSelectCommand(this.__sitetreeURI, aElement.getAttribute("name"), this.__topWindow);
+    doSelectCommandProxy: function (aAction, aFieldID) {
+        var value = null;
+
+        switch (aAction) {
+            case 0:
+                value = ResourceSelectDialog.doSelectFromLocal(this.__sitetreeURI, this.__topWindow);
+                break;
+            case 1:
+                value = ResourceSelectDialog.doSelectFromRemote(this.__sitetreeURI, this.__topWindow);
+                break;
+            default:
+        }
+
+        if (value)
+            document.getElementById(aFieldID).setAttribute("value", value);
     }
 };

@@ -1,0 +1,7 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* ------------------------ Bindings ------------------------ */
+
+resourceselector {
+  -moz-binding: url('chrome://yulup/content/editor/widgets/resourceselector.xml#resourceselector');
+}

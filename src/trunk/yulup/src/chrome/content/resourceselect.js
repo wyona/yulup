@@ -84,114 +84,108 @@ var ResourceSelectDialog = {
     },
 
     /**
-     * Selects a local or remote asset and performs
-     * upload if needed.
+     * Selects a local asset and performs upload if needed.
      *
      * @param  {nsIURI}       aSitetreeURI  the URI of the sitetree
-     * @param  {String}       aTextBoxId    a textbox ID to write the selected URI to
      * @param  {nsIDOMWindow} aWindow       a handle to a non-modal window
-     * @return {Undefined}  does not have a return value
+     * @return {String}  returns the URI of the selected asset or null if the selection was aborted
      */
-    doSelectCommand: function(aSitetreeURI, aTextBoxId, aWindow) {
-        var enumLabels     = null;
-        var objectSource   = null;
+    doSelectFromLocal: function (aSitetreeURI, aWindow) {
         var localFileURI   = null;
+        var enumLabels     = null;
         var objectTarget   = null;
-        var returnObject   = null;
         var progressDialog = null;
         var mimeType       = null;
         var sourceFile     = null;
-        var targetURI      = null;
         var uploadURI      = null;
 
-        /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialog.doSelectCommand() invoked\n");
+        /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialog.doSelectFromLocal() invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aSitetreeURI != null);
-        /* DEBUG */ YulupDebug.ASSERT(aTextBoxId   != null);
         /* DEBUG */ YulupDebug.ASSERT(aWindow      != null);
 
+        // select from local
+        localFileURI = PersistenceService.queryOpenFileURI(PersistenceService.FILETYPE_BINARY);
+
+        if (!localFileURI)
+            return null;
+
+        // find out where to place the local resource
         // TODO: i18n
-        enumLabels = ["Local", "Remote"];
+        enumLabels = ["Near the document", "Select target manually"];
 
-        // find out if we should select a local or a remote resource
         // TODO: i18n
-        if ((objectSource = YulupDialogService.openEnumDialog("Select Source", "Please select the source of the resource.", enumLabels, 0)) == null)
-            return;
+        if ((objectTarget = YulupDialogService.openEnumDialog("Select Target", "Please select where your asset should be stored.", enumLabels, 0)) == null)
+            return null;
 
-        if (objectSource != null && objectSource != -1) {
-            /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialog.doSelectCommand: selection source = \"" + objectSource + "\"\n");
+        switch (objectTarget) {
+            case 0:
+                // upload the object relative to the document URI
+                // TODO: get document URI
+                uploadURI = "http://demo.yulup.org/" + localFileURI.file.leafName;
 
-            switch (objectSource) {
-                case 0:
-                    // select from local
-                    localFileURI = PersistenceService.queryOpenFileURI(PersistenceService.FILETYPE_BINARY);
+                break;
+            case 1:
+                // query for the upload location
+                uploadURI = ResourceUploadDialog.showDocumentUploadDialog(aSitetreeURI, localFileURI.file.leafName);
 
-                    if (!localFileURI)
-                        return;
+                if (!uploadURI)
+                    return null;
 
-                    // find out where to place the local resource
-                    // TODO: i18n
-                    enumLabels = ["Near the document", "Select target manually"];
-
-                    // TODO: i18n
-                    if ((objectTarget = YulupDialogService.openEnumDialog("Select Target", "Please select where your asset should be stored.", enumLabels, 0)) == null)
-                        return;
-
-                    switch (objectTarget) {
-                        case 0:
-                            // upload the object relative to the document URI
-                            // TODO: get document URI
-                            uploadURI = "http://demo.yulup.org/" + localFileURI.file.leafName;
-
-                            break;
-                        case 1:
-                            // query for the upload location
-                            uploadURI = ResourceUploadDialog.showDocumentUploadDialog(aSitetreeURI);
-
-                            if (!uploadURI)
-                                return;
-
-                            break;
-                        default:
-                            return;
-                    }
-
-                    // upload the object
-                    progressDialog = new ProgressDialog(aWindow, document.getElementById("uiYulupOverlayStringbundle").getString("yulupResourceUploadProgressDialogTitle.label"), uploadURI);
-
-                    // figure out MIME type
-                    mimeType = YulupContentServices.getContentTypeFromURI(localFileURI);
-
-                    sourceFile = PersistenceService.getFileDescriptor(localFileURI.path);
-
-                    // TODO: after closing the dialog, the download dies
-                    NetworkService.httpRequestUploadFile(uploadURI, sourceFile, null, mimeType, ResourceUploadDialog.__uploadRequestFinishedHandler, ResourceUploadDialog.__resourceUploadFinished, false, true, progressDialog);
-
-                    targetURI = uploadURI;
-
-                    break;
-                case 1:
-                    // select from remote
-                    returnObject = {
-                        error: null,
-                        returnValue: null
-                    };
-
-                    if (!window.openDialog(YULUP_RESOURCE_SELECT_CHROME_URI, "yulupWidgetResourceSelectDialog", "modal,resizable=no,centerscreen", aSitetreeURI, returnObject))
-                        return;
-
-                    if (!returnObject.returnValue)
-                        return;
-
-                    targetURI = returnObject.returnValue.spec;
-
-                    break;
-                default:
-                    return;
-            }
-
-            /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialog.doSelectCommand: inserting URI \"" + targetURI + "\"\n");
-            document.getElementById(aTextBoxId).setAttribute("value", targetURI);
+                break;
+           default:
+               return null;
         }
+
+        // upload the object
+        // TODO: perform i18n via stringbundle loader
+        progressDialog = new ProgressDialog(aWindow, document.getElementById("uiYulupOverlayStringbundle").getString("yulupResourceUploadProgressDialogTitle.label"), uploadURI);
+
+        // figure out MIME type
+        mimeType = YulupContentServices.getContentTypeFromURI(localFileURI);
+
+        sourceFile = PersistenceService.getFileDescriptor(localFileURI.path);
+
+        // TODO: after closing the dialog, the download dies
+        NetworkService.httpRequestUploadFile(uploadURI, sourceFile, null, mimeType, ResourceUploadDialog.__uploadRequestFinishedHandler, ResourceUploadDialog.__resourceUploadFinished, false, true, progressDialog);
+
+        /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialog.doSelectFromLocal: asset URI is \"" + uploadURI + "\"\n");
+
+        return uploadURI;
+    },
+
+    /**
+     * Selects a remote asset.
+     *
+     * @param  {nsIURI}       aSitetreeURI  the URI of the sitetree
+     * @param  {nsIDOMWindow} aWindow       a handle to a non-modal window
+     * @return {String}  returns the URI of the selected asset or null if the selection was aborted
+     */
+    doSelectFromRemote: function (aSitetreeURI, aWindow) {
+        var returnObject = null;
+        var targetURI    = null;
+
+        /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialog.doSelectFromRemote() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aSitetreeURI != null);
+        /* DEBUG */ YulupDebug.ASSERT(aWindow      != null);
+
+        // select from remote
+        returnObject = {
+            error: null,
+            returnValue: null
+        };
+
+        if (!window.openDialog(YULUP_RESOURCE_SELECT_CHROME_URI, "yulupWidgetResourceSelectDialog", "modal,resizable=no,centerscreen", aSitetreeURI, returnObject))
+            return null;
+
+        if (!returnObject.returnValue)
+            return null;
+
+        targetURI = returnObject.returnValue.spec;
+
+        /* DEBUG */ dump("Yulup:widet.js:ResourceSelectDialog.doSelectFromRemote: asset URI is \"" + targetURI + "\"\n");
+
+        return targetURI;
     }
 };
