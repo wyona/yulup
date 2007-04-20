@@ -39,6 +39,9 @@ const PR_EXCL        = 0x80;
 const PERMS_FILE = 0644;
 
 var PersistenceService = {
+    FILETYPE_TEXT  : 0,
+    FILETYPE_BINARY: 1,
+
     /**
      * Return a file descriptor for a given platform-specific
      * path.
@@ -67,9 +70,10 @@ var PersistenceService = {
     /**
      * Open a file picker dialog to open a file from the file system.
      *
+     * @param  {Number} aFileType  the file type to open (FILETYPE_TEXT or FILETYPE_BINARY, or null)
      * @return {nsIFileURL} returns the selected URI or null if selection was aborted
      */
-    queryOpenFileURI: function () {
+    queryOpenFileURI: function (aFileType) {
         var documentURI   = null;
         var nsIFilePicker = null;
         var filePicker    = null;
@@ -81,8 +85,20 @@ var PersistenceService = {
         filePicker    = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 
         filePicker.init(window, document.getElementById("uiYulupEditorStringbundle").getString("editorFilePickerOpen.label"), nsIFilePicker.modeOpen);
-        filePicker.appendFilters(nsIFilePicker.filterXML);
-        filePicker.appendFilter("XHTML Files", "*.xhtml; *.html");
+
+        if (aFileType != null) {
+            switch (aFileType) {
+                case PersistenceService.FILETYPE_TEXT:
+                    filePicker.appendFilters(nsIFilePicker.filterHTML | nsIFilePicker.filterXML | nsIFilePicker.filterXUL | nsIFilePicker.filterText);
+                    filePicker.appendFilter("XHTML Files", "*.xhtml; *.html");
+                    break;
+                case PersistenceService.FILETYPE_BINARY:
+                    filePicker.appendFilters(nsIFilePicker.filterImages | nsIFilePicker.filterApps);
+                    break;
+                default:
+            }
+        }
+
         filePicker.appendFilters(nsIFilePicker.filterAll);
 
         if (filePicker.show() == nsIFilePicker.returnOK) {

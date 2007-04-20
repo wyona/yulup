@@ -124,7 +124,7 @@ var ResourceSelectDialog = {
             switch (objectSource) {
                 case 0:
                     // select from local
-                    localFileURI = PersistenceService.queryOpenFileURI();
+                    localFileURI = PersistenceService.queryOpenFileURI(PersistenceService.FILETYPE_BINARY);
 
                     if (!localFileURI)
                         return;

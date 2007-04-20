@@ -398,7 +398,7 @@ const Yulup = {
 
         /* DEBUG */ dump("Yulup:yulup.js:Yulup.openFromFile() invoked\n");
 
-        if (documentURI = PersistenceService.queryOpenFileURI()) {
+        if (documentURI = PersistenceService.queryOpenFileURI(PersistenceService.FILETYPE_TEXT)) {
             // figure out MIME type from document URI
             mimeType = YulupContentServices.getContentTypeFromURI(documentURI);
 
