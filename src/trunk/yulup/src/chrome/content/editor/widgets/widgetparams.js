@@ -247,14 +247,16 @@ var WidgetDialog = {
     },
 
     doSelectCommandProxy: function (aAction, aFieldID) {
-        var value       = null;
         var documentURI = null;
+        var value       = null;
         var uri         = null;
         var relURI      = null;
 
+        documentURI = this.__editorController.document.loadURI;
+
         switch (aAction) {
             case 0:
-                value = ResourceSelectDialog.doSelectFromLocal(this.__sitetreeURI, this.__topWindow);
+                value = ResourceSelectDialog.doSelectFromLocal(this.__sitetreeURI, this.__topWindow, documentURI);
                 break;
             case 1:
                 value = ResourceSelectDialog.doSelectFromRemote(this.__sitetreeURI, this.__topWindow);
@@ -265,8 +267,6 @@ var WidgetDialog = {
         if (value) {
             try {
                 // try to make the returned URI relative to the document URI
-                documentURI = this.__editorController.document.loadURI;
-
                 if (documentURI) {
                     uri = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(value, null, null);
 

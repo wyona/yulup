@@ -479,6 +479,14 @@ const YulupURIServices = {
         /* DEBUG */ YulupDebug.ASSERT(aBaseURI != null);
 
         return null;
+    },
+
+    resolveRelative: function (aURI, aLeafName) {
+        if (aURI && aLeafName) {
+            return aURI.resolve(aLeafName);
+        } else {
+            return null;
+        }
     }
 };
 

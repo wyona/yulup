@@ -88,9 +88,10 @@ var ResourceSelectDialog = {
      *
      * @param  {nsIURI}       aSitetreeURI  the URI of the sitetree
      * @param  {nsIDOMWindow} aWindow       a handle to a non-modal window
+     * @param  {nsIURI}       aDocumentURI  the URI which an upload should potentially be made relative against
      * @return {String}  returns the URI of the selected asset or null if the selection was aborted
      */
-    doSelectFromLocal: function (aSitetreeURI, aWindow) {
+    doSelectFromLocal: function (aSitetreeURI, aWindow, aDocumentURI) {
         var localFileURI   = null;
         var enumLabels     = null;
         var objectTarget   = null;
@@ -111,18 +112,22 @@ var ResourceSelectDialog = {
             return null;
 
         // find out where to place the local resource
-        // TODO: i18n
-        enumLabels = ["Near the document", "Select target manually"];
+        if (aDocumentURI) {
+            // TODO: i18n
+            enumLabels = ["Near the document", "Select target manually"];
 
-        // TODO: i18n
-        if ((objectTarget = YulupDialogService.openEnumDialog("Select Target", "Please select where your asset should be stored.", enumLabels, 0)) == null)
-            return null;
+            // TODO: i18n
+            if ((objectTarget = YulupDialogService.openEnumDialog("Select Target", "Please select where your asset should be stored.", enumLabels, 0)) == null)
+                return null;
+        } else {
+            // we don't have a document URI, so we have to find the upload location manually anyways
+            objectTarget = 1;
+        }
 
         switch (objectTarget) {
             case 0:
                 // upload the object relative to the document URI
-                // TODO: get document URI
-                uploadURI = "http://demo.yulup.org/" + localFileURI.file.leafName;
+                uploadURI = YulupURIServices.resolveRelative(aDocumentURI, localFileURI.file.leafName);
 
                 break;
             case 1:
