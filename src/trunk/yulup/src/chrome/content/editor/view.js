@@ -729,11 +729,17 @@ function CutCopySelectionListener(aView) {
 }
 
 CutCopySelectionListener.prototype = {
-    __view: null,
+    __view     : null,
+    __collapsed: true,
 
     notifySelectionChanged: function (aDocument, aSelection, aReason) {
-        if (this.__view.cutCopyObserver)
-            this.__view.cutCopyObserver.updateCommands();
+        // only update commands if state changed
+        if (this.__collapsed != aSelection.isCollapsed) {
+            this.__collapsed = !this.__collapsed;
+
+            if (this.__view.cutCopyObserver)
+                this.__view.cutCopyObserver.updateCommands();
+        }
     }
 };
 
