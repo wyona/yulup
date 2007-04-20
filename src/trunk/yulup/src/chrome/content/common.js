@@ -768,9 +768,9 @@ const DOMSerialiser = {
  * @return {Undefined}                does not have a return value
  */
 function ConfigurableNsResolver(aDocument) {
-    var sorceElements = null;
-    var prefix        = null;
-    var initialized   = false;
+    var sourceElements = null;
+    var prefix         = null;
+    var initialized    = false;
 
     /* DEBUG */ dump("Yulup:common.js:ConfigurableNsResolver() invoked\n");
 

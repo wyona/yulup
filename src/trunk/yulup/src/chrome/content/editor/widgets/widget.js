@@ -364,13 +364,14 @@ var WidgetHandler = {
      * @return {nsIDOMDocumentFragment} returns the parameterised fragment, or null if potential user interaction was canceled
      */
     getParametrizedWidgetFragment: function(aWidget, aWidgetAction) {
+        var nsResolver       = null;
+        var attributes       = null;
         var customAttrValue  = null;
         var attrXpath        = null;
         var attrIterator     = null;
         var attrElement      = null;
         var paramFragment    = null;
         var namespaces       = null;
-        var nsResolver       = null;
         var resolverFunction = null;
 
         /* DEBUG */ dump("Yulup:widget.js:WidgetHandler.getParametrizedWidgetFragment() invoked\n");

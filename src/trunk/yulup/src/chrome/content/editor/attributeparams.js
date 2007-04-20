@@ -224,7 +224,7 @@ var AttributeParamsDialog = {
         try {
             color = aColor.toUpperCase();
 
-            if (color.length = 7 && color[0] === "#") {
+            if (color.length == 7 && color[0] === "#") {
                 retval = true;
 
                 for (var i = 1; i < 7; i++) {

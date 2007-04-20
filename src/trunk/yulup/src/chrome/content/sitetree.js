@@ -47,7 +47,7 @@ function SitetreeDocument(aURI) {
     this.firstChild      = null;
     this.childNodes      = new Array();
 
-    //this.__proto__.__proto__.constructor.call();
+    //this.__proto__.__proto__.constructor.call(this);
 }
 
 SitetreeDocument.prototype = {

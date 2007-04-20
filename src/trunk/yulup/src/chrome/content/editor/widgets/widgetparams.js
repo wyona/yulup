@@ -38,6 +38,7 @@ var WidgetDialog = {
 
     uiYulupEditorWidgetInsertOnDialogLoadHandler: function() {
         var widget           = null;
+        var widgetAction     = null;
         var nsResolver       = null;
         var editorController = null;
         var widgetRows       = null;
@@ -146,6 +147,8 @@ var WidgetDialog = {
      * @return {Undefined}  does not have a return value
      */
     showWidgetInsertDialog: function(aWidget, aWidgetAction, aNSResolver, aEditorController, aWindow) {
+        var returnObject = null;
+
         returnObject = new Object();
 
         if (window.openDialog(YULUP_WIDGET_INSERT_CHROME_URI, "yulupWidgetInsertDialog", "modal,resizable=no,centerscreen", returnObject, aWidget, aWidgetAction, aNSResolver, aEditorController, aWindow)) {
@@ -218,7 +221,7 @@ var WidgetDialog = {
         try {
             color = aColor.toUpperCase();
 
-            if (color.length = 7 && color[0] === "#") {
+            if (color.length == 7 && color[0] === "#") {
                 retval = true;
 
                 for (var i = 1; i < 7; i++) {
