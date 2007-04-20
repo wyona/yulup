@@ -464,6 +464,25 @@ const YulupLocalisationServices = {
 };
 
 
+const YulupURIServices = {
+    /**
+     * Tries to create a relative URI from two absolute URIS.
+     *
+     * @param  {nsIURI} aURI      the URI to make relative
+     * @param  {nsIURI} aBaseURI  the URI against which aURI should be made relative
+     * @return {String} returns a relative URI or null, if creation failed
+     */
+    makeRelative: function (aURI, aBaseURI) {
+        /* DEBUG */ dump("Yulup:common.js:YulupURIServices.makeRelative() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aURI     != null);
+        /* DEBUG */ YulupDebug.ASSERT(aBaseURI != null);
+
+        return null;
+    }
+};
+
+
 /**
  * YulupMessageProxy constructor. Instantiates a new object of
  * type YulupMessageProxy.

@@ -34,13 +34,13 @@ const DEFAULT_COLORPICKER_VALUE = "#FFFFFF";
 var WidgetDialog = {
     __fragmentAttributes: null,
     __sitetreeURI       : null,
+    __editorController  : null,
     __topWindow         : null,
 
     uiYulupEditorWidgetInsertOnDialogLoadHandler: function() {
         var widget           = null;
         var widgetAction     = null;
         var nsResolver       = null;
-        var editorController = null;
         var widgetRows       = null;
         var label            = null;
         var elem             = null;
@@ -51,14 +51,14 @@ var WidgetDialog = {
 
         /* DEBUG */ dump("Yulup:widgetparams.js:WidgetDialog.uiYulupEditorWidgetInsertOnDialogLoadHandler() invoked\n");
 
-        widget           = window.arguments[1];
-        widgetAction     = window.arguments[2]
-        nsResolver       = window.arguments[3];
-        editorController = window.arguments[4];
-        this.__topWindow = window.arguments[5];
+        widget                  = window.arguments[1];
+        widgetAction            = window.arguments[2]
+        nsResolver              = window.arguments[3];
+        this.__editorController = window.arguments[4];
+        this.__topWindow        = window.arguments[5];
 
-        if (editorController.editorParams.navigation && editorController.editorParams.navigation.sitetree) {
-            this.__sitetreeURI = editorController.editorParams.navigation.sitetree.uri;
+        if (this.__editorController.editorParams.navigation && this.__editorController.editorParams.navigation.sitetree) {
+            this.__sitetreeURI = this.__editorController.editorParams.navigation.sitetree.uri;
         }
 
         WidgetDialog.__fragmentAttributes = widgetAction.parameters;
@@ -247,7 +247,10 @@ var WidgetDialog = {
     },
 
     doSelectCommandProxy: function (aAction, aFieldID) {
-        var value = null;
+        var value       = null;
+        var documentURI = null;
+        var uri         = null;
+        var relURI      = null;
 
         switch (aAction) {
             case 0:
@@ -259,7 +262,23 @@ var WidgetDialog = {
             default:
         }
 
-        if (value)
+        if (value) {
+            try {
+                // try to make the returned URI relative to the document URI
+                documentURI = this.__editorController.document.loadURI;
+
+                if (documentURI) {
+                    uri = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(value, null, null);
+
+                    if (relURI = YulupURIServices.makeRelative(uri, documentURI))
+                        value = relURI;
+                }
+            } catch (exception) {
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:widgetparams.js:WidgetDialog.doSelectCommandProxy", exception);
+                /* DEBUG */ Components.utils.reportError(exception);
+            }
+
             document.getElementById(aFieldID).setAttribute("value", value);
+        }
     }
 };
