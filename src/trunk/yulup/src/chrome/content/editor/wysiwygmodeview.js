@@ -1431,8 +1431,8 @@ WYSIWYGUpdateSelectionListener.prototype = {
         /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged() invoked\n");
 
         // check if the selected node actually changed
-        if (!(aSelection.isCollapsed && (this.__currentNode == aSelection.focusNode))) {
-            this.__currentNode = aSelection.focusNode;
+        if (this.__currentNode != aSelection.anchorNode) {
+            this.__currentNode = aSelection.anchorNode;
 
             elemNameList = this.__view.getNodesToRoot(aSelection);
 
