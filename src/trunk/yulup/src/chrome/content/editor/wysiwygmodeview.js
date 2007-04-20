@@ -1432,9 +1432,15 @@ WYSIWYGUpdateSelectionListener.prototype = {
 
         resizedObject = this.__view.view.QueryInterface(Components.interfaces.nsIHTMLObjectResizer).resizedObject;
 
-        selectedNode = (resizedObject ? resizedObject : aSelection.anchorNode);
+        /* Selected objects override text selection, but only if text selection
+         * is not a child of the selected object. */
+        if (resizedObject && !this.__isDescendant(aSelection.anchorNode, resizedObject)) {
+            selectedNode = resizedObject;
+        } else {
+            selectedNode = aSelection.anchorNode;
+        }
 
-        /* DEBUG */ dump("############################## Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: selected object = \"" + selectedNode + "\"\n");
+        /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: selected object = \"" + selectedNode + "\"\n");
 
         // check if the selected node actually changed
         if (this.__currentNode != selectedNode) {
@@ -1529,5 +1535,25 @@ WYSIWYGUpdateSelectionListener.prototype = {
             // open the context menu
             this.__menuPopup.showPopup(aEvent.originalTarget, -1, -1, "popup", "bottomleft", "topleft");
         }
+    },
+
+    __isDescendant: function (aPotentialDescendant, aNode) {
+        var isDescendant = false;
+        var descendant   = null;
+
+        if (aPotentialDescendant && aNode) {
+            descendant = aPotentialDescendant;
+
+            while (descendant) {
+                if (aNode == descendant) {
+                    isDescendant = true;
+                    break;
+                }
+
+                descendant = descendant.parentNode;
+            }
+        }
+
+        return isDescendant;
     }
 };
