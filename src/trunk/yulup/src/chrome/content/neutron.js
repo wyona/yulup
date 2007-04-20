@@ -207,44 +207,6 @@ var Neutron = {
 };
 
 
-/* TODO: the Asset type is not used in Yulup, but may be used e.g.
- * in the Thunderbird/Suite/SeaMonkey CMSConnector.
- *
- * Should we retain it here nevertheless? */
-/**
- * Asset constructor. Instantiates a new object of type Asset.
- *
- * @constructor
- * @param  {String} aContent   an URI to the file where the content resides
- * @param  {String} aAssetType the asset type of the asset
- * @return {Asset}  a new Asset object
- */
-function Asset(aContent, aAssetType) {
-    // private instance attributes
-    content   = aContent;
-    assetType = aAssetType;
-
-    // privileged instance methods
-
-    /**
-     * Return the content URI.
-     *
-     * @return {String} the content URI
-     */
-    this.getContent = function () {
-        return content;
-    };
-
-    /**
-     * Return the asset type.
-     *
-     * @return {String} the asset type
-     */
-    this.getAssetType = function () {
-        return assetType;
-    };
-}
-
 /**
  * Introspection constructor. Instantiates a new object of
  * type Introspection.
