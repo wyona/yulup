@@ -606,7 +606,9 @@ var WidgetHandler = {
         }
 
         // update all widgets if the view supports reading the DOM
+        /* TODO: the view should handle this, because the view knows if the
+         * anchor node should be looked at or some other nodes. */
         if ("getNodesToRoot" in aView)
-            WidgetHandler.updateCommandActiveStates(commandList, aView.getNodesToRoot(aView.view.selection));
+            WidgetHandler.updateCommandActiveStates(commandList, aView.getNodesToRoot(aView.view.selection.anchorNode));
     }
 };

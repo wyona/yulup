@@ -487,33 +487,31 @@ WYSIWYGModeView.prototype = {
     },
 
     /**
-     * Return a list of nodes, starting from the anchor node of the
-     * a selection up to and including the root node.
+     * Return a list of nodes, starting from the given node up to
+     * and including the root node.
      *
      * Note that the node at index 0 of the returned list is the
      * selection node, and the node at the highest index is the
      * root node.
      *
-     * @param  {nsISelection} aSelection the selection
+     * @param  {nsIDOMNode} aNode  the start node, can be null
      * @return {Array} returns an array of nodes
      */
-    getNodesToRoot: function (aSelection) {
+    getNodesToRoot: function (aNode) {
         var elemNameList = null;
         var node         = null;
         var position     = 0;
-
-        /* DEBUG */ YulupDebug.ASSERT(aSelection != null);
 
         /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.getNodesToRoot() invoked\n");
 
         elemNameList = new Array();
 
-        if (aSelection.anchorNode) {
-            /* Add all element names on the path from the current selection anchor
+        if (aNode) {
+            /* Add all element names on the path from the given node
              * to the element names map. */
-            node = aSelection.anchorNode;
+            node = aNode;
 
-            /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.getNodesToRoot: current anchor node = \"" + (node ? node.nodeName : node) + "\"\n");
+            /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGModeView.getNodesToRoot: current node = \"" + (node ? node.nodeName : node) + "\"\n");
 
             while (node) {
                 if (node.localName) {
@@ -1424,17 +1422,25 @@ WYSIWYGUpdateSelectionListener.prototype = {
     __currentNode      : null,
 
     notifySelectionChanged: function (aDocument, aSelection, aReason) {
+        var resizedObject           = null;
+        var selectedNode            = null;
         var elemNameList            = null;
         var currentLocationPathNode = null;
         var elem                    = null;
 
         /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged() invoked\n");
 
-        // check if the selected node actually changed
-        if (this.__currentNode != aSelection.anchorNode) {
-            this.__currentNode = aSelection.anchorNode;
+        resizedObject = this.__view.view.QueryInterface(Components.interfaces.nsIHTMLObjectResizer).resizedObject;
 
-            elemNameList = this.__view.getNodesToRoot(aSelection);
+        selectedNode = (resizedObject ? resizedObject : aSelection.anchorNode);
+
+        /* DEBUG */ dump("############################## Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.notifySelectionChanged: selected object = \"" + selectedNode + "\"\n");
+
+        // check if the selected node actually changed
+        if (this.__currentNode != selectedNode) {
+            this.__currentNode = selectedNode;
+
+            elemNameList = this.__view.getNodesToRoot(selectedNode);
 
             WidgetHandler.updateCommandActiveStates(this.__widgetCommandList, elemNameList);
 
