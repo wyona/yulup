@@ -250,7 +250,6 @@ var WidgetDialog = {
         var documentURI = null;
         var value       = null;
         var uri         = null;
-        var relURI      = null;
 
         documentURI = this.__editorController.document.loadURI;
 
@@ -270,8 +269,7 @@ var WidgetDialog = {
                 if (documentURI) {
                     uri = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(value, null, null);
 
-                    if (relURI = YulupURIServices.makeRelative(uri, documentURI))
-                        value = relURI;
+                    value = YulupURIServices.makeRelative(uri, documentURI);
                 }
             } catch (exception) {
                 /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:widgetparams.js:WidgetDialog.doSelectCommandProxy", exception);

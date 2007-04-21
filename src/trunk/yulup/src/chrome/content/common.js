@@ -466,19 +466,36 @@ const YulupLocalisationServices = {
 
 const YulupURIServices = {
     /**
-     * Tries to create a relative URI from two absolute URIS.
+     * Tries to create a relative URI from two absolute URIs. If
+     * the URI can not be made relative, the URI is returned as-is.
+     * If the given URI is the same as the base URI, the empty string
+     * is returned.
      *
      * @param  {nsIURI} aURI      the URI to make relative
      * @param  {nsIURI} aBaseURI  the URI against which aURI should be made relative
-     * @return {String} returns a relative URI or null, if creation failed
+     * @return {String} returns a potontially relative URI
      */
     makeRelative: function (aURI, aBaseURI) {
+        var retval  = null;
+        var baseURI = null;
+
         /* DEBUG */ dump("Yulup:common.js:YulupURIServices.makeRelative() invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aURI     != null);
         /* DEBUG */ YulupDebug.ASSERT(aBaseURI != null);
 
-        return null;
+        try {
+            baseURI = aBaseURI.QueryInterface(Components.interfaces.nsIURL);
+
+            retval = baseURI.getRelativeSpec(aURI);
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:common.js:YulupURIServices.makeRelative", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+
+            retval = aURI.spec;
+        }
+
+        return retval;
     },
 
     resolveRelative: function (aURI, aLeafName) {
