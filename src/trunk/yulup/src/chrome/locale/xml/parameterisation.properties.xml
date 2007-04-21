@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <dtd xmlns="http://yulup.wyona.org/1.0">
+  <entity id="resourceSelector.label">
+    <name xml:lang="en">Select</name>
+    <name xml:lang="de">Auswählen</name>
+  </entity>
+
+  <entity id="localSelector.label">
+    <name xml:lang="en">Local</name>
+    <name xml:lang="de">Lokal</name>
+  </entity>
+
+  <entity id="remoteSelector.label">
+    <name xml:lang="en">Remote</name>
+    <name xml:lang="de">Entfernt</name>
+  </entity>
 
   <entity id="nearDocument.label">
     <name xml:lang="en">Near the document</name>

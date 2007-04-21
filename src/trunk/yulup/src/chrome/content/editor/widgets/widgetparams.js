@@ -48,6 +48,7 @@ var WidgetDialog = {
         var row              = null;
         var container        = null;
         var textbox          = null;
+        var stringBundle     = null;
 
         /* DEBUG */ dump("Yulup:widgetparams.js:WidgetDialog.uiYulupEditorWidgetInsertOnDialogLoadHandler() invoked\n");
 
@@ -68,6 +69,8 @@ var WidgetDialog = {
 
         // set the dialog top-label
         label.setAttribute("value", label.getAttribute("value") + " \"" + widget.name + "\"");
+
+        stringBundle = YulupLocalisationServices.getStringBundle("chrome://yulup/locale/parameterisation.properties");
 
         for (var i=0; i < widgetAction.parameters.length; i++) {
             row = document.createElement("row");
@@ -97,7 +100,7 @@ var WidgetDialog = {
             switch (widgetAction.parameters[i].type) {
                 case "resource":
                     elem = document.createElement("resourceselector");
-                    elem.setAttribute("label", YulupLocalisationServices.getStringBundle("chrome://yulup/locale/widgets.properties").GetStringFromName("resourceSelector.label"));
+                    elem.setAttribute("label", stringBundle.GetStringFromName("resourceSelector.label"));
 
                     if (this.__sitetreeURI == null) {
                         elem.setAttribute("disabled", "true");
@@ -105,9 +108,8 @@ var WidgetDialog = {
                         messageProxy = new YulupMessageProxy(elem);
                         elem.proxy = messageProxy;
 
-                        // TODO: i18n
-                        messageProxy.dispatchMessage("addItem", ["Local", "WidgetDialog.doSelectCommandProxy(0, " + widgetAction.parameters[i].id + ")"]);
-                        messageProxy.dispatchMessage("addItem", ["Remote", "WidgetDialog.doSelectCommandProxy(1, " + widgetAction.parameters[i].id + ")"]);
+                        messageProxy.dispatchMessage("addItem", [stringBundle.GetStringFromName("localSelector.label"), "WidgetDialog.doSelectCommandProxy(0, " + widgetAction.parameters[i].id + ")"]);
+                        messageProxy.dispatchMessage("addItem", [stringBundle.GetStringFromName("remoteSelector.label"), "WidgetDialog.doSelectCommandProxy(1, " + widgetAction.parameters[i].id + ")"]);
                     }
 
                     container.appendChild(elem);
@@ -255,10 +257,10 @@ var WidgetDialog = {
 
         switch (aAction) {
             case 0:
-                value = ResourceSelectDialog.doSelectFromLocal(this.__sitetreeURI, this.__topWindow, documentURI);
+                value = this.doSelectFromLocal(this.__sitetreeURI, this.__topWindow, documentURI);
                 break;
             case 1:
-                value = ResourceSelectDialog.doSelectFromRemote(this.__sitetreeURI, this.__topWindow);
+                value = this.doSelectFromRemote(this.__sitetreeURI);
                 break;
             default:
         }
@@ -278,5 +280,107 @@ var WidgetDialog = {
 
             document.getElementById(aFieldID).setAttribute("value", value);
         }
+    },
+
+    /**
+     * Selects a local asset and performs upload if needed.
+     *
+     * @param  {nsIURI}       aSitetreeURI  the URI of the sitetree
+     * @param  {nsIDOMWindow} aWindow       a handle to a non-modal window
+     * @param  {nsIURI}       aDocumentURI  the URI which an upload should potentially be made relative against
+     * @return {String}  returns the URI of the selected asset or null if the selection was aborted
+     */
+    doSelectFromLocal: function (aSitetreeURI, aWindow, aDocumentURI) {
+        var localFileURI   = null;
+        var stringBundle   = null;
+        var enumLabels     = null;
+        var objectTarget   = null;
+        var progressDialog = null;
+        var mimeType       = null;
+        var sourceFile     = null;
+        var uploadURI      = null;
+
+        /* DEBUG */ dump("Yulup:widgetparams.js:WidgetDialog.doSelectFromLocal() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aSitetreeURI != null);
+        /* DEBUG */ YulupDebug.ASSERT(aWindow      != null);
+
+        // select from local
+        localFileURI = PersistenceService.queryOpenFileURI(PersistenceService.FILETYPE_BINARY);
+
+        if (!localFileURI)
+            return null;
+
+        stringBundle = YulupLocalisationServices.getStringBundle("chrome://yulup/locale/parameterisation.properties");
+
+        // find out where to place the local resource
+        if (aDocumentURI) {
+            enumLabels = [stringBundle.GetStringFromName("nearDocument.label"),
+                          stringBundle.GetStringFromName("selectManually.label")];
+
+            if ((objectTarget = YulupDialogService.openEnumDialog(stringBundle.GetStringFromName("selectTarget.label"), stringBundle.GetStringFromName("selectTargetDescription.label"), enumLabels, 0)) == null)
+                return null;
+        } else {
+            // we don't have a document URI, so we have to find the upload location manually anyways
+            objectTarget = 1;
+        }
+
+        switch (objectTarget) {
+            case 0:
+                // upload the object relative to the document URI
+                uploadURI = YulupURIServices.resolveRelative(aDocumentURI, localFileURI.file.leafName);
+
+                break;
+            case 1:
+                // query for the upload location
+                uploadURI = ResourceUploadDialog.showDocumentUploadDialog(aSitetreeURI, localFileURI.file.leafName);
+
+                if (!uploadURI)
+                    return null;
+
+                break;
+           default:
+               return null;
+        }
+
+        // upload the object
+        // TODO: perform i18n via stringbundle loader
+        progressDialog = new ProgressDialog(aWindow, document.getElementById("uiYulupOverlayStringbundle").getString("yulupResourceUploadProgressDialogTitle.label"), uploadURI);
+
+        // figure out MIME type
+        mimeType = YulupContentServices.getContentTypeFromURI(localFileURI);
+
+        sourceFile = PersistenceService.getFileDescriptor(localFileURI.path);
+
+        // TODO: after closing the dialog, the download dies
+        NetworkService.httpRequestUploadFile(uploadURI, sourceFile, null, mimeType, ResourceUploadDialog.__uploadRequestFinishedHandler, ResourceUploadDialog.__resourceUploadFinished, false, true, progressDialog);
+
+        /* DEBUG */ dump("Yulup:widgetparams.js:WidgetDialog.doSelectFromLocal: asset URI is \"" + uploadURI + "\"\n");
+
+        return uploadURI;
+    },
+
+    /**
+     * Selects a remote asset.
+     *
+     * @param  {nsIURI} aSitetreeURI  the URI of the sitetree
+     * @return {String}  returns the URI of the selected asset or null if the selection was aborted
+     */
+    doSelectFromRemote: function (aSitetreeURI) {
+        var targetURI = null;
+
+        /* DEBUG */ dump("Yulup:widgetparams.js:WidgetDialog.doSelectFromRemote() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aSitetreeURI != null);
+
+        // select from remote
+        targetURI = ResourceSelectDialog.showResourceSelectDialog(aSitetreeURI);
+
+        if (!targetURI)
+            return null;
+
+        /* DEBUG */ dump("Yulup:widgetparams.js:WidgetDialog.doSelectFromRemote: asset URI is \"" + targetURI.spec + "\"\n");
+
+        return targetURI.spec;
     }
 };
