@@ -473,7 +473,7 @@ const YulupURIServices = {
      *
      * @param  {nsIURI} aURI      the URI to make relative
      * @param  {nsIURI} aBaseURI  the URI against which aURI should be made relative
-     * @return {String} returns a potontially relative URI
+     * @return {String} returns a potentially relative URI
      */
     makeRelative: function (aURI, aBaseURI) {
         var retval  = null;
@@ -498,6 +498,13 @@ const YulupURIServices = {
         return retval;
     },
 
+    /**
+     * Resolves a given leaf name relative to a URI.
+     *
+     * @param  {nsIURI} aURI       the URI against which the leaf name should get resolved
+     * @param  {String} aLeafName  the leaf name
+     * @return {String} returns the resolved URI
+     */
     resolveRelative: function (aURI, aLeafName) {
         if (aURI && aLeafName) {
             return aURI.resolve(aLeafName);
