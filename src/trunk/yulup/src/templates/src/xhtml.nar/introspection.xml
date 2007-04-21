@@ -242,7 +242,7 @@
             <description xml:lang="de">Linkadresse</description>
           </parameter>
           <fragment>
-            <a xmlns="" href="http://www.yulup.org"/>
+            <a xmlns="" href=""/>
           </fragment>
         </surround>
       </widget>
