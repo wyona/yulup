@@ -93,6 +93,7 @@ var ResourceSelectDialog = {
      */
     doSelectFromLocal: function (aSitetreeURI, aWindow, aDocumentURI) {
         var localFileURI   = null;
+        var stringBundle   = null;
         var enumLabels     = null;
         var objectTarget   = null;
         var progressDialog = null;
@@ -111,13 +112,14 @@ var ResourceSelectDialog = {
         if (!localFileURI)
             return null;
 
+        stringBundle = YulupLocalisationServices.getStringBundle("chrome://yulup/locale/resourceselect.properties");
+
         // find out where to place the local resource
         if (aDocumentURI) {
-            // TODO: i18n
-            enumLabels = ["Near the document", "Select target manually"];
+            enumLabels = [stringBundle.GetStringFromName("nearDocument.label"),
+                          stringBundle.GetStringFromName("selectManually.label")];
 
-            // TODO: i18n
-            if ((objectTarget = YulupDialogService.openEnumDialog("Select Target", "Please select where your asset should be stored.", enumLabels, 0)) == null)
+            if ((objectTarget = YulupDialogService.openEnumDialog(stringBundle.GetStringFromName("selectTarget.label"), stringBundle.GetStringFromName("selectTargetDescription.label"), enumLabels, 0)) == null)
                 return null;
         } else {
             // we don't have a document URI, so we have to find the upload location manually anyways
