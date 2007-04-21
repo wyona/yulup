@@ -42,8 +42,10 @@
         buttonlabelcancel="&editorCancelButton.label;"
         ondialogaccept="return ResourceSelectDialog.save()"
         onload="ResourceSelectDialog.uiYulupEditorResourceSelectOnDialogLoadHandler()"
-        style="font: -moz-dialog; width: 400px;"
-        persist="screenX screenY"
+        mindwidth="400"
+        minheight="400"
+        style="font: -moz-dialog;"
+        persist="screenX screenY width height"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <script type="application/x-javascript"
@@ -72,7 +74,7 @@
     <tree id="uiYulupResourceSelectTree"
           enableColumnDrag="false"
           hidecolumnpicker="true"
-          rows="13"
+          flex="1"
           seltype="single">
       <treecols id="uiYulupResourceSelectTreeCols">
         <treecol id="uiYulupResourceSelectTreeCol" label="&editorResourceTree.label;" primary="true" flex="1"/>

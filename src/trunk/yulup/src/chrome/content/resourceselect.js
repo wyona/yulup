@@ -181,7 +181,7 @@ var ResourceSelectDialog = {
             returnValue: null
         };
 
-        if (!window.openDialog(YULUP_RESOURCE_SELECT_CHROME_URI, "yulupWidgetResourceSelectDialog", "modal,resizable=no,centerscreen", aSitetreeURI, returnObject))
+        if (!window.openDialog(YULUP_RESOURCE_SELECT_CHROME_URI, "yulupWidgetResourceSelectDialog", "modal,resizable=yes,centerscreen", aSitetreeURI, returnObject))
             return null;
 
         if (!returnObject.returnValue)
