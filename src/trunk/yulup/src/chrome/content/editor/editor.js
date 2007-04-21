@@ -613,27 +613,33 @@ var Editor = {
 
         /* DEBUG */ dump("Yulup:editor.js:Editor.saveAsToCMS() invoked\n");
 
-        // query for server address
-        serverURIString = ServerURIPrompt.showServerURIDialog();
-
-        if (!serverURIString) {
-            // user cancelled
-            return true;
-        } else if (serverURIString == "") {
-            return false;
-        }
-
         ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 
-        try {
-            serverURI = ioService.newURI(serverURIString, null, null);
-        } catch (exception) {
-            /* DEBUG */ dump("Yulup:editor.js:Editor.saveAsToCMS: server URI \"" + serverURIString + "\" is not a valid URI: " + exception + "\n");
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.saveAsToCMS", exception);
+        // query for server address if no sitetree available
+        if (gEditorController.editorParams.navigation &&
+            gEditorController.editorParams.navigation.sitetree &&
+            gEditorController.editorParams.navigation.sitetree.uri) {
+            serverURI = gEditorController.editorParams.navigation.sitetree.uri;
+        } else {
+            serverURIString = ServerURIPrompt.showServerURIDialog();
 
-            alert(Editor.getStringbundleString("editorURINotValidFailure.label") + ": \"" + serverURIString + "\".");
+            if (!serverURIString) {
+                // user cancelled
+                return true;
+            } else if (serverURIString == "") {
+                return false;
+            }
 
-            return false;
+            try {
+                serverURI = ioService.newURI(serverURIString, null, null);
+            } catch (exception) {
+                /* DEBUG */ dump("Yulup:editor.js:Editor.saveAsToCMS: server URI \"" + serverURIString + "\" is not a valid URI: " + exception + "\n");
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.saveAsToCMS", exception);
+
+                alert(Editor.getStringbundleString("editorURINotValidFailure.label") + ": \"" + serverURIString + "\".");
+
+                return false;
+            }
         }
 
         // show document upload dialog
