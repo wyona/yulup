@@ -261,39 +261,6 @@ NeutronIntrospection.prototype = {
         return this.introspectionURI;
     },
 
-
-    /**
-     * Create a new fragment and add it to the fragments list.
-     *
-     * @return {Object} returns the newly created fragment
-     */
-    createNewFragment: function () {
-        var fragment = null;
-
-        fragment = {
-            mimeType     : null,
-            open         : this.createNewFileOperation(null, null),
-            save         : this.createNewFileOperation(null, null),
-            checkout     : this.createNewFileOperation(null, null),
-            checkin      : this.createNewFileOperation(null, null),
-            schemas      : null,
-            styles       : null,
-            styleTemplate: null,
-            widgets      : null
-        };
-
-        this.fragments.push(fragment);
-
-        return fragment;
-    },
-
-    createNewFileOperation: function (aURI, aMethod) {
-        return {
-            uri   : aURI,
-            method: aMethod
-        };
-    },
-
     /**
      * Get the compatibility level of this object.
      *
