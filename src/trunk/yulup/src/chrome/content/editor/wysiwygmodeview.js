@@ -109,6 +109,11 @@ WYSIWYGModeView.prototype = {
             // TODO: experimental, remove after use
             this.validator = Validation.validatorFactory(this.view.document, "-//W3C//DTD HTML 4.01//EN");
 
+            // add our own stylesheet
+            this.view.QueryInterface(Components.interfaces.nsIEditorStyleSheets).addStyleSheet("chrome://yulup/skin/editor-content.css");
+
+            this.view.QueryInterface(Components.interfaces.nsIEditor);
+
             // hook up DocumentStateListener
             this.view.addDocumentStateListener(new DocumentStateListener(this.model));
 
