@@ -235,7 +235,7 @@
         <description xml:lang="en">Insert a hypertext link</description>
         <description xml:lang="de">Einen Link einfügen</description>
         <surround>
-          <parameter xpath="a/attribute::href" type="resource">
+          <parameter xpath="a/attribute::href" type="link">
             <name xml:lang="en">URI</name>
             <name xml:lang="de">URI</name>
             <description xml:lang="en">Link address</description>

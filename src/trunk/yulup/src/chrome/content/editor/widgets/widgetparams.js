@@ -98,6 +98,19 @@ var WidgetDialog = {
 
             // add a type specific action button
             switch (widgetAction.parameters[i].type) {
+                case "link":
+                    elem = document.createElement("button");
+                    elem.setAttribute("label", stringBundle.GetStringFromName("resourceSelector.label"));
+
+                    if (this.__sitetreeURI == null) {
+                        elem.setAttribute("disabled", "true");
+                    } else {
+                        elem.setAttribute("oncommand", "WidgetDialog.doSelectCommandProxy(1, " + widgetAction.parameters[i].id + ");");
+                    }
+
+                    container.appendChild(elem);
+
+                    break;
                 case "resource":
                     elem = document.createElement("resourceselector");
                     elem.setAttribute("label", stringBundle.GetStringFromName("resourceSelector.label"));
@@ -277,6 +290,8 @@ var WidgetDialog = {
                 /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:widgetparams.js:WidgetDialog.doSelectCommandProxy", exception);
                 /* DEBUG */ Components.utils.reportError(exception);
             }
+
+            /* DEBUG */ dump("Yulup:widgetparams.js:WidgetDialog.doSelectCommandProxy: final URI is \"" + value + "\"\n");
 
             document.getElementById(aFieldID).setAttribute("value", value);
         }
