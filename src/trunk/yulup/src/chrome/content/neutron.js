@@ -212,19 +212,25 @@ var Neutron = {
  * type Introspection.
  *
  * @constructor
- * @param  {nsIURI}        aAssociatedWithURI the URI of the document this introspection object is associated with
- * @return {Introspection} a new Introspection object
+ * @param  {nsIURI}        aAssociatedWithURI   the URI of the document this introspection object is associated with
+ * @param  {String}        aCompatibilityLevel  the namespace associated with the introspection document
+ * @return {Introspection} returns a new Introspection object
  */
-function Introspection(aAssociatedWithURI) {
+function Introspection(aAssociatedWithURI, aCompatibilityLevel) {
     /* DEBUG */ dump("Yulup:neutron.js:Introspection(\"" + aAssociatedWithURI + "\") invoked\n");
 
-    this.associatedWithURI = aAssociatedWithURI;
+    /* DEBUG */ YulupDebug.ASSERT(aAssociatedWithURI  != null);
+    /* DEBUG */ YulupDebug.ASSERT(aCompatibilityLevel != null);
+
+    this.associatedWithURI  = aAssociatedWithURI;
+    this.compatibilityLevel = aCompatibilityLevel;
 
     this.fragments = new Array();
 }
 
 Introspection.prototype = {
     associatedWithURI    : null,
+    compatibilityLevel   : null,
     introspectionDocument: null,
     introspectionURI     : null,
     fragments            : null,
@@ -288,9 +294,8 @@ Introspection.prototype = {
      *
      * @return {Undefined} does not have a return value
      */
-    // THE SPECIFICATION MUST FIRST BE WRITTEN FOR THIS PART
     queryCompatibility: function () {
-        // return compatibility level
+        return this.compatibilityLevel;
     },
 
     /**
