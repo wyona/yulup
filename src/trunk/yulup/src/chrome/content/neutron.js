@@ -540,80 +540,12 @@ NeutronIntrospection.prototype = {
      */
     toString: function () {
         var objString = "";
-        var xmlSerializer = null;
-
-        xmlSerializer = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer);
 
         objString += "Introspection URI:    " + this.introspectionURI + "\n\n";
 
         // for all fragments, convert to string
         for (var i = 0; i < this.fragments.length; i++) {
-            /* TODO: get rid of this horrible stringification once all the data is moved
-             *       into their own respective datatypes, so they can toString()
-             *       themselves. */
-            objString += "Fragment name:        " + this.fragments[i].name + "\n";
-            objString += "Edit MIME-Type:       " + this.fragments[i].mimeType + "\n";
-            objString += "Edit Open URI:        " + (this.fragments[i].open.uri ? this.fragments[i].open.uri.spec : this.fragments[i].open.uri) + "\n"; + "\n";
-            objString += "Edit Open method:     " + this.fragments[i].open.method + "\n";
-            objString += "Edit Save URI:        " + (this.fragments[i].save.uri ? this.fragments[i].save.uri.spec : this.fragments[i].save.uri) + "\n"; + "\n";
-            objString += "Edit Save method:     " + this.fragments[i].save.method + "\n";
-            objString += "Edit Checkin URI:     " + (this.fragments[i].checkin.uri ? this.fragments[i].checkin.uri.spec : this.fragments[i].checkin.uri) + "\n";
-            objString += "Edit Checkin method:  " + this.fragments[i].checkin.method + "\n";
-            objString += "Edit Checkout URI:    " + (this.fragments[i].checkout.uri ? this.fragments[i].checkout.uri.spec : this.fragments[i].checkout.uri) + "\n"; + "\n";
-            objString += "Edit Checkout method: " + this.fragments[i].checkout.method + "\n";
-            objString += "Edit Schemas:         ";
-            if (this.fragments[i].schemas) {
-                for (var j = 0; j < this.fragments[i].schemas.length; j++) {
-                    objString += this.fragments[i].schemas[j].href.spec + " ";
-                }
-                objString += "\n";
-            } else {
-                objString += this.fragments[i].schemas + "\n";
-            }
-
-            objString += "Edit Styles:          ";
-            if (this.fragments[i].styles) {
-                for (var j = 0; j < this.fragments[i].styles.length; j++) {
-                    objString += this.fragments[i].styles[j].href.spec + " ";
-                }
-                objString += "\n";
-            } else {
-                objString += this.fragments[i].styles + "\n";
-            }
-
-
-            objString += "Style Template:          " + (this.fragments[i].styleTemplate ? this.fragments[i].styleTemplate.uri.spec : "") + "\n";
-
-            objString += "Widgets:\n";
-            if (this.fragments[i].widgets) {
-                for (var j=0; j < this.fragments[i].widgets.length; j++) {
-                    if (this.fragments[i].widgets[j].iconURI) {
-                        objString += this.fragments[i].widgets[j].iconURI.spec + "\", \"";
-                        objString += this.fragments[i].widgets[j].icon + "\"\n";
-                    }
-                    if (this.fragments[i].widgets[j].attributes) {
-                        objString += "Widget attributes: \n"
-                        for (var name in this.fragments[i].widgets[j].attributes) {
-                            objString += name + "=";
-                            objString += this.fragments[i].widgets[j].attributes[name] + "\n";
-                        }
-                    }
-
-                    if (this.fragments[i].widgets[j].fragmentAttributes) {
-                        objString += "Fragment attributes: \n"
-                        for (var k=0; k < this.fragments[i].widgets[j].fragmentAttributes.length; k++) {
-                            objString += this.fragments[i].widgets[j].fragmentAttributes[k].name + " ";
-                            objString += this.fragments[i].widgets[j].fragmentAttributes[k].xpath + "\n";
-                        }
-                    }
-
-                    if (this.fragments[i].widgets[j].fragment) {
-                        objString += "Fragment: \n";
-                        objString += xmlSerializer.serializeToString(this.fragments[i].widgets[j].fragment);
-                        objString += "\n";
-                    }
-                }
-            }
+            objString += this.fragments[i].toString();
         }
 
         objString += "Navigation: \n";
@@ -625,6 +557,494 @@ NeutronIntrospection.prototype = {
         }
 
         return objString + "\n";
+    }
+};
+
+
+/**
+ * NeutronResource constructor. Instantiates a new object of
+ * type NeutronResource.
+ *
+ * @constructor
+ * @return {NeutronResource}
+ */
+function NeutronResource() {}
+
+NeutronResource.prototype = {
+    name           : null,
+    mimeType       : null,
+    open           : null,
+    save           : null,
+    checkout       : null,
+    checkin        : null,
+    schemas        : null,
+    styles         : null,
+    styleTemplate  : null,
+    widgets        : null,
+    templateWidgets: null,
+
+    toString: function () {
+        var objString = "";
+
+        objString += "Resource name:        " + this.name + "\n";
+        objString += "Edit MIME-Type:       " + this.mimeType + "\n";
+        objString += "Edit Open URI:        " + (this.open.uri ? this.open.uri.spec : this.open.uri) + "\n"; + "\n";
+        objString += "Edit Open method:     " + this.open.method + "\n";
+        objString += "Edit Save URI:        " + (this.save.uri ? this.save.uri.spec : this.save.uri) + "\n"; + "\n";
+        objString += "Edit Save method:     " + this.save.method + "\n";
+        objString += "Edit Checkin URI:     " + (this.checkin.uri ? this.checkin.uri.spec : this.checkin.uri) + "\n";
+        objString += "Edit Checkin method:  " + this.checkin.method + "\n";
+        objString += "Edit Checkout URI:    " + (this.checkout.uri ? this.checkout.uri.spec : this.checkout.uri) + "\n"; + "\n";
+        objString += "Edit Checkout method: " + this.checkout.method + "\n";
+        objString += "Edit Schemas:         ";
+        if (this.schemas) {
+            for (var i = 0; i < this.schemas.length; i++) {
+                objString += this.schemas[i].href.spec + " ";
+            }
+            objString += "\n";
+        } else {
+            objString += this.schemas + "\n";
+        }
+
+        objString += "Edit Styles:          ";
+        if (this.styles) {
+            for (var i = 0; i < this.styles.length; i++) {
+                objString += this.styles[i].href.spec + " ";
+            }
+            objString += "\n";
+        } else {
+            objString += this.styles + "\n";
+        }
+
+
+        objString += "Style Template:       " + (this.styleTemplate ? this.styleTemplate.uri.spec : this.styleTemplate) + "\n";
+
+        objString += "Widgets:\n";
+        if (this.widgets) {
+            for (var i = 0; i < this.widgets.length; i++) {
+                objString += this.widgets[i].toString();
+            }
+        }
+
+        return objString;
+    }
+};
+
+
+/**
+ * NeutronWidget constructor. Instantiates a new object of
+ * type NeutronWidget.
+ *
+ * Base class for versioned Neutron widgets.
+ *
+ * @constructor
+ * @return {NeutronWidget}
+ */
+function NeutronWidget() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidget() invoked\n");
+
+    this.id = Date.now().toString();
+}
+
+NeutronWidget.prototype = {
+    id: null,
+
+    __name     : null,
+    __nameCache: null,
+    __desc     : null,
+    __descCache: null,
+
+    icon    : null,
+    iconURI : null,
+    surround: null,
+    insert  : null,
+
+    __getByLang: function (aLangMap, aLangID) {
+        var retval      = null;
+        var prefixIndex = null;
+        var langID      = null;
+
+        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidget.__getByLang(\"" + aLangMap + "\", \"" + aLangID + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aLangMap != null);
+        /* DEBUG */ YulupDebug.ASSERT(aLangID  != null);
+
+        retval = aLangMap[aLangID];
+
+        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidget.__getByLang: 1. language ID = \"" + aLangID + "\", retval = \"" + retval + "\"\n");
+
+        if (retval)
+            return retval;
+
+        // try to cut down the lang ID to its prefix
+        prefixIndex = aLangID.indexOf("-");
+        if (prefixIndex > 0)
+            langID = aLangID.substring(0, prefixIndex);
+
+        retval = aLangMap[langID];
+
+        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidget.__getByLang: 2. language ID = \"" + langID + "\", retval = \"" + retval + "\"\n");
+
+        if (retval)
+            return retval;
+
+        // return first value in map
+        for (retval in aLangMap)
+            return aLangMap[retval];
+
+        return "";
+    },
+
+    set name(aValue) {
+        var name = {};
+
+        if (aValue) {
+            for (var i = 0; i < aValue.length; i++) {
+                name[aValue[i][0]] = aValue[i][1];
+            }
+        }
+
+        this.__name = name;
+    },
+
+    get name() {
+        if (!this.__nameCache)
+            this.__nameCache = this.__getByLang(this.__name, YulupAppServices.getAppLocale());
+
+        return this.__nameCache;
+    },
+
+    set description(aValue) {
+        var desc = {};
+
+        if (aValue) {
+            for (var i = 0; i < aValue.length; i++) {
+                desc[aValue[i][0]] = aValue[i][1];
+            }
+        }
+
+        this.__desc = desc;
+    },
+
+    get description() {
+        if (!this.__descCache)
+            this.__descCache = this.__getByLang(this.__desc, YulupAppServices.getAppLocale());
+
+        return this.__descCache;
+    },
+
+    supportsActionSurround: function () {
+        return (this.surround != null);
+    },
+
+    supportsActionInsert: function () {
+        return (this.insert != null);
+    },
+
+    getSurroundActionFragment: function () {
+        if (!this.surround)
+            return null;
+
+        return this.surround.fragment;
+    },
+
+    getInsertActionFragment: function () {
+        if (!this.insert)
+            return null;
+
+        return this.insert.fragment;
+    },
+
+    toString: function () {
+        var objString = null;
+
+        objString = "Widget \"" + this.name + "\" (" + this.description + ")\n";
+
+        objString += "Icon URI: " + (this.iconURI ? this.iconURI.spec : this.iconURI) + "\n";
+        objString += "Icon:     " + this.icon + "\n";
+
+        objString += "Surround action:\n"
+        if (this.surround) {
+            objString += this.surround.toString();
+        } else {
+            objString += this.surround + "\n";
+        }
+
+        objString += "Insert action:\n"
+        if (this.insert) {
+            objString += this.insert.toString();
+        } else {
+            objString += this.insert + "\n";
+        }
+
+        return objString;
+    }
+};
+
+
+/**
+ * NeutronWidgetGroup constructor. Instantiates a new object of
+ * type NeutronWidgetGroup.
+ *
+ * Base class for versioned Neutron widget groups.
+ *
+ * @constructor
+ * @return {NeutronWidgetGroup}
+ */
+function NeutronWidgetGroup() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetGroup() invoked\n");
+
+    this.widgets = new Array();
+}
+
+NeutronWidgetGroup.prototype = {
+    __name     : null,
+    __nameCache: null,
+    __desc     : null,
+    __descCache: null,
+
+    widgets: null,
+
+    __getByLang: function (aLangMap, aLangID) {
+        var retval      = null;
+        var prefixIndex = null;
+        var langID      = null;
+
+        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetGroup.__getByLang(\"" + aLangMap + "\", \"" + aLangID + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aLangMap != null);
+        /* DEBUG */ YulupDebug.ASSERT(aLangID  != null);
+
+        retval = aLangMap[aLangID];
+
+        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetGroup.__getByLang: 1. language ID = \"" + aLangID + "\", retval = \"" + retval + "\"\n");
+
+        if (retval)
+            return retval;
+
+        // try to cut down the lang ID to its prefix
+        prefixIndex = aLangID.indexOf("-");
+        if (prefixIndex > 0)
+            langID = aLangID.substring(0, prefixIndex);
+
+        retval = aLangMap[langID];
+
+        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetGroup.__getByLang: 2. language ID = \"" + langID + "\", retval = \"" + retval + "\"\n");
+
+        if (retval)
+            return retval;
+
+        // return first value in map
+        for (retval in aLangMap)
+            return aLangMap[retval];
+
+        return "";
+    },
+
+    set name(aValue) {
+        var name = {};
+
+        if (aValue) {
+            for (var i = 0; i < aValue.length; i++) {
+                name[aValue[i][0]] = aValue[i][1];
+            }
+        }
+
+        this.__name = name;
+    },
+
+    get name() {
+        if (!this.__nameCache)
+            this.__nameCache = this.__getByLang(this.__name, YulupAppServices.getAppLocale());
+
+        return this.__nameCache;
+    },
+
+    set description(aValue) {
+        var desc = {};
+
+        if (aValue) {
+            for (var i = 0; i < aValue.length; i++) {
+                desc[aValue[i][0]] = aValue[i][1];
+            }
+        }
+
+        this.__desc = desc;
+    },
+
+    get description() {
+        if (!this.__descCache)
+            this.__descCache = this.__getByLang(this.__desc, YulupAppServices.getAppLocale());
+
+        return this.__descCache;
+    },
+
+    toString: function () {
+        var objString = "";
+
+        objString += "WidgetGroup \"" + this.name + "\" (" + this.description + ")\n";
+        for (var i = 0; i < this.widgets.length; i++) {
+            objString += this.widgets[i].toString();
+        }
+
+        return objString;
+    }
+};
+
+
+/**
+ * NeutronWidgetAction constructor. Instantiates a new object of
+ * type NeutronWidgetAction.
+ *
+ * Base class for versioned Neutron widget actions.
+ *
+ * @constructor
+ * @return {NeutronWidgetAction}
+ */
+function NeutronWidgetAction() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetAction() invoked\n");
+}
+
+NeutronWidgetAction.prototype = {
+    parameters: null,
+    fragment  : null,
+
+    toString: function () {
+        var objString     = "";
+        var xmlSerializer = null;
+
+        xmlSerializer = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer);
+
+        objString += "Action parameters:\n"
+        if (this.parameters) {
+            for (var i = 0; i < this.parameters.length; i++) {
+                objString += this.parameters[i].toString();
+            }
+        } else {
+            objString += this.parameters + "\n";
+        }
+
+        objString += "Fragment:\n";
+        if (this.fragment) {
+            objString += xmlSerializer.serializeToString(this.fragment);
+            objString += "\n";
+        } else {
+            objString += this.fragment + "\n";
+        }
+
+        return objString;
+    }
+};
+
+
+/**
+ * NeutronWidgetActionParameter constructor. Instantiates a new object of
+ * type NeutronWidgetActionParameter.
+ *
+ * Base class for versioned Neutron widget action parameters.
+ *
+ * @constructor
+ * @return {NeutronWidgetActionParameter}
+ */
+function NeutronWidgetActionParameter() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetActionParameter() invoked\n");
+
+    this.id = Date.now().toString();
+}
+
+NeutronWidgetActionParameter.prototype = {
+    id: null,
+
+    __name     : null,
+    __nameCache: null,
+    __desc     : null,
+    __descCache: null,
+
+    xpath: null,
+    type : null,
+
+    __getByLang: function (aLangMap, aLangID) {
+        var retval      = null;
+        var prefixIndex = null;
+        var langID      = null;
+
+        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetActionParameter.__getByLang(\"" + aLangMap + "\", \"" + aLangID + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aLangMap != null);
+        /* DEBUG */ YulupDebug.ASSERT(aLangID  != null);
+
+        retval = aLangMap[aLangID];
+
+        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetActionParameter.__getByLang: 1. language ID = \"" + aLangID + "\", retval = \"" + retval + "\"\n");
+
+        if (retval)
+            return retval;
+
+        // try to cut down the lang ID to its prefix
+        prefixIndex = aLangID.indexOf("-");
+        if (prefixIndex > 0)
+            langID = aLangID.substring(0, prefixIndex);
+
+        retval = aLangMap[langID];
+
+        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetActionParameter.__getByLang: 2. language ID = \"" + langID + "\", retval = \"" + retval + "\"\n");
+
+        if (retval)
+            return retval;
+
+        // return first value in map
+        for (retval in aLangMap)
+            return aLangMap[retval];
+
+        return "";
+    },
+
+    set name(aValue) {
+        var name = {};
+
+        if (aValue) {
+            for (var i = 0; i < aValue.length; i++) {
+                name[aValue[i][0]] = aValue[i][1];
+            }
+        }
+
+        this.__name = name;
+    },
+
+    get name() {
+        if (!this.__nameCache)
+            this.__nameCache = this.__getByLang(this.__name, YulupAppServices.getAppLocale());
+
+        return this.__nameCache;
+    },
+
+    set description(aValue) {
+        var desc = {};
+
+        if (aValue) {
+            for (var i = 0; i < aValue.length; i++) {
+                desc[aValue[i][0]] = aValue[i][1];
+            }
+        }
+
+        this.__desc = desc;
+    },
+
+    get description() {
+        if (!this.__descCache)
+            this.__descCache = this.__getByLang(this.__desc, YulupAppServices.getAppLocale());
+
+        return this.__descCache;
+    },
+
+    toString: function () {
+        var objString = "";
+
+        objString += "Action parameter \"" + this.name + "\" (" + this.description + ")\n";
+        objString += "XPath: " + this.xpath + "\n";
+        objString += "Type:  " + this.type + "\n";
+
+        return objString;
     }
 };
 
@@ -667,7 +1087,7 @@ NeutronException.prototype.__proto__ = Error.prototype;
  * @return {NeutronProtocolException}
  */
 function NeutronProtocolException(aMessage) {
-    /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronProtocolException(\"" + aMessage + "\") invoked\n");
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronProtocolException(\"" + aMessage + "\") invoked\n");
 
     this.message = aMessage;
     this.name    = "NeutronProtocolException";
@@ -686,7 +1106,7 @@ NeutronProtocolException.prototype.__proto__ = Error.prototype;
  * @return {NeutronProtocolCheckinException}
  */
 function NeutronProtocolCheckinException(aMessage) {
-    /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronProtocolCheckinException(\"" + aMessage + "\") invoked\n");
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronProtocolCheckinException(\"" + aMessage + "\") invoked\n");
 
     NeutronProtocolException.call(this, aMessage);
 
@@ -717,7 +1137,7 @@ NeutronProtocolCheckinException.prototype = {
  * @return {NeutronProtocolDataNotWellFormedException}
  */
 function NeutronProtocolDataNotWellFormedException(aMessage) {
-    /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronProtocolDataNotWellFormedException(\"" + aMessage + "\") invoked\n");
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronProtocolDataNotWellFormedException(\"" + aMessage + "\") invoked\n");
 
     NeutronProtocolException.call(this, aMessage);
 
@@ -752,75 +1172,3 @@ function NeutronParser() {
 }
 
 NeutronParser.prototype = {};
-
-
-/**
- * NeutronWidget constructor. Instantiates a new object of
- * type NeutronWidget.
- *
- * Base class for versioned Neutron widgets.
- *
- * @constructor
- * @return {NeutronWidget}
- */
-function NeutronWidget() {
-    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidget() invoked\n");
-
-    this.id = Date.now().toString();
-}
-
-NeutronWidget.prototype = {
-    id: null
-};
-
-
-/**
- * NeutronWidgetGroup constructor. Instantiates a new object of
- * type NeutronWidgetGroup.
- *
- * Base class for versioned Neutron widget groups.
- *
- * @constructor
- * @return {NeutronWidgetGroup}
- */
-function NeutronWidgetGroup() {
-    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetGroup() invoked\n");
-}
-
-NeutronWidgetGroup.prototype = {};
-
-
-/**
- * NeutronWidgetAction constructor. Instantiates a new object of
- * type NeutronWidgetAction.
- *
- * Base class for versioned Neutron widget actions.
- *
- * @constructor
- * @return {NeutronWidgetAction}
- */
-function NeutronWidgetAction() {
-    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetAction() invoked\n");
-}
-
-NeutronWidgetAction.prototype = {};
-
-
-/**
- * NeutronWidgetActionParameter constructor. Instantiates a new object of
- * type NeutronWidgetActionParameter.
- *
- * Base class for versioned Neutron widget action parameters.
- *
- * @constructor
- * @return {NeutronWidgetActionParameter}
- */
-function NeutronWidgetActionParameter() {
-    /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetActionParameter() invoked\n");
-
-    this.id = Date.now().toString();
-}
-
-NeutronWidgetActionParameter.prototype = {
-    id: null
-};

@@ -152,12 +152,9 @@ NeutronParser10.prototype = {
         if (elemNodeIterator = this.documentDOM.evaluate("neutron10:introspection/neutron10:edit", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null)) {
             /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.parseIntrospection: found one or multiple edit elements\n");
             while (elemNode = elemNodeIterator.iterateNext()) {
-                /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.parseIntrospection: processing edit element #" + (fragment + 1) + "\n");
+                /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.parseIntrospection: processing edit element #" + fragment + "\n");
                 // edit element exists
-                introspection.fragments[fragment] = this.__parseEdit(this.documentDOM, elemNode);
-
-                // set fragment data
-                introspection.fragments[fragment++].name = this.documentDOM.evaluate("attribute::name", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+                introspection.fragments[fragment++] = this.__parseEdit(this.documentDOM, elemNode);
             }
         }
 
@@ -275,20 +272,24 @@ NeutronParser10.prototype = {
     },
 
     __parseEdit: function (aDocument, aNode) {
+        var fragment        = null;
         var templateWidgets = null;
 
-        return {
-            mimeType: aDocument.evaluate("attribute::mime-type", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
-            templateWidgets: ((templateWidgets = aDocument.evaluate("neutron10:widgets/attribute::templates", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) == "false" ? false : true),
-            open:     this.__parseFileOperation(aDocument, aNode, "open"),
-            save:     this.__parseFileOperation(aDocument, aNode, "save"),
-            checkout: this.__parseFileOperation(aDocument, aNode, "checkout"),
-            checkin:  this.__parseFileOperation(aDocument, aNode, "checkin"),
-            schemas:  this.__parseSchemas(aDocument, aNode),
-            styles:   this.__parseStyles(aDocument, aNode),
-            styleTemplate: this.__parseStyleTemplate(aDocument, aNode),
-            widgets:  this.__parseWidgets(aDocument, aNode)
-        };
+        fragment = new Neutron10Fragment();
+
+        fragment.name            = aDocument.evaluate("attribute::name", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+        fragment.mimeType        = aDocument.evaluate("attribute::mime-type", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+        fragment.open            = this.__parseFileOperation(aDocument, aNode, "open");
+        fragment.save            = this.__parseFileOperation(aDocument, aNode, "save");
+        fragment.checkout        = this.__parseFileOperation(aDocument, aNode, "checkout");
+        fragment.checkin         = this.__parseFileOperation(aDocument, aNode, "checkin");
+        fragment.schemas         = this.__parseSchemas(aDocument, aNode);
+        fragment.styles          = this.__parseStyles(aDocument, aNode);
+        fragment.styleTemplate   = this.__parseStyleTemplate(aDocument, aNode);
+        fragment.widgets         = this.__parseWidgets(aDocument, aNode);
+        fragment.templateWidgets = ((templateWidgets = aDocument.evaluate("neutron10:widgets/attribute::templates", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) == "false" ? false : true);
+
+        return fragment;
     },
 
     __parseFileOperation: function (aDocument, aNode, aOperation) {
@@ -555,6 +556,26 @@ Neutron10Introspection.prototype = {
     __proto__:  NeutronIntrospection.prototype
 };
 
+
+/**
+ * Neutron10Fragment constructor. Instantiates a new
+ * object of type Neutron10Fragment.
+ *
+ * @constructor
+ * @return {Neutron10Fragment} a new Neutron10Fragment object
+ */
+function Neutron10Fragment() {
+    /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Fragment() invoked\n");
+
+    // call super constructor
+    NeutronResource.call(this);
+}
+
+Neutron10Fragment.prototype = {
+    __proto__:  NeutronResource.prototype
+};
+
+
 /**
  * Neutron10Sitetree constructor. Instantiates a new
  * object of type Neutron10Sitetree.
@@ -579,206 +600,17 @@ function Neutron10Widget() {
 }
 
 Neutron10Widget.prototype = {
-    __proto__: NeutronWidget.prototype,
-
-    __name     : null,
-    __nameCache: null,
-    __desc     : null,
-    __descCache: null,
-
-    icon    : null,
-    iconURI : null,
-    surround: null,
-    insert  : null,
-
-    __getByLang: function (aLangMap, aLangID) {
-        var retval      = null;
-        var prefixIndex = null;
-        var langID      = null;
-
-        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang(\"" + aLangMap + "\", \"" + aLangID + "\") invoked\n");
-
-        /* DEBUG */ YulupDebug.ASSERT(aLangMap != null);
-        /* DEBUG */ YulupDebug.ASSERT(aLangID  != null);
-
-        retval = aLangMap[aLangID];
-
-        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang: 1. language ID = \"" + aLangID + "\", retval = \"" + retval + "\"\n");
-
-        if (retval)
-            return retval;
-
-        // try to cut down the lang ID to its prefix
-        prefixIndex = aLangID.indexOf("-");
-        if (prefixIndex > 0)
-            langID = aLangID.substring(0, prefixIndex);
-
-        retval = aLangMap[langID];
-
-        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang: 2. language ID = \"" + langID + "\", retval = \"" + retval + "\"\n");
-
-        if (retval)
-            return retval;
-
-        // return first value in map
-        for (retval in aLangMap)
-            return aLangMap[retval];
-
-        return "";
-    },
-
-    set name(aValue) {
-        var name = {};
-
-        if (aValue) {
-            for (var i = 0; i < aValue.length; i++) {
-                name[aValue[i][0]] = aValue[i][1];
-            }
-        }
-
-        this.__name = name;
-    },
-
-    get name() {
-        if (!this.__nameCache)
-            this.__nameCache = this.__getByLang(this.__name, YulupAppServices.getAppLocale());
-
-        return this.__nameCache;
-    },
-
-    set description(aValue) {
-        var desc = {};
-
-        if (aValue) {
-            for (var i = 0; i < aValue.length; i++) {
-                desc[aValue[i][0]] = aValue[i][1];
-            }
-        }
-
-        this.__desc = desc;
-    },
-
-    get description() {
-        if (!this.__descCache)
-            this.__descCache = this.__getByLang(this.__desc, YulupAppServices.getAppLocale());
-
-        return this.__descCache;
-    },
-
-    supportsActionSurround: function () {
-        return (this.surround != null);
-    },
-
-    supportsActionInsert: function () {
-        return (this.insert != null);
-    },
-
-    getSurroundActionFragment: function () {
-        if (!this.surround)
-            return null;
-
-        return this.surround.fragment;
-    },
-
-    getInsertActionFragment: function () {
-        if (!this.insert)
-            return null;
-
-        return this.insert.fragment;
-    }
+    __proto__: NeutronWidget.prototype
 };
 
 
 function Neutron10WidgetGroup() {
     // call super constructor
     NeutronWidgetGroup.call(this);
-
-    this.widgets = new Array();
 }
 
 Neutron10WidgetGroup.prototype = {
-    __proto__: NeutronWidgetGroup.prototype,
-
-    __name     : null,
-    __nameCache: null,
-    __desc     : null,
-    __descCache: null,
-
-    widgets: null,
-
-    __getByLang: function (aLangMap, aLangID) {
-        var retval      = null;
-        var prefixIndex = null;
-        var langID      = null;
-
-        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang(\"" + aLangMap + "\", \"" + aLangID + "\") invoked\n");
-
-        /* DEBUG */ YulupDebug.ASSERT(aLangMap != null);
-        /* DEBUG */ YulupDebug.ASSERT(aLangID  != null);
-
-        retval = aLangMap[aLangID];
-
-        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang: 1. language ID = \"" + aLangID + "\", retval = \"" + retval + "\"\n");
-
-        if (retval)
-            return retval;
-
-        // try to cut down the lang ID to its prefix
-        prefixIndex = aLangID.indexOf("-");
-        if (prefixIndex > 0)
-            langID = aLangID.substring(0, prefixIndex);
-
-        retval = aLangMap[langID];
-
-        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang: 2. language ID = \"" + langID + "\", retval = \"" + retval + "\"\n");
-
-        if (retval)
-            return retval;
-
-        // return first value in map
-        for (retval in aLangMap)
-            return aLangMap[retval];
-
-        return "";
-    },
-
-    set name(aValue) {
-        var name = {};
-
-        if (aValue) {
-            for (var i = 0; i < aValue.length; i++) {
-                name[aValue[i][0]] = aValue[i][1];
-            }
-        }
-
-        this.__name = name;
-    },
-
-    get name() {
-        if (!this.__nameCache)
-            this.__nameCache = this.__getByLang(this.__name, YulupAppServices.getAppLocale());
-
-        return this.__nameCache;
-    },
-
-    set description(aValue) {
-        var desc = {};
-
-        if (aValue) {
-            for (var i = 0; i < aValue.length; i++) {
-                desc[aValue[i][0]] = aValue[i][1];
-            }
-        }
-
-        this.__desc = desc;
-    },
-
-    get description() {
-        if (!this.__descCache)
-            this.__descCache = this.__getByLang(this.__desc, YulupAppServices.getAppLocale());
-
-        return this.__descCache;
-    }
+    __proto__: NeutronWidgetGroup.prototype
 };
 
 
@@ -788,10 +620,7 @@ function Neutron10WidgetAction() {
 }
 
 Neutron10WidgetAction.prototype = {
-    __proto__: NeutronWidgetAction.prototype,
-
-    parameters: null,
-    fragment  : null
+    __proto__: NeutronWidgetAction.prototype
 };
 
 
@@ -801,87 +630,5 @@ function Neutron10WidgetActionParameter() {
 }
 
 Neutron10WidgetActionParameter.prototype = {
-    __proto__: NeutronWidgetActionParameter.prototype,
-
-    __name     : null,
-    __nameCache: null,
-    __desc     : null,
-    __descCache: null,
-
-    xpath: null,
-    type : null,
-
-    __getByLang: function (aLangMap, aLangID) {
-        var retval      = null;
-        var prefixIndex = null;
-        var langID      = null;
-
-        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang(\"" + aLangMap + "\", \"" + aLangID + "\") invoked\n");
-
-        /* DEBUG */ YulupDebug.ASSERT(aLangMap != null);
-        /* DEBUG */ YulupDebug.ASSERT(aLangID  != null);
-
-        retval = aLangMap[aLangID];
-
-        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang: 1. language ID = \"" + aLangID + "\", retval = \"" + retval + "\"\n");
-
-        if (retval)
-            return retval;
-
-        // try to cut down the lang ID to its prefix
-        prefixIndex = aLangID.indexOf("-");
-        if (prefixIndex > 0)
-            langID = aLangID.substring(0, prefixIndex);
-
-        retval = aLangMap[langID];
-
-        /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Widget.__getByLang: 2. language ID = \"" + langID + "\", retval = \"" + retval + "\"\n");
-
-        if (retval)
-            return retval;
-
-        // return first value in map
-        for (retval in aLangMap)
-            return aLangMap[retval];
-
-        return "";
-    },
-
-    set name(aValue) {
-        var name = {};
-
-        if (aValue) {
-            for (var i = 0; i < aValue.length; i++) {
-                name[aValue[i][0]] = aValue[i][1];
-            }
-        }
-
-        this.__name = name;
-    },
-
-    get name() {
-        if (!this.__nameCache)
-            this.__nameCache = this.__getByLang(this.__name, YulupAppServices.getAppLocale());
-
-        return this.__nameCache;
-    },
-
-    set description(aValue) {
-        var desc = {};
-
-        if (aValue) {
-            for (var i = 0; i < aValue.length; i++) {
-                desc[aValue[i][0]] = aValue[i][1];
-            }
-        }
-
-        this.__desc = desc;
-    },
-
-    get description() {
-        if (!this.__descCache)
-            this.__descCache = this.__getByLang(this.__desc, YulupAppServices.getAppLocale());
-
-        return this.__descCache;
-    }
+    __proto__: NeutronWidgetActionParameter.prototype
 };
