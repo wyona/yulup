@@ -68,6 +68,8 @@ URIRewriter.prototype = {
 
         /* DEBUG */ dump("Yulup:urirewriter.js:URIRewriter.rewriteURIs() invoked\n");
 
+        // TODO: nsIHTMLEditor.getLinkedObjects() may prodive us with a more extensive link list
+
         if (this.__view.model.documentReference && (baseURI = this.__view.model.documentReference.getBaseURI()) != null) {
             // image URI rewriting
             targetNodes = this.__view.editor.contentDocument.images;
@@ -77,11 +79,13 @@ URIRewriter.prototype = {
             }
 
             // anchor URI rewriting
+            /*
             targetNodes = this.__view.editor.contentDocument.links;
 
             for (var i = 0; i < targetNodes.length; i++) {
                 this.__rewriteAURI(targetNodes.item(i), baseURI);
             }
+            */
 
             // link URI rewriting
             targetNodes = this.__view.editor.contentDocument.getElementsByTagName("link");
@@ -129,6 +133,9 @@ URIRewriter.prototype = {
     __rewriteAURI: function(aNode, aBaseURI) {
         var originalURI = null;
         var newURI      = null;
+
+        // TODO: don't rewrite links
+        return;
 
         originalURI = aNode.getAttribute("href");
 
