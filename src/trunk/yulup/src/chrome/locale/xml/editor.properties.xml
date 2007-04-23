@@ -55,15 +55,9 @@
   </entity>
 
   <entity id="editorWellFormednessError0.label">
-    <name xml:lang="en">Document not well-formed</name>
-    <name xml:lang="de">Das Dokument is nicht well-formed</name>
-    <name xml:lang="es">El documento no está bien formado</name>
-  </entity>
-
-  <entity id="editorWellFormednessError1.label">
-    <name xml:lang="en">line number</name>
-    <name xml:lang="de">Zeile</name>
-    <name xml:lang="es">número de línea</name>
+    <name xml:lang="en">Document not well-formed: line number</name>
+    <name xml:lang="de">Das Dokument is nicht well-formed: Zeile</name>
+    <name xml:lang="es">El documento no está bien formado: número de línea</name>
   </entity>
 
   <entity id="editorWellFormednessError2.label">

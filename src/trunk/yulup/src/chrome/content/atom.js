@@ -112,7 +112,7 @@ var APP = {
             if (aDocumentData) {
                 // load successful
                 if ((wellFormednessError = YulupXMLServices.checkWellFormedness(aDocumentData)) != null) {
-                    throw new YulupException(APP.createWellFormednessAlertString(wellFormednessError));
+                    throw new YulupException(YulupXMLServices.createWellFormednessAlertString(wellFormednessError));
                 }
 
                 domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"].createInstance(Components.interfaces.nsIDOMParser);
@@ -147,10 +147,6 @@ var APP = {
             // set the introspection state
             yulup.introspectionStateChanged("failed");
         }
-    },
-
-    createWellFormednessAlertString: function (aWellFormednessError) {
-        return document.getElementById("uiYulupEditorStringbundle").getString("editorWellFormednessError0.label") + ": " + document.getElementById("uiYulupEditorStringbundle").getString("editorWellFormednessError1.label") + ": " + aWellFormednessError.line + ", " + document.getElementById("uiYulupEditorStringbundle").getString("editorWellFormednessError2.label") + ": " + aWellFormednessError.column + (aWellFormednessError.sourceText != "" ? "\n" + aWellFormednessError.sourceText : "");
     },
 
     /**

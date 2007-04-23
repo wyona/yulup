@@ -330,6 +330,16 @@ const YulupXMLServices = {
         } else {
             return null;
         }
+    },
+
+    createWellFormednessAlertString: function (aWellFormednessError) {
+        var stringBundle = null;
+
+        stringBundle = YulupLocalisationServices.getStringBundle("chrome://yulup/locale/editor.properties");
+
+        return stringBundle.GetStringFromName("editorWellFormednessError0.label") + ": " + aWellFormednessError.line +
+            ", " + stringBundle.GetStringFromName("editorWellFormednessError2.label") + ": " + aWellFormednessError.column +
+            (aWellFormednessError.sourceText != "" ? "\n" + aWellFormednessError.sourceText : "");
     }
 };
 

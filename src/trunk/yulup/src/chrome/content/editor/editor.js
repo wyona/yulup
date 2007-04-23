@@ -401,7 +401,7 @@ var Editor = {
 
                 if (promptService.confirmEx(null,
                                             Editor.getStringbundleString("editorWellFormednessDialog.title"),
-                                            Editor.createWellFormednessAlertString(wellFormednessError) + "\n" + Editor.getStringbundleString("editorWellFormednessDialog.label"),
+                                            YulupXMLServices.createWellFormednessAlertString(wellFormednessError) + "\n" + Editor.getStringbundleString("editorWellFormednessDialog.label"),
                                             promptService.BUTTON_POS_0 * promptService.BUTTON_TITLE_SAVE + promptService.BUTTON_POS_1 * promptService.BUTTON_TITLE_CANCEL,
                                             "", "", "",
                                             null,
@@ -440,10 +440,6 @@ var Editor = {
             // save did not succeed, warn user
             alert(Editor.getStringbundleString("editorDocumentSaveFailure.label"));
         }
-    },
-
-    createWellFormednessAlertString: function (aWellFormednessError) {
-        return Editor.getStringbundleString("editorWellFormednessError0.label") + ": " + Editor.getStringbundleString("editorWellFormednessError1.label") + ": " + aWellFormednessError.line + ", " + Editor.getStringbundleString("editorWellFormednessError2.label") + ": " + aWellFormednessError.column + (aWellFormednessError.sourceText != "" ? "\n" + aWellFormednessError.sourceText : "");
     },
 
     /**
