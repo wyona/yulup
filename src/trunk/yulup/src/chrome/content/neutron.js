@@ -30,6 +30,7 @@
  */
 
 const NEUTRON_10_NAMESPACE = "http://www.wyona.org/neutron/1.0";
+const NEUTRON_20_NAMESPACE = "http://www.wyona.org/neutron/2.0";
 
 var Neutron = {
     /**
@@ -197,6 +198,10 @@ var Neutron = {
                 // instantiate Neutron 1.0 parser
                 neutronParser = new NeutronParser10(aDocument, aBaseURI);
                 break;
+            case NEUTRON_20_NAMESPACE:
+                // instantiate Neutron 2.0 parser
+                neutronParser = new NeutronParser20(aDocument, aBaseURI);
+                break;
             default:
                 // no parser available for this version
                 throw new NeutronException("Yulup:neutron.js:Neutron.parserFactory: Neutron version \"" + aDocument.documentElement.namespaceURI + "\" not supported.");
@@ -208,16 +213,16 @@ var Neutron = {
 
 
 /**
- * Introspection constructor. Instantiates a new object of
- * type Introspection.
+ * NeutronIntrospection constructor. Instantiates a new object of
+ * type NeutronIntrospection.
  *
  * @constructor
- * @param  {nsIURI}        aAssociatedWithURI   the URI of the document this introspection object is associated with
- * @param  {String}        aCompatibilityLevel  the namespace associated with the introspection document
- * @return {Introspection} returns a new Introspection object
+ * @param  {nsIURI} aAssociatedWithURI   the URI of the document this introspection object is associated with
+ * @param  {String} aCompatibilityLevel  the namespace associated with the introspection document
+ * @return {NeutronIntrospection} returns a new NeutronIntrospection object
  */
-function Introspection(aAssociatedWithURI, aCompatibilityLevel) {
-    /* DEBUG */ dump("Yulup:neutron.js:Introspection(\"" + aAssociatedWithURI + "\") invoked\n");
+function NeutronIntrospection(aAssociatedWithURI, aCompatibilityLevel) {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronIntrospection(\"" + aAssociatedWithURI + "\") invoked\n");
 
     /* DEBUG */ YulupDebug.ASSERT(aAssociatedWithURI  != null);
     /* DEBUG */ YulupDebug.ASSERT(aCompatibilityLevel != null);
@@ -228,7 +233,7 @@ function Introspection(aAssociatedWithURI, aCompatibilityLevel) {
     this.fragments = new Array();
 }
 
-Introspection.prototype = {
+NeutronIntrospection.prototype = {
     associatedWithURI    : null,
     compatibilityLevel   : null,
     introspectionDocument: null,
@@ -320,7 +325,7 @@ Introspection.prototype = {
             // check if fragment i supports open
             if (this.queryFragmentOpenURI(i)) {
                 fragments[j] = [this.queryFragmentName(i), this.queryFragmentOpenURI(i)];
-                /* DEBUG */ dump("Yulup:neutron.js:Introspection.queryOpenFragments: \"" + fragments[j][0] + "\", \"" + fragments[j][1] + "\"\n");
+                /* DEBUG */ dump("Yulup:neutron.js:NeutronIntrospection.queryOpenFragments: \"" + fragments[j][0] + "\", \"" + fragments[j][1] + "\"\n");
                 j++;
             }
         }
@@ -351,7 +356,7 @@ Introspection.prototype = {
             // check if fragment i supports checkout
             if (this.queryFragmentCheckoutURI(i)) {
                 fragments[j] = [this.queryFragmentName(i), this.queryFragmentCheckoutURI(i)];
-                /* DEBUG */ dump("Yulup:neutron.js:Introspection.queryCheckoutFragments: \"" + fragments[j][0] + "\", \"" + fragments[j][1] + "\"\n");
+                /* DEBUG */ dump("Yulup:neutron.js:NeutronIntrospection.queryCheckoutFragments: \"" + fragments[j][0] + "\", \"" + fragments[j][1] + "\"\n");
                 j++;
             }
         }

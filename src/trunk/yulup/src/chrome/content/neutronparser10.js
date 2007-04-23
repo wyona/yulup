@@ -548,11 +548,11 @@ function Neutron10Introspection(aAssociatedWithURI) {
     /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Introspection(\"" + aAssociatedWithURI + "\") invoked\n");
 
     // call super constructor
-    Introspection.call(this, aAssociatedWithURI, NEUTRON_10_NAMESPACE);
+    NeutronIntrospection.call(this, aAssociatedWithURI, NEUTRON_10_NAMESPACE);
 }
 
 Neutron10Introspection.prototype = {
-    __proto__:  Introspection.prototype
+    __proto__:  NeutronIntrospection.prototype
 };
 
 /**
