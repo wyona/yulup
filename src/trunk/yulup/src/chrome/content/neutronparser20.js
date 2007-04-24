@@ -25,21 +25,21 @@
  * @author Andreas Wuest
  *
  * This module contains the code to parse files
- * based on the Neutron 1 specification (see
+ * based on the Neutron 2 specification (see
  * http://www.wyona.org/osr-101/osr-101.xhtml).
  */
 
 /**
- * NeutronParser10 constructor. Instantiates a new object of
- * type NeutronParser10.
+ * NeutronParser20 constructor. Instantiates a new object of
+ * type NeutronParser20.
  *
  * @constructor
  * @param  {nsIDOMXMLDocument} aDocument the Neutron document to parse
  * @param  {nsIURI}            aBaseURI  the URI of the document to which the introspection document is associated
- * @return {NeutronParser10}
+ * @return {NeutronParser20}
  */
-function NeutronParser10(aDocument, aBaseURI) {
-    /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10(\"" + aDocument + "\", \"" + aBaseURI + "\") invoked\n");
+function NeutronParser20(aDocument, aBaseURI) {
+    /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20(\"" + aDocument + "\", \"" + aBaseURI + "\") invoked\n");
 
      // call super constructor
     NeutronParser.call(this);
@@ -49,7 +49,7 @@ function NeutronParser10(aDocument, aBaseURI) {
     this.ioService   = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 }
 
-NeutronParser10.prototype = {
+NeutronParser20.prototype = {
     __proto__: NeutronParser.prototype,
 
     documentDOM: null,
@@ -66,10 +66,10 @@ NeutronParser10.prototype = {
     nsResolver: function (aPrefix) {
         var namespace = null;
 
-        /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.nsResolver(\"" + aPrefix + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.nsResolver(\"" + aPrefix + "\") invoked\n");
 
         var namespace = {
-            "neutron10": "http://www.wyona.org/neutron/1.0",
+            "neutron20": "http://www.wyona.org/neutron/2.0",
             "D"        : "DAV",
             "xml"      : "http://www.w3.org/XML/1998/namespace"
         };
@@ -89,12 +89,12 @@ NeutronParser10.prototype = {
         var elemIterator = null;
         var resource     = 0;
 
-        /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.parseSitetree() invoked\n");
+        /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.parseSitetree() invoked\n");
 
-        sitetree = new Neutron10Sitetree();
+        sitetree = new Neutron20Sitetree();
 
         if (elemNodeIterator = this.documentDOM.evaluate("D:multistatus/D:response", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null)) {
-            /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.parseSitetree: found one or multiple response elements\n");
+            /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.parseSitetree: found one or multiple response elements\n");
 
             while (elemNode = elemNodeIterator.iterateNext()) {
                 sitetree.resources[resource++] = this.__parseResponse(this.documentDOM, elemNode);
@@ -137,7 +137,7 @@ NeutronParser10.prototype = {
     /**
      * Parse introspection file.
      *
-     * @return {Neutron10Introspection} a Neutron10Introspection object
+     * @return {Neutron20Introspection} a Neutron20Introspection object
      */
     parseIntrospection: function () {
         var introspection    = null;
@@ -145,25 +145,25 @@ NeutronParser10.prototype = {
         var elemNodeIterator = null;
         var fragment         = 0;
 
-        /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.parseIntrospection() invoked\n");
+        /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.parseIntrospection() invoked\n");
 
-        introspection = new Neutron10Introspection(this.baseURI);
+        introspection = new Neutron20Introspection(this.baseURI);
 
-        if (elemNodeIterator = this.documentDOM.evaluate("neutron10:introspection/neutron10:edit", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null)) {
-            /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.parseIntrospection: found one or multiple edit elements\n");
+        if (elemNodeIterator = this.documentDOM.evaluate("neutron20:introspection/neutron20:edit", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null)) {
+            /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.parseIntrospection: found one or multiple edit elements\n");
             while (elemNode = elemNodeIterator.iterateNext()) {
-                /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.parseIntrospection: processing edit element #" + fragment + "\n");
+                /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.parseIntrospection: processing edit element #" + fragment + "\n");
                 // edit element exists
                 introspection.fragments[fragment++] = this.__parseEdit(this.documentDOM, elemNode);
             }
         }
 
-        if (elemNode = this.documentDOM.evaluate("neutron10:introspection/neutron10:new", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) {
+        if (elemNode = this.documentDOM.evaluate("neutron20:introspection/neutron20:new", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) {
             // new element exists
             introspection.newTemplates = this.__parseNew(this.documentDOM, elemNode);
         }
 
-        if (elemNode = this.documentDOM.evaluate("neutron10:introspection/neutron10:navigation", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) {
+        if (elemNode = this.documentDOM.evaluate("neutron20:introspection/neutron20:navigation", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) {
             // navigation element exists
             introspection.navigation = this.__parseNavigation(this.documentDOM, elemNode);
         }
@@ -185,29 +185,29 @@ NeutronParser10.prototype = {
         var exceptionType = null;
         var response      = null;
 
-        /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.parseResponse() invoked\n");
+        /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.parseResponse() invoked\n");
 
-        if (elemNode = this.documentDOM.evaluate("neutron10:exception", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) {
+        if (elemNode = this.documentDOM.evaluate("neutron20:exception", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) {
             // response is of type exception, get exception type
             exceptionType = this.documentDOM.evaluate("attribute::type", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 
             switch (exceptionType) {
                 case "checkin":
-                    response = new NeutronProtocolCheckinException(this.documentDOM.evaluate("neutron10:message/text()", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue);
+                    response = new NeutronProtocolCheckinException(this.documentDOM.evaluate("neutron20:message/text()", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue);
 
                     // TODO: implement parsing of the remaining fields
                     break;
                 case "data-not-well-formed":
-                    response = new NeutronProtocolDataNotWellFormedException(this.documentDOM.evaluate("neutron10:message/text()", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue);
+                    response = new NeutronProtocolDataNotWellFormedException(this.documentDOM.evaluate("neutron20:message/text()", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue);
 
-                    if (elemNode = this.documentDOM.evaluate("neutron10:data-not-well-formed", elemNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) {
+                    if (elemNode = this.documentDOM.evaluate("neutron20:data-not-well-formed", elemNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) {
                         response.url        = this.documentDOM.evaluate("attribute::url", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-                        response.lineNumber = this.documentDOM.evaluate("neutron10:line/attribute::number", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-                        response.error      = this.documentDOM.evaluate("neutron10:line/attribute::message", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+                        response.lineNumber = this.documentDOM.evaluate("neutron20:line/attribute::number", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+                        response.error      = this.documentDOM.evaluate("neutron20:line/attribute::message", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
                     }
                     break;
                 default:
-                    response = new NeutronProtocolException(this.documentDOM.evaluate("neutron10:message/text()", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue);
+                    response = new NeutronProtocolException(this.documentDOM.evaluate("neutron20:message/text()", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue);
             }
 
             /* Because this message is of type exception, we
@@ -240,7 +240,7 @@ NeutronParser10.prototype = {
         var sitetree = null;
         var uri      = null;
 
-        sitetree = aDocument.evaluate("neutron10:sitetree", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
+        sitetree = aDocument.evaluate("neutron20:sitetree", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
 
         if (sitetree) {
             return {
@@ -258,7 +258,7 @@ NeutronParser10.prototype = {
         var templateArray = new Array();
         var uri           = null;
 
-        templates = aDocument.evaluate("neutron10:template", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+        templates = aDocument.evaluate("neutron20:template", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
 
         while (template = templates.iterateNext()) {
             templateArray.push({
@@ -275,7 +275,7 @@ NeutronParser10.prototype = {
         var fragment        = null;
         var templateWidgets = null;
 
-        fragment = new Neutron10Fragment();
+        fragment = new Neutron20Fragment();
 
         fragment.name            = aDocument.evaluate("attribute::name", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
         fragment.mimeType        = aDocument.evaluate("attribute::mime-type", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
@@ -287,7 +287,7 @@ NeutronParser10.prototype = {
         fragment.styles          = this.__parseStyles(aDocument, aNode);
         fragment.styleTemplate   = this.__parseStyleTemplate(aDocument, aNode);
         fragment.widgets         = this.__parseWidgets(aDocument, aNode);
-        fragment.templateWidgets = ((templateWidgets = aDocument.evaluate("neutron10:widgets/attribute::templates", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) == "false" ? false : true);
+        fragment.templateWidgets = ((templateWidgets = aDocument.evaluate("neutron20:widgets/attribute::templates", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) == "false" ? false : true);
 
         return fragment;
     },
@@ -295,7 +295,7 @@ NeutronParser10.prototype = {
     __parseFileOperation: function (aDocument, aNode, aOperation) {
         var sourceURI = null;
 
-        sourceURI = aDocument.evaluate("neutron10:" + aOperation + "/attribute::url", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+        sourceURI = aDocument.evaluate("neutron20:" + aOperation + "/attribute::url", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 
         if (sourceURI != "") {
             sourceURI = this.ioService.newURI(sourceURI, null, this.baseURI);
@@ -303,11 +303,11 @@ NeutronParser10.prototype = {
             sourceURI = null;
         }
 
-        /* DEBUG */ dump("Yulup:neutronparser10.js:NeutronParser10.__parseFileOperation: sourceURI = " + sourceURI + "\n");
+        /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.__parseFileOperation: sourceURI = " + sourceURI + "\n");
 
         return {
             uri:    sourceURI,
-            method: aDocument.evaluate("neutron10:" + aOperation + "/attribute::method", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue
+            method: aDocument.evaluate("neutron20:" + aOperation + "/attribute::method", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue
         };
     },
 
@@ -316,7 +316,7 @@ NeutronParser10.prototype = {
         var schema      = null;
         var schemaArray = new Array();
 
-        schemas = aDocument.evaluate("neutron10:schemas/neutron10:schema", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+        schemas = aDocument.evaluate("neutron20:schemas/neutron20:schema", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
 
         while (schema = schemas.iterateNext()) {
             schemaArray.push({
@@ -334,7 +334,7 @@ NeutronParser10.prototype = {
         var styleArray = new Array();
         var sourceURI  = null;
 
-        styles = aDocument.evaluate("neutron10:styles/neutron10:style", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+        styles = aDocument.evaluate("neutron20:styles/neutron20:style", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
 
         while (style = styles.iterateNext()) {
             styleArray.push({
@@ -350,11 +350,11 @@ NeutronParser10.prototype = {
 
         var styleTemplate = new Object();
 
-        var href = aDocument.evaluate("neutron10:styles/neutron10:style-template/attribute::href", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+        var href = aDocument.evaluate("neutron20:styles/neutron20:style-template/attribute::href", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
         if (href != "") {
            styleTemplate.uri = this.ioService.newURI(href, null, this.baseURI);
             // apply styleTemplate pre or post source transformation
-            var mode = aDocument.evaluate("neutron10:styles/neutron10:style-template/attribute::mode", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+            var mode = aDocument.evaluate("neutron20:styles/neutron20:style-template/attribute::mode", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
             if (mode != "") {
               styleTemplate.mode = mode;
             }
@@ -369,7 +369,7 @@ NeutronParser10.prototype = {
         var widget      = null;
         var widgetArray = new Array();
 
-        widgets = aDocument.evaluate("neutron10:widgets/*[self::neutron10:widget or self::neutron10:widgetgroup]", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+        widgets = aDocument.evaluate("neutron20:widgets/*[self::neutron20:widget or self::neutron20:widgetgroup]", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 
         while (widget = widgets.iterateNext()) {
             switch (widget.localName) {
@@ -392,7 +392,7 @@ NeutronParser10.prototype = {
         var iconIndex = null;
         var iconFile  = null;
 
-        widget = new Neutron10Widget();
+        widget = new Neutron20Widget();
 
         iconFile = aDocument.evaluate("attribute::icon", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
         if ((iconIndex = iconFile.lastIndexOf("/")) != -1) {
@@ -414,12 +414,12 @@ NeutronParser10.prototype = {
         var widgets     = null;
         var widget      = null;
 
-        widgetGroup = new Neutron10WidgetGroup();
+        widgetGroup = new Neutron20WidgetGroup();
 
         widgetGroup.name        = this.__parseWidgetNames(aDocument, aNode);
         widgetGroup.description = this.__parseWidgetDescriptions(aDocument, aNode);
 
-        widgets = aDocument.evaluate("neutron10:widget", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+        widgets = aDocument.evaluate("neutron20:widget", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 
         while (widget = widgets.iterateNext()) {
             widgetGroup.widgets.push(this.__parseWidget(aDocument, widget));
@@ -433,7 +433,7 @@ NeutronParser10.prototype = {
         var name      = null;
         var nameArray = new Array();
 
-        names = aDocument.evaluate("neutron10:name", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+        names = aDocument.evaluate("neutron20:name", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 
         while (name = names.iterateNext()) {
             nameArray.push(this.__parseWidgetNameAlikes(aDocument, name));
@@ -447,7 +447,7 @@ NeutronParser10.prototype = {
         var description  = null;
         var descArray    = new Array();
 
-        descriptions = aDocument.evaluate("neutron10:description", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+        descriptions = aDocument.evaluate("neutron20:description", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 
         while (description = descriptions.iterateNext()) {
             descArray.push(this.__parseWidgetNameAlikes(aDocument, description));
@@ -469,7 +469,7 @@ NeutronParser10.prototype = {
     __parseWidgetSurroundAction: function (aDocument, aNode) {
         var action = null;
 
-        if (action = aDocument.evaluate("neutron10:surround", aNode, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
+        if (action = aDocument.evaluate("neutron20:surround", aNode, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
             return this.__parseWidgetAction(aDocument, action);
         }
 
@@ -479,7 +479,7 @@ NeutronParser10.prototype = {
     __parseWidgetInsertAction: function (aDocument, aNode) {
         var action = null;
 
-        if (action = aDocument.evaluate("neutron10:insert", aNode, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
+        if (action = aDocument.evaluate("neutron20:insert", aNode, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
             return this.__parseWidgetAction(aDocument, action);
         }
 
@@ -489,7 +489,7 @@ NeutronParser10.prototype = {
     __parseWidgetAction: function (aDocument, aNode) {
         var action = null;
 
-        action = new Neutron10WidgetAction();
+        action = new Neutron20WidgetAction();
 
         action.parameters = this.__parseWidgetActionParameters(aDocument, aNode);
         action.fragment   = this.__parseWidgetFragment(aDocument, aNode);
@@ -503,10 +503,10 @@ NeutronParser10.prototype = {
         var widgetActionParam = null;
         var parameterArray    = new Array();
 
-        parameters = aDocument.evaluate("neutron10:parameter", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+        parameters = aDocument.evaluate("neutron20:parameter", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 
         while (parameter = parameters.iterateNext()) {
-            widgetActionParam = new Neutron10WidgetActionParameter();
+            widgetActionParam = new Neutron20WidgetActionParameter();
 
             widgetActionParam.xpath       = aDocument.evaluate("attribute::xpath", parameter, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
             widgetActionParam.type        = aDocument.evaluate("attribute::type", parameter, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
@@ -524,7 +524,7 @@ NeutronParser10.prototype = {
         var xmlDoc       = null;
         var importNode   = null;
 
-        fragmentNode = aDocument.evaluate("neutron10:fragment/child::*", aNode, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        fragmentNode = aDocument.evaluate("neutron20:fragment/child::*", aNode, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 
         if (fragmentNode) {
             xmlDoc = Components.classes["@mozilla.org/xml/xml-document;1"].createInstance(Components.interfaces.nsIDOMXMLDocument);
@@ -538,97 +538,97 @@ NeutronParser10.prototype = {
 
 
 /**
- * Neutron10Introspection constructor. Instantiates a new
- * object of type Neutron10Introspection.
+ * Neutron20Introspection constructor. Instantiates a new
+ * object of type Neutron20Introspection.
  *
  * @constructor
  * @param  {nsIURI}                 aAssociatedWithURI the URI of the document this introspection object is associated with
- * @return {Neutron10Introspection} a new Neutron10Introspection object
+ * @return {Neutron20Introspection} a new Neutron20Introspection object
  */
-function Neutron10Introspection(aAssociatedWithURI) {
-    /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Introspection(\"" + aAssociatedWithURI + "\") invoked\n");
+function Neutron20Introspection(aAssociatedWithURI) {
+    /* DEBUG */ dump("Yulup:neutronparser20.js:Neutron20Introspection(\"" + aAssociatedWithURI + "\") invoked\n");
 
     // call super constructor
     NeutronIntrospection.call(this, aAssociatedWithURI, NEUTRON_10_NAMESPACE);
 }
 
-Neutron10Introspection.prototype = {
+Neutron20Introspection.prototype = {
     __proto__:  NeutronIntrospection.prototype
 };
 
 
 /**
- * Neutron10Fragment constructor. Instantiates a new
- * object of type Neutron10Fragment.
+ * Neutron20Fragment constructor. Instantiates a new
+ * object of type Neutron20Fragment.
  *
  * @constructor
- * @return {Neutron10Fragment} a new Neutron10Fragment object
+ * @return {Neutron20Fragment} a new Neutron20Fragment object
  */
-function Neutron10Fragment() {
-    /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Fragment() invoked\n");
+function Neutron20Fragment() {
+    /* DEBUG */ dump("Yulup:neutronparser20.js:Neutron20Fragment() invoked\n");
 
     // call super constructor
     NeutronResource.call(this);
 }
 
-Neutron10Fragment.prototype = {
+Neutron20Fragment.prototype = {
     __proto__:  NeutronResource.prototype
 };
 
 
 /**
- * Neutron10Sitetree constructor. Instantiates a new
- * object of type Neutron10Sitetree.
+ * Neutron20Sitetree constructor. Instantiates a new
+ * object of type Neutron20Sitetree.
  *
  * @constructor
- * @return {Neutron10Sitetree} a new Neutron10Sitetree object
+ * @return {Neutron20Sitetree} a new Neutron20Sitetree object
  */
-function Neutron10Sitetree() {
-    /* DEBUG */ dump("Yulup:neutronparser10.js:Neutron10Sitetree() invoked\n");
+function Neutron20Sitetree() {
+    /* DEBUG */ dump("Yulup:neutronparser20.js:Neutron20Sitetree() invoked\n");
 
     this.resources = new Array();
 }
 
-Neutron10Sitetree.prototype = {
+Neutron20Sitetree.prototype = {
     resources: null
 };
 
 
-function Neutron10Widget() {
+function Neutron20Widget() {
     // call super constructor
     NeutronWidget.call(this);
 }
 
-Neutron10Widget.prototype = {
+Neutron20Widget.prototype = {
     __proto__: NeutronWidget.prototype
 };
 
 
-function Neutron10WidgetGroup() {
+function Neutron20WidgetGroup() {
     // call super constructor
     NeutronWidgetGroup.call(this);
 }
 
-Neutron10WidgetGroup.prototype = {
+Neutron20WidgetGroup.prototype = {
     __proto__: NeutronWidgetGroup.prototype
 };
 
 
-function Neutron10WidgetAction() {
+function Neutron20WidgetAction() {
     // call super constructor
     NeutronWidgetAction.call(this);
 }
 
-Neutron10WidgetAction.prototype = {
+Neutron20WidgetAction.prototype = {
     __proto__: NeutronWidgetAction.prototype
 };
 
 
-function Neutron10WidgetActionParameter() {
+function Neutron20WidgetActionParameter() {
     // call super constructor
     NeutronWidgetActionParameter.call(this);
 }
 
-Neutron10WidgetActionParameter.prototype = {
+Neutron20WidgetActionParameter.prototype = {
     __proto__: NeutronWidgetActionParameter.prototype
 };

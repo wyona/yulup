@@ -48,6 +48,7 @@
   <script type="application/x-javascript" src="chrome://yulup/content/networkservice.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/neutron.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/neutronparser10.js"/>
+  <script type="application/x-javascript" src="chrome://yulup/content/neutronparser20.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/neutronarchive.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/editor/widgets/widget.js"/>
   <script type="application/x-javascript" src="chrome://yulup/content/editor/widgets/widgetparams.js"/>
