@@ -149,12 +149,12 @@ NeutronParser20.prototype = {
 
         introspection = new Neutron20Introspection(this.baseURI);
 
-        if (elemNodeIterator = this.documentDOM.evaluate("neutron20:introspection/neutron20:edit", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null)) {
-            /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.parseIntrospection: found one or multiple edit elements\n");
+        if (elemNodeIterator = this.documentDOM.evaluate("neutron20:introspection/neutron20:resource", this.documentDOM, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null)) {
+            /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.parseIntrospection: found one or multiple resource elements\n");
             while (elemNode = elemNodeIterator.iterateNext()) {
-                /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.parseIntrospection: processing edit element #" + fragment + "\n");
+                /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.parseIntrospection: processing resource element #" + fragment + "\n");
                 // edit element exists
-                introspection.fragments[fragment++] = this.__parseEdit(this.documentDOM, elemNode);
+                introspection.fragments[fragment++] = this.__parseResource(this.documentDOM, elemNode);
             }
         }
 
@@ -271,25 +271,40 @@ NeutronParser20.prototype = {
         return (templateArray.length > 0 ? templateArray : null);
     },
 
-    __parseEdit: function (aDocument, aNode) {
-        var fragment        = null;
+    __parseResource: function (aDocument, aNode) {
+        var resource         = null;
+        var elemNodeIterator = null;
+        var elemNode         = null;
+
+        resource = new Neutron20Resource();
+
+        resource.name = aDocument.evaluate("attribute::name", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+
+        elemNode = aDocument.evaluate("neutron20:edit", aNode, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE , null).singleNodeValue;
+
+        if (elemNode) {
+            // edit element exists
+            this.__parseEdit(aDocument, elemNode, resource);
+        }
+
+        return resource;
+    },
+
+    __parseEdit: function (aDocument, aNode, aResource) {
         var templateWidgets = null;
 
-        fragment = new Neutron20Fragment();
+        aResource.mimeType        = aDocument.evaluate("attribute::mime-type", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+        aResource.open            = this.__parseFileOperation(aDocument, aNode, "open");
+        aResource.save            = this.__parseFileOperation(aDocument, aNode, "save");
+        aResource.checkout        = this.__parseFileOperation(aDocument, aNode, "checkout");
+        aResource.checkin         = this.__parseFileOperation(aDocument, aNode, "checkin");
+        aResource.schemas         = this.__parseSchemas(aDocument, aNode);
+        aResource.styles          = this.__parseStyles(aDocument, aNode);
+        aResource.styleTemplate   = this.__parseStyleTemplate(aDocument, aNode);
+        aResource.widgets         = this.__parseWidgets(aDocument, aNode);
+        aResource.templateWidgets = ((templateWidgets = aDocument.evaluate("neutron20:widgets/attribute::templates", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) == "false" ? false : true);
 
-        fragment.name            = aDocument.evaluate("attribute::name", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-        fragment.mimeType        = aDocument.evaluate("attribute::mime-type", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-        fragment.open            = this.__parseFileOperation(aDocument, aNode, "open");
-        fragment.save            = this.__parseFileOperation(aDocument, aNode, "save");
-        fragment.checkout        = this.__parseFileOperation(aDocument, aNode, "checkout");
-        fragment.checkin         = this.__parseFileOperation(aDocument, aNode, "checkin");
-        fragment.schemas         = this.__parseSchemas(aDocument, aNode);
-        fragment.styles          = this.__parseStyles(aDocument, aNode);
-        fragment.styleTemplate   = this.__parseStyleTemplate(aDocument, aNode);
-        fragment.widgets         = this.__parseWidgets(aDocument, aNode);
-        fragment.templateWidgets = ((templateWidgets = aDocument.evaluate("neutron20:widgets/attribute::templates", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) == "false" ? false : true);
-
-        return fragment;
+        return aResource;
     },
 
     __parseFileOperation: function (aDocument, aNode, aOperation) {
@@ -558,20 +573,20 @@ Neutron20Introspection.prototype = {
 
 
 /**
- * Neutron20Fragment constructor. Instantiates a new
- * object of type Neutron20Fragment.
+ * Neutron20Resource constructor. Instantiates a new
+ * object of type Neutron20Resource.
  *
  * @constructor
- * @return {Neutron20Fragment} a new Neutron20Fragment object
+ * @return {Neutron20Resource} a new Neutron20Resource object
  */
-function Neutron20Fragment() {
-    /* DEBUG */ dump("Yulup:neutronparser20.js:Neutron20Fragment() invoked\n");
+function Neutron20Resource() {
+    /* DEBUG */ dump("Yulup:neutronparser20.js:Neutron20Resource() invoked\n");
 
     // call super constructor
     NeutronResource.call(this);
 }
 
-Neutron20Fragment.prototype = {
+Neutron20Resource.prototype = {
     __proto__:  NeutronResource.prototype
 };
 
