@@ -723,12 +723,25 @@ const YulupDebug = {
      * @return {Undefined} does not have a return value
      */
     ASSERT: function (aAssertion, aLocation, aAssertionDescription) {
-        if (!aAssertion)
+        var stackFrame = null;
+
+        if (!aAssertion) {
             if (aLocation && aAssertionDescription) {
                 dump("################## ASSERTION " + aAssertionDescription + " failed at " + aLocation + " (file: " + Components.stack.caller.filename + ", line: " + Components.stack.caller.lineNumber + ", caller: " +  Components.stack.caller.name + ")! ##################\n");
             } else {
                 dump("################## ASSERTION failed at file: " + Components.stack.caller.filename + ", line: " + Components.stack.caller.lineNumber + ", caller: " +  Components.stack.caller.name + "! ##################\n");
             }
+
+            // print call stack
+            stackFrame = Components.stack.caller;
+
+            while (stackFrame.caller) {
+                stackFrame = stackFrame.caller;
+                dump(stackFrame.name + "() at file " + stackFrame.filename + ", line " + stackFrame.lineNumber + "\n");
+            }
+
+            dump("\n");
+        }
     }
 };
 
