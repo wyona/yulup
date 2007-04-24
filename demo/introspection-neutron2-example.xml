@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <introspection xmlns="http://www.wyona.org/neutron/2.0">
-  <resource>
-    <edit mime-type="application/xhtml+xml" name="Upload Example">
+  <resource name="Upload Example">
+    <edit mime-type="application/xhtml+xml">
       <open url="neutron2-example.xhtml" method="GET"/>
       <save url="neutron2-example.xhtml?yanel.resource.usecase=save" method="PUT"/>
     </edit>
