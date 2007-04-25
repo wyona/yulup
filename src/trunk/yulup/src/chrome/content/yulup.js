@@ -476,11 +476,8 @@ const Yulup = {
         var ioService       = null;
 
         // check for sitetree URI
-        if (this.currentNeutronIntrospection                            &&
-            this.currentNeutronIntrospection.queryNavigation()          &&
-            this.currentNeutronIntrospection.queryNavigation().sitetree &&
-            this.currentNeutronIntrospection.queryNavigation().sitetree.uri) {
-            sitetreeURI = this.currentNeutronIntrospection.queryNavigation().sitetree.uri;
+        if (this.currentNeutronIntrospection.hasSitetreeURI()) {
+            sitetreeURI = this.currentNeutronIntrospection.getSitetreeURI();
         } else {
             // query for server address
             serverURIString = ServerURIPrompt.showServerURIDialog();

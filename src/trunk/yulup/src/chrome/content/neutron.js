@@ -266,6 +266,19 @@ NeutronIntrospection.prototype = {
         return this.compatibilityLevel;
     },
 
+    hasSitetreeURI: function () {
+        if (this.queryNavigation()          &&
+            this.queryNavigation().sitetree &&
+            this.queryNavigation().sitetree.uri)
+            return true;
+
+        return false;
+    },
+
+    getSitetreeURI: function () {
+        return this.queryNavigation().sitetree.uri;
+    },
+
     /**
      * Get an array of fragments which can be loaded
      * using the Neutron "open" operation.
