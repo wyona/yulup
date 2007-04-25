@@ -86,6 +86,7 @@
     <groupbox flex="1">
       <caption label="&uiYulupResourceTargetCaption.label;"/>
       <tree id="uiYulupResourceUploadTree"
+            class="sitetreeTree"
             enableColumnDrag="false"
             hidecolumnpicker="true"
             flex="1"

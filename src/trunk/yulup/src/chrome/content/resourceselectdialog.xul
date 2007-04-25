@@ -72,6 +72,7 @@
     <stringbundle id="uiYulupEditorStringbundle" src="chrome://yulup/locale/editor.properties"/>
 
     <tree id="uiYulupResourceSelectTree"
+          class="sitetreeTree"
           enableColumnDrag="false"
           hidecolumnpicker="true"
           flex="1"
