@@ -2,3 +2,4 @@
 <!ENTITY openYulupNeutronSidebar.key "N">
 <!ENTITY openYulupNeutronSidebar.modifiers "shift accel">
 <!ENTITY neutronSidebarResourceTree.label "Seitenstruktur">
+<!ENTITY neutronSidebarVersionTree.label "Versionen">

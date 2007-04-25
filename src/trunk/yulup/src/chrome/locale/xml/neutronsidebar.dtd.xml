@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <dtd xmlns="http://yulup.wyona.org/1.0">
-
   <entity id="neutronSidebarPage.title">
     <name xml:lang="en">Neutron Sidebar</name>
   </entity>
@@ -20,4 +19,8 @@
     <name xml:lang="es">Sitetree</name>
   </entity>
 
+  <entity id="neutronSidebarVersionTree.label">
+    <name xml:lang="en">Versions</name>
+    <name xml:lang="de">Versionen</name>
+  </entity>
 </dtd>
