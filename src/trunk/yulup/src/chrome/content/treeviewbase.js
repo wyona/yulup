@@ -37,7 +37,7 @@
  * @constructor
  * @return {YulupTreeViewBase} a new YulupTreeViewBase object
  */
-function YulupTreeViewBase(aAtomFeed) {
+function YulupTreeViewBase() {
     /* DEBUG */ dump("Yulup:treeviewbase.js:YulupTreeViewBase() invoked\n");
 
     this.rowCount = 0;
