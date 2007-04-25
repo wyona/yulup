@@ -77,7 +77,7 @@
             flex="1">
         <vbox stretch="align" flex="1">
           <groupbox flex="1">
-            <caption label="&atomSidebarFeedInfoGroupbox.label;" style="font-size: x-small;"/>
+            <caption label="&atomSidebarFeedInfoGroupbox.label;"/>
             <iframe id="uiYulupAtomSidebarFeedInfoBox"
                     src="data:application/vnd.mozilla.xul+xml,&lt;?xml version='1.0' encoding='UTF-8'?>&lt;?xml-stylesheet href='chrome://global/skin/' type='text/css'?>&lt;?xml-stylesheet href='chrome://yulup/skin/atomfeedinfo.css' type='text/css'?>&lt;page orient='vertical' align='stretch' style='overflow: auto;' xmlns='http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul'/>"
                     flex="1"/>
@@ -86,7 +86,7 @@
           <splitter/>
 
           <groupbox flex="2">
-            <caption label="&atomSidebarFeedEntriesGroupbox.label;" style="font-size: x-small;"/>
+            <caption label="&atomSidebarFeedEntriesGroupbox.label;"/>
 
             <button label="&atomSidebarFirstButton.label;"    hidden="true"/>
             <button label="&atomSidebarPreviousButton.label;" hidden="true"/>

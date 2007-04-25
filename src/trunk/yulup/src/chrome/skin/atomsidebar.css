@@ -11,6 +11,13 @@
 }
 
 
+/* ------------------------ General ------------------------- */
+
+caption {
+  font-size: x-small;
+}
+
+
 /* ----------------- Feed Information Deck ------------------ */
 
 .uiYulupAtomSidebarFeedError {
