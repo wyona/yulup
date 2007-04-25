@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -26,7 +26,18 @@
  *
  */
 
-var NeutronSidebar = {
+const NeutronSidebar = {
+    CURRENT_RESOURCES_VIEWID: 0,
+    SITETREE_VIEWID         : 1,
+
+    __viewSelector    : null,
+    __contentTreeDeck : null,
+    __resourceTree    : null,
+    __sitetreeTree    : null,
+    __versionTree     : null,
+    __serverURI       : null,
+    __neutronResources: null,
+
     /**
      * Initialise the sidebar.
      *
@@ -35,8 +46,9 @@ var NeutronSidebar = {
     onLoadListener: function () {
         var mainBrowserWindow = null;
         var serverURIString   = null;
-        var serverURI         = null;
-        var tree              = null;
+        var currentViewID     = null;
+        var menulist          = null;
+        var me                = this;
 
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.onLoadListener() invoked\n");
 
@@ -49,24 +61,130 @@ var NeutronSidebar = {
             .getInterface(Components.interfaces.nsIDOMWindow);
 
         // retrieve Neutron introspection document from Yulup, if any
-        if (mainBrowserWindow.yulup.currentNeutronIntrospection                            &&
-            mainBrowserWindow.yulup.currentNeutronIntrospection.queryNavigation()          &&
-            mainBrowserWindow.yulup.currentNeutronIntrospection.queryNavigation().sitetree &&
-            mainBrowserWindow.yulup.currentNeutronIntrospection.queryNavigation().sitetree.uri) {
-            serverURI = mainBrowserWindow.yulup.currentNeutronIntrospection.queryNavigation().sitetree.uri;
-            /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.onLoadListener: use sitetree uri (\"" + serverURI + "\") from Neutron introspection\n");
+        if (mainBrowserWindow.yulup.currentNeutronIntrospection && mainBrowserWindow.yulup.currentNeutronIntrospection.hasSitetreeURI()) {
+            this.__serverURI = mainBrowserWindow.yulup.currentNeutronIntrospection.getSitetreeURI();
+
+            /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.onLoadListener: use sitetree uri (\"" + this.__serverURI + "\") from Neutron introspection\n");
         } else if ((serverURIString = YulupPreferences.getCharPref("neutron.", "defaultserver")) != null) {
             // get default URI from preferences
             if (serverURIString != "") {
-                serverURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(serverURIString, null, null)
+                this.__serverURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(serverURIString, null, null)
             } else
                 return false;
         } else {
             return false;
         }
 
-        tree = document.getElementById("uiYulupNeutronSidebarSiteTree");
-        tree.view = new SitetreeView(serverURI, NeutronSidebar.sitetreeErrorListener);
+        // cache various elements
+        this.__viewSelector    = document.getElementById("uiYulupNeutronSidebarContentDeckSelector");
+        this.__contentTreeDeck = document.getElementById("uiYulupNeutronSidebarContentTreeDeck");
+        this.__resourceTree    = document.getElementById("uiYulupNeutronSidebarResourceTree");
+        this.__sitetreeTree    = document.getElementById("uiYulupNeutronSidebarSiteTree");
+        this.__versionTree     = document.getElementById("uiYulupNeutronSidebarVersionTree");
+
+        // get current resources
+        this.__neutronResources = (mainBrowserWindow.yulup.currentNeutronIntrospection ? mainBrowserWindow.yulup.currentNeutronIntrospection.fragments : null);
+
+        // determine our start view
+        if (this.__neutronResources)
+            currentViewID = this.CURRENT_RESOURCES_VIEWID;
+        else
+            currentViewID = this.SITETREE_VIEWID;
+
+        // update menulist
+        this.__viewSelector.selectedIndex = currentViewID;
+
+        // install menulist selection change listener
+        this.__viewSelector.addEventListener("ValueChange", function (aEvent) { me.contentSelectorListener(aEvent); }, false);
+
+        this.viewSelectionChanged(currentViewID);
+    },
+
+    setNeutronResources: function (aNeutronResources) {
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.setNeutronResources() invoked\n");
+
+        this.__neutronResources = aNeutronResources;
+
+        // update the resource tree
+        if (this.__neutronResources)
+            this.__resourceTree.view = new NeutronResourceTreeView(this.__neutronResources, this.resourcetreeSelectionListener);
+        else
+            this.__resourceTree.view = null;
+
+        // blank the version tree
+        this.__versionTree.view = null;
+    },
+
+    viewSelectionChanged: function (aViewID) {
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.viewSelectionChanged(\"" + aViewID + "\") invoked\n");
+
+        switch (aViewID) {
+            case NeutronSidebar.CURRENT_RESOURCES_VIEWID:
+                // current resources view
+                if (!(this.__resourceTree.view.wrappedJSObject &&
+                      this.__resourceTree.view.wrappedJSObject instanceof NeutronResourceTreeView)) {
+                    this.__resourceTree.view = new NeutronResourceTreeView(this.__neutronResources, this.resourcetreeSelectionListener);
+
+                    // blank the version tree
+                    this.__versionTree.view = null;
+                }
+
+                // show the view
+                this.__contentTreeDeck.selectedIndex = NeutronSidebar.CURRENT_RESOURCES_VIEWID;
+
+                break;
+            case NeutronSidebar.SITETREE_VIEWID:
+                // sitetree view
+                if (!(this.__sitetreeTree.view.wrappedJSObject &&
+                      this.__sitetreeTree.view.wrappedJSObject instanceof SitetreeView)) {
+                    this.__sitetreeTree.view = new SitetreeView(this.__serverURI, this.sitetreeErrorListener);
+
+                    // blank the version tree
+                    this.__versionTree.view = null;
+                }
+
+                // show the view
+                this.__contentTreeDeck.selectedIndex = NeutronSidebar.SITETREE_VIEWID;
+
+                break;
+            default:
+        }
+    },
+
+    contentSelectorListener: function (aEvent) {
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.contentSelectorListener(\"" + aEvent + "\") invoked\n");
+
+        if (aEvent.originalTarget.namespaceURI == "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" &&
+            aEvent.originalTarget.localName    == "menulist")
+            this.viewSelectionChanged(aEvent.originalTarget.selectedIndex);
+
+        // we consumed this event
+        aEvent.stopPropagation();
+    },
+
+    sitetreeSelectionListener: function () {
+        var resource = null;
+
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.sitetreeSelectionListener() invoked\n");
+
+        // get selected resource
+        resource = tree.view.wrappedJSObject.getCurrentResource();
+
+        // TODO: get the introspection data for this resource
+
+        // TODO: feed resource version information to the version tree
+    },
+
+    resourcetreeSelectionListener: function (aResource) {
+        var resource = null;
+
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.resourcetreeSelectionListener(\"" + aResource + "\") invoked\n");
+
+        // TODO: get selected resource
+
+        // TODO: get the introspection data for this resource
+
+        // TODO: feed resource version information to the version tree
     },
 
     /**
@@ -80,5 +198,125 @@ var NeutronSidebar = {
 
     sitetreeErrorListener: function () {
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.sitetreeErrorListener() invoked\n");
-    },
+    }
+};
+
+
+/**
+ * NeutronResourceTreeView constructor. Instantiates a new object of
+ * type NeutronResourceTreeView.
+ *
+ * Implementes the nsITreeView interface.
+ *
+ * @constructor
+ * @param  {Array} aNeutronResources  an array of NeutronResource objects
+ * @return {NeutronResourceTreeView} a new NeutronResourceTreeView object
+ */
+function NeutronResourceTreeView(aNeutronResources, aSelectionChangeObserver) {
+    /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronResourceTreeView() invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aNeutronResources != null);
+
+    // call super constructor
+    YulupTreeViewBase.call(this);
+
+    this.__treeSource              = aNeutronResources;
+    this.__selectionChangeObserver = aSelectionChangeObserver;
+    this.rowCount                  = this.__treeSource.length;
+
+    this.wrappedJSObject = this;
+
+    /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronResourceTreeView: this.rowCount = \"" + this.rowCount + "\"\n");
 }
+
+NeutronResourceTreeView.prototype = {
+    __proto__: YulupTreeViewBase.prototype,
+
+    __treeSource             : null,
+    __selectionChangeObserver: null,
+
+    wrappedJSObject: null,
+
+    /**
+     * Get the text for a given cell.
+     *
+     * @param  {Number}        aRow    the row
+     * @param  {nsITreeColumn} aColumn the column
+     * @return {String}
+     */
+    getCellText: function (aRow, aColumn) {
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronResourceTreeView.getCellText(\"" + aRow + "\", \"" + aColumn + "\") invoked\n");
+
+        if (aColumn.id == "uiYulupNeutronSidebarResourceNameTreeCol")
+            return this.__treeSource[aRow].name;
+        else
+            return null;
+    },
+
+    selectionChanged: function() {
+        var resource = null;
+
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronResourceTreeView.selectionChanged() invoked\n");
+
+        if (this.__selectionChangeObserver) {
+            try {
+                this.__selectionChangeObserver(this.__treeSource[this.selection.currentIndex]);
+            } catch (exception) {
+                // we don't want to fail here
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutronsidebar.js:NeutronResourceTreeView.selectionChanged", exception);
+                /* DEBUG */ Components.utils.reportError(exception);
+            }
+        }
+    },
+};
+
+
+/**
+ * NeutronVersionTreeView constructor. Instantiates a new object of
+ * type NeutronVersionTreeView.
+ *
+ * Implementes the nsITreeView interface.
+ *
+ * @constructor
+ * @param  {Array} aNeutronResourceVersions  an array of NeutronResourceVersion objects
+ * @return {NeutronVersionTreeView} a new NeutronVersionTreeView object
+ */
+function NeutronVersionTreeView(aNeutronResourceVersions) {
+    /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronVersionTreeView() invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aNeutronResourceVersions != null);
+
+    // call super constructor
+    YulupTreeViewBase.call(this);
+
+    this.__treeSource = aNeutronResourceVersions;
+    this.rowCount     = this.__treeSource.length;
+
+    this.wrappedJSObject = this;
+
+    /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronVersionTreeView: this.rowCount = \"" + this.rowCount + "\"\n");
+}
+
+NeutronVersionTreeView.prototype = {
+    __proto__: YulupTreeViewBase.prototype,
+
+    __treeSource: null,
+
+    wrappedJSObject: null,
+
+    /**
+     * Get the text for a given cell.
+     *
+     * @param  {Number}        aRow    the row
+     * @param  {nsITreeColumn} aColumn the column
+     * @return {String}
+     */
+    getCellText: function (aRow, aColumn) {
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronVersionTreeView.getCellText(\"" + aRow + "\", \"" + aColumn + "\") invoked\n");
+
+        if (aColumn.id == "uiYulupNeutronSidebarVersionTreeCol")
+            return this.__treeSource[aRow].revision;
+        else
+            return null;
+    }
+};

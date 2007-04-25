@@ -1,5 +1,7 @@
 <!ENTITY neutronSidebarPage.title "Neutron Sidebar">
 <!ENTITY openYulupNeutronSidebar.key "N">
 <!ENTITY openYulupNeutronSidebar.modifiers "shift accel">
+<!ENTITY neutronSidebarSitetreeMenuitem.label "Sitetree">
+<!ENTITY neutronSidebarCurrentResourceMenuitem.label "Current Resources">
 <!ENTITY neutronSidebarResourceTree.label "Sitetree">
 <!ENTITY neutronSidebarVersionTree.label "Versions">
