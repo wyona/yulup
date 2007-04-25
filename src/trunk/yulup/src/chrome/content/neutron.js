@@ -568,7 +568,9 @@ NeutronIntrospection.prototype = {
  * @constructor
  * @return {NeutronResource}
  */
-function NeutronResource() {}
+function NeutronResource() {
+    this.versions = new Array();
+}
 
 NeutronResource.prototype = {
     name           : null,
@@ -582,6 +584,7 @@ NeutronResource.prototype = {
     styleTemplate  : null,
     widgets        : null,
     templateWidgets: null,
+    versions       : null,
 
     toString: function () {
         var objString = "";
@@ -623,6 +626,13 @@ NeutronResource.prototype = {
         if (this.widgets) {
             for (var i = 0; i < this.widgets.length; i++) {
                 objString += this.widgets[i].toString();
+            }
+        }
+
+        objString += "Versions:\n";
+        if (this.versions) {
+            for (var i = 0; i < this.versions.length; i++) {
+                objString += this.versions[i].toString();
             }
         }
 
@@ -1045,6 +1055,135 @@ NeutronWidgetActionParameter.prototype = {
         objString += "Type:  " + this.type + "\n";
 
         return objString;
+    }
+};
+
+
+/**
+ * NeutronResourceVersion constructor. Instantiates a new object of
+ * type NeutronResourceVersion.
+ *
+ * Base class for versioned Neutron resource versions.
+ *
+ * @constructor
+ * @return {NeutronResourceVersion}
+ */
+function NeutronResourceVersion() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronResourceVersion() invoked\n");
+}
+
+NeutronResourceVersion.prototype = {
+    url                : null,
+    comment            : null,
+    date               : null,
+    user               : null,
+    revision           : null,
+    workflowState      : null,
+    workflowTransitions: null,
+    workflowHistory    : null,
+
+    getWorkflowState: function () {
+        return this.workflowState;
+    },
+
+    getWorkflowTransitions: function () {
+        if (this.workflowTransitions && this.workflowTransitions.length > 0)
+            return this.workflowTransitions;
+
+        return null;
+    },
+
+    getWorkflowHistory: function () {
+        if (this.workflowHistory && this.workflowHistory.length > 0)
+            return this.workflowHistory;
+
+        return null;
+    },
+
+    toString: function () {
+        var objString = null;
+
+        objString = "Version (\"" + (this.url ? this.url.spec : this.url) + "\")\n";
+
+        objString += "Comment:  " + this.comment + "\n";
+        objString += "Date:     " + this.date + "\n";
+        objString += "User:     " + this.user + "\n";
+        objString += "Revision: " + this.revision + "\n";
+
+        objString += "Workflow state:\n"
+        if (this.workflowState) {
+            objString += this.workflowState.toString();
+        } else {
+            objString += this.workflowState + "\n";
+        }
+
+        objString += "Workflow transitions:\n"
+        if (this.workflowTransitions) {
+            for (var i = 0; i < this.workflowTransitions.length; i++) {
+                objString += this.workflowTransitions[i].toString();
+            }
+        } else {
+            objString += this.workflowTransitions + "\n";
+        }
+
+        objString += "Workflow history:\n"
+        if (this.workflowHistory) {
+            for (var i = 0; i < this.workflowHistory.length; i++) {
+                objString += this.workflowHistory[i].toString();
+            }
+        } else {
+            objString += this.workflowHistory + "\n";
+        }
+
+        return objString;
+    }
+};
+
+
+/**
+ * NeutronWorkflowState constructor. Instantiates a new object of
+ * type NeutronWorkflowState.
+ *
+ * Base class for versioned Neutron workflow states.
+ *
+ * @constructor
+ * @return {NeutronWorkflowState}
+ */
+function NeutronWorkflowState() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronWorkflowState() invoked\n");
+}
+
+NeutronWorkflowState.prototype = {
+    state: null,
+    date : null,
+
+    toString: function () {
+        return "State: \"" + this.state + "\" (" + this.date + ")\n";
+    }
+};
+
+
+/**
+ * NeutronWorkflowTransition constructor. Instantiates a new object of
+ * type NeutronWorkflowTransition.
+ *
+ * Base class for versioned Neutron workflow transitions.
+ *
+ * @constructor
+ * @return {NeutronWorkflowTransition}
+ */
+function NeutronWorkflowTransition() {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronWorkflowTransition() invoked\n");
+}
+
+NeutronWorkflowTransition.prototype = {
+    id    : null,
+    to    : null,
+    url   : null,
+    method: null,
+
+    toString: function () {
+        return "Transition: id = \"" + this.id + "\", to = \"" + this.to + "\", url = \"" + (this.url ? this.url.spec : this.url) + "\", method = \"" + this.method + "\"\n";
     }
 };
 

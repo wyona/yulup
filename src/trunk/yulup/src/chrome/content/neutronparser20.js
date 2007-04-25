@@ -77,6 +77,27 @@ NeutronParser20.prototype = {
         return namespace[aPrefix] || null;
     },
 
+    /**
+     * Constructs an nsIURI.
+     *
+     * @param  {String} aURI     a URI
+     * @param  {nsIURI} aBaseURI a base URI
+     * @return {nsIURI} the URI constructed from aURI and aBaseURI (if aURI is relative), or null if aURI is null or empty
+     */
+    __constructURI: function (aURI, aBaseURI) {
+        var uri = null;
+
+        /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.__constructURI(\"" + aURI + "\", \"" + aBaseURI + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aBaseURI != null, "Yulup:neutronparser20.js:NeutronParser20.__constructURI", "aBaseURI != null");
+
+        if (aURI && aURI != "") {
+            uri = this.ioService.newURI(aURI, null, aBaseURI);
+        }
+
+        /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.__constructURI: constructed uri = \"" + uri + "\"\n");
+        return uri;
+    },
 
     /**
      * Parse sitetree file.
@@ -105,16 +126,13 @@ NeutronParser20.prototype = {
     },
 
     __parseResponse: function(aDocument, aNode) {
-        var uri = null;
-
         return {
-            href: ((uri = aDocument.evaluate("D:href/text()", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != null ? this.ioService.newURI(uri, null, this.baseURI) : null),
+            href      : this.__constructURI(aDocument.evaluate("D:href/text()", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue, this.baseURI),
             properties: this.__parseProperties(aDocument, aNode)
         };
     },
 
     __parseProperties: function(aDocument, aNode) {
-
         return {
             displayname: aDocument.evaluate("D:propstat/D:prop/D:displayname/text()", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
             lastmodified: aDocument.evaluate("D:propstat/D:prop/D:lastmodified/text()", aNode,  this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
@@ -221,10 +239,8 @@ NeutronParser20.prototype = {
     },
 
     __parseNew: function(aDocument, aNode) {
-        var uri = null;
-
         return {
-            uri: ((uri = aDocument.evaluate("attribute::uri", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != "" ? this.ioService.newURI(uri, null, this.baseURI) : null),
+            uri      : this.__constructURI(aDocument.evaluate("attribute::uri", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue, this.baseURI),
             templates: this.__parseTemplates(aDocument, aNode)
         };
     },
@@ -238,13 +254,12 @@ NeutronParser20.prototype = {
 
     __parseSitetree: function(aDocument, aNode) {
         var sitetree = null;
-        var uri      = null;
 
         sitetree = aDocument.evaluate("neutron20:sitetree", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext();
 
         if (sitetree) {
             return {
-                uri: ((uri = aDocument.evaluate("attribute::href", sitetree, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != "" ? this.ioService.newURI(uri, null, this.baseURI) : null),
+                uri   : this.__constructURI(aDocument.evaluate("attribute::href", sitetree, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue, this.baseURI),
                 method: aDocument.evaluate("attribute::method", sitetree, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue
             };
         } else {
@@ -256,15 +271,14 @@ NeutronParser20.prototype = {
         var templates     = null;
         var template      = null;
         var templateArray = new Array();
-        var uri           = null;
 
         templates = aDocument.evaluate("neutron20:template", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
 
         while (template = templates.iterateNext()) {
             templateArray.push({
-                name: aDocument.evaluate("attribute::name", template, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
-                uri: ((uri = aDocument.evaluate("attribute::uri", template, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != "" ? this.ioService.newURI(uri, null, this.baseURI) : null),
-                mimeType: aDocument.evaluate("attribute::mime-type", template, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue
+                    name    : aDocument.evaluate("attribute::name", template, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue,
+                    uri     : this.__constructURI(aDocument.evaluate("attribute::uri", template, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue, this.baseURI),
+                    mimeType: aDocument.evaluate("attribute::mime-type", template, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue
             });
         }
 
@@ -280,11 +294,19 @@ NeutronParser20.prototype = {
 
         resource.name = aDocument.evaluate("attribute::name", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 
+        // get edit element
         elemNode = aDocument.evaluate("neutron20:edit", aNode, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE , null).singleNodeValue;
 
         if (elemNode) {
             // edit element exists
             this.__parseEdit(aDocument, elemNode, resource);
+        }
+
+        // get versions
+        if (elemNodeIterator = aDocument.evaluate("neutron20:versions/neutron20:version", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)) {
+            while (elemNode = elemNodeIterator.iterateNext()) {
+                resource.versions.push(this.__parseVersion(this.documentDOM, elemNode));
+            }
         }
 
         return resource;
@@ -308,20 +330,8 @@ NeutronParser20.prototype = {
     },
 
     __parseFileOperation: function (aDocument, aNode, aOperation) {
-        var sourceURI = null;
-
-        sourceURI = aDocument.evaluate("neutron20:" + aOperation + "/attribute::url", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-
-        if (sourceURI != "") {
-            sourceURI = this.ioService.newURI(sourceURI, null, this.baseURI);
-        } else {
-            sourceURI = null;
-        }
-
-        /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.__parseFileOperation: sourceURI = " + sourceURI + "\n");
-
         return {
-            uri:    sourceURI,
+            uri   : this.__constructURI(aDocument.evaluate("neutron20:" + aOperation + "/attribute::url", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue, this.baseURI),
             method: aDocument.evaluate("neutron20:" + aOperation + "/attribute::method", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue
         };
     },
@@ -347,13 +357,12 @@ NeutronParser20.prototype = {
         var styles     = null;
         var style      = null;
         var styleArray = new Array();
-        var sourceURI  = null;
 
         styles = aDocument.evaluate("neutron20:styles/neutron20:style", aNode, this.nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
 
         while (style = styles.iterateNext()) {
             styleArray.push({
-                href: ((sourceURI = aDocument.evaluate("attribute::href", style, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != "" ? this.ioService.newURI(sourceURI, null, this.baseURI) : null)
+                href: this.__constructURI(aDocument.evaluate("attribute::href", style, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue, this.baseURI)
             });
         }
 
@@ -362,7 +371,6 @@ NeutronParser20.prototype = {
 
 
     __parseStyleTemplate: function (aDocument, aNode) {
-
         var styleTemplate = new Object();
 
         var href = aDocument.evaluate("neutron20:styles/neutron20:style-template/attribute::href", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
@@ -403,7 +411,6 @@ NeutronParser20.prototype = {
 
     __parseWidget: function (aDocument, aNode) {
         var widget    = null;
-        var sourceURI = null;
         var iconIndex = null;
         var iconFile  = null;
 
@@ -415,7 +422,7 @@ NeutronParser20.prototype = {
         }
 
         widget.icon               = iconFile;
-        widget.iconURI            = ((sourceURI = aDocument.evaluate("attribute::icon", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue) != "" ? this.ioService.newURI(sourceURI, null, this.baseURI) : null);
+        widget.iconURI            = this.__constructURI(aDocument.evaluate("attribute::icon", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue, this.baseURI);
         widget.name               = this.__parseWidgetNames(aDocument, aNode);
         widget.description        = this.__parseWidgetDescriptions(aDocument, aNode);
         widget.surround           = this.__parseWidgetSurroundAction(aDocument, aNode);
@@ -548,6 +555,97 @@ NeutronParser20.prototype = {
         }
 
         return xmlDoc;
+    },
+
+    __parseVersion: function(aDocument, aNode) {
+        var version  = null;
+        var workflow = null;
+        var state    = null;
+
+        version = new Neutron20ResourceVersion();
+
+        version.url                 = this.__constructURI(aDocument.evaluate("attribute::url", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue, this.baseURI);
+        version.comment             = this.__parseSingleStringValue(aDocument, aNode, "comment");
+        version.date                = this.__parseSingleStringValue(aDocument, aNode, "date");
+        version.user                = this.__parseSingleStringValue(aDocument, aNode, "user");
+        version.revision            = this.__parseSingleStringValue(aDocument, aNode, "revision");
+
+        workflow = aDocument.evaluate("neutron20:workflow", aNode, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+
+        if (workflow) {
+            state = aDocument.evaluate("neutron20:state", workflow, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (state)
+                version.workflowState       = this.__parseWorkflowState(aDocument, state);
+
+            version.workflowTransitions = this.__parseWorkflowTransitions(aDocument, workflow);
+            version.workflowHistory     = this.__parseWorkflowHistory(aDocument, workflow);
+        }
+
+        return version;
+    },
+
+    __parseSingleStringValue: function (aDocument, aNode, aElemName) {
+        var elem   = null;
+        var retval = null;
+
+        elem = aDocument.evaluate("neutron20:" + aElemName, aNode, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+
+        if (elem) {
+            retval = aDocument.evaluate("text()", elem, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+        }
+
+        return retval;
+    },
+
+    __parseWorkflowState: function (aDocument, aNode) {
+        var state = null;
+
+        state = new Neutron20WorkflowState();
+
+        state.state = aDocument.evaluate("text()", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+        state.date  = aDocument.evaluate("attribute::date", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+
+        return state;
+    },
+
+    __parseWorkflowTransitions: function (aDocument, aNode) {
+        var transitions = null;
+        var transition  = null;
+        var transArray  = null;
+        var trans       = null;
+
+        transitions = aDocument.evaluate("neutron20:transitions/neutron20:transition", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+
+        transArray = new Array();
+
+        while (transition = transitions.iterateNext()) {
+            trans = new Neutron20WorkflowTransition();
+
+            trans.id     = aDocument.evaluate("attribute::id", transition, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+            trans.to     = aDocument.evaluate("attribute::to", transition, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+            trans.url    = this.__constructURI(aDocument.evaluate("attribute::url", transition, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue, this.baseURI);
+            trans.method = aDocument.evaluate("attribute::method", transition, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+
+            transArray.push(trans);
+        }
+
+        return transArray;
+    },
+
+    __parseWorkflowHistory: function (aDocument, aNode) {
+        var states     = null;
+        var state      = null;
+        var stateArray = null;
+
+        states = aDocument.evaluate("neutron20:history/neutron20:state", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+
+        stateArray = new Array();
+
+        while (state = states.iterateNext()) {
+            stateArray.push(this.__parseWorkflowState(aDocument, state));
+        }
+
+        return stateArray;
     }
 };
 
@@ -646,4 +744,34 @@ function Neutron20WidgetActionParameter() {
 
 Neutron20WidgetActionParameter.prototype = {
     __proto__: NeutronWidgetActionParameter.prototype
+};
+
+
+function Neutron20ResourceVersion() {
+    // call super constructor
+    NeutronResourceVersion.call(this);
+}
+
+Neutron20ResourceVersion.prototype = {
+    __proto__: NeutronResourceVersion.prototype
+};
+
+
+function Neutron20WorkflowState() {
+    // call super constructor
+    NeutronWorkflowState.call(this);
+}
+
+Neutron20WorkflowState.prototype = {
+    __proto__: NeutronWorkflowState.prototype
+};
+
+
+function Neutron20WorkflowTransition() {
+    // call super constructor
+    NeutronWorkflowTransition.call(this);
+}
+
+Neutron20WorkflowTransition.prototype = {
+    __proto__: NeutronWorkflowTransition.prototype
 };
