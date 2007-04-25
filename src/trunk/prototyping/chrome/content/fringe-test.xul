@@ -31,6 +31,7 @@
         gEditor = editorElem.getEditor(editorElem.contentWindow);
         gEditor.QueryInterface(Components.interfaces.nsIPlaintextEditor);
 
+        editorElem.contentWindow.addEventListener("scroll", scrollListener, false);
         editorElem.contentWindow.addEventListener("keypress", function (event) { event.preventBubble(); }, true);
 
         dump("editorElem status = \"" + editorElem.editingSession.editorStatus  + "\"\n");
@@ -40,6 +41,10 @@
     function addText() {
         gEditor.insertText("Hello?");
     }
+
+    function scrollListener(aEvent) {
+        dump("Scroll event: " + aEvent.type + ", scrollX = " + gEditorElem.contentWindow.scrollX + ", scrollY = " + gEditorElem.contentWindow.scrollY + "\n");
+    }
   </script>
 
   <button label="Add Text" oncommand="addText()"/>
@@ -48,13 +53,6 @@
       <vbox style="width: 2em; border: 2px solid red; margin: 2px 2px 2px 2px;" align="stretch"/>
       <editor id="uiEditor" type="content" flex="1" style="border: 2px solid black; margin: 2px 2px 2px 2px;" onload="initEditor()"/>
       <scrollbar orient="vertical"/>
-    </hbox>
-    <hbox align="stretch">
-    <scrollbar orient="horizontal" 
-                 curpos="50" 
-                 pageIncrement="20" 
-                 increment="5" 
-               flex="1" align="stretch"/>
     </hbox>
   </vbox>
 
