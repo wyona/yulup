@@ -85,16 +85,10 @@ const NeutronSidebar = {
         if (this.__mainBrowserWindow.yulup.currentNeutronIntrospection &&
             this.__mainBrowserWindow.yulup.currentNeutronIntrospection.hasSitetreeURI()) {
             this.serverURI = this.__mainBrowserWindow.yulup.currentNeutronIntrospection.getSitetreeURI();
-
-            /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.onLoadListener: use sitetree uri (\"" + this.serverURI + "\") from Neutron introspection\n");
         } else if ((serverURIString = YulupPreferences.getCharPref("neutron.", "defaultserver")) != null) {
             // get default URI from preferences
-            if (serverURIString != "") {
+            if (serverURIString != "")
                 this.serverURI = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(serverURIString, null, null)
-            } else
-                return false;
-        } else {
-            return false;
         }
 
         // get current resources
@@ -143,6 +137,7 @@ const NeutronSidebar = {
                     this.__contentTreeDeck.selectedIndex = NeutronSidebar.CURRENT_RESOURCES_VIEWID;
                 } else {
                     // view could not be shown
+                    this.__viewSelector.selectedIndex    = NeutronSidebar.SITETREE_VIEWID;
                     this.__contentTreeDeck.selectedIndex = NeutronSidebar.SITETREE_VIEWID;
                 }
 
@@ -154,6 +149,7 @@ const NeutronSidebar = {
                     this.__contentTreeDeck.selectedIndex = NeutronSidebar.SITETREE_VIEWID;
                 } else {
                     // view could not be shown
+                    this.__viewSelector.selectedIndex    = NeutronSidebar.CURRENT_RESOURCES_VIEWID;
                     this.__contentTreeDeck.selectedIndex = NeutronSidebar.CURRENT_RESOURCES_VIEWID;
                 }
 
@@ -298,7 +294,7 @@ const NeutronSidebarResourceView = {
 
         if (versions && versions.length > 0)
             this.__versionTree.view = new NeutronVersionTreeView(versions);
-    },
+    }
 };
 
 
@@ -324,10 +320,16 @@ const NeutronSidebarSitetreeView = {
 
         if (!(this.__resourceTree.view.wrappedJSObject &&
               this.__resourceTree.view.wrappedJSObject instanceof SitetreeView)) {
-            this.__resourceTree.view = new SitetreeView(NeutronSidebar.serverURI, this.sitetreeErrorListener, function (aNode) { me.sitetreeSelectionListener(aNode); });
+            // check if we have a server URI
+            if (NeutronSidebar.serverURI) {
+                this.__resourceTree.view = new SitetreeView(NeutronSidebar.serverURI, this.sitetreeErrorListener, function (aNode) { me.sitetreeSelectionListener(aNode); });
 
-            // blank the version tree
-            this.__versionTree.view = null;
+                // blank the version tree
+                this.__versionTree.view = null;
+            } else {
+                // we can't switch because there is no server URI
+                return false;
+            }
         }
 
         return true;
@@ -424,7 +426,7 @@ NeutronResourceTreeView.prototype = {
                 /* DEBUG */ Components.utils.reportError(exception);
             }
         }
-    },
+    }
 };
 
 
