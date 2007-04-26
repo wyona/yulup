@@ -59,6 +59,12 @@
   <script type="application/x-javascript"
           src="chrome://yulup/content/neutronsidebar/neutronsidebar.js"/>
 
+  <popupset>
+    <popup id="uiYulupNeutronSidebarVersionsContextMenu"
+           onpopupshowing="return NeutronSidebar.constructVersionsContextMenu(this)">
+    </popup>
+  </popupset>
+
   <vbox flex="1">
     <menulist id="uiYulupNeutronSidebarContentDeckSelector">
       <menupopup>
@@ -103,9 +109,9 @@
           seltype="single"
           onselect="this.view.selectionChanged()">
       <treecols id="uiYulupNeutronSidebarVersionTreeCols">
-        <treecol id="uiYulupNeutronSidebarVersionTreeCol" label="&neutronSidebarVersionTree.label;" primary="true" flex="1"/>
+        <treecol id="uiYulupNeutronSidebarVersionTreeCol" label="&neutronSidebarVersionTree.label;" flex="1"/>
       </treecols>
-      <treechildren/>
+      <treechildren context="uiYulupNeutronSidebarVersionsContextMenu"/>
     </tree>
   </vbox>
 </page>

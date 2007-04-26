@@ -30,13 +30,14 @@ const NeutronSidebar = {
     CURRENT_RESOURCES_VIEWID: 0,
     SITETREE_VIEWID         : 1,
 
-    __viewSelector    : null,
-    __contentTreeDeck : null,
-    __resourceTree    : null,
-    __sitetreeTree    : null,
-    __versionTree     : null,
-    __serverURI       : null,
-    __neutronResources: null,
+    __mainBrowserWindow: null,
+    __viewSelector     : null,
+    __contentTreeDeck  : null,
+    __resourceTree     : null,
+    __sitetreeTree     : null,
+    __versionTree      : null,
+    __serverURI        : null,
+    __neutronResources : null,
 
     /**
      * Initialise the sidebar.
@@ -53,16 +54,11 @@ const NeutronSidebar = {
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.onLoadListener() invoked\n");
 
         // get a handle on the main browser window
-        mainBrowserWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-            .getInterface(Components.interfaces.nsIWebNavigation)
-            .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-            .rootTreeItem
-            .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-            .getInterface(Components.interfaces.nsIDOMWindow);
+        this.__mainBrowserWindow = YulupAppServices.getMainBrowserWindow();
 
         // retrieve Neutron introspection document from Yulup, if any
-        if (mainBrowserWindow.yulup.currentNeutronIntrospection && mainBrowserWindow.yulup.currentNeutronIntrospection.hasSitetreeURI()) {
-            this.__serverURI = mainBrowserWindow.yulup.currentNeutronIntrospection.getSitetreeURI();
+        if (this.__mainBrowserWindow.yulup.currentNeutronIntrospection && this.__mainBrowserWindow.yulup.currentNeutronIntrospection.hasSitetreeURI()) {
+            this.__serverURI = this.__mainBrowserWindow.yulup.currentNeutronIntrospection.getSitetreeURI();
 
             /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.onLoadListener: use sitetree uri (\"" + this.__serverURI + "\") from Neutron introspection\n");
         } else if ((serverURIString = YulupPreferences.getCharPref("neutron.", "defaultserver")) != null) {
@@ -83,7 +79,7 @@ const NeutronSidebar = {
         this.__versionTree     = document.getElementById("uiYulupNeutronSidebarVersionTree");
 
         // get current resources
-        this.__neutronResources = (mainBrowserWindow.yulup.currentNeutronIntrospection ? mainBrowserWindow.yulup.currentNeutronIntrospection.fragments : null);
+        this.__neutronResources = (this.__mainBrowserWindow.yulup.currentNeutronIntrospection ? this.__mainBrowserWindow.yulup.currentNeutronIntrospection.fragments : null);
 
         // determine our start view
         if (this.__neutronResources)
@@ -116,6 +112,8 @@ const NeutronSidebar = {
     },
 
     viewSelectionChanged: function (aViewID) {
+        var me = this;
+
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.viewSelectionChanged(\"" + aViewID + "\") invoked\n");
 
         switch (aViewID) {
@@ -125,7 +123,7 @@ const NeutronSidebar = {
                       this.__resourceTree.view.wrappedJSObject instanceof NeutronResourceTreeView)) {
                     // check if we have introspection data
                     if (this.__neutronResources) {
-                        this.__resourceTree.view = new NeutronResourceTreeView(this.__neutronResources, this.resourcetreeSelectionListener);
+                        this.__resourceTree.view = new NeutronResourceTreeView(this.__neutronResources, function (aResource) { me.resourcetreeSelectionListener(aResource); });
 
                         // blank the version tree
                         this.__versionTree.view = null;
@@ -136,6 +134,9 @@ const NeutronSidebar = {
                         // we can't switch because there is no introspection data
                         this.__viewSelector.selectedIndex = NeutronSidebar.SITETREE_VIEWID;
                     }
+                } else {
+                    // show the view
+                    this.__contentTreeDeck.selectedIndex = NeutronSidebar.CURRENT_RESOURCES_VIEWID;
                 }
 
                 break;
@@ -143,7 +144,7 @@ const NeutronSidebar = {
                 // sitetree view
                 if (!(this.__sitetreeTree.view.wrappedJSObject &&
                       this.__sitetreeTree.view.wrappedJSObject instanceof SitetreeView)) {
-                    this.__sitetreeTree.view = new SitetreeView(this.__serverURI, this.sitetreeErrorListener);
+                    this.__sitetreeTree.view = new SitetreeView(this.__serverURI, this.sitetreeErrorListener, function (aNode) { me.sitetreeSelectionListener(aNode); });
 
                     // blank the version tree
                     this.__versionTree.view = null;
@@ -168,13 +169,12 @@ const NeutronSidebar = {
         aEvent.stopPropagation();
     },
 
-    sitetreeSelectionListener: function () {
+    sitetreeSelectionListener: function (aNode) {
         var resource = null;
 
-        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.sitetreeSelectionListener() invoked\n");
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.sitetreeSelectionListener(\"" + aNode + "\") invoked\n");
 
-        // get selected resource
-        resource = tree.view.wrappedJSObject.getCurrentResource();
+        // TODO: get selected resource
 
         // TODO: get the introspection data for this resource
 
@@ -182,15 +182,64 @@ const NeutronSidebar = {
     },
 
     resourcetreeSelectionListener: function (aResource) {
-        var resource = null;
+        var versions = null;
 
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.resourcetreeSelectionListener(\"" + aResource + "\") invoked\n");
 
-        // TODO: get selected resource
+        // feed resource version information to the version tree
+        versions = aResource.versions;
 
-        // TODO: get the introspection data for this resource
+        if (versions && versions.length > 0)
+            this.__versionTree.view = new NeutronVersionTreeView(versions);
+    },
 
-        // TODO: feed resource version information to the version tree
+    constructVersionsContextMenu: function (aPopup) {
+        var version     = null;
+        var transitions = null;
+        var elem        = null;
+
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.constructVersionsContextMenu() invoked\n");
+
+        // get current selection
+        version = this.__versionTree.view.wrappedJSObject.getSelectedVersion()
+
+        // don't show the context menu if nothing selected
+        if (!version)
+            return false;
+
+        transitions = version.getWorkflowTransitions();
+
+        // don't show the context menu if no transitions available
+        if (!transitions)
+            return false;
+
+        // clean up popup menu
+        while (aPopup.hasChildNodes())
+            aPopup.removeChild(aPopup.firstChild);
+
+        // add transitions to menu
+        for (var i = 0; i < transitions.length; i++) {
+            elem = document.createElement("menuitem");
+            elem.setAttribute("label", transitions[i].to);
+            elem.workflowTransition = transitions[i];
+            elem.addEventListener("command", this.versionContextHandler, false);
+
+            aPopup.appendChild(elem);
+        }
+    },
+
+    versionContextHandler: function (aEvent) {
+        var transition = null;
+
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.versionContextHandler() invoked\n");
+
+        if (aEvent.originalTarget.namespaceURI == "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" &&
+            aEvent.originalTarget.localName    == "menuitem")
+            transition = aEvent.originalTarget.workflowTransition;
+
+        dump(transition);
+
+        this.__mainBrowserWindow.Neutron.performWorkflowTransition(transition);
     },
 
     /**
@@ -309,6 +358,24 @@ NeutronVersionTreeView.prototype = {
     __treeSource: null,
 
     wrappedJSObject: null,
+
+    /**
+     * Returns the currently selected version or null, if no
+     * selection.
+     *
+     * @return {NeutronResourceVersion}  returns the currently selected version, or null if nothing is selected
+     */
+    getSelectedVersion: function () {
+        var selection = null;
+
+        selection = this.selection.currentIndex;
+
+        // don't show the context menu if nothing selected
+        if (selection < 0)
+            return null;
+
+        return this.__treeSource[selection];
+    },
 
     /**
      * Get the text for a given cell.

@@ -204,6 +204,10 @@ var Neutron = {
         }
 
         return neutronParser;
+    },
+
+    performWorkflowTransition: function (aWorkflowTransition) {
+        /* DEBUG */ dump("Yulup:neutron.js:Neutron.performWorkflowTransition(\"" + aWorkflowTransition + "\") invoked\n");
     }
 };
 
