@@ -60,9 +60,8 @@
           src="chrome://yulup/content/neutronsidebar/neutronsidebar.js"/>
 
   <popupset>
-    <popup id="uiYulupNeutronSidebarVersionsContextMenu"
-           onpopupshowing="return NeutronSidebar.constructVersionsContextMenu(this)">
-    </popup>
+    <popup id="uiYulupNeutronSidebarResourceVersionsContextMenu"/>
+    <popup id="uiYulupNeutronSidebarSitetreeVersionsContextMenu"/>
   </popupset>
 
   <vbox flex="1">
@@ -74,44 +73,62 @@
     </menulist>
 
     <deck id="uiYulupNeutronSidebarContentTreeDeck" selectedIndex="0" orient="vertical" align="stretch" flex="1">
-      <tree id="uiYulupNeutronSidebarResourceTree"
-            enableColumnDrag="false"
-            hidecolumnpicker="true"
-            flex="1"
-            seltype="single"
-            onselect="this.view.selectionChanged()">
-        <treecols id="uiYulupNeutronSidebarResourceTreeCols">
-          <treecol id="uiYulupNeutronSidebarResourceNameTreeCol" label="Current Resources" flex="1"/>
-        </treecols>
-        <treechildren/>
-      </tree>
+      <vbox flex="1">
+        <tree id="uiYulupNeutronSidebarResourceTree"
+              enableColumnDrag="false"
+              hidecolumnpicker="true"
+              flex="1"
+              seltype="single"
+              onselect="this.view.selectionChanged()">
+          <treecols>
+            <treecol label="Current Resources" flex="1"/>
+          </treecols>
+          <treechildren/>
+        </tree>
 
-      <tree id="uiYulupNeutronSidebarSiteTree"
-            class="sitetreeTree"
-            enableColumnDrag="false"
-            hidecolumnpicker="true"
-            flex="1"
-            seltype="single"
-            onselect="this.view.selectionChanged()">
-        <treecols id="uiYulupNeutronSidebarSiteTreeCols">
-          <treecol id="uiYulupNeutronSidebarSiteNameTreeCol" label="&neutronSidebarResourceTree.label;" primary="true" flex="1"/>
-        </treecols>
-        <treechildren/>
-      </tree>
+        <splitter/>
+
+        <tree id="uiYulupNeutronSidebarResourceVersionTree"
+              enableColumnDrag="false"
+              hidecolumnpicker="true"
+              flex="1"
+              seltype="single"
+              onselect="this.view.selectionChanged()">
+          <treecols>
+            <treecol label="&neutronSidebarVersionTree.label;" flex="1"/>
+          </treecols>
+          <treechildren context="uiYulupNeutronSidebarResourceVersionsContextMenu"/>
+        </tree>
+      </vbox>
+
+      <vbox>
+        <tree id="uiYulupNeutronSidebarSitetreeTree"
+              class="sitetreeTree"
+              enableColumnDrag="false"
+              hidecolumnpicker="true"
+              flex="1"
+              seltype="single"
+              onselect="this.view.selectionChanged()">
+          <treecols>
+            <treecol label="&neutronSidebarResourceTree.label;" primary="true" flex="1"/>
+          </treecols>
+          <treechildren/>
+        </tree>
+
+        <splitter/>
+
+        <tree id="uiYulupNeutronSidebarSitetreeVersionTree"
+              enableColumnDrag="false"
+              hidecolumnpicker="true"
+              flex="1"
+              seltype="single"
+              onselect="this.view.selectionChanged()">
+          <treecols>
+            <treecol label="&neutronSidebarVersionTree.label;" flex="1"/>
+          </treecols>
+          <treechildren context="uiYulupNeutronSidebarSitetreeVersionsContextMenu"/>
+        </tree>
+      </vbox>
     </deck>
-
-    <splitter/>
-
-    <tree id="uiYulupNeutronSidebarVersionTree"
-          enableColumnDrag="false"
-          hidecolumnpicker="true"
-          flex="1"
-          seltype="single"
-          onselect="this.view.selectionChanged()">
-      <treecols id="uiYulupNeutronSidebarVersionTreeCols">
-        <treecol id="uiYulupNeutronSidebarVersionTreeCol" label="&neutronSidebarVersionTree.label;" flex="1"/>
-      </treecols>
-      <treechildren context="uiYulupNeutronSidebarVersionsContextMenu"/>
-    </tree>
   </vbox>
 </page>
