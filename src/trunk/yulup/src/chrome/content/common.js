@@ -434,6 +434,15 @@ const YulupAppServices = {
 
         // we did not get anything out of the prefs
         return APPLOCALE_FALLBACK;
+    },
+
+    getMainBrowserWindow: function () {
+        return window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+            .getInterface(Components.interfaces.nsIWebNavigation)
+            .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
+            .rootTreeItem
+            .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+            .getInterface(Components.interfaces.nsIDOMWindow);
     }
 };
 

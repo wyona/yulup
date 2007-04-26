@@ -46,12 +46,7 @@ var AtomSidebar = {
         /* DEBUG */ dump("Yulup:atomsidebar.js:AtomSidebar.onLoadListener() invoked\n");
 
         // get a handle on the main browser window
-        AtomSidebar.mainBrowserWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-            .getInterface(Components.interfaces.nsIWebNavigation)
-            .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-            .rootTreeItem
-            .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-            .getInterface(Components.interfaces.nsIDOMWindow);
+        AtomSidebar.mainBrowserWindow = YulupAppServices.getMainBrowserWindow();
 
         // retrieve APP introspection document from Yulup, if any
         appIntrospection = AtomSidebar.mainBrowserWindow.yulup.currentAPPIntrospection;

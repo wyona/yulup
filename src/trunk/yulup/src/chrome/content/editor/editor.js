@@ -88,12 +88,7 @@ var Editor = {
             document.getElementById("uiYulupEditorToolbox").removeAttribute("hidden");
 
             // get a handle on the main browser window
-            Editor.__mainBrowserWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                .getInterface(Components.interfaces.nsIWebNavigation)
-                .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
-                .rootTreeItem
-                .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                .getInterface(Components.interfaces.nsIDOMWindow);
+            Editor.__mainBrowserWindow = YulupAppServices.getMainBrowserWindow();
 
             gMainBrowserWindow = Editor.__mainBrowserWindow;
 
