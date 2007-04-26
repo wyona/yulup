@@ -173,11 +173,12 @@ SitetreeNode.prototype = {
 /**
   * Instantiates an object of the type SitetreeView.
   *
-  * @param  {nsIURI}           aURI           the sitetree URI
-  * @param  {Function}         aErrorListener an error listener which is called if the root node fails to load
+  * @param  {nsIURI}           aURI                      the sitetree URI
+  * @param  {Function}         aErrorListener            an error listener which is called if the root node fails to load
+  * @param  {Function}         aSelectionChangeObserver  an observer of type function(Object) which gets called if the selected row changes, or null
   * @return {nsITreeSelection} aSelection the tree selection object
   */
-function SitetreeView(aURI, aErrorListener) {
+function SitetreeView(aURI, aErrorListener, aSelectionChangeObserver) {
     var elem = null;
 
     /* DEBUG */ YulupDebug.ASSERT(aURI           != null);
@@ -186,11 +187,12 @@ function SitetreeView(aURI, aErrorListener) {
 
     /* DEBUG */ dump("Yulup:sitetree.js:SitetreeView(\"" + aURI + "\") invoked\n");
 
-    this.uri             = aURI;
-    this.rowCount        = 0;
-    this.sitetreeDOM     = new SitetreeDocument(this.uri);
-    this.rowNodeMap      = new Array();
-    this.wrappedJSObject = this;
+    this.uri                     = aURI;
+    this.rowCount                = 0;
+    this.sitetreeDOM             = new SitetreeDocument(this.uri);
+    this.rowNodeMap              = new Array();
+    this.wrappedJSObject         = this;
+    this.selectionChangeObserver = aSelectionChangeObserver;
 
     this.__errorListener = aErrorListener;
 
