@@ -197,6 +197,7 @@ const NeutronSidebar = {
         var version     = null;
         var transitions = null;
         var elem        = null;
+        var me          = this;
 
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.constructVersionsContextMenu() invoked\n");
 
@@ -222,7 +223,7 @@ const NeutronSidebar = {
             elem = document.createElement("menuitem");
             elem.setAttribute("label", transitions[i].to);
             elem.workflowTransition = transitions[i];
-            elem.addEventListener("command", this.versionContextHandler, false);
+            elem.addEventListener("command", function (aEvent) { me.versionContextHandler(aEvent); }, false);
 
             aPopup.appendChild(elem);
         }
