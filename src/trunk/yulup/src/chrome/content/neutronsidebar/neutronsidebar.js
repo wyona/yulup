@@ -123,14 +123,20 @@ const NeutronSidebar = {
                 // current resources view
                 if (!(this.__resourceTree.view.wrappedJSObject &&
                       this.__resourceTree.view.wrappedJSObject instanceof NeutronResourceTreeView)) {
-                    this.__resourceTree.view = new NeutronResourceTreeView(this.__neutronResources, this.resourcetreeSelectionListener);
+                    // check if we have introspection data
+                    if (this.__neutronResources) {
+                        this.__resourceTree.view = new NeutronResourceTreeView(this.__neutronResources, this.resourcetreeSelectionListener);
 
-                    // blank the version tree
-                    this.__versionTree.view = null;
+                        // blank the version tree
+                        this.__versionTree.view = null;
+
+                        // show the view
+                        this.__contentTreeDeck.selectedIndex = NeutronSidebar.CURRENT_RESOURCES_VIEWID;
+                    } else {
+                        // we can't switch because there is no introspection data
+                        this.__viewSelector.selectedIndex = NeutronSidebar.SITETREE_VIEWID;
+                    }
                 }
-
-                // show the view
-                this.__contentTreeDeck.selectedIndex = NeutronSidebar.CURRENT_RESOURCES_VIEWID;
 
                 break;
             case NeutronSidebar.SITETREE_VIEWID:
