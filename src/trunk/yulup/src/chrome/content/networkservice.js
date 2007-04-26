@@ -256,8 +256,8 @@ var NetworkService = {
      *
      * @param  {String}    aURI                     the target URI of the PUT request
      * @param  {Array}     aHeaderArray             a two-dimensional array, the first dimension containing the header the arrays, the second dimension containing the header name as a string in field 0, and the header value as a string in field 1
-     * @param  {String}    aDocumentData            the data to PUT
-     * @param  {String}    aContentType             the content type of the data
+     * @param  {String}    aDocumentData            the data to PUT, can be null
+     * @param  {String}    aContentType             the content type of the data, can be null if not document data
      * @param  {Function}  aCallbackFunction        the function to call when the upload has finished of type function(String aDocumentData, Number aResponseStatusCode, Object aContext, Array aResponseHeaders, Error aException)
      * @param  {Object}    aContext                 a context, or null if unused by the caller
      * @param  {Boolean}   aRetrieveResponseHeaders set to true if the response headers should be passed to the callback, false otherwise
@@ -272,8 +272,7 @@ var NetworkService = {
         /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.httpRequestPUT(\"" + aURI + "\", \"" + aHeaderArray + "\", \"" + /*aDocumentData +*/ "\", \"" + aContentType + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\", \"" + aRetrieveResponseHeaders + "\", \"" + aHandleAuthentication + "\", \"" + aProgressListener + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aURI                     != null);
-        /* DEBUG */ YulupDebug.ASSERT(aDocumentData            != null);
-        /* DEBUG */ YulupDebug.ASSERT(aContentType             != null);
+        /* DEBUG */ YulupDebug.ASSERT(aDocumentData ? aContentType != null : true);
         /* DEBUG */ YulupDebug.ASSERT(aCallbackFunction        != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aCallbackFunction)        == "function");
         /* DEBUG */ YulupDebug.ASSERT(aRetrieveResponseHeaders != null);
@@ -298,8 +297,8 @@ var NetworkService = {
      *
      * @param  {String}    aURI                     the target URI of the POST request
      * @param  {Array}     aHeaderArray             a two-dimensional array, the first dimension containing the header the arrays, the second dimension containing the header name as a string in field 0, and the header value as a string in field 1
-     * @param  {String}    aDocumentData            the data to POST
-     * @param  {String}    aContentType             the content type of the data
+     * @param  {String}    aDocumentData            the data to POST, can be null
+     * @param  {String}    aContentType             the content type of the data, can be null if no document data
      * @param  {Function}  aCallbackFunction        the function to call when the upload has finished of type function(String aDocumentData, Number aResponseStatusCode, Object aContext, Array aResponseHeaders, Error aException)
      * @param  {Object}    aContext                 a context, or null if unused by the caller
      * @param  {Boolean}   aRetrieveResponseHeaders set to true if the response headers should be passed to the callback, false otherwise
@@ -314,8 +313,7 @@ var NetworkService = {
         /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.httpRequestPOST(\"" + aURI + "\", \"" + aHeaderArray + "\", \"" + /*aDocumentData +*/ "\", \"" + aContentType + "\", \"" + /*aCallbackFunction +*/ "\", \"" + /*aContext +*/ "\", \"" + aRetrieveResponseHeaders + "\", \"" + aHandleAuthentication + "\", \"" + aProgressListener + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aURI                     != null);
-        /* DEBUG */ YulupDebug.ASSERT(aDocumentData            != null);
-        /* DEBUG */ YulupDebug.ASSERT(aContentType             != null);
+        /* DEBUG */ YulupDebug.ASSERT(aDocumentData ? aContentType != null : true);
         /* DEBUG */ YulupDebug.ASSERT(aCallbackFunction        != null);
         /* DEBUG */ YulupDebug.ASSERT(typeof(aCallbackFunction)        == "function");
         /* DEBUG */ YulupDebug.ASSERT(aRetrieveResponseHeaders != null);
@@ -366,6 +364,13 @@ var NetworkService = {
         /* DEBUG */ YulupDebug.ASSERT(aRequestMethod != null);
         /* DEBUG */ YulupDebug.ASSERT(aRequestMethod == "PUT" || aRequestMethod == "POST");
 
+        ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+
+        channel = ioService.newChannelFromURI(ioService.newURI(aRequest.uri, null, null));
+
+        // install the notification callback handler
+        channel.notificationCallbacks = new ChannelNotificationCallback(aRequest.progressListener);
+
         // make sure that aDocumentData != null, otherwise FF 1.5 crashes (see https://bugzilla.mozilla.org/show_bug.cgi?id=351418)
         if (aRequest.documentData) {
             stringInputStream = Components.classes["@mozilla.org/io/string-input-stream;1"].createInstance(Components.interfaces.nsIStringInputStream);
@@ -378,35 +383,29 @@ var NetworkService = {
 
             stringInputStream.setData(documentDataUTF8, -1);
 
-            ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-
-            channel = ioService.newChannelFromURI(ioService.newURI(aRequest.uri, null, null));
-
-            // install the notification callback handler
-            channel.notificationCallbacks = new ChannelNotificationCallback(aRequest.progressListener);
-
             channel.QueryInterface(Components.interfaces.nsIUploadChannel);
             channel.setUploadStream(stringInputStream, aRequest.contentType, -1);
-
-            channel.QueryInterface(Components.interfaces.nsIHttpChannel);
-            channel.setRequestHeader("Content-Type", aRequest.contentType + "; charset=UTF-8", false);
-            channel.setRequestHeader("Neutron", SUPPORTED_NEUTRON_VERSIONS, false);
-            channel.setRequestHeader("WWW-Authenticate", SUPPORTED_AUTHENTICATION_SCHEMES, false);
-
-            if (aRequest.headerArray) {
-                for (var i = 0; i < aRequest.headerArray.length; i++) {
-                    channel.setRequestHeader(aRequest.headerArray[i][0], aRequest.headerArray[i][1], false);
-                }
-            }
-
-            channel.requestMethod = aRequestMethod;
-
-            streamListener = new YulupNetworkStreamListener(aRequest, channel);
-
-            channel.asyncOpen(streamListener, null);
-        } else {
-            throw new YulupException("Yulup:networkservice.js:NetworkService.__httpRequestPUTPOST: aDocumentData must not be null.");
         }
+
+        channel.QueryInterface(Components.interfaces.nsIHttpChannel);
+
+        if (aRequest.contentType)
+            channel.setRequestHeader("Content-Type", aRequest.contentType + "; charset=UTF-8", false);
+
+        channel.setRequestHeader("Neutron", SUPPORTED_NEUTRON_VERSIONS, false);
+        channel.setRequestHeader("WWW-Authenticate", SUPPORTED_AUTHENTICATION_SCHEMES, false);
+
+        if (aRequest.headerArray) {
+            for (var i = 0; i < aRequest.headerArray.length; i++) {
+                channel.setRequestHeader(aRequest.headerArray[i][0], aRequest.headerArray[i][1], false);
+            }
+        }
+
+        channel.requestMethod = aRequestMethod;
+
+        streamListener = new YulupNetworkStreamListener(aRequest, channel);
+
+        channel.asyncOpen(streamListener, null);
     },
 
     /**
@@ -1297,8 +1296,7 @@ HTTPRequestGET.prototype = {
 
 
 function HTTPRequestPUT(aURI, aHeaderArray, aDocumentData, aContentType, aRequestFinishedCallback, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener) {
-    /* DEBUG */ YulupDebug.ASSERT(aDocumentData                    != null);
-    /* DEBUG */ YulupDebug.ASSERT(aContentType                     != null);
+    /* DEBUG */ YulupDebug.ASSERT(aDocumentData ? aContentType != null : true);
     /* DEBUG */ YulupDebug.ASSERT(aRetrieveResponseHeaders         != null);
     /* DEBUG */ YulupDebug.ASSERT(typeof(aRetrieveResponseHeaders) == "boolean");
 
@@ -1321,8 +1319,7 @@ HTTPRequestPUT.prototype = {
 
 
 function HTTPRequestPOST(aURI, aHeaderArray, aDocumentData, aContentType, aRequestFinishedCallback, aContext, aRetrieveResponseHeaders, aHandleAuthentication, aProgressListener) {
-    /* DEBUG */ YulupDebug.ASSERT(aDocumentData                    != null);
-    /* DEBUG */ YulupDebug.ASSERT(aContentType                     != null);
+    /* DEBUG */ YulupDebug.ASSERT(aDocumentData ? aContentType != null : true);
     /* DEBUG */ YulupDebug.ASSERT(aRetrieveResponseHeaders         != null);
     /* DEBUG */ YulupDebug.ASSERT(typeof(aRetrieveResponseHeaders) == "boolean");
 
