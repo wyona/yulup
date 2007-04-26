@@ -66,11 +66,11 @@ var Neutron = {
      * @param  {Error}    aException               an exception, or null if everything went well
      * @return {Undefined} does not have a return value
      */
-    __requestFinishedHandler: function(aDocumentData, aResponseStatusCode, aContext, aResponseHeaders) {
+    __requestFinishedHandler: function (aDocumentData, aResponseStatusCode, aContext, aResponseHeaders) {
 
         /* DEBUG */ dump("Yulup:neutron.js:Neutron.__requestFinishedHandler() invoked\n");
 
-        if (aResponseStatusCode == 200) {
+        if (NetworkService.isStatusSuccess(aResponseStatusCode)) {
             // success, call back to original caller
             aContext.callbackFunction(aDocumentData, null, aContext);
         } else {
@@ -93,7 +93,7 @@ var Neutron = {
      * @param  {Object}    aContext      context object containing the function parameters
      * @return {Undefined}               does not have a return value
      */
-    introspectionLoadFinished: function(aDocumentData, aException, aContext) {
+    introspectionLoadFinished: function (aDocumentData, aException, aContext) {
         var wellFormednessError = null;
         var domParser           = null;
         var xmlSerializer       = null;
@@ -207,7 +207,38 @@ var Neutron = {
     },
 
     performWorkflowTransition: function (aWorkflowTransition) {
+        var context = null;
+
         /* DEBUG */ dump("Yulup:neutron.js:Neutron.performWorkflowTransition(\"" + aWorkflowTransition + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aWorkflowTransition != null);
+
+        context = {
+            callbackFunction: this.__workflowTransitionFinishedHandler,
+            transition      : aWorkflowTransition
+        };
+
+        switch (aWorkflowTransition.method) {
+            case "PUT":
+                NetworkService.httpRequestPUT(aWorkflowTransition.url.spec, null, null, null, this.__requestFinishedHandler, context, false, true, null);
+                break;
+            case "POST":
+                NetworkService.httpRequestPOST(aWorkflowTransition.url.spec, null, null, null, this.__requestFinishedHandler, context, false, true, null);
+                break;
+            default:
+        }
+    },
+
+    __workflowTransitionFinishedHandler: function (aDocumentData, aException, aContext) {
+        /* DEBUG */ dump("Yulup:neutron.js:Neutron.__workflowTransitionFinishedHandler() invoked\n");
+
+        if (aException) {
+            // TODO: i18n
+            alert("Transition \"" + aContext.transition.to + "\" failed to execute.\n\nError: " + aException);
+        } else {
+            // TODO: i18n
+            alert("New state is \"" + aContext.transition.to + "\".");
+        }
     }
 };
 
