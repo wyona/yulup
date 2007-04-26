@@ -1,5 +1,12 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
+/* ------------------------ Bindings ------------------------ */
+
+#uiYulupNeutronSidebarPage {
+  -moz-binding: url('chrome://yulup/content/neutronsidebar/neutronsidebar.xml#neutronsidebar');
+}
+
+
 /* ------------------------ General ------------------------- */
 
 caption {

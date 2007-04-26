@@ -887,6 +887,18 @@ const Yulup = {
                 if (this.currentNeutronIntrospection) {
                     this.buildFragmentsMenu(this.currentNeutronIntrospection.queryOpenFragments(), this.yulupEditMenuCheckoutNoLockMenuitem, this.yulupEditMenuCheckoutNoLockMenu, this.yulupEditMenuCheckoutNoLockMenupopup, "Yulup.checkoutNoLockFromCMS");
                     this.buildFragmentsMenu(this.currentNeutronIntrospection.queryCheckoutFragments(), this.yulupEditMenuCheckoutMenuitem, this.yulupEditMenuCheckoutMenu, this.yulupEditMenuCheckoutMenupopup, "Yulup.checkoutFromCMS");
+
+                    try {
+                        // check if the Neutron sidebar is open
+                        if (document.getElementById("sidebar").docShell && document.getElementById("sidebar").contentDocument.getElementById("uiYulupNeutronSidebarPage")) {
+                            // inform sidebar about new introspection data
+                            document.getElementById("sidebar").contentDocument.getElementById("uiYulupNeutronSidebarPage").reload();
+                        }
+                    } catch (exception) {
+                        // we don't want to fail here
+                        /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.introspectionStateChanged", exception);
+                        /* DEBUG */ Components.utils.reportError(exception);
+                    }
                 }
 
                 if (this.currentAPPIntrospection) {

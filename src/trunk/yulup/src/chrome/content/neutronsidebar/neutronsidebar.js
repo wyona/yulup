@@ -46,7 +46,6 @@ const NeutronSidebar = {
      */
     onLoadListener: function () {
         var mainBrowserWindow = null;
-        var serverURIString   = null;
         var currentViewID     = null;
         var menulist          = null;
         var me                = this;
@@ -56,7 +55,34 @@ const NeutronSidebar = {
         // get a handle on the main browser window
         this.__mainBrowserWindow = YulupAppServices.getMainBrowserWindow();
 
-        // retrieve Neutron introspection document from Yulup, if any
+        // cache various elements
+        this.__viewSelector    = document.getElementById("uiYulupNeutronSidebarContentDeckSelector");
+        this.__contentTreeDeck = document.getElementById("uiYulupNeutronSidebarContentTreeDeck");
+        this.__resourceTree    = document.getElementById("uiYulupNeutronSidebarResourceTree");
+        this.__sitetreeTree    = document.getElementById("uiYulupNeutronSidebarSiteTree");
+        this.__versionTree     = document.getElementById("uiYulupNeutronSidebarVersionTree");
+
+        this.__initSources();
+
+        // determine our start view
+        if (this.__neutronResources)
+            currentViewID = this.CURRENT_RESOURCES_VIEWID;
+        else
+            currentViewID = this.SITETREE_VIEWID;
+
+        // update menulist
+        this.__viewSelector.selectedIndex = currentViewID;
+
+        // install menulist selection change listener
+        this.__viewSelector.addEventListener("ValueChange", function (aEvent) { me.contentSelectorListener(aEvent); }, false);
+
+        this.viewSelectionChanged(currentViewID);
+    },
+
+    __initSources: function () {
+        var serverURIString   = null;
+
+        // retrieve Neutron introspection data from Yulup, if any
         if (this.__mainBrowserWindow.yulup.currentNeutronIntrospection && this.__mainBrowserWindow.yulup.currentNeutronIntrospection.hasSitetreeURI()) {
             this.__serverURI = this.__mainBrowserWindow.yulup.currentNeutronIntrospection.getSitetreeURI();
 
@@ -71,27 +97,28 @@ const NeutronSidebar = {
             return false;
         }
 
-        // cache various elements
-        this.__viewSelector    = document.getElementById("uiYulupNeutronSidebarContentDeckSelector");
-        this.__contentTreeDeck = document.getElementById("uiYulupNeutronSidebarContentTreeDeck");
-        this.__resourceTree    = document.getElementById("uiYulupNeutronSidebarResourceTree");
-        this.__sitetreeTree    = document.getElementById("uiYulupNeutronSidebarSiteTree");
-        this.__versionTree     = document.getElementById("uiYulupNeutronSidebarVersionTree");
-
         // get current resources
         this.__neutronResources = (this.__mainBrowserWindow.yulup.currentNeutronIntrospection ? this.__mainBrowserWindow.yulup.currentNeutronIntrospection.fragments : null);
+    },
 
-        // determine our start view
+    reInit: function () {
+        var currentViewID = null;
+
+        this.__initSources();
+
+        // determine our new view
         if (this.__neutronResources)
             currentViewID = this.CURRENT_RESOURCES_VIEWID;
         else
             currentViewID = this.SITETREE_VIEWID;
 
+        // clear views
+        this.__resourceTree.view = null;
+        this.__sitetreeTree.view = null;
+        this.__versionTree.view  = null;
+
         // update menulist
         this.__viewSelector.selectedIndex = currentViewID;
-
-        // install menulist selection change listener
-        this.__viewSelector.addEventListener("ValueChange", function (aEvent) { me.contentSelectorListener(aEvent); }, false);
 
         this.viewSelectionChanged(currentViewID);
     },
