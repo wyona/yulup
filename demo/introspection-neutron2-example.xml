@@ -8,7 +8,7 @@
     </edit>
 
     <versions>
-      <version url="index.xhtml?yanel.resource.revision=20843">
+      <version url="?yanel.resource.revision=20843">
         <comment>slugline updated</comment>
         <date>2006-05-23T00:38:05+02:00</date>
         <user>joe</user>
@@ -16,8 +16,8 @@
         <workflow>
           <state date="2006-05-23T00:38:05+02:00">REVIEW</state>
           <transitions>
-            <transition id="publish" to="LIVE" url="index.xhtml?yanel.resource.workflow.transition=publish" method="POST"/>
-            <transition id="reject" to="DRAFT"/>
+            <transition id="publish" to="LIVE" url="?yanel.resource.workflow.transition=publish" method="POST"/>
+            <transition id="reject" to="DRAFT" url="?yanel.resource.workflow.transition=reject" method="POST"/>
           </transitions>
           <history>
             <state date="2006-05-23T00:38:05+02:00">DRAFT</state>
