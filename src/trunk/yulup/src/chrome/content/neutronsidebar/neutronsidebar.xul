@@ -67,7 +67,7 @@
   <vbox flex="1">
     <menulist id="uiYulupNeutronSidebarContentDeckSelector">
       <menupopup>
-        <menuitem label="&neutronSidebarCurrentResourceMenuitem.label;"/>
+        <menuitem label="&neutronSidebarResourceMenuitem.label;"/>
         <menuitem label="&neutronSidebarSitetreeMenuitem.label;"/>
       </menupopup>
     </menulist>
@@ -81,7 +81,7 @@
               seltype="single"
               onselect="this.view.selectionChanged()">
           <treecols>
-            <treecol label="Current Resources" flex="1"/>
+            <treecol label="&neutronSidebarResourceTree.label;" flex="1"/>
           </treecols>
           <treechildren/>
         </tree>
@@ -110,7 +110,7 @@
               seltype="single"
               onselect="this.view.selectionChanged()">
           <treecols>
-            <treecol label="&neutronSidebarResourceTree.label;" primary="true" flex="1"/>
+            <treecol label="&neutronSidebarSitetreeTree.label;" primary="true" flex="1"/>
           </treecols>
           <treechildren/>
         </tree>
