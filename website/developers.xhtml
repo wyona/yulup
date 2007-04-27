@@ -62,7 +62,7 @@ Make sure to update the Mozilla <a href="https://addons.mozilla.org/firefox/3702
 <li>cp yulup/website/download/yulup-0.2.3-r22739.xpi tmp/.</li><li>cd tmp</li><li>unzip yulup-0.2.3-r22739.xpi</li>
 <li>Remove or comment &quot;updateURL&quot; within install.rdf</li><li>rm yulup-0.2.3-r22739.xpi</li>
 <li>zip -r yulup-0.2.3-r22739.xpi .<br/></li>
-<li>Click on &quot;<a href="https://addons.mozilla.org/developers">Developer Login</a>&quot;<br/></li><li>Click on &quot;<a href="https://addons.mozilla.org/developers/itemoverview.php?id=3702">Edit Item</a>&quot;</li><li>Upload new XPI</li></ul><p>
+<li>Click on &quot;<a href="https://addons.mozilla.org/developers">Developer Login</a>&quot;<br/></li><li>Click on &quot;<a href="https://addons.mozilla.org/developers/itemoverview.php?id=3702">Edit Item</a>&quot;</li><li>Upload new XPI</li><li>Add ProxyPass entry to www.yulup.org vhost within /usr/local/httpd-2.2.3/conf/extra/httpd-vhosts.conf</li></ul><p>
 </p>
 <h3 id="xpi-debug">4. Building Debug Releases: Generating XPI from source (Unix only)</h3>
 <p>Assume a path snippet <tt>$CURRENT</tt> which currently points to <tt>public/yulup/src/trunk/yulup/src</tt>.</p>
