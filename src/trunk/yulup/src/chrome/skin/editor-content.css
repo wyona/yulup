@@ -1,3 +1,8 @@
+a[href] {
+  text-decoration: underline -moz-anchor-decoration;
+  color: -moz-hyperlinktext;
+}
+
 a.asset * {
   text-decoration: underline -moz-anchor-decoration;
   color: -moz-hyperlinktext;
