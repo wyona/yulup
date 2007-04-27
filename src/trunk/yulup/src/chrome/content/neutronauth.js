@@ -145,9 +145,11 @@ var NeutronAuth = {
         var documentRoot = null;
         var challenge    = null;
 
-        /* DEBUG */ dump("Yulup:neutronauth.js:NeutronAuth.__parseChallenge(\"" + aChallenge + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:neutronauth.js:NeutronAuth.__parseChallenge() invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aChallenge != null);
+
+        /* DEBUG */ dump("Yulup:neutronauth.js:NeutronAuth.__parseChallenge: received challenge:\n" + aChallenge + "\n\n");
 
         // parse XML message to DOM
         xmlDocument = (new DOMParser()).parseFromString(aChallenge, "text/xml");
