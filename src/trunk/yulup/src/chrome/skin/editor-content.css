@@ -1,4 +1,5 @@
 a.asset * {
   text-decoration: underline -moz-anchor-decoration;
   color: -moz-hyperlinktext;
+  cursor: text;
 }
