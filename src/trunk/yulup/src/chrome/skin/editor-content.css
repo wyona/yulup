@@ -1,6 +1,4 @@
-a object.asset {
-  background-image: url(chrome://yulup/skin/icons/editor-content-asset.png);
-  background-repeat: no-repeat;
-  background-position: top left;
-  padding: 12px 12px 0px 12px;
+a.asset * {
+  text-decoration: underline -moz-anchor-decoration;
+  color: -moz-hyperlinktext;
 }

@@ -9,9 +9,7 @@
         <description xml:lang="en">Insert a paragraph</description>
         <description xml:lang="de">Einen Paragraphen einfügen</description>
         <surround>
-          <fragment>
-            <p xmlns=""/>
-          </fragment>
+          <fragment><p xmlns=""/></fragment>
         </surround>
       </widget>
 
@@ -27,9 +25,7 @@
           <description xml:lang="en">A heading of level 1</description>
           <description xml:lang="de">Ein Titel der Hierarchie 1</description>
           <surround>
-            <fragment>
-              <h1 xmlns=""/>
-            </fragment>
+            <fragment><h1 xmlns=""/></fragment>
           </surround>
         </widget>
 
@@ -39,9 +35,7 @@
           <description xml:lang="en">A heading of level 2</description>
           <description xml:lang="de">Ein Titel der Hierarchie 2</description>
           <surround>
-            <fragment>
-              <h2 xmlns=""/>
-            </fragment>
+            <fragment><h2 xmlns=""/></fragment>
           </surround>
         </widget>
 
@@ -51,9 +45,7 @@
           <description xml:lang="en">A heading of level 3</description>
           <description xml:lang="de">Ein Titel der Hierarchie 3</description>
           <surround>
-            <fragment>
-              <h3 xmlns=""/>
-            </fragment>
+            <fragment><h3 xmlns=""/></fragment>
           </surround>
         </widget>
 
@@ -63,9 +55,7 @@
           <description xml:lang="en">A heading of level 4</description>
           <description xml:lang="de">Ein Titel der Hierarchie 4</description>
           <surround>
-            <fragment>
-              <h4 xmlns=""/>
-            </fragment>
+            <fragment><h4 xmlns=""/></fragment>
           </surround>
         </widget>
 
@@ -75,9 +65,7 @@
           <description xml:lang="en">A heading of level 5</description>
           <description xml:lang="de">Ein Titel der Hierarchie 5</description>
           <surround>
-            <fragment>
-              <h5 xmlns=""/>
-            </fragment>
+            <fragment><h5 xmlns=""/></fragment>
           </surround>
         </widget>
 
@@ -87,9 +75,7 @@
           <description xml:lang="en">A heading of level 6</description>
           <description xml:lang="de">Ein Titel der Hierarchie 6</description>
           <surround>
-            <fragment>
-              <h6 xmlns=""/>
-            </fragment>
+            <fragment><h6 xmlns=""/></fragment>
           </surround>
         </widget>
       </widgetgroup>
@@ -100,9 +86,7 @@
         <description xml:lang="en">Mark text bold</description>
         <description xml:lang="de">Text als fett markieren</description>
         <surround>
-          <fragment>
-            <b xmlns=""/>
-          </fragment>
+          <fragment><b xmlns=""/></fragment>
         </surround>
       </widget>
 
@@ -112,9 +96,7 @@
         <description xml:lang="en">Mark text italic</description>
         <description xml:lang="de">Text als kursiv markieren</description>
         <surround>
-          <fragment>
-            <i xmlns=""/>
-          </fragment>
+          <fragment><i xmlns=""/></fragment>
         </surround>
       </widget>
 
@@ -124,9 +106,7 @@
         <description xml:lang="en">Mark text underline</description>
         <description xml:lang="de">Text als unterstrichen markieren</description>
         <surround>
-          <fragment>
-            <u xmlns=""/>
-          </fragment>
+          <fragment><u xmlns=""/></fragment>
         </surround>
       </widget>
 
@@ -136,9 +116,7 @@
         <description xml:lang="en">Mark text strikethrough</description>
         <description xml:lang="de">Text als durchgestrichen markieren</description>
         <surround>
-          <fragment>
-            <strike xmlns=""/>
-          </fragment>
+          <fragment><strike xmlns=""/></fragment>
         </surround>
       </widget>
 
@@ -148,9 +126,7 @@
         <description xml:lang="en">Mark text monospace</description>
         <description xml:lang="de">Text als in festbreitenschrift darstellen</description>
         <surround>
-          <fragment>
-            <tt xmlns=""/>
-          </fragment>
+          <fragment><tt xmlns=""/></fragment>
         </surround>
       </widget>
 
@@ -185,16 +161,16 @@
             <description xml:lang="de">Hintergrundfarbe der Tabelle</description>
           </parameter>
           <fragment>
-            <table border="0" cellpadding="0" cellspacing="0" bgcolor="#DDDDDD" xmlns="">
-              <tr>
-                <td>Column 1, Row 1</td>
-                <td>Column 2, Row 1</td>
-              </tr>
-              <tr>
-                <td>Column 1, Row 2</td>
-                <td>Column 2, Row 2</td>
-              </tr>
-            </table>
+<table border="0" cellpadding="0" cellspacing="0" bgcolor="#DDDDDD" xmlns="">
+  <tr>
+    <td>Column 1, Row 1</td>
+    <td>Column 2, Row 1</td>
+  </tr>
+  <tr>
+    <td>Column 1, Row 2</td>
+    <td>Column 2, Row 2</td>
+  </tr>
+</table>
           </fragment>
         </insert>
       </widget>
@@ -206,10 +182,10 @@
         <description xml:lang="de">Eine ungeordnete Liste einfügen</description>
         <insert>
           <fragment>
-            <ul xmlns="">
-              <li>List Item 1</li>
-              <li>List Item 2</li>
-            </ul>
+<ul xmlns="">
+  <li>List Item 1</li>
+  <li>List Item 2</li>
+</ul>
           </fragment>
         </insert>
       </widget>
@@ -221,10 +197,10 @@
         <description xml:lang="de">Eine geordnete Liste einfügen</description>
         <insert>
           <fragment>
-            <ol xmlns="">
-              <li>List Item 1</li>
-              <li>List Item 2</li>
-            </ol>
+<ol xmlns="">
+  <li>List Item 1</li>
+  <li>List Item 2</li>
+</ol>
           </fragment>
         </insert>
       </widget>
@@ -241,9 +217,7 @@
             <description xml:lang="en">Link address</description>
             <description xml:lang="de">Linkadresse</description>
           </parameter>
-          <fragment>
-            <a xmlns="" href=""/>
-          </fragment>
+          <fragment><a xmlns="" href=""/></fragment>
         </surround>
       </widget>
 
@@ -265,9 +239,7 @@
             <description xml:lang="en">Alternative text which is shown if image display is disabled or the image could not be loaded</description>
             <description xml:lang="de">Alternativer text der gezeigt wird, falls das Anzeigen von Bildern unterbunden wurde oder das Bild nicht geladen werden konnte</description>
           </parameter>
-          <fragment>
-            <img xmlns="" src="" alt=""/>
-          </fragment>
+          <fragment><img xmlns="" src="" alt=""/></fragment>
         </insert>
       </widget>
 
@@ -283,9 +255,7 @@
             <description xml:lang="en">Asset address</description>
             <description xml:lang="de">Assetadresse</description>
           </parameter>
-          <fragment>
-            <a xmlns="" href=""/>
-          </fragment>
+          <fragment><a xmlns="" href=""/></fragment>
         </surround>
         <insert>
           <parameter xpath="a/attribute::href" type="resource">
@@ -300,11 +270,7 @@
             <description xml:lang="en">Alternative text which is shown if image display is disabled or the image could not be loaded</description>
             <description xml:lang="de">Alternativer text der gezeigt wird, falls das Anzeigen von Bildern unterbunden wurde oder das Bild nicht geladen werden konnte</description>
           </parameter>
-          <fragment>
-            <a xmlns="" href="">
-              <object class="asset"/>
-            </a>
-          </fragment>
+          <fragment><a xmlns="" href="" class="asset"><object>Asset</object></a></fragment>
         </insert>
       </widget>
     </widgets>
