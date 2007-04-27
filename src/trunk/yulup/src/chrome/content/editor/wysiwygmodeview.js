@@ -389,7 +389,7 @@ WYSIWYGModeView.prototype = {
 
         fragmentData = this.xmlSerializer.serializeToString(aFragment);
 
-        this.view.insertHTML(fragmentData);
+        this.view.insertHTML(fragmentData + "&nbsp");
     },
 
     doSurroundCommand: function (aCommand, aFragment) {
