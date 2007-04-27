@@ -476,17 +476,21 @@ const Yulup = {
         var ioService       = null;
 
         // check for sitetree URI
-        if (this.currentNeutronIntrospection.hasSitetreeURI()) {
+        if (this.currentNeutronIntrospection &&
+            this.currentNeutronIntrospection.hasSitetreeURI()) {
             sitetreeURI = this.currentNeutronIntrospection.getSitetreeURI();
         } else {
-            // query for server address
-            serverURIString = ServerURIPrompt.showServerURIDialog();
+            // try to get address from prefs
+            if (!((serverURIString = YulupPreferences.getCharPref("neutron.", "defaultserver")) != null && serverURIString != "")) {
+                // query for server address
+                serverURIString = ServerURIPrompt.showServerURIDialog();
 
-            if (!serverURIString) {
-                // user cancelled
-                return true;
-            } else if (serverURIString == "") {
-                return false;
+                if (!serverURIString) {
+                    // user cancelled
+                    return true;
+                } else if (serverURIString == "") {
+                    return false;
+                }
             }
 
             ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
