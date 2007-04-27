@@ -1,0 +1,26 @@
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <atom:title type="text">yulup-0.2.7-r24052.xpi</atom:title>
+  <atom:author>
+    <atom:name>Andreas Wuest</atom:name>
+  </atom:author>
+  <atom:id>urn:www-yulup-org:0-2-7-release</atom:id>
+  <atom:content type="xhtml">
+    <xhtml:div>
+      <xhtml:a href="yulup-0.2.7-r24052.xpi">yulup-0.2.7-r24052.xpi</xhtml:a> <xhtml:a href="http://svn.wyona.com/repos/public/yulup/website/download/yulup-0.2.7-r24052.xpi.md5">(md5)</xhtml:a> (April 27, 2007)
+      <xhtml:br/>
+      <xhtml:br/>
+      Changelog:
+      <xhtml:ul>
+        <xhtml:li>Escape characters in URIs in WYSIWYG documents correctly.</xhtml:li>
+        <xhtml:li>New and improved editing widgets.</xhtml:li>
+        <xhtml:li>Improved editing performance.</xhtml:li>
+        <xhtml:li>Improved image/asset upload.</xhtml:li>
+        <xhtml:li>Improved link selection.</xhtml:li>
+        <xhtml:li>Improved handling of relative URIs.</xhtml:li>
+        <xhtml:li>Neutron 2 implemented.</xhtml:li>
+        <xhtml:li>Implemented workflow and versioning functionality in Neutron sidebar.</xhtml:li>
+        <xhtml:li>Lots of under-the-hood changes and bug-fixing.</xhtml:li>
+      </xhtml:ul>
+    </xhtml:div>
+  </atom:content>
+<atom:updated>2007-04-27T20:43:24.030Z</atom:updated><atom:published>2007-04-27T20:43:24.030Z</atom:published></atom:entry>
