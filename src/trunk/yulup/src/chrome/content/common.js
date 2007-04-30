@@ -443,6 +443,10 @@ const YulupAppServices = {
             .rootTreeItem
             .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
             .getInterface(Components.interfaces.nsIDOMWindow);
+    },
+
+    generateUID: function () {
+        return Date.now().toString() + "R" + Math.round(Math.random() * 100000).toString();
     }
 };
 

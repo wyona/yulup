@@ -1420,7 +1420,7 @@ YulupEditorInstancesManager.prototype = {
         var instanceID     = null;
 
         // create an instance ID for this instance
-        instanceID = Date.now();
+        instanceID = YulupAppServices.generateUID();
 
         editorInstance = new Object();
         editorInstance.instanceID      = instanceID;

@@ -705,7 +705,7 @@ NeutronResource.prototype = {
 function NeutronWidget() {
     /* DEBUG */ dump("Yulup:neutron.js:NeutronWidget() invoked\n");
 
-    this.id = Date.now().toString();
+    this.id = YulupAppServices.generateUID();
 }
 
 NeutronWidget.prototype = {
@@ -1011,7 +1011,7 @@ NeutronWidgetAction.prototype = {
 function NeutronWidgetActionParameter() {
     /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetActionParameter() invoked\n");
 
-    this.id = Date.now().toString();
+    this.id = YulupAppServices.generateUID();
 }
 
 NeutronWidgetActionParameter.prototype = {

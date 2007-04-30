@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -733,7 +733,7 @@ function AtomFeed(aFeedURI) {
      * we use the URI of the feed location). */
     AtomCommon.call(this, aFeedURI, null);
 
-    this.feedID       = Date.now();
+    this.feedID       = YulupAppServices.generateUID();
     this.feedURI      = aFeedURI;
 
     this.authors      = new Array();

@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -38,7 +38,7 @@ function ProgressDialog(aWindow, aAction, aDocumentName) {
     this.__action       = aAction;
     this.__documentName = aDocumentName;
 
-    this.__dialog = aWindow.openDialog(YULUP_PROGRESSDIALOG_CHROME_URI, "yulupProgressDialog" + Date.now(), "resizable=yes", this);
+    this.__dialog = aWindow.openDialog(YULUP_PROGRESSDIALOG_CHROME_URI, "yulupProgressDialog" + YulupAppServices.generateUID(), "resizable=yes", this);
 }
 
 ProgressDialog.prototype = {

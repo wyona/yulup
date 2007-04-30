@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -45,7 +45,7 @@ function NeutronArchive(aLoadURI) {
     /* DEBUG */ dump("Yulup:neutronarchive.js:NeutronArchive.NeutronArchive(" + aLoadURI.spec +") invoked\n");
 
     this.loadURI     = aLoadURI;
-    this.archiveID   = Date.now();
+    this.archiveID   = YulupAppServices.generateUID();
 }
 
 NeutronArchive.prototype = {
