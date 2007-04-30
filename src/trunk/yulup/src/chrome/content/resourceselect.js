@@ -57,14 +57,16 @@ var ResourceSelectDialog = {
     },
 
     onTreeDblclick: function (aEvent) {
+        var view = null;
+
         /* DEBUG */ dump("Yulup:resourceselect.js:ResourceSelectDialog.onTreeDblclick() invoked\n");
 
         if (aEvent.originalTarget.namespaceURI == "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" &&
             aEvent.originalTarget.localName    == "treechildren") {
-            if (document.getElementById("uiYulupResourceSelectTree").view.selection.count <= 0)
-                return;
+            view = document.getElementById("uiYulupResourceSelectTree").view;
 
-            document.getElementById("uiYulupEditorResourceSelectDialog").acceptDialog();
+            if (view.selection.count == 1 && !view.isContainer(view.selection.currentIndex))
+                document.getElementById("uiYulupEditorResourceSelectDialog").acceptDialog();
         }
     },
 
