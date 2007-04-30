@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<introspection xmlns="http://www.wyona.org/neutron/1.0">
+
+<edit mime-type="application/xhtml+xml" name="Upload Example">
+  <open url="upload-example.xhtml" method="GET"/>
+  <save url="upload-example.xhtml?yanel.resource.usecase=save" method="PUT"/>
+</edit>
+
+<navigation>
+  <sitetree href="../" method="PROPFIND"/>
+<!--
+  <sitetree href="sitetree.xml" method="GET"/>
+-->
+<!--
+  <sitetree href="sitetree.xml?collection=/" method="GET"/>
+-->
+<!--
+  <sitetree href="sitetree.xml?collection=/atom/" method="GET"/>
+-->
+</navigation>
+
+</introspection>
