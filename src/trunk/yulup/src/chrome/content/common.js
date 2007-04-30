@@ -337,9 +337,7 @@ const YulupXMLServices = {
 
         stringBundle = YulupLocalisationServices.getStringBundle("chrome://yulup/locale/editor.properties");
 
-        return stringBundle.GetStringFromName("editorWellFormednessError0.label") + ": " + aWellFormednessError.line +
-            ", " + stringBundle.GetStringFromName("editorWellFormednessError2.label") + ": " + aWellFormednessError.column +
-            (aWellFormednessError.sourceText != "" ? "\n" + aWellFormednessError.sourceText : "");
+        return stringBundle.formatStringFromName("editorWellFormednessError.label", [aWellFormednessError.line, aWellFormednessError.column, (aWellFormednessError.sourceText != "" ? "\n" + aWellFormednessError.sourceText : "")], 3);
     }
 };
 

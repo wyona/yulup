@@ -54,16 +54,10 @@
     <name xml:lang="es">¿Desea guardar de todos modos?</name>
   </entity>
 
-  <entity id="editorWellFormednessError0.label">
-    <name xml:lang="en">Document not well-formed: line number</name>
-    <name xml:lang="de">Das Dokument is nicht well-formed: Zeile</name>
-    <name xml:lang="es">El documento no está bien formado: número de línea</name>
-  </entity>
-
-  <entity id="editorWellFormednessError2.label">
-    <name xml:lang="en">column</name>
-    <name xml:lang="de">Spalte</name>
-    <name xml:lang="es">columna</name>
+  <entity id="editorWellFormednessError.label">
+    <name xml:lang="en">Document not well-formed: line number: %S, column: %S%S</name>
+    <name xml:lang="de">Das Dokument is nicht well-formed: Zeile: %S, Spalte: %S%S</name>
+    <name xml:lang="es">El documento no está bien formado: número de línea: %S, columna: %S%S</name>
   </entity>
 
   <entity id="editorCheckinAndExitConfirmation.label">
