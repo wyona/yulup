@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dtd xmlns="http://yulup.wyona.org/1.0">
+  <entity id="transitionFailed.label">
+    <name xml:lang="en">Transition "%S" failed to execute.\n\nError: %S</name>
+  </entity>
+
+  <entity id="transitionSucceeded.label">
+    <name xml:lang="en">New state is "%S".</name>
+  </entity>
+</dtd>

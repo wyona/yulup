@@ -170,7 +170,32 @@ var Neutron = {
             // response ok, pass it on to the Neutron parser
             response = Neutron.parserFactory(xmlDocument, null).parseResponse();
         }
+    },
 
+    parseWorkflowResponse: function (aResponse, aIntrospectionRoot, aVersion) {
+        var xmlDocument  = null;
+        var documentRoot = null;
+        var response     = null;
+
+        /* DEBUG */ dump("Yulup:neutron.js:Neutron.parseWorkflowResponse(\"" + aResponse + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aResponse          != null);
+        /* DEBUG */ YulupDebug.ASSERT(aIntrospectionRoot != null);
+        /* DEBUG */ YulupDebug.ASSERT(aVersion           != null);
+
+        // parse XML response to DOM
+        xmlDocument = (new DOMParser()).parseFromString(aResponse, "text/xml");
+
+        documentRoot = xmlDocument.documentElement;
+        if ((documentRoot.tagName == "parserError") || (documentRoot.namespaceURI == "http://www.mozilla.org/newlayout/xml/parsererror.xml")) {
+            // problem parsing the response
+            throw new NeutronException("Yulup:neutron.js:Neutron.parseWorkflowResponse: Neutron response not well-formed. The response string was = \"" + aResponse + "\".");
+        } else {
+            // response ok, pass it on to the Neutron parser
+            response = Neutron.parserFactory(xmlDocument, null).parseWorkflowResponse(aIntrospectionRoot, aVersion);
+        }
+
+        return response;
     },
 
     /**
@@ -204,45 +229,6 @@ var Neutron = {
         }
 
         return neutronParser;
-    },
-
-    performWorkflowTransition: function (aWorkflowTransition, aRevision) {
-        var context = null;
-        var request = null;
-
-        /* DEBUG */ dump("Yulup:neutron.js:Neutron.performWorkflowTransition(\"" + aWorkflowTransition + "\", \"" + aRevision + "\") invoked\n");
-
-        /* DEBUG */ YulupDebug.ASSERT(aWorkflowTransition != null);
-
-        // TODO: move this to a more generic factory
-        request = "<workflow><transition id=\"" + aWorkflowTransition.id + "\"" + (aRevision ? "revision=\"" + aRevision + "\"" : "") + "/></workflow>";
-
-        context = {
-            callbackFunction: this.__workflowTransitionFinishedHandler,
-            transition      : aWorkflowTransition
-        };
-
-        switch (aWorkflowTransition.method) {
-            case "PUT":
-                NetworkService.httpRequestPUT(aWorkflowTransition.url.spec, null, request, "application/xml", this.__requestFinishedHandler, context, false, true, null);
-                break;
-            case "POST":
-                NetworkService.httpRequestPOST(aWorkflowTransition.url.spec, null, request, "application/xml", this.__requestFinishedHandler, context, false, true, null);
-                break;
-            default:
-        }
-    },
-
-    __workflowTransitionFinishedHandler: function (aDocumentData, aException, aContext) {
-        /* DEBUG */ dump("Yulup:neutron.js:Neutron.__workflowTransitionFinishedHandler() invoked\n");
-
-        if (aException) {
-            // TODO: i18n
-            alert("Transition \"" + aContext.transition.to + "\" failed to execute.\n\nError: " + aException);
-        } else {
-            // TODO: i18n
-            alert("New state is \"" + aContext.transition.to + "\".");
-        }
     }
 };
 
@@ -583,6 +569,34 @@ NeutronIntrospection.prototype = {
         return this.navigation;
     },
 
+    /**
+     * Callback function that gets called when the introspection load
+     * request finished.
+     *
+     * @param  {String}   aDocumentData            the data returned by the request
+     * @param  {Long}     aResponseStatusCode      the status code of the response
+     * @param  {Object}   aContext                 context object containing the callback function and it's parameters
+     * @param  {Array}    aResponseHeaders         the response headers
+     * @param  {Error}    aException               an exception, or null if everything went well
+     * @return {Undefined} does not have a return value
+     */
+    __requestFinishedHandler: function (aDocumentData, aResponseStatusCode, aContext, aResponseHeaders, aException) {
+
+        /* DEBUG */ dump("Yulup:neutron.js:NeutronIntrospection.__requestFinishedHandler() invoked\n");
+
+        if (NetworkService.isStatusSuccess(aResponseStatusCode)) {
+            // success, call back to original caller
+            aContext.callbackFunction(aDocumentData, null, aContext);
+        } else {
+            try {
+                // parse error message (throws an exeception)
+                Neutron.response(aDocumentData);
+            } catch (exception) {
+                aContext.callbackFunction(null, exception, aContext);
+                return;
+            }
+        }
+    },
 
     /**
      * Return a string representation of this capabilities
@@ -1224,15 +1238,82 @@ NeutronWorkflowState.prototype = {
  * @constructor
  * @return {NeutronWorkflowTransition}
  */
-function NeutronWorkflowTransition() {
+function NeutronWorkflowTransition(aIntrospectionRoot, aVersion) {
     /* DEBUG */ dump("Yulup:neutron.js:NeutronWorkflowTransition() invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aIntrospectionRoot != null);
+    /* DEBUG */ YulupDebug.ASSERT(aVersion           != null);
+
+    this.__introspectionRoot = aIntrospectionRoot;
+    this.__version           = aVersion;
 }
 
 NeutronWorkflowTransition.prototype = {
+    __introspectionRoot: null,
+    __version          : null,
+
     id    : null,
     to    : null,
     url   : null,
     method: null,
+
+    /**
+     * Performs a workflow transition.
+     *
+     * @return {Undefined} does not have a return value
+     */
+    execute: function () {
+        var context = null;
+        var request = null;
+        var me      = this;
+
+        /* DEBUG */ dump("Yulup:neutron.js:NeutronWorkflowTransition.execute() invoked\n");
+
+        request = this.__introspectionRoot.generateWorkflowRequest(this, this.__version);
+
+        context = {
+            callbackFunction: function (aDocumentData, aException, aContext) {
+                me.__workflowTransitionFinishedHandler(aDocumentData, aException, aContext);
+            },
+            transition      : this
+        };
+
+        switch (this.method) {
+            case "PUT":
+                NetworkService.httpRequestPUT(this.url.spec, null, request, "application/xml", this.__introspectionRoot.__requestFinishedHandler, context, false, true, null);
+                break;
+            case "POST":
+                NetworkService.httpRequestPOST(this.url.spec, null, request, "application/xml", this.__introspectionRoot.__requestFinishedHandler, context, false, true, null);
+                break;
+            default:
+        }
+    },
+
+    __workflowTransitionFinishedHandler: function (aDocumentData, aException, aContext) {
+        var stringBundle = null;
+
+        /* DEBUG */ dump("Yulup:neutron.js:NeutronWorkflowTransition.__workflowTransitionFinishedHandler() invoked\n");
+
+        stringBundle = YulupLocalisationServices.getStringBundle("chrome://yulup/locale/neutron.properties");
+
+        if (aException) {
+            alert(stringBundle.formatStringFromName("transitionFailed.label", [aContext.transition.to, aException], 2));
+        } else {
+            try {
+                // replace old workflow element with response from server
+                Neutron.parseWorkflowResponse(aDocumentData, this.__introspectionRoot, this.__version);
+            } catch (exception) {
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutron.js:NeutronWorkflowTransition.__workflowTransitionFinishedHandler", exception);
+                /* DEBUG */ Components.utils.reportError(exception);
+
+                alert(stringBundle.formatStringFromName("transitionFailed.label", [aContext.transition.to, exception], 2));
+
+                return;
+            }
+
+            alert(stringBundle.formatStringFromName("transitionSucceeded.label", [aContext.transition.to], 1));
+        }
+    },
 
     toString: function () {
         return "Transition: id = \"" + this.id + "\", to = \"" + this.to + "\", url = \"" + (this.url ? this.url.spec : this.url) + "\", method = \"" + this.method + "\"\n";

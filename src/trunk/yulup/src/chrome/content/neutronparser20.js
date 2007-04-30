@@ -172,7 +172,7 @@ NeutronParser20.prototype = {
             while (elemNode = elemNodeIterator.iterateNext()) {
                 /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.parseIntrospection: processing resource element #" + fragment + "\n");
                 // edit element exists
-                introspection.fragments[fragment++] = this.__parseResource(this.documentDOM, elemNode);
+                introspection.fragments[fragment++] = this.__parseResource(this.documentDOM, elemNode, introspection);
             }
         }
 
@@ -238,6 +238,30 @@ NeutronParser20.prototype = {
         }
     },
 
+    parseWorkflowResponse: function (aIntrospectionRoot, aVersion) {
+        var workflow = null;
+        var state    = null;
+
+        /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.parseWorkflowResponse() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aIntrospectionRoot != null);
+        /* DEBUG */ YulupDebug.ASSERT(aVersion           != null);
+
+        workflow = this.documentDOM.evaluate("neutron20:workflow", this.documentDOM, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+
+        if (workflow) {
+            state = this.documentDOM.evaluate("neutron20:state", workflow, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (state)
+                aVersion.workflowState = this.__parseWorkflowState(this.documentDOM, state);
+
+            aVersion.workflowTransitions = this.__parseWorkflowTransitions(this.documentDOM, workflow, aIntrospectionRoot, aVersion);
+            aVersion.workflowHistory     = this.__parseWorkflowHistory(this.documentDOM, workflow);
+        } else
+            throw new NeutronException("Yulup:neutronparser20.js:NeutronParser20.parseWorkflowResponse: not a valid workflow response");
+
+        return aVersion;
+    },
+
     __parseNew: function(aDocument, aNode) {
         return {
             uri      : this.__constructURI(aDocument.evaluate("attribute::uri", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue, this.baseURI),
@@ -285,7 +309,7 @@ NeutronParser20.prototype = {
         return (templateArray.length > 0 ? templateArray : null);
     },
 
-    __parseResource: function (aDocument, aNode) {
+    __parseResource: function (aDocument, aNode, aIntrospectionRoot) {
         var resource         = null;
         var elemNodeIterator = null;
         var elemNode         = null;
@@ -305,7 +329,7 @@ NeutronParser20.prototype = {
         // get versions
         if (elemNodeIterator = aDocument.evaluate("neutron20:versions/neutron20:version", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)) {
             while (elemNode = elemNodeIterator.iterateNext()) {
-                resource.versions.push(this.__parseVersion(this.documentDOM, elemNode));
+                resource.versions.push(this.__parseVersion(this.documentDOM, elemNode, aIntrospectionRoot));
             }
         }
 
@@ -557,7 +581,7 @@ NeutronParser20.prototype = {
         return xmlDoc;
     },
 
-    __parseVersion: function(aDocument, aNode) {
+    __parseVersion: function(aDocument, aNode, aIntrospectionRoot) {
         var version  = null;
         var workflow = null;
         var state    = null;
@@ -575,9 +599,9 @@ NeutronParser20.prototype = {
         if (workflow) {
             state = aDocument.evaluate("neutron20:state", workflow, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
             if (state)
-                version.workflowState       = this.__parseWorkflowState(aDocument, state);
+                version.workflowState = this.__parseWorkflowState(aDocument, state);
 
-            version.workflowTransitions = this.__parseWorkflowTransitions(aDocument, workflow);
+            version.workflowTransitions = this.__parseWorkflowTransitions(aDocument, workflow, aIntrospectionRoot, version);
             version.workflowHistory     = this.__parseWorkflowHistory(aDocument, workflow);
         }
 
@@ -608,7 +632,7 @@ NeutronParser20.prototype = {
         return state;
     },
 
-    __parseWorkflowTransitions: function (aDocument, aNode) {
+    __parseWorkflowTransitions: function (aDocument, aNode, aIntrospectionRoot, aVersion) {
         var transitions = null;
         var transition  = null;
         var transArray  = null;
@@ -619,7 +643,7 @@ NeutronParser20.prototype = {
         transArray = new Array();
 
         while (transition = transitions.iterateNext()) {
-            trans = new Neutron20WorkflowTransition();
+            trans = new Neutron20WorkflowTransition(aIntrospectionRoot, aVersion);
 
             trans.id     = aDocument.evaluate("attribute::id", transition, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
             trans.to     = aDocument.evaluate("attribute::to", transition, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
@@ -662,11 +686,26 @@ function Neutron20Introspection(aAssociatedWithURI) {
     /* DEBUG */ dump("Yulup:neutronparser20.js:Neutron20Introspection(\"" + aAssociatedWithURI + "\") invoked\n");
 
     // call super constructor
-    NeutronIntrospection.call(this, aAssociatedWithURI, NEUTRON_10_NAMESPACE);
+    NeutronIntrospection.call(this, aAssociatedWithURI, NEUTRON_20_NAMESPACE);
 }
 
 Neutron20Introspection.prototype = {
-    __proto__:  NeutronIntrospection.prototype
+    __proto__:  NeutronIntrospection.prototype,
+
+    generateWorkflowRequest: function (aWorkflowTransition, aVersion) {
+        var retval = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aWorkflowTransition != null);
+        /* DEBUG */ YulupDebug.ASSERT(aVersion            != null);
+
+        // TODO: create a central XML handler which wraps document creation
+        retval  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        retval += "<workflow xmlns=\"" + NEUTRON_20_NAMESPACE + "\">";
+        retval += "<transition id=\"" + aWorkflowTransition.id + "\"" + (aVersion.revision ? " revision=\"" + aVersion.revision + "\"" : "") + "/>";
+        retval += "</workflow>";
+
+        return retval;
+    }
 };
 
 
@@ -767,9 +806,12 @@ Neutron20WorkflowState.prototype = {
 };
 
 
-function Neutron20WorkflowTransition() {
+function Neutron20WorkflowTransition(aIntrospectionRoot, aVersion) {
+    /* DEBUG */ YulupDebug.ASSERT(aIntrospectionRoot != null);
+    /* DEBUG */ YulupDebug.ASSERT(aVersion           != null);
+
     // call super constructor
-    NeutronWorkflowTransition.call(this);
+    NeutronWorkflowTransition.call(this, aIntrospectionRoot, aVersion);
 }
 
 Neutron20WorkflowTransition.prototype = {

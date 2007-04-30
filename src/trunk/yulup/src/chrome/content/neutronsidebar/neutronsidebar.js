@@ -210,17 +210,20 @@ const NeutronSidebar = {
     },
 
     versionContextHandler: function (aEvent) {
-        var transition = null;
+        var transition        = null;
 
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.versionContextHandler() invoked\n");
 
         if (aEvent.originalTarget.namespaceURI == "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" &&
-            aEvent.originalTarget.localName    == "menuitem")
+            aEvent.originalTarget.localName    == "menuitem") {
             transition = aEvent.originalTarget.workflowTransition;
+        }
 
-        dump(transition);
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.versionContextHandler: transition =\n" + transition + "\n");
 
-        this.__mainBrowserWindow.Neutron.performWorkflowTransition(transition);
+        //this.__mainBrowserWindow.Neutron.performWorkflowTransition(null, transition, revision);
+        //introspectionData.performWorkflowTransition(transition, resource, revision);
+        transition.execute();
     },
 
     /**
