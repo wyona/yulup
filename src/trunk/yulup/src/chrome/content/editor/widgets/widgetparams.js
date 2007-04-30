@@ -105,7 +105,7 @@ var WidgetDialog = {
                     if (this.__sitetreeURI == null) {
                         elem.setAttribute("disabled", "true");
                     } else {
-                        elem.setAttribute("oncommand", "WidgetDialog.doSelectCommandProxy(1, " + widgetAction.parameters[i].id + ");");
+                        elem.setAttribute("oncommand", "WidgetDialog.doSelectCommandProxy(1, \"" + widgetAction.parameters[i].id + "\");");
                     }
 
                     container.appendChild(elem);
@@ -121,8 +121,8 @@ var WidgetDialog = {
                         messageProxy = new YulupMessageProxy(elem);
                         elem.proxy = messageProxy;
 
-                        messageProxy.dispatchMessage("addItem", [stringBundle.GetStringFromName("localSelector.label"), "WidgetDialog.doSelectCommandProxy(0, " + widgetAction.parameters[i].id + ")"]);
-                        messageProxy.dispatchMessage("addItem", [stringBundle.GetStringFromName("remoteSelector.label"), "WidgetDialog.doSelectCommandProxy(1, " + widgetAction.parameters[i].id + ")"]);
+                        messageProxy.dispatchMessage("addItem", [stringBundle.GetStringFromName("localSelector.label"), "WidgetDialog.doSelectCommandProxy(0, \"" + widgetAction.parameters[i].id + "\")"]);
+                        messageProxy.dispatchMessage("addItem", [stringBundle.GetStringFromName("remoteSelector.label"), "WidgetDialog.doSelectCommandProxy(1, \"" + widgetAction.parameters[i].id + "\")"]);
                     }
 
                     container.appendChild(elem);
