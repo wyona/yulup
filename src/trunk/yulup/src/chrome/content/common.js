@@ -507,6 +507,8 @@ const YulupURIServices = {
         /* DEBUG */ YulupDebug.ASSERT(aURI     != null);
         /* DEBUG */ YulupDebug.ASSERT(aBaseURI != null);
 
+        /* DEBUG */ dump("Yulup:common.js:YulupURIServices.makeRelative: URI to make relative = \"" + aURI.spec + "\", URI to make relative against = \"" + aBaseURI.spec + "\"\n");
+
         try {
             baseURI = aBaseURI.QueryInterface(Components.interfaces.nsIURL);
 
