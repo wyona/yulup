@@ -206,12 +206,16 @@ var Neutron = {
         return neutronParser;
     },
 
-    performWorkflowTransition: function (aWorkflowTransition) {
+    performWorkflowTransition: function (aWorkflowTransition, aRevision) {
         var context = null;
+        var request = null;
 
-        /* DEBUG */ dump("Yulup:neutron.js:Neutron.performWorkflowTransition(\"" + aWorkflowTransition + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:neutron.js:Neutron.performWorkflowTransition(\"" + aWorkflowTransition + "\", \"" + aRevision + "\") invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aWorkflowTransition != null);
+
+        // TODO: move this to a more generic factory
+        request = "<workflow><transition id=\"" + aWorkflowTransition.id + "\"" + (aRevision ? "revision=\"" + aRevision + "\"" : "") + "/></workflow>";
 
         context = {
             callbackFunction: this.__workflowTransitionFinishedHandler,
@@ -220,10 +224,10 @@ var Neutron = {
 
         switch (aWorkflowTransition.method) {
             case "PUT":
-                NetworkService.httpRequestPUT(aWorkflowTransition.url.spec, null, null, null, this.__requestFinishedHandler, context, false, true, null);
+                NetworkService.httpRequestPUT(aWorkflowTransition.url.spec, null, request, "application/xml", this.__requestFinishedHandler, context, false, true, null);
                 break;
             case "POST":
-                NetworkService.httpRequestPOST(aWorkflowTransition.url.spec, null, null, null, this.__requestFinishedHandler, context, false, true, null);
+                NetworkService.httpRequestPOST(aWorkflowTransition.url.spec, null, request, "application/xml", this.__requestFinishedHandler, context, false, true, null);
                 break;
             default:
         }
