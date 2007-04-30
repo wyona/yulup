@@ -221,8 +221,6 @@ const NeutronSidebar = {
 
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.versionContextHandler: transition =\n" + transition + "\n");
 
-        //this.__mainBrowserWindow.Neutron.performWorkflowTransition(null, transition, revision);
-        //introspectionData.performWorkflowTransition(transition, resource, revision);
         transition.execute();
     },
 
