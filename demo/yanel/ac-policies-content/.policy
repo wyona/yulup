@@ -6,6 +6,11 @@
     <world permission="true"/>
   </role>
 
+  <role id="open">
+    <user id="yulup" permission="true"/>
+    <user id="alice" permission="true"/>
+  </role>
+
   <role id="write">
     <world permission="true"/>
   </role>
