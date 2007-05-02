@@ -2,11 +2,11 @@
 
 <dtd xmlns="http://yulup.wyona.org/1.0">
   <entity id="neutronSidebarPage.title">
-    <name xml:lang="en">Neutron Sidebar</name>
+    <name xml:lang="en">Page Management</name>
   </entity>
 
   <entity id="openYulupNeutronSidebar.key">
-    <name xml:lang="en">N</name>
+    <name xml:lang="en">P</name>
   </entity>
 
   <entity id="openYulupNeutronSidebar.modifiers">
@@ -14,8 +14,8 @@
   </entity>
 
   <entity id="neutronSidebarResourceMenuitem.label">
-    <name xml:lang="en">Current Resources</name>
-    <name xml:lang="de">Aktuelle Resourcen</name>
+    <name xml:lang="en">Page</name>
+    <name xml:lang="de">Seite</name>
   </entity>
 
   <entity id="neutronSidebarSitetreeMenuitem.label">
@@ -24,17 +24,17 @@
   </entity>
 
   <entity id="neutronSidebarResourceTree.label">
-    <name xml:lang="en">Current Resources</name>
-    <name xml:lang="de">Aktuelle Resourcen</name>
+    <name xml:lang="en">Elements of this page</name>
+    <name xml:lang="de">Elemente dieser Seite</name>
   </entity>
 
   <entity id="neutronSidebarSitetreeTree.label">
-    <name xml:lang="en">Sitetree</name>
-    <name xml:lang="de">Seitenstruktur</name>
+    <name xml:lang="en">Files &amp;amp; Folders</name>
+    <name xml:lang="de">Dateien &amp;amp; Verzeichnisse</name>
   </entity>
 
   <entity id="neutronSidebarVersionTree.label">
-    <name xml:lang="en">Versions</name>
-    <name xml:lang="de">Versionen</name>
+    <name xml:lang="en">Revisions of this element</name>
+    <name xml:lang="de">Revisionen dieses Elements</name>
   </entity>
 </dtd>

@@ -1,8 +1,8 @@
-<!ENTITY neutronSidebarPage.title "Neutron Sidebar">
-<!ENTITY openYulupNeutronSidebar.key "N">
+<!ENTITY neutronSidebarPage.title "Page Management">
+<!ENTITY openYulupNeutronSidebar.key "P">
 <!ENTITY openYulupNeutronSidebar.modifiers "shift accel">
-<!ENTITY neutronSidebarResourceMenuitem.label "Aktuelle Resourcen">
+<!ENTITY neutronSidebarResourceMenuitem.label "Seite">
 <!ENTITY neutronSidebarSitetreeMenuitem.label "Sitetree">
-<!ENTITY neutronSidebarResourceTree.label "Aktuelle Resourcen">
-<!ENTITY neutronSidebarSitetreeTree.label "Seitenstruktur">
-<!ENTITY neutronSidebarVersionTree.label "Versionen">
+<!ENTITY neutronSidebarResourceTree.label "Elemente dieser Seite">
+<!ENTITY neutronSidebarSitetreeTree.label "Dateien &amp; Verzeichnisse">
+<!ENTITY neutronSidebarVersionTree.label "Revisionen dieses Elements">

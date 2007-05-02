@@ -77,11 +77,11 @@
   </entity>
 
   <entity id="atomSidebarPage.title">
-    <name xml:lang="en">Atom Sidebar</name>
+    <name xml:lang="en">Blog Entries Management</name>
   </entity>
 
   <entity id="openYulupAtomSidebar.key">
-    <name xml:lang="en">A</name>
+    <name xml:lang="en">B</name>
   </entity>
 
   <entity id="openYulupAtomSidebar.modifiers">

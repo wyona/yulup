@@ -13,6 +13,6 @@
 <!ENTITY atomSidebarLastButton.label "Última entrada">
 <!ENTITY atomSidebarFeedEntriesContextMenuEdit.label "Editar">
 <!ENTITY atomSidebarFeedEntriesContextMenuDelete.label "Eliminar">
-<!ENTITY atomSidebarPage.title "Atom Sidebar">
-<!ENTITY openYulupAtomSidebar.key "A">
+<!ENTITY atomSidebarPage.title "Blog Entries Management">
+<!ENTITY openYulupAtomSidebar.key "B">
 <!ENTITY openYulupAtomSidebar.modifiers "shift accel">
