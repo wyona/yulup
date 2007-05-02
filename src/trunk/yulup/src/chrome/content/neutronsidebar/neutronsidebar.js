@@ -492,8 +492,23 @@ NeutronVersionTreeView.prototype = {
      * @return {String}
      */
     getCellText: function (aRow, aColumn) {
+        var workflowState = null;
+
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronVersionTreeView.getCellText(\"" + aRow + "\", \"" + aColumn + "\") invoked\n");
 
-        return this.__treeSource[aRow].revision;
+        switch (aColumn.element.getAttribute("name")) {
+            case "revision":
+                return this.__treeSource[aRow].revision;
+                break;
+            case "state":
+                if (workflowState = this.__treeSource[aRow].getWorkflowState())
+                    return workflowState.state;
+                break;
+            case "date":
+                return this.__treeSource[aRow].date;
+                break;
+        }
+
+        return "";
     }
 };
