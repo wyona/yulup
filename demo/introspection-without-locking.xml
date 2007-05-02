@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 
-<introspection xmlns="http://www.wyona.org/neutron/1.0">
+<introspection xmlns="http://www.wyona.org/neutron/2.0">
 
-<edit mime-type="application/xhtml+xml" name="Demopage without Locking">
-  <open url="editable-page-without-locking.xhtml" method="GET"/>
-
-  <save url="editable-page-without-locking.xhtml?yanel.resource.usecase=save" method="PUT"/>
-</edit>
+<resource name="Demopage without locking">
+  <edit mime-type="application/xhtml+xml">
+    <open url="editable-page-without-locking.xhtml" method="GET"/>
+    <save url="editable-page-without-locking.xhtml?yanel.resource.usecase=save" method="PUT"/>
+  </edit>
+</resource>
 
 <navigation>
   <sitetree href="./" method="PROPFIND"/>
