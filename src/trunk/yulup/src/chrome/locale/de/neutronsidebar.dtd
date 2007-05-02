@@ -8,4 +8,4 @@
 <!ENTITY neutronSidebarVersionTreeColumnRevision.label "Revisionen dieses Elements">
 <!ENTITY neutronSidebarVersionTreeColumnState.label "Zustand">
 <!ENTITY neutronSidebarVersionTreeColumnDate.label "Datum">
-<!ENTITY neutronSidebarVersionTreeChildren.tooltip "Kontext-Menü öffnen um Transitionen auszuführen">
+<!ENTITY neutronSidebarVersionTreeChildren.tooltip "Doppelklicken um diese Revision in einem neuen Tab zu laden. Kontext-Menü öffnen um Transitionen auszuführen">

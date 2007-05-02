@@ -224,6 +224,31 @@ const NeutronSidebar = {
         transition.execute();
     },
 
+    openRevision: function (aEvent, aView) {
+        var version = null;
+        var tab     = null;
+
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.openRevision() invoked\n");
+
+        // get current selection
+        version = aView.getSelectedVersion()
+
+        // bail out if nothing selected or version does not have an associated URI
+        if (!version || !version.url)
+            return;
+
+        try {
+            /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.openRevision: opening URI \"" + version.url.spec + "\" in new tab\n");
+
+            tab = this.__mainBrowserWindow.getBrowser().addTab(version.url.spec);
+
+            this.__mainBrowserWindow.getBrowser().selectedTab = tab;
+        } catch (exception) {
+            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutronsidebar.js:NeutronSidebar.openRevision", exception);
+            /* DEBUG */ Components.utils.reportError(exception);
+        }
+    },
+
     /**
      * Cleanup the sidebar.
      *
@@ -250,6 +275,7 @@ const NeutronSidebarResourceView = {
         this.__versionContext = document.getElementById("uiYulupNeutronSidebarResourceVersionsContextMenu");
 
         this.__versionContext.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsContextMenu(aEvent, me, me.__versionContext); }, false);
+        document.getElementById("uiYulupNeutronSidebarResourceVersionTreeTreeChildren").addEventListener("dblclick", function (aEvent) { NeutronSidebar.openRevision(aEvent, me); }, false);
     },
 
     showView: function () {
@@ -320,6 +346,8 @@ const NeutronSidebarSitetreeView = {
     __versionContext: null,
 
     init: function () {
+        var me = this;
+
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarSitetreeView.init() invoked\n");
 
         this.__resourceTree   = document.getElementById("uiYulupNeutronSidebarSitetreeTree");
@@ -327,6 +355,7 @@ const NeutronSidebarSitetreeView = {
         this.__versionContext = document.getElementById("uiYulupNeutronSidebarSitetreeVersionsContextMenu");
 
         this.__versionContext.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsContextMenu(aEvent, me, me.__versionContext); }, false);
+        document.getElementById("uiYulupNeutronSidebarSitetreeVersionTreeTreeChildren").addEventListener("dblclick", function (aEvent) { NeutronSidebar.openRevision(aEvent, me); }, false);
     },
 
     showView: function () {
