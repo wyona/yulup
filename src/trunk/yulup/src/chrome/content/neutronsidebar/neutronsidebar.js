@@ -271,6 +271,8 @@ const NeutronSidebarResourceView = {
             }
         }
 
+        this.__resourceTree.view.selection.select(0);
+
         return true;
     },
 
