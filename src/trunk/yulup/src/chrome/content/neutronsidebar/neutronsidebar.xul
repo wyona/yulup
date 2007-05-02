@@ -97,7 +97,7 @@
           <treecols>
             <treecol label="&neutronSidebarVersionTree.label;" flex="1"/>
           </treecols>
-          <treechildren context="uiYulupNeutronSidebarResourceVersionsContextMenu"/>
+          <treechildren context="uiYulupNeutronSidebarResourceVersionsContextMenu" tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
         </tree>
       </vbox>
 
@@ -126,7 +126,7 @@
           <treecols>
             <treecol label="&neutronSidebarVersionTree.label;" flex="1"/>
           </treecols>
-          <treechildren context="uiYulupNeutronSidebarSitetreeVersionsContextMenu"/>
+          <treechildren context="uiYulupNeutronSidebarSitetreeVersionsContextMenu" tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
         </tree>
       </vbox>
     </deck>

@@ -6,3 +6,4 @@
 <!ENTITY neutronSidebarResourceTree.label "Elemente dieser Seite">
 <!ENTITY neutronSidebarSitetreeTree.label "Dateien &amp; Verzeichnisse">
 <!ENTITY neutronSidebarVersionTree.label "Revisionen dieses Elements">
+<!ENTITY neutronSidebarVersionTreeChildren.tooltip "Kontext-Menü öffnen um Transitionen auszuführen">
