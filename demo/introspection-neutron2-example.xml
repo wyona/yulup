@@ -24,11 +24,11 @@
           </history>
         </workflow>
       </version>
-      <version url="index.xhtml?yanel.resource.revision=20840">
+      <version url="?yanel.resource.revision=20840">
         <comment>slugline updated</comment>
         <date>2006-05-22T03:38:05+02:00</date>
         <user>joe</user>
-        <revision>20843</revision>
+        <revision>20840</revision>
         <workflow>
           <state date="2006-05-22T03:38:05+02:00">DRAFT</state>
           <transitions>
@@ -39,7 +39,7 @@
           </history>
         </workflow>
       </version>
-      <version url="index.xhtml?yanel.resource.revision=20023">
+      <version url="?yanel.resource.revision=20023">
         <comment>title changed</comment>
         <revision>20023</revision>
         <workflow>
