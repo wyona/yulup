@@ -264,7 +264,7 @@ const NeutronSidebarResourceView = {
                 this.__resourceTree.view = new NeutronResourceTreeView(NeutronSidebar.neutronResources, function (aResource) { me.resourcetreeSelectionListener(aResource); });
 
                 // blank the version tree
-                this.__versionTree.view = null;
+                this.__blankVersionTree();
             } else {
                 // we can't switch because there is no introspection data
                 return false;
@@ -280,6 +280,15 @@ const NeutronSidebarResourceView = {
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarResourceView.clearView() invoked\n");
 
         this.__resourceTree.view = null;
+
+        this.__blankVersionTree();
+    },
+
+    __blankVersionTree: function () {
+        // hide version tree
+        document.getElementById("uiYulupNeutronSidebarResourceDeckSplitter").setAttribute("state", "collapsed");
+
+        // remove previous tree view
         this.__versionTree.view  = null;
     },
 
@@ -295,8 +304,12 @@ const NeutronSidebarResourceView = {
         // feed resource version information to the version tree
         versions = aResource.versions;
 
-        if (versions && versions.length > 0)
+        if (versions && versions.length > 0) {
             this.__versionTree.view = new NeutronVersionTreeView(versions);
+
+            // show version tree
+            document.getElementById("uiYulupNeutronSidebarResourceDeckSplitter").setAttribute("state", "open");
+        }
     }
 };
 
@@ -328,7 +341,7 @@ const NeutronSidebarSitetreeView = {
                 this.__resourceTree.view = new SitetreeView(NeutronSidebar.serverURI, this.sitetreeErrorListener, function (aNode) { me.sitetreeSelectionListener(aNode); });
 
                 // blank the version tree
-                this.__versionTree.view = null;
+                this.__blankVersionTree();
             } else {
                 // we can't switch because there is no server URI
                 return false;
@@ -342,6 +355,15 @@ const NeutronSidebarSitetreeView = {
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarSitetreeView.clearView() invoked\n");
 
         this.__resourceTree.view = null;
+
+        this.__blankVersionTree();
+    },
+
+    __blankVersionTree: function () {
+        // hide version tree
+        document.getElementById("uiYulupNeutronSidebarSitetreeDeckSplitter").setAttribute("state", "collapsed");
+
+        // remove previous tree view
         this.__versionTree.view  = null;
     },
 

@@ -86,7 +86,9 @@
           <treechildren/>
         </tree>
 
-        <splitter/>
+        <splitter id="uiYulupNeutronSidebarResourceDeckSplitter" collapse="after" state="collapsed">
+          <grippy/>
+        </splitter>
 
         <tree id="uiYulupNeutronSidebarResourceVersionTree"
               enableColumnDrag="false"
@@ -119,7 +121,9 @@
           <treechildren/>
         </tree>
 
-        <splitter/>
+        <splitter id="uiYulupNeutronSidebarSitetreeDeckSplitter" collapse="after" state="collapsed">
+          <grippy/>
+        </splitter>
 
         <tree id="uiYulupNeutronSidebarSitetreeVersionTree"
               enableColumnDrag="false"
