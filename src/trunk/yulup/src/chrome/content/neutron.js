@@ -192,7 +192,7 @@ var Neutron = {
             throw new NeutronException("Yulup:neutron.js:Neutron.parseWorkflowResponse: Neutron response not well-formed. The response string was = \"" + aResponse + "\".");
         } else {
             // response ok, pass it on to the Neutron parser
-            response = Neutron.parserFactory(xmlDocument, null).parseWorkflowResponse(aIntrospectionRoot, aVersion);
+            response = Neutron.parserFactory(xmlDocument, aIntrospectionRoot.associatedWithURI).parseWorkflowResponse(aIntrospectionRoot, aVersion);
         }
 
         return response;

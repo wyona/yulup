@@ -41,6 +41,9 @@
 function NeutronParser20(aDocument, aBaseURI) {
     /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20(\"" + aDocument + "\", \"" + aBaseURI + "\") invoked\n");
 
+    /* DEBUG */ YulupDebug.ASSERT(aDocument != null);
+    /* DEBUG */ YulupDebug.ASSERT(aBaseURI  != null);
+
      // call super constructor
     NeutronParser.call(this);
 
