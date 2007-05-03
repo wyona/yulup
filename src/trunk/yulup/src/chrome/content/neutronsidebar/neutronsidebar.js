@@ -32,8 +32,10 @@ const NeutronSidebar = {
 
     __mainBrowserWindow    : null,
     __viewSelector         : null,
-    __contentTreeDeck      : null,
+    __contentContainer     : null,
     __versionsTooltipObject: null,
+    __resourceDeck         : null,
+    __sitetreeDeck         : null,
 
     serverURI       : null,
     neutronResources: null,
@@ -53,16 +55,16 @@ const NeutronSidebar = {
         this.__mainBrowserWindow = YulupAppServices.getMainBrowserWindow();
 
         // cache various elements
-        this.__viewSelector    = document.getElementById("uiYulupNeutronSidebarContentDeckSelector");
-        this.__contentTreeDeck = document.getElementById("uiYulupNeutronSidebarContentTreeDeck");
+        this.__viewSelector     = document.getElementById("uiYulupNeutronSidebarContentDeckSelector");
+        this.__contentContainer = document.getElementById("uiYulupNeutronSidebarContentTreeDeck");
 
         this.__versionsTooltipObject = new VersionsTooltipObject(document);
 
         this.__initSources();
 
         // init views
-        NeutronSidebarResourceView.init();
-        NeutronSidebarSitetreeView.init();
+        this.__resourceDeck = new NeutronSidebarResourceDeck();
+        this.__sitetreeDeck = new NeutronSidebarSitetreeDeck();
 
         // determine our start view
         if (this.neutronResources)
@@ -123,8 +125,8 @@ const NeutronSidebar = {
     __clearViews: function () {
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.__clearViews() invoked\n");
 
-        NeutronSidebarResourceView.clearView();
-        NeutronSidebarSitetreeView.clearView();
+        this.__resourceDeck.clearView();
+        this.__sitetreeDeck.clearView();
     },
 
     __viewSelectionChanged: function (aViewID) {
@@ -135,25 +137,25 @@ const NeutronSidebar = {
         switch (aViewID) {
             case NeutronSidebar.CURRENT_RESOURCES_VIEWID:
                 // current resources view
-                if (NeutronSidebarResourceView.showView()) {
+                if (this.__resourceDeck.showView()) {
                     // show the view
-                    this.__contentTreeDeck.selectedIndex = NeutronSidebar.CURRENT_RESOURCES_VIEWID;
+                    this.__contentContainer.selectedIndex = NeutronSidebar.CURRENT_RESOURCES_VIEWID;
                 } else {
                     // view could not be shown
-                    this.__viewSelector.selectedIndex    = NeutronSidebar.SITETREE_VIEWID;
-                    this.__contentTreeDeck.selectedIndex = NeutronSidebar.SITETREE_VIEWID;
+                    this.__viewSelector.selectedIndex     = NeutronSidebar.SITETREE_VIEWID;
+                    this.__contentContainer.selectedIndex = NeutronSidebar.SITETREE_VIEWID;
                 }
 
                 break;
             case NeutronSidebar.SITETREE_VIEWID:
                 // sitetree view
-                if (NeutronSidebarSitetreeView.showView()) {
+                if (this.__sitetreeDeck.showView()) {
                     // show the view
-                    this.__contentTreeDeck.selectedIndex = NeutronSidebar.SITETREE_VIEWID;
+                    this.__contentContainer.selectedIndex = NeutronSidebar.SITETREE_VIEWID;
                 } else {
                     // view could not be shown
-                    this.__viewSelector.selectedIndex    = NeutronSidebar.CURRENT_RESOURCES_VIEWID;
-                    this.__contentTreeDeck.selectedIndex = NeutronSidebar.CURRENT_RESOURCES_VIEWID;
+                    this.__viewSelector.selectedIndex     = NeutronSidebar.CURRENT_RESOURCES_VIEWID;
+                    this.__contentContainer.selectedIndex = NeutronSidebar.CURRENT_RESOURCES_VIEWID;
                 }
 
                 break;
@@ -288,34 +290,74 @@ const NeutronSidebar = {
 };
 
 
-const NeutronSidebarResourceView = {
+function NeutronSidebarDeck() {}
+
+NeutronSidebarDeck.prototype = {
     __resourceTree  : null,
     __versionTree   : null,
     __versionContext: null,
     __versionTooltip: null,
+    __deckSplitter  : null,
 
-    init: function () {
-        var me = this;
+    clearView: function () {
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarDeck.clearView() invoked\n");
 
-        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarResourceView.init() invoked\n");
+        this.__resourceTree.view = null;
 
-        this.__resourceTree   = document.getElementById("uiYulupNeutronSidebarResourceTree");
-        this.__versionTree    = document.getElementById("uiYulupNeutronSidebarResourceVersionTree");
-        this.__versionContext = document.getElementById("uiYulupNeutronSidebarResourceVersionsContextMenu");
-        this.__versionTooltip = document.getElementById("uiYulupNeutronSidebarVersionsTooltip");
-
-        this.__versionContext.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsContextMenu(aEvent, me, me.__versionContext); }, false);
-        this.__versionTooltip.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsTooltip(aEvent, me, me.__versionTooltip); }, false);
-
-
-
-        document.getElementById("uiYulupNeutronSidebarResourceVersionTreeTreeChildren").addEventListener("dblclick", function (aEvent) { NeutronSidebar.openRevision(aEvent, me); }, false);
+        this.__blankVersionTree();
     },
+
+    __blankVersionTree: function () {
+        // hide version tree
+        this.__deckSplitter.setAttribute("state", "collapsed");
+
+        // remove previous tree view
+        this.__versionTree.view  = null;
+    },
+
+    getSelectedVersion: function () {
+        return this.__versionTree.view.wrappedJSObject.getSelectedVersion();
+    },
+
+    getVersionForRow: function (aRow) {
+        return this.__versionTree.view.wrappedJSObject.getVersionForRow(aRow);
+    },
+
+    getRowAt: function (aClientY) {
+        if (this.__versionTree && this.__versionTree.treeBoxObject)
+            return this.__versionTree.treeBoxObject.getRowAt(0, aClientY);
+
+        return null;
+    }
+};
+
+
+function NeutronSidebarResourceDeck() {
+    var me = this;
+
+    /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarResourceDeck() invoked\n");
+
+    NeutronSidebarDeck.call(this);
+
+    this.__resourceTree   = document.getElementById("uiYulupNeutronSidebarResourceTree");
+    this.__versionTree    = document.getElementById("uiYulupNeutronSidebarResourceVersionTree");
+    this.__versionContext = document.getElementById("uiYulupNeutronSidebarResourceVersionsContextMenu");
+    this.__versionTooltip = document.getElementById("uiYulupNeutronSidebarVersionsTooltip");
+    this.__deckSplitter   = document.getElementById("uiYulupNeutronSidebarResourceDeckSplitter");
+
+    this.__versionContext.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsContextMenu(aEvent, me, me.__versionContext); }, false);
+    this.__versionTooltip.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsTooltip(aEvent, me, me.__versionTooltip); }, false);
+
+    document.getElementById("uiYulupNeutronSidebarResourceVersionTreeTreeChildren").addEventListener("dblclick", function (aEvent) { NeutronSidebar.openRevision(aEvent, me); }, false);
+}
+
+NeutronSidebarResourceDeck.prototype = {
+    __proto__: NeutronSidebarDeck.prototype,
 
     showView: function () {
         var me = this;
 
-        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarResourceView.showView() invoked\n");
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarResourceDeck.showView() invoked\n");
 
         if (!(this.__resourceTree.view.wrappedJSObject &&
               this.__resourceTree.view.wrappedJSObject instanceof NeutronResourceTreeView)) {
@@ -336,39 +378,10 @@ const NeutronSidebarResourceView = {
         return true;
     },
 
-    clearView: function () {
-        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarResourceView.clearView() invoked\n");
-
-        this.__resourceTree.view = null;
-
-        this.__blankVersionTree();
-    },
-
-    __blankVersionTree: function () {
-        // hide version tree
-        document.getElementById("uiYulupNeutronSidebarResourceDeckSplitter").setAttribute("state", "collapsed");
-
-        // remove previous tree view
-        this.__versionTree.view  = null;
-    },
-
-    getSelectedVersion: function () {
-        return this.__versionTree.view.wrappedJSObject.getSelectedVersion();
-    },
-
-    getVersionForRow: function (aRow) {
-        return this.__versionTree.view.wrappedJSObject.getVersionForRow(aRow);
-    },
-
-    getRowAt: function (aClientY) {
-        if (this.__versionTree && this.__versionTree.treeBoxObject)
-            return this.__versionTree.treeBoxObject.getRowAt(0, aClientY);
-    },
-
     resourcetreeSelectionListener: function (aResource) {
         var versions = null;
 
-        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarResourceView.resourcetreeSelectionListener(\"" + aResource + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarResourceDeck.resourcetreeSelectionListener(\"" + aResource + "\") invoked\n");
 
         // feed resource version information to the version tree
         versions = aResource.versions;
@@ -377,34 +390,35 @@ const NeutronSidebarResourceView = {
             this.__versionTree.view = new NeutronVersionTreeView(versions);
 
             // show version tree
-            document.getElementById("uiYulupNeutronSidebarResourceDeckSplitter").setAttribute("state", "open");
+            this.__deckSplitter.setAttribute("state", "open");
         }
     }
 };
 
 
-const NeutronSidebarSitetreeView = {
-    __resourceTree: null,
-    __versionTree : null,
-    __versionContext: null,
+function NeutronSidebarSitetreeDeck() {
+    var me = this;
 
-    init: function () {
-        var me = this;
+    /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarSitetreeDeck() invoked\n");
 
-        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarSitetreeView.init() invoked\n");
+    NeutronSidebarDeck.call(this);
 
-        this.__resourceTree   = document.getElementById("uiYulupNeutronSidebarSitetreeTree");
-        this.__versionTree    = document.getElementById("uiYulupNeutronSidebarSitetreeVersionTree");
-        this.__versionContext = document.getElementById("uiYulupNeutronSidebarSitetreeVersionsContextMenu");
+    this.__resourceTree   = document.getElementById("uiYulupNeutronSidebarSitetreeTree");
+    this.__versionTree    = document.getElementById("uiYulupNeutronSidebarSitetreeVersionTree");
+    this.__versionContext = document.getElementById("uiYulupNeutronSidebarSitetreeVersionsContextMenu");
+    this.__deckSplitter   = document.getElementById("uiYulupNeutronSidebarSitetreeDeckSplitter");
 
-        this.__versionContext.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsContextMenu(aEvent, me, me.__versionContext); }, false);
-        document.getElementById("uiYulupNeutronSidebarSitetreeVersionTreeTreeChildren").addEventListener("dblclick", function (aEvent) { NeutronSidebar.openRevision(aEvent, me); }, false);
-    },
+    this.__versionContext.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsContextMenu(aEvent, me, me.__versionContext); }, false);
+    document.getElementById("uiYulupNeutronSidebarSitetreeVersionTreeTreeChildren").addEventListener("dblclick", function (aEvent) { NeutronSidebar.openRevision(aEvent, me); }, false);
+}
+
+NeutronSidebarSitetreeDeck.prototype = {
+    __proto__: NeutronSidebarDeck.prototype,
 
     showView: function () {
         var me = this;
 
-        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarSitetreeView.showView() invoked\n");
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarSitetreeDeck.showView() invoked\n");
 
         if (!(this.__resourceTree.view.wrappedJSObject &&
               this.__resourceTree.view.wrappedJSObject instanceof SitetreeView)) {
@@ -423,34 +437,14 @@ const NeutronSidebarSitetreeView = {
         return true;
     },
 
-    clearView: function () {
-        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarSitetreeView.clearView() invoked\n");
-
-        this.__resourceTree.view = null;
-
-        this.__blankVersionTree();
-    },
-
-    __blankVersionTree: function () {
-        // hide version tree
-        document.getElementById("uiYulupNeutronSidebarSitetreeDeckSplitter").setAttribute("state", "collapsed");
-
-        // remove previous tree view
-        this.__versionTree.view  = null;
-    },
-
-    getSelectedVersion: function () {
-        return this.__versionTree.view.wrappedJSObject.getSelectedVersion();
-    },
-
     sitetreeErrorListener: function () {
-        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarSitetreeView.sitetreeErrorListener() invoked\n");
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarSitetreeDeck.sitetreeErrorListener() invoked\n");
     },
 
     sitetreeSelectionListener: function (aNode) {
         var resource = null;
 
-        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarSitetreeView.sitetreeSelectionListener(\"" + aNode + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebarSitetreeDeck.sitetreeSelectionListener(\"" + aNode + "\") invoked\n");
 
         // TODO: get selected resource
 
