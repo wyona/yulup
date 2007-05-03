@@ -1,5 +1,14 @@
 <?xml version="1.0"?>
 
+<repository class="org.wyona.yarep.impl.repo.fs.FileSystemRepository">
+  <name>Yulup Demo Content Repository</name>
+  <paths class="org.wyona.yarep.impl.DefaultMapImpl" src="../data-paths" fallback="true">
+    <ignore pattern=".*\.svn"/>
+  </paths>
+  <content src="../../"/>
+</repository>
+
+<!--
 <repository>
   <name>Yulup Demo Content</name>
 
@@ -9,3 +18,4 @@
     <content src="../../"/>
   </storage>
 </repository>
+-->
