@@ -6,7 +6,7 @@
 <!ENTITY neutronSidebarResourceTree.label "Elemente dieser Seite">
 <!ENTITY neutronSidebarSitetreeTree.label "Dateien &amp; Verzeichnisse">
 <!ENTITY neutronSidebarVersionTreeTitle.label "Revisionen dieses Elements">
-<!ENTITY neutronSidebarVersionTreeColumnRevision.label "Revisionen">
+<!ENTITY neutronSidebarVersionTreeColumnRevision.label "Revision">
 <!ENTITY neutronSidebarVersionTreeColumnState.label "Workflow Zustand">
 <!ENTITY neutronSidebarVersionTreeColumnDate.label "Datum">
 <!ENTITY neutronSidebarVersionTreeChildren.tooltip "Doppelklicken um diese Revision in einem neuen Tab zu laden. Kontext-Menü öffnen um Transitionen auszuführen">

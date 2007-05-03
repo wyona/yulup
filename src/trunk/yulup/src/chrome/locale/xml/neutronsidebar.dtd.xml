@@ -39,8 +39,8 @@
   </entity>
 
   <entity id="neutronSidebarVersionTreeColumnRevision.label">
-    <name xml:lang="en">Revisions</name>
-    <name xml:lang="de">Revisionen</name>
+    <name xml:lang="en">Revision</name>
+    <name xml:lang="de">Revision</name>
   </entity>
 
   <entity id="neutronSidebarVersionTreeColumnState.label">
