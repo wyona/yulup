@@ -66,23 +66,27 @@
       <grid flex="1">
         <columns>
           <column flex="1"/>
-          <column flex="1"/>
+          <column/>
         </columns>
         <rows>
           <row>
-            <description value="Revision:" class="tooltipDescription"/>
+            <description value="&neutronSidebarVersionsTooltipRevDesc.label;"     class="tooltipDescription"/>
             <description id="uiYulupNeutronSidebarVersionsTooltipRevDesc"/>
           </row>
           <row>
-            <description value="Date:"     class="tooltipDescription"/>
+            <description value="&neutronSidebarVersionsTooltipDateDesc.label;"    class="tooltipDescription"/>
             <description id="uiYulupNeutronSidebarVersionsTooltipDateDesc"/>
           </row>
           <row>
-            <description value="Comment:"  class="tooltipDescription"/>
+            <description value="&neutronSidebarVersionsTooltipStateDesc.label;"   class="tooltipDescription"/>
+            <description id="uiYulupNeutronSidebarVersionsTooltipStateDesc"/>
+          </row>
+          <row>
+            <description value="&neutronSidebarVersionsTooltipCommentDesc.label;" class="tooltipDescription"/>
             <description id="uiYulupNeutronSidebarVersionsTooltipCommentDesc"/>
           </row>
           <row>
-            <description value="User:"     class="tooltipDescription"/>
+            <description value="&neutronSidebarVersionsTooltipUserDesc.label;"    class="tooltipDescription"/>
             <description id="uiYulupNeutronSidebarVersionsTooltipUserDesc"/>
           </row>
         </rows>

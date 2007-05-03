@@ -228,7 +228,7 @@ const NeutronSidebar = {
     },
 
     constructVersionsTooltip: function function (aEvent, aView, aPopup) {
-        var version     = null;
+        var version = null;
 
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.constructVersionsTooltip() invoked\n");
 
@@ -247,6 +247,9 @@ const NeutronSidebar = {
         this.__versionsTooltipObject.date     = version.date;
         this.__versionsTooltipObject.comment  = version.comment;
         this.__versionsTooltipObject.user     = version.user;
+
+        if (version.getWorkflowState())
+            this.__versionsTooltipObject.state = version.getWorkflowState().state;
     },
 
     openRevision: function (aEvent, aView) {
@@ -620,14 +623,22 @@ function VersionsTooltipObject(aDocument) {
 
     this.__revisionDescElem = aDocument.getElementById("uiYulupNeutronSidebarVersionsTooltipRevDesc");
     this.__dateDescElem     = aDocument.getElementById("uiYulupNeutronSidebarVersionsTooltipDateDesc");
+    this.__stateDescElem    = aDocument.getElementById("uiYulupNeutronSidebarVersionsTooltipStateDesc");
     this.__commentDescElem  = aDocument.getElementById("uiYulupNeutronSidebarVersionsTooltipCommentDesc");
     this.__userDescElem     = aDocument.getElementById("uiYulupNeutronSidebarVersionsTooltipUserDesc");
 }
 
 VersionsTooltipObject.prototype = {
+    __revisionDescElem: null,
+    __dateDescElem    : null,
+    __stateDescElem   : null,
+    __commentDescElem : null,
+    __userDescElem    : null,
+
     clearFields: function () {
         this.__revisionDescElem.value = "";
         this.__dateDescElem.value     = "";
+        this.__stateDescElem.value    = "";
         this.__commentDescElem.value  = "";
         this.__userDescElem.value     = "";
     },
@@ -638,6 +649,10 @@ VersionsTooltipObject.prototype = {
 
     set date(aValue) {
         this.__dateDescElem.value = aValue;
+    },
+
+    set state(aValue) {
+        this.__stateDescElem.value = aValue;
     },
 
     set comment(aValue) {

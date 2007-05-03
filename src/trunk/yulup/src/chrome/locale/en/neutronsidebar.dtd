@@ -10,3 +10,8 @@
 <!ENTITY neutronSidebarVersionTreeColumnState.label "Workflow State">
 <!ENTITY neutronSidebarVersionTreeColumnDate.label "Date">
 <!ENTITY neutronSidebarVersionTreeChildren.tooltip "Double click to load this revision in a new tab. Open the context menu to perform transitions">
+<!ENTITY neutronSidebarVersionsTooltipRevDesc.label "Revision:">
+<!ENTITY neutronSidebarVersionsTooltipDateDesc.label "Date:">
+<!ENTITY neutronSidebarVersionsTooltipStateDesc.label "Workflow State:">
+<!ENTITY neutronSidebarVersionsTooltipCommentDesc.label "Comment:">
+<!ENTITY neutronSidebarVersionsTooltipUserDesc.label "User:">

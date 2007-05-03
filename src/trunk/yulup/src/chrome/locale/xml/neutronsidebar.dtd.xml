@@ -57,4 +57,29 @@
     <name xml:lang="en">Double click to load this revision in a new tab. Open the context menu to perform transitions</name>
     <name xml:lang="de">Doppelklicken um diese Revision in einem neuen Tab zu laden. Kontext-Menü öffnen um Transitionen auszuführen</name>
   </entity>
+
+  <entity id="neutronSidebarVersionsTooltipRevDesc.label">
+    <name xml:lang="en">Revision:</name>
+    <name xml:lang="de">Revision:</name>
+  </entity>
+
+  <entity id="neutronSidebarVersionsTooltipDateDesc.label">
+    <name xml:lang="en">Date:</name>
+    <name xml:lang="de">Datum:</name>
+  </entity>
+
+  <entity id="neutronSidebarVersionsTooltipStateDesc.label">
+    <name xml:lang="en">Workflow State:</name>
+    <name xml:lang="de">Workflow Zustand:</name>
+  </entity>
+
+  <entity id="neutronSidebarVersionsTooltipCommentDesc.label">
+    <name xml:lang="en">Comment:</name>
+    <name xml:lang="de">Kommentar:</name>
+  </entity>
+
+  <entity id="neutronSidebarVersionsTooltipUserDesc.label">
+    <name xml:lang="en">User:</name>
+    <name xml:lang="de">Benutzer:</name>
+  </entity>
 </dtd>
