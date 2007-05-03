@@ -30,9 +30,10 @@ const NeutronSidebar = {
     CURRENT_RESOURCES_VIEWID: 0,
     SITETREE_VIEWID         : 1,
 
-    __mainBrowserWindow: null,
-    __viewSelector     : null,
-    __contentTreeDeck  : null,
+    __mainBrowserWindow    : null,
+    __viewSelector         : null,
+    __contentTreeDeck      : null,
+    __versionsTooltipObject: null,
 
     serverURI       : null,
     neutronResources: null,
@@ -54,6 +55,8 @@ const NeutronSidebar = {
         // cache various elements
         this.__viewSelector    = document.getElementById("uiYulupNeutronSidebarContentDeckSelector");
         this.__contentTreeDeck = document.getElementById("uiYulupNeutronSidebarContentTreeDeck");
+
+        this.__versionsTooltipObject = new VersionsTooltipObject(document);
 
         this.__initSources();
 
@@ -178,7 +181,7 @@ const NeutronSidebar = {
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.constructVersionsContextMenu() invoked\n");
 
         // get current selection
-        version = aView.getSelectedVersion()
+        version = aView.getSelectedVersion();
 
         // don't show the context menu if nothing selected
         if (!version) {
@@ -224,6 +227,28 @@ const NeutronSidebar = {
         transition.execute();
     },
 
+    constructVersionsTooltip: function function (aEvent, aView, aPopup) {
+        var version     = null;
+
+        /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.constructVersionsTooltip() invoked\n");
+
+        version = aView.getVersionForRow(aView.getRowAt(aEvent.clientY));
+
+        // don't show the tooltip if no information available
+        if (!version) {
+            aEvent.preventDefault();
+            return;
+        }
+
+        // add version information to tooltip popup
+        this.__versionsTooltipObject.clearFields();
+
+        this.__versionsTooltipObject.revision = version.revision;
+        this.__versionsTooltipObject.date     = version.date;
+        this.__versionsTooltipObject.comment  = version.comment;
+        this.__versionsTooltipObject.user     = version.user;
+    },
+
     openRevision: function (aEvent, aView) {
         var version = null;
         var tab     = null;
@@ -231,7 +256,7 @@ const NeutronSidebar = {
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.openRevision() invoked\n");
 
         // get current selection
-        version = aView.getSelectedVersion()
+        version = aView.getSelectedVersion();
 
         // bail out if nothing selected or version does not have an associated URI
         if (!version || !version.url)
@@ -264,6 +289,7 @@ const NeutronSidebarResourceView = {
     __resourceTree  : null,
     __versionTree   : null,
     __versionContext: null,
+    __versionTooltip: null,
 
     init: function () {
         var me = this;
@@ -273,8 +299,13 @@ const NeutronSidebarResourceView = {
         this.__resourceTree   = document.getElementById("uiYulupNeutronSidebarResourceTree");
         this.__versionTree    = document.getElementById("uiYulupNeutronSidebarResourceVersionTree");
         this.__versionContext = document.getElementById("uiYulupNeutronSidebarResourceVersionsContextMenu");
+        this.__versionTooltip = document.getElementById("uiYulupNeutronSidebarVersionsTooltip");
 
         this.__versionContext.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsContextMenu(aEvent, me, me.__versionContext); }, false);
+        this.__versionTooltip.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsTooltip(aEvent, me, me.__versionTooltip); }, false);
+
+
+
         document.getElementById("uiYulupNeutronSidebarResourceVersionTreeTreeChildren").addEventListener("dblclick", function (aEvent) { NeutronSidebar.openRevision(aEvent, me); }, false);
     },
 
@@ -320,6 +351,15 @@ const NeutronSidebarResourceView = {
 
     getSelectedVersion: function () {
         return this.__versionTree.view.wrappedJSObject.getSelectedVersion();
+    },
+
+    getVersionForRow: function (aRow) {
+        return this.__versionTree.view.wrappedJSObject.getVersionForRow(aRow);
+    },
+
+    getRowAt: function (aClientY) {
+        if (this.__versionTree && this.__versionTree.treeBoxObject)
+            return this.__versionTree.treeBoxObject.getRowAt(0, aClientY);
     },
 
     resourcetreeSelectionListener: function (aResource) {
@@ -528,11 +568,21 @@ NeutronVersionTreeView.prototype = {
 
         selection = this.selection.currentIndex;
 
-        // don't show the context menu if nothing selected
+        // return null if nothing selected
         if (selection < 0)
             return null;
 
         return this.__treeSource[selection];
+    },
+
+    getVersionForRow: function (aRow) {
+        /* DEBUG */ YulupDebug.ASSERT(aRow != null);
+
+        // return null if row out of bounds
+        if (aRow < 0)
+            return null;
+
+        return this.__treeSource[aRow];
     },
 
     /**
@@ -561,5 +611,40 @@ NeutronVersionTreeView.prototype = {
         }
 
         return "";
+    }
+};
+
+
+function VersionsTooltipObject(aDocument) {
+    /* DEBUG */ YulupDebug.ASSERT(aDocument != null);
+
+    this.__revisionDescElem = aDocument.getElementById("uiYulupNeutronSidebarVersionsTooltipRevDesc");
+    this.__dateDescElem     = aDocument.getElementById("uiYulupNeutronSidebarVersionsTooltipDateDesc");
+    this.__commentDescElem  = aDocument.getElementById("uiYulupNeutronSidebarVersionsTooltipCommentDesc");
+    this.__userDescElem     = aDocument.getElementById("uiYulupNeutronSidebarVersionsTooltipUserDesc");
+}
+
+VersionsTooltipObject.prototype = {
+    clearFields: function () {
+        this.__revisionDescElem.value = "";
+        this.__dateDescElem.value     = "";
+        this.__commentDescElem.value  = "";
+        this.__userDescElem.value     = "";
+    },
+
+    set revision(aValue) {
+        this.__revisionDescElem.value = aValue;
+    },
+
+    set date(aValue) {
+        this.__dateDescElem.value = aValue;
+    },
+
+    set comment(aValue) {
+        this.__commentDescElem.value = aValue;
+    },
+
+    set user(aValue) {
+        this.__userDescElem.value = aValue;
     }
 };

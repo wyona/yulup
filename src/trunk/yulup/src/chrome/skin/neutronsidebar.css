@@ -12,3 +12,8 @@
 caption {
   font-size: x-small;
 }
+
+.tooltipDescription {
+  font-weight: bolder;
+  margin-right: 4px;
+}

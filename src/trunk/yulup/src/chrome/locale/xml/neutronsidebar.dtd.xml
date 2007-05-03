@@ -33,14 +33,19 @@
     <name xml:lang="de">Dateien &amp;amp; Verzeichnisse</name>
   </entity>
 
-  <entity id="neutronSidebarVersionTreeColumnRevision.label">
+  <entity id="neutronSidebarVersionTreeTitle.label">
     <name xml:lang="en">Revisions of this element</name>
     <name xml:lang="de">Revisionen dieses Elements</name>
   </entity>
 
+  <entity id="neutronSidebarVersionTreeColumnRevision.label">
+    <name xml:lang="en">Revisions</name>
+    <name xml:lang="de">Revisionen</name>
+  </entity>
+
   <entity id="neutronSidebarVersionTreeColumnState.label">
-    <name xml:lang="en">State</name>
-    <name xml:lang="de">Zustand</name>
+    <name xml:lang="en">Workflow State</name>
+    <name xml:lang="de">Workflow Zustand</name>
   </entity>
 
   <entity id="neutronSidebarVersionTreeColumnDate.label">
