@@ -581,8 +581,12 @@ NeutronIntrospection.prototype = {
      * @return {Undefined} does not have a return value
      */
     __requestFinishedHandler: function (aDocumentData, aResponseStatusCode, aContext, aResponseHeaders, aException) {
-
         /* DEBUG */ dump("Yulup:neutron.js:NeutronIntrospection.__requestFinishedHandler() invoked\n");
+
+        if (aException) {
+            aContext.callbackFunction(null, aException, aContext);
+            return;
+        }
 
         if (NetworkService.isStatusSuccess(aResponseStatusCode)) {
             // success, call back to original caller
