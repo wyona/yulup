@@ -1297,6 +1297,7 @@ NeutronWorkflowTransition.prototype = {
         stringBundle = YulupLocalisationServices.getStringBundle("chrome://yulup/locale/neutron.properties");
 
         if (aException) {
+            // an error occurred, show intended state
             alert(stringBundle.formatStringFromName("transitionFailed.label", [aContext.transition.to, aException], 2));
         } else {
             try {
@@ -1311,7 +1312,8 @@ NeutronWorkflowTransition.prototype = {
                 return;
             }
 
-            alert(stringBundle.formatStringFromName("transitionSucceeded.label", [aContext.transition.to], 1));
+            // success, show actual new state
+            alert(stringBundle.formatStringFromName("transitionSucceeded.label", [this.__version.getWorkflowState() ? this.__version.getWorkflowState().state : this.__version.getWorkflowState()], 1));
         }
     },
 
