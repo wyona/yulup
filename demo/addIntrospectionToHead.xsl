@@ -18,6 +18,9 @@
 <xsl:template match="/">
 <html>
 <head>
+<!--
+  <link rel="neutron-introspection" type="application/neutron+xml" href="?yanel.resource.usecase=introspection"/>
+  -->
   <link rel="neutron-introspection" type="application/neutron+xml" href="introspection-{$name-without-suffix}.xml"/>
   <xsl:copy-of select="/xhtml:html/xhtml:head/*"/>
   <meta content="application/xhtml+xml; charset=UTF-8" http-equiv="Content-Type"/>
