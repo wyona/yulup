@@ -35,4 +35,9 @@
     <name xml:lang="en">More information...</name>
     <name xml:lang="de">Weitere Informationen...</name>
   </entity>
+
+  <entity id="neutronSidebarVersionsContextOpenRevision.label">
+    <name xml:lang="en">Open this revision in a new tab</name>
+    <name xml:lang="de">Diese Revision in einem neuen Tab öffnen</name>
+  </entity>
 </dtd>

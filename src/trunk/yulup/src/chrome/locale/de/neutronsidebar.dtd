@@ -7,7 +7,10 @@
 <!ENTITY neutronSidebarSitetreeTree.label "Dateien &amp; Verzeichnisse">
 <!ENTITY neutronSidebarVersionTreeTitle.label "Revisionen dieses Elements">
 <!ENTITY neutronSidebarVersionTreeColumnRevision.label "Revision">
+<!ENTITY neutronSidebarVersionTreeColumnRevision.tooltip "Zeigt den Revisionsidentifikator dieser Revision">
 <!ENTITY neutronSidebarVersionTreeColumnDate.label "Datum">
+<!ENTITY neutronSidebarVersionTreeColumnDate.tooltip "Zeigt das Datum, an dem diese Revision erstellt wurde">
 <!ENTITY neutronSidebarVersionTreeColumnWfState.label "Workflow Zustand">
+<!ENTITY neutronSidebarVersionTreeColumnWfState.tooltip "Zeigt den Zustand, in dem diese Revision an diesem Datum war">
 <!ENTITY neutronSidebarVersionTreeColumnWfDate.label "Workflow Datum">
-<!ENTITY neutronSidebarVersionTreeChildren.tooltip "Doppelklicken um diese Revision in einem neuen Tab zu laden. Kontext-Menü öffnen um Transitionen auszuführen">
+<!ENTITY neutronSidebarVersionTreeColumnWfDate.tooltip "Zeight das Datum, an dem diese Revision diesen Zustand eingenommen hat">

@@ -106,19 +106,19 @@
             <treecols>
               <treecol name="revision" flex="1"
                        label="&neutronSidebarVersionTreeColumnRevision.label;"
-                       tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
+                       tooltiptext="&neutronSidebarVersionTreeColumnRevision.tooltip;"/>
               <splitter class="tree-splitter"/>
               <treecol name="date" flex="1"
                        label="&neutronSidebarVersionTreeColumnDate.label;"
-                       tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
+                       tooltiptext="&neutronSidebarVersionTreeColumnDate.tooltip;"/>
               <splitter class="tree-splitter"/>
               <treecol name="wf-state" flex="1"
                        label="&neutronSidebarVersionTreeColumnWfState.label;"
-                       tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
+                       tooltiptext="&neutronSidebarVersionTreeColumnWfState.tooltip;"/>
               <splitter class="tree-splitter"/>
               <treecol name="wf-date" flex="1"
                        label="&neutronSidebarVersionTreeColumnWfDate.label;"
-                       tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
+                       tooltiptext="&neutronSidebarVersionTreeColumnWfDate.tooltip;"/>
             </treecols>
             <treechildren id="uiYulupNeutronSidebarResourceVersionTreeTreeChildren"
                           context="uiYulupNeutronSidebarResourceVersionsContextMenu"
@@ -157,19 +157,19 @@
             <treecols>
               <treecol name="revision" flex="1"
                        label="&neutronSidebarVersionTreeColumnRevision.label;"
-                       tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
+                       tooltiptext="&neutronSidebarVersionTreeColumnRevision.tooltip;"/>
               <splitter class="tree-splitter"/>
               <treecol name="date" flex="1"
                        label="&neutronSidebarVersionTreeColumnDate.label;"
-                       tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
+                       tooltiptext="&neutronSidebarVersionTreeColumnDate.tooltip;"/>
               <splitter class="tree-splitter"/>
               <treecol name="wf-state" flex="1"
                        label="&neutronSidebarVersionTreeColumnWfState.label;"
-                       tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
+                       tooltiptext="&neutronSidebarVersionTreeColumnWfState.tooltip;"/>
               <splitter class="tree-splitter"/>
               <treecol name="wf-date" flex="1"
                        label="&neutronSidebarVersionTreeColumnWfDate.label;"
-                       tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
+                       tooltiptext="&neutronSidebarVersionTreeColumnWfDate.tooltip;"/>
             </treecols>
             <treechildren id="uiYulupNeutronSidebarSitetreeVersionTreeTreeChildren"
                           context="uiYulupNeutronSidebarSitetreeVersionsContextMenu"

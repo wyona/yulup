@@ -227,6 +227,13 @@ const NeutronSidebar = {
         elem.addEventListener("command", function (aEvent) { new NeutronVersionInfoDialog(mainBrowserWin, version.resource.name, version); }, false);
 
         aPopup.appendChild(elem);
+
+        // add "Open this revision in new tab" menuitem
+        elem = document.createElement("menuitem");
+        elem.setAttribute("label", this.__stringBundle.GetStringFromName("neutronSidebarVersionsContextOpenRevision.label"));
+        elem.addEventListener("command", function () { me.openRevision(aView); }, false);
+
+        aPopup.appendChild(elem);
     },
 
     versionContextHandler: function (aEvent) {
@@ -271,7 +278,7 @@ const NeutronSidebar = {
         }
     },
 
-    openRevision: function (aEvent, aView) {
+    openRevision: function (aView) {
         var version = null;
         var tab     = null;
 
@@ -367,7 +374,7 @@ function NeutronSidebarResourceDeck() {
     this.__versionContext.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsContextMenu(aEvent, me, me.__versionContext); }, false);
     this.__versionTooltip.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsTooltip(aEvent, me, me.__versionTooltip); }, false);
 
-    document.getElementById("uiYulupNeutronSidebarResourceVersionTreeTreeChildren").addEventListener("dblclick", function (aEvent) { NeutronSidebar.openRevision(aEvent, me); }, false);
+    document.getElementById("uiYulupNeutronSidebarResourceVersionTreeTreeChildren").addEventListener("dblclick", function () { NeutronSidebar.openRevision(me); }, false);
 }
 
 NeutronSidebarResourceDeck.prototype = {
@@ -431,7 +438,7 @@ function NeutronSidebarSitetreeDeck() {
     this.__versionContext.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsContextMenu(aEvent, me, me.__versionContext); }, false);
     this.__versionTooltip.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsTooltip(aEvent, me, me.__versionTooltip); }, false);
 
-    document.getElementById("uiYulupNeutronSidebarSitetreeVersionTreeTreeChildren").addEventListener("dblclick", function (aEvent) { NeutronSidebar.openRevision(aEvent, me); }, false);
+    document.getElementById("uiYulupNeutronSidebarSitetreeVersionTreeTreeChildren").addEventListener("dblclick", function () { NeutronSidebar.openRevision(me); }, false);
 }
 
 NeutronSidebarSitetreeDeck.prototype = {
