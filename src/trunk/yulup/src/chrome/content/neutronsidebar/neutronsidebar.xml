@@ -67,6 +67,7 @@
             <xul:description class="tooltipDescription"/>
             <xul:description/>
           </xul:row>
+          <xul:separator class="groove-thin"/>
           <xul:row>
             <xul:description class="tooltipDescription"/>
             <xul:description/>
@@ -148,16 +149,16 @@
           document.getAnonymousNodes(this)[1].childNodes[1].childNodes[1].childNodes[0].value = stringbundle.getString("neutronSidebarVersionsTooltipDateDesc.label");
           document.getAnonymousNodes(this)[1].childNodes[1].childNodes[2].childNodes[0].value = stringbundle.getString("neutronSidebarVersionsTooltipCommentDesc.label");
           document.getAnonymousNodes(this)[1].childNodes[1].childNodes[3].childNodes[0].value = stringbundle.getString("neutronSidebarVersionsTooltipUserDesc.label");
-          document.getAnonymousNodes(this)[1].childNodes[1].childNodes[4].childNodes[0].value = stringbundle.getString("neutronSidebarVersionsTooltipWfStateDesc.label");
-          document.getAnonymousNodes(this)[1].childNodes[1].childNodes[5].childNodes[0].value = stringbundle.getString("neutronSidebarVersionsTooltipWfDateDesc.label");
+          document.getAnonymousNodes(this)[1].childNodes[1].childNodes[5].childNodes[0].value = stringbundle.getString("neutronSidebarVersionsTooltipWfStateDesc.label");
+          document.getAnonymousNodes(this)[1].childNodes[1].childNodes[6].childNodes[0].value = stringbundle.getString("neutronSidebarVersionsTooltipWfDateDesc.label");
 
           // initialise element fields
           this.__revisionDescElem = document.getAnonymousNodes(this)[1].childNodes[1].childNodes[0].childNodes[1];
           this.__dateDescElem     = document.getAnonymousNodes(this)[1].childNodes[1].childNodes[1].childNodes[1];
           this.__commentDescElem  = document.getAnonymousNodes(this)[1].childNodes[1].childNodes[2].childNodes[1];
           this.__userDescElem     = document.getAnonymousNodes(this)[1].childNodes[1].childNodes[3].childNodes[1];
-          this.__wfStateDescElem  = document.getAnonymousNodes(this)[1].childNodes[1].childNodes[4].childNodes[1];
-          this.__wfDateDescElem   = document.getAnonymousNodes(this)[1].childNodes[1].childNodes[5].childNodes[1];
+          this.__wfStateDescElem  = document.getAnonymousNodes(this)[1].childNodes[1].childNodes[5].childNodes[1];
+          this.__wfDateDescElem   = document.getAnonymousNodes(this)[1].childNodes[1].childNodes[6].childNodes[1];
         ]]>
       </constructor>
 
