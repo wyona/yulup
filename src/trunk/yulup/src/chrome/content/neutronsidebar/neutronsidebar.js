@@ -226,7 +226,7 @@ const NeutronSidebar = {
         transition.execute();
     },
 
-    constructVersionsTooltip: function function (aEvent, aView, aPopup) {
+    constructVersionsTooltip: function (aEvent, aView, aPopup) {
         var version = null;
 
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.constructVersionsTooltip() invoked\n");
