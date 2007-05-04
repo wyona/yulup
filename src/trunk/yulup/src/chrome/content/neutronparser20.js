@@ -227,6 +227,8 @@ NeutronParser20.prototype = {
                         response.error      = this.documentDOM.evaluate("neutron20:line/attribute::message", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
                     }
                     break;
+                case "workflow":
+                    response = new NeutronProtocolWorkflowException(this.documentDOM.evaluate("neutron20:message/text()", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue);
                 default:
                     response = new NeutronProtocolException(this.documentDOM.evaluate("neutron20:message/text()", elemNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue);
             }

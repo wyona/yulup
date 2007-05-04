@@ -1437,6 +1437,28 @@ NeutronProtocolDataNotWellFormedException.prototype = {
 
 
 /**
+ * NeutronProtocolWorkflowException constructor.
+ * Instantiates a new object of type
+ * NeutronProtocolWorkflowException.
+ *
+ * @constructor
+ * @param  {String}                           aMessage  a descriptive error message
+ * @return {NeutronProtocolWorkflowException}
+ */
+function NeutronProtocolWorkflowException(aMessage) {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronProtocolWorkflowException(\"" + aMessage + "\") invoked\n");
+
+    NeutronProtocolException.call(this, aMessage);
+
+    this.name = "NeutronProtocolWorkflowException";
+}
+
+NeutronProtocolWorkflowException.prototype = {
+    __proto__: NeutronProtocolException.prototype
+};
+
+
+/**
  * NeutronParser constructor. Instantiates a new object of
  * type NeutronParser.
  *
