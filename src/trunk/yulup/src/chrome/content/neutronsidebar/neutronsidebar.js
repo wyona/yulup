@@ -598,12 +598,16 @@ NeutronVersionTreeView.prototype = {
             case "revision":
                 return this.__treeSource[aRow].revision;
                 break;
-            case "state":
+            case "date":
+                return this.__treeSource[aRow].date;
+                break;
+            case "wf-state":
                 if (workflowState = this.__treeSource[aRow].getWorkflowState())
                     return workflowState.state;
                 break;
-            case "date":
-                return this.__treeSource[aRow].date;
+            case "wf-date":
+                if (workflowState = this.__treeSource[aRow].getWorkflowState())
+                    return workflowState.date;
                 break;
         }
 
