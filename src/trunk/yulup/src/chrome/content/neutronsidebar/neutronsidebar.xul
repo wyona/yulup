@@ -120,31 +120,33 @@
           <grippy/>
         </splitter>
 
-        <description style="padding-left: 5px">&neutronSidebarVersionTreeTitle.label;</description>
+        <vbox flex="1">
+          <description class="versionDescription">&neutronSidebarVersionTreeTitle.label;</description>
 
-        <tree id="uiYulupNeutronSidebarResourceVersionTree"
-              enableColumnDrag="false"
-              hidecolumnpicker="false"
-              flex="1"
-              seltype="single"
-              onselect="this.view.selectionChanged()">
-          <treecols>
-            <treecol name="revision" flex="1"
-                     label="&neutronSidebarVersionTreeColumnRevision.label;"
-                     tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
-            <splitter class="tree-splitter"/>
-            <treecol name="date" flex="1"
-                     label="&neutronSidebarVersionTreeColumnDate.label;"
-                     tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
-            <treecol name="state" flex="1"
-                     label="&neutronSidebarVersionTreeColumnState.label;"
-                     tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
-            <splitter class="tree-splitter"/>
-          </treecols>
-          <treechildren id="uiYulupNeutronSidebarResourceVersionTreeTreeChildren"
-                        context="uiYulupNeutronSidebarResourceVersionsContextMenu"
-                        tooltip="uiYulupNeutronSidebarVersionsTooltip"/>
-        </tree>
+          <tree id="uiYulupNeutronSidebarResourceVersionTree"
+                enableColumnDrag="false"
+                hidecolumnpicker="false"
+                flex="1"
+                seltype="single"
+                onselect="this.view.selectionChanged()">
+            <treecols>
+              <treecol name="revision" flex="1"
+                       label="&neutronSidebarVersionTreeColumnRevision.label;"
+                       tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
+              <splitter class="tree-splitter"/>
+              <treecol name="date" flex="1"
+                       label="&neutronSidebarVersionTreeColumnDate.label;"
+                       tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
+              <treecol name="state" flex="1"
+                       label="&neutronSidebarVersionTreeColumnState.label;"
+                       tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
+              <splitter class="tree-splitter"/>
+            </treecols>
+            <treechildren id="uiYulupNeutronSidebarResourceVersionTreeTreeChildren"
+                          context="uiYulupNeutronSidebarResourceVersionsContextMenu"
+                          tooltip="uiYulupNeutronSidebarVersionsTooltip"/>
+          </tree>
+        </vbox>
       </vbox>
 
       <vbox>
@@ -165,29 +167,33 @@
           <grippy/>
         </splitter>
 
-        <tree id="uiYulupNeutronSidebarSitetreeVersionTree"
-              enableColumnDrag="false"
-              hidecolumnpicker="false"
-              flex="1"
-              seltype="single"
-              onselect="this.view.selectionChanged()">
-          <treecols>
-            <treecol name="revision" flex="1"
-                     label="&neutronSidebarVersionTreeColumnRevision.label;"
-                     tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
-            <splitter class="tree-splitter"/>
-            <treecol name="date" flex="1"
-                     label="&neutronSidebarVersionTreeColumnDate.label;"
-                     tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
-            <treecol name="state" flex="1"
-                     label="&neutronSidebarVersionTreeColumnState.label;"
-                     tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
-            <splitter class="tree-splitter"/>
-          </treecols>
-          <treechildren id="uiYulupNeutronSidebarSitetreeVersionTreeTreeChildren"
-                        context="uiYulupNeutronSidebarSitetreeVersionsContextMenu"
-                        tooltip="uiYulupNeutronSidebarVersionsTooltip"/>
-        </tree>
+        <vbox flex="1">
+          <description class="versionDescription">&neutronSidebarVersionTreeTitle.label;</description>
+
+          <tree id="uiYulupNeutronSidebarSitetreeVersionTree"
+                enableColumnDrag="false"
+                hidecolumnpicker="false"
+                flex="1"
+                seltype="single"
+                onselect="this.view.selectionChanged()">
+            <treecols>
+              <treecol name="revision" flex="1"
+                       label="&neutronSidebarVersionTreeColumnRevision.label;"
+                       tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
+              <splitter class="tree-splitter"/>
+              <treecol name="date" flex="1"
+                       label="&neutronSidebarVersionTreeColumnDate.label;"
+                       tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
+              <treecol name="state" flex="1"
+                       label="&neutronSidebarVersionTreeColumnState.label;"
+                       tooltiptext="&neutronSidebarVersionTreeChildren.tooltip;"/>
+              <splitter class="tree-splitter"/>
+            </treecols>
+            <treechildren id="uiYulupNeutronSidebarSitetreeVersionTreeTreeChildren"
+                          context="uiYulupNeutronSidebarSitetreeVersionsContextMenu"
+                          tooltip="uiYulupNeutronSidebarVersionsTooltip"/>
+          </tree>
+        </vbox>
       </vbox>
     </deck>
   </vbox>

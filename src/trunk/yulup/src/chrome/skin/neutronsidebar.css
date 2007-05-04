@@ -17,3 +17,7 @@ caption {
   font-weight: bolder;
   margin-right: 4px;
 }
+
+.versionDescription {
+  padding-left: 5px;
+}
