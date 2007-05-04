@@ -203,7 +203,12 @@ const NeutronSidebar = {
         // add transitions to menu
         for (var i = 0; i < transitions.length; i++) {
             elem = document.createElement("menuitem");
-            elem.setAttribute("label", transitions[i].to);
+
+            if (transitions[i].description)
+                elem.setAttribute("label", transitions[i].description);
+            else
+                elem.setAttribute("label", transitions[i].to);
+
             elem.workflowTransition = transitions[i];
             elem.addEventListener("command", function (aEvent) { me.versionContextHandler(aEvent); }, false);
 
