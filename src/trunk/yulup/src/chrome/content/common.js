@@ -481,6 +481,42 @@ const YulupLocalisationServices = {
         }
 
         return stringBundle;
+    },
+
+    getByLang: function (aLangMap, aLangID) {
+        var retval      = null;
+        var prefixIndex = null;
+        var langID      = null;
+
+        /* DEBUG */ dump("Yulup:common.js:YulupLocalisationServices.getByLang(\"" + aLangMap + "\", \"" + aLangID + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aLangMap != null);
+        /* DEBUG */ YulupDebug.ASSERT(aLangID  != null);
+
+        retval = aLangMap[aLangID];
+
+        /* DEBUG */ dump("Yulup:common.js:YulupLocalisationServices.getByLang: 1. language ID = \"" + aLangID + "\", retval = \"" + retval + "\"\n");
+
+        if (retval)
+            return retval;
+
+        // try to cut down the lang ID to its prefix
+        prefixIndex = aLangID.indexOf("-");
+        if (prefixIndex > 0)
+            langID = aLangID.substring(0, prefixIndex);
+
+        retval = aLangMap[langID];
+
+        /* DEBUG */ dump("Yulup:common.js:YulupLocalisationServices.getByLang: 2. language ID = \"" + langID + "\", retval = \"" + retval + "\"\n");
+
+        if (retval)
+            return retval;
+
+        // return first value in map
+        for (retval in aLangMap)
+            return aLangMap[retval];
+
+        return "";
     }
 };
 

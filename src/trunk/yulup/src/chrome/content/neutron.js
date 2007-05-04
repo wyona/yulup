@@ -739,42 +739,6 @@ NeutronWidget.prototype = {
     surround: null,
     insert  : null,
 
-    __getByLang: function (aLangMap, aLangID) {
-        var retval      = null;
-        var prefixIndex = null;
-        var langID      = null;
-
-        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidget.__getByLang(\"" + aLangMap + "\", \"" + aLangID + "\") invoked\n");
-
-        /* DEBUG */ YulupDebug.ASSERT(aLangMap != null);
-        /* DEBUG */ YulupDebug.ASSERT(aLangID  != null);
-
-        retval = aLangMap[aLangID];
-
-        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidget.__getByLang: 1. language ID = \"" + aLangID + "\", retval = \"" + retval + "\"\n");
-
-        if (retval)
-            return retval;
-
-        // try to cut down the lang ID to its prefix
-        prefixIndex = aLangID.indexOf("-");
-        if (prefixIndex > 0)
-            langID = aLangID.substring(0, prefixIndex);
-
-        retval = aLangMap[langID];
-
-        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidget.__getByLang: 2. language ID = \"" + langID + "\", retval = \"" + retval + "\"\n");
-
-        if (retval)
-            return retval;
-
-        // return first value in map
-        for (retval in aLangMap)
-            return aLangMap[retval];
-
-        return "";
-    },
-
     set name(aValue) {
         var name = {};
 
@@ -789,7 +753,7 @@ NeutronWidget.prototype = {
 
     get name() {
         if (!this.__nameCache)
-            this.__nameCache = this.__getByLang(this.__name, YulupAppServices.getAppLocale());
+            this.__nameCache = YulupLocalisationServices.getByLang(this.__name, YulupAppServices.getAppLocale());
 
         return this.__nameCache;
     },
@@ -808,7 +772,7 @@ NeutronWidget.prototype = {
 
     get description() {
         if (!this.__descCache)
-            this.__descCache = this.__getByLang(this.__desc, YulupAppServices.getAppLocale());
+            this.__descCache = YulupLocalisationServices.getByLang(this.__desc, YulupAppServices.getAppLocale());
 
         return this.__descCache;
     },
@@ -885,42 +849,6 @@ NeutronWidgetGroup.prototype = {
 
     widgets: null,
 
-    __getByLang: function (aLangMap, aLangID) {
-        var retval      = null;
-        var prefixIndex = null;
-        var langID      = null;
-
-        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetGroup.__getByLang(\"" + aLangMap + "\", \"" + aLangID + "\") invoked\n");
-
-        /* DEBUG */ YulupDebug.ASSERT(aLangMap != null);
-        /* DEBUG */ YulupDebug.ASSERT(aLangID  != null);
-
-        retval = aLangMap[aLangID];
-
-        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetGroup.__getByLang: 1. language ID = \"" + aLangID + "\", retval = \"" + retval + "\"\n");
-
-        if (retval)
-            return retval;
-
-        // try to cut down the lang ID to its prefix
-        prefixIndex = aLangID.indexOf("-");
-        if (prefixIndex > 0)
-            langID = aLangID.substring(0, prefixIndex);
-
-        retval = aLangMap[langID];
-
-        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetGroup.__getByLang: 2. language ID = \"" + langID + "\", retval = \"" + retval + "\"\n");
-
-        if (retval)
-            return retval;
-
-        // return first value in map
-        for (retval in aLangMap)
-            return aLangMap[retval];
-
-        return "";
-    },
-
     set name(aValue) {
         var name = {};
 
@@ -935,7 +863,7 @@ NeutronWidgetGroup.prototype = {
 
     get name() {
         if (!this.__nameCache)
-            this.__nameCache = this.__getByLang(this.__name, YulupAppServices.getAppLocale());
+            this.__nameCache = YulupLocalisationServices.getByLang(this.__name, YulupAppServices.getAppLocale());
 
         return this.__nameCache;
     },
@@ -954,7 +882,7 @@ NeutronWidgetGroup.prototype = {
 
     get description() {
         if (!this.__descCache)
-            this.__descCache = this.__getByLang(this.__desc, YulupAppServices.getAppLocale());
+            this.__descCache = YulupLocalisationServices.getByLang(this.__desc, YulupAppServices.getAppLocale());
 
         return this.__descCache;
     },
@@ -1043,42 +971,6 @@ NeutronWidgetActionParameter.prototype = {
     xpath: null,
     type : null,
 
-    __getByLang: function (aLangMap, aLangID) {
-        var retval      = null;
-        var prefixIndex = null;
-        var langID      = null;
-
-        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetActionParameter.__getByLang(\"" + aLangMap + "\", \"" + aLangID + "\") invoked\n");
-
-        /* DEBUG */ YulupDebug.ASSERT(aLangMap != null);
-        /* DEBUG */ YulupDebug.ASSERT(aLangID  != null);
-
-        retval = aLangMap[aLangID];
-
-        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetActionParameter.__getByLang: 1. language ID = \"" + aLangID + "\", retval = \"" + retval + "\"\n");
-
-        if (retval)
-            return retval;
-
-        // try to cut down the lang ID to its prefix
-        prefixIndex = aLangID.indexOf("-");
-        if (prefixIndex > 0)
-            langID = aLangID.substring(0, prefixIndex);
-
-        retval = aLangMap[langID];
-
-        /* DEBUG */ dump("Yulup:neutron.js:NeutronWidgetActionParameter.__getByLang: 2. language ID = \"" + langID + "\", retval = \"" + retval + "\"\n");
-
-        if (retval)
-            return retval;
-
-        // return first value in map
-        for (retval in aLangMap)
-            return aLangMap[retval];
-
-        return "";
-    },
-
     set name(aValue) {
         var name = {};
 
@@ -1093,7 +985,7 @@ NeutronWidgetActionParameter.prototype = {
 
     get name() {
         if (!this.__nameCache)
-            this.__nameCache = this.__getByLang(this.__name, YulupAppServices.getAppLocale());
+            this.__nameCache = YulupLocalisationServices.getByLang(this.__name, YulupAppServices.getAppLocale());
 
         return this.__nameCache;
     },
@@ -1112,7 +1004,7 @@ NeutronWidgetActionParameter.prototype = {
 
     get description() {
         if (!this.__descCache)
-            this.__descCache = this.__getByLang(this.__desc, YulupAppServices.getAppLocale());
+            this.__descCache = YulupLocalisationServices.getByLang(this.__desc, YulupAppServices.getAppLocale());
 
         return this.__descCache;
     },
