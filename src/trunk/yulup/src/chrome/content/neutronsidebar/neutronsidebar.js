@@ -30,11 +30,12 @@ const NeutronSidebar = {
     CURRENT_RESOURCES_VIEWID: 0,
     SITETREE_VIEWID         : 1,
 
-    __mainBrowserWindow    : null,
-    __viewSelector         : null,
-    __contentContainer     : null,
-    __resourceDeck         : null,
-    __sitetreeDeck         : null,
+    __mainBrowserWindow: null,
+    __viewSelector     : null,
+    __contentContainer : null,
+    __resourceDeck     : null,
+    __sitetreeDeck     : null,
+    __stringBundle     : null,
 
     serverURI       : null,
     neutronResources: null,
@@ -56,6 +57,8 @@ const NeutronSidebar = {
         // cache various elements
         this.__viewSelector     = document.getElementById("uiYulupNeutronSidebarContentDeckSelector");
         this.__contentContainer = document.getElementById("uiYulupNeutronSidebarContentTreeDeck");
+
+        this.__stringBundle = YulupLocalisationServices.getStringBundle("chrome://yulup/locale/neutronsidebar.properties");
 
         this.__initSources();
 
@@ -172,10 +175,11 @@ const NeutronSidebar = {
     },
 
     constructVersionsContextMenu: function (aEvent, aView, aPopup) {
-        var version     = null;
-        var transitions = null;
-        var elem        = null;
-        var me          = this;
+        var version        = null;
+        var transitions    = null;
+        var elem           = null;
+        var me             = this;
+        var mainBrowserWin = null;
 
         /* DEBUG */ dump("Yulup:neutronsidebar.js:NeutronSidebar.constructVersionsContextMenu() invoked\n");
 
@@ -188,32 +192,41 @@ const NeutronSidebar = {
             return;
         }
 
-        transitions = version.getWorkflowTransitions();
-
-        // don't show the context menu if no transitions available
-        if (!transitions) {
-            aEvent.preventDefault();
-            return;
-        }
-
         // clean up popup menu
         while (aPopup.hasChildNodes())
             aPopup.removeChild(aPopup.firstChild);
 
-        // add transitions to menu
-        for (var i = 0; i < transitions.length; i++) {
-            elem = document.createElement("menuitem");
+        transitions = version.getWorkflowTransitions();
 
-            if (transitions[i].description)
-                elem.setAttribute("label", transitions[i].description);
-            else
-                elem.setAttribute("label", transitions[i].to);
+        if (transitions && transitions.length > 0) {
+            // add transitions to menu
+            for (var i = 0; i < transitions.length; i++) {
+                elem = document.createElement("menuitem");
 
-            elem.workflowTransition = transitions[i];
-            elem.addEventListener("command", function (aEvent) { me.versionContextHandler(aEvent); }, false);
+                if (transitions[i].description)
+                    elem.setAttribute("label", transitions[i].description);
+                else
+                    elem.setAttribute("label", transitions[i].to);
 
+                elem.workflowTransition = transitions[i];
+                elem.addEventListener("command", function (aEvent) { me.versionContextHandler(aEvent); }, false);
+
+                aPopup.appendChild(elem);
+            }
+
+            elem = document.createElement("menuseparator");
             aPopup.appendChild(elem);
         }
+
+        // add "More information..." menuitem
+        elem = document.createElement("menuitem");
+        elem.setAttribute("label", this.__stringBundle.GetStringFromName("neutronSidebarVersionsContextMoreInfo.label"));
+
+        mainBrowserWin = this.__mainBrowserWindow;
+
+        elem.addEventListener("command", function (aEvent) { new NeutronVersionInfoDialog(mainBrowserWin, version.resource.name, version); }, false);
+
+        aPopup.appendChild(elem);
     },
 
     versionContextHandler: function (aEvent) {
@@ -245,16 +258,16 @@ const NeutronSidebar = {
         }
 
         // add version information to tooltip popup
-        aPopup.clearFields();
+        aPopup.info.clearFields();
 
-        aPopup.revision = version.revision;
-        aPopup.date     = version.date;
-        aPopup.comment  = version.comment;
-        aPopup.user     = version.user;
+        aPopup.info.revision = version.revision;
+        aPopup.info.date     = version.date;
+        aPopup.info.comment  = version.comment;
+        aPopup.info.user     = version.user;
 
         if (version.getWorkflowState()) {
-            aPopup.wfState = version.getWorkflowState().state;
-            aPopup.wfDate  = version.getWorkflowState().date;
+            aPopup.info.wfState = version.getWorkflowState().state;
+            aPopup.info.wfDate  = version.getWorkflowState().date;
         }
     },
 

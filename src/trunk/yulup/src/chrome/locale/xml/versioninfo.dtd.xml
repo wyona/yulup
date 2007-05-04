@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dtd xmlns="http://yulup.wyona.org/1.0">
+  <entity id="versionInfoDialog.title">
+    <name xml:lang="en">Version Information</name>
+    <name xml:lang="de">Versionsinformation</name>
+  </entity>
+
+  <entity id="workflowHistoryCaption.label">
+    <name xml:lang="en">Workflow History</name>
+    <name xml:lang="de">Workflow Historie</name>
+  </entity>
+
+  <entity id="workflowHistoryTreeColumnState.label">
+    <name xml:lang="en">Workflow State</name>
+    <name xml:lang="de">Workflow Zustand</name>
+  </entity>
+
+  <entity id="workflowHistoryTreeColumnState.tooltip">
+    <name xml:lang="en">Displays the state in which this revision was at this date</name>
+    <name xml:lang="de">Zeigt den Zustand, in dem diese Revision an diesem Datum war</name>
+  </entity>
+
+  <entity id="workflowHistoryTreeColumnDate.label">
+    <name xml:lang="en">Workflow Date</name>
+    <name xml:lang="de">Workflow Datum</name>
+  </entity>
+
+  <entity id="workflowHistoryTreeColumnDate.tooltip">
+    <name xml:lang="en">Displays the date on which this revision entered this state</name>
+    <name xml:lang="de">Zeight das Datum, an dem diese Revision diesen Zustand eingenommen hat</name>
+  </entity>
+</dtd>

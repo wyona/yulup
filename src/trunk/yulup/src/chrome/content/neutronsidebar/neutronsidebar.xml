@@ -24,6 +24,7 @@
 -->
 
 <bindings xmlns="http://www.mozilla.org/xbl"
+          xmlns:xbl="http://www.mozilla.org/xbl"
           xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <!-- Binding for the Neutron sidebar. -->
@@ -39,15 +40,15 @@
     </implementation>
   </binding>
 
-  <!-- Version tooltip binding for the Neutron sidebar. -->
-  <binding id="versiontooltip" extends="chrome://global/content/bindings/popup.xml#tooltip">
+  <!-- Version display binding for the Neutron sidebar. -->
+  <binding id="versioninfo">
     <content>
       <xul:stringbundle src="chrome://yulup/locale/neutronsidebar.properties"/>
 
       <xul:grid flex="1">
         <xul:columns>
-          <xul:column flex="1"/>
           <xul:column/>
+          <xul:column flex="1"/>
         </xul:columns>
 
         <xul:rows>
@@ -67,7 +68,7 @@
             <xul:description class="tooltipDescription"/>
             <xul:description/>
           </xul:row>
-          <xul:separator class="groove-thin"/>
+          <xul:separator xbl:inherits="class=separator"/>
           <xul:row>
             <xul:description class="tooltipDescription"/>
             <xul:description/>
@@ -88,7 +89,7 @@
       <field name="__wfStateDescElem"/>
       <field name="__wfDateDescElem"/>
 
-      <property name="revision" readonly="true">
+      <property name="revision">
         <setter>
           <![CDATA[
             this.__revisionDescElem.value = val;
@@ -96,7 +97,7 @@
         </setter>
       </property>
 
-      <property name="date" readonly="true">
+      <property name="date">
         <setter>
           <![CDATA[
             this.__dateDescElem.value = val;
@@ -104,7 +105,7 @@
         </setter>
       </property>
 
-      <property name="comment" readonly="true">
+      <property name="comment">
         <setter>
           <![CDATA[
             this.__commentDescElem.value = val;
@@ -112,7 +113,7 @@
         </setter>
       </property>
 
-      <property name="user" readonly="true">
+      <property name="user">
         <setter>
           <![CDATA[
             this.__userDescElem.value = val;
@@ -120,7 +121,7 @@
         </setter>
       </property>
 
-      <property name="wfState" readonly="true">
+      <property name="wfState">
         <setter>
           <![CDATA[
             this.__wfStateDescElem.value = val;
@@ -128,7 +129,7 @@
         </setter>
       </property>
 
-      <property name="wfDate" readonly="true">
+      <property name="wfDate">
         <setter>
           <![CDATA[
             this.__wfDateDescElem.value = val;
@@ -174,6 +175,28 @@
           ]]>
         </body>
       </method>
+    </implementation>
+  </binding>
+
+  <!-- Version tooltip binding for the Neutron sidebar. -->
+  <binding id="versiontooltip" extends="chrome://global/content/bindings/popup.xml#tooltip">
+    <content>
+      <xul:versioninfo separator="groove-thin"/>
+    </content>
+
+    <implementation>
+      <field name="__info"/>
+
+      <property name="info" readonly="true">
+        <getter>
+          <![CDATA[
+            if (!this.__info)
+                this.__info = document.getAnonymousNodes(this)[0];
+
+            return this.__info;
+          ]]>
+        </getter>
+      </property>
     </implementation>
   </binding>
 </bindings>

@@ -1030,11 +1030,16 @@ NeutronWidgetActionParameter.prototype = {
  * @constructor
  * @return {NeutronResourceVersion}
  */
-function NeutronResourceVersion() {
+function NeutronResourceVersion(aResource) {
     /* DEBUG */ dump("Yulup:neutron.js:NeutronResourceVersion() invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aResource != null);
+
+    this.resource = aResource;
 }
 
 NeutronResourceVersion.prototype = {
+    resource           : null,
     url                : null,
     comment            : null,
     date               : null,

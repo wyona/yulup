@@ -57,6 +57,8 @@
   <script type="application/x-javascript"
           src="chrome://yulup/content/treeviewbase.js"/>
   <script type="application/x-javascript"
+          src="chrome://yulup/content/neutronsidebar/versioninfodialog.js"/>
+  <script type="application/x-javascript"
           src="chrome://yulup/content/neutronsidebar/neutronsidebar.js"/>
 
   <popupset>

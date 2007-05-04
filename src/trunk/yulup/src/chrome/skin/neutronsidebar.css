@@ -6,6 +6,10 @@
   -moz-binding: url('chrome://yulup/content/neutronsidebar/neutronsidebar.xml#neutronsidebar');
 }
 
+versioninfo {
+  -moz-binding: url('chrome://yulup/content/neutronsidebar/neutronsidebar.xml#versioninfo');
+}
+
 tooltip.version {
   -moz-binding: url('chrome://yulup/content/neutronsidebar/neutronsidebar.xml#versiontooltip');
 }

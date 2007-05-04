@@ -30,4 +30,9 @@
     <name xml:lang="en">Workflow Date:</name>
     <name xml:lang="de">Workflow Datum:</name>
   </entity>
+
+  <entity id="neutronSidebarVersionsContextMoreInfo.label">
+    <name xml:lang="en">More information...</name>
+    <name xml:lang="de">Weitere Informationen...</name>
+  </entity>
 </dtd>

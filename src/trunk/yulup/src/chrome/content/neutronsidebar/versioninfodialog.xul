@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<!--
+# ***** BEGIN LICENSE BLOCK *****
+# Copyright 2007 Wyona AG Zurich
+#
+# This file is part of Yulup.
+#
+# Yulup is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Yulup is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Yulup; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# ***** END LICENSE BLOCK *****
+-->
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://yulup/skin/neutronsidebar.css" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://yulup/locale/versioninfo.dtd">
+
+<dialog id="uiYulupNeutronVersionInfoDialog"
+        orient="vertical"
+        align="stretch"
+        title="&versionInfoDialog.title;"
+        buttons="accept"
+        onload="window.arguments[0].onLoadHandler();"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <stringbundle id="uiYulupNeutronVersionInfoStringbundle" src="chrome://yulup/locale/neutronsidebar.properties"/>
+
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/common.js"/>
+  <script type="application/x-javascript"
+          src="chrome://yulup/content/neutronsidebar/versioninfodialog.js"/>
+
+  <groupbox>
+    <caption id="uiYulupVersionGroupboxCaption"/>
+
+    <versioninfo id="uiYulupVersionInfoDisplay" separator="thin"/>
+  </groupbox>
+
+  <groupbox flex="1">
+    <caption label="&workflowHistoryCaption.label;"/>
+
+    <tree id="uiYulupWorkflowHistoryTree"
+          enableColumnDrag="false"
+          hidecolumnpicker="true"
+          flex="1"
+          seltype="single">
+      <treecols>
+        <treecol name="state" flex="1"
+                 label="&workflowHistoryTreeColumnState.label;"
+                 tooltiptext="&workflowHistoryTreeColumnState.tooltip;"/>
+        <splitter class="tree-splitter"/>
+        <treecol name="date" flex="1"
+                 label="&workflowHistoryTreeColumnDate.label;"
+                 tooltiptext="&workflowHistoryTreeColumnDate.tooltip;"/>
+      </treecols>
+      <treechildren id="uiYulupWorkflowHistoryTreeTreeChildren"/>
+    </tree>
+  </groupbox>
+
+</dialog>

@@ -334,7 +334,7 @@ NeutronParser20.prototype = {
         // get versions
         if (elemNodeIterator = aDocument.evaluate("neutron20:versions/neutron20:version", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)) {
             while (elemNode = elemNodeIterator.iterateNext()) {
-                resource.versions.push(this.__parseVersion(this.documentDOM, elemNode, aIntrospectionRoot));
+                resource.versions.push(this.__parseVersion(this.documentDOM, elemNode, aIntrospectionRoot, resource));
             }
         }
 
@@ -586,12 +586,12 @@ NeutronParser20.prototype = {
         return xmlDoc;
     },
 
-    __parseVersion: function(aDocument, aNode, aIntrospectionRoot) {
+    __parseVersion: function(aDocument, aNode, aIntrospectionRoot, aResource) {
         var version  = null;
         var workflow = null;
         var state    = null;
 
-        version = new Neutron20ResourceVersion();
+        version = new Neutron20ResourceVersion(aResource);
 
         version.url                 = this.__constructURI(aDocument.evaluate("attribute::url", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue, this.baseURI);
         version.comment             = this.__parseSingleStringValue(aDocument, aNode, "comment");
@@ -792,9 +792,11 @@ Neutron20WidgetActionParameter.prototype = {
 };
 
 
-function Neutron20ResourceVersion() {
+function Neutron20ResourceVersion(aResource) {
+    /* DEBUG */ YulupDebug.ASSERT(aResource != null);
+
     // call super constructor
-    NeutronResourceVersion.call(this);
+    NeutronResourceVersion.call(this, aResource);
 }
 
 Neutron20ResourceVersion.prototype = {
