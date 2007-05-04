@@ -48,11 +48,15 @@ NeutronVersionInfoDialog.prototype = {
      * @return {Undefined} does not have a return value
      */
     onLoadHandler: function () {
-        var versionInfo = null;
+        var versionCaption = null;
+        var versionInfo    = null;
 
         /* DEBUG */ dump("Yulup:versioninfodialog.js:NeutronVersionInfoDialog.onLoadHandler() invoked\n");
 
-        this.__dialog.document.getElementById("uiYulupVersionGroupboxCaption").label = this.__resourceName;
+        versionCaption = this.__dialog.document.getElementById("uiYulupVersionGroupboxCaption");
+        versionCaption.label = versionCaption.label + " \"" + this.__resourceName + "\"";
+
+        this.__dialog.title = this.__dialog.title + " - " + this.__resourceName;
 
         versionInfo = this.__dialog.document.getElementById("uiYulupVersionInfoDisplay");
 
@@ -67,5 +71,64 @@ NeutronVersionInfoDialog.prototype = {
             versionInfo.wfState = this.__resourceVersion.getWorkflowState().state;
             versionInfo.wfDate  = this.__resourceVersion.getWorkflowState().date;
         }
+
+        // set up workflow history tree
+        if (this.__resourceVersion.getWorkflowHistory())
+            this.__dialog.document.getElementById("uiYulupWorkflowHistoryTree").view = new NeutronVersionInfoWorkflowHistoryTree(this.__resourceVersion.getWorkflowHistory());
+    }
+};
+
+
+/**
+ * NeutronVersionInfoWorkflowHistoryTree constructor. Instantiates a new object of
+ * type NeutronVersionInfoWorkflowHistoryTree.
+ *
+ * Implementes the nsITreeView interface.
+ *
+ * @constructor
+ * @param  {Array} aNeutronWorkflowHistory  an array of NeutronWorkflowState objects
+ * @return {NeutronVersionInfoWorkflowHistoryTree} a new NeutronVersionInfoWorkflowHistoryTree object
+ */
+function NeutronVersionInfoWorkflowHistoryTree(aNeutronWorkflowHistory) {
+    /* DEBUG */ dump("Yulup:versioninfodialog.js:NeutronVersionInfoWorkflowHistoryTree() invoked\n");
+
+    /* DEBUG */ YulupDebug.ASSERT(aNeutronWorkflowHistory != null);
+
+    // call super constructor
+    YulupTreeViewBase.call(this);
+
+    this.__treeSource = aNeutronWorkflowHistory;
+    this.rowCount     = this.__treeSource.length;
+
+    /* DEBUG */ dump("Yulup:versioninfodialog.js:NeutronVersionInfoWorkflowHistoryTree: this.rowCount = \"" + this.rowCount + "\"\n");
+}
+
+NeutronVersionInfoWorkflowHistoryTree.prototype = {
+    __proto__: YulupTreeViewBase.prototype,
+
+    __treeSource: null,
+
+    /**
+     * Get the text for a given cell.
+     *
+     * @param  {Number}        aRow    the row
+     * @param  {nsITreeColumn} aColumn the column
+     * @return {String}
+     */
+    getCellText: function (aRow, aColumn) {
+        var workflowState = null;
+
+        /* DEBUG */ dump("Yulup:versioninfodialog.js:NeutronVersionInfoWorkflowHistoryTree.getCellText(\"" + aRow + "\", \"" + aColumn + "\") invoked\n");
+
+        switch (aColumn.element.getAttribute("name")) {
+            case "state":
+                return this.__treeSource[aRow].state;
+                break;
+            case "date":
+                return this.__treeSource[aRow].date;
+                break;
+        }
+
+        return "";
     }
 };

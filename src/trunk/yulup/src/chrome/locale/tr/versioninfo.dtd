@@ -1,4 +1,5 @@
 <!ENTITY versionInfoDialog.title "Version Information">
+<!ENTITY workflowRevisionCaption.label "Information for resource">
 <!ENTITY workflowHistoryCaption.label "Workflow History">
 <!ENTITY workflowHistoryTreeColumnState.label "Workflow State">
 <!ENTITY workflowHistoryTreeColumnState.tooltip "Displays the state in which this revision was at this date">

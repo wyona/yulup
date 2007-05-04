@@ -41,10 +41,12 @@
   <script type="application/x-javascript"
           src="chrome://yulup/content/common.js"/>
   <script type="application/x-javascript"
+          src="chrome://yulup/content/treeviewbase.js"/>
+  <script type="application/x-javascript"
           src="chrome://yulup/content/neutronsidebar/versioninfodialog.js"/>
 
   <groupbox>
-    <caption id="uiYulupVersionGroupboxCaption"/>
+    <caption id="uiYulupVersionGroupboxCaption" label="&workflowRevisionCaption.label;"/>
 
     <versioninfo id="uiYulupVersionInfoDisplay" separator="thin"/>
   </groupbox>
@@ -56,9 +58,11 @@
           enableColumnDrag="false"
           hidecolumnpicker="true"
           flex="1"
-          seltype="single">
+          seltype="single"
+          minheight="100"
+          minwidth="300">
       <treecols>
-        <treecol name="state" flex="1"
+        <treecol name="state"
                  label="&workflowHistoryTreeColumnState.label;"
                  tooltiptext="&workflowHistoryTreeColumnState.tooltip;"/>
         <splitter class="tree-splitter"/>

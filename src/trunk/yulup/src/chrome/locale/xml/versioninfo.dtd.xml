@@ -6,6 +6,11 @@
     <name xml:lang="de">Versionsinformation</name>
   </entity>
 
+  <entity id="workflowRevisionCaption.label">
+    <name xml:lang="en">Information for resource</name>
+    <name xml:lang="de">Information für Resource</name>
+  </entity>
+
   <entity id="workflowHistoryCaption.label">
     <name xml:lang="en">Workflow History</name>
     <name xml:lang="de">Workflow Historie</name>
