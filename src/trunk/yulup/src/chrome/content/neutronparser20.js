@@ -453,7 +453,7 @@ NeutronParser20.prototype = {
         widget.icon               = iconFile;
         widget.iconURI            = this.__constructURI(aDocument.evaluate("attribute::icon", aNode, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue, this.baseURI);
         widget.name               = this.__parseWidgetNames(aDocument, aNode);
-        widget.description        = this.__parseWidgetDescriptions(aDocument, aNode);
+        widget.description        = this.__parseI18nDescriptions(aDocument, aNode);
         widget.surround           = this.__parseWidgetSurroundAction(aDocument, aNode);
         widget.insert             = this.__parseWidgetInsertAction(aDocument, aNode);
 
@@ -468,7 +468,7 @@ NeutronParser20.prototype = {
         widgetGroup = new Neutron20WidgetGroup();
 
         widgetGroup.name        = this.__parseWidgetNames(aDocument, aNode);
-        widgetGroup.description = this.__parseWidgetDescriptions(aDocument, aNode);
+        widgetGroup.description = this.__parseI18nDescriptions(aDocument, aNode);
 
         widgets = aDocument.evaluate("neutron20:widget", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 
@@ -487,13 +487,13 @@ NeutronParser20.prototype = {
         names = aDocument.evaluate("neutron20:name", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 
         while (name = names.iterateNext()) {
-            nameArray.push(this.__parseWidgetNameAlikes(aDocument, name));
+            nameArray.push(this.__parseI18nNameAlikes(aDocument, name));
         }
 
         return (nameArray.length > 0 ? nameArray : null);
     },
 
-    __parseWidgetDescriptions: function (aDocument, aNode) {
+    __parseI18nDescriptions: function (aDocument, aNode) {
         var descriptions = null;
         var description  = null;
         var descArray    = new Array();
@@ -501,13 +501,13 @@ NeutronParser20.prototype = {
         descriptions = aDocument.evaluate("neutron20:description", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 
         while (description = descriptions.iterateNext()) {
-            descArray.push(this.__parseWidgetNameAlikes(aDocument, description));
+            descArray.push(this.__parseI18nNameAlikes(aDocument, description));
         }
 
         return (descArray.length > 0 ? descArray : null);
     },
 
-    __parseWidgetNameAlikes: function (aDocument, aNode) {
+    __parseI18nNameAlikes: function (aDocument, aNode) {
         var lang = null;
         var text = null;
 
@@ -562,7 +562,7 @@ NeutronParser20.prototype = {
             widgetActionParam.xpath       = aDocument.evaluate("attribute::xpath", parameter, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
             widgetActionParam.type        = aDocument.evaluate("attribute::type", parameter, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
             widgetActionParam.name        = this.__parseWidgetNames(aDocument, parameter);
-            widgetActionParam.description = this.__parseWidgetDescriptions(aDocument, parameter);
+            widgetActionParam.description = this.__parseI18nDescriptions(aDocument, parameter);
 
             parameterArray.push(widgetActionParam);
         }
@@ -650,10 +650,11 @@ NeutronParser20.prototype = {
         while (transition = transitions.iterateNext()) {
             trans = new Neutron20WorkflowTransition(aIntrospectionRoot, aVersion);
 
-            trans.id     = aDocument.evaluate("attribute::id", transition, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-            trans.to     = aDocument.evaluate("attribute::to", transition, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-            trans.url    = this.__constructURI(aDocument.evaluate("attribute::url", transition, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue, this.baseURI);
-            trans.method = aDocument.evaluate("attribute::method", transition, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+            trans.id          = aDocument.evaluate("attribute::id", transition, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+            trans.to          = aDocument.evaluate("attribute::to", transition, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+            trans.url         = this.__constructURI(aDocument.evaluate("attribute::url", transition, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue, this.baseURI);
+            trans.method      = aDocument.evaluate("attribute::method", transition, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+            trans.description = this.__parseI18nDescriptions(aDocument, transition);
 
             transArray.push(trans);
         }

@@ -1147,11 +1147,32 @@ function NeutronWorkflowTransition(aIntrospectionRoot, aVersion) {
 NeutronWorkflowTransition.prototype = {
     __introspectionRoot: null,
     __version          : null,
+    __desc             : null,
+    __descCache        : null,
 
     id    : null,
     to    : null,
     url   : null,
     method: null,
+
+    set description(aValue) {
+        var desc = {};
+
+        if (aValue) {
+            for (var i = 0; i < aValue.length; i++) {
+                desc[aValue[i][0]] = aValue[i][1];
+            }
+        }
+
+        this.__desc = desc;
+    },
+
+    get description() {
+        if (!this.__descCache)
+            this.__descCache = YulupLocalisationServices.getByLang(this.__desc, YulupAppServices.getAppLocale());
+
+        return this.__descCache;
+    },
 
     /**
      * Performs a workflow transition.
@@ -1214,7 +1235,7 @@ NeutronWorkflowTransition.prototype = {
     },
 
     toString: function () {
-        return "Transition: id = \"" + this.id + "\", to = \"" + this.to + "\", url = \"" + (this.url ? this.url.spec : this.url) + "\", method = \"" + this.method + "\"\n";
+        return "Transition: id = \"" + this.id + "\", to = \"" + this.to + "\", description = \"" + this.description + "\", url = \"" + (this.url ? this.url.spec : this.url) + "\", method = \"" + this.method + "\"\n";
     }
 };
 
