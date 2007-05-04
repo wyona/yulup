@@ -1219,8 +1219,15 @@ NeutronWorkflowTransition.prototype = {
         stringBundle = YulupLocalisationServices.getStringBundle("chrome://yulup/locale/neutron.properties");
 
         if (aException) {
-            // an error occurred, show intended state
-            alert(stringBundle.formatStringFromName("transitionFailed.label", [aContext.transition.to, aException], 2));
+            // an error occurred
+
+            if (aException instanceof NeutronProtocolException) {
+                // show intended state
+                alert(stringBundle.formatStringFromName("transitionFailed.label", [aContext.transition.to, aException.message], 2));
+            } else {
+                // show intended state
+                alert(stringBundle.formatStringFromName("transitionFailed.label", [aContext.transition.to, aException], 2));
+            }
         } else {
             try {
                 // replace old workflow element with response from server
