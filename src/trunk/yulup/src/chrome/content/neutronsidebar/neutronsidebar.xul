@@ -62,36 +62,8 @@
   <popupset>
     <popup id="uiYulupNeutronSidebarResourceVersionsContextMenu"/>
     <popup id="uiYulupNeutronSidebarSitetreeVersionsContextMenu"/>
-    <tooltip id="uiYulupNeutronSidebarVersionsTooltip" noautohide="true" orient="vertical">
-      <grid flex="1">
-        <columns>
-          <column flex="1"/>
-          <column/>
-        </columns>
-        <rows>
-          <row>
-            <description value="&neutronSidebarVersionsTooltipRevDesc.label;"     class="tooltipDescription"/>
-            <description id="uiYulupNeutronSidebarVersionsTooltipRevDesc"/>
-          </row>
-          <row>
-            <description value="&neutronSidebarVersionsTooltipDateDesc.label;"    class="tooltipDescription"/>
-            <description id="uiYulupNeutronSidebarVersionsTooltipDateDesc"/>
-          </row>
-          <row>
-            <description value="&neutronSidebarVersionsTooltipStateDesc.label;"   class="tooltipDescription"/>
-            <description id="uiYulupNeutronSidebarVersionsTooltipStateDesc"/>
-          </row>
-          <row>
-            <description value="&neutronSidebarVersionsTooltipCommentDesc.label;" class="tooltipDescription"/>
-            <description id="uiYulupNeutronSidebarVersionsTooltipCommentDesc"/>
-          </row>
-          <row>
-            <description value="&neutronSidebarVersionsTooltipUserDesc.label;"    class="tooltipDescription"/>
-            <description id="uiYulupNeutronSidebarVersionsTooltipUserDesc"/>
-          </row>
-        </rows>
-      </grid>
-    </tooltip>
+    <tooltip class="version" id="uiYulupNeutronSidebarResourceVersionsTooltip" noautohide="true" orient="vertical"/>
+    <tooltip class="version" id="uiYulupNeutronSidebarSitetreeVersionsTooltip" noautohide="true" orient="vertical"/>
   </popupset>
 
   <vbox flex="1">
@@ -148,7 +120,7 @@
             </treecols>
             <treechildren id="uiYulupNeutronSidebarResourceVersionTreeTreeChildren"
                           context="uiYulupNeutronSidebarResourceVersionsContextMenu"
-                          tooltip="uiYulupNeutronSidebarVersionsTooltip"/>
+                          tooltip="uiYulupNeutronSidebarResourceVersionsTooltip"/>
           </tree>
         </vbox>
       </vbox>
@@ -199,7 +171,7 @@
             </treecols>
             <treechildren id="uiYulupNeutronSidebarSitetreeVersionTreeTreeChildren"
                           context="uiYulupNeutronSidebarSitetreeVersionsContextMenu"
-                          tooltip="uiYulupNeutronSidebarVersionsTooltip"/>
+                          tooltip="uiYulupNeutronSidebarSitetreeVersionsTooltip"/>
           </tree>
         </vbox>
       </vbox>

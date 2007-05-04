@@ -33,7 +33,6 @@ const NeutronSidebar = {
     __mainBrowserWindow    : null,
     __viewSelector         : null,
     __contentContainer     : null,
-    __versionsTooltipObject: null,
     __resourceDeck         : null,
     __sitetreeDeck         : null,
 
@@ -57,8 +56,6 @@ const NeutronSidebar = {
         // cache various elements
         this.__viewSelector     = document.getElementById("uiYulupNeutronSidebarContentDeckSelector");
         this.__contentContainer = document.getElementById("uiYulupNeutronSidebarContentTreeDeck");
-
-        this.__versionsTooltipObject = new VersionsTooltipObject(document);
 
         this.__initSources();
 
@@ -243,15 +240,17 @@ const NeutronSidebar = {
         }
 
         // add version information to tooltip popup
-        this.__versionsTooltipObject.clearFields();
+        aPopup.clearFields();
 
-        this.__versionsTooltipObject.revision = version.revision;
-        this.__versionsTooltipObject.date     = version.date;
-        this.__versionsTooltipObject.comment  = version.comment;
-        this.__versionsTooltipObject.user     = version.user;
+        aPopup.revision = version.revision;
+        aPopup.date     = version.date;
+        aPopup.comment  = version.comment;
+        aPopup.user     = version.user;
 
-        if (version.getWorkflowState())
-            this.__versionsTooltipObject.state = version.getWorkflowState().state;
+        if (version.getWorkflowState()) {
+            aPopup.wfState = version.getWorkflowState().state;
+            aPopup.wfDate  = version.getWorkflowState().date;
+        }
     },
 
     openRevision: function (aEvent, aView) {
@@ -316,11 +315,13 @@ NeutronSidebarDeck.prototype = {
     },
 
     getSelectedVersion: function () {
-        return this.__versionTree.view.wrappedJSObject.getSelectedVersion();
+        if (this.__versionTree.view.wrappedJSObject)
+            return this.__versionTree.view.wrappedJSObject.getSelectedVersion();
     },
 
     getVersionForRow: function (aRow) {
-        return this.__versionTree.view.wrappedJSObject.getVersionForRow(aRow);
+        if (this.__versionTree.view.wrappedJSObject)
+            return this.__versionTree.view.wrappedJSObject.getVersionForRow(aRow);
     },
 
     getRowAt: function (aClientY) {
@@ -342,7 +343,7 @@ function NeutronSidebarResourceDeck() {
     this.__resourceTree   = document.getElementById("uiYulupNeutronSidebarResourceTree");
     this.__versionTree    = document.getElementById("uiYulupNeutronSidebarResourceVersionTree");
     this.__versionContext = document.getElementById("uiYulupNeutronSidebarResourceVersionsContextMenu");
-    this.__versionTooltip = document.getElementById("uiYulupNeutronSidebarVersionsTooltip");
+    this.__versionTooltip = document.getElementById("uiYulupNeutronSidebarResourceVersionsTooltip");
     this.__deckSplitter   = document.getElementById("uiYulupNeutronSidebarResourceDeckSplitter");
 
     this.__versionContext.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsContextMenu(aEvent, me, me.__versionContext); }, false);
@@ -406,9 +407,12 @@ function NeutronSidebarSitetreeDeck() {
     this.__resourceTree   = document.getElementById("uiYulupNeutronSidebarSitetreeTree");
     this.__versionTree    = document.getElementById("uiYulupNeutronSidebarSitetreeVersionTree");
     this.__versionContext = document.getElementById("uiYulupNeutronSidebarSitetreeVersionsContextMenu");
+    this.__versionTooltip = document.getElementById("uiYulupNeutronSidebarSitetreeVersionsTooltip");
     this.__deckSplitter   = document.getElementById("uiYulupNeutronSidebarSitetreeDeckSplitter");
 
     this.__versionContext.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsContextMenu(aEvent, me, me.__versionContext); }, false);
+    this.__versionTooltip.addEventListener("popupshowing", function (aEvent) { NeutronSidebar.constructVersionsTooltip(aEvent, me, me.__versionTooltip); }, false);
+
     document.getElementById("uiYulupNeutronSidebarSitetreeVersionTreeTreeChildren").addEventListener("dblclick", function (aEvent) { NeutronSidebar.openRevision(aEvent, me); }, false);
 }
 
@@ -612,52 +616,5 @@ NeutronVersionTreeView.prototype = {
         }
 
         return "";
-    }
-};
-
-
-function VersionsTooltipObject(aDocument) {
-    /* DEBUG */ YulupDebug.ASSERT(aDocument != null);
-
-    this.__revisionDescElem = aDocument.getElementById("uiYulupNeutronSidebarVersionsTooltipRevDesc");
-    this.__dateDescElem     = aDocument.getElementById("uiYulupNeutronSidebarVersionsTooltipDateDesc");
-    this.__stateDescElem    = aDocument.getElementById("uiYulupNeutronSidebarVersionsTooltipStateDesc");
-    this.__commentDescElem  = aDocument.getElementById("uiYulupNeutronSidebarVersionsTooltipCommentDesc");
-    this.__userDescElem     = aDocument.getElementById("uiYulupNeutronSidebarVersionsTooltipUserDesc");
-}
-
-VersionsTooltipObject.prototype = {
-    __revisionDescElem: null,
-    __dateDescElem    : null,
-    __stateDescElem   : null,
-    __commentDescElem : null,
-    __userDescElem    : null,
-
-    clearFields: function () {
-        this.__revisionDescElem.value = "";
-        this.__dateDescElem.value     = "";
-        this.__stateDescElem.value    = "";
-        this.__commentDescElem.value  = "";
-        this.__userDescElem.value     = "";
-    },
-
-    set revision(aValue) {
-        this.__revisionDescElem.value = aValue;
-    },
-
-    set date(aValue) {
-        this.__dateDescElem.value = aValue;
-    },
-
-    set state(aValue) {
-        this.__stateDescElem.value = aValue;
-    },
-
-    set comment(aValue) {
-        this.__commentDescElem.value = aValue;
-    },
-
-    set user(aValue) {
-        this.__userDescElem.value = aValue;
     }
 };
