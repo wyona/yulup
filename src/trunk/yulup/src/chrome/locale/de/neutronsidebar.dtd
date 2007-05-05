@@ -5,7 +5,7 @@
 <!ENTITY neutronSidebarSitetreeMenuitem.label "Sitetree">
 <!ENTITY neutronSidebarResourceTree.label "Elemente dieser Seite">
 <!ENTITY neutronSidebarSitetreeTree.label "Dateien &amp; Verzeichnisse">
-<!ENTITY neutronSidebarVersionTreeTitle.label "Revisionen dieses Elements">
+<!ENTITY neutronSidebarVersionTreeTitle.label "Revisionen und Arbeitsablaeufedieses Elements">
 <!ENTITY neutronSidebarVersionTreeColumnRevision.label "Revision">
 <!ENTITY neutronSidebarVersionTreeColumnRevision.tooltip "Zeigt den Revisionsidentifikator dieser Revision">
 <!ENTITY neutronSidebarVersionTreeColumnDate.label "Datum">
