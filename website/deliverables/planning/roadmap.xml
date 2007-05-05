@@ -14,22 +14,26 @@
       <author>
         <firstname>Andreas</firstname>
         <surname>Wuest</surname>
-        <email>awuest@student.ethz.ch</email>
+        <email>andreas.wuest@wyona.com</email>
         <affiliation>
-          <corpname>Wyona AG</corpname>
+          <corpname>Wyona</corpname>
         </affiliation>
       </author>
       <author>
         <firstname>Michael</firstname>
         <surname>Wechner</surname>
-        <email>michi@wyona.com</email>
+        <email>michael.wechner@wyona.com</email>
         <affiliation>
+	<!--
           <jobtitle>CEO</jobtitle>
+	  -->
           <corpname>Wyona AG</corpname>
         </affiliation>
+	<!--
         <affiliation>
           <orgname>Apache Software Foundation</orgname>
         </affiliation>
+	-->
       </author>
     </authorgroup>
     <!-- All dates specified in ISO "YYYY-MM-DD" format -->
