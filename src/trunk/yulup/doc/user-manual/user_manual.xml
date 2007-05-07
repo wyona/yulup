@@ -1004,7 +1004,7 @@
           <title>Blog Entries Management</title>
           <mediaobject>
             <imageobject>
-              <imagedata fileref="figures/atom_sidebar.png" format="PNG"/>
+              <imagedata fileref="figures/blogentriesmanagement_sidebar.png" format="PNG"/>
             </imageobject>
             <textobject>
               <phrase>Blog Entries Management sidebar showing a news feed and the context menu for one of the feed items</phrase>
@@ -1080,7 +1080,7 @@
           <title>Page Management</title>
           <mediaobject>
             <imageobject>
-              <imagedata fileref="figures/neutron_sidebar.png" format="PNG"/>
+              <imagedata fileref="figures/pagemanagement_sidebar.png" format="PNG"/>
             </imageobject>
             <textobject>
               <phrase>Page Management sidebar showing several collections and resources</phrase>
