@@ -46,10 +46,16 @@
       </author>
     </authorgroup>
     <!-- All dates specified in ISO "YYYY-MM-DD" format -->
-    <pubdate>2007-02-07</pubdate>
+    <pubdate>2007-05-07</pubdate>
     <!-- Most recent revision goes at the top; list in descending order -->
     <!--
     <revhistory>
+      <revision>
+        <revnumber>0.1.3</revnumber>
+        <date>2007-05-07</date>
+        <authorinitials>AW</authorinitials>
+        <revremark>Updated to reflect most of Yulup 0.2.8.</revremark>
+      </revision>
       <revision>
         <revnumber>0.1.2</revnumber>
         <date>2007-01-15</date>
@@ -979,29 +985,29 @@
   <section>
     <title>Sidebars</title>
     <para>
-      Sidebars are UI elements which are usually opened on the left hand side of the web browser. There are several standard sidebars delivered with Firefox, and &project; adds two new ones, an Atom sidebar and a Neutron sidebar.
+      Sidebars are UI elements which are usually opened on the left hand side of the web browser. There are several standard sidebars delivered with Firefox, and &project; adds two new ones, an Blog Entries Management sidebar and a Neutron sidebar.
     </para>
     <para>
       Sidebars can generally be accessed either via the <guimenu>View</guimenu> &gt;&gt; <guisubmenu>Sidebar</guisubmenu> menu, or via a keyboard shortcut specific to each sidebar.
     </para>
     <section>
-      <title>Atom Sidebar</title>
+      <title>Blog Entries Management</title>
       <para>
-        The Atom sidebar can be accessed either via the <guimenu>View</guimenu> &gt;&gt; <guisubmenu>Sidebar</guisubmenu> &gt;&gt; <guimenuitem>Atom Sidebar</guimenuitem> menu item, via the <guimenuitem>Atom Sidebar</guimenuitem> menu item in the &project; menu, or via the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>A</keycap></keycombo> keyboard shortcut.
+        The Blog Entries Management sidebar can be accessed either via the <guimenu>View</guimenu> &gt;&gt; <guisubmenu>Sidebar</guisubmenu> &gt;&gt; <guimenuitem>Blog Entries Management</guimenuitem> menu item, via the <guimenuitem>Blog Entries Management</guimenuitem> menu item in the &project; menu, or via the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>B</keycap></keycombo> keyboard shortcut.
       </para>
       <para>
-        Once the Atom sidebar is open, you can close it by unchecking it in one of the above mentioned menus, by hitting the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>A</keycap></keycombo> keyboard shortcut again, or by clicking the <guibutton>close</guibutton> button in the upper right corner of the sidebar.
+        Once the Blog Entries Management sidebar is open, you can close it by unchecking it in one of the above mentioned menus, by hitting the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>B</keycap></keycombo> keyboard shortcut again, or by clicking the <guibutton>close</guibutton> button in the upper right corner of the sidebar.
       </para>
       <para>
-        Note that the Atom sidebar cannot be opened if the currently shown document does not contain a link to an APP Service Document.
+        Note that the Blog Entries Management sidebar cannot be opened if the currently shown document does not contain a link to an APP Service Document.
         <figure>
-          <title>Atom Sidebar</title>
+          <title>Blog Entries Management</title>
           <mediaobject>
             <imageobject>
               <imagedata fileref="figures/atom_sidebar.png" format="PNG"/>
             </imageobject>
             <textobject>
-              <phrase>Atom sidebar showing a news feed and the context menu for one of the feed items</phrase>
+              <phrase>Blog Entries Management sidebar showing a news feed and the context menu for one of the feed items</phrase>
             </textobject>
           </mediaobject>
         </figure>
@@ -1057,7 +1063,7 @@
       <section>
         <title>Searching a Feed</title>
         <para>
-          By entering text in the search box at the bottom of the Atom sidebar, you can search through all feed entry titles of the currently shown feed. If one or multiple feed entry titles match, these feed entries are selected.
+          By entering text in the search box at the bottom of the Blog Entries Management sidebar, you can search through all feed entry titles of the currently shown feed. If one or multiple feed entry titles match, these feed entries are selected.
         </para>
       </section>
     </section>
@@ -1146,8 +1152,8 @@
           <itemizedlist>
             <listitem>
               <formalpara>
-                <title>Open Atom Sidebar Automatically</title>
-                Check this option if you would like &project; to automatically open the Atom sidebar every time a page containing a link to an APP Service Document is accessed.
+                <title>Open Blog Entries Management Sidebar Automatically</title>
+                Check this option if you would like &project; to automatically open the Blog Entries Management sidebar every time a page containing a link to an APP Service Document is accessed.
               </formalpara>
             </listitem>
           </itemizedlist>
