@@ -1075,23 +1075,23 @@
       <para>
         Once the Page Management sidebar is open, you can close it by unchecking it in one of the above mentioned menus, by hitting the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>P</keycap></keycombo> keyboard shortcut again, or by clicking the <guibutton>close</guibutton> button in the upper right corner of the sidebar.
       </para>
-      <para>
-        <figure>
-          <title>Page Management</title>
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="figures/pagemanagement_sidebar.png" format="PNG"/>
-            </imageobject>
-            <textobject>
-              <phrase>Page Management sidebar showing several collections and resources</phrase>
-            </textobject>
-          </mediaobject>
-        </figure>
-      </para>
       <section>
         <title>Navigating the Remote Hierarchy (Sitetree)</title>
         <para>
           The remote hierarchy can be reached by selecting "Sitetree" in the menu list at the top of the sidebar.
+        </para>
+        <para>
+          <figure>
+            <title>Page Management Remote Hierarchy</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="figures/pagemanagement_sitetree_sidebar.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <phrase>Page Management sidebar showing several collections and resources of the sitetree</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
         </para>
         <para>
           The remote hierarchy can be navigated by clicking on the arrow icons left to collections; this will open or close the collection, depending on its current state.
@@ -1101,6 +1101,19 @@
         <title>Accessing the Elements of the Current Page</title>
         <para>
           To access the elements of the current page, select "Page" in the menu list at the top of the sidebar.
+        </para>
+        <para>
+          <figure>
+            <title>Page Management Page Elements</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="figures/pagemanagement_page_sidebar.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <phrase>Page Management sidebar showing elements of the current page</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
         </para>
         <para>
           By clicking on one of the elements, its revision history is shown in the lower tree list, if available. By context-clicking on one of the revision entries, several actions can be performed.
