@@ -1089,10 +1089,69 @@
         </figure>
       </para>
       <section>
-        <title>Navigating</title>
+        <title>Navigating the Remote Hierarchy (Sitetree)</title>
+        <para>
+          The remote hierarchy can be reached by selecting "Sitetree" in the menu list at the top of the sidebar.
+        </para>
         <para>
           The remote hierarchy can be navigated by clicking on the arrow icons left to collections; this will open or close the collection, depending on its current state.
         </para>
+      </section>
+      <section>
+        <title>Accessing the Elements of the Current Page</title>
+        <para>
+          To access the elements of the current page, select "Page" in the menu list at the top of the sidebar.
+        </para>
+        <para>
+          By clicking on one of the elements, its revision history is shown in the lower tree list, if available. By context-clicking on one of the revision entries, several actions can be performed.
+        </para>
+        <para>
+          <figure>
+            <title>Revision Context Menu</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="figures/pagemanagement_contextmenu.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <phrase>The context menu for a revision in the Page Management sidebar</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+        </para>
+        <para>
+          At the top of the context menu, all available transitions for this revision are listed, if available. Below, you can request detailed information for this revision by selecting <guimenuitem>More information...</guimenuitem>. Also, you can open this revision in a new tab by selecting <guimenuitem>Open this revision in a new tab</guimenuitem>.
+        </para>
+        <section>
+          <title>Opening Old Revisions</title>
+          <para>
+            An old revision can be opened by either double-clicking on the revision you want to open, or by opening its context menu and selecting <guimenuitem>Open this revision in a new tab</guimenuitem>.
+          </para>
+        </section>
+        <section>
+          <title>Displaying Detailed Revision Information</title>
+          <para>
+            Detailed information for a specific revision can be displayed by opening the revision's context menu and selecting <guimenuitem>More information...</guimenuitem>.
+          </para>
+          <para>
+            <figure>
+              <title>Detailed Revision Information</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="figures/pagemanagement_versioninfo.png" format="PNG"/>
+                </imageobject>
+                <textobject>
+                  <phrase>The revision detailed information dialog</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+          </para>
+        </section>
+        <section>
+          <title>Performing Workflow Transitions</title>
+          <para>
+            All workflow transitions are listed on the top of a revision's context menu. If no transitions are available, then none will be listed. By selecting one of the transitions, this transition will be performed for the selected revision. A dialog will inform you about the success state of the transition.
+          </para>
+        </section>
       </section>
     </section>
   </section>
