@@ -985,7 +985,7 @@
   <section>
     <title>Sidebars</title>
     <para>
-      Sidebars are UI elements which are usually opened on the left hand side of the web browser. There are several standard sidebars delivered with Firefox, and &project; adds two new ones, an Blog Entries Management sidebar and a Neutron sidebar.
+      Sidebars are UI elements which are usually opened on the left hand side of the web browser. There are several standard sidebars delivered with Firefox, and &project; adds two new ones, an Blog Entries Management sidebar and a Page Management sidebar.
     </para>
     <para>
       Sidebars can generally be accessed either via the <guimenu>View</guimenu> &gt;&gt; <guisubmenu>Sidebar</guisubmenu> menu, or via a keyboard shortcut specific to each sidebar.
@@ -1067,23 +1067,23 @@
         </para>
       </section>
     </section>
-    <section id="neutronsidebar">
-      <title id="neutronsidebar.title">Neutron Sidebar</title>
+    <section id="pagemanagement">
+      <title id="pagemanagement.title">Page Management</title>
       <para>
-        The Neutron sidebar can be accessed either via the <guimenu>View</guimenu> &gt;&gt; <guisubmenu>Sidebar</guisubmenu> &gt;&gt; <guimenuitem>Neutron Sidebar</guimenuitem> menu item, via the <guimenuitem>Neutron Sidebar</guimenuitem> menu item in the &project; menu, or via the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>N</keycap></keycombo> keyboard shortcut.
+        The Page Management sidebar can be accessed either via the <guimenu>View</guimenu> &gt;&gt; <guisubmenu>Sidebar</guisubmenu> &gt;&gt; <guimenuitem>Page Management</guimenuitem> menu item, via the <guimenuitem>Page Management</guimenuitem> menu item in the &project; menu, or via the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>P</keycap></keycombo> keyboard shortcut.
       </para>
       <para>
-        Once the Neutron sidebar is open, you can close it by unchecking it in one of the above mentioned menus, by hitting the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>N</keycap></keycombo> keyboard shortcut again, or by clicking the <guibutton>close</guibutton> button in the upper right corner of the sidebar.
+        Once the Page Management sidebar is open, you can close it by unchecking it in one of the above mentioned menus, by hitting the <keycombo action="simul"><keycap>Accel</keycap><keycap>Shift</keycap><keycap>P</keycap></keycombo> keyboard shortcut again, or by clicking the <guibutton>close</guibutton> button in the upper right corner of the sidebar.
       </para>
       <para>
         <figure>
-          <title>Neutron Sidebar</title>
+          <title>Page Management</title>
           <mediaobject>
             <imageobject>
               <imagedata fileref="figures/neutron_sidebar.png" format="PNG"/>
             </imageobject>
             <textobject>
-              <phrase>Neutron sidebar showing several collections and resources</phrase>
+              <phrase>Page Management sidebar showing several collections and resources</phrase>
             </textobject>
           </mediaobject>
         </figure>
@@ -1143,7 +1143,7 @@
       <section id="defaultcms">
         <title id="defaultcms.title">Default CMS</title>
         <para>
-          Enter the URI of the CMS you use most. This URI is evaluated e.g. when using the <xref linkend="neutronsidebar" endterm="neutronsidebar.title"/>, or when you try to upload a new document to your CMS, but no CMS URI can be found via Neutron.
+          Enter the URI of the CMS you use most. This URI is evaluated e.g. when using the <xref linkend="pagemanagement" endterm="pagemanagement.title"/>, or when you try to upload a new document to your CMS, but no CMS URI can be found via Neutron.
         </para>
       </section>
       <section>
@@ -1242,7 +1242,7 @@
       You can use &project; together with a WebDAV-enabled backend for browsing and storing documents. In order to use WebDAV, simply point your default CMS (see <xref linkend="defaultcms" endterm="defaultcms.title"/>) to your WebDAV server.
     </para>
     <para>
-      Then, you can use the <xref linkend="neutronsidebar" endterm="neutronsidebar.title"/> to browse the WebDAV repository, and you can use the various upload functionalities to store documents on your WebDAV server.
+      Then, you can use the <xref linkend="pagemanagement" endterm="pagemanagement.title"/> to browse the WebDAV repository, and you can use the various upload functionalities to store documents on your WebDAV server.
     </para>
   </appendix>
 
