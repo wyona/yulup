@@ -1,14 +1,14 @@
 <div element="article" href="specification.xhtml#id52600" number="">
   <ttl>Yulup Specification</ttl>
   <xreftext>Yulup Specification</xreftext>
-  <div element="section" href="specification.xhtml#id342851" number="1">
+  <div element="section" href="specification.xhtml#id342847" number="1">
     <ttl>Use Cases</ttl>
     <xreftext>Section 1, “Use Cases”</xreftext>
-    <div element="section" href="specification.xhtml#id342856" number="1.1">
+    <div element="section" href="specification.xhtml#id342852" number="1.1">
       <ttl>Using Yulup as a Browser</ttl>
       <xreftext>Section 1.1, “Using Yulup as a Browser”</xreftext>
     </div>
-    <div element="section" href="specification.xhtml#id342875" number="1.2">
+    <div element="section" href="specification.xhtml#id342871" number="1.2">
       <ttl>Using Yulup as an Editing Tool</ttl>
       <xreftext>Section 1.2, “Using Yulup as an Editing Tool”</xreftext>
       <obj element="listitem" href="specification.xhtml#UC1" number="" targetptr="UC1">
@@ -48,14 +48,14 @@
         <xreftext>UC9</xreftext>
       </obj>
     </div>
-    <div element="section" href="specification.xhtml#id343044" number="1.3">
+    <div element="section" href="specification.xhtml#id343041" number="1.3">
       <ttl>More than XML</ttl>
       <xreftext>Section 1.3, “More than XML”</xreftext>
       <obj element="listitem" href="specification.xhtml#UC10" number="" targetptr="UC10">
         <ttl>???TITLE???</ttl>
         <xreftext>UC10</xreftext>
       </obj>
-      <obj element="example" href="specification.xhtml#id343069" number="1">
+      <obj element="example" href="specification.xhtml#id343066" number="1">
         <ttl>Add "common" formatting</ttl>
         <xreftext>Example 1, “Add "common" formatting”</xreftext>
       </obj>
@@ -101,24 +101,24 @@
       </obj>
     </div>
   </div>
-  <div element="section" href="specification.xhtml#id343263" number="2">
+  <div element="section" href="specification.xhtml#id343260" number="2">
     <ttl>Project Decomposition</ttl>
     <xreftext>Section 2, “Project Decomposition”</xreftext>
-    <obj element="figure" href="specification.xhtml#id343274" number="1">
+    <obj element="figure" href="specification.xhtml#id343272" number="1">
       <ttl>Project Decomposition</ttl>
       <xreftext>Figure 1, “Project Decomposition”</xreftext>
     </obj>
   </div>
-  <div element="section" href="specification.xhtml#id343318" number="3">
+  <div element="section" href="specification.xhtml#id343316" number="3">
     <ttl>Requirements</ttl>
     <xreftext>Section 3, “Requirements”</xreftext>
-    <div element="section" href="specification.xhtml#id343324" number="3.1">
+    <div element="section" href="specification.xhtml#id343321" number="3.1">
       <ttl>Functional Requirements</ttl>
       <xreftext>Section 3.1, “Functional Requirements”</xreftext>
-      <div element="section" href="specification.xhtml#id343329" number="3.1.1">
+      <div element="section" href="specification.xhtml#id343326" number="3.1.1">
         <ttl>Front End Component (FRONTEND)</ttl>
         <xreftext>Section 3.1.1, “Front End Component (FRONTEND)”</xreftext>
-        <obj element="figure" href="specification.xhtml#id343349" number="2">
+        <obj element="figure" href="specification.xhtml#id343346" number="2">
           <ttl>Front End</ttl>
           <xreftext>Figure 2, “Front End”</xreftext>
         </obj>
@@ -182,23 +182,23 @@
           <ttl>???TITLE???</ttl>
           <xreftext>Feature F15</xreftext>
         </obj>
-        <div element="section" href="specification.xhtml#id343740" number="3.1.1.1">
+        <div element="section" href="specification.xhtml#id343737" number="3.1.1.1">
           <ttl>Browser Integrated Variant (BROWSER)</ttl>
           <xreftext>Section 3.1.1.1, “Browser Integrated Variant (BROWSER)”</xreftext>
         </div>
-        <div element="section" href="specification.xhtml#id343755" number="3.1.1.2">
+        <div element="section" href="specification.xhtml#id343752" number="3.1.1.2">
           <ttl>Standalone Variant (STANDALONE)</ttl>
           <xreftext>Section 3.1.1.2, “Standalone Variant (STANDALONE)”</xreftext>
         </div>
-        <div element="section" href="specification.xhtml#id343768" number="3.1.1.3">
+        <div element="section" href="specification.xhtml#id343765" number="3.1.1.3">
           <ttl>Web-based Variant (WEB)</ttl>
           <xreftext>Section 3.1.1.3, “Web-based Variant (WEB)”</xreftext>
         </div>
       </div>
-      <div element="section" href="specification.xhtml#id343781" number="3.1.2">
+      <div element="section" href="specification.xhtml#id343778" number="3.1.2">
         <ttl>Back End Component (BACKEND)</ttl>
         <xreftext>Section 3.1.2, “Back End Component (BACKEND)”</xreftext>
-        <obj element="figure" href="specification.xhtml#id343802" number="3">
+        <obj element="figure" href="specification.xhtml#id343799" number="3">
           <ttl>Back End</ttl>
           <xreftext>Figure 3, “Back End”</xreftext>
         </obj>
@@ -563,10 +563,10 @@
           <xreftext>Feature B17</xreftext>
         </obj>
       </div>
-      <div element="section" href="specification.xhtml#id345849" number="3.1.3">
+      <div element="section" href="specification.xhtml#id345846" number="3.1.3">
         <ttl>Remote Connector Component (CONNECTOR)</ttl>
         <xreftext>Section 3.1.3, “Remote Connector Component (CONNECTOR)”</xreftext>
-        <obj element="figure" href="specification.xhtml#id345862" number="4">
+        <obj element="figure" href="specification.xhtml#id345859" number="4">
           <ttl>Remote Connector</ttl>
           <xreftext>Figure 4, “Remote Connector”</xreftext>
         </obj>
@@ -584,16 +584,16 @@
         </obj>
       </div>
     </div>
-    <div element="section" href="specification.xhtml#id345944" number="3.2">
+    <div element="section" href="specification.xhtml#id345941" number="3.2">
       <ttl>Non-Functional Requirements</ttl>
       <xreftext>Section 3.2, “Non-Functional Requirements”</xreftext>
     </div>
   </div>
-  <div element="section" href="specification.xhtml#id346021" number="4">
+  <div element="section" href="specification.xhtml#id346018" number="4">
     <ttl>Open Issues/To be discussed</ttl>
     <xreftext>Section 4, “Open Issues/To be discussed”</xreftext>
   </div>
-  <div element="section" href="specification.xhtml#id346082" number="5">
+  <div element="section" href="specification.xhtml#id346079" number="5">
     <ttl>Reasoning</ttl>
     <xreftext>Section 5, “Reasoning”</xreftext>
   </div>
