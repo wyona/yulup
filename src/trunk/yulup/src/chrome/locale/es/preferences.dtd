@@ -7,7 +7,7 @@
 <!ENTITY generalDefaultServerGroupbox.label "CMS por defecto">
 <!ENTITY generalDefaultServerTextboxLabel.label "Introduzca la URI de su CMS por defecto">
 <!ENTITY generalSidebarsGroupbox.label "Barras laterales">
-<!ENTITY generalSidebarsAtomAutoOpen.label "Abrir la Barra Lateral Atom automáticamente">
+<!ENTITY generalSidebarsAtomAutoOpen.label "Abrir la Barra Lateral Blog Entries Management automáticamente">
 <!ENTITY editorPrefPane.label "Editor">
 <!ENTITY editorKeyBindingsGroupbox.label "Combinaciones de teclas">
 <!ENTITY editorKeyBindingsMenulistLabel.label "Seleccionar un esquema de combinación de teclas">
