@@ -172,7 +172,7 @@ var Neutron = {
         }
     },
 
-    parseWorkflowResponse: function (aResponse, aIntrospectionRoot, aVersion) {
+    parseWorkflowResponse: function (aResponse, aIntrospectionRoot, aResource) {
         var xmlDocument  = null;
         var documentRoot = null;
         var response     = null;
@@ -181,7 +181,7 @@ var Neutron = {
 
         /* DEBUG */ YulupDebug.ASSERT(aResponse          != null);
         /* DEBUG */ YulupDebug.ASSERT(aIntrospectionRoot != null);
-        /* DEBUG */ YulupDebug.ASSERT(aVersion           != null);
+        /* DEBUG */ YulupDebug.ASSERT(aResource          != null);
 
         // parse XML response to DOM
         xmlDocument = (new DOMParser()).parseFromString(aResponse, "text/xml");
@@ -192,7 +192,7 @@ var Neutron = {
             throw new NeutronException("Yulup:neutron.js:Neutron.parseWorkflowResponse: Neutron response not well-formed. The response string was = \"" + aResponse + "\".");
         } else {
             // response ok, pass it on to the Neutron parser
-            response = Neutron.parserFactory(xmlDocument, aIntrospectionRoot.associatedWithURI).parseWorkflowResponse(aIntrospectionRoot, aVersion);
+            response = Neutron.parserFactory(xmlDocument, aIntrospectionRoot.associatedWithURI).parseWorkflowResponse(aIntrospectionRoot, aResource);
         }
 
         return response;
@@ -1231,7 +1231,7 @@ NeutronWorkflowTransition.prototype = {
         } else {
             try {
                 // replace old workflow element with response from server
-                Neutron.parseWorkflowResponse(aDocumentData, this.__introspectionRoot, this.__version);
+                Neutron.parseWorkflowResponse(aDocumentData, this.__introspectionRoot, this.__version.resource);
             } catch (exception) {
                 /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutron.js:NeutronWorkflowTransition.__workflowTransitionFinishedHandler", exception);
                 /* DEBUG */ Components.utils.reportError(exception);

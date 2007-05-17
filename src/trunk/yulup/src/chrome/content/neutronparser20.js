@@ -243,28 +243,36 @@ NeutronParser20.prototype = {
         }
     },
 
-    parseWorkflowResponse: function (aIntrospectionRoot, aVersion) {
-        var workflow = null;
-        var state    = null;
+    parseWorkflowResponse: function (aIntrospectionRoot, aResource) {
+        var versions    = null;
+        var versionIter = null;
+        var version     = null;
 
         /* DEBUG */ dump("Yulup:neutronparser20.js:NeutronParser20.parseWorkflowResponse() invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aIntrospectionRoot != null);
-        /* DEBUG */ YulupDebug.ASSERT(aVersion           != null);
+        /* DEBUG */ YulupDebug.ASSERT(aResource          != null);
 
-        workflow = this.documentDOM.evaluate("neutron20:workflow", this.documentDOM, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        // get versions element
+        versions = this.documentDOM.evaluate("neutron20:versions", this.documentDOM, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 
-        if (workflow) {
-            state = this.documentDOM.evaluate("neutron20:state", workflow, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (state)
-                aVersion.workflowState = this.__parseWorkflowState(this.documentDOM, state);
+        if (versions) {
+            if (aResource.versions) {
+                while (aResource.versions.length > 0)
+                    aResource.versions.pop();
+            } else {
+                aResource.versions = new Array();
+            }
 
-            aVersion.workflowTransitions = this.__parseWorkflowTransitions(this.documentDOM, workflow, aIntrospectionRoot, aVersion);
-            aVersion.workflowHistory     = this.__parseWorkflowHistory(this.documentDOM, workflow);
+            versionIter = aDocument.evaluate("neutron20:version", versions, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
+
+            while (version = versionIter.iterateNext()) {
+                aResource.versions.push(this.__parseVersion(this.documentDOM, version, aIntrospectionRoot, aResource));
+            }
         } else
             throw new NeutronException("Yulup:neutronparser20.js:NeutronParser20.parseWorkflowResponse: not a valid workflow response");
 
-        return aVersion;
+        return aResource;
     },
 
     __parseNew: function(aDocument, aNode) {
