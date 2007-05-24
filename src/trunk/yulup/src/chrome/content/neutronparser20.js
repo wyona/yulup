@@ -264,7 +264,7 @@ NeutronParser20.prototype = {
                 aResource.versions = new Array();
             }
 
-            versionIter = aDocument.evaluate("neutron20:version", versions, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
+            versionIter = this.documentDOM.evaluate("neutron20:version", versions, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)
 
             while (version = versionIter.iterateNext()) {
                 aResource.versions.push(this.__parseVersion(this.documentDOM, version, aIntrospectionRoot, aResource));
