@@ -36,14 +36,21 @@ var Neutron = {
     /**
      * Fetch introspection file.
      *
-     * @param  {String}       aURI     URI of remote host to query for introspection file
-     * @param  {nsIURI}       aBaseURI the URI of the document to which the introspection document is associated
-     * @return {Undefined}             does not have a return value
+     * @param  {String}  aURI           URI of remote host to query for introspection file
+     * @param  {nsIURI}  aBaseURI       the URI of the document to which the introspection document is associated
+     * @param  {Object}  aYulup         the Yulup object
+     * @param  {Boolean} aAuthenticate  if authentication should take place during introspection document load, or we should fail
+     * @return {Undefined}  does not have a return value
      */
-    introspection: function (aURI, aBaseURI, aYulup) {
+    introspection: function (aURI, aBaseURI, aYulup, aAuthenticate) {
         var context = null;
 
         /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspection(\"" + aURI + "\", \"" + aBaseURI + "\") invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aURI          != null);
+        /* DEBUG */ YulupDebug.ASSERT(aBaseURI      != null);
+        /* DEBUG */ YulupDebug.ASSERT(aYulup        != null);
+        /* DEBUG */ YulupDebug.ASSERT(aAuthenticate != null);
 
         context = {
             URI:              aURI,
@@ -52,7 +59,7 @@ var Neutron = {
             callbackFunction: Neutron.introspectionLoadFinished
         };
 
-        NetworkService.httpRequestGET(aURI, null, this.__requestFinishedHandler, context, false, true);
+        NetworkService.httpRequestGET(aURI, null, this.__requestFinishedHandler, context, false, aAuthenticate, null);
     },
 
     /**
@@ -133,7 +140,11 @@ var Neutron = {
                 /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished: failed to load introspection document \"" + uri + "\". \"" + aException + "\"\n");
 
                 // set the introspection state
-                yulup.introspectionStateChanged("failed");
+                if (aException instanceof NeutronProtocolException) {
+                    yulup.introspectionStateChanged("auth-required", uri);
+                } else {
+                    yulup.introspectionStateChanged("failed");
+                }
             }
         } catch (exception) {
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:neutron.js:Neutron.introspectionLoadFinished", exception);

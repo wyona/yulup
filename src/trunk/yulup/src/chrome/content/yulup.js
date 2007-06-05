@@ -152,6 +152,7 @@ const Yulup = {
         this.yulupOperationNewFromTemplateLocalMenupopup = document.getElementById("uiYulupOperationNewFromTemplateLocalMenupopup");
         this.uiYulupEditMenupopup                        = document.getElementById("uiYulupEditMenupopup");
         this.yulupOpenAtomSidebarObserver                = document.getElementById("uiOpenYulupAtomSidebar");
+        this.yulupNeutronLoginMenuitem                   = document.getElementById("uiYulupRealmLogin");
         this.yulupDocument                               = document;
 
         this.yulupEditMenu.setAttribute("disabled", "false");
@@ -560,6 +561,10 @@ const Yulup = {
         self.getBrowser().selectedBrowser.loadURI(YULUP_WEB_SITE_URI, null, null);
     },
 
+    authenticationLogin: function () {
+        Neutron.introspection(this.yulupNeutronLoginMenuitem.getAttribute("uri"), self.getBrowser().selectedBrowser.currentURI, this, true);
+    },
+
     authenticationLogout: function (aLogoutURI, aRealm) {
         /* DEBUG */ dump("Yulup:yulup.js:Yulup.authenticationLogout() invoked\n");
 
@@ -743,7 +748,7 @@ const Yulup = {
                     for (var i = 0; i < introspectionLinks.length; i++) {
                         switch (introspectionLinks[i].type) {
                         case INTROSPECTION_TYPE_NEUTRON:
-                            Neutron.introspection(introspectionLinks[i].uri, documentURI, this);
+                            Neutron.introspection(introspectionLinks[i].uri, documentURI, this, false);
                             break;
                         case INTROSPECTION_TYPE_APP:
                             APP.fetchIntrospection(introspectionLinks[i].uri, documentURI, this);
@@ -841,7 +846,18 @@ const Yulup = {
         }
     },
 
-    introspectionStateChanged: function (aStateChange) {
+    setLoginRequired: function (aURI) {
+        if (aURI) {
+            this.yulupNeutronLoginMenuitem.setAttribute("uri", aURI);
+            this.yulupNeutronLoginMenuitem.removeAttribute("disabled");
+        } else {
+            this.yulupNeutronLoginMenuitem.setAttribute("disabled", "true");
+            this.yulupNeutronLoginMenuitem.removeAttribute("uri");
+        }
+
+    },
+
+    introspectionStateChanged: function (aStateChange, aURI) {
         var fragments    = null;
         var atomAutoOpen = null;
 
@@ -871,6 +887,8 @@ const Yulup = {
 
                     this.yulupEditMenuCheckoutMenuitem.removeAttribute("hidden");
                     this.yulupEditMenuCheckoutNoLockMenuitem.removeAttribute("hidden");
+
+                    this.setLoginRequired(null);
 
                     this.yulupEditMenu.setAttribute("introspection", "no");
                     this.yulupEditMenu.removeAttribute("tooltip");
@@ -936,11 +954,44 @@ const Yulup = {
                         this.yulupOpenAtomSidebarObserver.setAttribute("disabled", true);
                 }
 
+                this.setLoginRequired(null);
+
                 this.yulupEditMenu.setAttribute("introspection", "ok");
                 this.yulupEditMenu.removeAttribute("tooltip");
                 this.yulupEditMenu.setAttribute("tooltiptext", document.getElementById("uiYulupOverlayStringbundle").getString("editToolbarbutton.tooltip"));
 
                 this.currentState = "success";
+
+                break;
+            case "auth-required":
+                this.currentNeutronIntrospection = null;
+
+                this.setLoginRequired(aURI);
+
+                // restore menu item labels
+                this.yulupEditMenuCheckoutMenuitem.setAttribute("label", this.yulupEditMenuCheckoutMenuitemLabel);
+                this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("label", this.yulupEditMenuCheckoutNoLockMenuitemLabel);
+
+                this.yulupEditMenuCheckoutMenu.setAttribute("hidden", "true");
+                this.yulupEditMenuCheckoutMenu.setAttribute("disabled", "true");
+                this.yulupEditMenuCheckoutNoLockMenu.setAttribute("hidden", "true");
+                this.yulupEditMenuCheckoutNoLockMenu.setAttribute("disabled", "true");
+
+                this.yulupEditMenuCheckoutMenuitem.setAttribute("disabled", "true");
+                this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("disabled", "true");
+
+                this.yulupEditMenuCheckoutMenuitem.removeAttribute("hidden");
+                this.yulupEditMenuCheckoutNoLockMenuitem.removeAttribute("hidden");
+
+                this.yulupEditMenu.setAttribute("introspection", "ok");
+                this.yulupEditMenu.removeAttribute("tooltip");
+                this.yulupEditMenu.setAttribute("tooltiptext", document.getElementById("uiYulupOverlayStringbundle").getString("editToolbarbutton.tooltip"));
+
+                // no Atom content available, disable sidebar opening
+                if (this.yulupOpenAtomSidebarObserver)
+                    this.yulupOpenAtomSidebarObserver.setAttribute("disabled", true);
+
+                this.currentState = "failed";
 
                 break;
             case "failed":
@@ -960,6 +1011,8 @@ const Yulup = {
 
                 this.yulupEditMenuCheckoutMenuitem.removeAttribute("hidden");
                 this.yulupEditMenuCheckoutNoLockMenuitem.removeAttribute("hidden");
+
+                this.setLoginRequired(null);
 
                 this.yulupEditMenu.setAttribute("introspection", "warn");
                 this.yulupEditMenu.removeAttribute("tooltiptext");

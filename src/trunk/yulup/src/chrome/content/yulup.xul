@@ -184,7 +184,12 @@
         <menuitem key="key_openYulupAtomSidebar"    observes="uiOpenYulupAtomSidebar"/>
         <menuitem key="key_openYulupNeutronSidebar" observes="uiOpenYulupNeutronSidebar"/>
 
-        <menuseparator id="uiYulupRealmSeparator" hidden="true"/>
+        <menuseparator id="uiYulupRealmSeparator"/>
+
+        <menuitem id="uiYulupRealmLogin"
+                  oncommand="Yulup.authenticationLogin()"
+                  label="&operationNeutronLogin.label;" tooltiptext="&operationNeutronLogin.tooltip;"
+                  disabled="true"/>
 
         <menuseparator id="uiYulupExtrasSeparator"/>
 

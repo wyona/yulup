@@ -66,6 +66,16 @@
     <name xml:lang="es">Abrir</name>
   </entity>
 
+  <entity id="operationNeutronLogin.label">
+    <name xml:lang="en">Login</name>
+    <name xml:lang="de">Einloggen</name>
+  </entity>
+
+  <entity id="operationNeutronLogin.tooltip">
+    <name xml:lang="en">Login to see all available operations</name>
+    <name xml:lang="de">Einloggen um alle vorhandenen Operationen zu sehen</name>
+  </entity>
+
   <entity id="editAboutYulupMenuitem.label">
     <name xml:lang="en">About</name>
     <name xml:lang="de">Ueber</name>

@@ -9,6 +9,8 @@
 <!ENTITY editOperationNewMenu.label "Neu">
 <!ENTITY fileOperationNewAtomEntryMenuitem.label "Neuer Atom Eintrag">
 <!ENTITY editOperationOpenMenu.label "Öffnen">
+<!ENTITY operationNeutronLogin.label "Einloggen">
+<!ENTITY operationNeutronLogin.tooltip "Einloggen um alle vorhandenen Operationen zu sehen">
 <!ENTITY editAboutYulupMenuitem.label "Ueber">
 <!ENTITY editPreferencesMenuitem.label "Einstellungen">
 <!ENTITY editHelpMenuitem.label "Hilfe">
