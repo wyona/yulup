@@ -1253,7 +1253,7 @@ NeutronWorkflowTransition.prototype = {
             }
 
             // success, show actual new state
-            alert(stringBundle.formatStringFromName("transitionSucceeded.label", [this.__version.getWorkflowState() ? this.__version.getWorkflowState().state : this.__version.getWorkflowState()], 1));
+            alert(stringBundle.GetStringFromName("transitionSucceeded.label"));
         }
     },
 

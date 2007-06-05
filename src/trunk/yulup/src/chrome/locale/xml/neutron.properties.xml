@@ -6,6 +6,6 @@
   </entity>
 
   <entity id="transitionSucceeded.label">
-    <name xml:lang="en">New state is "%S".</name>
+    <name xml:lang="en">Transition succeeded.</name>
   </entity>
 </dtd>
