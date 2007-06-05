@@ -94,23 +94,7 @@ NeutronAuthParser10.prototype = {
                 challenge = new NeutronAuth10Challenge(this.documentDOM.evaluate("neutronauth10:message/text()", elemNode, this.__nsResolver, XPathResult.STRING_TYPE, null).stringValue);
 
                 if ((elemNode = this.documentDOM.evaluate("neutronauth10:authentication", elemNode, this.__nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) != null) {
-                    challenge.originalUrl = this.documentDOM.evaluate("neutronauth10:original-request/attribute::url", elemNode, this.__nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-                    challenge.logoutUrl   = this.documentDOM.evaluate("neutronauth10:logout/attribute::url", elemNode, this.__nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-                    challenge.realm       = this.documentDOM.evaluate("neutronauth10:logout/attribute::realm", elemNode, this.__nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-
-                    if ((elemNode = this.documentDOM.evaluate("neutronauth10:login", elemNode, this.__nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) != null) {
-                        challenge.url = this.documentDOM.evaluate("attribute::url", elemNode, this.__nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-
-                        if ((elemNode = this.documentDOM.evaluate("neutronauth10:form", elemNode, this.__nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) != null) {
-                            challenge.infoMessage = this.documentDOM.evaluate("neutronauth10:message/text()", elemNode, this.__nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-                            nodeSet = this.documentDOM.evaluate("neutronauth10:param", elemNode, this.__nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
-                            challenge.params = new Array();
-
-                            while ((elemNode = nodeSet.iterateNext()) != null) {
-                                challenge.params[this.documentDOM.evaluate("attribute::name", elemNode, this.__nsResolver, XPathResult.STRING_TYPE, null).stringValue] = this.documentDOM.evaluate("attribute::description", elemNode, this.__nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-                            }
-                        }
-                    }
+                    this.__parseAuthentication(this.documentDOM, elemNode, challenge);
                 }
             } else {
                 throw new NeutronAuthException("Yulup:neutronauthparser10.js:NeutronAuthParser10.parseChallenge: type unknown (\"" + exceptionType + "\")");
@@ -120,6 +104,28 @@ NeutronAuthParser10.prototype = {
         }
 
         return challenge;
+    },
+
+    __parseAuthentication: function (aDocument, aNode, aChallenge) {
+        var elemNode = null;
+
+        aChallenge.originalUrl = aDocument.evaluate("neutronauth10:original-request/attribute::url", aNode, this.__nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+        aChallenge.logoutUrl   = aDocument.evaluate("neutronauth10:logout/attribute::url", aNode, this.__nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+        aChallenge.realm       = aDocument.evaluate("neutronauth10:logout/attribute::realm", aNode, this.__nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+
+        if ((elemNode = aDocument.evaluate("neutronauth10:login", aNode, this.__nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) != null) {
+            aChallenge.url = aDocument.evaluate("attribute::url", elemNode, this.__nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+
+            if ((elemNode = aDocument.evaluate("neutronauth10:form", elemNode, this.__nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null).iterateNext()) != null) {
+                aChallenge.infoMessage = aDocument.evaluate("neutronauth10:message/text()", elemNode, this.__nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+                nodeSet = aDocument.evaluate("neutronauth10:param", elemNode, this.__nsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
+                aChallenge.params = new Array();
+
+                while ((elemNode = nodeSet.iterateNext()) != null) {
+                    aChallenge.params[aDocument.evaluate("attribute::name", elemNode, this.__nsResolver, XPathResult.STRING_TYPE, null).stringValue] = aDocument.evaluate("attribute::description", elemNode, this.__nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+                }
+            }
+        }
     }
 };
 
