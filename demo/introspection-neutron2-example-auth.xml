@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+
+<introspection xmlns="http://www.wyona.org/neutron/2.0">
+  <resource name="Upload Example">
+    <edit mime-type="application/xhtml+xml">
+      <open url="neutron2-example.xhtml" method="GET"/>
+      <save url="neutron2-example.xhtml?yanel.resource.usecase=save" method="PUT"/>
+    </edit>
+
+    <versions>
+      <version url="?yanel.resource.revision=20843">
+        <comment>slugline updated</comment>
+        <date>2006-05-23T00:38:05+02:00</date>
+        <user>joe</user>
+        <revision>20843</revision>
+        <workflow>
+          <state date="2006-05-23T00:38:05+02:00">REVIEW</state>
+          <transitions>
+            <transition id="publish" to="LIVE" url="?yanel.resource.workflow.transition=publish" method="POST"/>
+            <transition id="reject" to="DRAFT" url="?yanel.resource.workflow.transition=reject" method="POST"/>
+          </transitions>
+          <history>
+            <state date="2006-05-23T00:38:05+02:00">DRAFT</state>
+          </history>
+        </workflow>
+      </version>
+      <version url="?yanel.resource.revision=20840">
+        <comment>slugline updated</comment>
+        <date>2006-05-22T03:38:05+02:00</date>
+        <user>joe</user>
+        <revision>20840</revision>
+        <workflow>
+          <state date="2006-05-22T03:38:05+02:00">DRAFT</state>
+          <transitions>
+            <transition id="submit-to-review" to="REVIEW" url="?yanel.resource.workflow.transition=submit-to-review" method="POST"/>
+          </transitions>
+          <history>
+            <state date="2006-05-22T03:38:05+02:00">DRAFT</state>
+          </history>
+        </workflow>
+      </version>
+      <version url="?yanel.resource.revision=20023">
+        <comment>title changed</comment>
+        <revision>20023</revision>
+        <workflow>
+          <state date="2006-05-22T03:38:05+02:00">LIVE</state>
+          <history>
+            <state date="2006-05-22T03:38:05+02:00">REVIEW</state>
+            <state date="2006-05-22T03:38:05+02:00">DRAFT</state>
+          </history>
+        </workflow>
+      </version>
+    </versions>
+  </resource>
+
+  <navigation>
+    <sitetree href="./" method="PROPFIND"/>
+  </navigation>
+</introspection>
