@@ -56,4 +56,15 @@
   <navigation>
     <sitetree href="./" method="PROPFIND"/>
   </navigation>
+
+  <authentication>
+    <login url="?yanel.usecase=neutron-auth" method="POST">
+      <message>Login for realm 'Foo Bar' ...</message>
+      <form>
+        <param description="Username" name="username"/>
+        <param description="Password" name="passwd"/>
+      </form>
+    </login>
+    <logout url="?yanel.usecase=logout" realm="Yulup Demo"/>
+  </authentication>
 </introspection>
