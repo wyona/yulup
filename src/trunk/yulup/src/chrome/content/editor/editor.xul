@@ -344,7 +344,9 @@
                        key="key_yulup_replace"/>
       </box>
       <toolbarseparator id="uiYulupWidgetToolbarSeparator" hidden="true"/>
-      <box id="uiYulupWidgetToolbarbuttons" hidden="true"/>
+    </toolbar>
+    <toolbar id="uiYulupWidgetToolbar" hidden="true">
+      <box id="uiYulupWidgetToolbarbuttons"/>
     </toolbar>
   </toolbox>
 

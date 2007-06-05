@@ -739,9 +739,8 @@ YulupEditStateController.prototype = {
                         Editor.goUpdateUploadCommands();
 
                         // activate widgets, if present
-                        if (document.getElementById('uiYulupWidgetToolbarbuttons').hasChildNodes()) {
-                            document.getElementById('uiYulupWidgetToolbarSeparator').removeAttribute("hidden");
-                            document.getElementById('uiYulupWidgetToolbarbuttons').removeAttribute("hidden");
+                        if (document.getElementById("uiYulupWidgetToolbarbuttons").hasChildNodes()) {
+                            document.getElementById("uiYulupWidgetToolbar").removeAttribute("hidden");
                         }
                         break;
                     case this.STATE_DOCUMENTNEW:
