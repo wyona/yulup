@@ -660,6 +660,7 @@ NeutronResource.prototype = {
     save           : null,
     checkout       : null,
     checkin        : null,
+    releaseLock    : null,
     schemas        : null,
     styles         : null,
     styleTemplate  : null,
@@ -670,17 +671,29 @@ NeutronResource.prototype = {
     toString: function () {
         var objString = "";
 
-        objString += "Resource name:        " + this.name + "\n";
-        objString += "Edit MIME-Type:       " + this.mimeType + "\n";
-        objString += "Edit Open URI:        " + (this.open.uri ? this.open.uri.spec : this.open.uri) + "\n"; + "\n";
-        objString += "Edit Open method:     " + this.open.method + "\n";
-        objString += "Edit Save URI:        " + (this.save.uri ? this.save.uri.spec : this.save.uri) + "\n"; + "\n";
-        objString += "Edit Save method:     " + this.save.method + "\n";
-        objString += "Edit Checkin URI:     " + (this.checkin.uri ? this.checkin.uri.spec : this.checkin.uri) + "\n";
-        objString += "Edit Checkin method:  " + this.checkin.method + "\n";
-        objString += "Edit Checkout URI:    " + (this.checkout.uri ? this.checkout.uri.spec : this.checkout.uri) + "\n"; + "\n";
-        objString += "Edit Checkout method: " + this.checkout.method + "\n";
-        objString += "Edit Schemas:         ";
+        objString += "Resource name:            " + this.name + "\n";
+        objString += "Edit MIME-Type:           " + this.mimeType + "\n";
+        if (this.open) {
+            objString += "Edit Open URI:            " + (this.open.uri ? this.open.uri.spec : this.open.uri) + "\n"; + "\n";
+            objString += "Edit Open method:         " + this.open.method + "\n";
+        }
+        if (this.save) {
+            objString += "Edit Save URI:            " + (this.save.uri ? this.save.uri.spec : this.save.uri) + "\n"; + "\n";
+            objString += "Edit Save method:         " + this.save.method + "\n";
+        }
+        if (this.checkin) {
+            objString += "Edit Checkin URI:         " + (this.checkin.uri ? this.checkin.uri.spec : this.checkin.uri) + "\n";
+            objString += "Edit Checkin method:      " + this.checkin.method + "\n";
+        }
+        if (this.checkout) {
+            objString += "Edit Checkout URI:        " + (this.checkout.uri ? this.checkout.uri.spec : this.checkout.uri) + "\n"; + "\n";
+            objString += "Edit Checkout method:     " + this.checkout.method + "\n";
+        }
+        if (this.releaseLock) {
+            objString += "Edit Release Lock URI:    " + (this.releaseLock.uri ? this.releaseLock.uri.spec : this.releaseLock.uri) + "\n"; + "\n";
+            objString += "Edit Release Lock method: " + this.releaseLock.method + "\n";
+        }
+        objString += "Edit Schemas:             ";
         if (this.schemas) {
             for (var i = 0; i < this.schemas.length; i++) {
                 objString += this.schemas[i].href.spec + " ";

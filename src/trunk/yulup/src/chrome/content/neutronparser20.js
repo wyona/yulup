@@ -357,6 +357,7 @@ NeutronParser20.prototype = {
         aResource.save            = this.__parseFileOperation(aDocument, aNode, "save");
         aResource.checkout        = this.__parseFileOperation(aDocument, aNode, "checkout");
         aResource.checkin         = this.__parseFileOperation(aDocument, aNode, "checkin");
+        aResource.releaseLock     = this.__parseFileOperation(aDocument, aNode, "release-lock");
         aResource.schemas         = this.__parseSchemas(aDocument, aNode);
         aResource.styles          = this.__parseStyles(aDocument, aNode);
         aResource.styleTemplate   = this.__parseStyleTemplate(aDocument, aNode);
