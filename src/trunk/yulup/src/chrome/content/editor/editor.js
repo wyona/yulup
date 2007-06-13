@@ -172,6 +172,11 @@ var Editor = {
         try {
             // close all open windows
             Editor.__closeAllWindows();
+
+            // unlock document if needed
+            if (unlockURI = gEditorController.document.shouldUnlock()) {
+                Editor.__mainBrowserWindow.yulup.unlockDocument(unlockURI);
+            }
         } catch (exception) {
             /* DEBUG */ dump("Yulup:editor.js:Editor.onUnloadListener: " + exception + "\n");
             /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:editor.js:Editor.onUnloadListener", exception);
@@ -254,6 +259,8 @@ var Editor = {
     },
 
     shutdownEditor: function () {
+        var unlockURI = null;
+
         /* DEBUG */ dump("Yulup:editor.js:Editor.shutdownEditor() invoked\n");
 
         try {

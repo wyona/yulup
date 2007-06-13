@@ -1098,6 +1098,27 @@ const Yulup = {
     },
 
     /**
+     * Hack to unlock documents from the main window
+     * context, because the editor's context is being
+     * destroyed during tab close.
+     */
+    unlockDocument: function (aURI) {
+        setTimeout(function() {
+                NetworkService.httpRequestGET(aURI, null, function(aDocumentData, aResponseStatusCode, aContext, aResponseHeaders, aException) {
+                        if (NetworkService.isStatusSuccess(aResponseStatusCode)) {
+                            alert(document.getElementById("uiYulupOverlayStringbundle").getString("yulupDocumentUnlockSucceeded.label"));
+                        } else {
+                            if (aException) {
+                                alert(document.getElementById("uiYulupOverlayStringbundle").getFormattedString("yulupDocumentUnlockFailed.label", ["\n" + aException]));
+                            } else {
+                                alert(document.getElementById("uiYulupOverlayStringbundle").getFormattedString("yulupDocumentUnlockFailed.label", [""]));
+                            }
+                        }
+                    }, null, false, true, null);
+            }, 0);
+    },
+
+    /**
      * Add session history entries to a tab. Does not add the last history
      * entry from the given list if its URI matches the passed in URI.
      *

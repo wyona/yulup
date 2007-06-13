@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -150,34 +150,38 @@ function NeutronEditorParameters(aURI, aIntrospectionObject, aFragment, aLoadSty
 
     EditorParameters.call(this, aURI, aIntrospectionObject.queryFragmentMIMEType(aFragment), aIntrospectionObject.queryFragmentSchemas(aFragment), aIntrospectionObject.queryFragmentStyles(aFragment), aIntrospectionObject.queryFragmentStyleTemplate(aFragment), aIntrospectionObject.queryFragmentWidgets(aFragment));
 
-    this.openURI        = aIntrospectionObject.queryFragmentOpenURI(aFragment);
-    this.openMethod     = aIntrospectionObject.queryFragmentOpenMethod(aFragment);
-    this.saveURI        = aIntrospectionObject.queryFragmentSaveURI(aFragment);
-    this.saveMethod     = aIntrospectionObject.queryFragmentSaveMethod(aFragment);
-    this.checkoutURI    = aIntrospectionObject.queryFragmentCheckoutURI(aFragment);
-    this.checkoutMethod = aIntrospectionObject.queryFragmentCheckoutMethod(aFragment);
-    this.checkinURI     = aIntrospectionObject.queryFragmentCheckinURI(aFragment);
-    this.checkinMethod  = aIntrospectionObject.queryFragmentCheckinMethod(aFragment);
-    this.screenName     = aIntrospectionObject.queryFragmentName(aFragment);
-    this.loadStyle      = aLoadStyle;
-    this.navigation     = aIntrospectionObject.queryNavigation();
-    this.templates      = aIntrospectionObject.queryTemplateWidgets(aFragment);
+    this.openURI           = aIntrospectionObject.queryFragmentOpenURI(aFragment);
+    this.openMethod        = aIntrospectionObject.queryFragmentOpenMethod(aFragment);
+    this.saveURI           = aIntrospectionObject.queryFragmentSaveURI(aFragment);
+    this.saveMethod        = aIntrospectionObject.queryFragmentSaveMethod(aFragment);
+    this.checkoutURI       = aIntrospectionObject.queryFragmentCheckoutURI(aFragment);
+    this.checkoutMethod    = aIntrospectionObject.queryFragmentCheckoutMethod(aFragment);
+    this.checkinURI        = aIntrospectionObject.queryFragmentCheckinURI(aFragment);
+    this.checkinMethod     = aIntrospectionObject.queryFragmentCheckinMethod(aFragment);
+    this.releaseLockURI    = aIntrospectionObject.queryFragmentReleaseLockURI(aFragment);
+    this.releaseLockMethod = aIntrospectionObject.queryFragmentReleaseLockMethod(aFragment);
+    this.screenName        = aIntrospectionObject.queryFragmentName(aFragment);
+    this.loadStyle         = aLoadStyle;
+    this.navigation        = aIntrospectionObject.queryNavigation();
+    this.templates         = aIntrospectionObject.queryTemplateWidgets(aFragment);
 }
 
 NeutronEditorParameters.prototype = {
     __proto__: EditorParameters.prototype,
 
-    type          : "NeutronEditorParameters",
-    openURI       : null,
-    openMethod    : null,
-    saveURI       : null,
-    saveMethod    : null,
-    checkoutURI   : null,
-    checkoutMethod: null,
-    checkinURI    : null,
-    checkinMethod : null,
-    screenName    : null,
-    loadStyle     : null,
+    type             : "NeutronEditorParameters",
+    openURI          : null,
+    openMethod       : null,
+    saveURI          : null,
+    saveMethod       : null,
+    checkoutURI      : null,
+    checkoutMethod   : null,
+    checkinURI       : null,
+    checkinMethod    : null,
+    releaseLockURI   : null,
+    releaseLockMethod: null,
+    screenName       : null,
+    loadStyle        : null,
 
     /**
      * Substitute the editor parameters by the parameters
@@ -196,20 +200,22 @@ NeutronEditorParameters.prototype = {
 
         /* DEBUG */ YulupDebug.ASSERT(aIntrospectionObject != null);
 
-        this.openURI        = aIntrospectionObject.queryFragmentOpenURI(0);
-        this.openMethod     = aIntrospectionObject.queryFragmentOpenMethod(0);
-        this.saveURI        = aIntrospectionObject.queryFragmentSaveURI(0);
-        this.saveMethod     = aIntrospectionObject.queryFragmentSaveMethod(0);
-        this.checkoutURI    = aIntrospectionObject.queryFragmentCheckoutURI(0);
-        this.checkoutMethod = aIntrospectionObject.queryFragmentCheckoutMethod(0);
-        this.checkinURI     = aIntrospectionObject.queryFragmentCheckinURI(0);
-        this.checkinMethod  = aIntrospectionObject.queryFragmentCheckinMethod(0);
-        this.screenName     = aIntrospectionObject.queryFragmentName(0);
-        this.schemas        = aIntrospectionObject.queryFragmentSchemas(0);
-        this.styles         = aIntrospectionObject.queryFragmentStyles(0);
-        this.styleTemplate  = aIntrospectionObject.queryFragmentStyleTemplate(0);
-        this.widgets        = aIntrospectionObject.queryFragmentWidgets(0);
-        this.contentType    = aIntrospectionObject.queryFragmentMIMEType(0);
+        this.openURI           = aIntrospectionObject.queryFragmentOpenURI(0);
+        this.openMethod        = aIntrospectionObject.queryFragmentOpenMethod(0);
+        this.saveURI           = aIntrospectionObject.queryFragmentSaveURI(0);
+        this.saveMethod        = aIntrospectionObject.queryFragmentSaveMethod(0);
+        this.checkoutURI       = aIntrospectionObject.queryFragmentCheckoutURI(0);
+        this.checkoutMethod    = aIntrospectionObject.queryFragmentCheckoutMethod(0);
+        this.checkinURI        = aIntrospectionObject.queryFragmentCheckinURI(0);
+        this.checkinMethod     = aIntrospectionObject.queryFragmentCheckinMethod(0);
+        this.releaseLockURI    = aIntrospectionObject.queryFragmentReleaseLockURI(0);
+        this.releaseLockMethod = aIntrospectionObject.queryFragmentReleaseLockMethod(0);
+        this.screenName        = aIntrospectionObject.queryFragmentName(0);
+        this.schemas           = aIntrospectionObject.queryFragmentSchemas(0);
+        this.styles            = aIntrospectionObject.queryFragmentStyles(0);
+        this.styleTemplate     = aIntrospectionObject.queryFragmentStyleTemplate(0);
+        this.widgets           = aIntrospectionObject.queryFragmentWidgets(0);
+        this.contentType       = aIntrospectionObject.queryFragmentMIMEType(0);
     },
 
     mergeIntrospectionParams: function (aIntrospectionObject) {

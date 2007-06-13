@@ -498,6 +498,30 @@ NeutronIntrospection.prototype = {
     },
 
     /**
+     * Return the URI for the "release-lock" operation for the given
+     * fragment identifier.
+     *
+     * @param  {Integer} aFragment a fragment identifier
+     * @return {nsIURI}  the "release-lock" URI
+     */
+    queryFragmentReleaseLockURI: function (aFragment) {
+        // return release-lock URI for fragment
+        return (this.fragments[aFragment].releaseLock ? this.fragments[aFragment].releaseLock.uri : null);
+    },
+
+    /**
+     * Return the method for the "release-lock" operation for the given
+     * fragment identifier.
+     *
+     * @param  {Integer} aFragment a fragment identifier
+     * @return {String}  the "release-lock" method
+     */
+    queryFragmentReleaseLockMethod: function (aFragment) {
+        // return release-lock method for fragment
+        return (this.fragments[aFragment].releaseLock ? this.fragments[aFragment].releaseLock.method : null);
+    },
+
+    /**
      * Return the schemas associated with the fragment for the given
      * fragment identifier.
      *

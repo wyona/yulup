@@ -487,7 +487,9 @@ Document.prototype = {
  * @param  {nsIURI}          aLoadURI       the URI from which this document originates, as specified by the Neutron introspection
  * @param  {String}          aLoadMethod    the load method, as specified by the Neutron introspection (i.e. "GET", etc.)
  * @param  {nsIURI}          aUploadURI     the URI which should be used to store the document back to the server, as specified by the Neutron introspection
- " @param  {String}          aUploadMethod  the upload method, as specified by the Neutron introspection (i.e. "PUT", "POST", etc.)
+ * @param  {String}          aUploadMethod  the upload method, as specified by the Neutron introspection (i.e. "PUT", "POST", etc.)
+ * @param  {nsIURI}          aUnlockURI     the URI which should be used to unlock the document
+ * @param  {String}          aUnlockMethod  the unlock method, as specified by the Neutron introspection (i.e. "GET", etc.)
  * @param  {String}          aContentType   the content type of this document, as specified by the Neutron introspection
  * @param  {String}          aFragmentName  the name of the fragment to load, as specified by the Neutron introspection
  * @param  {Array}           aSchemaArray   the URIs for schemas associated with this document, as specified by the Neutron introspection
@@ -496,7 +498,7 @@ Document.prototype = {
  * @param  {String}          aLoadStyle     the load style used to load this document, i.e. either "open" or "checkout"
  * @return {NeutronDocument}
  */
-function NeutronDocument(aLoadURI, aLoadMethod, aUploadURI, aUploadMethod, aContentType, aFragmentName, aSchemaArray, aStyleArray, aStyleTemplate, aLoadStyle) {
+function NeutronDocument(aLoadURI, aLoadMethod, aUploadURI, aUploadMethod, aUnlockURI, aUnlockMethod, aContentType, aFragmentName, aSchemaArray, aStyleArray, aStyleTemplate, aLoadStyle) {
     /* DEBUG */ dump("Yulup:document.js:NeutronDocument(\"" + aLoadURI + "\", \"" + aLoadMethod + "\", \"" + aUploadURI + "\", \"" + aUploadMethod + "\", \"" + aContentType + "\", \"" + aFragmentName + "\", \"" + aSchemaArray + "\", \"" + aStyleArray + "\", \"" + aStyleTemplate + "\", \"" + aLoadStyle + "\") invoked\n");
 
     /* DEBUG */ YulupDebug.ASSERT(aLoadURI      != null);
@@ -509,14 +511,24 @@ function NeutronDocument(aLoadURI, aLoadMethod, aUploadURI, aUploadMethod, aCont
 
     Document.call(this, aLoadURI, aContentType, aFragmentName, null, aSchemaArray, aStyleArray, aStyleTemplate);
 
-    this.loadMethod   = aLoadMethod;
-    this.uploadURI    = aUploadURI;
-    this.uploadMethod = aUploadMethod;
-    this.loadStyle    = aLoadStyle;
+    this.loadMethod     = aLoadMethod;
+    this.uploadURI      = aUploadURI;
+    this.uploadMethod   = aUploadMethod;
+    this.__unlockURI    = aUnlockURI;
+    this.__unlockMethod = aUnlockMethod;
+    this.loadStyle      = aLoadStyle;
+
+    if (this.loadStyle == "checkout")
+        this.__locked = true;
 }
 
 NeutronDocument.prototype = {
     __proto__: Document.prototype,
+
+    __locked: null,
+
+    __unlockURI   : null,
+    __unlockMethod: null,
 
     loadMethod: null,
 
@@ -623,6 +635,8 @@ NeutronDocument.prototype = {
      * @return {Undefined} does not have a return value
      */
     uploadDocument: function (aDocumentData, aUploadFinishedCallback) {
+        var me = this;
+
         /* DEBUG */ dump("Yulup:document.js:NeutronDocument.uploadDocument() invoked\n");
 
         /* DEBUG */ YulupDebug.ASSERT(aDocumentData                   != null);
@@ -632,14 +646,48 @@ NeutronDocument.prototype = {
         // we have to proxy this request because it is a Neutron request, i.e. we have to deal with potential Neutron protocol exceptions
         switch (this.uploadMethod) {
             case "PUT":
-                NetworkService.httpRequestPUT(this.uploadURI.spec, null, aDocumentData, this.contentType, this.__uploadFinishedHandler, aUploadFinishedCallback, false, true);
+                NetworkService.httpRequestPUT(this.uploadURI.spec, null, aDocumentData, this.contentType,
+                                              function(aFinishedDocumentData, aResponseStatusCode, aRequestFinishedCallback, aResponseHeaders, aException) {
+                                                  me.__uploadFinishedHandler(aFinishedDocumentData, aResponseStatusCode, aRequestFinishedCallback, aResponseHeaders, aException);
+                                              }, aUploadFinishedCallback, false, true);
                 break;
             case "POST":
-                NetworkService.httpRequestPOST(this.uploadURI.spec, null, aDocumentData, this.contentType, this.__uploadFinishedHandler, aUploadFinishedCallback, false, true);
+                NetworkService.httpRequestPOST(this.uploadURI.spec, null, aDocumentData, this.contentType,
+                                               function(aFinishedDocumentData, aResponseStatusCode, aRequestFinishedCallback, aResponseHeaders, aException) {
+                                                   me.__uploadFinishedHandler(aFinishedDocumentData, aResponseStatusCode, aRequestFinishedCallback, aResponseHeaders, aException);
+                                               }, aUploadFinishedCallback, false, true);
                 break;
             default:
                 // unknown request method
                 throw new YulupEditorException("Yulup:document.js:NeutronDocument.uploadDocument: request method \"" + this.uploadMethod + "\" unknown.");
+        }
+    },
+
+    shutdown: function () {
+        /* DEBUG */ dump("Yulup:document.js:NeutronDocument.shutdown() invoked\n");
+
+        // if the document is locked, we have to unlock it now
+        if (this.__locked && this.__unlockURI) {
+            if (this.__unlockMethod == "GET") {
+                // we have to proxy this request because it is a Neutron request, i.e. we have to deal with potential Neutron protocol exceptions
+                NetworkService.httpRequestGET(this.__unlockURI.spec, null, this.__unlockFinishedHandler, null, false, true, null);
+            } else {
+                // unknown request method
+                throw new YulupEditorException("Yulup:document.js:NeutronDocument.shutdown: request method \"" + this.__unlockMethod + "\" unknown.");
+            }
+        }
+    },
+
+    /**
+     * Checks if the document needs to be unlocked.
+     *
+     * @return {String}  returns the URI to unlock the document with, or null if it is not in need of unlocking
+     */
+    shouldUnlock: function () {
+        if (this.__locked && this.__unlockURI) {
+            return this.__unlockURI.spec;
+        } else {
+            return null;
         }
     },
 
@@ -724,7 +772,11 @@ NeutronDocument.prototype = {
         /* DEBUG */ YulupDebug.ASSERT(typeof(aRequestFinishedCallback) == "function");
 
         if (NetworkService.isStatusSuccess(aResponseStatusCode)) {
-            // success, call back to original caller
+            // success
+            if (this.loadStyle == "checkout")
+                this.__locked = false;
+
+            // call back to original caller
             aRequestFinishedCallback(aDocumentData, null);
         } else {
             if (aException) {
@@ -736,6 +788,56 @@ NeutronDocument.prototype = {
                 } catch (exception) {
                     aRequestFinishedCallback(null, exception);
                     return;
+                }
+            }
+        }
+    },
+
+    /**
+     * The handler which gets called via a callback after unlock has
+     * finished.
+     *
+     * Calls aRequestFinishedCallback upon completion. If
+     * the request succeeded, aRequestFinishedCallback(String, null)
+     * is called (where String might be "" if the request was a
+     * PUT or POST request). aRequestFinishedCallback(null, NeutronException)
+     * if the server threw a Neutron exception during the request.
+     * aRequestFinishedCallback(null, Error) if an internal error
+     * occurred while fullfilling the request.
+     *
+     * Don't use "this" inside this method because the callback
+     * will not provide a pointer to it. If you need "this", you
+     * must wrap this handler in an anonymous function when you
+     * pass it to httpRequestGET().
+     *
+     * @param  {String}   aDocumentData            the data returned by the request
+     * @param  {Long}     aResponseStatusCode      the status code of the response
+     * @param  {Function} aRequestFinishedCallback a function with the signature function(String, Error)
+     * @param  {Array}    aResponseHeaders         the response headers
+     * @param  {Error}    aException               an exception, or null if everything went well
+     * @return {Undefined} does not have a return value
+     */
+    __unlockFinishedHandler: function (aDocumentData, aResponseStatusCode, aRequestFinishedCallback, aResponseHeaders, aException) {
+        /* DEBUG */ dump("Yulup:document.js:NeutronDocument.__unlockFinishedHandler() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aResponseStatusCode              != null);
+        /* DEBUG */ YulupDebug.ASSERT(aRequestFinishedCallback ? typeof(aRequestFinishedCallback) == "function" : true);
+
+        if (aRequestFinishedCallback) {
+            if (aResponseStatusCode == 200) {
+                // success, call back to original caller
+                aRequestFinishedCallback(aDocumentData, null);
+            } else {
+                if (aException) {
+                    aRequestFinishedCallback(null, aException);
+                } else {
+                    try {
+                        // parse error message (throws an exeception)
+                        Neutron.response(aDocumentData);
+                    } catch (exception) {
+                        aRequestFinishedCallback(null, exception);
+                        return;
+                    }
                 }
             }
         }
