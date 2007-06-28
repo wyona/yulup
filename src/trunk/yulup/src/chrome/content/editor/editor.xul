@@ -396,7 +396,9 @@
            align="center"
            hidden="true">
     <label id="uiYulupEditorPathToolBarPathLabel" value="&uiYulupEditorPathToolBarPathLabel.label;:" tooltiptext="&uiYulupEditorPathToolBarPathLabel.tooltip;"/>
-    <hbox align="center" id="uiYulupEditorPathToolBarPathBox" tooltiptext="&uiYulupEditorPathToolBarPathLabel.tooltip;"/>
+    <arrowscrollbox orient="horizontal" flex="1" align="center">
+      <hbox align="center" id="uiYulupEditorPathToolBarPathBox" tooltiptext="&uiYulupEditorPathToolBarPathLabel.tooltip;"/>
+    </arrowscrollbox>
   </toolbar>
 
   <toolbar id="uiYulupXPathToolBar"
