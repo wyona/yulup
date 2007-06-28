@@ -1,0 +1,20 @@
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <atom:title type="text">yulup-0.2.10-r25590.xpi</atom:title>
+  <atom:author>
+    <atom:name>Andreas Wuest</atom:name>
+  </atom:author>
+  <atom:id>urn:www-yulup-org:0-2-10-release</atom:id>
+  <atom:content type="xhtml">
+    <xhtml:div>
+      <xhtml:a href="yulup-0.2.10-r25590.xpi">yulup-0.2.10-r25590.xpi</xhtml:a> <xhtml:a href="http://svn.wyona.com/repos/public/yulup/website/download/yulup-0.2.10-r25590.xpi.md5">(md5)</xhtml:a> (June 28, 2007)
+      <xhtml:br/>
+      <xhtml:br/>
+      Changelog:
+      <xhtml:ul>
+        <xhtml:li>APP Service documents must now live in namespace "http://www.w3.org/2007/app" to be recognised.</xhtml:li>
+        <xhtml:li>Scroll toolbar buttons horizontally on overflow.</xhtml:li>
+        <xhtml:li>Scroll edit path buttons horizontally on overflow.</xhtml:li>
+      </xhtml:ul>
+    </xhtml:div>
+  </atom:content>
+<atom:updated>2007-06-28T19:54:49.477Z</atom:updated><atom:published>2007-06-28T19:54:49.477Z</atom:published></atom:entry>
