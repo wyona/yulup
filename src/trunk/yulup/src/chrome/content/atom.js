@@ -29,7 +29,7 @@
  * and the Atom specification (see http://www.ietf.org/rfc/rfc4287.txt).
  */
 
-const APP_09_NAMESPACE  = "http://purl.org/atom/app#";
+const APP_09_NAMESPACE  = "http://www.w3.org/2007/app";
 const ATOM_10_NAMESPACE = "http://www.w3.org/2005/Atom";
 
 var APP = {
