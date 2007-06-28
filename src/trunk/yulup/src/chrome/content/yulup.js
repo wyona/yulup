@@ -66,6 +66,10 @@ const Yulup = {
     yulupEditMenuCheckoutMenuitemLabel         : null,
     yulupEditMenuCheckoutNoLockMenuitemLabel   : null,
     yulupEditMenuResourceUploadMenuitem        : null,
+    yulupEditMenuDeleteMenuitem                : null,
+    yulupEditMenuDeleteMenuitemLabel           : null,
+    yulupEditMenuDeleteMenu                    : null,
+    yulupEditMenuDeleteMenupopup               : null,
     yulupOperationNewFromTemplateLocalMenu     : null,
     yulupOperationNewFromTemplateLocalMenupopup: null,
     yulupOpenAtomSidebarObserver               : null,
@@ -141,10 +145,14 @@ const Yulup = {
         this.yulupEditMenuCheckoutNoLockMenuitem         = document.getElementById("uiYulupEditCheckoutNoLockMenuitem");
         this.yulupEditMenuCheckoutMenuitemLabel          = document.getElementById("uiYulupEditCheckoutMenuitem").getAttribute("label");
         this.yulupEditMenuCheckoutNoLockMenuitemLabel    = document.getElementById("uiYulupEditCheckoutNoLockMenuitem").getAttribute("label");
+        this.yulupEditMenuDeleteMenuitemLabel            = document.getElementById("uiYulupEditDeleteMenuitem").getAttribute("label");
         this.yulupEditMenuCheckoutMenu                   = document.getElementById("uiYulupEditCheckoutMenu");
         this.yulupEditMenuCheckoutNoLockMenu             = document.getElementById("uiYulupEditCheckoutNoLockMenu");
         this.yulupEditMenuCheckoutMenupopup              = document.getElementById("uiYulupEditCheckoutMenupopup");
         this.yulupEditMenuCheckoutNoLockMenupopup        = document.getElementById("uiYulupEditCheckoutNoLockMenupopup");
+        this.yulupEditMenuDeleteMenuitem                 = document.getElementById("uiYulupEditDeleteMenuitem");
+        this.yulupEditMenuDeleteMenu                     = document.getElementById("uiYulupEditDeleteMenu");
+        this.yulupEditMenuDeleteMenupopup                = document.getElementById("uiYulupEditDeleteMenupopup");
         this.yulupEditMenuResourceUploadMenuitem         = document.getElementById("uiYulupUploadMenuitem");
         this.yulupEditMenuRealmSeparator                 = document.getElementById("uiYulupRealmSeparator");
         this.yulupEditMenuExtrasSeparator                = document.getElementById("uiYulupExtrasSeparator");
@@ -468,6 +476,69 @@ const Yulup = {
         } else {
             /* We should never have no introspection object when
              * we reach this function. */
+        }
+    },
+
+    /**
+     * Deletes the indicated fragment.
+     *
+     * @return {Undefined} does not have a return value
+     */
+    deleteFromCMS: function (aFragment) {
+        var resourceName  = null;
+        var context       = null;
+        var requestMethod = null;
+
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.deleteFromCMS(\"" + aFragment + "\") invoked\n");
+
+        if (this.currentNeutronIntrospection) {
+            resourceName = this.currentNeutronIntrospection.queryFragmentName(aFragment);
+            alert(document.getElementById("uiYulupOverlayStringbundle").getFormattedString("yulupDocumentDeleteQuestion.label", [resourceName]));
+
+            context = {
+                resourceName: resourceName
+            };
+
+            try {
+                requestMethod = this.currentNeutronIntrospection.queryFragmentDeleteMethod(aFragment);
+
+                switch (requestMethod) {
+                    case "GET":
+                        NetworkService.httpRequestGET(this.currentNeutronIntrospection.queryFragmentDeleteURI(aFragment).spec, null, this.__deleteRequestFinishedHandler, context, false, true, null);
+                        break;
+                    case "DELETE":
+                        NetworkService.httpRequestDELETE(this.currentNeutronIntrospection.queryFragmentDeleteURI(aFragment).spec, null, this.__deleteRequestFinishedHandler, context, false, true, null);
+                        break;
+                    default:
+                        // unknown request method
+                        throw new YulupException("Yulup:yulup.js:Yulup.deleteFromCMS: request method \"" + requestMethod + "\" unknown.");
+                }
+            } catch (exception) {
+                /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:yulup.js:Yulup.deleteFromCMS", exception);
+
+                alert(document.getElementById("uiYulupOverlayStringbundle").getFormattedString("yulupDocumentDeleteFailed.label", [resourceName, "\n\n" + exception]));
+            }
+        } else {
+            /* We should never have no introspection object when
+             * we reach this function. */
+        }
+    },
+
+    __deleteRequestFinishedHandler: function (aDocumentData, aResponseStatusCode, aContext, aResponseHeaders, aException) {
+        /* DEBUG */ dump("Yulup:yulup.js:Yulup.__deleteRequestFinishedHandler() invoked\n");
+
+        /* DEBUG */ YulupDebug.ASSERT(aResponseStatusCode != null);
+        /* DEBUG */ YulupDebug.ASSERT(aContext            != null);
+
+        if (aResponseStatusCode == 200 ||
+            aResponseStatusCode == 202 ||
+            aResponseStatusCode == 204) {
+            // successfully deleted, call back original caller
+            alert(document.getElementById("uiYulupOverlayStringbundle").getFormattedString("yulupDocumentDeleteSucceeded.label", [aContext.resourceName]));
+        } else {
+            /* DEBUG */ dump("Yulup:yulup.js:Yulup.__deleteRequestFinishedHandler: failed to delete resource. Response status code = \"" + aResponseStatusCode + "\".\n");
+
+            alert(document.getElementById("uiYulupOverlayStringbundle").getFormattedString("yulupDocumentDeleteFailed.label", [aContext.resourceName]));
         }
     },
 
@@ -876,17 +947,22 @@ const Yulup = {
                     // restore menu item labels
                     this.yulupEditMenuCheckoutMenuitem.setAttribute("label", this.yulupEditMenuCheckoutMenuitemLabel);
                     this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("label", this.yulupEditMenuCheckoutNoLockMenuitemLabel);
+                    this.yulupEditMenuDeleteMenuitem.setAttribute("label", this.yulupEditMenuDeleteMenuitemLabel);
 
                     this.yulupEditMenuCheckoutMenu.setAttribute("hidden", "true");
                     this.yulupEditMenuCheckoutMenu.setAttribute("disabled", "true");
                     this.yulupEditMenuCheckoutNoLockMenu.setAttribute("hidden", "true");
                     this.yulupEditMenuCheckoutNoLockMenu.setAttribute("disabled", "true");
+                    this.yulupEditMenuDeleteMenu.setAttribute("hidden", "true");
+                    this.yulupEditMenuDeleteMenu.setAttribute("disabled", "true");
 
                     this.yulupEditMenuCheckoutMenuitem.setAttribute("disabled", "true");
                     this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("disabled", "true");
+                    this.yulupEditMenuDeleteMenuitem.setAttribute("disabled", "true");
 
                     this.yulupEditMenuCheckoutMenuitem.removeAttribute("hidden");
                     this.yulupEditMenuCheckoutNoLockMenuitem.removeAttribute("hidden");
+                    this.yulupEditMenuDeleteMenuitem.removeAttribute("hidden");
 
                     this.setLoginRequired(null);
 
@@ -905,10 +981,12 @@ const Yulup = {
                 // restore menu item labels
                 this.yulupEditMenuCheckoutMenuitem.setAttribute("label", this.yulupEditMenuCheckoutMenuitemLabel);
                 this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("label", this.yulupEditMenuCheckoutNoLockMenuitemLabel);
+                this.yulupEditMenuDeleteMenuitem.setAttribute("label", this.yulupEditMenuDeleteMenuitemLabel);
 
                 if (this.currentNeutronIntrospection) {
                     this.buildFragmentsMenu(this.currentNeutronIntrospection.queryOpenFragments(), this.yulupEditMenuCheckoutNoLockMenuitem, this.yulupEditMenuCheckoutNoLockMenu, this.yulupEditMenuCheckoutNoLockMenupopup, "Yulup.checkoutNoLockFromCMS");
                     this.buildFragmentsMenu(this.currentNeutronIntrospection.queryCheckoutFragments(), this.yulupEditMenuCheckoutMenuitem, this.yulupEditMenuCheckoutMenu, this.yulupEditMenuCheckoutMenupopup, "Yulup.checkoutFromCMS");
+                    this.buildFragmentsMenu(this.currentNeutronIntrospection.queryDeleteFragments(), this.yulupEditMenuDeleteMenuitem, this.yulupEditMenuDeleteMenu, this.yulupEditMenuDeleteMenupopup, "Yulup.deleteFromCMS");
 
                     try {
                         // check if the Neutron sidebar is open
@@ -971,17 +1049,22 @@ const Yulup = {
                 // restore menu item labels
                 this.yulupEditMenuCheckoutMenuitem.setAttribute("label", this.yulupEditMenuCheckoutMenuitemLabel);
                 this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("label", this.yulupEditMenuCheckoutNoLockMenuitemLabel);
+                this.yulupEditMenuDeleteMenuitem.setAttribute("label", this.yulupEditMenuDeleteMenuitemLabel);
 
                 this.yulupEditMenuCheckoutMenu.setAttribute("hidden", "true");
                 this.yulupEditMenuCheckoutMenu.setAttribute("disabled", "true");
                 this.yulupEditMenuCheckoutNoLockMenu.setAttribute("hidden", "true");
                 this.yulupEditMenuCheckoutNoLockMenu.setAttribute("disabled", "true");
+                this.yulupEditMenuDeleteMenu.setAttribute("hidden", "true");
+                this.yulupEditMenuDeleteMenu.setAttribute("disabled", "true");
 
                 this.yulupEditMenuCheckoutMenuitem.setAttribute("disabled", "true");
                 this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("disabled", "true");
+                this.yulupEditMenuDeleteMenuitem.setAttribute("disabled", "true");
 
                 this.yulupEditMenuCheckoutMenuitem.removeAttribute("hidden");
                 this.yulupEditMenuCheckoutNoLockMenuitem.removeAttribute("hidden");
+                this.yulupEditMenuDeleteMenuitem.removeAttribute("hidden");
 
                 this.yulupEditMenu.setAttribute("introspection", "ok");
                 this.yulupEditMenu.removeAttribute("tooltip");
@@ -1000,17 +1083,22 @@ const Yulup = {
                 // restore menu item labels
                 this.yulupEditMenuCheckoutMenuitem.setAttribute("label", this.yulupEditMenuCheckoutMenuitemLabel);
                 this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("label", this.yulupEditMenuCheckoutNoLockMenuitemLabel);
+                this.yulupEditMenuDeleteMenuitem.setAttribute("label", this.yulupEditMenuDeleteMenuitemLabel);
 
                 this.yulupEditMenuCheckoutMenu.setAttribute("hidden", "true");
                 this.yulupEditMenuCheckoutMenu.setAttribute("disabled", "true");
                 this.yulupEditMenuCheckoutNoLockMenu.setAttribute("hidden", "true");
                 this.yulupEditMenuCheckoutNoLockMenu.setAttribute("disabled", "true");
+                this.yulupEditMenuDeleteMenu.setAttribute("hidden", "true");
+                this.yulupEditMenuDeleteMenu.setAttribute("disabled", "true");
 
                 this.yulupEditMenuCheckoutMenuitem.setAttribute("disabled", "true");
                 this.yulupEditMenuCheckoutNoLockMenuitem.setAttribute("disabled", "true");
+                this.yulupEditMenuDeleteMenuitem.setAttribute("disabled", "true");
 
                 this.yulupEditMenuCheckoutMenuitem.removeAttribute("hidden");
                 this.yulupEditMenuCheckoutNoLockMenuitem.removeAttribute("hidden");
+                this.yulupEditMenuDeleteMenuitem.removeAttribute("hidden");
 
                 this.setLoginRequired(null);
 

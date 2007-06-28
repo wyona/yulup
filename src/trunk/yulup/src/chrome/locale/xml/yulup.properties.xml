@@ -89,4 +89,19 @@
     <name xml:lang="en">Failed to unlock document.%S</name>
     <name xml:lang="de">Dokument konnte nicht freigegeben werden.%S</name>
   </entity>
+
+  <entity id="yulupDocumentDeleteQuestion.label">
+    <name xml:lang="en">Do you really want to delete document "%S"?</name>
+    <name xml:lang="de">Soll das Dokument "%S" wirklich gelöscht werden?</name>
+  </entity>
+
+  <entity id="yulupDocumentDeleteSucceeded.label">
+    <name xml:lang="en">Document "%S" deleted successfully.</name>
+    <name xml:lang="de">Dokument "%S" erfolgreich gelöscht.</name>
+  </entity>
+
+  <entity id="yulupDocumentDeleteFailed.label">
+    <name xml:lang="en">Failed to delete document "%S".%S</name>
+    <name xml:lang="de">Dokument "%S" konnte nicht gelöscht werden.%S</name>
+  </entity>
 </dtd>

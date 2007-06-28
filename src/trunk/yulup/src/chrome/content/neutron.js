@@ -378,6 +378,37 @@ NeutronIntrospection.prototype = {
     },
 
     /**
+     * Get an array of fragments which can be deleted
+     * using the Neutron "delete" operation.
+     *
+     * This method returns a two-dimensional array, the
+     * first dimension consisting of arrays of fragments.
+     * The fragment array consists of the fragment string name
+     * in field 0, and the fragment nsIURI in field 1.
+     *
+     * Note that the fragment order is retained as listed in
+     * the introspection document.
+     *
+     * @return {Array} two-dimensional array containing all framgents which can be deleted by the "delete" operation
+     */
+    queryDeleteFragments: function () {
+        var fragments = new Array();
+        var j         = 0;
+
+        for (var i = 0; i < this.fragments.length; i++) {
+            // check if fragment i supports checkout
+            if (this.queryFragmentDeleteURI(i)) {
+                fragments[j] = [this.queryFragmentName(i), this.queryFragmentDeleteURI(i)];
+                /* DEBUG */ dump("Yulup:neutron.js:NeutronIntrospection.queryDeleteFragments: \"" + fragments[j][0] + "\", \"" + fragments[j][1] + "\"\n");
+                j++;
+            }
+        }
+
+        // return available fragments
+        return fragments;
+    },
+
+    /**
      * Return the name of the fragment for the given
      * fragment identifier.
      *
@@ -519,6 +550,30 @@ NeutronIntrospection.prototype = {
     queryFragmentReleaseLockMethod: function (aFragment) {
         // return release-lock method for fragment
         return (this.fragments[aFragment].releaseLock ? this.fragments[aFragment].releaseLock.method : null);
+    },
+
+    /**
+     * Return the URI for the "delete" operation for the given
+     * fragment identifier.
+     *
+     * @param  {Integer} aFragment a fragment identifier
+     * @return {nsIURI}  the "delete" URI
+     */
+    queryFragmentDeleteURI: function (aFragment) {
+        // return delete URI for fragment
+        return (this.fragments[aFragment].delete ? this.fragments[aFragment].delete.uri : null);
+    },
+
+    /**
+     * Return the method for the "delete" operation for the given
+     * fragment identifier.
+     *
+     * @param  {Integer} aFragment a fragment identifier
+     * @return {String}  the "delete" method
+     */
+    queryFragmentDeleteMethod: function (aFragment) {
+        // return delete method for fragment
+        return (this.fragments[aFragment].delete ? this.fragments[aFragment].delete.method : null);
     },
 
     /**
@@ -685,6 +740,7 @@ NeutronResource.prototype = {
     checkout       : null,
     checkin        : null,
     releaseLock    : null,
+    delete         : null,
     schemas        : null,
     styles         : null,
     styleTemplate  : null,
@@ -737,7 +793,6 @@ NeutronResource.prototype = {
             objString += this.styles + "\n";
         }
 
-
         objString += "Style Template:       " + (this.styleTemplate ? this.styleTemplate.uri.spec : this.styleTemplate) + "\n";
 
         objString += "Widgets:\n";
@@ -752,6 +807,11 @@ NeutronResource.prototype = {
             for (var i = 0; i < this.versions.length; i++) {
                 objString += this.versions[i].toString();
             }
+        }
+
+        if (this.delete) {
+            objString += "Delete URI:               " + (this.delete.uri ? this.delete.uri.spec : this.delete.uri) + "\n"; + "\n";
+            objString += "Delete method:            " + this.delete.method + "\n";
         }
 
         return objString;
