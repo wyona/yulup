@@ -22,9 +22,6 @@ editcontroller {
   -moz-binding: url('chrome://yulup/content/editor/editor.xml#editcontroller');
 }
 
-#uiYulupEditorToolbox {
-  -moz-binding: url('chrome://yulup/content/editor/editor.xml#wrappingtoolbox');
-}
 
 /* ------------------------ Sidebar ------------------------- */
 

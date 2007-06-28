@@ -255,98 +255,102 @@
   <toolbox id="uiYulupEditorToolbox" context="uiYulupEditorToolboxContextMenu" hidden="true" showiconsonly="true">
     <toolbar id="uiYulupEditorToolbar"
              toolbarname="Yulup Editor Toolbar">
-      <box id="uiYulupFileOperationsToolbarbuttons">
-        <toolbarbutton id="uiFileOperationExit"
-                       oncommand="Editor.exitEditor()"
-                       observes="broadcaster_yulup_newopen"
-                       label="&fileOperationExit.label;" tooltiptext="&fileOperationExit.tooltip;"
-                       key="key_yulup_exit"
-                       disabled="true"/>
-        <toolbarbutton id="uiFileOperationNew" label="&fileOperationNew.label;" tooltiptext="&fileOperationNew.tooltip;" observes="broadcaster_yulup_newopen" type="menu">
-          <menupopup id="uiFileOperationNewMenupopup">
-            <menu id="uiYulupOperationNewFromTemplateLocalMenu"
-                 label="&fileOperationNewFromTemplateLocalMenuitem.label;" tooltiptext="&fileOperationNewFromTemplateLocalMenuitem.tooltip;"
-                 disabled="true">
-              <menupopup id="uiYulupOperationNewFromTemplateLocalMenupopup"/>
-            </menu>
-            <menuitem id="uiFileOperationNewFromTemplateCMSMenuitem"
-                      oncommand="Editor.createNewFromTemplateCMS()"
-                      label="&fileOperationNewFromTemplateCMSMenuitem.label;" tooltiptext="&fileOperationNewFromTemplateCMSMenuitem.tooltip;"
-                      disabled="true"/>
-          </menupopup>
-        </toolbarbutton>
-        <toolbarbutton id="uiFileOperationOpen" label="&fileOperationOpen.label;" tooltiptext="&fileOperationOpen.tooltip;" observes="broadcaster_yulup_newopen" type="menu">
-          <menupopup id="uiFileOperationOpenMenupopup">
-            <menuitem id="uiFileOperationOpenLocalMenuitem"
-                      oncommand="Editor.openFromFile()"
-                      label="&fileOperationOpenLocalMenuitem.label;" tooltiptext="&fileOperationOpenLocalMenuitem.tooltip;"
-                      disabled="false"/>
-            <menuitem id="uiFileOperationOpenCMSMenuitem"
-                      oncommand="Editor.openFromCMS()"
-                      label="&fileOperationOpenCMSMenuitem.label;" tooltiptext="&fileOperationOpenCMSMenuitem.tooltip;"
-                      disabled="true"/>
-          </menupopup>
-        </toolbarbutton>
-        <toolbarbutton id="uiFileOperationSave" label="&fileOperationSave.label;" tooltiptext="&fileOperationSave.tooltip;" disabled="true" type="menu">
-          <menupopup id="uiFileOperationSaveMenupopup">
-            <menuitem id="uiFileOperationSaveLocalMenuitem"
-                      command="cmd_yulup_savelocal"
-                      disabled="true"/>
-            <menuseparator/>
-            <menuitem id="uiFileOperationSaveTempMenuitem"
-                      command="cmd_yulup_savetemp"
-                      key="key_yulup_savetemp"
-                      disabled="true"/>
-            <menuitem id="uiFileOperationSaveCMSMenuitem"
-                      command="cmd_yulup_savecms"
-                      key="key_yulup_savecms"
-                      disabled="true"/>
-            <menuitem id="uiFileOperationCheckinCMSAndExitMenuitem"
-                      command="cmd_yulup_checkincms"
-                      key="key_yulup_checkincms"
-                      disabled="true"/>
-          </menupopup>
-        </toolbarbutton>
-        <toolbarbutton id="uiFileOperationSaveAs" label="&fileOperationSaveAs.label;" tooltiptext="&fileOperationSaveAs.tooltip;" observes="broadcaster_yulup_saveas" type="menu">
-          <menupopup id="uiFileOperationSaveAsMenupopup">
-            <menuitem id="uiFileOperationSaveAsLocalMenuitem"
-                      oncommand="Editor.saveDispatcher('saveaslocal')"
-                      label="&fileOperationSaveAsLocalMenuitem.label;" tooltiptext="&fileOperationSaveAsLocalMenuitem.tooltip;"
-                      disabled="false"/>
-            <menuitem id="uiFileOperationSaveAsCMSMenuitem"
-                      oncommand="Editor.saveDispatcher('saveascms')"
-                      label="&fileOperationSaveAsCMSMenuitem.label;" tooltiptext="&fileOperationSaveAsCMSMenuitem.tooltip;"
-                      disabled="true"/>
-          </menupopup>
-        </toolbarbutton>
-        <toolbarbutton id="uiFileOperationUpload"
-                       command="cmd_yulup_upload"
-                       key="key_yulup_upload"
-                       disabled="true"/>
-      </box>
-      <toolbarseparator/>
-      <box id="uiYulupEditOperationsToolbarbuttons">
-        <toolbarbutton id="uiEditOperationUndo"
-                       command="cmd_undo"/>
-        <toolbarbutton id="uiEditOperationRedo"
-                       command="cmd_redo"/>
-        <toolbarbutton id="uiEditOperationCut"
-                       command="cmd_cut"/>
-        <toolbarbutton id="uiEditOperationCopy"
-                       command="cmd_copy"/>
-        <toolbarbutton id="uiEditOperationPaste"
-                       command="cmd_paste"/>
-        <toolbarbutton id="uiEditOperationFind"
-                       command="cmd_yulup_find"
-                       key="key_yulup_find"/>
-        <toolbarbutton id="uiEditOperationFindReplace"
-                       command="cmd_yulup_replace"
-                       key="key_yulup_replace"/>
-      </box>
-      <toolbarseparator id="uiYulupWidgetToolbarSeparator" hidden="true"/>
+      <arrowscrollbox orient="horizontal" flex="1">
+        <box id="uiYulupFileOperationsToolbarbuttons">
+          <toolbarbutton id="uiFileOperationExit"
+                         oncommand="Editor.exitEditor()"
+                         observes="broadcaster_yulup_newopen"
+                         label="&fileOperationExit.label;" tooltiptext="&fileOperationExit.tooltip;"
+                         key="key_yulup_exit"
+                         disabled="true"/>
+          <toolbarbutton id="uiFileOperationNew" label="&fileOperationNew.label;" tooltiptext="&fileOperationNew.tooltip;" observes="broadcaster_yulup_newopen" type="menu">
+            <menupopup id="uiFileOperationNewMenupopup">
+              <menu id="uiYulupOperationNewFromTemplateLocalMenu"
+                    label="&fileOperationNewFromTemplateLocalMenuitem.label;" tooltiptext="&fileOperationNewFromTemplateLocalMenuitem.tooltip;"
+                    disabled="true">
+                <menupopup id="uiYulupOperationNewFromTemplateLocalMenupopup"/>
+              </menu>
+              <menuitem id="uiFileOperationNewFromTemplateCMSMenuitem"
+                        oncommand="Editor.createNewFromTemplateCMS()"
+                        label="&fileOperationNewFromTemplateCMSMenuitem.label;" tooltiptext="&fileOperationNewFromTemplateCMSMenuitem.tooltip;"
+                        disabled="true"/>
+            </menupopup>
+          </toolbarbutton>
+          <toolbarbutton id="uiFileOperationOpen" label="&fileOperationOpen.label;" tooltiptext="&fileOperationOpen.tooltip;" observes="broadcaster_yulup_newopen" type="menu">
+            <menupopup id="uiFileOperationOpenMenupopup">
+              <menuitem id="uiFileOperationOpenLocalMenuitem"
+                        oncommand="Editor.openFromFile()"
+                        label="&fileOperationOpenLocalMenuitem.label;" tooltiptext="&fileOperationOpenLocalMenuitem.tooltip;"
+                        disabled="false"/>
+              <menuitem id="uiFileOperationOpenCMSMenuitem"
+                        oncommand="Editor.openFromCMS()"
+                        label="&fileOperationOpenCMSMenuitem.label;" tooltiptext="&fileOperationOpenCMSMenuitem.tooltip;"
+                        disabled="true"/>
+            </menupopup>
+          </toolbarbutton>
+          <toolbarbutton id="uiFileOperationSave" label="&fileOperationSave.label;" tooltiptext="&fileOperationSave.tooltip;" disabled="true" type="menu">
+            <menupopup id="uiFileOperationSaveMenupopup">
+              <menuitem id="uiFileOperationSaveLocalMenuitem"
+                        command="cmd_yulup_savelocal"
+                        disabled="true"/>
+              <menuseparator/>
+              <menuitem id="uiFileOperationSaveTempMenuitem"
+                        command="cmd_yulup_savetemp"
+                        key="key_yulup_savetemp"
+                        disabled="true"/>
+              <menuitem id="uiFileOperationSaveCMSMenuitem"
+                        command="cmd_yulup_savecms"
+                        key="key_yulup_savecms"
+                        disabled="true"/>
+              <menuitem id="uiFileOperationCheckinCMSAndExitMenuitem"
+                        command="cmd_yulup_checkincms"
+                        key="key_yulup_checkincms"
+                        disabled="true"/>
+            </menupopup>
+          </toolbarbutton>
+          <toolbarbutton id="uiFileOperationSaveAs" label="&fileOperationSaveAs.label;" tooltiptext="&fileOperationSaveAs.tooltip;" observes="broadcaster_yulup_saveas" type="menu">
+            <menupopup id="uiFileOperationSaveAsMenupopup">
+              <menuitem id="uiFileOperationSaveAsLocalMenuitem"
+                        oncommand="Editor.saveDispatcher('saveaslocal')"
+                        label="&fileOperationSaveAsLocalMenuitem.label;" tooltiptext="&fileOperationSaveAsLocalMenuitem.tooltip;"
+                        disabled="false"/>
+              <menuitem id="uiFileOperationSaveAsCMSMenuitem"
+                        oncommand="Editor.saveDispatcher('saveascms')"
+                        label="&fileOperationSaveAsCMSMenuitem.label;" tooltiptext="&fileOperationSaveAsCMSMenuitem.tooltip;"
+                        disabled="true"/>
+            </menupopup>
+          </toolbarbutton>
+          <toolbarbutton id="uiFileOperationUpload"
+                         command="cmd_yulup_upload"
+                         key="key_yulup_upload"
+                         disabled="true"/>
+        </box>
+        <toolbarseparator/>
+        <box id="uiYulupEditOperationsToolbarbuttons">
+          <toolbarbutton id="uiEditOperationUndo"
+                         command="cmd_undo"/>
+          <toolbarbutton id="uiEditOperationRedo"
+                         command="cmd_redo"/>
+          <toolbarbutton id="uiEditOperationCut"
+                         command="cmd_cut"/>
+          <toolbarbutton id="uiEditOperationCopy"
+                         command="cmd_copy"/>
+          <toolbarbutton id="uiEditOperationPaste"
+                         command="cmd_paste"/>
+          <toolbarbutton id="uiEditOperationFind"
+                         command="cmd_yulup_find"
+                         key="key_yulup_find"/>
+          <toolbarbutton id="uiEditOperationFindReplace"
+                         command="cmd_yulup_replace"
+                         key="key_yulup_replace"/>
+        </box>
+        <toolbarseparator id="uiYulupWidgetToolbarSeparator" hidden="true"/>
+      </arrowscrollbox>
     </toolbar>
     <toolbar id="uiYulupWidgetToolbar" hidden="true">
-      <box id="uiYulupWidgetToolbarbuttons"/>
+      <arrowscrollbox orient="horizontal" flex="1">
+        <box id="uiYulupWidgetToolbarbuttons"/>
+      </arrowscrollbox>
     </toolbar>
   </toolbox>
 
