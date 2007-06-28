@@ -2,7 +2,7 @@
 
 <!-- http://bitworking.org/projects/atom/ -->
 
-<service xmlns="http://purl.org/atom/app#">
+<service xmlns="http://www.w3.org/2007/app">
   <workspace title="Yulup Demo">
     <collection title="Releases" href="../entries/?yanel.resource.viewid=atom">
     </collection>
