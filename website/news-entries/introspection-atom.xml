@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<service xmlns="http://purl.org/atom/app#">
+<service xmlns="http://www.w3.org/2007/app">
   <workspace title="Yulup Website">
     <collection title="News" href="../news-entries/?yanel.resource.viewid=atom">
     </collection>
