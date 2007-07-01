@@ -21,7 +21,7 @@
 <head>
   <title>Yulup News</title>
   <link rel="alternate" title="Yulup News" href="atom.xml" type="application/atom+xml"/>
-  <link rel="introspection" href="news-entries/introspection-atom.xml" type="application/atomserv+xml"/>
+  <link rel="service" href="news-entries/introspection-atom.xml" type="application/atomsvc+xml"/>
 </head>
 <body>
 <!--
@@ -43,7 +43,7 @@
 <!--
 <ul>
   <li>This Feed as <a href="?yanel.resource.viewid=source">application/xml</a> or as <a href="?yanel.resource.viewid=atom">application/atom+xml</a> or as <a href="index.xml?yanel.resource.viewid=source">Directory-XML</a></li>
-  <li>The Atom Introspection/Service Document as <a href="../introspection-atom.xml">application/atomserv+xml</a> or as <a href="../introspection-atom.xml?yanel.resource.viewid=source">application/xml</a></li>
+  <li>The Atom Introspection/Service Document as <a href="../introspection-atom.xml">application/atomsvc+xml</a> or as <a href="../introspection-atom.xml?yanel.resource.viewid=source">application/xml</a></li>
 </ul>
 -->
 </body>
