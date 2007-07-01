@@ -3,5 +3,5 @@
 <yanel:resource-config xmlns:yanel="http://www.wyona.org/yanel/rti/1.0">
   <yanel:rti name="xml" namespace="http://www.wyona.org/yanel/resource/1.0"/>
 
-  <yanel:property name="mime-type" value="application/atomserv+xml"/>
+  <yanel:property name="mime-type" value="application/atomsvc+xml"/>
 </yanel:resource-config>
