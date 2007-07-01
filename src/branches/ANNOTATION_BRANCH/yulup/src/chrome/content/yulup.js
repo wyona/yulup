@@ -746,8 +746,8 @@ const Yulup = {
 
                                     // found a Neutron introspection link
                                     introspectionLinks.push(new YulupIntrospectionLink(domElem.href, INTROSPECTION_TYPE_NEUTRON));
-                                } else if (domElem.rel && domElem.rel == "introspection" && domElem.type && domElem.type == "application/atomserv+xml") {
-                                    /* See http://bitworking.org/projects/atom/draft-ietf-atompub-protocol-08.html#iana
+                                } else if (domElem.rel && domElem.rel == "service" && domElem.type && domElem.type == "application/atomsvc+xml") {
+                                    /* See http://bitworking.org/projects/atom/draft-ietf-atompub-protocol-15.html#iana-atomsvc
                                      * and http://www-128.ibm.com/developerworks/xml/library/x-matters45.html. */
 
                                     /* DEBUG */ dump("Yulup:yulup.js:Yulup.introspectionDetector: APP introspection = \"" + domElem.href + "\"\n");
