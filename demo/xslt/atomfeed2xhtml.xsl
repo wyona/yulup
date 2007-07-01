@@ -22,9 +22,9 @@
 <!--
   <link rel="neutron-introspection" type="application/neutron+xml" href="introspection-{$name-without-suffix}.xml"/>
 -->
-  <link rel="introspection" type="application/atomserv+xml" href="../introspection-atom.xml"/>
+  <link rel="service" type="application/atomsvc+xml" href="../introspection-atom.xml"/>
   <!--
-  <link rel="introspection" type="application/atomserv+xml" href="introspection-{$name-without-suffix}.xml"/>
+  <link rel="service" type="application/atomsvc+xml" href="introspection-{$name-without-suffix}.xml"/>
   -->
   <meta content="application/xhtml+xml; charset=UTF-8" http-equiv="Content-Type"/>
   <title><xsl:value-of select="/atom:feed/atom:title"/> - Yulup Demo</title>
@@ -45,7 +45,7 @@
 
 <ul>
   <li>This Feed as <a href="?yanel.resource.viewid=source">application/xml</a> or as <a href="?yanel.resource.viewid=atom">application/atom+xml</a> or as <a href="index.xml?yanel.resource.viewid=source">Directory-XML</a></li>
-  <li>The Atom Introspection/Service Document as <a href="../introspection-atom.xml">application/atomserv+xml</a> or as <a href="../introspection-atom.xml?yanel.resource.viewid=source">application/xml</a></li>
+  <li>The Atom Introspection/Service Document as <a href="../introspection-atom.xml">application/atomsvc+xml</a> or as <a href="../introspection-atom.xml?yanel.resource.viewid=source">application/xml</a></li>
 </ul>
 </body>
 </html>
