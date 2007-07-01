@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<yanel:resource-config xmlns:yanel="http://www.wyona.org/yanel/rti/1.0">
+  <yanel:rti name="atom" namespace="http://www.wyona.org/yanel/resource/1.0"/>
+
+  <yanel:property name="feed-title" value="Releases"/>
+  <yanel:property name="author" value="Yulup Release Manager"/>
+  <yanel:property name="xslt" value="/xslt/atomfeed2xhtml.xsl"/>
+  <yanel:property name="self-url" value="http://www.yulup.org/download/release-atom-entries/?yanel.resource.viewid=atom"/>
+<!--
+  <yanel:property name="self-url" value="http://www.yulup.org:9190/ulysses/download/release-atom-entries/?yanel.resource.viewid=atom"/>
+-->
+</yanel:resource-config>

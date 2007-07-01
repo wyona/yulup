@@ -1,6 +1,0 @@
-<{http://www.wyona.org/yanel/resource/1.0}atom/>
-feed-title: Releases
-author: Yulup Release Manager
-xslt: /xslt/atomfeed2xhtml.xsl
-self-url: http://www.yulup.org/download/release-atom-entries/?yanel.resource.viewid=atom
-#self-url: http://www.yulup.org:9190/ulysses/download/release-atom-entries/?yanel.resource.viewid=atom
