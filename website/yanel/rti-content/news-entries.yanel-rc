@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<yanel:resource-config xmlns:yanel="http://www.wyona.org/yanel/rti/1.0">
+  <yanel:rti name="atom" namespace="http://www.wyona.org/yanel/resource/1.0"/>
+
+  <yanel:property name="feed-title" value="News"/>
+  <yanel:property name="author" value="Yulup Editorial Team"/>
+  <yanel:property name="xslt" value="/xslt/atomfeed2news-xhtml.xsl"/>
+  <yanel:property name="self-url" value="http://www.yulup.org/news-entries/?yanel.resource.viewid=atom"/>
+<!--
+  <yanel:property name="self-url" value="http://www.yulup.org:9190/ulysses/news-entries/?yanel.resource.viewid=atom"/>
+-->
+  <yanel:property name="entries-path" value="/news-entries"/>
+  <yanel:property name="entries-url" value="http://www.yulup.org/news-entries/"/>
+</yanel:resource-config>
