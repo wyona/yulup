@@ -5,7 +5,7 @@
 
   <yanel:property name="feed-title" value="Releases"/>
   <yanel:property name="author" value="Yulup Release Manager"/>
-  <yanel:property name="xslt" value="/xslt/atomfeed2xhtml.xsl"/>
+  <yanel:property name="xslt" value="/xslt/atomfeed2download-xhtml.xsl"/>
   <yanel:property name="self-url" value="http://www.yulup.org/download/release-atom-entries/?yanel.resource.viewid=atom"/>
 <!--
   <yanel:property name="self-url" value="http://www.yulup.org:9190/ulysses/download/release-atom-entries/?yanel.resource.viewid=atom"/>
