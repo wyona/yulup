@@ -14,7 +14,8 @@
         <xhtml:li>APP Service documents must now live in namespace "http://www.w3.org/2007/app" to be recognised.</xhtml:li>
         <xhtml:li>Scroll toolbar buttons horizontally on overflow.</xhtml:li>
         <xhtml:li>Scroll edit path buttons horizontally on overflow.</xhtml:li>
+        <xhtml:li>Delete method implemented</xhtml:li>
       </xhtml:ul>
     </xhtml:div>
   </atom:content>
-<atom:updated>2007-06-28T19:54:49.477Z</atom:updated><atom:published>2007-06-28T19:54:49.477Z</atom:published></atom:entry>
+<atom:updated>2007-07-02T09:23:25.303Z</atom:updated><atom:published>2007-06-28T19:54:49.477Z</atom:published></atom:entry>
