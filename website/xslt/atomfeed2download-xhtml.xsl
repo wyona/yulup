@@ -31,7 +31,7 @@
 <h2>Download</h2>
 
 <h3>System Requirements</h3>
-<p>Yulup requires <a href="http://www.mozilla.com/firefox/">Mozilla Firefox</a> with a minimum version of 1.5 to function. The Yulup editor is a platform-independent application, and can therefore be run on every machine which also runs Firefox.</p>
+<p>Yulup requires <a href="http://www.mozilla.com/firefox/">Mozilla Firefox</a> with a minimum version of 2.0 to function. The Yulup editor is a platform-independent application, and can therefore be run on every machine which also runs Firefox.</p>
 
 <p>
 Please see the <a href="../faq.html#troubleinstalltoc">FAQ</a> for troubleshooting the installation.
