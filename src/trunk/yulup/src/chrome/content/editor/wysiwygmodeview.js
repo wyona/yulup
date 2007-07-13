@@ -1538,7 +1538,7 @@ WYSIWYGUpdateSelectionListener.prototype = {
             this.__view.setContextTarget(aEvent.originalTarget.locationNode);
 
             // open the context menu
-            this.__menuPopup.showPopup(aEvent.originalTarget, -1, -1, "popup", "bottomleft", "topleft");
+            this.__menuPopup.showPopup(aEvent.originalTarget, -1, -1, "popup", "topright", "bottomright");
         }
     },
 
