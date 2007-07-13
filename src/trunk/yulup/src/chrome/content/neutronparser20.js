@@ -340,7 +340,7 @@ NeutronParser20.prototype = {
         }
 
         // parse delete element
-        resource.delete = this.__parseFileOperation(aDocument, aNode, "delete");
+        resource.remove = this.__parseFileOperation(aDocument, aNode, "delete");
 
         // get versions
         if (elemNodeIterator = aDocument.evaluate("neutron20:versions/neutron20:version", aNode, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)) {

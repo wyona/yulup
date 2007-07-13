@@ -561,7 +561,7 @@ NeutronIntrospection.prototype = {
      */
     queryFragmentDeleteURI: function (aFragment) {
         // return delete URI for fragment
-        return (this.fragments[aFragment].delete ? this.fragments[aFragment].delete.uri : null);
+        return (this.fragments[aFragment].remove ? this.fragments[aFragment].remove.uri : null);
     },
 
     /**
@@ -573,7 +573,7 @@ NeutronIntrospection.prototype = {
      */
     queryFragmentDeleteMethod: function (aFragment) {
         // return delete method for fragment
-        return (this.fragments[aFragment].delete ? this.fragments[aFragment].delete.method : null);
+        return (this.fragments[aFragment].remove ? this.fragments[aFragment].remove.method : null);
     },
 
     /**
@@ -740,7 +740,7 @@ NeutronResource.prototype = {
     checkout       : null,
     checkin        : null,
     releaseLock    : null,
-    delete         : null,
+    remove         : null,
     schemas        : null,
     styles         : null,
     styleTemplate  : null,
@@ -809,9 +809,9 @@ NeutronResource.prototype = {
             }
         }
 
-        if (this.delete) {
-            objString += "Delete URI:               " + (this.delete.uri ? this.delete.uri.spec : this.delete.uri) + "\n"; + "\n";
-            objString += "Delete method:            " + this.delete.method + "\n";
+        if (this.remove) {
+            objString += "Delete URI:               " + (this.remove.uri ? this.remove.uri.spec : this.remove.uri) + "\n"; + "\n";
+            objString += "Delete method:            " + this.remove.method + "\n";
         }
 
         return objString;
