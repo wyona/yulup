@@ -25,11 +25,11 @@
  * @author Andreas Wuest
  *
  * This module contains the code to communicate with a server
- * supporting the APP (see http://bitworking.org/projects/atom/draft-ietf-atompub-protocol-09.html)
+ * supporting the APP (see http://bitworking.org/projects/atom/draft-ietf-atompub-protocol-15.html)
  * and the Atom specification (see http://www.ietf.org/rfc/rfc4287.txt).
  */
 
-const APP_09_NAMESPACE  = "http://www.w3.org/2007/app";
+const APP_15_NAMESPACE  = "http://www.w3.org/2007/app";
 const ATOM_10_NAMESPACE = "http://www.w3.org/2005/Atom";
 
 var APP = {
@@ -169,9 +169,9 @@ var APP = {
 
         // extract APP version
         switch (aDocument.documentElement.namespaceURI) {
-            case APP_09_NAMESPACE:
+            case APP_15_NAMESPACE:
                 // instantiate APP 0.9 parser
-                appParser = new APPParser09(aDocument, aBaseURI);
+                appParser = new APPParser15(aDocument, aBaseURI);
                 break;
             default:
                 // no parser available for this version
