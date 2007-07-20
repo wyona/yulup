@@ -1503,7 +1503,7 @@ WYSIWYGUpdateSelectionListener.prototype = {
 
         /* DEBUG */ dump("Yulup:wysiwygmodeview.js:WYSIWYGUpdateSelectionListener.__createPathButton() invoked\n");
 
-        button = document.createElementNS(XUL_NAMESPACE_URI, "button");
+        button = document.createElementNS(XUL_NAMESPACE_URI, "toolbarbutton");
         button.setAttribute("label", aName);
         // TODO: i18n
         button.setAttribute("tooltiptext", "Click to open menu to modify this element");
