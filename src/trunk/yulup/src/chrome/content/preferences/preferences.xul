@@ -2,7 +2,7 @@
 
 <!--
 # ***** BEGIN LICENSE BLOCK *****
-# Copyright 2006 Wyona AG Zurich
+# Copyright 2006-2007 Wyona AG Zurich
 #
 # This file is part of Yulup.
 #
@@ -89,9 +89,6 @@
       <preference id="pref_editor_wrap"
                   name="extensions.yulup.editor.wrap"
                   type="bool"/>
-      <preference id="pref_editor_theme"
-                  name="extensions.yulup.editor.theme"
-                  type="unichar"/>
       <preference id="pref_editor_openinnewtab"
                   name="extensions.yulup.editor.openinnewtab"
                   type="bool"/>
@@ -124,13 +121,6 @@
 
     <groupbox>
       <caption label="&editorThemeGroupbox.label;"/>
-      <label value="&editorThemeMenulistLabel.label;:" control="uiEditorThemeMenulist"/>
-      <menulist id="uiEditorThemeMenulist" disabled="true">
-        <menupopup>
-          <menuitem value="default" label="&editorThemeDefaultTheme.label;"/>
-        </menupopup>
-      </menulist>
-      <separator class="thin"/>
       <checkbox label="&editorAppearanceOpenInNewTab.label;" preference="pref_editor_openinnewtab"/>
     </groupbox>
 

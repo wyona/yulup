@@ -1,6 +1,6 @@
 /*
  * ***** BEGIN LICENSE BLOCK *****
- * Copyright 2006 Wyona AG Zurich
+ * Copyright 2006-2007 Wyona AG Zurich
  *
  * This file is part of Yulup.
  *
@@ -35,81 +35,10 @@ var PreferencesDialog = {
      * @return {Undefined} does not have a return value
      */
     onLoadHandler: function () {
-        var menulist         = null;
-        var ioService        = null;
-        var chromeRegistry   = null;
-        var fileURI          = null;
-        var file             = null;
-        var dirEntries       = null;
-        var themeDirectory   = null;
-        var themeID          = null;
-        var themeValue       = null;
-        var selectedItem     = null;
-
         /* DEBUG */ dump("Yulup:preferences.js:PreferencesDialog.onLoadHandler() invoked\n");
-
-        menulist = document.getElementById("uiEditorThemeMenulist");
-
-        // discover all available themes
-        try {
-            ioService      = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-            chromeRegistry = Components.classes["@mozilla.org/chrome/chrome-registry;1"].getService(Components.interfaces.nsIChromeRegistry);
-
-            fileURI = chromeRegistry.convertChromeURL(ioService.newURI(YULUP_THEME_CHROME_URI, null, null));
-
-            /* DEBUG */ dump("Yulup:preferences.js:PreferencesDialog.onLoadHandler: fileURI.spec = \"" + fileURI.spec + "\"\n");
-
-            file = fileURI.QueryInterface(Components.interfaces.nsIFileURL).file;
-
-            /* DEBUG */ dump("Yulup:preferences.js:PreferencesDialog.onLoadHandler: file = \"" + file + "\"\n");
-
-            if (file.isDirectory()) {
-                dirEntries = file.directoryEntries;
-
-                while (dirEntries.hasMoreElements()) {
-                    themeDirectory = dirEntries.getNext().QueryInterface(Components.interfaces.nsIFile);
-
-                    /* DEBUG */ dump("Yulup:preferences.js:PreferencesDialog.onLoadHandler: theme dir entry = \"" + themeDirectory.leafName + "\"\n");
-
-                    if (themeDirectory.isDirectory) {
-                        menulist.appendItem(themeDirectory.leafName, themeDirectory.leafName.toLowerCase(), null);
-                    }
-                }
-            }
-        } catch (exception) {
-            /* DEBUG */ YulupDebug.dumpExceptionToConsole("Yulup:preferences.js:PreferencesDialog.onLoadHandler", exception);
-            /* DEBUG */ Components.utils.reportError(exception);
-        }
-
-        // get current theme
-        if ((themeID = YulupPreferences.getCharPref("editor.", "theme")) != null) {
-            themeValue = themeID.toLowerCase();
-        } else {
-            themeValue = "default";
-        }
-
-        // select current theme
-        for (var i = 0; i < menulist.firstChild.childNodes.length; i++) {
-            if (menulist.firstChild.childNodes[i].value == themeValue) {
-                selectedItem = menulist.firstChild.childNodes[i];
-                break;
-            }
-        }
-
-        if (selectedItem) {
-            menulist.selectedItem = selectedItem;
-        } else {
-            menulist.selectedIndex = 0;
-        }
 
         // install keypress handler for input validation
         document.getElementById("uiEditorTabspacesTextbox").inputField.addEventListener("keypress", PreferencesDialog.spacesTextboxKeypressHandler, false);
-
-        // install preference connectors
-        menulist.setAttribute("preference", "pref_editor_theme");
-
-        // enable preferences
-        menulist.removeAttribute("disabled");
     },
 
     selectDirectory: function () {

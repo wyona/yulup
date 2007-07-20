@@ -41,10 +41,10 @@
     <content>
       <children includes="observes|template|menupopup|tooltip"/>
       <xul:vbox flex="1" align="center">
-        <xul:deck selectedIndex="0" width="24" height="24">
-          <xhtml:canvas width="24" height="24"></xhtml:canvas>
-          <xhtml:canvas width="24" height="24"></xhtml:canvas>
-          <xhtml:canvas width="24" height="24"></xhtml:canvas>
+        <xul:deck anonid="canvasImageDeck" selectedIndex="0" width="24" height="24">
+          <xhtml:canvas anonid="canvasNormalCanvas" width="24" height="24"></xhtml:canvas>
+          <xhtml:canvas anonid="canvasActiveCanvas" width="24" height="24"></xhtml:canvas>
+          <xhtml:canvas anonid="canvasInactiveCanvas" width="24" height="24"></xhtml:canvas>
         </xul:deck>
       </xul:vbox>
       <xul:label class="toolbarbutton-text" crop="right" flex="1"
@@ -148,10 +148,10 @@
           /* DEBUG */ dump("Yulup:canvasbutton.xml:canvasbutton.ctor: image attribute = \"" + this.getAttribute("image") + "\"\n");
 
           // initialise element fields
-          this.__deck           = document.getAnonymousNodes(this)[0].childNodes[0];
-          this.__canvasNormal   = document.getAnonymousNodes(this)[0].childNodes[0].childNodes[0];
-          this.__canvasActive   = document.getAnonymousNodes(this)[0].childNodes[0].childNodes[1];
-          this.__canvasInactive = document.getAnonymousNodes(this)[0].childNodes[0].childNodes[2];
+          this.__deck           = document.getAnonymousElementByAttribute(this, "anonid", "canvasImageDeck");
+          this.__canvasNormal   = document.getAnonymousElementByAttribute(this, "anonid", "canvasNormalCanvas");
+          this.__canvasActive   = document.getAnonymousElementByAttribute(this, "anonid", "canvasActiveCanvas");
+          this.__canvasInactive = document.getAnonymousElementByAttribute(this, "anonid", "canvasInactiveCanvas");
 
           // create a mouseup listener wrapper
           this.mouseUpListenerWrapper = function(aEvent) { self.__mouseUpListener(aEvent); };
@@ -316,5 +316,22 @@
         ]]>
       </handler>
     </handlers>
+  </binding>
+
+  <binding id="menu" display="xul:menu"
+           extends="chrome://yulup/content/canvasbutton.xml#canvasbutton">
+    <content>
+      <children includes="observes|template|menupopup|tooltip"/>
+      <xul:vbox flex="1" align="center">
+        <xul:deck anonid="canvasImageDeck" selectedIndex="0" width="24" height="24">
+          <xhtml:canvas anonid="canvasNormalCanvas" width="24" height="24"></xhtml:canvas>
+          <xhtml:canvas anonid="canvasActiveCanvas" width="24" height="24"></xhtml:canvas>
+          <xhtml:canvas anonid="canvasInactiveCanvas" width="24" height="24"></xhtml:canvas>
+        </xul:deck>
+      </xul:vbox>
+      <xul:label class="toolbarbutton-text" crop="right" flex="1"
+                 xbl:inherits="value=label,accesskey,crop,toolbarmode,buttonstyle"/>
+      <xul:dropmarker type="menu" class="toolbarbutton-menu-dropmarker" xbl:inherits="disabled"/>
+    </content>
   </binding>
 </bindings>

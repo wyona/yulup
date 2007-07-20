@@ -69,6 +69,10 @@ toolbox[showiconsonly="true"] .toolbarbutton-text {
   display: none;
 }
 
+canvasbutton > dropmarker {
+  display: none !important;
+}
+
 /* -------------------- Footer Toolbars  -------------------- */
 
 .uiEditorFooterToolBar {

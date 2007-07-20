@@ -27,7 +27,6 @@
 <?xml-stylesheet href="chrome://yulup/skin/canvasbutton.css" type="text/css"?>
 <?xml-stylesheet href="chrome://yulup/skin/widgetgroup.css" type="text/css"?>
 <?xml-stylesheet href="chrome://yulup/skin/editor.css" type="text/css"?>
-<?xml-stylesheet href="chrome://yulup/skin/theme.default.css" type="text/css"?>
 
 <!DOCTYPE window SYSTEM "chrome://yulup/locale/editor.dtd">
 
@@ -257,13 +256,19 @@
              toolbarname="Yulup Editor Toolbar">
       <arrowscrollbox orient="horizontal" flex="1">
         <box id="uiYulupFileOperationsToolbarbuttons">
-          <toolbarbutton id="uiFileOperationExit"
-                         oncommand="Editor.exitEditor()"
-                         observes="broadcaster_yulup_newopen"
-                         label="&fileOperationExit.label;" tooltiptext="&fileOperationExit.tooltip;"
-                         key="key_yulup_exit"
-                         disabled="true"/>
-          <toolbarbutton id="uiFileOperationNew" label="&fileOperationNew.label;" tooltiptext="&fileOperationNew.tooltip;" observes="broadcaster_yulup_newopen" type="menu">
+          <canvasbutton id="uiFileOperationExit"
+                        image="chrome://yulup/skin/icons/editor/yulup-exit.png"
+                        oncommand="Editor.exitEditor()"
+                        observes="broadcaster_yulup_newopen"
+                        label="&fileOperationExit.label;" tooltiptext="&fileOperationExit.tooltip;"
+                        key="key_yulup_exit"
+                        disabled="true"/>
+          <canvasbutton id="uiFileOperationNew"
+                        image="chrome://yulup/skin/icons/editor/yulup-new.png"
+                        label="&fileOperationNew.label;"
+                        tooltiptext="&fileOperationNew.tooltip;"
+                        observes="broadcaster_yulup_newopen"
+                        type="menu">
             <menupopup id="uiFileOperationNewMenupopup">
               <menu id="uiYulupOperationNewFromTemplateLocalMenu"
                     label="&fileOperationNewFromTemplateLocalMenuitem.label;" tooltiptext="&fileOperationNewFromTemplateLocalMenuitem.tooltip;"
@@ -275,8 +280,13 @@
                         label="&fileOperationNewFromTemplateCMSMenuitem.label;" tooltiptext="&fileOperationNewFromTemplateCMSMenuitem.tooltip;"
                         disabled="true"/>
             </menupopup>
-          </toolbarbutton>
-          <toolbarbutton id="uiFileOperationOpen" label="&fileOperationOpen.label;" tooltiptext="&fileOperationOpen.tooltip;" observes="broadcaster_yulup_newopen" type="menu">
+          </canvasbutton>
+          <canvasbutton id="uiFileOperationOpen"
+                        image="chrome://yulup/skin/icons/editor/yulup-open.png"
+                        label="&fileOperationOpen.label;"
+                        tooltiptext="&fileOperationOpen.tooltip;"
+                        observes="broadcaster_yulup_newopen"
+                        type="menu">
             <menupopup id="uiFileOperationOpenMenupopup">
               <menuitem id="uiFileOperationOpenLocalMenuitem"
                         oncommand="Editor.openFromFile()"
@@ -287,8 +297,13 @@
                         label="&fileOperationOpenCMSMenuitem.label;" tooltiptext="&fileOperationOpenCMSMenuitem.tooltip;"
                         disabled="true"/>
             </menupopup>
-          </toolbarbutton>
-          <toolbarbutton id="uiFileOperationSave" label="&fileOperationSave.label;" tooltiptext="&fileOperationSave.tooltip;" disabled="true" type="menu">
+          </canvasbutton>
+          <canvasbutton id="uiFileOperationSave"
+                        image="chrome://yulup/skin/icons/editor/yulup-save.png"
+                        label="&fileOperationSave.label;"
+                        tooltiptext="&fileOperationSave.tooltip;"
+                        disabled="true"
+                        type="menu">
             <menupopup id="uiFileOperationSaveMenupopup">
               <menuitem id="uiFileOperationSaveLocalMenuitem"
                         command="cmd_yulup_savelocal"
@@ -307,8 +322,13 @@
                         key="key_yulup_checkincms"
                         disabled="true"/>
             </menupopup>
-          </toolbarbutton>
-          <toolbarbutton id="uiFileOperationSaveAs" label="&fileOperationSaveAs.label;" tooltiptext="&fileOperationSaveAs.tooltip;" observes="broadcaster_yulup_saveas" type="menu">
+          </canvasbutton>
+          <canvasbutton id="uiFileOperationSaveAs"
+                        image="chrome://yulup/skin/icons/editor/yulup-saveas.png"
+                        label="&fileOperationSaveAs.label;"
+                        tooltiptext="&fileOperationSaveAs.tooltip;"
+                        observes="broadcaster_yulup_saveas"
+                        type="menu">
             <menupopup id="uiFileOperationSaveAsMenupopup">
               <menuitem id="uiFileOperationSaveAsLocalMenuitem"
                         oncommand="Editor.saveDispatcher('saveaslocal')"
@@ -319,30 +339,38 @@
                         label="&fileOperationSaveAsCMSMenuitem.label;" tooltiptext="&fileOperationSaveAsCMSMenuitem.tooltip;"
                         disabled="true"/>
             </menupopup>
-          </toolbarbutton>
-          <toolbarbutton id="uiFileOperationUpload"
-                         command="cmd_yulup_upload"
-                         key="key_yulup_upload"
-                         disabled="true"/>
+          </canvasbutton>
+          <canvasbutton id="uiFileOperationUpload"
+                        image="chrome://yulup/skin/icons/editor/yulup-upload.png"
+                        command="cmd_yulup_upload"
+                        key="key_yulup_upload"
+                        disabled="true"/>
         </box>
         <toolbarseparator/>
         <box id="uiYulupEditOperationsToolbarbuttons">
-          <toolbarbutton id="uiEditOperationUndo"
-                         command="cmd_undo"/>
-          <toolbarbutton id="uiEditOperationRedo"
-                         command="cmd_redo"/>
-          <toolbarbutton id="uiEditOperationCut"
-                         command="cmd_cut"/>
-          <toolbarbutton id="uiEditOperationCopy"
-                         command="cmd_copy"/>
-          <toolbarbutton id="uiEditOperationPaste"
-                         command="cmd_paste"/>
-          <toolbarbutton id="uiEditOperationFind"
-                         command="cmd_yulup_find"
-                         key="key_yulup_find"/>
-          <toolbarbutton id="uiEditOperationFindReplace"
-                         command="cmd_yulup_replace"
-                         key="key_yulup_replace"/>
+          <canvasbutton id="uiEditOperationUndo"
+                        image="chrome://yulup/skin/icons/editor/yulup-undo.png"
+                        command="cmd_undo"/>
+          <canvasbutton id="uiEditOperationRedo"
+                        image="chrome://yulup/skin/icons/editor/yulup-redo.png"
+                        command="cmd_redo"/>
+          <canvasbutton id="uiEditOperationCut"
+                        image="chrome://yulup/skin/icons/editor/yulup-cut.png"
+                        command="cmd_cut"/>
+          <canvasbutton id="uiEditOperationCopy"
+                        image="chrome://yulup/skin/icons/editor/yulup-copy.png"
+                        command="cmd_copy"/>
+          <canvasbutton id="uiEditOperationPaste"
+                        image="chrome://yulup/skin/icons/editor/yulup-paste.png"
+                        command="cmd_paste"/>
+          <canvasbutton id="uiEditOperationFind"
+                        image="chrome://yulup/skin/icons/editor/yulup-find.png"
+                        command="cmd_yulup_find"
+                        key="key_yulup_find"/>
+          <canvasbutton id="uiEditOperationFindReplace"
+                        image="chrome://yulup/skin/icons/editor/yulup-findreplace.png"
+                        command="cmd_yulup_replace"
+                        key="key_yulup_replace"/>
         </box>
         <toolbarseparator id="uiYulupWidgetToolbarSeparator" hidden="true"/>
       </arrowscrollbox>

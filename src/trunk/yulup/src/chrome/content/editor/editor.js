@@ -77,13 +77,6 @@ var Editor = {
                 document.getElementById("uiYulupEditorToolbox").setAttribute("showiconsonly", false);
             }
 
-            // add toolbox stylesheet according to preferred theme
-            if ((themeID = YulupPreferences.getCharPref("editor.", "theme")) != null) {
-                if (themeID != "default") {
-                    document.styleSheets.item(2).insertRule("@import url(chrome://yulup/skin/theme." + themeID + ".css);", 0);
-                }
-            }
-
             // show toolbox
             document.getElementById("uiYulupEditorToolbox").removeAttribute("hidden");
 
