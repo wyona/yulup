@@ -961,7 +961,14 @@ AtomPlainText.prototype = {
     __proto__:  AtomText.prototype,
 
     type: null,
-    text: null
+    text: null,
+
+    toString: function () {
+        if (this.type == "html")
+            return DOMSerialiser.extractTextFromTree("<div>" + YulupXMLServices.unescapeString(this.text) + "</div>");
+
+        return this.text;
+    }
 };
 
 
@@ -985,7 +992,11 @@ AtomXHTMLText.prototype = {
     __proto__:  AtomText.prototype,
 
     type    : null,
-    xhtmlDiv: null
+    xhtmlDiv: null,
+
+    toString: function () {
+        return DOMSerialiser.extractTextFromTree(this.xhtmlDiv);
+    }
 };
 
 

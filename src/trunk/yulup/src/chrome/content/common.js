@@ -227,11 +227,11 @@ const YulupXMLServices = {
     escapeString: function (aString) {
         /* DEBUG */ YulupDebug.ASSERT(aString != null);
 
-        const escapeRegExp = new RegExp('[<&]', "g");
+        const escapeRegExp = new RegExp("[<&]", "g");
 
         const escapeTable = {
-            '<': "&lt;",
-            '&': "&amp;"
+            "<": "&lt;",
+            "&": "&amp;"
         };
 
         function lookupReplacementChar(aChar) {
@@ -246,12 +246,12 @@ const YulupXMLServices = {
 
         var retString = null;
 
-        const escapeRegExp = new RegExp('[<>&]', "g");
+        const escapeRegExp = new RegExp("[<>&]", "g");
 
         const escapeTable = {
-            '<': "&lt;",
-            '>': "&gt;",
-            '&': "&amp;"
+            "<": "&lt;",
+            ">": "&gt;",
+            "&": "&amp;"
         };
 
         function lookupReplacementChar(aChar) {
@@ -259,6 +259,24 @@ const YulupXMLServices = {
         };
 
         return aString.replace(escapeRegExp, lookupReplacementChar);
+    },
+
+    unescapeString: function (aString) {
+        /* DEBUG */ YulupDebug.ASSERT(aString != null);
+
+        const unescapeRegExp = new RegExp("&lt;|&gt;|&amp;", "g");
+
+        const unescapeTable = {
+            "&lt;" : "<",
+            "&gt;" : ">",
+            "&amp;": "&"
+        };
+
+        function lookupReplacementString(aFoundString) {
+            return unescapeTable[aFoundString];
+        };
+
+        return aString.replace(unescapeRegExp, lookupReplacementString);
     },
 
     /**
@@ -880,7 +898,41 @@ const DOMSerialiser = {
                 break;
             default:
         }
-    }
+    },
+
+    /**
+     * Extracts all the text from a DOM tree.
+     *
+     * @param  {String}  aString  a string of XML
+     * @return {String}  the text contained in the passed in XML
+     */
+    extractTextFromTree: function (aString) {
+        var domParser    = null;
+        var tree         = null;
+        var treeToString = null;
+
+        domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"].createInstance(Components.interfaces.nsIDOMParser);
+
+        tree = domParser.parseFromString(aString, "application/xml");
+
+        treeToString = function (aNode) {
+            var child  = null;
+            var string = null;
+
+            if (aNode.nodeType == Components.interfaces.nsIDOMNode.TEXT_NODE)
+                return aNode.data;
+
+            string = "";
+
+            for (child = aNode.firstChild; child != null; child = child.nextSibling) {
+                string += treeToString(child);
+            }
+
+            return string;
+        };
+
+        return treeToString(tree);
+    },
 };
 
 

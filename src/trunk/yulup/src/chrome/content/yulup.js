@@ -784,7 +784,7 @@ const Yulup = {
                         for (domElem = elemWalker.firstChild(); domElem; domElem = elemWalker.nextSibling()) {
                             if (domElem.nodeName == "link" || domElem.nodeName == "LINK") {
                                 // found a <link> element, look at its attributes
-                                if (domElem.rel && domElem.rel == "neutron-introspection" && domElem.type && domElem.type == "application/neutron+xml") {
+                                if (domElem.rel && domElem.rel == "neutron-introspection" && domElem.type && (domElem.type == "application/neutron+xml" || domElem.type == "application/atomserv+xml")) {
                                     /* DEBUG */ dump("Yulup:yulup.js:Yulup.introspectionDetector: Neutron introspection = \"" + domElem.href + "\"\n");
 
                                     // found a Neutron introspection link

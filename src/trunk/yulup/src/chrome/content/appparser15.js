@@ -74,7 +74,8 @@ APPParser15.prototype = {
         /* DEBUG */ dump("Yulup:appparser15.js:APPParser15.nsResolver(\"" + aPrefix + "\") invoked\n");
 
         var namespace = {
-            "app15" : APP_15_NAMESPACE
+            "app15" : APP_15_NAMESPACE,
+            "atom10": ATOM_10_NAMESPACE
         };
 
         return namespace[aPrefix] || null;
@@ -164,14 +165,19 @@ APPParser15.prototype = {
      * @throws {APPInvalidException}
      */
     __parseWorkspace: function (aBaseURI, aDocument, aWorkspace) {
+        var title       = null;
         var collections = null;
         var collection  = null;
         var workspace   = null;
 
         workspace = new APP15Workspace(this.__parseCommonAttributeBase(aWorkspace, aBaseURI), this.__parseCommonAttributeLang(aWorkspace));
 
-        if (!(workspace.title = aDocument.evaluate("attribute::title", aWorkspace, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue))
-            throw new APPInvalidException("The workspace element must contain a title attribute.\n\n" + this.__serialiseNode(aWorkspace));
+        if (title = aDocument.evaluate("atom10:title", aWorkspace, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
+            workspace.title = this.__parseTextConstruct(aBaseURI, aDocument, title);
+        } else {
+            // app:workspace element MUST contain one atom:title element
+            throw new APPInvalidException("The workspace element must contain a <atom:title> element.\n\n" + this.__serialiseNode(aWorkspace));
+        }
 
         if (collections = aDocument.evaluate("app15:collection", aWorkspace, this.nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null)) {
             while (collection = collections.iterateNext()) {
@@ -192,14 +198,19 @@ APPParser15.prototype = {
      * @throws {APPInvalidException}
      */
     __parseCollection: function (aBaseURI, aDocument, aCollection) {
+        var title      = null;
         var accepts    = null;
         var accept     = null;
         var collection = null;
 
         collection = new APP15Collection(this.__parseCommonAttributeBase(aCollection, aBaseURI), this.__parseCommonAttributeLang(aCollection));
 
-        if (!(collection.title = aDocument.evaluate("attribute::title", aCollection, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue))
-            throw new APPInvalidException("The collection element must contain a title attribute.\n\n" + this.__serialiseNode(aCollection));
+        if (title = aDocument.evaluate("atom10:title", aCollection, this.nsResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) {
+            collection.title = this.__parseTextConstruct(aBaseURI, aDocument, title);
+        } else {
+            // app:collection element MUST contain one atom:title element
+            throw new APPInvalidException("The collection element must contain a <atom:title> element.\n\n" + this.__serialiseNode(aCollection));
+        }
 
         // we can't pack the assignment directly into the if condition because collection.uri is a setter
         collection.uri = aDocument.evaluate("attribute::href", aCollection, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
@@ -245,6 +256,49 @@ APPParser15.prototype = {
         }
 
         return accept;
+    },
+
+    /* Hack: mix in from atomparser10.js */
+    /**
+     * Parse an atomTextConstruct node.
+     *
+     * @param  {nsIURI}     aBaseURI       the parent base URI
+     * @param  {nsIDOMNode} aTextConstruct the node to operate on
+     * @return {AtomText}
+     */
+    __parseTextConstruct: function (aBaseURI, aDocument, aTextConstruct) {
+        var text = null;
+        var type = null;
+
+        /* DEBUG */ YulupDebug.ASSERT(aBaseURI != null);
+        /* DEBUG */ YulupDebug.ASSERT(aTextConstruct != null);
+
+        switch (aTextConstruct.getAttribute("type")) {
+            case "xhtml":
+                text = new Atom10XHTMLText(this.__parseCommonAttributeBase(aTextConstruct, aBaseURI), this.__parseCommonAttributeLang(aTextConstruct));
+                text.type = "xhtml";
+                text.xhtmlDiv = this.__serialiseNode(aTextConstruct.firstChild);
+                break;
+            case "html":
+                text = new Atom10PlainText(this.__parseCommonAttributeBase(aTextConstruct, aBaseURI), this.__parseCommonAttributeLang(aTextConstruct));
+                text.type = "html";
+                text.text = "";
+
+                for (var node = aTextConstruct.firstChild; node != null; node = node.nextSibling) {
+                    text.text += this.__serialiseNode(node);
+                }
+
+                break;
+            case "text":
+                // fall through
+            default:
+                // assume plaintext
+                text = new Atom10PlainText(this.__parseCommonAttributeBase(aTextConstruct, aBaseURI), this.__parseCommonAttributeLang(aTextConstruct));
+                text.type = "text";
+                text.text = aDocument.evaluate("text()", aTextConstruct, this.nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+        }
+
+        return text;
     }
 };
 
