@@ -2,6 +2,7 @@
 
 <service xmlns="http://www.w3.org/2007/app" xmlns:atom="http://www.w3.org/2005/Atom">
   <workspace title="Yulup Website">
+    <atom:title type="text">Yulup Website</atom:title>
     <collection title="Releases" href="release-atom-entries/?yanel.resource.viewid=atom">
       <atom:title type="text">Releases</atom:title>
 <!--
