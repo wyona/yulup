@@ -932,7 +932,7 @@ const DOMSerialiser = {
         };
 
         return treeToString(tree);
-    },
+    }
 };
 
 
