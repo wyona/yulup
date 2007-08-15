@@ -1,0 +1,21 @@
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <atom:title type="text">yulup-0.3.0-r26657.xpi</atom:title>
+  <atom:author>
+    <atom:name>Andreas Wuest</atom:name>
+  </atom:author>
+  <atom:id>urn:www-yulup-org:0-3-0-release</atom:id>
+  <atom:content type="xhtml">
+    <xhtml:div>
+      <xhtml:a href="yulup-0.3.0-r26657.xpi">yulup-0.3.0-r26657.xpi</xhtml:a> <xhtml:a href="http://svn.wyona.com/repos/public/yulup/website/download/yulup-0.3.0-r26657.xpi.md5">(md5)</xhtml:a> (August 09, 2007)
+      <xhtml:br/>
+      <xhtml:br/>
+      Changelog:
+      <xhtml:ul>
+        <xhtml:li>APP Service documents with mime-type application/atomsvc+xml are now recognised as well.</xhtml:li>
+        <xhtml:li>Fixed issue with menu in path toolbar not showing.</xhtml:li>
+        <xhtml:li>Switched to canvasbutton for all toolbarbuttons. Note that this removes the ability to have different themes for the editor.</xhtml:li>
+        <xhtml:li>Updated to APP draft 15.</xhtml:li>
+      </xhtml:ul>
+    </xhtml:div>
+  </atom:content>
+<atom:updated>2007-08-09T17:11:20.140Z</atom:updated><atom:published>2007-08-09T17:11:20.140Z</atom:published></atom:entry>
