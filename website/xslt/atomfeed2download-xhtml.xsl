@@ -37,8 +37,10 @@
 Please see the <a href="../faq.html#troubleinstalltoc">FAQ</a> for troubleshooting the installation.
 </p>
 
+<!--
 <h3>Nightly Builds</h3>
 <p>You can find our nightly builds under <a href="/download/nightly/">/download/nightly/</a>.</p>
+-->
 
 <h3>Releases</h3>
 <xsl:apply-templates select="/atom:feed/atom:entry"/>
