@@ -14,8 +14,8 @@
         <xhtml:li>APP Service documents with mime-type application/atomsvc+xml are now recognised as well.</xhtml:li>
         <xhtml:li>Fixed issue with menu in path toolbar not showing.</xhtml:li>
         <xhtml:li>Switched to canvasbutton for all toolbarbuttons. Note that this removes the ability to have different themes for the editor.</xhtml:li>
-        <xhtml:li>Updated to APP draft 15.</xhtml:li>
+        <xhtml:li>Updated to APP draft <xhtml:a href="http://bitworking.org/projects/atom/draft-ietf-atompub-protocol-15.html">15</xhtml:a>.</xhtml:li>
       </xhtml:ul>
     </xhtml:div>
   </atom:content>
-<atom:updated>2007-08-09T17:11:20.140Z</atom:updated><atom:published>2007-08-09T17:11:20.140Z</atom:published></atom:entry>
+<atom:updated>2007-08-15T07:21:24.248Z</atom:updated><atom:published>2007-08-09T17:11:20.140Z</atom:published></atom:entry>
