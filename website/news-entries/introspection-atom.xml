@@ -1,11 +1,14 @@
 <?xml version="1.0"?>
 
-<service xmlns="http://www.w3.org/2007/app">
+<service xmlns="http://www.w3.org/2007/app" xmlns:atom="http://www.w3.org/2005/Atom">
   <workspace title="Yulup Website">
+    <atom:title>Yulup Website</atom:title>
     <collection title="News" href="../news-entries/?yanel.resource.viewid=atom">
+      <atom:title>News</atom:title>
     </collection>
 
     <collection title="Releases" href="../download/release-atom-entries/?yanel.resource.viewid=atom">
+      <atom:title>Releases</atom:title>
     </collection>
   </workspace>
 </service>
