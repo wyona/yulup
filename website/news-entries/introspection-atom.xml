@@ -5,10 +5,12 @@
     <atom:title>Yulup Website</atom:title>
     <collection title="News" href="../news-entries/?yanel.resource.viewid=atom">
       <atom:title>News</atom:title>
+      <accept>application/atom+xml;type=entry</accept>
     </collection>
 
     <collection title="Releases" href="../download/release-atom-entries/?yanel.resource.viewid=atom">
       <atom:title>Releases</atom:title>
+      <accept>application/atom+xml;type=entry</accept>
     </collection>
   </workspace>
 </service>

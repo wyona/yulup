@@ -5,15 +5,11 @@
     <atom:title type="text">Yulup Website</atom:title>
     <collection title="Releases" href="release-atom-entries/?yanel.resource.viewid=atom">
       <atom:title type="text">Releases</atom:title>
-<!--
-    <collection title="Releases" href="download/release-atom-entries/?yanel.resource.viewid=atom">
--->
+      <accept>application/atom+xml;type=entry</accept>
     </collection>
     <collection title="News" href="../news-entries/?yanel.resource.viewid=atom">
       <atom:title type="text">News</atom:title>
-<!--
-    <collection title="News" href="news-entries.html?yanel.resource.viewid=atom">
--->
+      <accept>application/atom+xml;type=entry</accept>
     </collection>
   </workspace>
 </service>
