@@ -35,7 +35,7 @@
  *
  * @constructor
  * @param  {nsIDOMXMLDocument} aDocument the Neutron document to parse
- * @param  {nsIURI}            aBaseURI  the URI of the document to which the introspection document is associated
+ * @param  {nsIURI}            aBaseURI  the URI of the introspection document
  * @return {NeutronParser20}
  */
 function NeutronParser20(aDocument, aBaseURI) {
@@ -697,14 +697,14 @@ NeutronParser20.prototype = {
  * object of type Neutron20Introspection.
  *
  * @constructor
- * @param  {nsIURI}                 aAssociatedWithURI the URI of the document this introspection object is associated with
+ * @param  {nsIURI}                 aURI  the URI of the introspection document
  * @return {Neutron20Introspection} a new Neutron20Introspection object
  */
-function Neutron20Introspection(aAssociatedWithURI) {
-    /* DEBUG */ dump("Yulup:neutronparser20.js:Neutron20Introspection(\"" + aAssociatedWithURI + "\") invoked\n");
+function Neutron20Introspection(aURI) {
+    /* DEBUG */ dump("Yulup:neutronparser20.js:Neutron20Introspection(\"" + aURI + "\") invoked\n");
 
     // call super constructor
-    NeutronIntrospection.call(this, aAssociatedWithURI, NEUTRON_20_NAMESPACE);
+    NeutronIntrospection.call(this, aURI, NEUTRON_20_NAMESPACE);
 }
 
 Neutron20Introspection.prototype = {

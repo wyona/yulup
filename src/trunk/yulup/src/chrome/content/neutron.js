@@ -36,25 +36,25 @@ var Neutron = {
     /**
      * Fetch introspection file.
      *
-     * @param  {String}  aURI           URI of remote host to query for introspection file
-     * @param  {nsIURI}  aBaseURI       the URI of the document to which the introspection document is associated
+     * @param  {String}  aURI           the URI of the introspection document
+     * @param  {nsIURI}  aAssociatedURI the URI of the document to which the introspection document is associated
      * @param  {Object}  aYulup         the Yulup object
      * @param  {Boolean} aAuthenticate  if authentication should take place during introspection document load, or we should fail
      * @return {Undefined}  does not have a return value
      */
-    introspection: function (aURI, aBaseURI, aYulup, aAuthenticate) {
+    introspection: function (aURI, aAssociatedURI, aYulup, aAuthenticate) {
         var context = null;
 
-        /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspection(\"" + aURI + "\", \"" + aBaseURI + "\") invoked\n");
+        /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspection(\"" + aURI + "\", \"" + aAssociatedURI + "\") invoked\n");
 
-        /* DEBUG */ YulupDebug.ASSERT(aURI          != null);
-        /* DEBUG */ YulupDebug.ASSERT(aBaseURI      != null);
-        /* DEBUG */ YulupDebug.ASSERT(aYulup        != null);
-        /* DEBUG */ YulupDebug.ASSERT(aAuthenticate != null);
+        /* DEBUG */ YulupDebug.ASSERT(aURI           != null);
+        /* DEBUG */ YulupDebug.ASSERT(aAssociatedURI != null);
+        /* DEBUG */ YulupDebug.ASSERT(aYulup         != null);
+        /* DEBUG */ YulupDebug.ASSERT(aAuthenticate  != null);
 
         context = {
             URI:              aURI,
-            baseURI:          aBaseURI,
+            associatedURI:    aAssociatedURI,
             yulup:            aYulup,
             callbackFunction: Neutron.introspectionLoadFinished
         };
@@ -105,8 +105,8 @@ var Neutron = {
         var domParser           = null;
         var xmlSerializer       = null;
         var introspection       = null;
-        var uri                 = aContext.URI;
-        var baseURI             = aContext.baseURI;
+        var uri                 = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService).newURI(aContext.URI, null, null);
+        var associatedURI       = aContext.associatedURI;
         var yulup               = aContext.yulup;
 
         /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished() invoked\n");
@@ -124,10 +124,10 @@ var Neutron = {
                 domDocument  = domParser.parseFromString(aDocumentData, "text/xml");
 
                 // instantiate the parser for this version and parse the file
-                introspection = Neutron.parserFactory(domDocument, baseURI).parseIntrospection();
+                introspection = Neutron.parserFactory(domDocument, uri).parseIntrospection();
 
                 introspection.introspectionDocument = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].getService(Components.interfaces.nsIDOMSerializer).serializeToString(domDocument);
-                introspection.introspectionURI      = uri;
+                introspection.associatedWithURI     = associatedURI;
 
                 // set the global introspection object
                 yulup.currentNeutronIntrospection = introspection;
@@ -214,7 +214,7 @@ var Neutron = {
      * used.
      *
      * @param  {nsIDOMXMLDocument} aDocument the Neutron document to parse
-     * @param  {nsIRUI}            aBaseURI  the URI of the document to which the introspection document is associated
+     * @param  {nsIRUI}            aBaseURI  the URI of the Neutron document
      * @return {NeutronParser}     the Neutron parser best matching the used Neutron version
      * @throws {NeutronException}
      */
@@ -249,17 +249,17 @@ var Neutron = {
  * type NeutronIntrospection.
  *
  * @constructor
- * @param  {nsIURI} aAssociatedWithURI   the URI of the document this introspection object is associated with
+ * @param  {nsIURI} aURI                 the URI of the introspection document
  * @param  {String} aCompatibilityLevel  the namespace associated with the introspection document
  * @return {NeutronIntrospection} returns a new NeutronIntrospection object
  */
-function NeutronIntrospection(aAssociatedWithURI, aCompatibilityLevel) {
-    /* DEBUG */ dump("Yulup:neutron.js:NeutronIntrospection(\"" + aAssociatedWithURI + "\") invoked\n");
+function NeutronIntrospection(aURI, aCompatibilityLevel) {
+    /* DEBUG */ dump("Yulup:neutron.js:NeutronIntrospection(\"" + aURI + "\") invoked\n");
 
-    /* DEBUG */ YulupDebug.ASSERT(aAssociatedWithURI  != null);
+    /* DEBUG */ YulupDebug.ASSERT(aURI                != null);
     /* DEBUG */ YulupDebug.ASSERT(aCompatibilityLevel != null);
 
-    this.associatedWithURI  = aAssociatedWithURI;
+    this.introspectionURI   = aURI.spec;
     this.compatibilityLevel = aCompatibilityLevel;
 
     this.fragments = new Array();
