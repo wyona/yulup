@@ -8,8 +8,13 @@
   <yanel:property name="mime-type" value="application/xml"/>
   <yanel:property name="mime-type" value="application/atom+xml"/>
   <yanel:property name="entries-path" value="/atom/news-entries/"/>
+  <yanel:property name="entries-url" value="http://demo.yulup.org/atom/entries/"/>
 -->
 
   <yanel:property name="feed-title" value="Demo Feed (Early Yulup Releases)"/>
   <yanel:property name="author" value="Yulup Demo Community"/>
+  <yanel:property name="self-url" value="http://demo.yulup.org/atom/entries/"/>
+<!--
+  <yanel:property name="self-url" value="http://demo.yulup.org/atom/entries/?yanel.resource.viewid=atom"/>
+-->
 </yanel:resource-config>
