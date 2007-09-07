@@ -113,7 +113,7 @@ var Neutron = {
 
         try {
             if (aDocumentData) {
-                /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspection: loading introspection file \"" + uri + "\" succeeded\n");
+                /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspection: loading introspection file \"" + uri.spec + "\" succeeded\n");
 
                 if ((wellFormednessError = YulupXMLServices.checkWellFormedness(aDocumentData)) != null) {
                     throw new YulupException(YulupXMLServices.createWellFormednessAlertString(wellFormednessError));
@@ -137,11 +137,11 @@ var Neutron = {
 
                 /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished: introspection object = \n" + introspection.toString());
             } else {
-                /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished: failed to load introspection document \"" + uri + "\". \"" + aException + "\"\n");
+                /* DEBUG */ dump("Yulup:neutron.js:Neutron.introspectionLoadFinished: failed to load introspection document \"" + uri.spec + "\". \"" + aException + "\"\n");
 
                 // set the introspection state
                 if (aException instanceof NeutronProtocolException) {
-                    yulup.introspectionStateChanged("auth-required", uri);
+                    yulup.introspectionStateChanged("auth-required", uri.spec);
                 } else {
                     yulup.introspectionStateChanged("failed");
                 }
