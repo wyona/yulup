@@ -628,13 +628,18 @@ var NetworkService = {
                 // extract the scheme identifier
                 authSchemeIdent = authScheme.split(" ", 1);
 
+                /* Convert auth scheme to lower case, since the scheme token is
+                 * case-insensitive (cf. http://tools.ietf.org/html/rfc2617#section-1.2). */
+                if (authSchemeIdent[0])
+                    authSchemeIdent[0] = authSchemeIdent[0].toLowerCase();
+
                 switch (authSchemeIdent[0]) {
-                    case "NEUTRON-AUTH":
+                    case "neutron-auth":
                         /* DEBUG */ dump("Yulup:networkservice.js:NetworkService.authenticate: initiating NEUTRON-AUTH authentication\n");
                         NeutronAuth.authenticate(aDocumentData, aRequest, aFirstAttempt);
                         return;
-                    case "Basic":
-                    case "Digest":
+                    case "basic":
+                    case "digest":
                         throw new YulupException("Yulup:networkservice.js:NetworkService.authenticate: authentication aborted.");
                     default:
                         throw new YulupException("Yulup:networkservice.js:NetworkService.authenticate: unknown authentication scheme \"" + authScheme + "\".");
