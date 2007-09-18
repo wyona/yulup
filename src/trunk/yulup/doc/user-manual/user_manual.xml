@@ -46,10 +46,16 @@
       </author>
     </authorgroup>
     <!-- All dates specified in ISO "YYYY-MM-DD" format -->
-    <pubdate>2007-05-07</pubdate>
+    <pubdate>2007-09-18</pubdate>
     <!-- Most recent revision goes at the top; list in descending order -->
     <!--
     <revhistory>
+      <revision>
+        <revnumber>0.1.4</revnumber>
+        <date>2007-09-18</date>
+        <authorinitials>AW</authorinitials>
+        <revremark>Updated to reflect most of Yulup 0.3.1.</revremark>
+      </revision>
       <revision>
         <revnumber>0.1.3</revnumber>
         <date>2007-05-07</date>
@@ -146,7 +152,7 @@
   <section>
     <title>System Requirements</title>
     <para>
-      &project; requires <ulink url="http://www.mozilla.com/firefox/">Mozilla Firefox</ulink> with a minimum version of 1.5. The &project; editor is a platform-independent application, and can therefore be run on every machine which also runs Firefox.
+      &project; requires <ulink url="http://www.mozilla.com/firefox/">Mozilla Firefox</ulink> with a minimum version of 2.0. The &project; editor is a platform-independent application, and can therefore be run on every machine which also runs Firefox.
     </para>
   </section>
 
@@ -185,7 +191,7 @@
             </para>
           </listitem>
         </orderedlist>
-        You are done. You can verify that the installation was successful by opening Firefox's extension manager (<guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Extensions</guimenuitem> for Firefox 1.5; <guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Add-ons</guimenuitem> for Firefox 2.0). There, an entry for &project; should appear.
+        You are done. You can verify that the installation was successful by opening Firefox's extension manager (<guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Add-ons</guimenuitem>). There, an entry for &project; should appear.
       </para>
     </section>
     <section id="update">
@@ -194,7 +200,7 @@
         <orderedlist>
           <listitem>
             <para>
-              Open Firefox's extension manager (<guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Extensions</guimenuitem> for Firefox 1.5; <guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Add-ons</guimenuitem> for Firefox 2.0).
+              Open Firefox's extension manager (<guimenu>Tools</guimenu> &gt;&gt; <guimenuitem>Add-ons</guimenuitem>).
             </para>
           </listitem>
           <listitem>
@@ -506,6 +512,9 @@
 
     <section>
       <title>Source Mode</title>
+      <para>
+        Editing in the source mode allows you to edit the source of the document, e.g. the XML tags, directly. The source mode can be used if the abstraction level of the XHTML  mode or the XML mode is too high, or you are an expert user and want to work with the source itself.
+      </para>
       <section id="guidedtaginserter">
         <title>Guided Tag Inserter</title>
         <para>
@@ -572,11 +581,168 @@
 
     <section>
       <title>WYSIWYG Mode</title>
+      <para>
+        The WYSIWYG mode enables you to work with the document as it would look like if you were viewing the final result. This means that the document looks the same as if you would be looking at the document with your webbrowser or other viewer.
+      </para>
       <section>
         <title>XHTML Mode</title>
+        <para>
+          The XHTML mode allows you to work with an XHTML document. Most of the usual elements of XHTML are available from the toolbar.
+        </para>
+        <section>
+          <title>Context Menu</title>
+          <para>
+            The context menu allows you to perform certain operations on the current selection. You can open the context menu by context-clicking at the current cursor position.
+            <figure>
+              <title>XHTML Mode Context Menu</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="figures/xhtmlmode_context_menu.png" format="PNG"/>
+                </imageobject>
+                <textobject>
+                  <phrase>Context menu in the XHTML mode</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+            Several operations are available:
+            <itemizedlist>
+              <listitem>
+                <formalpara>
+                  <title>Undo</title>
+                  Undo the last operation.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Redo</title>
+                  Redo the last operation.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Cut</title>
+                  Cut the current selection and put it on the clipboard.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Copy</title>
+                  Copy the current selection to the clipboard.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Paste</title>
+                  Paste the current content in the clipboard to the current selection.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Delete</title>
+                  Delete the current selection.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Select All</title>
+                  Select the whole document.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Select Contents</title>
+                  Select the text content of the currently selected element.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Find</title>
+                  Open the Find dialog to search for text in the document.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Replace</title>
+                  Open the Find &amp; Replace dialog to search and replace text in the document.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Mark as</title>
+                  Apply an inline element to the current selection. If no inline operations are defined, then this menu is not available.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Insert</title>
+                  Insert an element. If no insert operations are defined, then this menu is not available.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Edit Attributes</title>
+                  Lets you edit the attributes of the selected element.
+                </formalpara>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
+        <section>
+          <title>Path Toolbar</title>
+          <para>
+            The path toolbar shows you the path from the document root to the current selection. Furthermore, by clicking on one of the nodes in the path, you are presented with a menu from which you can do further operations on that node.
+            <figure>
+              <title>Path Toolbar</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="figures/path_toolbar.png" format="PNG"/>
+                </imageobject>
+                <textobject>
+                  <phrase>Path toolbar showing the path from the document root to the current selection</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+            Several operations are available:
+            <itemizedlist>
+              <listitem>
+                <formalpara>
+                  <title>Delete Element</title>
+                  Delete the selected element and all its content.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Select Contents</title>
+                  Select all the text content of the selected element.
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Move Up</title>
+                  Move the selected element upwards in the document (if the selected element has a left sibling node).
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Move Down</title>
+                  Move the selected element downwards in the document (if the selected element has a right sibling node).
+                </formalpara>
+              </listitem>
+              <listitem>
+                <formalpara>
+                  <title>Edit Attributes</title>
+                  Lets you edit the attributes of the selected element.
+                </formalpara>
+              </listitem>
+            </itemizedlist>
+          </para>
+        </section>
       </section>
       <section>
         <title>XML Mode</title>
+        <para>
+          The XML mode allows you to work with an XML document which is processed using an XSLT stylesheet to produce a formatted visual representation of the document. In this mode, you can at the same time change the original XML document whilst editing the transformed output. In other words, you are modifying the underlying XML document but are looking at the final result as if viewed in your webbrowser.
+        </para>
         <section>
           <title>XPath Toolbar</title>
           <para>
@@ -1229,6 +1395,15 @@
               </formalpara>
             </listitem>
           </itemizedlist>
+        </para>
+      </section>
+      <section>
+        <title>Default Character Set</title>
+        <para>
+          Select the default character set for documents handled by &project;. The selected character set is used when opening a document and no character set information is available (e.g. when opening a file from the local file system), but not when loading a document via HTTP(S) (if no character set information is available in that situation, the character set used is UTF-8, as defined in the HTTP/1.1 specification). The default character set is also used when writing files to the disk.
+        </para>
+        <para>
+          The default character set is UTF-8.
         </para>
       </section>
     </section>
