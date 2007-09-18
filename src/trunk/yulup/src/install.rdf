@@ -7,7 +7,7 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>yulup@wyona.com</em:id>
-    <em:version>0.3.0-rXXXXX-dev</em:version>
+    <em:version>0.3.1-rXXXXX-dev</em:version>
     <em:type>2</em:type>
     <em:targetApplication>
       <Description>
