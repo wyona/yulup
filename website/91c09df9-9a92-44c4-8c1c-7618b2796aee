@@ -1,0 +1,21 @@
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <atom:title type="text">yulup-0.3.1-r27430.xpi</atom:title>
+  <atom:author>
+    <atom:name>Andreas Wuest</atom:name>
+  </atom:author>
+  <atom:id>urn:www-yulup-org:0-3-1-release</atom:id>
+  <atom:content type="xhtml">
+    <xhtml:div>
+      <xhtml:a href="yulup-0.3.1-r27430.xpi">yulup-0.3.1-r27430.xpi</xhtml:a> <xhtml:a href="http://svn.wyona.com/repos/public/yulup/website/download/yulup-0.3.1-r27430.xpi.md5">(md5)</xhtml:a> (September 18, 2007)
+      <xhtml:br/>
+      <xhtml:br/>
+      Changelog:
+      <xhtml:ul>
+        <xhtml:li>Treat introspection URI as the base URI of the introspection document instead of the URI the introspection document was linked from.</xhtml:li>
+        <xhtml:li>Made WWW-Authenticate auth scheme check case-insensitive.</xhtml:li>
+        <xhtml:li>Made default charset selectable in the preferences dialog.</xhtml:li>
+        <xhtml:li>Updated the user manual.</xhtml:li>
+      </xhtml:ul>
+    </xhtml:div>
+  </atom:content>
+<atom:updated>2007-09-18T18:36:52.168Z</atom:updated><atom:published>2007-09-18T18:36:52.168Z</atom:published></atom:entry>
