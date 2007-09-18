@@ -211,7 +211,7 @@ var PersistenceService = {
 
             fileStream.QueryInterface(Components.interfaces.nsISafeOutputStream);
 
-            unicodeConverter.charset = "UTF-8";
+            unicodeConverter.charset = YulupInternationalisationServices.getDefaultCharset();
             unicodeDoc  = unicodeConverter.ConvertFromUnicode(aDocument);
             unicodeDoc += unicodeConverter.Finish();
 

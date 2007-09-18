@@ -538,6 +538,11 @@ const YulupLocalisationServices = {
     }
 };
 
+const YulupInternationalisationServices = {
+    getDefaultCharset: function () {
+        return YulupPreferences.getCharPref("", "defaultcharset");
+    }
+}
 
 const YulupURIServices = {
     /**

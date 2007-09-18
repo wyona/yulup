@@ -939,8 +939,16 @@ YulupNetworkStreamListener.prototype = {
                 // get content's character set
                 charSet = aRequest.QueryInterface(Components.interfaces.nsIChannel).contentCharset;
 
-                if (!charSet || charSet == "")
-                    charSet = DEFAULT_CHAR_SET;
+                if (!charSet || charSet == "") {
+                    /* Fall back to the URF-8 charset if we have an HTTP channel (because
+                     * the HTTP/1.1 spec says that we have to use UTF-8 if no charset
+                     * was specified), otherwise use the user defined default charset. */
+                    if (this.channel instanceof Components.interfaces.nsIHttpChannel) {
+                        charSet = DEFAULT_CHAR_SET;
+                    } else {
+                        charSet = YulupInternationalisationServices.getDefaultCharset();
+                    }
+                }
             } catch (exception) {
                 // failed to retrieve content character set; fall back to DEFAULT_CHAR_SET
                 /* DEBUG */ dump("Yulup:networkservice.js:YulupNetworkStreamListener.onStopRequest: failed to retrieve document character set. Falling back to " + DEFAULT_CHAR_SET + ".\n");
