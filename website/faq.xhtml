@@ -27,6 +27,7 @@
         <ol>
           <li><a href="#firebug">Yulup does not detect Neutron enabled pages or network connection fails.</a></li>
           <li><a href="#keyboardfocus">Although the cursor is placed inside the source editor, no text can be entered.</a></li>
+          <li><a href="#charset">Opening a file from the file system fails or produces weird output.</a></li>
         </ol>
       </li>
     </ul>
@@ -74,6 +75,11 @@
 
     <p><span style="font-weight: bolder;">A.</span> This is <a href="http://bugzilla.wyona.com/cgi-bin/bugzilla/show_bug.cgi?id=5153">bug 5153</a> and is fixed in Yulup version 0.2.2. You might want to consider updating.</p>
     <p>In case you can't update right now, simply position the cursor inside the source view and hit TAB once.</p>
+
+    <a name="charset"/>
+    <p><span style="font-weight: bolder;">Q.</span> Opening a file from the file system fails or produces weird output.</p>
+
+    <p><span style="font-weight: bolder;">A.</span> When opening a file from the local file system, Yulup has no information about the character set which was used to encode the document. If you know which character set is used, you can go to the Yulup preferences dialog (Yulup popup menu &gt;&gt; Preferences) and selected the default character set in the "General" tab of the dialog. The selected character set is then used to open and write files from and to the file system.</p>
 
     <br/><br/><br/><br/><br/>
   </body>
