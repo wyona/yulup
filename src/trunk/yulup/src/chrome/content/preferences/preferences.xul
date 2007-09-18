@@ -51,6 +51,9 @@
       <preference id="pref_general_workspace_atomautoopensidebar"
                   name="extensions.yulup.atom.autoopensidebar"
                   type="bool"/>
+      <preference id="pref_general_defaultcharset"
+                  name="extensions.yulup.defaultcharset"
+                  type="string"/>
     </preferences>
 
     <groupbox>
@@ -72,6 +75,14 @@
     <groupbox>
       <caption label="&generalSidebarsGroupbox.label;"/>
       <checkbox label="&generalSidebarsAtomAutoOpen.label;" preference="pref_general_workspace_atomautoopensidebar"/>
+    </groupbox>
+
+    <groupbox>
+      <!-- TODO: i18n -->
+      <caption label="&generalDefaultCharsetGroupbox.label;"/>
+      <menulist id="uiGeneralDefaultCharsetMenulist" preference="pref_general_defaultcharset">
+        <menupopup/>
+      </menulist>
     </groupbox>
   </prefpane>
 

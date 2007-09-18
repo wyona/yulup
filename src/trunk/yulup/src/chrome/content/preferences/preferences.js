@@ -37,6 +37,9 @@ var PreferencesDialog = {
     onLoadHandler: function () {
         /* DEBUG */ dump("Yulup:preferences.js:PreferencesDialog.onLoadHandler() invoked\n");
 
+        // populate the charset list
+        this.__populateCharsetList(document.getElementById("uiGeneralDefaultCharsetMenulist"), document.getElementById("pref_general_defaultcharset").value);
+
         // install keypress handler for input validation
         document.getElementById("uiEditorTabspacesTextbox").inputField.addEventListener("keypress", PreferencesDialog.spacesTextboxKeypressHandler, false);
     },
@@ -76,5 +79,40 @@ var PreferencesDialog = {
                     aEvent.preventDefault();
             }
         }
+    },
+
+    __populateCharsetList: function (aMenuList, aCurrentCharset) {
+        var charsetArray = [];
+        var charsetStringBundle = YulupLocalisationServices.getStringBundle("chrome://global/locale/charsetTitles.properties");
+
+        var charsets = charsetStringBundle.getSimpleEnumeration();
+
+        while (charsets.hasMoreElements()) {
+            var elem = charsets.getNext().QueryInterface(Components.interfaces.nsIPropertyElement);
+
+            if (elem.key.indexOf("chardet.") == 0 || elem.key.indexOf("x-user-defined") == 0)
+                continue;
+
+            charsetArray.push(elem);
+        }
+
+        // sort charsets by value
+        var localeService = Components.classes["@mozilla.org/intl/nslocaleservice;1"].getService(Components.interfaces.nsILocaleService);
+        var locale = localeService.newLocale(YulupAppServices.getAppLocale());
+
+        var collationFactory = Components.classes["@mozilla.org/intl/collation-factory;1"].getService(Components.interfaces.nsICollationFactory);
+        var collation = collationFactory.CreateCollation(locale);
+        collation.initialize(locale);
+
+        charsetArray.sort(function (aItemA, aItemB) {
+                return collation.compareString(Components.interfaces.nsICollation.kCollationStrengthDefault, aItemA.value, aItemB.value);
+            });
+
+        for (var i = 0; i < charsetArray.length; i++) {
+            aMenuList.appendItem(charsetArray[i].value, charsetArray[i].key.substring(0, charsetArray[i].key.indexOf(".")), null);
+        }
+
+        // select menuitem per current pref
+        aMenuList.value = aCurrentCharset;
     }
 };

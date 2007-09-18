@@ -8,6 +8,7 @@
 <!ENTITY generalDefaultServerTextboxLabel.label "URI des standard CMS eingeben">
 <!ENTITY generalSidebarsGroupbox.label "Sidebars">
 <!ENTITY generalSidebarsAtomAutoOpen.label "Blog Entries Management Sidebar automatisch öffnen">
+<!ENTITY generalDefaultCharsetGroupbox.label "Standard Symbolcodierung">
 <!ENTITY editorPrefPane.label "Editor">
 <!ENTITY editorKeyBindingsGroupbox.label "Tastaturkürzel">
 <!ENTITY editorKeyBindingsMenulistLabel.label "Tastaturkürzelschema auswählen">

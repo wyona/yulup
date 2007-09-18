@@ -62,6 +62,11 @@
     <name xml:lang="es">Abrir la Barra Lateral Blog Entries Management automáticamente</name>
   </entity>
 
+  <entity id="generalDefaultCharsetGroupbox.label">
+    <name xml:lang="en">Default Character Set</name>
+    <name xml:lang="de">Standard Symbolcodierung</name>
+  </entity>
+
   <entity id="editorPrefPane.label">
     <name xml:lang="en">Editor</name>
     <name xml:lang="de">Editor</name>
