@@ -6,6 +6,7 @@
     <ignore pattern=".*\.svn"/>
   </paths>
   <content src="../../"/>
+  <meta src="../../yarep"/>
 </repository>
 
 <!--
