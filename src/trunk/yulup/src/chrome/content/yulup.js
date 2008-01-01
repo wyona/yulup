@@ -793,9 +793,9 @@ const Yulup = {
                                     /* See http://bitworking.org/projects/atom/draft-ietf-atompub-protocol-15.html#iana-atomsvc
                                      * and http://www-128.ibm.com/developerworks/xml/library/x-matters45.html. */
 
-                                    /* DEBUG */ dump("Yulup:yulup.js:Yulup.introspectionDetector: APP introspection = \"" + domElem.href + "\"\n");
+                                    /* DEBUG */ dump("DEBUG: Yulup:chrome/content/yulup.js:Yulup.introspectionDetector(): APP service document = \"" + domElem.href + "\"\n");
 
-                                    // found an APP introspection link
+                                    // Found an APP introspection resp. service document link
                                     introspectionLinks.push(new YulupIntrospectionLink(domElem.href, INTROSPECTION_TYPE_APP));
                                 }
                             }
