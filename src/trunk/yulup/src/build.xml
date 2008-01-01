@@ -138,6 +138,7 @@
     <replace file="../pkg/update.rdf" token="@VERSION@" value="${version}"/>
   </target>
 
+  <!-- Remove all lines containing the substring "/* DEBUG */" unless the debug property has set to true! -->
   <target name="strip-debug" description="Strip debug lines" unless="debug">
     <replaceregexp match="/\* DEBUG \*/.+" replace="" byline="true">
       <fileset dir="../pkg/tmp/chrome"/>
