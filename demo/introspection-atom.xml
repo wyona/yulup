@@ -2,7 +2,7 @@
 
 <!-- http://bitworking.org/projects/atom/ -->
 
-<service xmlns="http://www.w3.org/2007/app" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<service xmlns="http://www.w3.org/2007/app" xmlns:atom="http://www.w3.org/2005/Atom">
   <workspace title="Yulup Demo">
     <atom:title type="text">Yulup Demo</atom:title>
     <collection title="Releases" href="../entries/?yanel.resource.viewid=atom">
@@ -20,7 +20,7 @@
   <workspace title="Yulup Website">
     <atom:title type="text">Yulup Website</atom:title>
     <collection title="Releases" href="http://www.yulup.org/download/release-atom-entries/?yanel.resource.viewid=atom">
-      <atom:title type="xhtml"><xhtml:div>Yulup <xhtml:b>Releases</xhtml:b></xhtml:div></atom:title>
+      <atom:title type="xhtml"><xhtml:div xmlns:xhtml="http://www.w3.org/1999/xhtml">Yulup <xhtml:b>Releases</xhtml:b></xhtml:div></atom:title>
     </collection>
 <!--
     <collection title="News" href="http://www.yulup.org/news-entries.xml">
