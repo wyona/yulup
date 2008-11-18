@@ -1,0 +1,12 @@
+<yanel:resource-config xmlns:yanel="http://www.wyona.org/yanel/rti/1.0">
+  <yanel:rti name="flash-video" namespace="http://www.wyonapictures.com/yanel/resource/1.0"/>
+
+  <yanel:property name="title" value="How to edit with Yulup"/>
+<!--
+  <yanel:property name="href" value="/yanel/from-scratch-realm/show-kinder112K.flv"/>
+-->
+<!--
+  <yanel:property name="href" value="http://127.0.0.1:8080/yanel/from-scratch-realm/show-kinder112K.flv"/>
+-->
+  <yanel:property name="href" value="../../../../../../../../how-to-edit-in-yulup.flv"/>
+</yanel:resource-config>
