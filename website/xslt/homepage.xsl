@@ -88,7 +88,7 @@
 <xsl:copy-of select="/hp:homepage/xhtml:html/*"/>
 
 <p>
-<span id="footer-copyright">Copyright &#169; 2007 <a href="http://www.wyona.com">Wyona</a>. All rights reserved.</span>
+<span id="footer-copyright">Copyright &#169; 2009 <a href="http://www.wyona.com">Wyona</a>. All rights reserved.</span>
 </p>
 </div>
 
