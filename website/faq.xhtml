@@ -28,59 +28,48 @@
           <li><a href="#firebug">Yulup does not detect Neutron enabled pages or network connection fails.</a></li>
           <li><a href="#keyboardfocus">Although the cursor is placed inside the source editor, no text can be entered.</a></li>
           <li><a href="#charset">Opening a file from the file system fails or produces weird output.</a></li>
+          <li><a href="#icons">Yulup toolbar icons do not show anymore</a></li>
         </ol>
       </li>
     </ul>
-
     <h3>Answers</h3>
     <h4>Troubleshooting Installation</h4>
-
-    <a name="xpinstall"/>
-    <p><span style="font-weight: bolder;">Q.</span> When I click on one of the download links below, Firefox tells me something along the lines of &quot;Software installation is currently disabled. Click Edit Options... to enable it and try again.&quot; When clicking on &quot;Edit Options...&quot;, the preferences dialog is opened but there is no relevant option to reenable software installation.</p>
-
-    <p><span style="font-weight: bolder;">A.</span> The option to enable software installation was removed from the user interface, without implementing a replacement. This is a known <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=310737">bug</a> and is fixed in Firefox 2 alpha 2. For users of Firefox 1.5.0.x, a workaround is to open the URI &quot;about:config&quot;, scroll down to the option &quot;xpinstall.enabled&quot;, right click on that name, and select &quot;Toggle&quot; from the context menu, such that the &quot;Value&quot; column reads &quot;true&quot;.</p>
-
+    <a name="xpinstall">
+    </a><p><span style="font-weight: bolder;"><a name="xpinstall">Q.</a></span><a name="xpinstall"> When I click on one of the download links below, Firefox tells me something along the lines of &quot;Software installation is currently disabled. Click Edit Options... to enable it and try again.&quot; When clicking on &quot;Edit Options...&quot;, the preferences dialog is opened but there is no relevant option to reenable software installation.</a></p>
+<a name="xpinstall">    </a><p><span style="font-weight: bolder;"><a name="xpinstall">A.</a></span><a name="xpinstall"> The option to enable software installation was removed from the user interface, without implementing a replacement. This is a known </a><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=310737">bug</a> and is fixed in Firefox 2 alpha 2. For users of Firefox 1.5.0.x, a workaround is to open the URI &quot;about:config&quot;, scroll down to the option &quot;xpinstall.enabled&quot;, right click on that name, and select &quot;Toggle&quot; from the context menu, such that the &quot;Value&quot; column reads &quot;true&quot;.</p>
     <p>Note that this bug must not necessarily show up with your installation, since the &quot;xpinstall.enabled&quot; is set to &quot;true&quot; by default, and could only have been changed by you yourself (or your administrator) in an earlier release or manually by using &quot;about:config&quot;.</p>
-
     <hr/>
-
-    <a name="noupdates"/>
-    <p><span style="font-weight: bolder;">Q.</span> Cannot upgrade to a newer version although a newer version is indeed available (Extension Manager reports: &quot;No updates were found for Wyona Yulup&quot;).</p>
-
-    <p><span style="font-weight: bolder;">A.</span> Clear your browser cache (Preferences -&gt; Privacy -&gt; Cache -&gt; Clear Cache Now) then try again to update. Alternative 1: Uninstall Yulup and reinstall afresh from the Yulup website. Alternative 2: Delete your local profile and restart Firefox (warning: this deletes all your bookmarks, etc., therefore you might want to create a backup copy of your profile folder first, and afterwards migrate your old bookmarks to your new profile).</p>
-
-    <hr/>
-
-    <a name="upgrade"/>
-    <p><span style="font-weight: bolder;">Q.</span> How to upgrade from an older to a newer version.</p>
-
-    <p><span style="font-weight: bolder;">A.</span> Click on the Firefox/Mozilla Tools menu, then on the Extensions menu item, and then click &quot;Find Updates&quot;.</p>
-
-    <hr/>
-
-    <a name="notvalidpackage"/>
-    <p><span style="font-weight: bolder;">Q.</span> Firefox could not install the file at http:// because: Not a valid install package.</p>
-
-    <p><span style="font-weight: bolder;">A.</span> This seems to be a Firefox <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=277556">bug</a>. After 4 or 5 times re-trying to install it usually suddenly works. See also <a href="http://kb.mozillazine.org/Unable_to_install_themes_or_extensions_-_Firefox">this</a> mozillaZine Knowledge Base article.</p>
-
+    <a name="noupdates">
+    </a><p><span style="font-weight: bolder;"><a name="noupdates">Q.</a></span><a name="noupdates"> Cannot upgrade to a newer version although a newer version is indeed available (Extension Manager reports: &quot;No updates were found for Wyona Yulup&quot;).</a></p>
+<a name="noupdates">    </a><p><span style="font-weight: bolder;"><a name="noupdates">A.</a></span><a name="noupdates"> Clear your browser cache (Preferences -&gt; Privacy -&gt; Cache -&gt; Clear Cache Now) then try again to update. Alternative 1: Uninstall Yulup and reinstall afresh from the Yulup website. Alternative 2: Delete your local profile and restart Firefox (warning: this deletes all your bookmarks, etc., therefore you might want to create a backup copy of your profile folder first, and afterwards migrate your old bookmarks to your new profile).</a></p>
+<a name="noupdates">    </a><hr/>
+<a name="noupdates">    </a><a name="upgrade">
+    </a><p><span style="font-weight: bolder;"><a name="upgrade">Q.</a></span><a name="upgrade"> How to upgrade from an older to a newer version.</a></p>
+<a name="upgrade">    </a><p><span style="font-weight: bolder;"><a name="upgrade">A.</a></span><a name="upgrade"> Click on the Firefox/Mozilla Tools menu, then on the Extensions menu item, and then click &quot;Find Updates&quot;.</a></p>
+<a name="upgrade">    </a><hr/>
+<a name="upgrade">    </a><a name="notvalidpackage">
+    </a><p><span style="font-weight: bolder;"><a name="notvalidpackage">Q.</a></span><a name="notvalidpackage"> Firefox could not install the file at http:// because: Not a valid install package.</a></p>
+<a name="notvalidpackage">    </a><p><span style="font-weight: bolder;"><a name="notvalidpackage">A.</a></span><a name="notvalidpackage"> This seems to be a Firefox </a><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=277556">bug</a>. After 4 or 5 times re-trying to install it usually suddenly works. See also <a href="http://kb.mozillazine.org/Unable_to_install_themes_or_extensions_-_Firefox">this</a> mozillaZine Knowledge Base article.</p>
     <h4>Running Yulup</h4>
-
-    <a name="firebug"/>
-    <p><span style="font-weight: bolder;">Q.</span> Yulup does not detect Neutron enabled pages or network connection fails.</p>
-
-    <p><span style="font-weight: bolder;">A.</span> If you have the FireBug extension installed next to Yulup, please disable FireBug or uninstall it. FireBug is known to break Yulup in its current release. We are currently implementing a specific Yulup prefix as a workaround. Please stay tuned.</p>
-
-    <a name="keyboardfocus"/>
-    <p><span style="font-weight: bolder;">Q.</span> Although the cursor is placed inside the source editor, no text can be entered.</p>
-
-    <p><span style="font-weight: bolder;">A.</span> This is <a href="http://bugzilla.wyona.com/cgi-bin/bugzilla/show_bug.cgi?id=5153">bug 5153</a> and is fixed in Yulup version 0.2.2. You might want to consider updating.</p>
+    <a name="firebug">
+    </a><p><span style="font-weight: bolder;"><a name="firebug">Q.</a></span><a name="firebug"> Yulup does not detect Neutron enabled pages or network connection fails.</a></p>
+<a name="firebug">    </a><p><span style="font-weight: bolder;"><a name="firebug">A.</a></span><a name="firebug"> If you have the FireBug extension installed next to Yulup, please disable FireBug or uninstall it. FireBug is known to break Yulup in its current release. We are currently implementing a specific Yulup prefix as a workaround. Please stay tuned.</a></p>
+<a name="firebug">    </a><a name="keyboardfocus">
+    </a><p><span style="font-weight: bolder;"><a name="keyboardfocus">Q.</a></span><a name="keyboardfocus"> Although the cursor is placed inside the source editor, no text can be entered.</a></p>
+<a name="keyboardfocus">    </a><p><span style="font-weight: bolder;"><a name="keyboardfocus">A.</a></span><a name="keyboardfocus"> This is </a><a href="http://bugzilla.wyona.com/cgi-bin/bugzilla/show_bug.cgi?id=5153">bug 5153</a> and is fixed in Yulup version 0.2.2. You might want to consider updating.</p>
     <p>In case you can't update right now, simply position the cursor inside the source view and hit TAB once.</p>
+    <a name="charset">
+    </a><p><span style="font-weight: bolder;"><a name="charset">Q.</a></span><a name="charset"> Opening a file from the file system fails or produces weird output.</a></p>
+<a name="charset">    </a><p><span style="font-weight: bolder;"><a name="charset">A.</a></span><a name="charset"> When opening a file from the local file system, Yulup has no information about the character set which was used to encode the document. If you know which character set is used, you can go to the Yulup preferences dialog (Yulup popup menu &gt;&gt; Preferences) and selected the default character set in the &quot;General&quot; tab of the dialog. The selected character set is then used to open and write files from and to the file system.</a></p>
+<a name="charset">
+  </a>
 
-    <a name="charset"/>
-    <p><span style="font-weight: bolder;">Q.</span> Opening a file from the file system fails or produces weird output.</p>
-
-    <p><span style="font-weight: bolder;">A.</span> When opening a file from the local file system, Yulup has no information about the character set which was used to encode the document. If you know which character set is used, you can go to the Yulup preferences dialog (Yulup popup menu &gt;&gt; Preferences) and selected the default character set in the "General" tab of the dialog. The selected character set is then used to open and write files from and to the file system.</p>
-
-    <br/><br/><br/><br/><br/>
-  </body>
+<a name="icons"/>
+<p><b>
+Q.</b> Yulup toolbar icons do not show anymore
+</p>
+<p><b>
+A.</b> This is because a bug within Firefox 2.0.0.10. Please see <a href="http://www.neowin.net/news/main/07/11/28/firefox-20010-gaffe-prompts-quick-fix">http://www.neowin.net/news/main/07/11/28/firefox-20010-gaffe-prompts-quick-fix</a>
+</p>
+</body>
 </html>
