@@ -160,7 +160,7 @@ WARNING: This file has been generated automatically. All changes will be lost.
 
 <!-- TODO: Add margin left and right instead non-breaking spaces ... -->
 
-&#160;&#160;&#160;<span id="footer-copyright">Copyright &#169; 2007 <a href="http://www.wyona.com">Wyona</a>. All rights reserved.</span>
+&#160;&#160;&#160;<span id="footer-copyright">Copyright &#169; 2009 <a href="http://www.wyona.com">Wyona</a>. All rights reserved.</span>
 
 </p>
 
